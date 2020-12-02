@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-adding-capabilities
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/description: Adding additional capabilities beyond the default set must be disallowed.
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: capabilities
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Adding of additional capabilities beyond the default set is disallowed.\nThe fields spec.containers[*].securityContext.capabilities.add and spec.initContainers[*].securityContext.capabilities.add must be empty.\n"
+      pattern:
+        spec:
+          initContainers:
+          - =(securityContext):
+              =(capabilities):
+                add: ["null"]         
+          containers:
+          - =(securityContext):
+              =(capabilities):
+                add: ["null"]

@@ -1,0 +1,28 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-selinux
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/description: Setting custom SELinux options should be disallowed.
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: selinux
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Setting custom SELinux options is disallowed.\nThe fields spec.securityContext.seLinuxOptions, spec.containers[*].securityContext.seLinuxOptions, and spec.initContainers[*].securityContext.seLinuxOptions must be empty.\n"
+      pattern:
+        spec:
+          =(securityContext):
+            X(seLinuxOptions): "null"
+          initContainers:
+          - =(securityContext):
+              X(seLinuxOptions): "null"
+          containers:
+          - =(securityContext):
+              X(seLinuxOptions): "null"

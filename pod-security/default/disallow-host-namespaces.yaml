@@ -4,18 +4,20 @@ metadata:
   name: disallow-host-namespaces
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: ...
+    policies.kyverno.io/description: Sharing the host namespaces must be disallowed.
 spec:
-  background: true
   validationFailureAction: audit
+  background: true
   rules:
-  - name: ...
+  - name: host-namespaces
     match:
       resources:
         kinds:
-        - Pod  
+        - Pod
     validate:
-      message: "..."
-      anyPattern:
-      - spec:
-      - spec:
+      message: "Sharing the host namespaces is disallowed.\nThe fields spec.hostNetwork, spec.hostIPC, and spec.hostPID must not be set to true.\n"
+      pattern:
+        spec:
+          =(hostPID): "false"
+          =(hostIPC): "false"
+          =(hostNetwork): "false"
