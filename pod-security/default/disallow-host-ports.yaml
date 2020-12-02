@@ -1,0 +1,26 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-host-ports
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/description: HostPorts should be disallowed, or at minimum restricted to a known list.
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: host-ports
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Use of hostPort is disallowed.\nThe fields spec.containers[*].ports[*].hostPort and spec.initContainers[*].ports[*].hostPort must be empty.\n"
+      pattern:
+        spec:
+          initContainers:
+          - =(ports):
+              - X(hostPort): "null"
+          containers:
+          - =(ports):
+              - X(hostPort): "null"

@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-host-path
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/description: HostPath volumes must be forbidden.
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: host-path
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Use of hostPath volumes is disallowed.\nThe fields spec.volumes[*].hostPath must not be set.\n"
+      pattern:
+        spec:
+          =(volumes):
+          - X(hostPath): "null"
