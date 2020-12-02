@@ -1,0 +1,5 @@
+bases:
+- ../default
+
+resources:
+- restrict-volume-types.yaml

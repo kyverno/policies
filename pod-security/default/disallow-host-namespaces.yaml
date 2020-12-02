@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-host-namespaces
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/description: ...
+spec:
+  background: true
+  validationFailureAction: audit
+  rules:
+  - name: ...
+    match:
+      resources:
+        kinds:
+        - Pod  
+    validate:
+      message: "..."
+      anyPattern:
+      - spec:
+      - spec:
