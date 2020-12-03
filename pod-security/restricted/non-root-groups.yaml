@@ -1,0 +1,50 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: non-root-groups
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/description: Containers should be forbidden from running with a root primary or supplementary GID.
+spec:
+  background: true
+  validationFailureAction: audit
+  rules:
+  - name: non-root-groups-runasgroup
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Running with root groups is disallowed.\nThe fields spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup, and spec.initContainers[*].securityContext.runAsGroup must be empty or greater than zero.\n"
+      pattern:
+        spec:
+          =(securityContext):
+            =(runAsGroup): ">0"
+          initContainers:
+          - =(securityContext):
+              =(runAsGroup): ">0"
+          containers:
+          - =(securityContext):
+              =(runAsGroup): ">0"
+  - name: non-root-groups-supplementalGroups
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Adding of supplemental group IDs is disallowed.\nThe field spec.securityContext.supplementalGroups must not be defined.\n"
+      pattern:
+        spec:
+          =(securityContext):
+            =(supplementalGroups): ["null"]
+  - name: non-root-groups-fsGroup
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Changing of file system groups is disallowed.\nThe field spec.securityContext.fsGroup must not be defined.\n"
+      pattern:
+        spec:
+          =(securityContext):
+            X(fsGroup): "null"
