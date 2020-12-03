@@ -20,7 +20,7 @@ spec:
         spec:
           =(securityContext):
             =(runAsGroup): ">0"
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               =(runAsGroup): ">0"
           containers:

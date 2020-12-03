@@ -20,7 +20,7 @@ spec:
         spec:
           =(securityContext):
             =(runAsNonRoot): "true"
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               =(runAsNonRoot): "true"
           containers:

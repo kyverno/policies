@@ -20,7 +20,7 @@ spec:
         spec:
           =(securityContext):
             X(seLinuxOptions): "null"
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               X(seLinuxOptions): "null"
           containers:

@@ -18,7 +18,7 @@ spec:
       message: "Privileged mode is disallowed.\nThe fields spec.containers[*].securityContext.privileged and spec.initContainers[*].securityContext.privileged must not be set to true.\n"
       pattern:
         spec:
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               =(privileged): "false"          
           containers:
