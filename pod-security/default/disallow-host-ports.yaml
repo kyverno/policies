@@ -18,7 +18,7 @@ spec:
       message: "Use of hostPort is disallowed.\nThe fields spec.containers[*].ports[*].hostPort and spec.initContainers[*].ports[*].hostPort must be empty.\n"
       pattern:
         spec:
-          initContainers:
+          =(initContainers):
           - =(ports):
               - X(hostPort): "null"
           containers:

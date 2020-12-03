@@ -21,7 +21,7 @@ spec:
           =(securityContext):
             =(seccompProfile):
               =(type): "RuntimeDefault"
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               =(seccompProfile):
                 =(type): "RuntimeDefault"

@@ -18,7 +18,7 @@ spec:
       message: "Changing the proc mount away from the defaults is disallowed.\nThe fields spec.containers[*].securityContext.procMount and spec.initContainers[*].securityContext.procMount must not be changed away from `Default`.\n"
       pattern:
         spec:
-          initContainers:
+          =(initContainers):
           - =(securityContext):
               =(procMount): "Default"
           containers:
