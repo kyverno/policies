@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-seccomp
+  annotations:
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/description: The RuntimeDefault seccomp profile must be required, or allow specific additional profiles.
+spec:
+  background: true
+  validationFailureAction: audit
+  rules:
+  - name: seccomp
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Use of custom Seccomp profiles is disallowed.\nThe fields spec.securityContext.seccompProfile.type, spec.containers[*].securityContext.seccompProfile.type, and spec.initContainers[*].securityContext.seccompProfile.type must be unset or set to `RuntimeDefault`.\n"
+      pattern:
+        spec:
+          =(securityContext):
+            =(seccompProfile):
+              =(type): "RuntimeDefault"
+          initContainers:
+          - =(securityContext):
+              =(seccompProfile):
+                =(type): "RuntimeDefault"
+          containers:
+          - =(securityContext):
+              =(seccompProfile):
+                =(type): "RuntimeDefault"
