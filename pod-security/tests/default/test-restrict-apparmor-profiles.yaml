@@ -1,5 +1,5 @@
-apiVersion: apps/v1
 ### Awaiting enhancement in Kyverno (wildcard support in annotation key names in `pattern` statements) before this can be tested.
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: test

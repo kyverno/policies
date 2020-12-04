@@ -1,5 +1,5 @@
 ### This test will always pass unless the kubelet flag `ProcMountType` is passed. Any values set for `procMount` will be mutated by Kubernetes to
-### read as `Default` upon submission.
+### read as `Default` upon submission. Therefore, without the kubelet modification this manifest will always validate to true.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
