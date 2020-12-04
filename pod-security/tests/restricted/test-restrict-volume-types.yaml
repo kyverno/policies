@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      volumes:
+      - name: myvol
+      #   emptyDir:
+      #     medium: Memory
+        # nfs:
+        #     path: /foo
+        #     server: foo.server.com
+        gitRepo:
+          repository: https://github.com/foo/bar
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]

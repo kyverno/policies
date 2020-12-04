@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+### Awaiting enhancement in Kyverno (wildcard support in annotation key names in `pattern` statements) before this can be tested.
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/busybox: localhost/fooprofile
+    spec:
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
