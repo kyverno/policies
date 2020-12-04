@@ -1,0 +1,24 @@
+### This test will always pass unless the kubelet flag `ProcMountType` is passed. Any values set for `procMount` will be mutated by Kubernetes to
+### read as `Default` upon submission.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+        securityContext:
+          procMount: Unmasked

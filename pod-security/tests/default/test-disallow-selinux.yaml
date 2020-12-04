@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      securityContext:
+        # seLinuxOptions:
+        #   user: foo
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
