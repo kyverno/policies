@@ -8,3 +8,11 @@ resources:
 - disallow-selinux.yaml
 - restrict-apparmor-profiles.yaml
 - restrict-sysctls.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/validationFailureAction
+      value: enforce    
+  target:
+    kind: ClusterPolicy

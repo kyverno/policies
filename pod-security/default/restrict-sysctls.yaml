@@ -4,7 +4,11 @@ metadata:
   name: restrict-sysctls
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed "safe" subset. A sysctl is considered safe if it is namespaced in the container or the Pod, and it is isolated from other Pods or processes on the same Node.
+    policies.kyverno.io/description: >-
+      Sysctls can disable security mechanisms or affect all containers on a
+      host, and should be disallowed except for an allowed "safe" subset. A
+      sysctl is considered safe if it is namespaced in the container or the 
+      Pod, and it is isolated from other Pods or processes on the same Node.
 spec:
   validationFailureAction: audit
   background: true
@@ -15,10 +19,14 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Setting additional sysctls above the allowed type is disallowed.\nThe field spec.securityContext.sysctls must not use any other names than the following:\n\nkernel.shm_rmid_forced\nnet.ipv4.ip_local_port_range\nnet.ipv4.tcp_syncookies\nnet.ipv4.ping_group_range\n"
+      message: >-
+        Setting additional sysctls above the allowed type is disallowed.
+        The field spec.securityContext.sysctls must not use any other names
+        than 'kernel.shm_rmid_forced', 'net.ipv4.ip_local_port_range',
+        'net.ipv4.tcp_syncookies' and 'net.ipv4.ping_group_range'.
       pattern:
         spec:
           =(securityContext):
             =(sysctls):
-            - =(name): "kernel.shm_rmid_forced | net.ipv4.ip_local_port_range | net.ipv4.tcp_syncookies | net.ipv4.ping_group_range"
+            - name: "kernel.shm_rmid_forced | net.ipv4.ip_local_port_range | net.ipv4.tcp_syncookies | net.ipv4.ping_group_range"
               value: "?*"

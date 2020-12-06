@@ -14,18 +14,20 @@ spec:
       labels:
         app: test
     spec:
+      securityContext:
+        runAsNonRoot: false
       initContainers:
-        - name: alpine
-          image: alpine
-          securityContext:
-            capabilities:
-              add:
-              - SYS_RESOURCE
-      containers: 
+      - name: alpine1
+        image: alpine
+      - name: alpine2
+        image: alpine
+        securityContext:
+          runAsNonRoot: true
+      containers:
       - name: busybox
         image: busybox
         command: ["sleep", "9999"]
+      - name: nginx
+        image: nginx
         securityContext:
-          capabilities:
-            add:
-            - SYS_TIME
+          runAsNonRoot: true

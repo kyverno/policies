@@ -7,3 +7,11 @@ resources:
 - running-as-nonroot.yaml
 - non-root-groups.yaml
 - restrict-seccomp.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/validationFailureAction
+      value: enforce    
+  target:
+    kind: ClusterPolicy
