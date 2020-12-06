@@ -19,7 +19,7 @@ spec:
       message: >-
         Adding of additional capabilities beyond the default set is no allowed.
         The fields spec.containers[*].securityContext.capabilities.add and 
-        spec.initContainers[*].securityContext.capabilities.add must be empty."
+        spec.initContainers[*].securityContext.capabilities.add must be empty.
       pattern:
         spec:
           containers:
