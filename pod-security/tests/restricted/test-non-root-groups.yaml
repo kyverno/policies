@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      # securityContext:
+        # fsGroup: 0
+        # supplementalGroups:
+        #   - 0
+        # runAsGroup: 5
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+        securityContext:
+          runAsGroup: 0

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      # initContainers:
+      # - name: alpine1
+      #   image: alpine
+      # - name: alpine2
+      #   image: alpine
+      #   securityContext:
+      #     runAsNonRoot: false
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["sleep", "9999"]
+      - name: nginx
+        image: nginx
+        securityContext:
+          runAsNonRoot: false
