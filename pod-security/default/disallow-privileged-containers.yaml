@@ -4,7 +4,8 @@ metadata:
   name: disallow-privileged-containers
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: Privileged Pods disable most security mechanisms and must be disallowed.
+    policies.kyverno.io/description: >-
+      Privileged mode disables most security mechanisms and must not be allowed.
 spec:
   validationFailureAction: audit
   background: true
@@ -15,7 +16,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Privileged mode is disallowed.\nThe fields spec.containers[*].securityContext.privileged and spec.initContainers[*].securityContext.privileged must not be set to true.\n"
+      message: >-
+        Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged
+        and spec.initContainers[*].securityContext.privileged must not be set to true.
       pattern:
         spec:
           =(initContainers):

@@ -4,7 +4,9 @@ metadata:
   name: restrict-volume-types
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Restricted)
-    policies.kyverno.io/description: In addition to restricting HostPath volumes, the restricted profile limits usage of non-core volume types to those defined through PersistentVolumes.
+    policies.kyverno.io/description: >-
+      In addition to restricting HostPath volumes, the restricted pod security profile
+      limits usage of non-core volume types to those defined through PersistentVolumes.
 spec:
   background: true
   validationFailureAction: audit
@@ -15,7 +17,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the gcePersistentDisk type volume is disallowed.\nThe fields spec.volumes[*].gcePersistentDisk must not be set.\n"
+      message: >-
+        Use of the gcePersistentDisk type volume is disallowed.
+        The fields spec.volumes[*].gcePersistentDisk must not be set.
       pattern:
         spec:
           =(volumes):
@@ -26,7 +30,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the awsElasticBlockStore type volume is disallowed.\nThe fields spec.volumes[*].awsElasticBlockStore must not be set.\n"
+      message: >-
+        Use of the awsElasticBlockStore type volume is disallowed.
+        The fields spec.volumes[*].awsElasticBlockStore must not be set.
       pattern:
         spec:
           =(volumes):
@@ -37,7 +43,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the gitRepo type volume is disallowed.\nThe fields spec.volumes[*].gitRepo must not be set.\n"
+      message: >-
+        Use of the gitRepo type volume is disallowed.
+        The fields spec.volumes[*].gitRepo must not be set.
       pattern:
         spec:
           =(volumes):
@@ -48,7 +56,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the nfs type volume is disallowed.\nThe fields spec.volumes[*].nfs must not be set.\n"
+      message: >-
+        Use of the nfs type volume is disallowed.
+        The fields spec.volumes[*].nfs must not be set.
       pattern:
         spec:
           =(volumes):
@@ -59,7 +69,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the iscsi type volume is disallowed.\nThe fields spec.volumes[*].iscsi must not be set.\n"
+      message: >-
+        Use of the iscsi type volume is disallowed.
+        The fields spec.volumes[*].iscsi must not be set.
       pattern:
         spec:
           =(volumes):
@@ -70,7 +82,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the glusterfs type volume is disallowed.\nThe fields spec.volumes[*].glusterfs must not be set.\n"
+      message: >-
+        Use of the glusterfs type volume is disallowed.
+        The fields spec.volumes[*].glusterfs must not be set.
       pattern:
         spec:
           =(volumes):
@@ -81,7 +95,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the rbd type volume is disallowed.\nThe fields spec.volumes[*].rbd must not be set.\n"
+      message: >-
+        Use of the rbd type volume is disallowed.
+        The fields spec.volumes[*].rbd must not be set.
       pattern:
         spec:
           =(volumes):
@@ -92,7 +108,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the flexVolume type volume is disallowed.\nThe fields spec.volumes[*].flexVolume must not be set.\n"
+      message: >-
+        Use of the flexVolume type volume is disallowed.
+        The fields spec.volumes[*].flexVolume must not be set.
       pattern:
         spec:
           =(volumes):
@@ -103,7 +121,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the cinder type volume is disallowed.\nThe fields spec.volumes[*].cinder must not be set.\n"
+      message: >-
+        Use of the cinder type volume is disallowed.
+        The fields spec.volumes[*].cinder must not be set.
       pattern:
         spec:
           =(volumes):
@@ -114,7 +134,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the cephFS type volume is disallowed.\nThe fields spec.volumes[*].cephFS must not be set.\n"
+      message: >-
+        Use of the cephFS type volume is disallowed.
+        The fields spec.volumes[*].cephFS must not be set.
       pattern:
         spec:
           =(volumes):
@@ -125,7 +147,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the flocker type volume is disallowed.\nThe fields spec.volumes[*].flocker must not be set.\n"
+      message: >-
+        Use of the flocker type volume is disallowed.
+        The fields spec.volumes[*].flocker must not be set.
       pattern:
         spec:
           =(volumes):
@@ -136,7 +160,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the fc type volume is disallowed.\nThe fields spec.volumes[*].fc must not be set.\n"
+      message: >-
+        Use of the fc type volume is disallowed.
+        The fields spec.volumes[*].fc must not be set.
       pattern:
         spec:
           =(volumes):
@@ -147,7 +173,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the azureFile type volume is disallowed.\nThe fields spec.volumes[*].azureFile must not be set.\n"
+      message: >-
+        Use of the azureFile type volume is disallowed.
+        The fields spec.volumes[*].azureFile must not be set.
       pattern:
         spec:
           =(volumes):
@@ -158,7 +186,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the vsphereVolume type volume is disallowed.\nThe fields spec.volumes[*].vsphereVolume must not be set.\n"
+      message: >-
+        Use of the vsphereVolume type volume is disallowed.
+        The fields spec.volumes[*].vsphereVolume must not be set.
       pattern:
         spec:
           =(volumes):
@@ -169,7 +199,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the quobyte type volume is disallowed.\nThe fields spec.volumes[*].quobyte must not be set.\n"
+      message: >-
+        Use of the quobyte type volume is disallowed.
+        The fields spec.volumes[*].quobyte must not be set.
       pattern:
         spec:
           =(volumes):
@@ -180,7 +212,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the azureDisk type volume is disallowed.\nThe fields spec.volumes[*].azureDisk must not be set.\n"
+      message: >-
+        Use of the azureDisk type volume is disallowed.
+        The fields spec.volumes[*].azureDisk must not be set.
       pattern:
         spec:
           =(volumes):
@@ -191,7 +225,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the portworxVolume type volume is disallowed.\nThe fields spec.volumes[*].portworxVolume must not be set.\n"
+      message: >-
+        Use of the portworxVolume type volume is disallowed.
+        The fields spec.volumes[*].portworxVolume must not be set.
       pattern:
         spec:
           =(volumes):
@@ -202,7 +238,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the scaleIO type volume is disallowed.\nThe fields spec.volumes[*].scaleIO must not be set.\n"
+      message: >-
+        Use of the scaleIO type volume is disallowed.
+        The fields spec.volumes[*].scaleIO must not be set.
       pattern:
         spec:
           =(volumes):
@@ -213,7 +251,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the storageos type volume is disallowed.\nThe fields spec.volumes[*].storageos must not be set.\n"
+      message: >-
+        Use of the storageos type volume is disallowed.
+        The fields spec.volumes[*].storageos must not be set.
       pattern:
         spec:
           =(volumes):
@@ -224,7 +264,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the csi type volume is disallowed.\nThe fields spec.volumes[*].csi must not be set.\n"
+      message: >-
+        Use of the csi type volume is disallowed.
+        The fields spec.volumes[*].csi must not be set.
       pattern:
         spec:
           =(volumes):

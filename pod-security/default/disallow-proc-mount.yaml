@@ -4,7 +4,8 @@ metadata:
   name: disallow-proc-mount
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: The default /proc masks are set up to reduce attack surface, and should be required.
+    policies.kyverno.io/description: >-
+      The default /proc masks are set up to reduce attack surface and should be required.
 spec:
   validationFailureAction: audit
   background: true
@@ -15,7 +16,11 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Changing the proc mount away from the defaults is disallowed.\nThe fields spec.containers[*].securityContext.procMount and spec.initContainers[*].securityContext.procMount must not be changed away from `Default`.\n"
+      message: >-
+        Changing the proc mount from the defaults is not allowed. The fields
+        spec.containers[*].securityContext.procMount and
+        spec.initContainers[*].securityContext.procMount must not be changed 
+        from `Default`.
       pattern:
         spec:
           =(initContainers):
