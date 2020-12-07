@@ -4,7 +4,10 @@ metadata:
   name: disallow-host-path
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: HostPath volumes must be forbidden.
+    policies.kyverno.io/description: >-
+      HostPath volumes let pods use host directories and volumes in containers.
+      Using host resources can be used to access shared data or escalate privileges
+      and should not be allowed.
 spec:
   validationFailureAction: audit
   background: true
@@ -15,7 +18,8 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of hostPath volumes is disallowed.\nThe fields spec.volumes[*].hostPath must not be set.\n"
+      message: >-
+        HostPath volumes are forbidden. The fields spec.volumes[*].hostPath must not be set.
       pattern:
         spec:
           =(volumes):

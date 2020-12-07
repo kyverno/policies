@@ -24,19 +24,15 @@ spec:
           securityContext:
             runAsNonRoot: true
           containers:
-          - name: "*"
-            =(securityContext):
+          - =(securityContext):
               =(runAsNonRoot): true
           =(initContainers):
-          - name: "*"
-            =(securityContext):
+          - =(securityContext):
               =(runAsNonRoot): true              
       - spec:
           containers:
-          - name: "*"
-            securityContext:
+          - securityContext:
               runAsNonRoot: true
           =(initContainers):
-          - name: "*"
-            securityContext:
+          - securityContext:
               runAsNonRoot: true         

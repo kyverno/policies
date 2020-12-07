@@ -4,7 +4,9 @@ metadata:
   name: disallow-host-ports
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
-    policies.kyverno.io/description: HostPorts should be disallowed, or at minimum restricted to a known list.
+    policies.kyverno.io/description: >-
+      Access to host ports allows potential snooping of network traffic and should not be
+      allowed, or at minimum restricted to a known list.
 spec:
   validationFailureAction: audit
   background: true
@@ -15,12 +17,14 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of hostPort is disallowed.\nThe fields spec.containers[*].ports[*].hostPort and spec.initContainers[*].ports[*].hostPort must be empty.\n"
+      message: >-
+        Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort
+        and spec.initContainers[*].ports[*].hostPort must be empty.
       pattern:
         spec:
           =(initContainers):
           - =(ports):
-              - X(hostPort): "null"
+              - X(hostPort): 0
           containers:
           - =(ports):
-              - X(hostPort): "null"
+              - X(hostPort): 0

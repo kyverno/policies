@@ -13,6 +13,6 @@ patches:
 - patch: |-
     - op: replace
       path: /spec/validationFailureAction
-      value: enforce    
+      value: enforce
   target:
     kind: ClusterPolicy
