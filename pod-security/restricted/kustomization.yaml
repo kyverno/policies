@@ -1,0 +1,17 @@
+bases:
+- ../default
+
+resources:
+- restrict-volume-types.yaml
+- deny-privilege-escalation.yaml
+- running-as-nonroot.yaml
+- non-root-groups.yaml
+- restrict-seccomp.yaml
+
+patches:
+- patch: |-
+    - op: replace
+      path: /spec/validationFailureAction
+      value: enforce    
+  target:
+    kind: ClusterPolicy

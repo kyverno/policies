@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test
+  labels:
+    app: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      initContainers:
+        - name: alpine
+          image: alpine
+          securityContext:
+            capabilities:
+              add:
+              - SYS_RESOURCE
+      containers: 
+      - name: busybox
+        image: busybox
+        command: ["sleep", "9999"]
+        securityContext:
+          capabilities:
+            add:
+            - SYS_TIME

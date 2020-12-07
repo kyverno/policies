@@ -1,2 +1,3 @@
-# policies
-Kyverno policies for security and best practices 
+# Policies
+
+Kyverno policies for security and best practices.
