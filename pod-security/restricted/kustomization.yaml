@@ -4,7 +4,7 @@ bases:
 resources:
 - restrict-volume-types.yaml
 - deny-privilege-escalation.yaml
-- running-as-nonroot.yaml
+- require-run-as-nonroot.yaml
 - non-root-groups.yaml
 - restrict-seccomp.yaml
 
