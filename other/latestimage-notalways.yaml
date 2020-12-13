@@ -1,3 +1,4 @@
+### This policy requires Kyverno v1.3.0+ ###
 apiVersion : kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -16,5 +17,5 @@ spec:
       pattern:
         spec:
           containers:
-          - (image): "*:latest"
+          - (image): "*:latest | !*:*"
             imagePullPolicy: "!Always"
