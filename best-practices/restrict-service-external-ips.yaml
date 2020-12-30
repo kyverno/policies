@@ -2,6 +2,13 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-external-ips
+  annotations:
+    policies.kyverno.io/title: Restrict External IPs
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: >-
+      Service externalIPs can be used for a MITM attack (CVE-2020-8554).
+      Restrict externalIPs or limit to a known set of addresses.
+      See: https://github.com/kyverno/kyverno/issues/1367.
 spec:
   validationFailureAction: audit
   rules:
@@ -14,8 +21,7 @@ spec:
       message: "externalIPs are not allowed"
       pattern:
         spec:
-          # this prevents any external IP address (see https://github.com/kubernetes/kubernetes/issues/97076#)
+          # restrict external IP addresses
           # you can alternatively restrict to a known set of addresses using:
           #     =(externalIPs): ["37.10.11.53", "153.10.20.1"]
-          # Note: this currently needs to be an exact ordered set (see https://github.com/kyverno/kyverno/issues/1367).
           X(externalIPs): nil

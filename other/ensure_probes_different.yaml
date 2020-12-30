@@ -1,10 +1,14 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: validate-probes
+  name: validate-probes  
   annotations:
     # Only applies to pods originating from DaemonSet, Deployment, or StatefulSet.
-    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
+    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet  
+    policies.kyverno.io/title: Validate Probes
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/description: >-
+      Sample policy to check that liveness and readiness probes are not set to the same values.
 spec:
   validationFailureAction: enforce
   background: false
