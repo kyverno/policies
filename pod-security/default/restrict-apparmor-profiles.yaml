@@ -3,6 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: restrict-apparmor-profiles
   annotations:
+    policies.kyverno.io/title: Restrict AppArmor
     policies.kyverno.io/category: Pod Security Standards (Default)
     policies.kyverno.io/description: >-
       On supported hosts, the 'runtime/default' AppArmor profile is applied by default. 

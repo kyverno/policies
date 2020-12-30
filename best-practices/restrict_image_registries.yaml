@@ -3,8 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: restrict-image-registries
   annotations:
-    policies.kyverno.io/category: Workload Management
-    policies.kyverno.io/description: Images from unknown registries may not be scanned and secured. 
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: >-
+      Images from unknown registries may not be scanned and secured. 
       Requiring use of known registries helps reduce threat exposure.
 spec:
   validationFailureAction: audit
