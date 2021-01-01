@@ -10,7 +10,7 @@ metadata:
     policies.kyverno.io/description: >-
       Sample policy to check that liveness and readiness probes are not set to the same values.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
     # Checks the first container in a Pod.
@@ -18,7 +18,7 @@ spec:
       match:
         resources:
           kinds:
-            - Pod
+          - Pod
       validate:
         message: "Liveness and readiness probes cannot be the same."
         # A `deny` rule is different in structure than a `validate` rule and inverts the check. It uses `conditions` written in JMESPath notation upon which to base its decisions.
@@ -34,7 +34,7 @@ spec:
       match:
         resources:
           kinds:
-            - Pod
+          - Pod
       validate:
         message: "Liveness and readiness probes cannot be the same."
         deny:
@@ -47,7 +47,7 @@ spec:
       match:
         resources:
           kinds:
-            - Pod
+          - Pod
       validate:
         message: "Liveness and readiness probes cannot be the same."
         deny:
@@ -60,7 +60,7 @@ spec:
       match:
         resources:
           kinds:
-            - Pod
+          - Pod
       validate:
         message: "Liveness and readiness probes cannot be the same."
         deny:

@@ -19,7 +19,7 @@ spec:
     generate:
       kind: ResourceQuota
       name: default-resourcequota
-      synchronize : true
+      synchronize: true
       namespace: "{{request.object.metadata.name}}"
       data:
         spec:
@@ -36,7 +36,7 @@ spec:
     generate:
       kind: LimitRange
       name: default-limitrange
-      synchronize : true
+      synchronize: true
       namespace: "{{request.object.metadata.name}}"
       data:
         spec:
