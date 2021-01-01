@@ -2,6 +2,15 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: insert-podantiaffinity
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      In cases where you wish to run applications with multiple replicas,
+      it may be required to ensure those Pods are separated from each other
+      for availability purposes. While a DaemonSet resource would accomplish
+      similar goals, your Deployment object may need fewer replicas than there
+      are nodes. Pod anti-affinity rules ensures that Pods are separated from
+      each other. Inversely, affinity rules ensure they are co-located.
 spec:
   rules:
     - name: insert-podantiaffinity

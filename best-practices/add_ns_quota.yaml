@@ -4,7 +4,8 @@ metadata:
   name: add-ns-quota
   annotations:
     policies.kyverno.io/category: Workload Isolation
-    policies.kyverno.io/description: To limit the number of objects, as well as the 
+    policies.kyverno.io/description: >-
+      To limit the number of objects, as well as the 
       total amount of compute that may be consumed by a single namespace, create 
       a default resource quota for each namespace.
 spec:
@@ -17,14 +18,14 @@ spec:
     exclude:
       resources:
         namespaces:
-          - "kube-system"
-          - "default"
-          - "kube-public"
-          - "kyverno"
+          - kube-system
+          - default
+          - kube-public
+          - kyverno
     generate:
       kind: ResourceQuota
       name: default-resourcequota
-      synchronize : true
+      synchronize: true
       namespace: "{{request.object.metadata.name}}"
       data:
         spec:
@@ -41,7 +42,7 @@ spec:
     generate:
       kind: LimitRange
       name: default-limitrange
-      synchronize : true
+      synchronize: true
       namespace: "{{request.object.metadata.name}}"
       data:
         spec:

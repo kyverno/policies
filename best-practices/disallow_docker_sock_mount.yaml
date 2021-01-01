@@ -4,7 +4,8 @@ metadata:
   name: disallow-docker-sock-mount
   annotations:
     policies.kyverno.io/category: Security
-    policies.kyverno.io/description: The Docker socket bind mount allows access to the 
+    policies.kyverno.io/description: >-
+      The Docker socket bind mount allows access to the 
       Docker daemon on the node. This access can be used for privilege escalation and 
       to manage containers outside of Kubernetes, and hence should not be allowed.  
 spec:
@@ -16,7 +17,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the Docker Unix socket is not allowed"
+      message: "Use of the Docker Unix socket is not allowed."
       pattern:
         spec:
           =(volumes):

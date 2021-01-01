@@ -4,9 +4,10 @@ metadata:
   name: require-ro-rootfs
   annotations:
     policies.kyverno.io/category: Security
-    policies.kyverno.io/description: A read-only root file system helps to enforce an immutable 
-      infrastructure strategy; the container only needs to write on the mounted volume that p
-      ersists the state. An immutable root filesystem can also prevent malicious binaries from 
+    policies.kyverno.io/description: >-
+      A read-only root file system helps to enforce an immutable 
+      infrastructure strategy; the container only needs to write to the mounted volume that persists
+      the state. An immutable root filesystem can also prevent malicious binaries from 
       writing to the host system.
 spec:
   validationFailureAction: audit
@@ -17,7 +18,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Root filesystem must be read-only"
+      message: "Root filesystem must be read-only."
       pattern:
         spec:
           containers:

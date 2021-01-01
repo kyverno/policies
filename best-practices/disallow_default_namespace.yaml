@@ -5,7 +5,8 @@ metadata:
   annotations:
     pod-policies.kyverno.io/autogen-controllers: none	
     policies.kyverno.io/category: Workload Isolation
-    policies.kyverno.io/description: Kubernetes namespaces are an optional feature 
+    policies.kyverno.io/description: >-
+      Kubernetes namespaces are an optional feature 
       that provide a way to segment and isolate cluster resources across multiple 
       applications and users. As a best practice, workloads should be isolated with 
       namespaces. Namespaces should be required and the default (empty) namespace 
@@ -19,7 +20,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Using 'default' namespace is not allowed"
+      message: "Using 'default' namespace is not allowed."
       pattern:
         metadata:
           namespace: "!default"
@@ -29,7 +30,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "A namespace is required"
+      message: "A namespace is required."
       pattern:
         metadata:
           namespace: "?*"
@@ -42,7 +43,7 @@ spec:
         - Job
         - StatefulSet
     validate:
-      message: "Using 'default' namespace is not allowed for podcontrollers"
+      message: "Using 'default' namespace is not allowed for podcontrollers."
       pattern:
         metadata:
           namespace: "!default"
@@ -55,7 +56,7 @@ spec:
         - Job
         - StatefulSet
     validate:
-      message: "A namespace is required for podcontrollers"
+      message: "A namespace is required for podcontrollers."
       pattern:
         metadata:
           namespace: "?*"

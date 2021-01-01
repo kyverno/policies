@@ -2,6 +2,13 @@ apiVersion : kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: imagepullpolicy-always
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      By default, Kubernetes sets the `imagePullPolicy` for images which specify a tag
+      to be `IfNotPresent`. In some cases, this may not be desired where the image
+      could be rebuilt upstream. This sample policy ensures that all containers have
+      their `imagePullPolicy` set to `Always`.
 spec:
   validationFailureAction: audit
   background: false

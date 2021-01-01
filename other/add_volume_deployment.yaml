@@ -2,6 +2,14 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: add-volume
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Annotations can be used to control many optional and custom behaviors in Kubernetes.
+      One such example is using an annotation to add a volume to a Pod which mounts a secret
+      from an external source such as HashiCorp Vault. This sample mutates an incoming Deployment
+      to add an `emptyDir`-type volume to a Pod if the annotation `vault.k8s.corp.net/inject=enabled`
+      is found.
 spec:
   background: false
   rules:
@@ -12,7 +20,7 @@ spec:
         - Deployment
     preconditions:
     - key: "{{request.object.spec.template.metadata.annotations.\"vault.k8s.corp.net/inject\"}}"
-      operator: "Equals"
+      operator: Equals
       value: "enabled"
     mutate:
       patchesJson6902: |-

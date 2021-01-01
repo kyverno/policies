@@ -2,6 +2,13 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: inject-sidecar
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Annotations can be used to control many optional and custom behaviors in Kubernetes.
+      One such example is using an annotation to add a sidecar to a Pod. This sample mutates
+      an incoming Deployment to add a HashiCorp Vault agent and volume if the annotation
+      `vault,hashicorp.com/agent-inject=true`.
 spec:
   background: false
   rules:

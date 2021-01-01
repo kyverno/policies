@@ -2,6 +2,12 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: deployment-has-multiple-replicas
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Deployments with only a single replica produce availability concerns should
+      that single replica fail. In most cases, you would want Deployment objects
+      to have more than one replica to ensure continued availability if not scale.
 spec:
   validationFailureAction: audit
   rules:

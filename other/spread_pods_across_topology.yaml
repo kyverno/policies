@@ -2,6 +2,14 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: spread-pods
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      When having a Kubernetes cluster that spans multiple availability zones,
+      it is often desired to spread your Pods out among them in a way which
+      controls where they land. This can be advantageous in ensuring that,
+      should one of those zones fail, your application continues to run in a
+      more predictable way and with less potential loss.
 spec:
   rules:
     - name: spread-pods-across-nodes

@@ -2,6 +2,12 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-external-ips
+  annotations:
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/description: >-
+      A user with permissions to create or patch a Service of type LoadBalancer or ClusterIP
+      may optionally set the `externalIP` field to intercept traffic to that Service as a
+      man-in-the-middle attack. This policy ensures that the `externalIP` field is not set.
 spec:
   validationFailureAction: audit
   rules:
@@ -11,7 +17,7 @@ spec:
         kinds:
         - Service
     validate:
-      message: "externalIPs are not allowed"
+      message: "externalIPs are not allowed."
       pattern:
         spec:
           # this prevents any external IP address (see https://github.com/kubernetes/kubernetes/issues/97076#)

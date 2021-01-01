@@ -2,6 +2,13 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: drop-all-capabilities
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Containers may optionally ask for specific Linux capabilities without requiring
+      root on the node. As a security best practice, containers should only specify
+      exactly which capabilities they need. This starts with dropping all capabilities
+      and only selectively adding ones back.
 spec:
   validationFailureAction: audit
   rules:

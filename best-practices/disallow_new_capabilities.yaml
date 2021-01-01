@@ -5,7 +5,8 @@ metadata:
   annotations:
     pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/category: Security
-    policies.kyverno.io/description: Linux allows defining fine-grained permissions using
+    policies.kyverno.io/description: >-
+      Linux allows defining fine-grained permissions using
       capabilities. With Kubernetes, it is possible to add capabilities that escalate the
       level of kernel access and allow other potentially dangerous behaviors. This policy 
       enforces that containers cannot add new capabilities. Other policies can be used to set
@@ -19,7 +20,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "New capabilities cannot be added"
+      message: "New capabilities cannot be added."
       pattern:
         spec:
           containers:

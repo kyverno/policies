@@ -5,6 +5,11 @@ metadata:
   annotations:
     # Only applies to pods originating from DaemonSet, Deployment, or StatefulSet.
     pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Pod liveness and readiness probes are often used as a check to ensure
+      either the health of an already running Pod or when one is ready to receive traffic.
+      This sample checks to ensure that livenessProbe and readinessProbe are configured differently. 
 spec:
   validationFailureAction: enforce
   background: false

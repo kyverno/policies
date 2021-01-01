@@ -3,6 +3,16 @@ apiVersion : kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: latestimage-notalways
+  annotations:
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/minversion: "1.3.0"
+    policies.kyverno.io/description: >-
+      When using the `latest` tag for images, although generally not a best practice,
+      Kubernetes defaults its `imagePullPolicy` to `Always`. Since Docker Hub has implemented
+      a rate-limiting policy, this could result in reaching that limit faster than anticipated,
+      which could mean errors for other Pods in the cluster or across the enterprise.
+      Ensuring those `latest`-tagged images do not use the default of `Always` is one way to
+      ensure pulls are only when needed.
 spec:
   validationFailureAction: audit
   background: false

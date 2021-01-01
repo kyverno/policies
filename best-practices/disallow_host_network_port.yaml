@@ -4,7 +4,8 @@ metadata:
   name: disallow-host-network-port
   annotations:
     policies.kyverno.io/category: Workload Isolation
-    policies.kyverno.io/description: Using 'hostPort' and 'hostNetwork' allows pods to share 
+    policies.kyverno.io/description: >-
+      Using 'hostPort' and 'hostNetwork' allows pods to share 
       the host network stack, allowing potential snooping of network traffic from an application pod.
 spec:
   validationFailureAction: audit
@@ -15,7 +16,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of hostNetwork is not allowed"
+      message: "Use of hostNetwork is not allowed."
       pattern:
         spec:
           =(hostNetwork): false
@@ -25,7 +26,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of hostPort is not allowed"
+      message: "Use of hostPort is not allowed."
       pattern:
         spec:
           containers:
