@@ -2,6 +2,10 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: add-volume
+  annotations:
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/description: >-
+      Sample policy to add a volume and volumeMount. 
 spec:
   background: false
   rules:
