@@ -18,8 +18,7 @@ spec:
         kinds:
         - Service
     validate:
-      message: "Services of type NodePort are not allowed"
+      message: "Services of type NodePort are not allowed."
       pattern: 
         spec:
           type: "!NodePort"
-

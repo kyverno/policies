@@ -1,4 +1,4 @@
-apiVersion : kyverno.io/v1
+apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-ingress-classes
@@ -17,7 +17,7 @@ spec:
         kinds:
         - Ingress
     validate:
-      message: "Unknown ingress class"
+      message: "Unknown ingress class."
       pattern:
         metadata:
           annotations:

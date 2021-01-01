@@ -1,4 +1,4 @@
-apiVersion : kyverno.io/v1
+apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: restrict-automount-sa-token
@@ -18,7 +18,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Auto-mounting of Service Account tokens is not allowed"
+      message: "Auto-mounting of Service Account tokens is not allowed."
       pattern:
         spec:
           automountServiceAccountToken: false
