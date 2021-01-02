@@ -1,4 +1,4 @@
-apiVersion : kyverno.io/v1
+apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: disallow-latest-tag
@@ -17,7 +17,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "An image tag is required"  
+      message: "An image tag is required."  
       pattern:
         spec:
           containers:
@@ -28,7 +28,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Using a mutable image tag e.g. 'latest' is not allowed"
+      message: "Using a mutable image tag e.g. 'latest' is not allowed."
       pattern:
         spec:
           containers:

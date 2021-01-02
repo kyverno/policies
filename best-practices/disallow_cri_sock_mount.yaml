@@ -3,6 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: disallow-container-sock-mounts
   annotations:
+    policies.kyverno.io/title: Disallow CRI socket mounts
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       Container daemon socket bind mounts allows access to the container engine on the 
@@ -17,7 +18,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the Docker Unix socket is not allowed"
+      message: "Use of the Docker Unix socket is not allowed."
       pattern:
         spec:
           =(volumes):
@@ -29,7 +30,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the Containerd Unix socket is not allowed"
+      message: "Use of the Containerd Unix socket is not allowed."
       pattern:
         spec:
           =(volumes):
@@ -41,7 +42,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Use of the CRIO Unix socket is not allowed"
+      message: "Use of the CRI-O Unix socket is not allowed."
       pattern:
         spec:
           =(volumes):

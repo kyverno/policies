@@ -20,7 +20,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Liveness and readiness probes are required"
+      message: "Liveness and readiness probes are required."
       pattern:
         spec:
           containers:
@@ -28,4 +28,3 @@ spec:
               periodSeconds: ">0"      
             readinessProbe:
               periodSeconds: ">0"
-
