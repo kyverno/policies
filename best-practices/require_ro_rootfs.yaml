@@ -19,7 +19,7 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "Root filesystem must be read-only"
+      message: "Root filesystem must be read-only."
       pattern:
         spec:
           containers:

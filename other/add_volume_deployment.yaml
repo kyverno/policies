@@ -16,7 +16,7 @@ spec:
         - Deployment
     preconditions:
     - key: "{{request.object.spec.template.metadata.annotations.\"vault.k8s.corp.net/inject\"}}"
-      operator: "Equals"
+      operator: Equals
       value: "enabled"
     mutate:
       patchesJson6902: |-

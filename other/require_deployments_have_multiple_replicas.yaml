@@ -14,7 +14,7 @@ spec:
       match:
         resources:
           kinds:
-            - Deployment
+          - Deployment
       validate:
         message: "Deployments should have more than one replica to ensure availability."
         pattern:
