@@ -1,27 +1,18 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: host-path
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      volumes:
-      - name: my-enptydir
-        emptyDir:
-          medium: Memory
-      - name: my-hostpath
-        hostPath:
-            path: /foo/bar
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: host-path
+    image: kubernetes/pause
+    volumeMounts:
+      - name: hostdir
+        mountPath: /tmp
+  volumes:
+  - name: hostdir
+    hostPath:
+        path: /root

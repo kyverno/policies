@@ -1,23 +1,14 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: host-port
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
-        ports:
-        - containerPort: 80
-          hostPort: 22222
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: host-port
+    image: kubernetes/pause
+    ports:
+    - containerPort: 80
+      hostPort: 80

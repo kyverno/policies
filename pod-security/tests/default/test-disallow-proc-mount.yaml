@@ -1,24 +1,17 @@
-### This test will always pass unless the kubelet flag `ProcMountType` is passed. Any values set for `procMount` will be mutated by Kubernetes to
-### read as `Default` upon submission. Therefore, without the kubelet modification this manifest will always validate to true.
-apiVersion: apps/v1
-kind: Deployment
+### This test will always pass unless the kubelet flag `ProcMountType` is passed. 
+# Any values set for `procMount` will be mutated by Kubernetes to be read as `Default` 
+# upon submission. Therefore, without the kubelet modification this manifest will always 
+# validate to true.
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: proc-mount
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
-        securityContext:
-          procMount: Unmasked
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: proc-mount
+    image: kubernetes/pause
+    securityContext:
+      procMount: Unmasked
