@@ -5,7 +5,7 @@ metadata:
   name: gce-pd
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers: 
   - name: pause
     image: kubernetes/pause
@@ -22,7 +22,7 @@ metadata:
   name: awsebs
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers: 
   - name: awsebs
     image: busybox
@@ -40,7 +40,7 @@ metadata:
   name: server
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: nginx
     name: nginx
@@ -59,7 +59,7 @@ metadata:
   name: test-pd
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: k8s.gcr.io/test-webserver
     name: test-container
@@ -80,7 +80,7 @@ metadata:
   name: test-portworx-volume-pod
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: k8s.gcr.io/test-webserver
     name: test-container
@@ -100,7 +100,7 @@ metadata:
   name: pod-0
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: k8s.gcr.io/test-webserver
     name: pod-0
@@ -128,7 +128,7 @@ metadata:
   name: test-storageos-redis
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
     - name: master
       image: kubernetes/redis:v1
@@ -153,7 +153,7 @@ metadata:
   name: test-vmdk
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: k8s.gcr.io/test-webserver
     name: test-container
@@ -173,7 +173,7 @@ metadata:
   name: iscsipd
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - name: iscsipd-rw
     image: kubernetes/pause
@@ -196,7 +196,7 @@ metadata:
   name: glusterfs
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - name: glusterfs
     image: nginx
@@ -216,7 +216,7 @@ metadata:
   name: rbd
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
     - image: kubernetes/pause
       name: rbd-rw
@@ -238,31 +238,12 @@ spec:
         keyring: /etc/ceph/keyring
 ---
 apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv0001 
-spec:
-  securityContext:
-      runAsNonRoot: true
-  capacity:
-    storage: 1Gi 
-  accessModes:
-    - ReadWriteOnce
-  flexVolume:
-    driver: openshift.com/foo 
-    fsType: "ext4" 
-    readOnly: true 
-    options: 
-      fooServer: 192.168.0.1:1234
-      fooVolumeName: bar
----
-apiVersion: v1
 kind: Pod
 metadata:
   name: cephfs
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - name: cephfs-rw
     image: kubernetes/pause
@@ -288,7 +269,7 @@ metadata:
   name: flocker-web
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
     - name: web
       image: nginx
@@ -310,7 +291,7 @@ metadata:
  name: fibre-channel-example-pod
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
    - image: kubernetes/pause
      name: fc
@@ -332,7 +313,7 @@ metadata:
  name: azure
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
     - image: kubernetes/pause
       name: azure
@@ -352,7 +333,7 @@ metadata:
  name: quobytevolume
 spec:
   securityContext:
-      runAsNonRoot: true
+    runAsNonRoot: true
   containers:
   - image: kubernetes/pause
     name: quobytevolume
