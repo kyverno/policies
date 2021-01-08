@@ -1,22 +1,14 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: privileged-container
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
-        securityContext:
-          privileged: true
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: privileged-ctnr
+    image: kubernetes/pause
+    securityContext:
+      privileged: true
+

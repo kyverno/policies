@@ -12,4 +12,28 @@ kustomize build https://github.com/kyverno/policies/pod-security | kubectl apply
 
 ## Test Manifests
 
-For each policy in both categories there is a corresponding manifest which can be used to "prove" the functional state of the policy being tested. Each proof manifest is configured to violate the policy as written. In order to verify the behavior because policies are written to `audit` rather than `enforce`, the `PolicyReport` object will need to be inspected in the Namespace in which the proof manifest was deployed to check for failures. If you wish to integrate this into unit tests with less parsing logic, the policies can be configured for `enforce` mode which should block the proof manifests immediately.
+For each policy in both categories there is a corresponding resource which can be used to "prove" the functional state of the policy being tested. Each resource manifest is configured to violate the policy as written. 
+
+To apply the tests:
+
+1. Install Kyverno (if needed):
+
+```shell
+kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/definitions/release/install.yaml
+```
+
+2. Install policies:
+
+```shell
+ kustomize build https://github.com/kyverno/policies/pod-security | kubectl apply -f -
+```
+
+3. Apply test YAMLs
+
+```shell
+ kustomize build https://github.com/kyverno/policies/pod-security/tests | kubectl apply -f -
+```
+
+All pods should be blocked from execution.
+
+NOTE: the `proc-mount` pod may execute as non-default values for `securityContext.procMount` require the `ProcMountType` feature flag to be enabled.

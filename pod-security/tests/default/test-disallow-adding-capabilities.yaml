@@ -1,31 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: add-capabilities
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      initContainers:
-        - name: alpine
-          image: alpine
-          securityContext:
-            capabilities:
-              add:
-              - SYS_RESOURCE
-      containers: 
-      - name: busybox
-        image: busybox
-        command: ["sleep", "9999"]
-        securityContext:
-          capabilities:
-            add:
-            - SYS_TIME
+  containers: 
+  - name: add-capabilities
+    image: kubernetes/pause
+    securityContext:
+      runAsNonRoot: true
+      capabilities:
+        add:
+        - SYS_TIME
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-init-containers
+spec:
+  initContainers:
+    - name: add-capabilities-init
+      image: busybox
+      command: ["sleep", "9999"]
+      securityContext:
+        runAsNonRoot: true
+        capabilities:
+          add:
+          - SYS_RESOURCE
+  containers: 
+  - name: add-capabilities
+    image: kubernetes/pause
