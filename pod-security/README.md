@@ -22,7 +22,7 @@ To apply the tests:
 kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/main/definitions/release/install.yaml
 ```
 
-2. Install pod security policies:
+2. Install policies:
 
 ```shell
  kustomize build https://github.com/kyverno/policies/pod-security | kubectl apply -f -
