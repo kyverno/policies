@@ -1,0 +1,10 @@
+resources:
+- test-disallow-host-namespaces.yaml
+- test-disallow-adding-capabilities.yaml
+- test-disallow-host-path.yaml
+- test-disallow-host-ports.yaml
+- test-disallow-privileged-containers.yaml
+- test-disallow-proc-mount.yaml
+- test-disallow-selinux.yaml
+- test-restrict-apparmor-profiles.yaml
+- test-restrict-sysctls.yaml

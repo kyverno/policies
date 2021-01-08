@@ -1,24 +1,13 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: sysctls
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      securityContext:
-        sysctls:
-          - name: kernel.random.poolsize
-            value: "2048"
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
+  securityContext:
+    sysctls:
+      - name: kernel.random.poolsize
+        value: "2048"
+  containers: 
+  - name: sysctls
+    image: kubernetes/pause

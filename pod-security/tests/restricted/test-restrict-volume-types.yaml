@@ -1,29 +1,369 @@
-apiVersion: apps/v1
-kind: Deployment
+---
+apiVersion: v1
+kind: Pod
 metadata:
-  name: test
-  labels:
-    app: test
+  name: gce-pd
 spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: test
-  template:
-    metadata:
-      labels:
-        app: test
-    spec:
-      volumes:
-      - name: myvol
-      #   emptyDir:
-      #     medium: Memory
-        # nfs:
-        #     path: /foo
-        #     server: foo.server.com
-        gitRepo:
-          repository: https://github.com/foo/bar
-      containers: 
-      - name: busybox
-        image: busybox:1.28
-        command: ["sleep", "9999"]
+  securityContext:
+      runAsNonRoot: true
+  containers: 
+  - name: pause
+    image: kubernetes/pause
+  volumes:
+  - name: test-volume
+    # This GCE PD must already exist.
+    gcePersistentDisk:
+      pdName: my-data-disk
+      fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: awsebs
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers: 
+  - name: awsebs
+    image: busybox
+    command: ["sleep", "9999"]
+  volumes:
+  - name: test-volume
+    # This AWS EBS volume must already exist.
+    awsElasticBlockStore:
+      volumeID: "<volume id>"
+      fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: server
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - mountPath: /mypath
+      name: git-volume
+  volumes:
+  - name: git-volume
+    gitRepo:
+      repository: "git@somewhere:me/my-git-repository.git"
+      revision: "22f1d8406d464b0c0874075539c1f2e96c253775"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pd
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-pd
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      # directory location on host
+      path: /data
+      # this field is optional
+      type: Directory
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-portworx-volume-pod
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /mnt
+      name: pxvol
+  volumes:
+  - name: pxvol
+    # This Portworx volume must already exist.
+    portworxVolume:
+      volumeID: "pxvol"
+      fsType: "<fs-type>"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-0
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: pod-0
+    volumeMounts:
+    - mountPath: /test-pd
+      name: vol-0
+  volumes:
+  - name: vol-0
+    scaleIO:
+      gateway: https://localhost:443/api
+      system: scaleio
+      protectionDomain: sd0
+      storagePool: sp1
+      volumeName: vol-0
+      secretRef:
+        name: sio-secret
+      fsType: xfs
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    name: redis
+    role: master
+  name: test-storageos-redis
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+    - name: master
+      image: kubernetes/redis:v1
+      env:
+        - name: MASTER
+          value: "true"
+      ports:
+        - containerPort: 6379
+      volumeMounts:
+        - mountPath: /redis-master-data
+          name: redis-data
+  volumes:
+    - name: redis-data
+      storageos:
+        # The `redis-vol01` volume must already exist within StorageOS in the `default` namespace.
+        volumeName: redis-vol01
+        fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-vmdk
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: k8s.gcr.io/test-webserver
+    name: test-container
+    volumeMounts:
+    - mountPath: /test-vmdk
+      name: test-volume
+  volumes:
+  - name: test-volume
+    # This VMDK volume must already exist.
+    vsphereVolume:
+      volumePath: "[DatastoreName] volumes/myDisk"
+      fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: iscsipd
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: iscsipd-rw
+    image: kubernetes/pause
+    volumeMounts:
+    - mountPath: "/mnt/iscsipd"
+      name: iscsipd-rw
+  volumes:
+  - name: iscsipd-rw
+    iscsi:
+      targetPortal: 10.0.2.15:3260
+      portals: ['10.0.2.16:3260', '10.0.2.17:3260']
+      iqn: iqn.2001-04.com.example:storage.kube.sys1.xyz
+      lun: 0
+      fsType: ext4
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: glusterfs
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: glusterfs
+    image: nginx
+    volumeMounts:
+    - mountPath: "/mnt/glusterfs"
+      name: glusterfsvol
+  volumes:
+  - name: glusterfsvol
+    glusterfs:
+      endpoints: glusterfs-cluster
+      path: kube_vol
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: rbd
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+    - image: kubernetes/pause
+      name: rbd-rw
+      volumeMounts:
+      - name: rbdpd
+        mountPath: /mnt/rbd
+  volumes:
+    - name: rbdpd
+      rbd:
+        monitors:
+        - '10.16.154.78:6789'
+        - '10.16.154.82:6789'
+        - '10.16.154.83:6789'
+        pool: kube
+        image: foo
+        fsType: ext4
+        readOnly: true
+        user: admin
+        keyring: /etc/ceph/keyring
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv0001 
+spec:
+  securityContext:
+      runAsNonRoot: true
+  capacity:
+    storage: 1Gi 
+  accessModes:
+    - ReadWriteOnce
+  flexVolume:
+    driver: openshift.com/foo 
+    fsType: "ext4" 
+    readOnly: true 
+    options: 
+      fooServer: 192.168.0.1:1234
+      fooVolumeName: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cephfs
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: cephfs-rw
+    image: kubernetes/pause
+    volumeMounts:
+    - mountPath: "/mnt/cephfs"
+      name: cephfs
+  volumes:
+  - name: cephfs
+    cephfs:
+      monitors:
+      - 10.16.154.78:6789
+      - 10.16.154.82:6789
+      - 10.16.154.83:6789
+      # by default the path is /, but you can override and mount a specific path of the filesystem by using the path attribute
+      # path: /some/path/in/side/cephfs
+      user: admin
+      secretFile: "/etc/ceph/admin.secret"
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flocker-web
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+    - name: web
+      image: nginx
+      ports:
+        - name: web
+          containerPort: 80
+      volumeMounts:
+          # name must match the volume name below
+          - name: www-root
+            mountPath: "/usr/share/nginx/html"
+  volumes:
+    - name: www-root
+      flocker:
+        datasetName: my-flocker-vol
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: fibre-channel-example-pod
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+   - image: kubernetes/pause
+     name: fc
+     volumeMounts:
+       - name: fc-vol
+         mountPath: /mnt/fc
+  volumes:
+  - name: fc-vol
+    fc:
+      targetWWNs:
+        - <ADD Target WWN Here>
+      lun: 0
+      fsType: ext4
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: azure
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+    - image: kubernetes/pause
+      name: azure
+      volumeMounts:
+        - name: azure
+          mountPath: /mnt/azure
+  volumes:
+    - name: azure
+      azureFile:
+        secretName: azure-secret
+        shareName: k8stest
+        readOnly: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+ name: quobytevolume
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers:
+  - image: kubernetes/pause
+    name: quobytevolume
+    volumeMounts:
+    - name: quobytevolume
+      mountPath: /mnt/quobytevolume
+  volumes:
+    - name: quobytevolume
+      quobyte:
+        registry: ignored:7861 # Unused string required for API compatibility
+        volume: testVolume
+        readOnly: false
+        user: username
+        group: groupname
