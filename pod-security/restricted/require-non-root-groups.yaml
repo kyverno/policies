@@ -56,4 +56,4 @@ spec:
         pattern:
           spec:
             =(securityContext):
-              X(fsGroup): "null"
+              X(fsGroup): "*"
