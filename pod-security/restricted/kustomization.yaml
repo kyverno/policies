@@ -5,6 +5,7 @@ resources:
 - restrict-volume-types.yaml
 - deny-privilege-escalation.yaml
 - require-run-as-nonroot.yaml
+- require-non-root-groups.yaml
 - restrict-seccomp.yaml
 
 patches:
