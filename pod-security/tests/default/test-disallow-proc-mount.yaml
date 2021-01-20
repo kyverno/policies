@@ -1,8 +1,8 @@
-### This test will always pass unless the feature gate `ProcMountType` is enabled. 
+---
+# This test will always pass unless the feature gate `ProcMountType` is enabled. 
 # Any values set for `procMount` will be mutated by Kubernetes to be read as `Default` 
 # upon submission. Therefore, without the feature gate enabled this manifest will always 
 # validate to true.
----
 apiVersion: v1
 kind: Pod
 metadata:
