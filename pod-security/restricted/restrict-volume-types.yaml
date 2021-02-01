@@ -128,19 +128,19 @@ spec:
         spec:
           =(volumes):
           - X(cinder): "null"
-  - name: restricted-vol-cephFS
+  - name: restricted-vol-cephfs
     match:
       resources:
         kinds:
         - Pod
     validate:
       message: >-
-        Use of the cephFS type volume is disallowed.
-        The fields spec.volumes[*].cephFS must not be set.
+        Use of the cephfs type volume is disallowed.
+        The fields spec.volumes[*].cephfs must not be set.
       pattern:
         spec:
           =(volumes):
-          - X(cephFS): "null"
+          - X(cephfs): "null"
   - name: restricted-vol-flocker
     match:
       resources:
