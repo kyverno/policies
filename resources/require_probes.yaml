@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: eemyapp-podw
+  name: myapp-pod
   labels:
     app: myapp
 spec:
