@@ -1,0 +1,11 @@
+name: require_probes
+description: "...."
+policies:
+  -  require_probes_policy.yaml
+resources:
+  - require_probes.yaml
+results:
+  - policy: require-pod-probes
+    rule: validate-livenessProbe-readinessProbe
+    status: fail
+    resource: myapp-pod
