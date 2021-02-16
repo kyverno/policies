@@ -1,0 +1,12 @@
+name: test-1
+description: "...."
+policies:
+  -  disallow_bind_mounts.yaml
+resources:
+  - disallow_host_filesystem_pass.yaml
+variables: value.yml
+results:
+  - policy: disallow-bind-mounts
+    rule: validate-hostPath
+    resource: image-with-hostpath
+    status: pass

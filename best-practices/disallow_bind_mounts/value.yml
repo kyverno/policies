@@ -1,0 +1,6 @@
+policies:
+  - name: disallow-bind-mounts
+    resources:
+      - name: image-with-hostpath
+        values:
+          message: Pod
