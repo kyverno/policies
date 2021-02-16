@@ -3,4 +3,4 @@ policies:
     resources:
       - name: image-with-hostpath
         values:
-          message: Pod
+          request.message: Pod
