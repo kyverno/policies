@@ -8,4 +8,4 @@ results:
   - policy: disallow-bind-mounts
     rule: validate-hostPath
     resource: image-with-hostpath
-    status: pass
+    status: fail
