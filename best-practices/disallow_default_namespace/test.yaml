@@ -1,9 +1,9 @@
-name: test-1
+name: disallow_default_namespace
 description: "...."
 policies:
-  - \disallow_default_namespace_test.yaml
+  - \disallow_default_namespace_policy.yaml
 resources:
-  - \require_probes.yaml
+  - \disallow_default_namespace.yaml
 results:
   - policy: disallow-default-namespace
     rule: require-namespace
