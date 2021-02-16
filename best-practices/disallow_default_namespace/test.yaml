@@ -1,0 +1,15 @@
+name: test-1
+description: "...."
+policies:
+  - \disallow_default_namespace_test.yaml
+resources:
+  - \require_probes.yaml
+results:
+  - policy: disallow-default-namespace
+    rule: require-namespace
+    resource: myapp-pod
+    status: pass
+  - policy: disallow-default-namespace
+    rule: validate-namespace
+    resource: myapp-pod
+    status: fail
