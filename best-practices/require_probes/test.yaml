@@ -1,9 +1,9 @@
 name: require_probes
 description: "...."
 policies:
-  -  require_probes_policy.yaml
+  - require_probes_policy.yaml
 resources:
-  - require_probes.yaml
+  - resources.yaml
 results:
   - policy: require-pod-probes
     rule: validate-livenessProbe-readinessProbe
