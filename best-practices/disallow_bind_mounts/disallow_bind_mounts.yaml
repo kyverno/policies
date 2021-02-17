@@ -19,7 +19,7 @@ spec:
         kinds: 
         - Pod
     validate: 
-      message: "Host path volumes are not allowed {{ request.message }}"
+      message: "Host path volumes are not allowed {{request.message}}"
       pattern: 
         spec: 
           =(volumes): 

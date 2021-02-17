@@ -1,0 +1,21 @@
+name: require-ro-rootfs
+description: "...."
+policies:
+  - require_ro_rootfs.yaml
+  - disallow_latest_tag.yaml
+resources:
+  - resources.yaml
+  - pod_with_latest_tag.yaml
+results:
+  - policy: require-ro-rootfs
+    rule: validate-readOnlyRootFilesystem
+    status: fail
+    resource: ghost-with-readonly-rootfilesystem
+  - policy: disallow-latest-tag
+    rule: require-image-tag
+    status: pass
+    resource: myapp-pod
+  - policy: disallow-latest-tag
+    rule: validate-image-tag
+    status: pass
+    resource: myapp-pod
