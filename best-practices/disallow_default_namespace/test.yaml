@@ -8,8 +8,8 @@ results:
   - policy: disallow-default-namespace
     rule: require-namespace
     resource: myapp-pod
-    status: fail
+    status: pass
   - policy: disallow-default-namespace
     rule: validate-namespace
     resource: myapp-pod
-    status: fail
+    status: pass
