@@ -12,4 +12,4 @@ results:
   - policy: disallow-default-namespace
     rule: validate-namespace
     resource: myapp-pod
-    status: pass
+    status: fail
