@@ -4,7 +4,7 @@ policies:
 resources:
   -  resource.yaml
 results:
-  - policy: require-pod-requests-limits
-    rule: validate-nodeport
+  - policy: require-requests-limits
+    rule: validate-resources
     resource: myapp-pod
     status: pass
