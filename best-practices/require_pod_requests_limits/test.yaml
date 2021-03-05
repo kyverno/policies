@@ -1,0 +1,10 @@
+name: require-requests-limits
+policies:
+  -  require_pod_requests_limits.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: require-pod-requests-limits
+    rule: validate-nodeport
+    resource: myapp-pod
+    status: pass
