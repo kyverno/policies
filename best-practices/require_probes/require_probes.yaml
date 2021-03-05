@@ -12,7 +12,7 @@ metadata:
       are running or need to be restarted. A `readinessProbe` is used by services 
       and deployments to determine if the pod is ready to receive network traffic.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   rules:
   - name: validate-livenessProbe-readinessProbe
     match:

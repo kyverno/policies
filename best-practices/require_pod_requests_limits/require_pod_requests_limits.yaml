@@ -11,7 +11,7 @@ metadata:
       and 'resources.limits.memory' per pod. If a namespace level request or limit is specified, 
       defaults will automatically be applied to each pod based on the 'LimitRange' configuration.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   rules:
   - name: validate-resources
     match:

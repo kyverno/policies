@@ -1,0 +1,10 @@
+name: disallow-helm-tiller
+policies:
+  -  disallow_helm_tiller.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: pod-helm-tiller
+    status: fail
