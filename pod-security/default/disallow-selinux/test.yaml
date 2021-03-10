@@ -1,0 +1,10 @@
+name: disallow-selinux
+policies:
+  -  disallow-selinux.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: disallow-selinux
+    rule: seLinux
+    resource: busybox-selinux
+    status: fail

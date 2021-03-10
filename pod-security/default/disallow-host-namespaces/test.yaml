@@ -1,0 +1,14 @@
+name:  disallow-host-namespaces
+policies:
+  -  disallow-host-namespaces.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy:  disallow-host-namespaces
+    rule:  host-namespaces
+    resource: host-namespaces-net
+    status: fail
+  - policy:  disallow-host-namespaces
+    rule:  host-namespaces
+    resource: host-namespaces-pid
+    status: fail
