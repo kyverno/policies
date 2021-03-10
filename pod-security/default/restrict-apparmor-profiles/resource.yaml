@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: apparmor
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/apparmor: localhost/customprofile
+spec:
+  securityContext:
+      runAsNonRoot: true
+  containers: 
+  - name: apparmor
+    image: kubernetes/pause

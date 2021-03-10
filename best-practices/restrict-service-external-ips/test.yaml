@@ -1,0 +1,10 @@
+name: restrict-external-ips
+policies:
+  -  restrict-service-external-ips.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-external-ips
+    rule: check-ips
+    resource: my-service
+    status: pass

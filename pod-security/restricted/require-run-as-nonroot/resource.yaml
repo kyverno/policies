@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nonroot-pod
+spec:
+  securityContext:
+    runAsNonRoot: false
+  containers: 
+  - name: busybox
+    image: busybox
+    command: ["sleep", "9999"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: root-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: root-pod
+    image: busybox
+    command: ["sleep", "9999"]
+    securityContext:
+      runAsNonRoot: false
