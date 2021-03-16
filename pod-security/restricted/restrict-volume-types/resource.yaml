@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gce-pd
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers: 
+  - name: pause
+    image: kubernetes/pause
+  volumes:
+  - name: test-volume
+    # This GCE PD must already exist.
+    gcePersistentDisk:
+      pdName: my-data-disk
+      fsType: ext4

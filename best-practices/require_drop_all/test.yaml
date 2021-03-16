@@ -1,0 +1,10 @@
+name: drop-all-capabilities
+policies:
+  -  require_drop_all.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: drop-all-capabilities
+    rule: check-init-containers
+    resource:  add-capabilities
+    status: fail

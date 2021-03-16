@@ -1,0 +1,10 @@
+name: disallow-host-ports
+policies:
+  -  disallow-host-ports.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: disallow-host-ports
+    rule: host-ports
+    resource: host-port
+    status: fail
