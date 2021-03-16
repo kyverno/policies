@@ -1,0 +1,14 @@
+name: restrict-volume-types
+policies:
+  -  restrict-volume-types.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-volume-types
+    rule: restricted-vol-gcePersistentDisk
+    resource: gce-pd
+    status: fail
+  - policy: restrict-volume-types
+    rule: restricted-vol-awsElasticBlockStore
+    resource: gce-pd
+    status: pass

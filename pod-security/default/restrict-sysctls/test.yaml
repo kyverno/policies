@@ -1,0 +1,10 @@
+name: restrict-sysctls
+policies:
+  -  restrict-sysctls.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-sysctls
+    rule: sysctls
+    resource: nginx
+    status: pass

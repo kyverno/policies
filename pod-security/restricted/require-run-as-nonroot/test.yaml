@@ -1,0 +1,16 @@
+name: require-run-as-non-root
+policies:
+  -   require-run-as-nonroot.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy:  require-run-as-non-root
+    rule: check-containers
+    resource:  nonroot-pod
+    status: fail
+  - policy:  require-run-as-non-root
+    rule: check-containers
+    resource: root-pod
+    status: fail
+
+

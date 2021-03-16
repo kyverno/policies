@@ -1,0 +1,10 @@
+name: require-default-proc-mount
+policies:
+  -  check-proc-mount.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: require-default-proc-mount
+    rule: check-proc-mount
+    resource: nginx-proc-mount
+    status: pass

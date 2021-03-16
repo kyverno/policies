@@ -1,0 +1,20 @@
+name: restrict-seccomp
+policies:
+  -  restrict-seccomp.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy:  restrict-seccomp
+    rule: seccomp
+    resource:  seccomp-pod
+    status: fail
+  - policy:  restrict-seccomp
+    rule: seccomp
+    resource: seccomp-ctnr
+    status: pass
+  - policy:  restrict-seccomp
+    rule: seccomp
+    resource: seccomp-init-ctnr
+    status: pass
+
+

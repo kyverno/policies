@@ -1,0 +1,10 @@
+name: deny-privilege-escalation
+policies:
+  -  deny-privilege-escalation.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy:  deny-privilege-escalation
+    rule: deny-privilege-escalation
+    resource: privileged
+    status: fail
