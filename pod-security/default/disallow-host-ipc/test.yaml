@@ -5,7 +5,7 @@ resources:
   -  resource.yaml
 results:
   - policy:  disallow-host-ipc
-    rule:  host-namespaces
+    rule:  validate-hostIPC
     resource: nginx-with-hostipc
-    status: fail
+    status: pass
 

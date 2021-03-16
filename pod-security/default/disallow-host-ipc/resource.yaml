@@ -4,7 +4,7 @@ metadata:
   name: nginx-with-hostipc
 spec:
   hostPID: false
-  hostIPC: true
+  hostIPC: false
   containers:
   - name: nginx
     image: nginx
