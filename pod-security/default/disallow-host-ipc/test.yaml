@@ -1,0 +1,11 @@
+name:  disallow-host-ipc
+policies:
+  -  disallow-host-ipc.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy:  disallow-host-ipc
+    rule:  host-namespaces
+    resource: nginx-with-hostipc
+    status: fail
+
