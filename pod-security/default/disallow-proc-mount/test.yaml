@@ -1,6 +1,6 @@
 name: require-default-proc-mount
 policies:
-  -  check-proc-mount.yaml
+  -  disallow-proc-mount.yaml
 resources:
   -  resource.yaml
 results:
