@@ -5,9 +5,10 @@ metadata:
   annotations:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
-      The ':latest' tag is mutable and can lead to unexpected errors if the 
-      image changes. A best practice is to use an immutable tag that maps to 
-      a specific version of an application pod.  
+      Define and use labels that identify semantic attributes of your application or Deployment.
+      A common set of labels allows tools to work interoperably, describing objects in a common manner that 
+      all tools can understand. The recommended labels describe applications in a way that can be 
+      queried. 
 spec:
   validationFailureAction: audit
   rules:
