@@ -3,8 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: restrict-nodeport
   annotations:
-    policies.kyverno.io/title: Disallow Node Ports
-    policies.kyverno.io/category: "Best Practices"
+    policies.kyverno.io/title: Disallow NodePort
+    policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       A Kubernetes service of type NodePort uses a host port to receive traffic from 
       any source. A 'NetworkPolicy' resource cannot be used to control traffic to host ports. 
