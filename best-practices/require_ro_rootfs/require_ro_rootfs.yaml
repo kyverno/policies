@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: require-ro-rootfs
   annotations:
-    policies.kyverno.io/title: Require Read-Only Root FS
+    policies.kyverno.io/title: Require Read-Only Root Filesystem
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       A read-only root file system helps to enforce an immutable infrastructure strategy; 
