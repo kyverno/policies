@@ -22,5 +22,5 @@ spec:
       message: Pods may not use tolerations which schedule on control plane nodes.
       pattern:
         spec:
-        =(tolerations):
-          - X(key): "node-role.kubernetes.io/master"
+          =(tolerations):
+            - X(key): "node-role.kubernetes.io/master"
