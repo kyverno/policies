@@ -9,9 +9,7 @@ metadata:
       This example policy prevents the use of an annotation beginning with a common
       key name (in this case "fluxcd.io/"). This can be useful to ensure users either
       don't set reserved annotations or to force them to
-      use a newer version of an annotation. By setting autogen-controllers
-      to "none", Kyverno will only look at the top most `metadata` object
-      in the named resource kinds.
+      use a newer version of an annotation.
     pod-policies.kyverno.io/autogen-controllers: None
 spec:
   validationFailureAction: enforce
