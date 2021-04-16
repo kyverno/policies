@@ -4,6 +4,7 @@ metadata:
   name: disallow-add-capabilities
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
       Capabilities permit privileged actions without giving full root access.
       Adding capabilities beyond the default set must not be allowed.

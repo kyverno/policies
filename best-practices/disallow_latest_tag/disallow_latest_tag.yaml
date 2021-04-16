@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Disallow Latest Tag
     policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
       The ':latest' tag is mutable and can lead to unexpected errors if the 
       image changes. A best practice is to use an immutable tag that maps to 

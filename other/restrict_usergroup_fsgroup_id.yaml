@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Validate User ID, Group ID, and FS Group 
     policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
       All processes inside the pod can be made to run with specific user and groupID 
       by setting 'runAsUser' and 'runAsGroup' respectively. 'fsGroup' can be specified 
