@@ -25,16 +25,7 @@ spec:
           - securityContext:
               capabilities:
                 drop: ["ALL"]
-  - name: check-init-containers
-    match:
-      resources:
-        kinds:
-        - Pod
-    validate:
-      message: "All capabilities should be dropped with only those required added back."
-      pattern:
-        spec:
-          initContainers:
-          - securityContext:
-              capabilities:
+          =(initContainers):
+          - =(securityContext):
+              (capabilities):
                 drop: ["ALL"]
