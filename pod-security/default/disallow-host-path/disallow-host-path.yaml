@@ -4,6 +4,7 @@ metadata:
   name: disallow-host-path
   annotations:
     policies.kyverno.io/category: Pod Security Standards (Default)
+    policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
       HostPath volumes let pods use host directories and volumes in containers.
       Using host resources can be used to access shared data or escalate privileges
