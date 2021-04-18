@@ -1,9 +1,9 @@
 bases:
-- ../default
+  - ../baseline
 
 resources:
-- test-restrict-volume-types.yaml
-- test-deny-privilege-escalation.yaml
-- test-require-run-as-nonroot.yaml
-- test-non-root-groups.yaml
-- test-restrict-seccomp.yaml
+  - test-restrict-volume-types.yaml
+  - test-deny-privilege-escalation.yaml
+  - test-require-run-as-nonroot.yaml
+  - test-non-root-groups.yaml
+  - test-restrict-seccomp.yaml

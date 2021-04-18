@@ -1,5 +1,5 @@
 bases:
-  - ../default
+  - ../baseline
 
 resources:
   - restrict-volume-types/restrict-volume-types.yaml
