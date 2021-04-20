@@ -7,4 +7,4 @@ results:
   - policy: disallow-privileged-containers
     rule: priviledged-containers
     resource: check-privileged-cfg
-    status: pass
+    result: pass

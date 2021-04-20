@@ -7,4 +7,4 @@ results:
   - policy: require-requests-limits
     rule: validate-resources
     resource: myapp-pod
-    status: pass
+    result: pass
