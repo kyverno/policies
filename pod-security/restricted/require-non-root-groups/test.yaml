@@ -7,13 +7,13 @@ results:
   - policy: require-non-root-groups
     rule: check-runasgroup
     resource: fs-group0
-    status: pass
+    result: pass
   - policy: require-non-root-groups
     rule: check-supplementalGroups
     resource: fs-group0
-    status: pass
+    result: pass
   - policy: require-non-root-groups
     rule:  check-fsGroup
     resource: fs-group0
-    status: fail
+    result: fail
 

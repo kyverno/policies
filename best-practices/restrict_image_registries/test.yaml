@@ -7,4 +7,4 @@ results:
   - policy: restrict-image-registries
     rule: validate-registries
     resource: k8s-nginx
-    status: pass
+    result: pass

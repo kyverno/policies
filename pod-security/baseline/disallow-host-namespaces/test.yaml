@@ -7,8 +7,8 @@ results:
   - policy:  disallow-host-namespaces
     rule:  host-namespaces
     resource: host-namespaces-net
-    status: fail
+    result: fail
   - policy:  disallow-host-namespaces
     rule:  host-namespaces
     resource: host-namespaces-pid
-    status: fail
+    result: fail

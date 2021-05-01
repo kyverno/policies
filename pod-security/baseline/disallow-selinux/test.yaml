@@ -7,4 +7,4 @@ results:
   - policy: disallow-selinux
     rule: seLinux
     resource: busybox-selinux
-    status: fail
+    result: fail

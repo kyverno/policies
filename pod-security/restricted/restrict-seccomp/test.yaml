@@ -7,14 +7,14 @@ results:
   - policy:  restrict-seccomp
     rule: seccomp
     resource:  seccomp-pod
-    status: fail
+    result: fail
   - policy:  restrict-seccomp
     rule: seccomp
     resource: seccomp-ctnr
-    status: pass
+    result: pass
   - policy:  restrict-seccomp
     rule: seccomp
     resource: seccomp-init-ctnr
-    status: pass
+    result: pass
 
 

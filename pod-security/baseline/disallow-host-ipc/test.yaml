@@ -7,5 +7,5 @@ results:
   - policy:  disallow-host-ipc
     rule:  validate-hostIPC
     resource: nginx-with-hostipc
-    status: pass
+    result: pass
 

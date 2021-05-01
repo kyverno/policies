@@ -7,8 +7,8 @@ results:
   - policy: disallow-container-sock-mounts
     rule: validate-docker-sock-mount
     resource: pod-with-docker-sock-mount
-    status: fail
+    result: fail
   - policy: disallow-container-sock-mounts
     rule: validate-containerd-sock-mount
     resource: pod-with-docker-sock-mount
-    status: pass
+    result: pass
