@@ -5,6 +5,6 @@ resources:
   -  resource.yaml
 results:
   - policy: drop-all-capabilities
-    rule: check-init-containers
+    rule: check-containers
     resource:  add-capabilities
     status: fail
