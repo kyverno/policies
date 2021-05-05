@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Restrict node label changes
     policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Node, Label
     policies.kyverno.io/description: >-
       This policy prevents changes or deletions to label called `foo` on
       cluster nodes. Use of this policy requires removal of the Node resource filter

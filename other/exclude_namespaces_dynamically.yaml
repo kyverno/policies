@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Exclude Namespaces Dynamically
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Namespace, Pod
     policies.kyverno.io/description: >-
       Policy which illustrates how to dynamically look up an allow list of Namespaces from a ConfigMap
       where the ConfigMap stores an array of strings. This policy validates that any Pods created

@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Require Limits and Requests 
     policies.kyverno.io/category: Multi-Tenancy
     policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       As application workloads share cluster resources, it is important to limit resources 
       requested and consumed by each pod. It is recommended to require 'resources.requests' 
