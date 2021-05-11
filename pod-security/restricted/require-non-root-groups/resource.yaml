@@ -11,4 +11,18 @@ spec:
   - name: fs-group
     image: busybox
     command: ["sleep", "9999"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: supplemental-groups0
+spec:
+  securityContext:
+    runAsNonRoot: true
+    supplementalGroups:
+    - 0
+  containers: 
+  - name: supplemental-groups
+    image: busybox
+    command: ["sleep", "9999"]
 
