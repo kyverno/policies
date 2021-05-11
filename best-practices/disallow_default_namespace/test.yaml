@@ -1,9 +1,8 @@
 name: disallow_default_namespace
-description: "...."
 policies:
   -  disallow_default_namespace.yaml
 resources:
-  -  resources.yaml
+  -  resource.yaml
 results:
   - policy: disallow-default-namespace
     rule: require-namespace

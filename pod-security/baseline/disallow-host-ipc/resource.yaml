@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-with-hostipc
+spec:
+  hostPID: false
+  hostIPC: false
+  containers:
+  - name: nginx
+    image: nginx

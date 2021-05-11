@@ -1,0 +1,18 @@
+resources:
+  - disallow-host-namespaces/disallow-host-namespaces.yaml
+  - disallow-adding-capabilities/disallow-adding-capabilities.yaml
+  - disallow-host-path/disallow-host-path.yaml
+  - disallow-host-ports/disallow-host-ports.yaml
+  - disallow-privileged-containers/disallow-privileged-containers.yaml
+  - disallow-proc-mount/disallow-proc-mount.yaml
+  - disallow-selinux/disallow-selinux.yaml
+  - restrict-apparmor-profiles/restrict-apparmor-profiles.yaml
+  - restrict-sysctls/restrict-sysctls.yaml
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/validationFailureAction
+        value: enforce
+    target:
+      kind: ClusterPolicy

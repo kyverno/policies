@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: host-namespaces-net
+spec:
+  securityContext:
+    runAsNonRoot: true
+  hostNetwork: true
+  containers:
+  - name: host-namespaces-net
+    image: kubernetes/pause    
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: host-namespaces-pid
+spec:
+  securityContext:
+    runAsNonRoot: true
+  hostPID: true
+  containers: 
+  - name: host-namespaces-pid
+    image: kubernetes/pause
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: host-namespaces-ipc
+spec:
+  securityContext:
+    runAsNonRoot: true
+  hostIPC: true
+  containers: 
+  - name: host-namespaces-ipc
+    image: kubernetes/pause
+    

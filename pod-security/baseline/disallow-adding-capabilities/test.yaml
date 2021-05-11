@@ -1,0 +1,10 @@
+name: disallow-add-capabilities
+policies:
+  -  disallow-adding-capabilities.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: disallow-add-capabilities
+    rule: capabilities
+    resource: add-new-capabilities
+    status: fail

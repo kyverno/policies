@@ -1,17 +1,17 @@
 bases:
-- ../default
+  - ../baseline
 
 resources:
-- restrict-volume-types.yaml
-- deny-privilege-escalation.yaml
-- require-run-as-nonroot.yaml
-- require-non-root-groups.yaml
-- restrict-seccomp.yaml
+  - restrict-volume-types/restrict-volume-types.yaml
+  - deny-privilege-escalation/deny-privilege-escalation.yaml
+  - require-run-as-nonroot/require-run-as-nonroot.yaml
+  - require-non-root-groups/require-non-root-groups.yaml
+  - restrict-seccomp/restrict-seccomp.yaml
 
 patches:
-- patch: |-
-    - op: replace
-      path: /spec/validationFailureAction
-      value: enforce    
-  target:
-    kind: ClusterPolicy
+  - patch: |-
+      - op: replace
+        path: /spec/validationFailureAction
+        value: enforce
+    target:
+      kind: ClusterPolicy

@@ -1,0 +1,10 @@
+name: restrict-apparmor-profiles
+policies:
+  -  restrict-apparmor-profiles.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-apparmor-profiles
+    rule: app-armor
+    resource: apparmor
+    status: fail
