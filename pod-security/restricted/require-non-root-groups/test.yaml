@@ -24,4 +24,8 @@ results:
     rule: check-fsGroup
     resource: supplemental-groups0
     status: pass
+  - policy: require-non-root-groups
+    rule: check-runasgroup
+    resource: supplemental-groups0
+    status: pass
 
