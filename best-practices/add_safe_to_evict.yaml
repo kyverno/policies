@@ -23,7 +23,7 @@ spec:
           annotations:
             +(cluster-autoscaler.kubernetes.io/safe-to-evict): "true"
         spec:          
-          volumes: 
+          (volumes): 
           - (emptyDir): {}
   - name: annotate-host-path
     match: 
@@ -36,6 +36,6 @@ spec:
           annotations:
             +(cluster-autoscaler.kubernetes.io/safe-to-evict): "true"
         spec:          
-          volumes: 
+          (volumes): 
           - (hostPath):
               path: "*"
