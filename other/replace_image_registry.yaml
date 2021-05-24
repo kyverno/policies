@@ -13,7 +13,7 @@ metadata:
       it is also possible to mutate them so the pulls are directed to
       approved registries. This sample policy mutates all images either
       in the form 'image:tag' or 'registry.corp.com/image:tag' to be prefaced
-      with `myregistry.corp.com/`.  
+      with `myregistry.corp.com/`.
 spec:
   background: false
   rules:
