@@ -16,4 +16,16 @@ results:
     rule:  check-fsGroup
     resource: fs-group0
     status: fail
+  - policy: require-non-root-groups
+    rule: check-supplementalGroups
+    resource: supplemental-groups0
+    status: fail
+  - policy: require-non-root-groups
+    rule: check-fsGroup
+    resource: supplemental-groups0
+    status: pass
+  - policy: require-non-root-groups
+    rule: check-runasgroup
+    resource: supplemental-groups0
+    status: pass
 
