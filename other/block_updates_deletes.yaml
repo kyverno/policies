@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Block Updates and Deletes
     policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: RBAC
     policies.kyverno.io/description: >-
       Kubernetes RBAC allows for controls on kinds of resources or those
       with specific names. This policy restricts updates and deletes to any
