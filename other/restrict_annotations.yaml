@@ -14,7 +14,7 @@ metadata:
       use a newer version of an annotation.
     pod-policies.kyverno.io/autogen-controllers: None
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
   - name: block-flux-v1

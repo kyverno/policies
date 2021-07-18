@@ -12,7 +12,7 @@ metadata:
     policies.kyverno.io/description: >-
       Sample policy to check that liveness and readiness probes are not equal.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
     - name: validate-probes

@@ -13,7 +13,7 @@ metadata:
       a cluster-admin and thus functions as a more granular option to
       Kubernetes RBAC. 
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
   - name: block-updates-deletes
