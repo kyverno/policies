@@ -13,7 +13,7 @@ metadata:
       Requiring use of known registries helps reduce threat exposure.
 spec:
   background: false
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: validate-registries
     match:

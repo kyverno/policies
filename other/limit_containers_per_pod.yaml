@@ -15,7 +15,7 @@ metadata:
       no more than four containers.
 spec:
   background: false
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: limit-containers-per-pod-controllers
     match:

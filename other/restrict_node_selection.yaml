@@ -11,7 +11,7 @@ metadata:
       for scheduling of Pods by prohibiting the use of the `nodeSelector`
       and `nodeName` fields in a Pod spec.     
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
   - name: restrict-nodeselector
