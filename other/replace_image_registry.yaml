@@ -11,7 +11,9 @@ metadata:
     policies.kyverno.io/description: >-
       Rather than blocking Pods which come from outside registries,
       it is also possible to mutate them so the pulls are directed to
-      approved registries. This sample policy mutates all images either
+      approved registries. In some cases, those registries may function as
+      pull-through proxies and can fetch the image if not cached.
+      This sample policy mutates all images either
       in the form 'image:tag' or 'registry.corp.com/image:tag' to be prefaced
       with `myregistry.corp.com/`.
 spec:
