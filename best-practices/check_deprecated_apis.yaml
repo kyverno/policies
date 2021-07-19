@@ -6,9 +6,10 @@ metadata:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       Kubernetes APIs are sometimes deprecated and removed after a few releases. 
-      As a best practice older API versions should be replaced with newer versions.
+      As a best practice older API versions should be replaced with newer versions. 
+      This policy validates for APIs that are deprecated or scheduled for removal.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: validate-v1-22-removals
     match:
