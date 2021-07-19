@@ -8,9 +8,9 @@ metadata:
     policies.kyverno.io/minversion: 1.3.6
     policies.kyverno.io/subject: Deployment, NetworkPolicy
     policies.kyverno.io/description: >-
-      NetworkPolicy resources are used to control pod-to-pod communication
-      and are good practices to ensure only authorized pods can send/receive
-      traffic. This sample policy checks incoming Deployments to ensure
+      NetworkPolicy is used to control Pod-to-Pod communication
+      and is a good practice to ensure only authorized Pods can send/receive
+      traffic. This sample checks incoming Deployments to ensure
       they have a matching, preexisting NetworkPolicy.
 spec:
   validationFailureAction: audit

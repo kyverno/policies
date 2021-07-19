@@ -7,9 +7,12 @@ metadata:
     policies.kyverno.io/category: Multi-Tenancy
     policies.kyverno.io/subject: ResourceQuota, LimitRange
     policies.kyverno.io/description: >-
-      To limit the number of objects, as well as the total amount of compute that 
-      may be consumed by a single namespace, create a default resource quota for 
-      each namespace.
+      In order to better control the number of resources that can be created in a
+      given Namespace as well as to provide some default resource consumption limits for
+      Pods in that Namespace, a ResourceQuota and LimitRange resources can be created.
+      This sample, upon seeing the creation of a new Namespace, will generate a
+      ResourceQuota and LimitRange resource configuring them according to the `spec` objects
+      shown in the below rules.
 spec:
   rules:
   - name: generate-resourcequota
