@@ -26,4 +26,4 @@ spec:
           # restrict external IP addresses
           # you can alternatively restrict to a known set of addresses using:
           #     =(externalIPs): ["37.10.11.53", "153.10.20.1"]
-          X(externalIPs): nil
+          X(externalIPs): "null"
