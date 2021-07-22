@@ -15,7 +15,7 @@ metadata:
       PriorityClasses for the given Namespace stored in a ConfigMap. If the `priorityClassName` is not
       among them, the Pod is blocked.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: false
   rules:
   - name: validate-pod-priority

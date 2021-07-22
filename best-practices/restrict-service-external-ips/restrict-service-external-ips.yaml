@@ -10,7 +10,8 @@ metadata:
     policies.kyverno.io/description: >-
       Service externalIPs can be used for a MITM attack (CVE-2020-8554).
       Restrict externalIPs or limit to a known set of addresses.
-      See: https://github.com/kyverno/kyverno/issues/1367.
+      See: https://github.com/kyverno/kyverno/issues/1367. This sample validates
+      that the `externalIPs` field is not set on a Service.
 spec:
   validationFailureAction: audit
   rules:
