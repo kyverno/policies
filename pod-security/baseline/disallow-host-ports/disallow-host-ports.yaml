@@ -26,7 +26,8 @@ spec:
           spec:
             =(initContainers):
               - =(ports):
-                  - X(hostPort): "null"
+              # the value here is actually not evaluated, the key is the one do not allow.
+                  - X(hostPort): 0
             containers:
               - =(ports):
-                  - X(hostPort): "null"
+                  - X(hostPort): 0
