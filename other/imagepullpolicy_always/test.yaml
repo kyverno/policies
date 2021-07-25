@@ -1,0 +1,11 @@
+name: imagepullpolicy-always
+policies:
+  -  imagepullpolicy-always.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: myapp-pod
+    status: fail
+  
