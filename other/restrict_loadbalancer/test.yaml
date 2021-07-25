@@ -1,0 +1,10 @@
+name: no-loadbalancer-service
+policies:
+  -  no-loadbalancer-service.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: no-loadbalancer-service
+    rule: no-LoadBalancer
+    resource: myapp-pod
+    status: fail
