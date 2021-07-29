@@ -8,3 +8,7 @@ results:
     rule: require-image-checksum
     resource: myapp-pod
     status: pass
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: myapp-pod-2
+    status: fail
