@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Pods can have many different containers which
-      are tightly coupled. It may be desired to limit the amount of containers that
+      are tightly coupled. It may be desirable to limit the amount of containers that
       can be in a single Pod to control best practice application or so policy can
       be applied consistently. This sample checks all Pods to ensure they have
       no more than four containers.
