@@ -10,10 +10,10 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Images from unknown, public registries can be of dubious quality and may not be
-      scanned and secured, representing some degree of risk. Requiring use of known, approved
+      scanned and secured, representing a high degree of risk. Requiring use of known, approved
       registries helps reduce threat exposure by ensuring image pulls only come from them. This
-      sample validates that container images only originate from the registry `k8s.gcr.io` or
-      `gcr.io`.
+      sample validates that container images only originate from the registry `eu.foo.io` or
+      `bar.io`.
 spec:
   background: false
   validationFailureAction: audit
@@ -28,4 +28,4 @@ spec:
       pattern:
         spec:
           containers:
-          - image: "k8s.gcr.io/* | gcr.io/*"
+          - image: "eu.foo.io/* | bar.io/*"
