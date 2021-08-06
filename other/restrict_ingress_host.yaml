@@ -24,16 +24,20 @@ spec:
       context:
         - name: hosts
           apiCall:
-            urlPath: "/apis/networking.k8s.io/v1beta1/ingresses"
+            urlPath: "/apis/networking.k8s.io/v1/ingresses"
             jmesPath: "items[].spec.rules[].host"
       preconditions:
+        all:
         - key: "{{ request.operation }}"
           operator: Equals
-          value: "CREATE"
+          value: CREATE
+        any:
+        - key: "{{ request.object.spec.rules[].host }}"
+          operator: In
+          value: "{{ hosts }}"
+        - key: "{{ request.object.spec.rules[].host }}"
+          operator: NotIn
+          value: "{{ hosts }}"
       validate:
         message: "The Ingress host name must be unique."
-        deny:
-          conditions:
-            - key: "{{ request.object.spec.rules[].host }}"
-              operator: In
-              value: "{{ hosts }}"
+        deny: {}
