@@ -11,7 +11,8 @@ metadata:
     policies.kyverno.io/description: >-
       On supported hosts, the 'runtime/default' AppArmor profile is applied by default. 
       The default policy should prevent overriding or disabling the policy, or restrict 
-      overrides to an allowed set of profiles.
+      overrides to an allowed set of profiles. This policy ensures Pods do not
+      specify any other AppArmor profiles than `runtime/default`.
 spec:
   validationFailureAction: audit
   background: true
