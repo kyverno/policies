@@ -10,7 +10,7 @@ metadata:
     policies.kyverno.io/description: >-
       NetworkPolicy is used to control Pod-to-Pod communication
       and is a good practice to ensure only authorized Pods can send/receive
-      traffic. This sample checks incoming Deployments to ensure
+      traffic. This policy checks incoming Deployments to ensure
       they have a matching, preexisting NetworkPolicy.
 spec:
   validationFailureAction: audit

@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Containers should be forbidden from running with a root primary or supplementary GID.
-      This sample ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number
+      This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number
       greater than zero (i.e., non root).
 spec:
   background: true

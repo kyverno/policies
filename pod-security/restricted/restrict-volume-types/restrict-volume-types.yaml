@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/description: >-
       In addition to restricting HostPath volumes, the restricted pod security profile
       limits usage of non-core volume types to those defined through PersistentVolumes.
-      This sample blocks a number of different non-core volume types as named.
+      This policy blocks a number of different non-core volume types as named.
 spec:
   background: true
   validationFailureAction: audit

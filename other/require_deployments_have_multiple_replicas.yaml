@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/subject: Deployment
     policies.kyverno.io/description: >-
       Deployments with a single replica cannot be highly available and thus the application
-      may suffer downtime if that one replica goes down. This sample validates that Deployments
+      may suffer downtime if that one replica goes down. This policy validates that Deployments
       have more than one replica.    
 spec:
   validationFailureAction: audit

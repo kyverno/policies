@@ -12,7 +12,7 @@ metadata:
       requested and consumed by each Pod. It is recommended to require resource requests and
       limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, 
       defaults will automatically be applied to each Pod based on the 'LimitRange' configuration.
-      This sample validates that all containers have something specified for memory and cpu
+      This policy validates that all containers have something specified for memory and cpu
       requests and memory limits.
 spec:
   validationFailureAction: audit

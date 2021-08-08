@@ -11,7 +11,7 @@ metadata:
       Capabilities permit privileged actions without giving full root access. The
       CAP_NET_RAW capability, enabled by default, allows processes in a container to
       forge packets and bind to any interface potentially leading to MitM attacks.
-      This sample ensures that all containers explicitly drop the CAP_NET_RAW
+      This policy ensures that all containers explicitly drop the CAP_NET_RAW
       ability.
 spec:
   validationFailureAction: audit
