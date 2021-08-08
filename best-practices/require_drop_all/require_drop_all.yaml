@@ -29,6 +29,6 @@ spec:
               capabilities:
                 drop: ["ALL"]
           =(initContainers):
-          - =(securityContext):
-              (capabilities):
+          - securityContext:
+              capabilities:
                 drop: ["ALL"]
