@@ -30,7 +30,7 @@ spec:
       operator: Equals
       value: CONNECT
     validate:
-      message: Exec'ing into Pods into Namespaces protected with the label `exec=false` is forbidden.
+      message: Executing a command in a container is forbidden for Pods running in Namespaces protected with the label "exec=false".
       deny:
         conditions:
           - key: "{{ nslabelexec }}"
