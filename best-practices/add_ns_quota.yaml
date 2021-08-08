@@ -10,7 +10,7 @@ metadata:
       To better control the number of resources that can be created in a given 
       Namespace and provide default resource consumption limits for Pods,
       ResourceQuota and LimitRange resources are recommended.
-      This sample will generate ResourceQuota and LimitRange resources when
+      This policy will generate ResourceQuota and LimitRange resources when
       a new Namespace is created.
 spec:
   rules:

@@ -8,7 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      SELinux options can be used to escalate privileges and should not be allowed. This sample
+      SELinux options can be used to escalate privileges and should not be allowed. This policy
       ensures that the `seLinuxOptions` field is undefined.
 spec:
   validationFailureAction: audit

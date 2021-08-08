@@ -11,7 +11,7 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Liveness and readiness probes accomplish different goals, and setting both to the same
-      is an anti-pattern and often results in app problems in the future. This sample
+      is an anti-pattern and often results in app problems in the future. This policy
       checks that liveness and readiness probes are not equal.
 spec:
   validationFailureAction: audit
