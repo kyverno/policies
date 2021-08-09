@@ -7,8 +7,11 @@ metadata:
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Deployment, Volume
     policies.kyverno.io/description: >-
-      Sample policy to add a volume and volumeMount to a Deployment resource. This checks for the presence of an annotation called
-      "vault.k8s.corp.net/inject=enabled" and adds an emptyDir volume using the memory medium.
+      Some Kubernetes applications like HashiCorp Vault must perform some modifications
+      to resources in order to invoke their specific functionality. Often times, that functionality
+      is controlled by the presence of a label or specific annotation. This policy, based on HashiCorp
+      Vault, adds a volume and volumeMount to a Deployment if there is an annotation called
+      "vault.k8s.corp.net/inject=enabled" present.
 spec:
   background: false
   rules:

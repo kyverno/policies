@@ -12,7 +12,7 @@ metadata:
       are mutable and can be overwritten. This policy checks to ensure that all images
       use SHA checksums rather than tags.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: true
   rules:
   - name: require-image-checksum
