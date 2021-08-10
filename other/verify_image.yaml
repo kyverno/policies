@@ -25,7 +25,7 @@ spec:
           kinds:
             - Pod
       verifyImages:
-      - image: "ghcr.io/kyverno/test-image-verify:*"
+      - image: "ghcr.io/kyverno/test-verify-image:*"
         key: |-
           -----BEGIN PUBLIC KEY-----
           MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE8nXRh950IZbRj8Ra/N9sbqOPZrfM
