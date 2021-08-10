@@ -1,7 +1,7 @@
 ---
 name: pod-lifetime
 policies:
-  - policy.yaml
+  - enforce_pod_duration.yaml
 resources:
   - resources.yaml
 results: 
