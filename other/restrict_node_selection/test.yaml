@@ -6,11 +6,11 @@ resources:
 results:
   - policy: restrict-node-selection
     rule: restrict-nodeselector
-    resource: myapp-pod
+    resource: myapp-pod-1
     status: fail
   - policy: restrict-node-selection
     rule: restrict-nodename
-    resource: myapp-pod1
+    resource: myapp-pod-2
     status: fail
   
   
