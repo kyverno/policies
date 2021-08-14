@@ -1,0 +1,10 @@
+name: restrict-ingress-classes
+policies:
+  -  restrict-ingress-classes.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-ingress-classes
+    rule: validate-ingress
+    resource: minimal-ingress
+    status: pass
