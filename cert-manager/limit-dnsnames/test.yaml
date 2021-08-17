@@ -8,4 +8,7 @@ results:
     rule: limit-dnsnames
     resource: letsencrypt-crt
     status: fail
-  
+  - policy: cert-manager-limit-dnsnames
+    rule: limit-dnsnames
+    resource: acme-crt
+    status: pass
