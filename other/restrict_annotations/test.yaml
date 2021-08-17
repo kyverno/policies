@@ -1,0 +1,15 @@
+name: restrict-annotations
+policies:
+  -  restrict_annotations.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-annotations
+    rule: block-flux-v1
+    resource: myapp-pod
+    status: fail
+  - policy: restrict-annotations
+    rule: block-flux-v1
+    resource: myapp-deploy
+    status: fail
+  
