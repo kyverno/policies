@@ -15,7 +15,7 @@ metadata:
       sample validates that container images only originate from the registry `eu.foo.io` or
       `bar.io`.
 spec:
-  background: false
+  background: true
   validationFailureAction: audit
   rules:
   - name: validate-registries
