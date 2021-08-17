@@ -1,0 +1,15 @@
+---
+name: pod-lifetime
+policies:
+  - enforce_pod_duration.yaml
+resources:
+  - resources.yaml
+results: 
+  - policy: pod-lifetime
+    rule: pods-lifetime
+    resource: test-lifetime-pass
+    status: pass
+  - policy: pod-lifetime
+    rule: pods-lifetime
+    resource: test-lifetime-fail
+    status: fail
