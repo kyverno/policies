@@ -21,11 +21,10 @@ spec:
       resources:
         kinds:
         - Certificate
-    preconditions:
-      any:
-      - key: "{{request.object.spec.dnsNames | length(@)}}"
-        operator: GreaterThan
-        value: "1"
     validate:
       message: Only one dnsNames entry allowed per certificate request.
-      deny: {}
+      deny:
+        conditions:
+        - key: "{{request.object.spec.dnsNames | length(@)}}"
+          operator: GreaterThan
+          value: "1"
