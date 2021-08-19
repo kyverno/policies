@@ -1,0 +1,18 @@
+name: require-image-checksum
+policies:
+  -  require_image_checksum.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: myapp-pod-1
+    kind: Pod
+    namespace: default
+    status: pass
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: myapp-pod-2
+    kind: Pod
+    namespace: default
+    status: fail
