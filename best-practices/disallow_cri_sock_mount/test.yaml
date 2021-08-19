@@ -12,3 +12,7 @@ results:
     rule: validate-containerd-sock-mount
     resource: pod-with-docker-sock-mount
     result: pass
+  - policy: disallow-container-sock-mounts
+    rule: validate-crio-sock-mount
+    resource: pod-with-docker-sock-mount
+    result: pass
