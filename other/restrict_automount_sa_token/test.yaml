@@ -1,0 +1,12 @@
+name: restrict-automount-sa-token
+policies:
+  -  restrict_automount_sa_token.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-automount-sa-token
+    rule: validate-automountServiceAccountToken
+    resource: myapp-pod
+    kind: Pod
+    namespace: default
+    status: pass
