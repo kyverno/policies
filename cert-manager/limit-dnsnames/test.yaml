@@ -1,0 +1,14 @@
+name: limit_dnsnames
+policies:
+  -  limit-dnsnames.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: cert-manager-limit-dnsnames
+    rule: limit-dnsnames
+    resource: letsencrypt-crt
+    result: fail
+  - policy: cert-manager-limit-dnsnames
+    rule: limit-dnsnames
+    resource: acme-crt
+    result: pass

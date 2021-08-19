@@ -1,0 +1,10 @@
+name: drop-cap-net-raw
+policies:
+  -  require_drop_cap_net_raw.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: drop-cap-net-raw
+    rule: drop-cap-net-raw
+    resource:  add-capabilities
+    result: fail
