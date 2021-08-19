@@ -1,0 +1,24 @@
+name: validate-userid-groupid-fsgroup
+policies:
+  -  restrict_usergroup_fsgroup_id.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: validate-userid-groupid-fsgroup
+    rule: validate-userid
+    resource: myapp-pod
+    kind: Pod
+    namespace: default
+    status: pass
+  - policy: validate-userid-groupid-fsgroup
+    rule: validate-groupid
+    resource: myapp-pod
+    kind: Pod
+    namespace: default
+    status: pass
+  - policy: validate-userid-groupid-fsgroup
+    rule: validate-fsgroup
+    resource: myapp-pod
+    kind: Pod
+    namespace: default
+    status: pass
