@@ -1,0 +1,38 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-node-selection
+  annotations:
+    policies.kyverno.io/title: Restrict node selection
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The Kubernetes scheduler uses complex logic to determine the optimal placement
+      for new Pods. Users who have access to set certain fields in a Pod spec
+      may sidestep this logic which in many cases is undesirable. This policy
+      prevents users from targeting specific Nodes for scheduling of Pods by
+      prohibiting the use of the `nodeSelector` and `nodeName` fields.     
+spec:
+  validationFailureAction: audit
+  background: false
+  rules:
+  - name: restrict-nodeselector
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: Setting the nodeSelector field is prohibited.
+      pattern:
+        spec:
+          X(nodeSelector): "null"
+  - name: restrict-nodename
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: Setting the nodeName field is prohibited.
+      pattern:
+        spec:
+          X(nodeName): "null"
