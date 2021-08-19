@@ -1,0 +1,13 @@
+name: add-labels
+policies:
+  - add_labels.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-labels
+    rule: add-labels
+    resource: myapp-pod
+    patchedResource: patch.yaml
+    kind: Pod
+    namespace: default
+    status: pass
