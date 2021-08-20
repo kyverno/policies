@@ -7,8 +7,8 @@ results:
   - policy: restrict-volume-types
     rule: restricted-vol-gcePersistentDisk
     resource: gce-pd
-    status: fail
+    result: fail
   - policy: restrict-volume-types
     rule: restricted-vol-awsElasticBlockStore
     resource: gce-pd
-    status: pass
+    result: pass
