@@ -7,4 +7,4 @@ results:
   - policy: restrict-sysctls
     rule: sysctls
     resource: nginx
-    status: pass
+    result: pass
