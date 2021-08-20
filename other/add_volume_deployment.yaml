@@ -13,7 +13,6 @@ metadata:
       Vault, adds a volume and volumeMount to a Deployment if there is an annotation called
       "vault.k8s.corp.net/inject=enabled" present.
 spec:
-  validationFailureAction: audit
   background: false
   rules:
   - name: add-volume

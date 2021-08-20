@@ -12,7 +12,6 @@ metadata:
       sets a Pod anti-affinity configuration on Deployments which contain an `app` label if it is
       not already present.
 spec:
-  validationFailureAction: audit
   background: false
   rules:
     - name: insert-pod-antiaffinity

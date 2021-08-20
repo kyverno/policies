@@ -14,7 +14,6 @@ metadata:
       imagePullPolicy to Always. An alternative to the Kubernetes admission controller
       AlwaysPullImages.
 spec:
-  validationFailureAction: audit
   background: false
   rules:
   - name: always-pull-images

@@ -13,7 +13,6 @@ metadata:
       It will add the `env` array if not present. If any Pods have any of these
       env vars, they will be overwritten with the value(s) in this policy.
 spec:
-  validationFailureAction: audit
   background: false
   rules:
   - name: add-pod-proxies

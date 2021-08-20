@@ -13,7 +13,6 @@ metadata:
       This policy injects a sidecar container, initContainer, and volume into Pods that match
       an annotation called `vault.hashicorp.com/agent-inject: true`.
 spec:
-  validationFailureAction: audit
   background: false
   rules:
   - name: inject-sidecar
