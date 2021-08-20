@@ -12,7 +12,6 @@ metadata:
       do not impact availability. This policy matches Deployments with the label
       `distributed=required` and mutates them to spread Pods across zones.
 spec:
-  background: false
   rules:
     - name: spread-pods-across-nodes
       # Matches any Deployment with the label `distributed=required`

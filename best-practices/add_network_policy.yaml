@@ -15,7 +15,6 @@ metadata:
       to application Pods from select sources. This policy will create a new NetworkPolicy resource
       named `default-deny` which will deny all traffic anytime a new Namespace is created.
 spec:
-  background: false
   rules:
   - name: default-deny
     match:
