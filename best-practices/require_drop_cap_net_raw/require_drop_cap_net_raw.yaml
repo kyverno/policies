@@ -15,6 +15,7 @@ metadata:
       ability.
 spec:
   validationFailureAction: audit
+  background: true
   rules:
   - name: drop-cap-net-raw
     match:

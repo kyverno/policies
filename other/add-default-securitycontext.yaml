@@ -12,6 +12,7 @@ metadata:
       such Pod definitions. This policy will mutate a Pod to set `runAsUser`, `runAsGroup`, and `fsGroup` fields
       within the Pod securityContext if they are not already set.
 spec:
+  validationFailureAction: audit
   background: false
   rules:
   - name: add-default-securitycontext

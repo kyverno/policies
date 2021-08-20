@@ -11,8 +11,8 @@ metadata:
       This policy ensures the `allowPrivilegeEscalation` fields are either undefined
       or set to `false`.
 spec:
-  background: true
   validationFailureAction: audit
+  background: true
   rules:
   - name: deny-privilege-escalation
     match:

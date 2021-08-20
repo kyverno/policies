@@ -5,7 +5,7 @@ metadata:
   namespace: default
   labels:
     app: myapp
-spec: 
+spec:
   containers:
   - name: nginx
     image: nginx

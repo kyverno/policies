@@ -24,7 +24,7 @@ spec:
     - name: podexeclabel
       apiCall:
         urlPath: "/api/v1/namespaces/{{request.namespace}}/pods/{{request.name}}"
-        jmesPath: "metadata.labels.exec"   
+        jmesPath: "metadata.labels.exec"
     preconditions:
     - key: "{{ request.operation }}"
       operator: Equals

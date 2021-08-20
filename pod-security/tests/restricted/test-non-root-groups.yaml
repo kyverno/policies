@@ -7,7 +7,7 @@ spec:
   securityContext:
     runAsNonRoot: true
     fsGroup: 0
-  containers: 
+  containers:
   - name: fs-group
     image: busybox
     command: ["sleep", "9999"]
@@ -21,7 +21,7 @@ spec:
     runAsNonRoot: true
     supplementalGroups:
     - 0
-  containers: 
+  containers:
   - name: supplemental-groups
     image: busybox
     command: ["sleep", "9999"]
@@ -34,7 +34,7 @@ spec:
   securityContext:
     runAsNonRoot: true
     runAsGroup: 0
-  containers: 
+  containers:
   - name: run-as-group
     image: busybox
     command: ["sleep", "9999"]
@@ -47,7 +47,7 @@ spec:
   securityContext:
     runAsNonRoot: true
     fsGroup: 0
-  containers: 
+  containers:
   - name: fs-group-ctnr
     image: busybox
     command: ["sleep", "9999"]
@@ -59,10 +59,9 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: run-as-group-ctnr
     image: busybox
     command: ["sleep", "9999"]
     securityContext:
       runAsGroup: 0
-

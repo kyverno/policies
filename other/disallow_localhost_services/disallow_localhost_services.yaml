@@ -13,6 +13,7 @@ metadata:
       if the externalName field refers to localhost.
 spec:
   validationFailureAction: audit
+  background: true
   rules:
   - name: no-localhost-service
     match:

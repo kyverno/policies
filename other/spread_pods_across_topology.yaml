@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: spread-pods
   annotations:
-    policies.kyverno.io/title: Spread Pods Across Nodes 
+    policies.kyverno.io/title: Spread Pods Across Nodes
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Deployment, Pod
     policies.kyverno.io/description: >-
@@ -12,6 +12,8 @@ metadata:
       do not impact availability. This policy matches Deployments with the label
       `distributed=required` and mutates them to spread Pods across zones.
 spec:
+  validationFailureAction: audit
+  background: false
   rules:
     - name: spread-pods-across-nodes
       # Matches any Deployment with the label `distributed=required`
