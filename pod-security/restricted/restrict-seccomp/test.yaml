@@ -5,16 +5,54 @@ resources:
   -  resource.yaml
 results:
   - policy:  restrict-seccomp
-    rule: seccomp
-    resource:  seccomp-pod
-    result: fail
+    rule: restrict-seccomp
+    resource: seccomp-pod-spec-undefined
+    status: fail
   - policy:  restrict-seccomp
-    rule: seccomp
-    resource: seccomp-ctnr
-    result: pass
+    rule: restrict-seccomp
+    resource: seccomp-pod-spec-unconfined
+    status: fail
   - policy:  restrict-seccomp
-    rule: seccomp
-    resource: seccomp-init-ctnr
-    result: pass
-
-
+    rule: restrict-seccomp
+    resource: seccomp-pod-cont1-unconfined
+    status: fail
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-pod-cont2-inconsistent
+    status: fail
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-pod-cont2-inconsistent1
+    status: fail
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp-initcontainers
+    resource: seccomp-pod-initcont-undefined
+    status: fail
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp-initcontainers
+    resource: seccomp-pod-initcont-unconfined
+    status: fail
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-good-pod
+    status: pass
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-good-pod-localhost
+    status: pass
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-good-pod-cont1-runtimedefault
+    status: pass
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp
+    resource: seccomp-good-pod-cont2-runtimedefault
+    status: pass
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp-initcontainers
+    resource: seccomp-good-pod-initcont
+    status: pass
+  - policy:  restrict-seccomp
+    rule: restrict-seccomp-initcontainers
+    resource: seccomp-good-pod-initcont1
+    status: pass
