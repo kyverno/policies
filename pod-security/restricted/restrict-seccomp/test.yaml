@@ -7,52 +7,52 @@ results:
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-spec-undefined
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-spec-unconfined
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont1-unconfined
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont2-inconsistent
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont2-inconsistent1
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-pod-initcont-undefined
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-pod-initcont-unconfined
-    result: fail
+    status: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod
-    result: pass
+    status: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-localhost
-    result: pass
+    status: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-cont1-runtimedefault
-    result: pass
+    status: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-cont2-runtimedefault
-    result: pass
+    status: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-good-pod-initcont
-    result: pass
+    status: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-good-pod-initcont1
-    result: pass
+    status: pass
