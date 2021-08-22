@@ -6,13 +6,25 @@ resources:
 results:
   - policy: restrict-controlplane-scheduling
     rule: restrict-controlplane-scheduling-master
-    resource: myapp-pod
+    resource: myapp-pod-1
     kind: Pod
     namespace: default
     result: fail
   - policy: restrict-controlplane-scheduling
     rule: restrict-controlplane-scheduling-control-plane
-    resource: myapp-pod
+    resource: myapp-pod-2
+    kind: Pod
+    namespace: default
+    result: fail
+  - policy: restrict-controlplane-scheduling
+    rule: restrict-controlplane-scheduling-master
+    resource: myapp-pod-2
+    kind: Pod
+    namespace: default
+    result: pass
+  - policy: restrict-controlplane-scheduling
+    rule: restrict-controlplane-scheduling-control-plane
+    resource: myapp-pod-1
     kind: Pod
     namespace: default
     result: pass
