@@ -10,4 +10,4 @@ results:
     patchedResource: patchedResource.yaml
     kind: Pod
     namespace: default
-    status: pass
+    result: pass
