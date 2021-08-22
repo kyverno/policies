@@ -9,16 +9,16 @@ results:
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: pass
+    result: pass
   - policy: validate-userid-groupid-fsgroup
     rule: validate-groupid
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: pass
+    result: pass
   - policy: validate-userid-groupid-fsgroup
     rule: validate-fsgroup
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: pass
+    result: pass

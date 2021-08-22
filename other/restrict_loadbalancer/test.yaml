@@ -9,11 +9,11 @@ results:
     resource: my-service-1
     kind: Service
     namespace: default
-    status: fail
+    result: fail
   - policy: no-loadbalancer-service
     rule: no-LoadBalancer
     resource: my-service-2
     kind: Service
     namespace: default
-    status: pass
+    result: pass
   

@@ -9,10 +9,10 @@ results:
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: fail
+    result: fail
   - policy: restrict-controlplane-scheduling
     rule: restrict-controlplane-scheduling-control-plane
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: pass
+    result: pass

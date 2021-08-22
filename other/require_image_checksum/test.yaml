@@ -9,10 +9,10 @@ results:
     resource: myapp-pod-1
     kind: Pod
     namespace: default
-    status: pass
+    result: pass
   - policy: require-image-checksum
     rule: require-image-checksum
     resource: myapp-pod-2
     kind: Pod
     namespace: default
-    status: fail
+    result: fail

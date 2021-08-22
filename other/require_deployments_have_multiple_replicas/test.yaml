@@ -9,4 +9,4 @@ results:
     resource: myapp-deployment
     kind: Pod
     namespace: default
-    status: pass
+    result: pass

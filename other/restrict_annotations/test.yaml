@@ -9,10 +9,10 @@ results:
     resource: myapp-pod
     kind: Pod
     namespace: default
-    status: fail
+    result: fail
   - policy: restrict-annotations
     rule: block-flux-v1
     resource: myapp-deploy
     kind: Deployment
     namespace: default
-    status: fail
+    result: fail
