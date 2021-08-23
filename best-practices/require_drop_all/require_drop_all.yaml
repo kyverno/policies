@@ -21,7 +21,9 @@ spec:
         kinds:
         - Pod
     validate:
-      message: "All capabilities should be dropped with only those required added back."
+      message: >-
+        All capabilities should be dropped with only those required added back. Drop `ALL` must be
+        specified in all caps.
       pattern:
         spec:
           containers:
