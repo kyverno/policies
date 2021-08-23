@@ -1,0 +1,14 @@
+name: restrict-issuer
+policies:
+  -  restrict-issuer.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: cert-manager-restrict-issuer
+    rule: restrict-corp-cert-issuer
+    resource: letsencrypt-crt
+    result: pass
+  - policy: cert-manager-restrict-issuer
+    rule: restrict-corp-cert-issuer
+    resource: acme-crt
+    result: fail

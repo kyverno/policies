@@ -7,4 +7,4 @@ results:
   - policy: require-pod-probes
     rule: validate-livenessProbe-readinessProbe
     resource: myapp-pod
-    status: fail
+    result: fail
