@@ -35,9 +35,6 @@ spec:
         - key: "{{ request.object.spec.rules[].host }}"
           operator: In
           value: "{{ hosts }}"
-        - key: "{{ request.object.spec.rules[].host }}"
-          operator: NotIn
-          value: "{{ hosts }}"
       validate:
         message: "The Ingress host name must be unique."
         deny: {}
