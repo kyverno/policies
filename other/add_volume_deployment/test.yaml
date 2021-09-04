@@ -9,4 +9,4 @@ results:
     resource: mydeploy
     patchedResource: patchedResource.yaml
     kind: Deployment
-    status: pass
+    result: pass
