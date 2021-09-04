@@ -1,0 +1,30 @@
+name: inject-sidecar
+policies:
+  - inject_sidecar_deployment.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: inject-sidecar
+    rule: inject-sidecar
+    resource: mydeploy-1
+    patchedResource: patchedResource1.yaml
+    kind: Deployment
+    status: pass
+  - policy: inject-sidecar
+    rule: inject-sidecar
+    resource: mydeploy-2
+    patchedResource: patchedResource2.yaml
+    kind: Deployment
+    status: pass
+  - policy: inject-sidecar-1
+    rule: inject-sidecar
+    resource: mydeploy-1
+    patchedResource: patchedResource1.yaml
+    kind: Deployment
+    status: pass
+  - policy: inject-sidecar-1
+    rule: inject-sidecar
+    resource: mydeploy-2
+    patchedResource: patchedResource2.yaml
+    kind: Deployment
+    status: skip
