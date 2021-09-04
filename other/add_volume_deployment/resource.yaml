@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: mydeploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+      annotations: 
+        vault.k8s.corp.net/inject: enabled
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
