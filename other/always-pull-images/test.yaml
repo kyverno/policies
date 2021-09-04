@@ -1,0 +1,12 @@
+name: always-pull-images
+policies:
+  - always-pull-images.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: always-pull-images
+    rule: always-pull-images
+    resource: myapp-pod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    result: pass
