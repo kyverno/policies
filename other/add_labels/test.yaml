@@ -11,3 +11,10 @@ results:
     kind: Pod
     namespace: default
     result: pass
+  - policy: add-labels
+    rule: add-labels
+    resource: my-service
+    patchedResource: patchedResource1.yaml
+    kind: Service
+    namespace: default
+    result: pass
