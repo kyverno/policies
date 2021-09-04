@@ -6,3 +6,17 @@ spec:
   containers:
   - name: nginx
     image: nginx:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+spec:
+  type: NodePort
+  selector:
+    app: MyApp
+  ports:
+  - port: 80
+    targetPort: 80
+    protocol: TCP
