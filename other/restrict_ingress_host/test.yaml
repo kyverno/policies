@@ -1,0 +1,17 @@
+name: unique-ingress-host
+policies:
+  - restrict_ingress_host.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: unique-ingress-host
+    rule: check-host
+    resource: ingress-kyverno-host
+    kind: Ingress
+    result: fail
+  - policy: unique-ingress-host
+    rule: check-host
+    resource: ingress-foo-host
+    kind: Ingress
+    result: pass
