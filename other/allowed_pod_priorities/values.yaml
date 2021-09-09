@@ -1,0 +1,16 @@
+policies:
+  - name: allowed-podpriorities
+    rules:
+      - name: validate-pod-priority-pods
+        values:
+          podprioritydict.data.default: "[\"high-priority\", \"moderate-priority\", \"low-priority\"]"
+
+      - name: validate-pod-priority
+        values:
+          podprioritydict.data.default: "[\"high-priority\", \"moderate-priority\", \"low-priority\"]"
+
+      - name: validate-pod-priority-cronjob
+        values:
+          podprioritydict.data.production: "[\"high-priority\", \"moderate-priority\", \"low-priority\"]"
+
+          
