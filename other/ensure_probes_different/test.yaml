@@ -1,0 +1,16 @@
+name: validate-probes
+policies:
+  - ensure_probes_different.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: validate-probes
+    rule: validate-probes
+    resource: mydeploy-1
+    kind: Deployment
+    result: pass
+  - policy: validate-probes
+    rule: validate-probes
+    resource: mydeploy-2
+    kind: Deployment
+    result: fail
