@@ -1,0 +1,67 @@
+# "Liveness and readiness probes are not same."
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: mydeploy-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      name: goproxy
+      labels:
+        app: goproxy
+    spec:
+      containers:
+      - name: goproxy
+        image: k8s.gcr.io/goproxy:0.1
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 20
+
+---
+# "Liveness and readiness probes are same."
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+  name: mydeploy-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      name: goproxy
+      labels:
+        app: goproxy
+    spec:
+      containers:
+      - name: goproxy
+        image: k8s.gcr.io/goproxy:0.1
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 10
+
