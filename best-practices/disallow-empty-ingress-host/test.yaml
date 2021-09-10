@@ -11,4 +11,4 @@ results:
   - policy: disallow-empty-ingress-host
     rule: disallow-empty-ingress-host
     resource: minimal-ingress
-    result: pass
+    result: fail
