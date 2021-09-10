@@ -1,0 +1,14 @@
+name: disallow_empty_ingress_host
+policies:
+  -  disallow_empty_ingress_host.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: disallow-empty-ingress-host
+    rule: disallow-empty-ingress-host
+    resource: ingress-wildcard-host
+    result: pass
+  - policy: disallow-empty-ingress-host
+    rule: disallow-empty-ingress-host
+    resource: minimal-ingress
+    result: pass
