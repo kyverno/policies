@@ -32,6 +32,8 @@ spec:
     metadata:
       labels:
         app: myapp
+      annotations:
+        vault.hashicorp.com/agent-inject: "false" 
     spec:
       containers:
       - image: nginx:latest

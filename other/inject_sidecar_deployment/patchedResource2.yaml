@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: myapp
+      annotations:
+        vault.hashicorp.com/agent-inject: "false" 
     spec:
       containers:
       - image: vault:1.5.4
