@@ -7,6 +7,6 @@ results:
   - policy: deployment-has-multiple-replicas
     rule: deployment-has-multiple-replicas
     resource: myapp-deployment
-    kind: Pod
+    kind: Deployment
     namespace: default
     result: pass
