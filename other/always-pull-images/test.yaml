@@ -6,7 +6,13 @@ resources:
 results:
   - policy: always-pull-images
     rule: always-pull-images
-    resource: myapp-pod
-    patchedResource: patchedResource.yaml
+    resource: myapp-pod-1
+    patchedResource: patchedResource1.yaml
     kind: Pod
     result: pass
+  - policy: always-pull-images
+    rule: always-pull-images
+    resource: myapp-pod-2
+    patchedResource: patchedResource2.yaml
+    kind: Pod
+    result: skip

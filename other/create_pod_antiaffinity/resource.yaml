@@ -15,4 +15,15 @@ spec:
       containers:
       - image: nginx:latest
         name: nginx
-      
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
