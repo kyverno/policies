@@ -7,10 +7,12 @@ results:
   - policy:  require-run-as-non-root
     rule: check-containers
     resource:  nonroot-pod
+    kind: Pod
     result: fail
   - policy:  require-run-as-non-root
     rule: check-containers
     resource: root-pod
+    kind: Pod
     result: fail
 
 

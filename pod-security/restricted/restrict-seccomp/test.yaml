@@ -7,14 +7,17 @@ results:
   - policy:  restrict-seccomp
     rule: seccomp
     resource:  seccomp-pod
+    kind: Pod
     result: fail
   - policy:  restrict-seccomp
     rule: seccomp
     resource: seccomp-ctnr
+    kind: Pod
     result: pass
   - policy:  restrict-seccomp
     rule: seccomp
     resource: seccomp-init-ctnr
+    kind: Pod
     result: pass
 
 

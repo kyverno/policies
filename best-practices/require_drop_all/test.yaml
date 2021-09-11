@@ -7,4 +7,5 @@ results:
   - policy: drop-all-capabilities
     rule: check-containers
     resource:  add-capabilities
+    kind: Pod
     result: fail
