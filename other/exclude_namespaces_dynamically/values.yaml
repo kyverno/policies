@@ -1,7 +1,0 @@
-policies:
-  - name: exclude-namespaces-example
-    rules:
-      - name: exclude-namespaces-dynamically
-        values:
-          namespacefilters.data.exclude: "[\"cluster-admin\", \"cluster-operator\", \"tenant-admin\"]"
-        

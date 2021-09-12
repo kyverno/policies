@@ -8,11 +8,19 @@ results:
     rule: imagepullpolicy-always
     resource: myapp-pod-1
     kind: Pod
-    namespace: default
     result: pass
   - policy: imagepullpolicy-always
     rule: imagepullpolicy-always
     resource: myapp-pod-2
     kind: Pod
-    namespace: default
     result: fail
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: mydeploy1
+    kind: Deployment
+    result: fail
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: mydeploy2
+    kind: Deployment
+    result: pass

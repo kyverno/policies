@@ -6,7 +6,11 @@ resources:
 results:
   - policy: deployment-has-multiple-replicas
     rule: deployment-has-multiple-replicas
-    resource: myapp-deployment
+    resource: mydeploy
     kind: Deployment
-    namespace: default
     result: pass
+  - policy: deployment-has-multiple-replicas
+    rule: deployment-has-multiple-replicas
+    resource: myapp-pod
+    kind: Pod
+    result: skip

@@ -12,13 +12,12 @@ spec:
     name: myapp-pod
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: myapp-deploy
-  name: myapp-deploy
+    app: myapp
+  name: mydeploy
   annotations:
     fluxcd.io/title: Annotation for deployment
 spec:
@@ -33,3 +32,20 @@ spec:
       containers:
       - image: nginx
         name: nginx
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+  annotations:
+    gauss.io/title: Annotation for CronJob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox

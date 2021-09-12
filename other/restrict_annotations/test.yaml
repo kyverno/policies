@@ -8,11 +8,14 @@ results:
     rule: block-flux-v1
     resource: myapp-pod
     kind: Pod
-    namespace: default
     result: fail
   - policy: restrict-annotations
     rule: block-flux-v1
-    resource: myapp-deploy
+    resource: mydeploy
     kind: Deployment
-    namespace: default
     result: fail
+  - policy: restrict-annotations
+    rule: block-flux-v1
+    resource: hello
+    kind: CronJob
+    result: pass

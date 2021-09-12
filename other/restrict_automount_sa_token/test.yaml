@@ -8,5 +8,9 @@ results:
     rule: validate-automountServiceAccountToken
     resource: myapp-pod
     kind: Pod
-    namespace: default
     result: pass
+  - policy: restrict-automount-sa-token
+    rule: validate-automountServiceAccountToken
+    resource: mydeploy
+    kind: Deployment
+    result: fail

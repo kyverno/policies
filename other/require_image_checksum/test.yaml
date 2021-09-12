@@ -8,11 +8,19 @@ results:
     rule: require-image-checksum
     resource: myapp-pod-1
     kind: Pod
-    namespace: default
     result: pass
   - policy: require-image-checksum
     rule: require-image-checksum
     resource: myapp-pod-2
     kind: Pod
-    namespace: default
+    result: fail
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: mydeploy
+    kind: Deployment
+    result: pass
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: hello
+    kind: CronJob
     result: fail
