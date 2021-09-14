@@ -7,4 +7,5 @@ results:
   - policy:  disallow-host-path
     rule: host-path
     resource:  host-path
-    status: fail
+    kind: Pod
+    result: fail

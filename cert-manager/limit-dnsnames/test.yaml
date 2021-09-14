@@ -7,8 +7,10 @@ results:
   - policy: cert-manager-limit-dnsnames
     rule: limit-dnsnames
     resource: letsencrypt-crt
-    status: fail
+    kind: Certificate
+    result: fail
   - policy: cert-manager-limit-dnsnames
     rule: limit-dnsnames
     resource: acme-crt
-    status: pass
+    kind: Certificate
+    result: pass

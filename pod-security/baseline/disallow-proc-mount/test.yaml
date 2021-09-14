@@ -7,4 +7,5 @@ results:
   - policy: require-default-proc-mount
     rule: check-proc-mount
     resource: nginx-proc-mount
-    status: pass
+    kind: Pod
+    result: pass

@@ -7,4 +7,5 @@ results:
   - policy: disallow-add-capabilities
     rule: capabilities
     resource: add-new-capabilities
-    status: fail
+    kind: Pod
+    result: fail

@@ -7,4 +7,5 @@ results:
   - policy: disallow-helm-tiller
     rule: validate-helm-tiller
     resource: pod-helm-tiller
-    status: fail
+    kind: Pod
+    result: fail
