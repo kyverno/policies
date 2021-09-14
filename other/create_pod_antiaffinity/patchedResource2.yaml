@@ -3,20 +3,8 @@ kind: Pod
 metadata:
   name: myapp-pod
   labels:
-    foo: bar
+    app: myapp
 spec:
   containers:
   - name: nginx
     image: nginx:latest
-  affinity:
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - weight: 1
-          podAffinityTerm:
-            topologyKey: "kubernetes.io/hostname"
-            labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - myapp

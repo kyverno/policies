@@ -6,5 +6,3 @@ spec:
   containers:
   - name: nginx
     image: nginx:latest
-  imagePullSecrets:
-  - name: my-secret

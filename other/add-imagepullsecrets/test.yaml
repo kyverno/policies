@@ -21,4 +21,4 @@ results:
     resource: myapp-pod-3
     patchedResource: patchedResource3.yaml
     kind: Pod
-    result: pass
+    result: skip
