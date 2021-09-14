@@ -7,4 +7,5 @@ results:
   - policy: require-ro-rootfs
     rule: validate-readOnlyRootFilesystem
     resource: ghost-with-readonly-rootfilesystem
+    kind: Pod
     result: fail

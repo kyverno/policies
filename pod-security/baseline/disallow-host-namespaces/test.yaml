@@ -7,8 +7,10 @@ results:
   - policy:  disallow-host-namespaces
     rule:  host-namespaces
     resource: host-namespaces-net
+    kind: Pod
     result: fail
   - policy:  disallow-host-namespaces
     rule:  host-namespaces
     resource: host-namespaces-pid
+    kind: Pod
     result: fail

@@ -7,4 +7,5 @@ results:
   - policy: restrict-apparmor-profiles
     rule: app-armor
     resource: apparmor
+    kind: Pod
     result: fail
