@@ -7,4 +7,5 @@ results:
   - policy: restrict-external-ips
     rule: check-ips
     resource: my-service
-    status: pass
+    kind: Service
+    result: pass

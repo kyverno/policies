@@ -7,9 +7,10 @@ results:
   - policy: no-localhost-service
     rule: no-localhost-service
     resource: my-service
-    status: fail
+    kind: Service
+    result: fail
   - policy: no-localhost-service
     rule: no-localhost-service
     resource: my-np-service
-    status: pass
-  
+    kind: Service
+    result: pass

@@ -7,8 +7,10 @@ results:
   - policy: restrict-volume-types
     rule: restricted-vol-gcePersistentDisk
     resource: gce-pd
-    status: fail
+    kind: Pod
+    result: fail
   - policy: restrict-volume-types
     rule: restricted-vol-awsElasticBlockStore
     resource: gce-pd
-    status: pass
+    kind: Pod
+    result: pass

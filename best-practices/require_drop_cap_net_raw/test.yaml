@@ -7,4 +7,5 @@ results:
   - policy: drop-cap-net-raw
     rule: drop-cap-net-raw
     resource:  add-capabilities
-    status: fail
+    kind: Pod
+    result: fail
