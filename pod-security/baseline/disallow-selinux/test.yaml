@@ -7,4 +7,5 @@ results:
   - policy: disallow-selinux
     rule: seLinux
     resource: busybox-selinux
+    kind: Pod
     result: fail
