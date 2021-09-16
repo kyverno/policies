@@ -7,4 +7,5 @@ results:
   - policy: restrict-nodeport
     rule: validate-nodeport
     resource: my-service
+    kind: Service
     result: fail

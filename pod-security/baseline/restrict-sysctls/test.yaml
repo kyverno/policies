@@ -7,4 +7,5 @@ results:
   - policy: restrict-sysctls
     rule: sysctls
     resource: nginx
+    kind: Pod
     result: pass

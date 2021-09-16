@@ -7,8 +7,10 @@ results:
   - policy: cert-manager-restrict-issuer
     rule: restrict-corp-cert-issuer
     resource: letsencrypt-crt
+    kind: Certificate
     result: pass
   - policy: cert-manager-restrict-issuer
     rule: restrict-corp-cert-issuer
     resource: acme-crt
+    kind: Certificate
     result: fail

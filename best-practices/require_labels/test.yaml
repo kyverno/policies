@@ -7,4 +7,5 @@ results:
   - policy: require-labels
     rule: check-for-labels
     resource: myapp-pod
+    kind: Pod
     result: fail
