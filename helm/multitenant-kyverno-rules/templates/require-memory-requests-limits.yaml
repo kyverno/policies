@@ -1,0 +1,51 @@
+{{ if .Values.active_rules.require_memory_requests_equal_limits  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-require-requests-limits
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+  annotations:
+    policies.kyverno.io/title: Require Limits and Requests 
+    policies.kyverno.io/category: Multi-Tenancy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      As application workloads share cluster resources, it is important to limit resources 
+      requested and consumed by each Pod. It is recommended to require resource requests and
+      limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, 
+      defaults will automatically be applied to each Pod based on the LimitRange configuration.
+      This policy validates that all containers have something specified for memory and CPU
+      requests and memory limits.      
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: validate-resources
+    match:
+      resources:
+        kinds:
+        - Pod
+        namespaceSelector:
+          matchExpressions:
+          - key: {{ .Values.policy_namespace }}.io/type
+            operator: NotIn
+            values: [ephemeral, system]
+    exclude:
+      resources:
+        {{- with .Values.excluded_namespaces  }}
+        namespaces:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+    validate:
+      message: "CPU and memory resource requests and limits are required."
+      pattern:
+        spec:
+          containers:
+          - resources:
+              requests:
+                memory: "?*"
+                cpu: "?*"
+              limits:
+                memory: "?*"
+{{ end }}

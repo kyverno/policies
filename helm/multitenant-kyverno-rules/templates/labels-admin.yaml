@@ -1,0 +1,37 @@
+{{ if .Values.active_rules.labels_admin  }}
+{{- $top := . -}}
+{{- $resource_kinds := .Values.label_and_annotate_resource_kinds -}}
+{{- $excluded_namespaces := .Values.excluded_namespaces -}}
+{{- $policy_namespace := .Values.policy_namespace -}}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  labels:
+    {{ $policy_namespace }}.io/origin: {{ $policy_namespace }}
+  name: {{ $policy_namespace }}-admin-require-labels-or-{{ $policy_namespace }}.io-type
+spec:
+  background: false
+  rules:
+{{- range $label := .Values.label_validations }}
+  - name: check-for-{{ $label.name }}
+    match:
+      resources:
+          kinds:
+          - Namespace
+          selector:
+            matchExpressions:
+              - {key: {{ $policy_namespace }}.io/type, operator: NotIn, values: [ephemeral, system]}
+      clusterRoles:
+        - cluster-admin
+        - admin
+        - jenkins-ci
+        - operator
+    validate:
+      message: "label `{{ $label.label }}` is required matching `{{ $label.match }}` https://kyverno.io/docs/writing-policies/validate/#wildcards -- {{ $label.description }}"
+      pattern:
+        metadata:
+          labels:
+            {{ $label.label }}: "{{ $label.match }}"
+  {{- end }}
+  validationFailureAction: enforce
+{{ end }}

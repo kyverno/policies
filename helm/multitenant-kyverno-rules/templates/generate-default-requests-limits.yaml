@@ -1,0 +1,41 @@
+{{ if .Values.active_rules.generate_default_reuests_limits  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-generate-ns-quota
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+  annotations:
+    policies.kyverno.io/title: Add Quota
+    policies.kyverno.io/category: Multi-Tenancy
+    policies.kyverno.io/subject: ResourceQuota, LimitRange
+    policies.kyverno.io/description: >-
+      To better control the number of resources that can be created in a given 
+      Namespace and provide default resource consumption limits for Pods,
+      ResourceQuota and LimitRange resources are recommended.
+      This policy will generate ResourceQuota and LimitRange resources when
+      a new Namespace is created.      
+spec:
+  background: false
+  rules:
+  - name: generate-resourcequota
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+            matchExpressions:
+              - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [ephemeral, system]}
+    generate:
+      kind: ResourceQuota
+      name: default-resourcequota
+      synchronize: true
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:
+        spec:
+          hard:
+            requests.cpu: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/requests-cpu\", '1000m') {{ "}}" }}"
+            requests.memory: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/requests-memory\", '1Gi') {{ "}}" }}"
+            limits.cpu: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/limits-cpu\", request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/requests-cpu\", '1000m') {{ "}}" }}"
+            limits.memory: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/limits-memory\", request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/requests-memory\", '1Gi') {{ "}}" }}"
+{{ end }}

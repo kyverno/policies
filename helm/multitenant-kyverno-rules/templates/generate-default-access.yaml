@@ -1,0 +1,63 @@
+{{ if .Values.active_rules.generate_default_access  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-generate-default-access
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+  annotations:
+    policies.kyverno.io/title: Add access policies
+    policies.kyverno.io/category: Multi-Tenancy
+    policies.kyverno.io/subject: RoleBinding
+    policies.kyverno.io/description: >-
+      Some sort of access control is inevitable in a multi-tenant environment.
+      This policy will generate administrator and read-only RoleBindings for 
+      when a new Namespace is created.      
+spec:
+  background: false
+  rules:
+  - name: generate-rolebinding-admin
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+            matchExpressions:
+              - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [ephemeral, system]}
+    generate:
+      kind: RoleBinding
+      name: default-rolebinding-admin
+      synchronize: true
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:
+        subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/admin-kind\", 'Group') {{ "}}" }}"
+          name: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/admin-name\", request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/admin-group\", '{{ .Values.default_admin_group  }}') {{ "}}" }}"
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/admin-role\", '{{ .Values.default_admin_role  }}') {{ "}}" }}"
+  - name: generate-rolebinding-readonly
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+            matchExpressions:
+              - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [ephemeral, system]}
+    generate:
+      kind: RoleBinding
+      name: default-rolebinding-readonly
+      synchronize: true
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:
+        subjects:
+        - apiGroup: rbac.authorization.k8s.io
+          kind: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/readonly-kind\", 'Group') {{ "}}" }}"
+          name: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/readonly-name\", request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/readonly-group\", '{{ .Values.default_readonly_group  }}') {{ "}}" }}"
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: "{{ "{{" }} not_null(request.object.metadata.annotations.\"{{ .Values.policy_namespace }}.io/readonly-role\", '{{ .Values.default_readonly_role  }}') {{ "}}" }}"
+{{ end }}
