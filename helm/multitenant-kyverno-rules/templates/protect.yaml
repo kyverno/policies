@@ -1,0 +1,51 @@
+{{ if .Values.active_rules.protect  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-block-updates-deletes-for-protected-network
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+  annotations:
+    policies.kyverno.io/title: Block Updates and Deletes
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: NetworkPolicy
+    policies.kyverno.io/description: >-
+      Kubernetes RBAC allows for controls on kinds of resources or those
+      with specific names. But it does not have the type of granularity often
+      required in more complex environments. This policy restricts updates and deletes to any
+      NetworkPolicy resource that contains the label `protected=true` unless by
+      a cluster-admin.      
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: block-updates-deletes
+    exclude:
+      any:
+      - clusterRoles:
+        - cluster-admin
+        - admin
+        - operator
+    match:
+      any:
+      - resources:
+          kinds:
+          - NetworkPolicy
+          selector:
+            matchLabels:
+              {{ .Values.policy_namespace }}.io/protected: "true"
+      - resources:
+          kinds:
+          - NetworkPolicy
+          names:
+          - "default-deny*"
+    validate:
+      message: "This resource is protected and changes are not allowed. Please seek a cluster-admin."
+      deny:
+        conditions:
+          - key: "{{ "{{" }} request.operation {{ "}}" }}"
+            operator: In
+            value: 
+            - DELETE
+            - UPDATE
+{{ end }}

@@ -1,0 +1,35 @@
+{{ if .Values.active_rules.certificate_expiry_max_100days  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-certificate-expiry-max-100days 
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/title: Certificate max expiry is 100 days
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Certificate
+    policies.kyverno.io/minversion: 1.3.6
+    policies.kyverno.io/description: k8s managed non letsencrypt certificates have to be renewed in every 100day
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: certificate-expiry-max-100days 
+    match:
+      resources:
+        kinds:
+        - Certificate
+    preconditions:
+      - key: "{{ "{{" }} contains(request.object.spec.issuerRef.name, 'letsencrypt') {{ "}}" }}"
+        operator: Equals
+        value: False
+    validate:
+      message: "certificate duration must be < than 2400h (100 days)"
+      deny:
+        conditions:
+        - key: "{{ "{{" }}  max( [ to_number(regex_replace_all('h.*',request.object.spec.duration,'')), to_number('2400') ] ) {{ "}}" }}"
+          operator: NotEquals
+          value: 2400
+{{ end }}

@@ -1,0 +1,78 @@
+# Default values for {{ .Values.policy_namespace }}-kyverno-rules.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# list dictionaries defining which rules should be deployed
+
+active_rules:
+  annotations_admin: y
+  annotations: y
+  certificate_expiry_max_100days: y
+  cert_manager_limit_dnsnames: y
+  disallow_infra_services: y
+  disallow_privileged_containers: y
+  generate_default_access: y
+  generate_default_network_policies: y
+  generate_default_reuests_limits: y
+  labels_admin: y
+  labels: y
+  protect: y
+  require_memory_requests_equal_limits: y
+  require_memory_requests_limits: y
+
+# rules custom labels will be in the {{policy_namespace}}.io namespace
+
+policy_namespace: myns
+
+# some of the rules support namespace based exclusion, configure them here
+
+excluded_namespaces:
+- kube-system
+- default
+
+# list of resources that should be labeled and annotated as per rules
+
+label_and_annotate_resource_kinds:
+- Namespace
+
+# list of labels that have to be applied on the above specified resources
+
+label_validations:
+- name: contact-productowner
+  label: contact.productowner
+  match: "?*_at_mydomain.com"
+  description: mail contact of the Product Owner
+- name: contact-deployment
+  label: contact.deployment
+  match: "?*_at_mydomain.com"
+  description: mail contact of the colleague who was creating, initiating or changing a resource within Kubernetes
+- name: contact-team
+  label: contact.team
+  match: "?*_at_mydomain.com"
+  description: mail contact of the team which is responsible for the (Micro-)service consisting of the Kubernetes resources
+- name: environment-type
+  label: environment.type
+  match: "?*"
+  description: environment type which describes for whether this is a non productive or a productive micro-service.
+- name: microservice-localmarket
+  label: microservice.localmarket
+  match: "?*"
+  description: local market defines the market a microservice is operating in (specify Group for Mydomain Group services)
+
+# list of annotations that have to be applied on the above specified resources
+
+annotation_validations:  
+- name: contact-support
+  label: contact.support
+  match: "?*"
+  description: phone number of the team which is reachable for the case the service is not operating as expected
+- name: microservice-documentation
+  label: microservice.documentation
+  match: "?*"
+  description: the documentation link leads to the High-level Design of the service and is the central landing page for gathering all other detailed information about this microservice
+
+# default roles for namespace rolebinding generations
+
+default_admin_role: namespace-admin
+default_readonly_role: namespace-readonly

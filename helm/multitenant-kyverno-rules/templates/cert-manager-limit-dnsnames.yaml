@@ -1,0 +1,34 @@
+{{ if .Values.active_rules.cert_manager_limit_dnsnames  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-cert-manager-limit-dnsnames
+  annotations:
+    policies.kyverno.io/title: Limit dnsNames
+    policies.kyverno.io/category: Cert-Manager
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.3.6
+    policies.kyverno.io/subject: Certificate
+    policies.kyverno.io/description: >-
+      Some applications will not accept certificates containing more than a single name.
+      This policy ensures that each certificate request contains
+      only one DNS name entry.
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}      
+spec:
+  validationFailureAction: audit
+  background: false
+  rules:
+  - name: limit-dnsnames
+    match:
+      resources:
+        kinds:
+        - Certificate
+    preconditions:
+       - key: "{{ "{{" }} request.object.spec.dnsNames | length(@) {{ "}}" }}"
+         operator: NotEquals
+         value: "1"
+    validate:
+      message: Only one dnsNames entry allowed per certificate request.
+      deny: {}
+{{ end }}

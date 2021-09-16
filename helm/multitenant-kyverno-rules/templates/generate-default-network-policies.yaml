@@ -1,0 +1,133 @@
+{{ if .Values.active_rules.generate_default_network_policies  }}
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-generate-net-default-deny-egress
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+spec:
+  rules:
+  - name: default-deny-egress
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+          matchExpressions:
+            - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [system]}
+    exclude:
+      resources:
+        {{- with .Values.excluded_namespaces }}
+        namespaces:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+    generate:
+      kind: NetworkPolicy
+      name: default-deny-egress
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:  
+        metadata:
+          labels:
+            {{ .Values.policy_namespace }}.io/protected: "true"
+            {{ .Values.policy_namespace }}.io/kyverno-generated: "true"
+        spec:
+          egress:
+          - ports:
+            - port: 53
+              protocol: TCP
+            - port: 53
+              protocol: UDP
+            - port: 1053
+              protocol: TCP
+            - port: 1053
+              protocol: UDP
+          podSelector: {}
+          policyTypes:
+          - Egress
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-generate-net-default-deny-ingress
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+spec:
+  rules:
+  - name: default-deny-ingress
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+          matchExpressions:
+            - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [system]}
+    exclude:
+      resources:
+        {{- with .Values.excluded_namespaces }}
+        namespaces:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+    generate:
+      kind: NetworkPolicy
+      name: default-deny-ingress
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:
+        metadata:
+          labels:
+            {{ .Values.policy_namespace }}.io/protected: "true"
+            {{ .Values.policy_namespace }}.io/kyverno-generated: "true"
+        spec:
+          podSelector: {}
+          policyTypes:
+          - Ingress
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ .Values.policy_namespace }}-generate-net-allow-instana-access
+  labels:
+    {{ .Values.policy_namespace }}.io/origin: {{ .Values.policy_namespace }}
+spec:
+  rules:
+  - name: allow-instana-access
+    match:
+      resources:
+        kinds:
+        - Namespace
+        selector:
+          matchExpressions:
+            - {key: {{ .Values.policy_namespace }}.io/type, operator: NotIn, values: [system]}
+    exclude:
+      resources:
+        {{- with .Values.excluded_namespaces }}
+        namespaces:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+    generate:
+      kind: NetworkPolicy
+      name: allow-instana
+      namespace: "{{ "{{" }} request.object.metadata.name {{ "}}" }}"
+      data:
+        metadata:
+          labels:
+            {{ .Values.policy_namespace }}.io/protected: "true"
+            {{ .Values.policy_namespace }}.io/kyverno-generated: "true"
+        spec:
+          ingress:
+          - from:
+            - namespaceSelector:
+                matchLabels:
+                  app: instana-agent
+          egress:
+          - to:
+            - namespaceSelector:
+                matchLabels:
+                  app: instana-agent
+          - ports:
+            - port: 42699
+              protocol: TCP
+          podSelector: {}
+          policyTypes:
+          - Ingress
+          - Egress
+{{ end }}

@@ -1,0 +1,40 @@
+{{ if .Values.active_rules.annotations  }}
+{{- $top := . -}}
+{{- $resource_kinds := .Values.label_and_annotate_resource_kinds -}}
+{{- $excluded_namespaces := .Values.excluded_namespaces -}}
+{{- $policy_namespace := .Values.policy_namespace -}}
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: {{ $policy_namespace }}-require-annotations
+  labels:
+    {{ $policy_namespace }}.io/origin: {{ $policy_namespace }}
+  annotations:
+    policies.kyverno.io/title: annotations need to be there
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+{{- range $label := .Values.annotation_validations }}
+  - name: check-for-{{ $label.name }}
+    match:
+      resources:
+        {{- with $resource_kinds }}
+        kinds:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+    exclude:
+      clusterRoles:
+      - cluster-admin
+      - admin
+      - jenkins-ci
+      - operator
+    validate:
+      message: "annotation `{{ $label.label }}` is required matching `{{ $label.match }}` https://kyverno.io/docs/writing-policies/validate/#wildcards -- {{ $label.description }}"
+      pattern:
+        metadata:
+          annotations:
+            {{ $label.label }}: "{{ $label.match }}"
+{{- end }}
+{{ end }}
