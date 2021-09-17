@@ -8,8 +8,10 @@ results:
   - policy: pod-lifetime
     rule: pods-lifetime
     resource: test-lifetime-pass
+    kind: Pod
     result: pass
   - policy: pod-lifetime
     rule: pods-lifetime
     resource: test-lifetime-fail
+    kind: Pod
     result: fail

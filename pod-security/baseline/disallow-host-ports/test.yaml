@@ -7,4 +7,5 @@ results:
   - policy: disallow-host-ports
     rule: host-ports
     resource: host-port
+    kind: Pod
     result: fail

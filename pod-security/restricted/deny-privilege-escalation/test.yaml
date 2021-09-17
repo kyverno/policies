@@ -7,4 +7,5 @@ results:
   - policy:  deny-privilege-escalation
     rule: deny-privilege-escalation
     resource: privileged
+    kind: Pod
     result: fail

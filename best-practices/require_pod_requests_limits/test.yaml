@@ -7,4 +7,5 @@ results:
   - policy: require-requests-limits
     rule: validate-resources
     resource: myapp-pod
+    kind: Pod
     result: pass
