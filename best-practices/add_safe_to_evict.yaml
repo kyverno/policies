@@ -6,7 +6,8 @@ metadata:
     policies.kyverno.io/category: Workload Management
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.4.3
-    policies.kyverno.io/description: The Kubernetes cluster autoscaler does not evict pods that 
+    policies.kyverno.io/description: >-
+      The Kubernetes cluster autoscaler does not evict pods that 
       use hostPath or emptyDir volumes. To allow eviction of these pods, the annotation 
       cluster-autoscaler.kubernetes.io/safe-to-evict=true must be added to the pods. 
 spec: 
