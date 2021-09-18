@@ -8,7 +8,7 @@ spec:
     runAsNonRoot: true
     seccompProfile:
       type: Unconfined
-  containers: 
+  containers:
   - name: seccomp
     image: busybox
     command: ["sleep", "9999"]
@@ -20,7 +20,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: seccomp
     image: busybox
     command: ["sleep", "9999"]
@@ -39,7 +39,7 @@ spec:
     image: busybox
     command: ["sleep", "9999"]
     seccompProfile:
-      type: Unconfined    
-  containers: 
-   - name: seccomp
-     image: kubernetes/pause
+      type: Unconfined
+  containers:
+  - name: seccomp
+    image: kubernetes/pause

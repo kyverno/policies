@@ -14,7 +14,7 @@ metadata:
       outside of the list of Namespaces have the label `foo` applied.
 spec:
   validationFailureAction: audit
-  background: false
+  background: true
   rules:
   - name: exclude-namespaces-dynamically
     context:

@@ -6,7 +6,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: false
-  containers: 
+  containers:
   - name: busybox
     image: busybox
     command: ["sleep", "9999"]
@@ -18,7 +18,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: root-pod
     image: busybox
     command: ["sleep", "9999"]
@@ -38,7 +38,7 @@ spec:
     command: ["sleep", "9999"]
     securityContext:
       runAsNonRoot: false
-  containers: 
+  containers:
   - name: app
     image: busybox
     command: ["sleep", "9999"]

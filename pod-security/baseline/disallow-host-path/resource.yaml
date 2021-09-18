@@ -6,7 +6,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: host-path
     image: kubernetes/pause
     volumeMounts:

@@ -15,6 +15,8 @@ metadata:
       annotation. This annotation has largely been replaced as of Kubernetes 1.18 with the IngressClass
       resource.
 spec:
+  validationFailureAction: audit
+  background: true
   rules:
   - name: validate-ingress
     match:

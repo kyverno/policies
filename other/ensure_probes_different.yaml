@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: validate-probes  
+  name: validate-probes
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: none  
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Validate Probes
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium

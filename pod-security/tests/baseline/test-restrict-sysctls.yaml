@@ -8,6 +8,6 @@ spec:
     sysctls:
       - name: kernel.random.poolsize
         value: "2048"
-  containers: 
+  containers:
   - name: sysctls
     image: kubernetes/pause

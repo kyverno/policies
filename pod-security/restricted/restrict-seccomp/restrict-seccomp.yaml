@@ -12,8 +12,8 @@ metadata:
       additional profiles should be allowed. This policy ensures that only the
       `runtime/default` is used as a `type`.
 spec:
-  background: true
   validationFailureAction: audit
+  background: true
   rules:
   - name: seccomp
     match:

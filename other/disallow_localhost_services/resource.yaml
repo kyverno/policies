@@ -5,9 +5,7 @@ metadata:
 spec:
   type: ExternalName
   externalName: localhost
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
