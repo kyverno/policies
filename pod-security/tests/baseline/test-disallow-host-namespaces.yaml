@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
   - name: host-namespaces-net
-    image: kubernetes/pause    
+    image: kubernetes/pause
 ---
 apiVersion: v1
 kind: Pod

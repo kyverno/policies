@@ -16,7 +16,7 @@ metadata:
       among them, the Pod is blocked.
 spec:
   validationFailureAction: audit
-  background: false
+  background: true
   rules:
   - name: validate-pod-priority
     context:

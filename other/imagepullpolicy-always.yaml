@@ -14,7 +14,7 @@ metadata:
       when the `latest` tag is specified explicitly or where a tag is not defined at all.
 spec:
   validationFailureAction: audit
-  background: false
+  background: true
   rules:
   - name: imagepullpolicy-always
     match:

@@ -4,7 +4,7 @@ kind: Pod
 metadata:
   name: add-capabilities
 spec:
-  containers: 
+  containers:
   - name: add-capabilities
     image: kubernetes/pause
     securityContext:
@@ -27,6 +27,6 @@ spec:
         capabilities:
           add:
           - SYS_RESOURCE
-  containers: 
+  containers:
   - name: add-capabilities
     image: kubernetes/pause

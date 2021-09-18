@@ -1,6 +1,13 @@
+## Contributors
+<a href="https://github.com/kyverno/policies/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=kyverno/policies" />
+</a>
+
+Made with [contributors-img](https://contrib.rocks).
+
 # Policies
 
-This repository contains Kyverno policies for a wide array of usage on various Kubernetes and ecosystem resources and subjects. For the optimal searching and browsing experience, please see [Usage and Documentation](##usage-and-documentation). For guidance on how you can contribute your own, please see [Contribution](##contribution). To request a Kyverno policy be created which doesn't exist, please see [Policy Requests](##policy-requests).
+This repository contains Kyverno policies for a wide array of usage on various Kubernetes and ecosystem resources and subjects. For the optimal searching and browsing experience, please see [Usage and Documentation](#usage-and-documentation). For guidance on how you can contribute your own, please see [Contribution](#contribution). To request a Kyverno policy be created which doesn't exist, please see [Policy Requests](#policy-requests).
 
 ## Usage and Documentation
 

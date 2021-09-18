@@ -5,7 +5,7 @@ metadata:
   namespace: test
   annotations:
     pod.kubernetes.io/lifetime: 4h
-spec: 
+spec:
   containers:
   - name: nginx
     image: nginx:1.12
@@ -17,7 +17,7 @@ metadata:
   namespace: test
   annotations:
     pod.kubernetes.io/lifetime: 24h
-spec: 
+spec:
   containers:
   - name: nginx
     image: nginx:1.12
