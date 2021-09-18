@@ -5,7 +5,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: host-port
     image: kubernetes/pause
     ports:

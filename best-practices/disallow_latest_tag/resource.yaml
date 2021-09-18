@@ -4,7 +4,7 @@ metadata:
   name: myapp-pod
   labels:
     app: myapp
-spec: 
+spec:
   containers:
   - name: nginx
     image: nginx:1.12

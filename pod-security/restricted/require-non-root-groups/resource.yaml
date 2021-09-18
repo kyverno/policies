@@ -7,7 +7,7 @@ spec:
   securityContext:
     runAsNonRoot: true
     fsGroup: 0
-  containers: 
+  containers:
   - name: fs-group
     image: busybox
     command: ["sleep", "9999"]
@@ -21,8 +21,7 @@ spec:
     runAsNonRoot: true
     supplementalGroups:
     - 0
-  containers: 
+  containers:
   - name: supplemental-groups
     image: busybox
     command: ["sleep", "9999"]
-

@@ -15,7 +15,7 @@ metadata:
     pod-policies.kyverno.io/autogen-controllers: None
 spec:
   validationFailureAction: audit
-  background: false
+  background: true
   rules:
   - name: block-flux-v1
     match:

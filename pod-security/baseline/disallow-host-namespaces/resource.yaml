@@ -9,7 +9,7 @@ spec:
   hostNetwork: true
   containers:
   - name: host-namespaces-net
-    image: kubernetes/pause    
+    image: kubernetes/pause
 ---
 apiVersion: v1
 kind: Pod
@@ -19,7 +19,7 @@ spec:
   securityContext:
     runAsNonRoot: true
   hostPID: true
-  containers: 
+  containers:
   - name: host-namespaces-pid
     image: kubernetes/pause
 ---
@@ -31,7 +31,6 @@ spec:
   securityContext:
     runAsNonRoot: true
   hostIPC: true
-  containers: 
+  containers:
   - name: host-namespaces-ipc
     image: kubernetes/pause
-    

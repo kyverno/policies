@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Multi-Tenancy
     policies.kyverno.io/subject: ResourceQuota, LimitRange
     policies.kyverno.io/description: >-
-      To better control the number of resources that can be created in a given 
+      To better control the number of resources that can be created in a given
       Namespace and provide default resource consumption limits for Pods,
       ResourceQuota and LimitRange resources are recommended.
       This policy will generate ResourceQuota and LimitRange resources when

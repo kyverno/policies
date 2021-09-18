@@ -6,7 +6,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: pause
     image: kubernetes/pause
   volumes:
@@ -23,7 +23,7 @@ metadata:
 spec:
   securityContext:
     runAsNonRoot: true
-  containers: 
+  containers:
   - name: awsebs
     image: busybox
     command: ["sleep", "9999"]
@@ -288,16 +288,16 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
- name: fibre-channel-example-pod
+  name: fibre-channel-example-pod
 spec:
   securityContext:
     runAsNonRoot: true
   containers:
-   - image: kubernetes/pause
-     name: fc
-     volumeMounts:
-       - name: fc-vol
-         mountPath: /mnt/fc
+  - image: kubernetes/pause
+    name: fc
+    volumeMounts:
+    - name: fc-vol
+      mountPath: /mnt/fc
   volumes:
   - name: fc-vol
     fc:
@@ -310,7 +310,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
- name: azure
+  name: azure
 spec:
   securityContext:
     runAsNonRoot: true
@@ -330,7 +330,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
- name: quobytevolume
+  name: quobytevolume
 spec:
   securityContext:
     runAsNonRoot: true
