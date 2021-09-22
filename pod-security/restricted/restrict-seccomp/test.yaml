@@ -7,52 +7,65 @@ results:
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-spec-undefined
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-spec-unconfined
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont1-unconfined
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont2-inconsistent
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-cont2-inconsistent1
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-pod-initcont-undefined
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-pod-initcont-unconfined
-    status: fail
+    kind: Pod
+    result: fail
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod
-    status: pass
+    kind: Pod
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-localhost
-    status: pass
+    kind: Pod
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-cont1-runtimedefault
-    status: pass
+    kind: Pod
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-good-pod-cont2-runtimedefault
-    status: pass
+    kind: Pod
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-good-pod-initcont
-    status: pass
+    kind: Pod
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp-initcontainers
     resource: seccomp-good-pod-initcont1
-    status: pass
+    kind: Pod
+    result: pass
