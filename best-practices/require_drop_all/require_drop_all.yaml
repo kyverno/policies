@@ -15,7 +15,7 @@ metadata:
       ability.
 spec:
   validationFailureAction: audit
-  background: true
+  background: false
   rules:
   - name: check-containers
     match:
