@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-1
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeSelector:
+    kubernetes.io/hostname: minikube
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-2
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+  nodeName: kube-01

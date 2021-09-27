@@ -8,9 +8,9 @@ results:
     rule: disallow-empty-ingress-host
     resource: ingress-wildcard-host
     result: pass
-    kind: Pod
+    kind: Ingress
   - policy: disallow-empty-ingress-host
     rule: disallow-empty-ingress-host
     resource: minimal-ingress
     result: fail
-    kind: Pod
+    kind: Ingress

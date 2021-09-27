@@ -1,0 +1,16 @@
+name: deployment-has-multiple-replicas
+policies:
+  -  require_deployments_have_multiple_replicas.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: deployment-has-multiple-replicas
+    rule: deployment-has-multiple-replicas
+    resource: mydeploy
+    kind: Deployment
+    result: pass
+  - policy: deployment-has-multiple-replicas
+    rule: deployment-has-multiple-replicas
+    resource: myapp-pod
+    kind: Pod
+    result: skip

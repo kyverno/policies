@@ -1,0 +1,21 @@
+name: memory-requests-equal-limits
+policies:
+  - memory-requests-equal-limits.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: memory-requests-equal-limits
+    rule: memory-requests-equal-limits-deployment
+    resource: fluentd-elasticsearch
+    kind: DaemonSet
+    status: pass
+  - policy: memory-requests-equal-limits
+    rule: memory-requests-equal-limits-pod
+    resource: myapp-pod
+    kind: Pod
+    status: fail
+  - policy: memory-requests-equal-limits
+    rule: memory-requests-equal-limits-cronjob
+    resource: hello
+    kind: CronJob
+    status: pass

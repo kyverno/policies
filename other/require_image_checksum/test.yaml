@@ -1,0 +1,26 @@
+name: require-image-checksum
+policies:
+  -  require_image_checksum.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: myapp-pod-1
+    kind: Pod
+    result: pass
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: myapp-pod-2
+    kind: Pod
+    result: fail
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: mydeploy
+    kind: Deployment
+    result: pass
+  - policy: require-image-checksum
+    rule: require-image-checksum
+    resource: hello
+    kind: CronJob
+    result: fail

@@ -1,0 +1,10 @@
+policies:
+- name: restrict-pod-count
+  rules:
+    - name: restrict-pod-count
+      values:
+        podcounts: "40"
+  resources:
+  - name: myapp-pod
+    values:
+      request.operation: CREATE

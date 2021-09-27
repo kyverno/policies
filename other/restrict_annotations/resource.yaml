@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: myapp
+  name: myapp-pod
+  annotations:
+    fluxcd.io/title: Annotation for pods
+spec:
+  containers:
+  - image: nginx
+    name: myapp-pod
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: myapp
+  name: mydeploy
+  annotations:
+    fluxcd.io/title: Annotation for deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    labels:
+      app: myapp
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+  annotations:
+    gauss.io/title: Annotation for CronJob
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox

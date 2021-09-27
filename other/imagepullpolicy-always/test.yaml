@@ -1,0 +1,26 @@
+name: imagepullpolicy-always
+policies:
+  -  imagepullpolicy-always.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: myapp-pod-1
+    kind: Pod
+    result: pass
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: myapp-pod-2
+    kind: Pod
+    result: fail
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: mydeploy1
+    kind: Deployment
+    result: fail
+  - policy: imagepullpolicy-always
+    rule: imagepullpolicy-always
+    resource: mydeploy2
+    kind: Deployment
+    result: pass

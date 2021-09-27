@@ -1,0 +1,30 @@
+name: restrict-node-selection
+policies:
+  -  restrict_node_selection.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-node-selection
+    rule: restrict-nodeselector
+    resource: myapp-pod-1
+    kind: Pod
+    namespace: default
+    result: fail  
+  - policy: restrict-node-selection
+    rule: restrict-nodename
+    resource: myapp-pod-1
+    kind: Pod
+    namespace: default
+    result: pass
+  - policy: restrict-node-selection
+    rule: restrict-nodeselector
+    resource: myapp-pod-2
+    kind: Pod
+    namespace: default
+    result: pass 
+  - policy: restrict-node-selection
+    rule: restrict-nodename
+    resource: myapp-pod-2
+    kind: Pod
+    namespace: default
+    result: fail
