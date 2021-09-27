@@ -56,4 +56,3 @@ spec:
         - key: "{{ request.object.spec.jobTemplate.spec.template.spec.containers[?resources.requests.memory!=resources.limits.memory] | length(@) }}"
           operator: NotEquals
           value: 0
-
