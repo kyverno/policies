@@ -6,12 +6,22 @@ resources:
 variables: values.yaml
 results:
   - policy: unique-ingress-host
-    rule: check-host
+    rule: check-single-host
     resource: ingress-kyverno-host
     kind: Ingress
     result: fail
   - policy: unique-ingress-host
-    rule: check-host
+    rule: check-single-host
     resource: ingress-foo-host
     kind: Ingress
-    result: pass
+    result: skip
+  - policy: unique-ingress-host
+    rule: deny-multiple-hosts
+    resource: ingress-kyverno-host
+    kind: Ingress
+    result: skip
+  - policy: unique-ingress-host
+    rule: deny-multiple-hosts
+    resource: ingress-foo-host
+    kind: Ingress
+    result: fail

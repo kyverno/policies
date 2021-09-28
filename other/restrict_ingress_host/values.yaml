@@ -1,7 +1,7 @@
 policies:
 - name: unique-ingress-host
   rules:
-  - name: check-host
+  - name: check-single-host
     values:
       hosts: "[\"www.github.com\", \"www.kyverno.com\", \"www.nirmata.com\"]"
   resources:
