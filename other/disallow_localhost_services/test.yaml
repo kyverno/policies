@@ -13,4 +13,4 @@ results:
     rule: no-localhost-service
     resource: my-np-service
     kind: Service
-    result: pass
+    result: skip
