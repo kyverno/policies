@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-2
+  labels:
+    foo: bar
+spec:
+  containers:
+  - name: ""
+    image: nginx:latest
+    imagePullPolicy: Always

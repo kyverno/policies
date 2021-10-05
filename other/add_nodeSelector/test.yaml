@@ -1,0 +1,13 @@
+name: add-nodeselector
+policies:
+  - add_nodeSelector.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-nodeselector
+    rule: add-nodeselector
+    resource: myapp-pod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    namespace: default
+    result: pass

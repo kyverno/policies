@@ -1,0 +1,18 @@
+name: insert-pod-antiaffinity
+policies:
+  - create_pod_antiaffinity.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: insert-pod-antiaffinity
+    rule: insert-pod-antiaffinity
+    resource: mydeploy
+    patchedResource: patchedResource1.yaml
+    kind: Deployment
+    result: pass
+  - policy: insert-pod-antiaffinity
+    rule: insert-pod-antiaffinity
+    resource: myapp-pod
+    patchedResource: patchedResource2.yaml
+    kind: Pod
+    result: skip

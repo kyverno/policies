@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: myapp
+  name: myapp-pod
+spec:
+  containers:
+  - image: myregistry.corp.com/nginx:latest
+    name: docker-with-registry

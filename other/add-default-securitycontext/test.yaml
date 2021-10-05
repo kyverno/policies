@@ -1,0 +1,12 @@
+name: add-default-securitycontext
+policies:
+  - add-default-securitycontext.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-default-securitycontext
+    rule: add-default-securitycontext
+    resource: myapp-pod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    result: pass

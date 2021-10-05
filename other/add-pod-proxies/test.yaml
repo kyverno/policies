@@ -1,0 +1,18 @@
+name: add-pod-proxies
+policies:
+  - add-pod-proxies.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-pod-proxies
+    rule: add-pod-proxies
+    resource: myapp-pod-1
+    patchedResource: patchedResource1.yaml
+    kind: Pod
+    result: pass
+  - policy: add-pod-proxies
+    rule: add-pod-proxies
+    resource: myapp-pod-2
+    patchedResource: patchedResource2.yaml
+    kind: Pod
+    result: skip

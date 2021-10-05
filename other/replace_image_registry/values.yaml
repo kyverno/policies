@@ -1,0 +1,6 @@
+policies:
+  - name: replace-image-registry
+    rules:
+    - name: replace-image-registry
+      values:
+        /@: "[\"docker-with-registry\", \"docker-io\", \"gcr-with-registry\", \"grc-io\",\"quay.io\"]"

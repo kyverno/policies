@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-labels
+  annotations:
+    policies.kyverno.io/title: Add Labels
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Label
+    policies.kyverno.io/description: >-
+      Labels are used as an important source of metadata describing objects in various ways
+      or triggering other functionality. Labels are also a very basic concept and should be
+      used throughout Kubernetes. This policy performs a simple mutation which adds a label
+      `foo=bar` to Pods, Services, ConfigMaps, and Secrets.
+spec:
+  rules:
+  - name: add-labels
+    match:
+      resources:
+        kinds:
+        - Pod
+        - Service
+        - ConfigMap
+        - Secret
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            foo: bar

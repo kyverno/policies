@@ -1,0 +1,19 @@
+name: replace-image-registry
+policies:
+  -  replace_image_registry.yaml
+resources:
+  -  resource.yaml
+variables: values.yaml
+results:
+  - policy: replace-image-registry
+    rule: replace-image-registry
+    resource: myapp-pod
+    kind: Pod
+    patchedResource: patchedResource1.yaml
+    result: pass
+  - policy: replace-image-registry
+    rule: replace-image-registry
+    resource: mydeploy
+    kind: Deployment
+    patchedResource: patchedResource2.yaml
+    result: pass
