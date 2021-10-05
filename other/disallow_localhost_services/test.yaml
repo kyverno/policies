@@ -9,9 +9,8 @@ results:
     resource: my-service
     kind: Service
     result: fail
-  # result should be skip
   - policy: no-localhost-service
     rule: no-localhost-service
     resource: my-np-service
     kind: Service
-    result: pass
+    result: skip
