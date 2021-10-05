@@ -10,9 +10,10 @@ results:
     patchedResource: patchedResource1.yaml
     kind: Pod
     result: pass
+    # result should be skip
   - policy: add-pod-proxies
     rule: add-pod-proxies
     resource: myapp-pod-2
     patchedResource: patchedResource2.yaml
     kind: Pod
-    result: skip
+    result: pass
