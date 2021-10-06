@@ -31,4 +31,3 @@ spec:
             - (name): "*"
               image: |-
                 {{ regex_replace_all('^[^/]+', '{{@}}', 'myregistry.corp.com') }}
-              

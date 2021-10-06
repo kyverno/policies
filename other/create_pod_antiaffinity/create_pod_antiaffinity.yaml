@@ -20,7 +20,7 @@ spec:
             - Deployment
       preconditions:
         # This precondition selects Pods with the label `app`
-      - key: "{{ request.object.spec.template.metadata.labels.app }}"
+      - key: "{{request.object.spec.template.metadata.labels.app}}"
         operator: NotEquals
         value: ""
       # Mutates the Deployment resource to add fields.
@@ -41,4 +41,4 @@ spec:
                             - key: app
                               operator: In
                               values:
-                              - "{{ request.object.spec.template.metadata.labels.app }}"
+                              - "{{request.object.spec.template.metadata.labels.app}}"
