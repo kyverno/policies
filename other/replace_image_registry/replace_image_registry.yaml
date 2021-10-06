@@ -17,7 +17,6 @@ metadata:
       in the form 'image:tag' or 'registry.corp.com/image:tag' to be prefaced
       with `myregistry.corp.com/`.
 spec:
-  background: false
   rules:
     - name: replace-image-registry
       match:
@@ -31,4 +30,3 @@ spec:
             - (name): "*"
               image: |-
                 {{ regex_replace_all('^[^/]+', '{{@}}', 'myregistry.corp.com') }}
-              
