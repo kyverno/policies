@@ -16,7 +16,7 @@ results:
     resource: myapp-pod-2
     patchedResource: patchedResource2.yaml
     kind: Pod
-    result: pass
+    result: skip
   - policy: add-imagepullsecrets
     rule: add-imagepullsecret
     resource: myapp-pod-3
