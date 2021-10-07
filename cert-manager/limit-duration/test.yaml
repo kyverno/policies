@@ -1,0 +1,21 @@
+name: limit-duration
+policies:
+  -  limit-duration.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: cert-manager-limit-duration
+    rule: certificate-duration-max-100days 
+    resource: letsencrypt-crt
+    kind: Certificate
+    result: pass
+  - policy: cert-manager-restrict-issuer
+    rule: certificate-duration-max-100days 
+    resource: acme-crt-short
+    kind: Certificate
+    result: pass
+  - policy: cert-manager-restrict-issuer
+    rule: certificate-duration-max-100days 
+    resource: acme-crt-long
+    kind: Certificate
+    result: fail
