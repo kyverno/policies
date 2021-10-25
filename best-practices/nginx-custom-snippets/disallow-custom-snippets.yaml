@@ -17,22 +17,22 @@ spec:
   validationFailureAction: enforce
   rules:
     - name: check-config-map
-      message: "ingress-nginx allow-snippet-annotations must be set to false"
       match:
         resources:
           kinds:
             - ConfigMap      
       validate:
+        message: "ingress-nginx allow-snippet-annotations must be set to false"
         pattern:
           data:
             =(allow-snippet-annotations) : "false"
     - name: check-ingress-annotations
-      message: "ingress-nginx custom snippets are not allowed"
       match:
         resources:
           kinds:
             - Ingress      
       validate:
+        message: "ingress-nginx custom snippets are not allowed"
         pattern:
           metadata:
             =(annotations):
