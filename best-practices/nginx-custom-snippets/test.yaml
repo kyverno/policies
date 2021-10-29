@@ -15,6 +15,16 @@ results:
     kind: ConfigMap
     result: pass
   - policy: disallow-ingress-nginx-custom-snippets
+    rule: check-config-map
+    resource: config-map-other
+    kind: ConfigMap
+    result: pass    
+  - policy: disallow-ingress-nginx-custom-snippets
+    rule: check-config-map
+    resource: config-map-empty
+    kind: ConfigMap
+    result: pass       
+  - policy: disallow-ingress-nginx-custom-snippets
     rule: check-ingress-annotations
     resource: cafe-ingress-with-snippets
     kind: Ingress
