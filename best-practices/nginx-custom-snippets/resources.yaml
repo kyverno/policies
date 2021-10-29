@@ -13,6 +13,18 @@ kind: ConfigMap
 metadata:
   name: config-map-true
 ---
+apiVersion: v1
+data:
+  random: "someval"
+kind: ConfigMap
+metadata:
+  name: config-map-other
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-map-empty
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

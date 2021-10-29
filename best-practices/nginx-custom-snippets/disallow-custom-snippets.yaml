@@ -23,7 +23,7 @@ spec:
       validate:
         message: "ingress-nginx allow-snippet-annotations must be set to false"
         pattern:
-          data:
+          =(data):
             =(allow-snippet-annotations) : "false"
     - name: check-ingress-annotations
       match:
