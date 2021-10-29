@@ -8,7 +8,7 @@ results:
     rule: restrict-seccomp
     resource: seccomp-pod-spec-undefined
     kind: Pod
-    result: fail
+    result: pass
   - policy:  restrict-seccomp
     rule: restrict-seccomp
     resource: seccomp-pod-spec-unconfined
@@ -28,14 +28,14 @@ results:
     rule: restrict-seccomp
     resource: seccomp-pod-cont2-inconsistent1
     kind: Pod
-    result: fail
+    result: pass
   - policy:  restrict-seccomp
-    rule: restrict-seccomp-initcontainers
+    rule: restrict-seccomp
     resource: seccomp-pod-initcont-undefined
     kind: Pod
-    result: fail
+    result: pass
   - policy:  restrict-seccomp
-    rule: restrict-seccomp-initcontainers
+    rule: restrict-seccomp
     resource: seccomp-pod-initcont-unconfined
     kind: Pod
     result: fail
@@ -60,12 +60,12 @@ results:
     kind: Pod
     result: pass
   - policy:  restrict-seccomp
-    rule: restrict-seccomp-initcontainers
+    rule: restrict-seccomp
     resource: seccomp-good-pod-initcont
     kind: Pod
     result: pass
   - policy:  restrict-seccomp
-    rule: restrict-seccomp-initcontainers
+    rule: restrict-seccomp
     resource: seccomp-good-pod-initcont1
     kind: Pod
     result: pass
