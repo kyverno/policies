@@ -33,6 +33,6 @@ spec:
           - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop[].contains(@, 'CAP_NET_RAW') | !contains(@, `false`)}}"
             operator: Equals
             value: false
-          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop[] | length(@) }}"
+          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop | length(@) }}"
             operator: NotEquals
             value: "{{request.object.spec.[containers, initContainers][] | length(@) }}"
