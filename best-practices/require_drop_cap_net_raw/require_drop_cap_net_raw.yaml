@@ -13,7 +13,7 @@ metadata:
       CAP_NET_RAW capability, enabled by default, allows processes in a container to
       forge packets and bind to any interface potentially leading to MitM attacks.
       This policy ensures that all containers explicitly drop the CAP_NET_RAW
-      ability.
+      ability.      
 spec:
   validationFailureAction: audit
   background: false
@@ -24,15 +24,15 @@ spec:
         kinds:
         - Pod
     validate:
-      message: The capability CAP_NET_RAW or NET_RAW must be explicitly dropped.
+      message: The capability CAP_NET_RAW must be explicitly dropped.
       deny:
         conditions:
           any:
-          # Get all the entries in each initContainers and containers drop[] array and ensures that every instance contains NET_RAW. If not, deny the request.
+          # Get all the entries in each initContainers and containers drop[] array and ensures that every instance contains CAP_NET_RAW. If not, deny the request.
           # backticks around false statement (in the key) implies a JSON object and so the value must not be in quotes or is interpreted as a string.
-          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop.contains(@, 'NET_RAW') | !contains(@, `false`)}}"
+          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop[].contains(@, 'CAP_NET_RAW') | !contains(@, `false`)}}"
             operator: Equals
             value: false
-          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop.contains(@, 'CAP_NET_RAW') | !contains(@, `false`)}}"
-            operator: Equals
-            value: false
+          - key: "{{request.object.spec.[containers, initContainers][].securityContext.capabilities.drop[] | length(@) }}"
+            operator: NotEquals
+            value: "{{request.object.spec.[containers, initContainers][] | length(@) }}"
