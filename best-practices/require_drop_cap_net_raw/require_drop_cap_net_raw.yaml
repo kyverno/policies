@@ -18,6 +18,54 @@ spec:
   validationFailureAction: audit
   background: false
   rules:
+  # Checks initContainers and containers to ensure they all specify a securityContext.capabilities.drop section
+  - name: check-for-drop-initcontainers
+    match:
+      resources:
+        kinds:
+        - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE
+        - UPDATE
+      - key: "{{ request.object.spec.initContainers[] | length(@) }}"
+        operator: GreaterThanOrEquals
+        value: 1
+    validate:
+      message: All initContainers must specify the securityContext.capabilities.drop section.
+      deny:
+        conditions:
+          any:
+          # Deny if every initContainer in the Pod doesn't specify the `drop[]` array (doesn't exist)
+          - key: "{{request.object.spec.initContainers[].securityContext.capabilities.drop | length(@) }}"
+            operator: NotEquals
+            value: "{{request.object.spec.initContainers[] | length(@) }}"
+  # Checks containers to ensure they all specify a securityContext.capabilities.drop section
+  - name: check-for-drop-containers
+    match:
+      resources:
+        kinds:
+        - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: All containers must specify the securityContext.capabilities.drop section.
+      deny:
+        conditions:
+          any:
+          # Deny if every container in the Pod doesn't specify the `drop[]` array (doesn't exist)
+          - key: "{{request.object.spec.containers[].securityContext.capabilities.drop | length(@) }}"
+            operator: NotEquals
+            value: "{{request.object.spec.containers[] | length(@) }}"
+  # Checks initContainers to ensure they drop CAP_NET_RAW
   - name: drop-cap-net-raw-initcontainers
     match:
       resources:
@@ -30,7 +78,7 @@ spec:
         value:
         - CREATE
         - UPDATE
-      # Check if initContainers even exist in the Pod.
+      # Check if initContainers even exist in the Pod
       - key: "{{ request.object.spec.initContainers[] | length(@) }}"
         operator: GreaterThanOrEquals
         value: 1
@@ -41,14 +89,11 @@ spec:
         deny:
           conditions:
             any:
-            # Loop over the `drop[]` array in each container looking for `CAP_NET_RAW` and deny if not found.
-            - key: "{{ element.drop  | contains(@, 'CAP_NET_RAW') }}"
+            # Loop over the `drop[]` array in each container looking for `CAP_NET_RAW` or `NET_RAW` and deny if not found
+            - key: "{{ element.drop  | contains(@, 'CAP_NET_RAW') || contains(@, 'NET_RAW') }}"
               operator: Equals
               value: false
-            # Also deny if every container in the Pod doesn't specify the `drop[]` array (doesn't exist).
-            - key: "{{request.object.spec.initContainers[].securityContext.capabilities.drop | length(@) }}"
-              operator: NotEquals
-              value: "{{request.object.spec.initContainers[] | length(@) }}"
+  # Checks containers to ensure they drop CAP_NET_RAW
   - name: drop-cap-net-raw-containers
     match:
       resources:
@@ -68,11 +113,7 @@ spec:
         deny:
           conditions:
             any:
-            # Loop over the `drop[]` array in each container looking for `CAP_NET_RAW` and deny if not found.
-            - key: "{{ element.drop  | contains(@, 'CAP_NET_RAW') }}"
+            # Loop over the `drop[]` array in each container looking for `CAP_NET_RAW` or `NET_RAW` and deny if not found
+            - key: "{{ element.drop  | contains(@, 'CAP_NET_RAW') || contains(@, 'NET_RAW') }}"
               operator: Equals
               value: false
-            # Also deny if every container in the Pod doesn't specify the `drop[]` array (doesn't exist).
-            - key: "{{request.object.spec.containers[].securityContext.capabilities.drop | length(@) }}"
-              operator: NotEquals
-              value: "{{request.object.spec.containers[] | length(@) }}"
