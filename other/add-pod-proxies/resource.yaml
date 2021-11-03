@@ -18,5 +18,5 @@ metadata:
     foo: bar
 spec:
   containers:
-  - name: 
+  - name: nginx
     image: nginx:latest
