@@ -14,4 +14,4 @@ spec:
     - name: NO_PROXY
       value: localhost,*.example.com
     image: nginx:latest
-    name: 
+    name: nginx
