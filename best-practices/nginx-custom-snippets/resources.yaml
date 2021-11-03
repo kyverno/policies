@@ -30,11 +30,11 @@ kind: Ingress
 metadata:
   name: cafe-ingress-with-snippets
   annotations:
-    nginx.org/server-snippets: |
+    nginx.org/server-snippet: |
       location / {
           return 302 /coffee;
       }      
-    nginx.org/location-snippets: |
+    nginx.org/location-snippet: |
             add_header my-test-header test-value;
 spec:
   rules:
