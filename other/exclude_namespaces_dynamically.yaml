@@ -29,12 +29,12 @@ spec:
         kinds:
         - Pod
     preconditions:
-    - key: "{{request.object.metadata.namespace}}"
+    - key: "{{request.namespace}}"
       operator: NotIn
       value: "{{namespacefilters.data.exclude}}"
     validate:
       message: >
-        Creating Pods in the {{request.object.metadata.namespace}} namespace,
+        Creating Pods in the {{request.namespace}} namespace,
         which is not in the excluded list of namespaces {{ namespacefilters.data.exclude }},
         is forbidden unless it carries the label `foo`.
       pattern:
