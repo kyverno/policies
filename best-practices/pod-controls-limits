@@ -1,0 +1,157 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: limit-pod-resorces
+  annotations:
+    policies.kyverno.io/title: Limited pod resources
+    policies.kyverno.io/category: K8s
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Control and limited, limits and requests limit.
+spec:
+  background: false
+  validationFailureAction: enforce
+  rules:
+  - name: check-container-cpu-limits
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    preconditions:
+      - key: "{{request.object.spec.containers[].resources.limits.cpu | length(@)}}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchStrategicMerge:
+        spec:
+          containers:
+            - (name): "*"
+              resources:
+                limits:
+                  cpu: "500m"
+                requests:
+                  cpu: "1m"
+  - name: check-initcontainer-cpu-limits
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    preconditions:
+      - key: "{{request.object.spec.initContainers[].resources.limits.cpu | length(@)}}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchStrategicMerge:
+        spec:
+          initContainers:
+            - (name): "*"
+              resources:
+                limits:
+                  cpu: "500m"
+                requests:
+                  cpu: "1m"
+  - name: check-container-memory-limits
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    preconditions:
+      any:
+      - key: "{{request.object.spec.containers[].resources.limits.memory | length(@)}}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchStrategicMerge:
+        spec:
+          containers:
+            - (name): "*"
+              resources:
+                limits:
+                  memory: "500Mi"
+                requests:
+                  memory: "1Mi"
+  - name: check-initcontainer-memory-limits
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    preconditions:
+      any:
+      - key: "{{request.object.spec.initContainers[].resources.limits.memory | length(@)}}"
+        operator: Equals
+        value: "0"
+    mutate:
+      patchStrategicMerge:
+        spec:
+          initContainers:
+            - (name): "*"
+              resources:
+                limits:
+                  memory: "500Mi"
+                requests:
+                  memory: "1Mi"
+  - name: validate-container-resources-limit
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    validate:
+      message: "check-container"
+      pattern:
+        spec:
+          containers:
+          - resources:
+              limits:
+                memory: "<=500Mi"
+                cpu: "<=500m"
+  - name: validate-initcontainer-resources-limit
+    match:
+      resources:
+        kinds:
+          - Pod
+        namespaces:
+          - mynamespace
+    exclude:
+      subjects:
+      - kind: User
+        name: myuser
+    validate:
+      message: "check-initcontainer"
+      pattern:
+        spec:
+          initContainers:
+          - resources:
+              limits:
+                memory: "<=500Mi"
+                cpu: "<=500m"
