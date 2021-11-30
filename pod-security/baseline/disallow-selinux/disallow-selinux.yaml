@@ -22,13 +22,17 @@ spec:
       validate:
         message: >-
           Setting custom SELinux options is disallowed. The fields
-          spec.securityContext.seLinuxOptions, spec.containers[*].securityContext.seLinuxOptions,
-          and spec.initContainers[*].securityContext.seLinuxOptions must be empty.
+          spec.securityContext.seLinuxOptions, spec.containers[*].securityContext.seLinuxOptions, 
+          spec.ephemeralContainers[*].securityContext.seLinuxOptions, and
+          spec.initContainers[*].securityContext.seLinuxOptions must be empty.
         pattern:
           spec:
             =(securityContext):
               X(seLinuxOptions): "null"
             =(initContainers):
+              - =(securityContext):
+                  X(seLinuxOptions): "null"
+            =(ephemeralContainers):
               - =(securityContext):
                   X(seLinuxOptions): "null"
             containers:

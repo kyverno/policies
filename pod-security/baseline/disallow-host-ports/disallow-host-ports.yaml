@@ -22,10 +22,14 @@ spec:
       validate:
         message: >-
           Use of host ports is disallowed. The fields spec.containers[*].ports[*].hostPort
-          and spec.initContainers[*].ports[*].hostPort must be empty.
+          and spec.initContainers[*].ports[*].hostPort and 
+          spec.ephemeralContainers[*].ports[*].hostPort must be empty.
         pattern:
           spec:
             =(initContainers):
+              - =(ports):
+                  - X(hostPort): 0
+            =(ephemeralContainers):
               - =(ports):
                   - X(hostPort): 0
             containers:

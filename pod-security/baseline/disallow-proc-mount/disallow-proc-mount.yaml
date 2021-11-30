@@ -22,11 +22,15 @@ spec:
         message: >-
           Changing the proc mount from the default is not allowed. The fields
           spec.containers[*].securityContext.procMount and
-          spec.initContainers[*].securityContext.procMount must not be changed
+          spec.initContainers[*].securityContext.procMount and
+          spec.ephemeralContainers[*].securityContext.procMountmust not be changed
           from `Default`.
         pattern:
           spec:
             =(initContainers):
+              - =(securityContext):
+                  =(procMount): "Default"
+            =(ephemeralContainers):
               - =(securityContext):
                   =(procMount): "Default"
             containers:

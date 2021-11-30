@@ -24,13 +24,16 @@ spec:
         message: >-
           Running with root group IDs is disallowed. The fields
           spec.securityContext.runAsGroup, spec.containers[*].securityContext.runAsGroup,
-          and spec.initContainers[*].securityContext.runAsGroup must be empty
-          or greater than zero.
+          and spec.ephemeralContainers[*].securityContext.runAsGroup and 
+          spec.initContainers[*].securityContext.runAsGroup must be empty or greater than zero.
         pattern:
           spec:
             =(securityContext):
               =(runAsGroup): ">0"
             =(initContainers):
+              - =(securityContext):
+                  =(runAsGroup): ">0"
+            =(ephemeralContainers):
               - =(securityContext):
                   =(runAsGroup): ">0"
             containers:

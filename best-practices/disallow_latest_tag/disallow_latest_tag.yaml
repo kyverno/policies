@@ -27,6 +27,10 @@ spec:
         spec:
           containers:
           - image: "*:*"
+          =(initContainers):
+          - image: "*:*"
+          =(ephemeralContainers):
+          - image: "*:*"
   - name: validate-image-tag
     match:
       resources:
@@ -37,4 +41,8 @@ spec:
       pattern:
         spec:
           containers:
+          - image: "!*:latest"
+          =(initContainers):
+          - image: "!*:latest"
+          =(ephemeralContainers):
           - image: "!*:latest"

@@ -31,3 +31,21 @@ spec:
                 value: https://secureproxy.corp.domain:8080
               - name: NO_PROXY
                 value: localhost,*.example.com
+          =(initContainers):
+            - (name): "*"
+              env:
+              - name: HTTP_PROXY
+                value: http://proxy.corp.domain:8080
+              - name: HTTPS_PROXY
+                value: https://secureproxy.corp.domain:8080
+              - name: NO_PROXY
+                value: localhost,*.example.com
+          =(ephemeralContainers):
+            - (name): "*"
+              env:
+              - name: HTTP_PROXY
+                value: http://proxy.corp.domain:8080
+              - name: HTTPS_PROXY
+                value: https://secureproxy.corp.domain:8080
+              - name: NO_PROXY
+                value: localhost,*.example.com

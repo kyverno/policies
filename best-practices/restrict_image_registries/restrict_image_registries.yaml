@@ -29,3 +29,7 @@ spec:
         spec:
           containers:
           - image: "eu.foo.io/* | bar.io/*"
+          =(initContainers):
+          - image: "eu.foo.io/* | bar.io/*"
+          =(ephemeralContainers):
+          - image: "eu.foo.io/* | bar.io/*"

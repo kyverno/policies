@@ -24,3 +24,21 @@ spec:
     command: ["sleep", "9999"]
     securityContext:
       runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: root-ephemeralContainers-pod
+spec:
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: root-pod
+    image: busybox
+    command: ["sleep", "9999"]
+  ephemeralContainers:
+  - name: root-pod
+    image: busybox
+    command: ["sleep", "9999"]
+    securityContext:
+      runAsNonRoot: false

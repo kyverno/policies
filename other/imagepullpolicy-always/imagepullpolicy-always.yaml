@@ -29,3 +29,9 @@ spec:
           containers:
           - (image): "*:latest | !*:*"
             imagePullPolicy: "Always"
+          initContainers:
+          - (image): "*:latest | !*:*"
+            imagePullPolicy: "Always"
+          ephemeralContainers:
+          - (image): "*:latest | !*:*"
+            imagePullPolicy: "Always"

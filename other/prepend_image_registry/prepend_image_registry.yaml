@@ -14,8 +14,8 @@ metadata:
       or simply because the traffic results in an excess of bandwidth usage.
       Instead of blocking them, they can be mutated to divert to an internal
       registry which may already contain them or function as a pull-through proxy.
-      This policy prepends all images in both containers and initContainers to come
-      from `registry.io`.
+      This policy prepends all images in containers, initContainers and
+      ephemeralContainers to come from `registry.io`.
 spec:
   background: false
   rules:
@@ -59,3 +59,23 @@ spec:
             initContainers:
             - name: "{{ element.name }}"           
               image: "registry.io/{{ images.initContainers.{{element.name}}.path}}:{{images.initContainers.{{element.name}}.tag}}"
+  - name: prepend-registry-ephemeralContainers
+    match:
+      resources:
+        kinds:
+        - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE
+        - UPDATE
+    mutate:
+      foreach:
+      - list: "request.object.spec.ephemeralContainers"
+        patchStrategicMerge:
+          spec:
+            ephemeralContainers:
+            - name: "{{ element.name }}"           
+              image: "registry.io/{{ images.ephemeralContainers.{{element.name}}.path}}:{{images.ephemeralContainers.{{element.name}}.tag}}"

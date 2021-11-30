@@ -23,11 +23,15 @@ spec:
       message: >-
         Privilege escalation is disallowed. The fields
         spec.containers[*].securityContext.allowPrivilegeEscalation, and
-        spec.initContainers[*].securityContext.allowPrivilegeEscalation must
+        spec.initContainers[*].securityContext.allowPrivilegeEscalation, and
+        spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must
         be undefined or set to `false`.
       pattern:
         spec:
           =(initContainers):
+          - =(securityContext):
+              =(allowPrivilegeEscalation): "false"
+          =(ephemeralContainers):
           - =(securityContext):
               =(allowPrivilegeEscalation): "false"
           containers:

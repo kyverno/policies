@@ -14,3 +14,8 @@ results:
     resource: root-pod
     kind: Pod
     result: fail
+  - policy:  require-run-as-non-root
+    rule: check-containers
+    resource: root-ephemeralContainers-pod
+    kind: Pod
+    result: fail

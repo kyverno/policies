@@ -10,9 +10,10 @@ metadata:
       Instead of defining a common set of environment variables multiple
       times either in manifests or separate policies, Pods can reference
       entire collections stored in a ConfigMap. This policy mutates all
-      initContainers (if present) and containers in a Pod with environment
-      variables defined in a ConfigMap named `nsenvvars` that must exist
-      in the destination Namespace.     
+      initContainers (if present), ephemeralContainers (if present) and
+      containers in a Pod with environment variables defined in a 
+      ConfigMap named `nsenvvars` that must exist in the destination 
+      Namespace.     
 spec:
   rules:
   - name: add-env-vars-from-cm
@@ -24,6 +25,11 @@ spec:
       patchStrategicMerge:
         spec:
           initContainers:
+            - (name): "*"
+              envFrom:
+              - configMapRef:
+                  name: nsenvvars
+          ephemeralContainers:
             - (name): "*"
               envFrom:
               - configMapRef:
