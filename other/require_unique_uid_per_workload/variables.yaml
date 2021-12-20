@@ -1,0 +1,8 @@
+globalValues:
+  request.operation: CREATE
+policies:
+  - name: require-unique-uid-per-workload
+    rules:
+    - name: require-unique-uid
+      values:
+        uidsAllPodsExceptSameOwnerAsRequestObject: "[\"1337\"]"
