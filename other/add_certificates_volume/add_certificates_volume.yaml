@@ -1,0 +1,43 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-certificates-volume
+  annotations:
+    policies.kyverno.io/title: Add Certificates as a Volume
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      In some cases you would need to trust custom CA certificates for all the containers of a Pod.
+      It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation.
+spec:
+  background: false
+  rules:
+  - name: add-ssl-certs
+    match:
+      resources:
+        kinds:
+        - Pod
+    preconditions:
+      all:
+      - key: '{{request.object.metadata.annotations."inject-certs"}}'
+        operator: Equals
+        value: enabled
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+          - CREATE
+          - UPDATE
+    mutate:
+      foreach:
+      - list: "request.object.spec.containers"
+        patchStrategicMerge:
+          spec:
+            containers:
+            - name: "{{ element.name }}"
+              volumeMounts:
+              - name: etc-ssl-certs
+                mountPath: /etc/ssl/certs
+            volumes:
+            - name: etc-ssl-certs
+              configMap:
+                name: ca-pemstore

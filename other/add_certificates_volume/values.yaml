@@ -1,0 +1,6 @@
+policies:
+- name: add-certificates-volume
+  resources:
+  - name: mypod
+    values:
+      request.operation: CREATE
