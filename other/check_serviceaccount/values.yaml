@@ -1,0 +1,9 @@
+policies:
+- name: check-sa
+  resources:
+  - name: badpod01
+    values:
+      serviceAccountName: safe
+  - name: goodpod01
+    values:
+      serviceAccountName: safe
