@@ -8,6 +8,7 @@ metadata:
     policies.kyverno.io/subject: Pod
     kyverno.io/kyverno-version: 1.5.2
     kyverno.io/kubernetes-version: "1.21"
+    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,Job,StatefulSet
     policies.kyverno.io/description: >-
       In some cases you would need to trust custom CA certificates for all the containers of a Pod.
       It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation.
