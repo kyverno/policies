@@ -1,0 +1,11 @@
+name: block-velero-restore
+policies:
+  -  block-velero-restore.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: block-velero-restore
+    rule: block-velero-restore-to-protected-namespace
+    resource: my-restore-backup-0000111122223333
+    kind: Restore
+    result: pass

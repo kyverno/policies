@@ -1,0 +1,12 @@
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: my-restore-backup-0000111122223333
+  namespace: velero
+spec:
+  backupName: my-backup
+  includedResources:
+  - '*'
+  namespaceMapping:
+    default: kube-system
+restorePVs: true
