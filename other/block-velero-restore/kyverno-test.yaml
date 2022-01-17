@@ -8,4 +8,4 @@ results:
     rule: block-velero-restore-to-protected-namespace
     resource: my-restore-backup-0000111122223333
     kind: Restore
-    result: pass
+    result: fail
