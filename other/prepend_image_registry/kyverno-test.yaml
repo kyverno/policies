@@ -3,6 +3,8 @@ policies:
   - prepend_image_registry.yaml
 resources:
   - resource.yaml
+  - resourceFailed.yaml
+  - withoutinitcontainer.yaml
 variables: values.yaml
 results:
   - policy: prepend-registry
@@ -17,3 +19,23 @@ results:
     patchedResource: patchedResource.yaml
     kind: Pod
     result: pass
+  - policy: prepend-registry
+    rule: prepend-registry-containers
+    resource: myfailedpod
+    patchedResource: failpatchedResource.yaml
+    kind: Pod
+    result: fail
+  - policy: prepend-registry
+    rule: prepend-registry-initcontainers
+    resource: myfailedpod
+    patchedResource: failpatchedResource.yaml
+    kind: Pod
+    result: fail
+  - policy: prepend-registry
+    rule: prepend-registry-containers
+    resource: withoutinitcontainer
+    patchedResource: patchedResourceWithoutInitContainer.yaml
+    kind: Pod
+    result: fail
+
+    
