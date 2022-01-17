@@ -7,3 +7,9 @@ policies:
   - name: mypod
     values:
       request.operation: CREATE
+  - name: myfailedpod
+    values:
+      request.operation: CREATE
+  - name: withoutinitcontainer
+    values:
+      request.operation: CREATE
