@@ -1,0 +1,11 @@
+policies:
+- name: drop-cap-net-raw
+  rules:
+  - name: check-for-drop-initcontainers
+  - name: check-for-drop-containers
+  - name: drop-cap-net-raw-initcontainers
+  - name: drop-cap-net-raw-containers
+  resources:
+  - name: add-capabilities
+    values:
+      request.operation: CREATE
