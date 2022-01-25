@@ -21,13 +21,15 @@ spec:
         kinds:
         - PodExecOptions
     preconditions:
-    - key: "{{ request.operation }}"
-      operator: Equals
-      value: CONNECT
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: CONNECT
     validate:
       message: Pods in this namespace may not be exec'd into.
       deny:
         conditions:
+          any:
           - key: "{{ request.namespace }}"
             operator: Equals
             value: pci

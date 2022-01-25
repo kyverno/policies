@@ -29,9 +29,10 @@ spec:
         kinds:
         - Pod
     preconditions:
-    - key: "{{request.namespace}}"
-      operator: NotIn
-      value: "{{namespacefilters.data.exclude}}"
+      all:
+      - key: "{{request.object.metadata.namespace}}"
+        operator: NotIn
+        value: "{{namespacefilters.data.exclude}}"
     validate:
       message: >
         Creating Pods in the {{request.namespace}} namespace,

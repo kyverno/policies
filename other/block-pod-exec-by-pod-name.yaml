@@ -22,13 +22,15 @@ spec:
         kinds:
         - PodExecOptions
     preconditions:
-    - key: "{{ request.operation }}"
-      operator: Equals
-      value: CONNECT
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: CONNECT
     validate:
       message: Exec'ing into Pods called "myapp-maintenance" is not allowed.
       deny:
         conditions:
+          all:
           - key: "{{ request.name }}"
             operator: Equals
             value: myapp-maintenance-*
