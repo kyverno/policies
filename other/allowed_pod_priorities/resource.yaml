@@ -24,7 +24,7 @@ spec:
   template:
     metadata:
       labels:
-        app: myapp1
+        app: myapp
     spec:
       containers:
       - image: nginx:latest

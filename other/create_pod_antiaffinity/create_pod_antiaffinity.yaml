@@ -19,10 +19,11 @@ spec:
           kinds:
             - Deployment
       preconditions:
-        # This precondition selects Pods with the label `app`
-      - key: "{{request.object.spec.template.metadata.labels.app}}"
-        operator: NotEquals
-        value: ""
+        # This precondition selects Pods with the label `
+        all:
+        - key: "{{request.object.spec.template.metadata.labels.app}}"
+          operator: NotEquals
+          value: ""
       # Mutates the Deployment resource to add fields.
       mutate:
         patchStrategicMerge:
