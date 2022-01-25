@@ -1,0 +1,11 @@
+policies:
+- name: drop-all-capabilities
+  rules:
+  - name: check-for-drop-initcontainers
+  - name: check-for-drop-containers
+  - name: drop-all-initcontainers
+  - name: drop-all-containers
+  resources:
+  - name: add-capabilities
+    values:
+      request.operation: CREATE
