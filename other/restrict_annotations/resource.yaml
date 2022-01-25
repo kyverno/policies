@@ -50,3 +50,4 @@ spec:
           containers:
           - name: hello
             image: busybox
+          restartPolicy: OnFailure
