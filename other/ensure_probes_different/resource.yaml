@@ -8,7 +8,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp
+      app: goproxy
   template:
     metadata:
       name: goproxy
@@ -42,7 +42,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: myapp
+      app: goproxy
   template:
     metadata:
       name: goproxy
