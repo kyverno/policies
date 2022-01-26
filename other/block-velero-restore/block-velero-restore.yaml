@@ -25,8 +25,9 @@ spec:
       message: "Warning! Restore to protected namespace: {{request.object.spec.namespaceMapping | values(@)}} is not allowed!"
       deny:
         conditions:
-          - key: "{{request.object.spec.namespaceMapping | values(@)}}"
-            operator: In
-            value:
-            - kube-system
-            - kube-node-lease
+          any:
+            - key: "{{request.object.spec.namespaceMapping | values(@)}}"
+              operator: In
+              value:
+              - kube-system
+              - kube-node-lease
