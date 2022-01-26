@@ -26,8 +26,9 @@ spec:
     matchLabels:
       app: myapp
   template:
-    labels:
-      app: myapp
+    metadata:
+      labels:
+        app: myapp
     spec:
       containers:
       - image: nginx
@@ -49,3 +50,4 @@ spec:
           containers:
           - name: hello
             image: busybox
+          restartPolicy: OnFailure
