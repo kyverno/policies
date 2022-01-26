@@ -34,14 +34,16 @@ spec:
           # see https://github.com/kyverno/website/blob/b08d6d8356bd46b8d55ab52324a9cfa243399b01/content/en/docs/Writing%20policies/preconditions.md?plain=1#L154
           jmesPath: "items[?@.metadata.ownerReferences == false || metadata.ownerReferences[?uid != '{{ request.object.metadata.keys(@).contains(@, 'ownerReferences') && request.object.metadata.ownerReferences[0].uid }}']].spec.containers[].securityContext.to_string(runAsUser)"
     preconditions:
-    - key: "{{ request.operation }}"
-      operator: Equals
-      value: "CREATE"
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: "CREATE"
     validate:
       message: "Only cluster-unique UIDs are allowed"
       deny:
         conditions:
         # this checks uids for ALL containers in any pod of the workload
-        - key: "{{ request.object.spec.containers[].securityContext.to_string(runAsUser) }}"
-          operator: In
-          value: "{{ uidsAllPodsExceptSameOwnerAsRequestObject }}"
+          all:
+          - key: "{{ request.object.spec.containers[].securityContext.to_string(runAsUser) }}"
+            operator: In
+            value: "{{ uidsAllPodsExceptSameOwnerAsRequestObject }}"
