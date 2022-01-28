@@ -3,6 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: replace-image-registry
   annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Replace Image Registry
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
@@ -19,15 +20,73 @@ metadata:
 spec:
   background: false
   rules:
-    - name: replace-image-registry
+    - name: replace-image-registry-pod-containers
       match:
         resources:
           kinds:
           - Pod
       mutate:
-        patchStrategicMerge:
-          spec:
-            containers:
-            - (name): "*"
-              image: |-
-                {{ regex_replace_all('^[^/]+', '{{@}}', 'myregistry.corp.com') }}
+        foreach:
+        - list: "request.object.spec.containers"
+          patchStrategicMerge:
+            spec:
+              containers:
+              - name: "{{ element.name }}"
+                image: |-    
+                        {{ regex_replace_all('^[^/]+', '{{element.image}}', 'myregistry.corp.com' )}}
+    - name: replace-image-registry-pod-initcontainers
+      match:
+        resources:
+          kinds:
+          - Pod
+      preconditions:
+        all:
+        - key: "{{ request.object.spec.initContainers[] || '' | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
+      mutate:
+        foreach:
+        - list: "request.object.spec.initContainers"
+          patchStrategicMerge:
+            spec:
+              initContainers:
+              - name: "{{ element.name }}"
+                image: |-    
+                        {{ regex_replace_all('^[^/]+', '{{element.image}}', 'myregistry.corp.com' )}}
+    - name: replace-image-registry-depl-containers
+      match:
+        resources:
+          kinds:
+          - Deployment
+      mutate:
+        foreach:
+        - list: "request.object.spec.template.spec.containers"
+          patchStrategicMerge:
+            spec:
+              template:
+                spec:
+                  containers:
+                  - name: "{{ element.name }}"
+                    image: |-    
+                            {{ regex_replace_all('^[^/]+', '{{element.image}}', 'myregistry.corp.com' )}}
+    - name: replace-image-registry-depl-initcontainers
+      match:
+        resources:
+          kinds:
+          - Deployment
+      preconditions:
+        all:
+        - key: "{{ request.object.spec.template.spec.initContainers[] || '' | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
+      mutate:
+        foreach:
+        - list: "request.object.spec.template.spec.initContainers"
+          patchStrategicMerge:
+            spec:
+              template:
+                spec:
+                  initContainers:
+                  - name: "{{ element.name }}"
+                    image: |-    
+                            {{ regex_replace_all('^[^/]+', '{{element.image}}', 'myregistry.corp.com' )}}
