@@ -1,0 +1,252 @@
+name: require-run-as-non-root-user
+policies:
+  - require-run-as-non-root-user.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod05
+    kind: Pod
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badpod06
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod06
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod07
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod08
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod09
+    kind: Pod
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodpod10
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment05
+    kind: Deployment
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: baddeployment06
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment06
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment07
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment08
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment09
+    kind: Deployment
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: gooddeployment10
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob05
+    kind: CronJob
+    result: fail
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: badcronjob06
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob06
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob07
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob08
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob09
+    kind: CronJob
+    result: pass
+  - policy: require-run-as-non-root-user
+    rule: run-as-non-root-user
+    resource: goodcronjob10
+    kind: CronJob
+    result: pass

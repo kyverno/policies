@@ -9,7 +9,9 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: true
+      capabilities:
+        add:
+        - NET_RAW
 ---
 apiVersion: v1
 kind: Pod
@@ -19,24 +21,30 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      privileged: true
+      capabilities:
+        add:
+        - NET_RAW
+        - SETGID
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod03
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
 ---
 apiVersion: v1
 kind: Pod
@@ -46,13 +54,17 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
     securityContext:
-      privileged: true
+      capabilities:
+        add:
+        - NET_RAW
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
 ---
 apiVersion: v1
 kind: Pod
@@ -65,12 +77,36 @@ spec:
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: true
+      capabilities:
+        add:
+        - NET_RAW
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: true
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - SYS_ADMIN
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -91,7 +127,9 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      capabilities:
+        add:
+        - SETGID
 ---
 apiVersion: v1
 kind: Pod
@@ -101,10 +139,16 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - DAC_OVERRIDE
   - name: container02
     image: dummyimagename
     securityContext:
-      privileged: false
+      capabilities:
+        add:
+        - SETGID
 ---
 apiVersion: v1
 kind: Pod
@@ -127,7 +171,9 @@ spec:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      privileged: false
+      capabilities:
+        add:
+        - DAC_OVERRIDE
   containers:
   - name: container01
     image: dummyimagename
@@ -140,15 +186,17 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
     securityContext:
-      privileged: false
+      capabilities:
+        add:
+        - DAC_OVERRIDE
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      capabilities:
+        add:
+        - SETGID
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -169,7 +217,9 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: true
+          capabilities:
+            add:
+            - NET_RAW
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -188,10 +238,11 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          privileged: true
+          capabilities:
+            add:
+            - NET_RAW
+            - SETGID
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -207,14 +258,19 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - NET_RAW
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - SETGID
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -233,13 +289,17 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
         securityContext:
-          privileged: true
+          capabilities:
+            add:
+            - NET_RAW
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - SETGID
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -261,12 +321,45 @@ spec:
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          privileged: true
+          capabilities:
+            add:
+            - NET_RAW
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: true
+          capabilities:
+            add:
+            - SETGID
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - NET_RAW
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -305,7 +398,9 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          capabilities:
+            add:
+            - SETGID
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -324,10 +419,16 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - DAC_OVERRIDE
       - name: container02
         image: dummyimagename
         securityContext:
-          privileged: false
+          capabilities:
+            add:
+            - SETGID
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -368,7 +469,9 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: false
+          capabilities:
+            add:
+            - DAC_OVERRIDE
       containers:
       - name: container01
         image: dummyimagename
@@ -391,14 +494,16 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: false
-      - name: initcontainer02
-        image: dummyimagename
+          capabilities:
+            add:
+            - DAC_OVERRIDE
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          capabilities:
+            add:
+            - SETGID
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -416,7 +521,9 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: true
+              capabilities:
+                add:
+                - NET_RAW
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -432,10 +539,11 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              privileged: true
+              capabilities:
+                add:
+                - NET_RAW
+                - SETGID
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -448,14 +556,19 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - NET_RAW
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - SETGID
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -471,13 +584,17 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
             securityContext:
-              privileged: true
+              capabilities:
+                add:
+                - NET_RAW
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - SETGID
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -496,12 +613,42 @@ spec:
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: true
+              capabilities:
+                add:
+                - NET_RAW
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: true
+              capabilities:
+                add:
+                - SETGID
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - NET_RAW
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - SYS_ADMIN
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -534,7 +681,9 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              capabilities:
+                add:
+                - SETGID
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -550,10 +699,16 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - DAC_OVERRIDE
           - name: container02
             image: dummyimagename
             securityContext:
-              privileged: false
+              capabilities:
+                add:
+                - SETGID
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -588,7 +743,9 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              privileged: false
+              capabilities:
+                add:
+                - DAC_OVERRIDE
           containers:
           - name: container01
             image: dummyimagename
@@ -607,12 +764,14 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
             securityContext:
-              privileged: false
+              capabilities:
+                add:
+                - DAC_OVERRIDE
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              capabilities:
+                add:
+                - SETGID

@@ -1,6 +1,6 @@
-########################
-## Rule: selinux-type ##
-########################
+############################
+## Rule: require-drop-all ##
+############################
 ###### Pods - Bad
 ---
 apiVersion: v1
@@ -11,9 +11,6 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      type: spc_t
 ---
 apiVersion: v1
 kind: Pod
@@ -24,8 +21,9 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: spc_t
+      capabilities:
+        drop:
+        - NET_RAW
 ---
 apiVersion: v1
 kind: Pod
@@ -37,9 +35,6 @@ spec:
     image: dummyimagename
   - name: container02
     image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: spc_t
 ---
 apiVersion: v1
 kind: Pod
@@ -49,29 +44,31 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: spc_t
+      capabilities:
+        drop:
+        - NET_RAW
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod05
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: spc_t
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - NET_RAW
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
@@ -81,14 +78,13 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: spc_t
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
@@ -99,16 +95,82 @@ spec:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: spc_t
+      capabilities:
+        drop:
+        - NET_RAW
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - NET_RAW
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - NET_RAW
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -119,6 +181,10 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
@@ -128,9 +194,11 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      type: container_t
+    securityContext:
+      capabilities:
+        drop:
+        - NET_RAW
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
@@ -140,170 +208,83 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      type: container_init_t
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod04
 spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      type: container_kvm_t
+    securityContext:
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod05
 spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        drop:
+        - NET_RAW
+        - ALL
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_t
+      capabilities:
+        drop:
+        - ALL
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod06
 spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_init_t
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod07
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod08
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod09
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_t
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod10
-spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_t
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod11
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_init_t
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod12
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_kvm_t
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod13
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
+      capabilities:
+        drop:
+        - ALL
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_t
+      capabilities:
+        drop:
+        - ALL
   containers:
   - name: container01
     image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod14
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_init_t
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_t
-  containers:
-  - name: container01
-    image: dummyimagename
+      capabilities:
+        drop:
+        - ALL
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -323,9 +304,6 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          type: spc_t
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -345,8 +323,9 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: spc_t
+          capabilities:
+            drop:
+            - NET_RAW
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -367,9 +346,6 @@ spec:
         image: dummyimagename
       - name: container02
         image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: spc_t
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -388,14 +364,12 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: spc_t
+          capabilities:
+            drop:
+            - NET_RAW
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -411,15 +385,19 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: spc_t
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -438,14 +416,13 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: spc_t
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -465,16 +442,109 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: spc_t
+          capabilities:
+            drop:
+            - NET_RAW
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -494,6 +564,10 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -512,9 +586,11 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          type: container_t
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -533,9 +609,16 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          type: container_init_t
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -551,12 +634,20 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          type: container_kvm_t
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -572,12 +663,21 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - ALL
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_t
+          capabilities:
+            drop:
+            - ALL
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -593,209 +693,26 @@ spec:
       labels:
         app: app
     spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_init_t
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment07
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment08
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment09
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_t
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment10
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_t
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment11
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_init_t
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment12
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_kvm_t
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment13
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
+          capabilities:
+            drop:
+            - ALL
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_t
+          capabilities:
+            drop:
+            - ALL
       containers:
       - name: container01
         image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment14
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_init_t
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_t
-      containers:
-      - name: container01
-        image: dummyimagename
+          capabilities:
+            drop:
+            - ALL
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -812,9 +729,6 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              type: spc_t
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -831,8 +745,9 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: spc_t
+              capabilities:
+                drop:
+                - NET_RAW
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -850,9 +765,6 @@ spec:
             image: dummyimagename
           - name: container02
             image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: spc_t
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -868,14 +780,12 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: spc_t
+              capabilities:
+                drop:
+                - NET_RAW
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -888,15 +798,19 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: spc_t
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -912,14 +826,13 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: spc_t
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -936,16 +849,100 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: spc_t
+              capabilities:
+                drop:
+                - NET_RAW
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -962,6 +959,10 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -977,9 +978,11 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              type: container_t
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -995,9 +998,16 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              type: container_init_t
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1010,12 +1020,20 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              type: container_kvm_t
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1028,12 +1046,21 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+                - ALL
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_t
+              capabilities:
+                drop:
+                - ALL
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1046,269 +1073,63 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_init_t
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob07
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob08
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob09
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_t
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob10
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_t
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob11
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_init_t
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob12
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_kvm_t
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob13
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
+              capabilities:
+                drop:
+                - ALL
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_t
+              capabilities:
+                drop:
+                - ALL
           containers:
           - name: container01
             image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob14
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_init_t
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_t
-          containers:
-          - name: container01
-            image: dummyimagename
+              capabilities:
+                drop:
+                - ALL
 ---
-#############################
-## Rule: selinux-user-role ##
-#############################
+######################################
+## Rule: adding-capabilities-strict ##
+######################################
 ###### Pods - Bad
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod01
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      user: sysadm_u
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod02
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      role: sysadm_r
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod03
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      user: sysadm_u
-      role: sysadm_r
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod04
+  name: addcap-badpod01
 spec:
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        user: sysadm_u
+      capabilities:
+        add:
+        - CHOWN
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod05
+  name: addcap-badpod02
 spec:
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        role: sysadm_r
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod06
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        user: sysadm_u
-        role: sysadm_r
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod07
+  name: addcap-badpod03
 spec:
   containers:
   - name: container01
@@ -1316,66 +1137,61 @@ spec:
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        user: sysadm_u
+      capabilities:
+        add:
+        - CHOWN
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod08
+  name: addcap-badpod04
 spec:
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        role: sysadm_r
+      capabilities:
+        add:
+        - CHOWN
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod09
+  name: addcap-badpod05
 spec:
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        user: sysadm_u
-        role: sysadm_r
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod10
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: unconfined_t
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        user: sysadm_u
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod11
+  name: addcap-badpod06
 spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        user: sysadm_u
+      capabilities:
+        add:
+        - CHOWN
   containers:
   - name: container01
     image: dummyimagename
@@ -1383,14 +1199,16 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod12
+  name: addcap-badpod07
 spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        role: sysadm_r
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
   containers:
   - name: container01
     image: dummyimagename
@@ -1398,87 +1216,62 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-badpod13
+  name: addcap-badpod08
 spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        user: sysadm_u
-        role: sysadm_r
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod14
-spec:
-  initContainers:
-  - name: initcontainer02
-    image: dummyimagename
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        user: sysadm_u
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod15
-spec:
-  initContainers:
-  - name: initcontainer02
-    image: dummyimagename
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        role: sysadm_r
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod16
-spec:
-  initContainers:
-  - name: initcontainer02
-    image: dummyimagename
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        user: sysadm_u
-        role: sysadm_r
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-badpod17
-spec:
-  initContainers:
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_init_t
+      capabilities:
+        add:
+        - CHOWN
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod09
+spec:
+  initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        user: sysadm_u
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
   containers:
   - name: container01
     image: dummyimagename
@@ -1487,7 +1280,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod01
+  name: addcap-goodpod01
 spec:
   containers:
   - name: container01
@@ -1496,44 +1289,31 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod02
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  securityContext:
-    seLinuxOptions:
-      level: "s0:c123,c456"
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-goodpod03
+  name: addcap-goodpod02
 spec:
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod04
+  name: addcap-goodpod03
 spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        type: container_t
-        level: "s0:c123,c456"
+  - name: container02
+    image: dummyimagename
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod05
+  name: addcap-goodpod04
 spec:
   containers:
   - name: container01
@@ -1541,30 +1321,33 @@ spec:
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod06
+  name: addcap-goodpod05
 spec:
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_t
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   - name: container02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod07
+  name: addcap-goodpod06
 spec:
   initContainers:
   - name: initcontainer01
@@ -1576,30 +1359,15 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod08
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: selur-goodpod09
+  name: addcap-goodpod07
 spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
-        type: container_t
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   containers:
   - name: container01
     image: dummyimagename
@@ -1607,7 +1375,21 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod10
+  name: addcap-goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod09
 spec:
   initContainers:
   - name: initcontainer01
@@ -1615,8 +1397,9 @@ spec:
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   containers:
   - name: container01
     image: dummyimagename
@@ -1624,92 +1407,33 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: selur-goodpod11
+  name: addcap-goodpod10
 spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        type: container_t
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      seLinuxOptions:
-        level: "s0:c123,c456"
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
   containers:
   - name: container01
     image: dummyimagename
 ---
+##################################################
+## Rule: adding-capabilities-strict-controllers ##
+##################################################
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment01
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          user: sysadm_u
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment02
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          role: sysadm_r
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment03
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          user: sysadm_u
-          role: sysadm_r
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment04
+  name: addcap-baddeployment01
 spec:
   replicas: 1
   selector:
@@ -1724,13 +1448,14 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            user: sysadm_u
+          capabilities:
+            add:
+            - CHOWN
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment05
+  name: addcap-baddeployment02
 spec:
   replicas: 1
   selector:
@@ -1745,35 +1470,15 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            role: sysadm_r
+          capabilities:
+            add:
+            - CHOWN
+            - NET_BIND_SERVICE
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment06
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            user: sysadm_u
-            role: sysadm_r
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment07
+  name: addcap-baddeployment03
 spec:
   replicas: 1
   selector:
@@ -1790,13 +1495,14 @@ spec:
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            user: sysadm_u
+          capabilities:
+            add:
+            - CHOWN
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment08
+  name: addcap-baddeployment04
 spec:
   replicas: 1
   selector:
@@ -1810,16 +1516,21 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            role: sysadm_r
+          capabilities:
+            add:
+            - CHOWN
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment09
+  name: addcap-baddeployment05
 spec:
   replicas: 1
   selector:
@@ -1833,43 +1544,22 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            user: sysadm_u
-            role: sysadm_r
+          capabilities:
+            add:
+            - CHOWN
+            - NET_BIND_SERVICE
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment10
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: unconfined_t
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            user: sysadm_u
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment11
+  name: addcap-baddeployment06
 spec:
   replicas: 1
   selector:
@@ -1884,8 +1574,9 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            user: sysadm_u
+          capabilities:
+            add:
+            - CHOWN
       containers:
       - name: container01
         image: dummyimagename
@@ -1893,7 +1584,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment12
+  name: addcap-baddeployment07
 spec:
   replicas: 1
   selector:
@@ -1908,8 +1599,10 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            role: sysadm_r
+          capabilities:
+            add:
+            - CHOWN
+            - NET_BIND_SERVICE
       containers:
       - name: container01
         image: dummyimagename
@@ -1917,7 +1610,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-baddeployment13
+  name: addcap-baddeployment08
 spec:
   replicas: 1
   selector:
@@ -1931,118 +1624,75 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            user: sysadm_u
-            role: sysadm_r
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment14
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer02
-        image: dummyimagename
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            user: sysadm_u
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment15
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer02
-        image: dummyimagename
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            role: sysadm_r
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment16
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer02
-        image: dummyimagename
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            user: sysadm_u
-            role: sysadm_r
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-baddeployment17
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_init_t
+          capabilities:
+            add:
+            - CHOWN
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-baddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            user: sysadm_u
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-baddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - NET_BIND_SERVICE
       containers:
       - name: container01
         image: dummyimagename
@@ -2051,7 +1701,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment01
+  name: addcap-gooddeployment01
 spec:
   replicas: 1
   selector:
@@ -2069,28 +1719,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment02
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      securityContext:
-        seLinuxOptions:
-          level: "s0:c123,c456"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-gooddeployment03
+  name: addcap-gooddeployment02
 spec:
   replicas: 1
   selector:
@@ -2105,13 +1734,14 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment04
+  name: addcap-gooddeployment03
 spec:
   replicas: 1
   selector:
@@ -2125,15 +1755,13 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            type: container_t
-            level: "s0:c123,c456"
+      - name: container02
+        image: dummyimagename
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment05
+  name: addcap-gooddeployment04
 spec:
   replicas: 1
   selector:
@@ -2150,13 +1778,14 @@ spec:
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment06
+  name: addcap-gooddeployment05
 spec:
   replicas: 1
   selector:
@@ -2171,18 +1800,20 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_t
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       - name: container02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment07
+  name: addcap-gooddeployment06
 spec:
   replicas: 1
   selector:
@@ -2203,31 +1834,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment08
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: selur-gooddeployment09
+  name: addcap-gooddeployment07
 spec:
   replicas: 1
   selector:
@@ -2242,9 +1849,9 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
-            type: container_t
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       containers:
       - name: container01
         image: dummyimagename
@@ -2252,7 +1859,30 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment10
+  name: addcap-gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment09
 spec:
   replicas: 1
   selector:
@@ -2269,8 +1899,9 @@ spec:
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       containers:
       - name: container01
         image: dummyimagename
@@ -2278,7 +1909,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: selur-gooddeployment11
+  name: addcap-gooddeployment10
 spec:
   replicas: 1
   selector:
@@ -2293,77 +1924,27 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            type: container_t
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          seLinuxOptions:
-            level: "s0:c123,c456"
+          capabilities:
+            add:
+            - NET_BIND_SERVICE
       containers:
       - name: container01
         image: dummyimagename
 ---
+###############################################
+## Rule: adding-capabilities-strict-cronjobs ##
+###############################################
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob01
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              user: sysadm_u
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob02
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              role: sysadm_r
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob03
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              user: sysadm_u
-              role: sysadm_r
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob04
+  name: addcap-badcronjob01
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2375,13 +1956,14 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                user: sysadm_u
+              capabilities:
+                add:
+                - CHOWN
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob05
+  name: addcap-badcronjob02
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2393,32 +1975,15 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                role: sysadm_r
+              capabilities:
+                add:
+                - CHOWN
+                - NET_BIND_SERVICE
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob06
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                user: sysadm_u
-                role: sysadm_r
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob07
+  name: addcap-badcronjob03
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2432,13 +1997,14 @@ spec:
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                user: sysadm_u
+              capabilities:
+                add:
+                - CHOWN
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob08
+  name: addcap-badcronjob04
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2449,16 +2015,21 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                role: sysadm_r
+              capabilities:
+                add:
+                - CHOWN
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob09
+  name: addcap-badcronjob05
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2469,40 +2040,22 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                user: sysadm_u
-                role: sysadm_r
+              capabilities:
+                add:
+                - CHOWN
+                - NET_BIND_SERVICE
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob10
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: unconfined_t
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                user: sysadm_u
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob11
+  name: addcap-badcronjob06
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2514,8 +2067,9 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                user: sysadm_u
+              capabilities:
+                add:
+                - CHOWN
           containers:
           - name: container01
             image: dummyimagename
@@ -2523,7 +2077,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob12
+  name: addcap-badcronjob07
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2535,8 +2089,10 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                role: sysadm_r
+              capabilities:
+                add:
+                - CHOWN
+                - NET_BIND_SERVICE
           containers:
           - name: container01
             image: dummyimagename
@@ -2544,7 +2100,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-badcronjob13
+  name: addcap-badcronjob08
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2555,106 +2111,69 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                user: sysadm_u
-                role: sysadm_r
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob14
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer02
-            image: dummyimagename
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                user: sysadm_u
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob15
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer02
-            image: dummyimagename
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                role: sysadm_r
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob16
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer02
-            image: dummyimagename
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                user: sysadm_u
-                role: sysadm_r
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-badcronjob17
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_init_t
+              capabilities:
+                add:
+                - CHOWN
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-badcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                user: sysadm_u
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - CHOWN
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-badcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - CHOWN
+                - NET_BIND_SERVICE
           containers:
           - name: container01
             image: dummyimagename
@@ -2663,7 +2182,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob01
+  name: addcap-goodcronjob01
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2678,25 +2197,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob02
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          securityContext:
-            seLinuxOptions:
-              level: "s0:c123,c456"
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-goodcronjob03
+  name: addcap-goodcronjob02
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2708,13 +2209,14 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob04
+  name: addcap-goodcronjob03
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2725,15 +2227,13 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                type: container_t
-                level: "s0:c123,c456"
+          - name: container02
+            image: dummyimagename
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob05
+  name: addcap-goodcronjob04
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2747,13 +2247,14 @@ spec:
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob06
+  name: addcap-goodcronjob05
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2765,18 +2266,20 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_t
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           - name: container02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob07
+  name: addcap-goodcronjob06
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2794,28 +2297,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob08
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: selur-goodcronjob09
+  name: addcap-goodcronjob07
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2827,9 +2309,9 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
-                type: container_t
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           containers:
           - name: container01
             image: dummyimagename
@@ -2837,7 +2319,27 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob10
+  name: addcap-goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob09
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2851,8 +2353,9 @@ spec:
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           containers:
           - name: container01
             image: dummyimagename
@@ -2860,7 +2363,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: selur-goodcronjob11
+  name: addcap-goodcronjob10
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -2872,13 +2375,16 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                type: container_t
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              seLinuxOptions:
-                level: "s0:c123,c456"
+              capabilities:
+                add:
+                - NET_BIND_SERVICE
           containers:
           - name: container01
             image: dummyimagename
+---

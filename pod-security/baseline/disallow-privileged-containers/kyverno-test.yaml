@@ -1,11 +1,177 @@
 name: disallow-privileged-containers
 policies:
-  -  disallow-privileged-containers.yaml
+  - disallow-privileged-containers.yaml
 resources:
-  -  resource.yaml
+  - resource.yaml
 results:
+###### Pods - Bad
   - policy: disallow-privileged-containers
-    rule: priviledged-containers
-    resource: check-privileged-cfg
+    rule: privileged-containers
+    resource: badpod01
     kind: Pod
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badpod05
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodpod06
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: baddeployment05
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: gooddeployment06
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: badcronjob05
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass
+  - policy: disallow-privileged-containers
+    rule: privileged-containers
+    resource: goodcronjob06
+    kind: CronJob
     result: pass

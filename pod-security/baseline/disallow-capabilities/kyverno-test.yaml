@@ -1,0 +1,192 @@
+name: disallow-capabilities
+policies:
+  - disallow-capabilities.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod05
+    kind: Pod
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badpod06
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodpod06
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment05
+    kind: Deployment
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: baddeployment06
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: gooddeployment06
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob05
+    kind: CronJob
+    result: fail
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: badcronjob06
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass
+  - policy: disallow-capabilities
+    rule: adding-capabilities
+    resource: goodcronjob06
+    kind: CronJob
+    result: pass

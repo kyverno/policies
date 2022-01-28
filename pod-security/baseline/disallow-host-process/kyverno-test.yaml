@@ -1,0 +1,177 @@
+name: disallow-host-process
+policies:
+  - disallow-host-process.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badpod05
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodpod06
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: baddeployment05
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: gooddeployment06
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: badcronjob05
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-process
+    rule: host-process-containers
+    resource: goodcronjob06
+    kind: CronJob
+    result: pass

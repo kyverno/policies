@@ -8,6 +8,9 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
+  securityContext:
+    seccompProfile:
+      type: Unconfined
 ---
 apiVersion: v1
 kind: Pod
@@ -18,7 +21,8 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      runAsNonRoot: false
+      seccompProfile:
+        type: Unconfined
 ---
 apiVersion: v1
 kind: Pod
@@ -28,8 +32,11 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    runAsNonRoot: false
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
 ---
 apiVersion: v1
 kind: Pod
@@ -40,19 +47,27 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      runAsNonRoot: false
-  securityContext:
-    runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod05
 spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
   containers:
   - name: container01
-    image: dummyimagename
-  - name: container02
     image: dummyimagename
 ---
 apiVersion: v1
@@ -60,158 +75,37 @@ kind: Pod
 metadata:
   name: badpod06
 spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: false
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod07
 spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  - name: container02
-    image: dummyimagename
-  securityContext:
-    runAsNonRoot: false
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod08
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: false
-  securityContext:
-    runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod09
-spec:
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
-  - name: container02
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: false
-  securityContext:
-    runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod10
-spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      runAsNonRoot: false
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod11
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
-  securityContext:
-    runAsNonRoot: false
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod12
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: false
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
-  securityContext:
-    runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod13
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-  containers:
-  - name: container01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod14
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
+      seccompProfile:
+        type: RuntimeDefault
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      runAsNonRoot: false
+      seccompProfile:
+        type: Unconfined
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod15
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-  containers:
-  - name: container01
-    image: dummyimagename
-  securityContext:
-    runAsNonRoot: false
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -222,8 +116,6 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Pod
@@ -233,8 +125,9 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
 ---
 apiVersion: v1
 kind: Pod
@@ -244,10 +137,10 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
   securityContext:
-    runAsNonRoot: true
+    seccompProfile:
+      type: Localhost
+      localhostProfile: operator/default/profile1.json
 ---
 apiVersion: v1
 kind: Pod
@@ -257,10 +150,9 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
-  securityContext:
-    runAsNonRoot: true
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
 ---
 apiVersion: v1
 kind: Pod
@@ -270,42 +162,42 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      runAsNonRoot: true
-  securityContext:
-    runAsNonRoot: true
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod06
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    runAsNonRoot: true
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod07
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    runAsNonRoot: true
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
 ---
 apiVersion: v1
 kind: Pod
@@ -316,12 +208,11 @@ spec:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Pod
@@ -332,14 +223,12 @@ spec:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      runAsNonRoot: true
-  - name: initcontainer02
-    image: dummyimagename
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
   containers:
   - name: container01
     image: dummyimagename
-  securityContext:
-    runAsNonRoot: true
 ---
 apiVersion: v1
 kind: Pod
@@ -349,17 +238,35 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-    securityContext:
-      runAsNonRoot: true
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      runAsNonRoot: true
+      seccompProfile:
+        type: RuntimeDefault
   containers:
   - name: container01
     image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
     securityContext:
-      runAsNonRoot: true
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -379,6 +286,9 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+      securityContext:
+        seccompProfile:
+          type: Unconfined
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -398,7 +308,8 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          runAsNonRoot: false
+          seccompProfile:
+            type: Unconfined
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -417,8 +328,11 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        runAsNonRoot: false
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: Unconfined
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -438,9 +352,13 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          runAsNonRoot: false
-      securityContext:
-        runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: Unconfined
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -456,10 +374,14 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: Unconfined
       containers:
       - name: container01
-        image: dummyimagename
-      - name: container02
         image: dummyimagename
 ---
 apiVersion: apps/v1
@@ -476,13 +398,17 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: Unconfined
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -498,217 +424,20 @@ spec:
       labels:
         app: app
     spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      - name: container02
-        image: dummyimagename
-      securityContext:
-        runAsNonRoot: false
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment08
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: false
-      securityContext:
-        runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment09
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
-      - name: container02
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: false
-      securityContext:
-        runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment10
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          runAsNonRoot: false
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment11
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
-      securityContext:
-        runAsNonRoot: false
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment12
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: false
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
-      securityContext:
-        runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment13
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-      containers:
-      - name: container01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment14
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
+          seccompProfile:
+            type: RuntimeDefault
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          runAsNonRoot: false
+          seccompProfile:
+            type: Unconfined
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment15
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-      containers:
-      - name: container01
-        image: dummyimagename
-      securityContext:
-        runAsNonRoot: false
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -728,8 +457,6 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        runAsNonRoot: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -748,8 +475,9 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -768,10 +496,10 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
       securityContext:
-        runAsNonRoot: true
+        seccompProfile:
+          type: Localhost
+          localhostProfile: operator/default/profile1.json
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -790,10 +518,9 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
-      securityContext:
-        runAsNonRoot: true
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -812,12 +539,10 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          runAsNonRoot: true
-      securityContext:
-        runAsNonRoot: true
+          seccompProfile:
+            type: Localhost
+            localhostProfile: operator/default/profile1.json
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -833,14 +558,14 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        runAsNonRoot: true
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -856,16 +581,18 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        runAsNonRoot: true
+        securityContext:
+          seccompProfile:
+            type: Localhost
+            localhostProfile: operator/default/profile1.json
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -885,12 +612,11 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -910,14 +636,12 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          runAsNonRoot: true
-      - name: initcontainer02
-        image: dummyimagename
+          seccompProfile:
+            type: Localhost
+            localhostProfile: operator/default/profile1.json
       containers:
       - name: container01
         image: dummyimagename
-      securityContext:
-        runAsNonRoot: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -936,17 +660,44 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-        securityContext:
-          runAsNonRoot: true
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
       containers:
       - name: container01
         image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
         securityContext:
-          runAsNonRoot: true
+          seccompProfile:
+            type: Localhost
+            localhostProfile: operator/default/profile1.json
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+      containers:
+      - name: container01
+        image: dummyimagename
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -963,6 +714,9 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+          securityContext:
+            seccompProfile:
+              type: Unconfined
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -979,7 +733,8 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              runAsNonRoot: false
+              seccompProfile:
+                type: Unconfined
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -995,8 +750,11 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            runAsNonRoot: false
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: Unconfined
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1013,9 +771,13 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              runAsNonRoot: false
-          securityContext:
-            runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: Unconfined
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1028,10 +790,14 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: Unconfined
           containers:
           - name: container01
-            image: dummyimagename
-          - name: container02
             image: dummyimagename
 ---
 apiVersion: batch/v1
@@ -1045,13 +811,17 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: Unconfined
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1064,193 +834,20 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          - name: container02
-            image: dummyimagename
-          securityContext:
-            runAsNonRoot: false
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob08
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: false
-          securityContext:
-            runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob09
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
-          - name: container02
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: false
-          securityContext:
-            runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob10
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              runAsNonRoot: false
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob11
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
-          securityContext:
-            runAsNonRoot: false
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob12
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: false
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
-          securityContext:
-            runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob13
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-          containers:
-          - name: container01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob14
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
+              seccompProfile:
+                type: RuntimeDefault
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              runAsNonRoot: false
+              seccompProfile:
+                type: Unconfined
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob15
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-          containers:
-          - name: container01
-            image: dummyimagename
-          securityContext:
-            runAsNonRoot: false
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -1267,8 +864,6 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            runAsNonRoot: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1284,8 +879,9 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1301,10 +897,10 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
           securityContext:
-            runAsNonRoot: true
+            seccompProfile:
+              type: Localhost
+              localhostProfile: operator/default/profile1.json
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1320,10 +916,9 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
-          securityContext:
-            runAsNonRoot: true
+            securityContext:
+              seccompProfile:
+                type: RuntimeDefault
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1339,12 +934,10 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              runAsNonRoot: true
-          securityContext:
-            runAsNonRoot: true
+              seccompProfile:
+                type: Localhost
+                localhostProfile: operator/default/profile1.json
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1357,14 +950,14 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            runAsNonRoot: true
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: RuntimeDefault
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1377,16 +970,18 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            runAsNonRoot: true
+            securityContext:
+              seccompProfile:
+                type: Localhost
+                localhostProfile: operator/default/profile1.json
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: RuntimeDefault
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1403,12 +998,11 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1425,14 +1019,12 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              runAsNonRoot: true
-          - name: initcontainer02
-            image: dummyimagename
+              seccompProfile:
+                type: Localhost
+                localhostProfile: operator/default/profile1.json
           containers:
           - name: container01
             image: dummyimagename
-          securityContext:
-            runAsNonRoot: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -1448,14 +1040,39 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-            securityContext:
-              runAsNonRoot: true
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              runAsNonRoot: true
+              seccompProfile:
+                type: RuntimeDefault
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
             securityContext:
-              runAsNonRoot: true
+              seccompProfile:
+                type: Localhost
+                localhostProfile: operator/default/profile1.json
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: RuntimeDefault
+          containers:
+          - name: container01
+            image: dummyimagename
+---

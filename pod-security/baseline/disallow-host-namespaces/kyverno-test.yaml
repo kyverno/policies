@@ -1,16 +1,147 @@
-name:  disallow-host-namespaces
+name: disallow-host-namespaces
 policies:
-  -  disallow-host-namespaces.yaml
+  - disallow-host-namespaces.yaml
 resources:
-  -  resource.yaml
+  - resource.yaml
 results:
-  - policy:  disallow-host-namespaces
-    rule:  host-namespaces
-    resource: host-namespaces-net
+###### Pods - Bad
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badpod01
     kind: Pod
     result: fail
-  - policy:  disallow-host-namespaces
-    rule:  host-namespaces
-    resource: host-namespaces-pid
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badpod02
     kind: Pod
     result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badpod04
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodpod05
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: disallow-host-namespaces
+    rule: host-namespaces
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass

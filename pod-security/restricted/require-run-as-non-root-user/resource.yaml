@@ -8,8 +8,8 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      privileged: true
+  securityContext:
+    runAsUser: 0
 ---
 apiVersion: v1
 kind: Pod
@@ -19,24 +19,21 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      privileged: true
+      runAsUser: 0
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod03
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsUser: 0
 ---
 apiVersion: v1
 kind: Pod
@@ -46,13 +43,11 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
+  securityContext:
+    runAsUser: 0
 ---
 apiVersion: v1
 kind: Pod
@@ -62,15 +57,27 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
     securityContext:
-      privileged: true
+      runAsUser: 0
   containers:
   - name: container01
     image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
     securityContext:
-      privileged: true
+      runAsUser: 0
+  containers:
+  - name: container01
+    image: dummyimagename
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -90,8 +97,8 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      privileged: false
+  securityContext:
+    runAsUser: 1
 ---
 apiVersion: v1
 kind: Pod
@@ -101,33 +108,62 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      privileged: false
+      runAsUser: 1
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod04
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
   containers:
   - name: container01
     image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsUser: 1
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod05
 spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsUser: 1
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsUser: 2
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsUser: 1
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsUser: 2
+  securityContext:
+    runAsUser: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-    securityContext:
-      privileged: false
   containers:
   - name: container01
     image: dummyimagename
@@ -135,7 +171,35 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod06
+  name: goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsUser: 1
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsUser: 1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
 spec:
   initContainers:
   - name: initcontainer01
@@ -143,12 +207,10 @@ spec:
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: false
+      runAsUser: 1
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      privileged: false
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -168,8 +230,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          privileged: true
+      securityContext:
+        runAsUser: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -188,10 +250,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          privileged: true
+          runAsUser: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -207,14 +267,13 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          runAsUser: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -233,13 +292,11 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
+      securityContext:
+        runAsUser: 0
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -258,15 +315,36 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
         securityContext:
-          privileged: true
+          runAsUser: 0
       containers:
       - name: container01
         image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
         securityContext:
-          privileged: true
+          runAsUser: 0
+      containers:
+      - name: container01
+        image: dummyimagename
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -304,8 +382,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          privileged: false
+      securityContext:
+        runAsUser: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -324,10 +402,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          privileged: false
+          runAsUser: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -343,12 +419,13 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
       containers:
       - name: container01
         image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          runAsUser: 1
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -364,14 +441,15 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: false
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          runAsUser: 1
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          runAsUser: 2
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -387,18 +465,109 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: false
-      - name: initcontainer02
-        image: dummyimagename
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          runAsUser: 1
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          runAsUser: 2
+      securityContext:
+        runAsUser: 10
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          runAsUser: 1
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        runAsUser: 1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          runAsUser: 1
+      containers:
+      - name: container01
+        image: dummyimagename
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -415,8 +584,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              privileged: true
+          securityContext:
+            runAsUser: 0
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -432,10 +601,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              privileged: true
+              runAsUser: 0
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -448,14 +615,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              runAsUser: 0
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -471,13 +637,11 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
+          securityContext:
+            runAsUser: 0
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -493,15 +657,33 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
             securityContext:
-              privileged: true
+              runAsUser: 0
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
             securityContext:
-              privileged: true
+              runAsUser: 0
+          containers:
+          - name: container01
+            image: dummyimagename
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -533,8 +715,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              privileged: false
+          securityContext:
+            runAsUser: 1
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -550,10 +732,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              privileged: false
+              runAsUser: 1
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -566,12 +746,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
           containers:
           - name: container01
             image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              runAsUser: 1
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -584,11 +765,53 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              runAsUser: 1
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              runAsUser: 2
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              runAsUser: 1
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              runAsUser: 2
+          securityContext:
+            runAsUser: 10
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-            securityContext:
-              privileged: false
           containers:
           - name: container01
             image: dummyimagename
@@ -596,7 +819,47 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: goodcronjob06
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              runAsUser: 1
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            runAsUser: 1
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob10
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -610,9 +873,7 @@ spec:
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: false
+              runAsUser: 1
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              privileged: false

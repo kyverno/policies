@@ -1,0 +1,282 @@
+name: restrict-seccomp
+policies:
+  - restrict-seccomp.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod05
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod06
+    kind: Pod
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badpod07
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod06
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod07
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod08
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod09
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod10
+    kind: Pod
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodpod11
+    kind: Pod
+    result: pass
+###### Deployments - Bad
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment02
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment03
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment04
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment05
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment06
+    kind: Deployment
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: baddeployment07
+    kind: Deployment
+    result: fail
+###### Deployments - Good
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment02
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment03
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment04
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment05
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment06
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment07
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment08
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment09
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment10
+    kind: Deployment
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: gooddeployment11
+    kind: Deployment
+    result: pass
+###### CronJobs - Bad
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob01
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob02
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob03
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob04
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob05
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob06
+    kind: CronJob
+    result: fail
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: badcronjob07
+    kind: CronJob
+    result: fail
+###### CronJobs - Good
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob01
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob02
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob03
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob04
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob05
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob06
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob07
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob08
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob09
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob10
+    kind: CronJob
+    result: pass
+  - policy: restrict-seccomp
+    rule: check-seccomp
+    resource: goodcronjob11
+    kind: CronJob
+    result: pass

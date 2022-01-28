@@ -8,8 +8,6 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      privileged: true
 ---
 apiVersion: v1
 kind: Pod
@@ -19,40 +17,36 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      privileged: true
+      allowPrivilegeEscalation: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod03
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod04
 spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -62,15 +56,29 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
-  - name: initcontainer02
-    image: dummyimagename
-    securityContext:
-      privileged: true
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: true
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -81,6 +89,8 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -91,20 +101,27 @@ spec:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      allowPrivilegeEscalation: false
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod03
 spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
   containers:
   - name: container01
     image: dummyimagename
-  - name: container02
-    image: dummyimagename
     securityContext:
-      privileged: false
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -114,9 +131,17 @@ spec:
   initContainers:
   - name: initcontainer01
     image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -127,28 +152,20 @@ spec:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      privileged: false
-  containers:
-  - name: container01
-    image: dummyimagename
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod06
-spec:
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
+      allowPrivilegeEscalation: false
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: false
+      allowPrivilegeEscalation: false
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      allowPrivilegeEscalation: false
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -168,8 +185,6 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          privileged: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -188,10 +203,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          privileged: true
+          allowPrivilegeEscalation: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -207,14 +220,13 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -230,16 +242,15 @@ spec:
       labels:
         app: app
     spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: true
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -258,15 +269,38 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
-      - name: initcontainer02
-        image: dummyimagename
-        securityContext:
-          privileged: true
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: true
+          allowPrivilegeEscalation: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: true
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -286,6 +320,8 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -305,7 +341,11 @@ spec:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          allowPrivilegeEscalation: false
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -321,13 +361,16 @@ spec:
       labels:
         app: app
     spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
       containers:
       - name: container01
         image: dummyimagename
-      - name: container02
-        image: dummyimagename
         securityContext:
-          privileged: false
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -346,9 +389,17 @@ spec:
       initContainers:
       - name: initcontainer01
         image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -368,37 +419,20 @@ spec:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: false
-      containers:
-      - name: container01
-        image: dummyimagename
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: gooddeployment06
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          privileged: false
+          allowPrivilegeEscalation: false
       - name: initcontainer02
         image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          allowPrivilegeEscalation: false
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -415,8 +449,6 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              privileged: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -432,10 +464,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -448,14 +478,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -468,16 +497,15 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: true
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -493,15 +521,35 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
-          - name: initcontainer02
-            image: dummyimagename
-            securityContext:
-              privileged: true
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: true
+              allowPrivilegeEscalation: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: true
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -518,6 +566,8 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -534,7 +584,11 @@ spec:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              allowPrivilegeEscalation: false
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -547,13 +601,16 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
           containers:
           - name: container01
             image: dummyimagename
-          - name: container02
-            image: dummyimagename
             securityContext:
-              privileged: false
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -569,9 +626,17 @@ spec:
           initContainers:
           - name: initcontainer01
             image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -588,31 +653,17 @@ spec:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              privileged: false
-          containers:
-          - name: container01
-            image: dummyimagename
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: goodcronjob06
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
+              allowPrivilegeEscalation: false
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: false
+              allowPrivilegeEscalation: false
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              allowPrivilegeEscalation: false
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false

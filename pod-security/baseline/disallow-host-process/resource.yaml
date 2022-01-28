@@ -5,72 +5,98 @@ kind: Pod
 metadata:
   name: badpod01
 spec:
+  hostNetwork: true
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod02
 spec:
+  hostNetwork: true
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
   - name: container02
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod03
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod04
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod05
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: true
+      windowsOptions:
+        hostProcess: true
 ---
 ###### Pods - Good
 apiVersion: v1
@@ -78,6 +104,7 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  hostNetwork: true
   containers:
   - name: container01
     image: dummyimagename
@@ -87,30 +114,35 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  hostNetwork: true
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      windowsOptions:
+        hostProcess: false
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod03
 spec:
+  hostNetwork: true
   containers:
   - name: container01
     image: dummyimagename
   - name: container02
     image: dummyimagename
     securityContext:
-      privileged: false
+      windowsOptions:
+        hostProcess: false
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod04
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
@@ -123,11 +155,13 @@ kind: Pod
 metadata:
   name: goodpod05
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
     securityContext:
-      privileged: false
+      windowsOptions:
+        hostProcess: false
   containers:
   - name: container01
     image: dummyimagename
@@ -137,18 +171,21 @@ kind: Pod
 metadata:
   name: goodpod06
 spec:
+  hostNetwork: true
   initContainers:
   - name: initcontainer01
     image: dummyimagename
   - name: initcontainer02
     image: dummyimagename
     securityContext:
-      privileged: false
+      windowsOptions:
+        hostProcess: false
   containers:
   - name: container01
     image: dummyimagename
     securityContext:
-      privileged: false
+      windowsOptions:
+        hostProcess: false
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -165,11 +202,13 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -185,13 +224,18 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          windowsOptions:
+            hostProcess: true
       - name: container02
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -207,14 +251,19 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          windowsOptions:
+            hostProcess: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -230,16 +279,24 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
+        securityContext:
+          windowsOptions:
+            hostProcess: true
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          windowsOptions:
+            hostProcess: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -255,18 +312,24 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
+        securityContext:
+          windowsOptions:
+            hostProcess: true
       - name: initcontainer02
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: true
+          windowsOptions:
+            hostProcess: true
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -283,6 +346,7 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       containers:
       - name: container01
         image: dummyimagename
@@ -301,11 +365,13 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          windowsOptions:
+            hostProcess: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -321,13 +387,15 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       containers:
       - name: container01
         image: dummyimagename
       - name: container02
         image: dummyimagename
         securityContext:
-          privileged: false
+          windowsOptions:
+            hostProcess: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -343,6 +411,7 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
@@ -364,11 +433,13 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: false
+          windowsOptions:
+            hostProcess: false
       containers:
       - name: container01
         image: dummyimagename
@@ -387,18 +458,21 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: initcontainer01
         image: dummyimagename
         securityContext:
-          privileged: false
+          windowsOptions:
+            hostProcess: false
       - name: initcontainer02
         image: dummyimagename
       containers:
       - name: container01
         image: dummyimagename
         securityContext:
-          privileged: false
+          windowsOptions:
+            hostProcess: false
 ---
 ###### CronJobs - Bad
 apiVersion: batch/v1
@@ -412,11 +486,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -429,13 +505,18 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              windowsOptions:
+                hostProcess: true
           - name: container02
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -448,14 +529,19 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              windowsOptions:
+                hostProcess: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -468,16 +554,24 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
+            securityContext:
+              windowsOptions:
+                hostProcess: true
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              windowsOptions:
+                hostProcess: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -490,18 +584,24 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
+            securityContext:
+              windowsOptions:
+                hostProcess: true
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: true
+              windowsOptions:
+                hostProcess: true
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -515,6 +615,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           containers:
           - name: container01
             image: dummyimagename
@@ -530,11 +631,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              windowsOptions:
+                hostProcess: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -547,13 +650,15 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           containers:
           - name: container01
             image: dummyimagename
           - name: container02
             image: dummyimagename
             securityContext:
-              privileged: false
+              windowsOptions:
+                hostProcess: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -566,6 +671,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
@@ -584,11 +690,13 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
             securityContext:
-              privileged: false
+              windowsOptions:
+                hostProcess: false
           containers:
           - name: container01
             image: dummyimagename
@@ -604,15 +712,18 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          hostNetwork: true
           initContainers:
           - name: initcontainer01
             image: dummyimagename
           - name: initcontainer02
             image: dummyimagename
             securityContext:
-              privileged: false
+              windowsOptions:
+                hostProcess: false
           containers:
           - name: container01
             image: dummyimagename
             securityContext:
-              privileged: false
+              windowsOptions:
+                hostProcess: false
