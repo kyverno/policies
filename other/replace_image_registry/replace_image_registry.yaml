@@ -3,6 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: replace-image-registry
   annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Replace Image Registry
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
