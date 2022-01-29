@@ -20,9 +20,10 @@ spec:
   rules:
     - name: check-runasgroup
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Running with root group IDs is disallowed. The fields
