@@ -50,6 +50,12 @@ spec:
   validationFailureAction: audit
   background: true
   rules:
+  - name: my-rule-name
+    match:
+      any:
+      - resources:
+          kinds:
+            - Resource
 ```
 
 ## Policy Requests
