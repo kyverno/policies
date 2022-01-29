@@ -33,6 +33,7 @@ spec:
       message: Nginx containers inside myapp-maintanence Pods may not be exec'd into.
       deny:
         conditions:
+          all:
           - key: "{{ request.object.container }}"
             operator: Equals
             value: nginx
