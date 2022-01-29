@@ -19,9 +19,10 @@ spec:
   rules:
     - name: require-drop-all
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       preconditions:
         all:
         - key: "{{ request.operation }}"

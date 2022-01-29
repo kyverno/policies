@@ -18,9 +18,10 @@ spec:
   rules:
     - name: selinux-type
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Setting the SELinux type is restricted. The fields

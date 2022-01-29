@@ -18,9 +18,10 @@ spec:
   rules:
     - name: adding-capabilities
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Any capabilities added beyond the allowed list (AUDIT_WRITE, CHOWN, DAC_OVERRIDE, FOWNER,

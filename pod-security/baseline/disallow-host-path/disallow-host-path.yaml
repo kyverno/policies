@@ -19,9 +19,10 @@ spec:
   rules:
     - name: host-path
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset.

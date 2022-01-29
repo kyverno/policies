@@ -19,46 +19,47 @@ spec:
   background: true
   validationFailureAction: audit
   rules:
-  - name: check-seccomp-strict
-    match:
-      resources:
-        kinds:
-        - Pod
-    validate:
-      message: >-
-        Use of custom Seccomp profiles is disallowed. The fields
-        spec.securityContext.seccompProfile.type,
-        spec.containers[*].securityContext.seccompProfile.type,
-        spec.initContainers[*].securityContext.seccompProfile.type, and
-        spec.ephemeralContainers[*].securityContext.seccompProfile.type
-        must be set to `RuntimeDefault` or `Localhost`.
-      anyPattern:
-      - spec:
-          securityContext:
-            seccompProfile:
-              type: "RuntimeDefault | Localhost"
-          =(ephemeralContainers):
-          - =(securityContext):
-              =(seccompProfile):
-                =(type): "RuntimeDefault | Localhost"
-          =(initContainers):
-          - =(securityContext):
-              =(seccompProfile):
-                =(type): "RuntimeDefault | Localhost"
-          containers:
-          - =(securityContext):
-              =(seccompProfile):
-                =(type): "RuntimeDefault | Localhost"
-      - spec:
-          =(ephemeralContainers):
-          - securityContext:
+    - name: check-seccomp-strict
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      validate:
+        message: >-
+          Use of custom Seccomp profiles is disallowed. The fields
+          spec.securityContext.seccompProfile.type,
+          spec.containers[*].securityContext.seccompProfile.type,
+          spec.initContainers[*].securityContext.seccompProfile.type, and
+          spec.ephemeralContainers[*].securityContext.seccompProfile.type
+          must be set to `RuntimeDefault` or `Localhost`.
+        anyPattern:
+        - spec:
+            securityContext:
               seccompProfile:
                 type: "RuntimeDefault | Localhost"
-          =(initContainers):
-          - securityContext:
-              seccompProfile:
-                type: "RuntimeDefault | Localhost"
-          containers:
-          - securityContext:
-              seccompProfile:
-                type: "RuntimeDefault | Localhost"
+            =(ephemeralContainers):
+            - =(securityContext):
+                =(seccompProfile):
+                  =(type): "RuntimeDefault | Localhost"
+            =(initContainers):
+            - =(securityContext):
+                =(seccompProfile):
+                  =(type): "RuntimeDefault | Localhost"
+            containers:
+            - =(securityContext):
+                =(seccompProfile):
+                  =(type): "RuntimeDefault | Localhost"
+        - spec:
+            =(ephemeralContainers):
+            - securityContext:
+                seccompProfile:
+                  type: "RuntimeDefault | Localhost"
+            =(initContainers):
+            - securityContext:
+                seccompProfile:
+                  type: "RuntimeDefault | Localhost"
+            containers:
+            - securityContext:
+                seccompProfile:
+                  type: "RuntimeDefault | Localhost"

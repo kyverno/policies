@@ -20,9 +20,10 @@ spec:
   rules:
     - name: check-proc-mount
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Changing the proc mount from the default is not allowed. The fields

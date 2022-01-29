@@ -20,9 +20,10 @@ spec:
   rules:
     - name: host-namespaces
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Sharing the host namespaces is disallowed. The fields spec.hostNetwork,

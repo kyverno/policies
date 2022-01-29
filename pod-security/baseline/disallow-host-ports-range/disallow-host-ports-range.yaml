@@ -20,9 +20,10 @@ spec:
   rules:
     - name: host-port-range
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           The only permitted hostPorts are in the range 5000-6000.
