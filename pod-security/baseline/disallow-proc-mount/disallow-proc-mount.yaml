@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: require-default-proc-mount
+  name: disallow-proc-mount
   annotations:
     policies.kyverno.io/title: Disallow procMount
     policies.kyverno.io/category: Pod Security Standards (Baseline)
