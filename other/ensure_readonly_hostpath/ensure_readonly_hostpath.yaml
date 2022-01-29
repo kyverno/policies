@@ -43,6 +43,7 @@ spec:
           # counts aren't equal, deny the Pod because at least one is attempting to mount that hostPath in read/write mode. Note that the absence of
           # the `readOnly: true` field implies read/write access. Therefore, every hostPath volume must explicitly specify that it should be mounted
           # in readOnly mode, regardless of where that occurs in a Pod.
-          - key: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}'][] | length(@) }}"
-            operator: NotEquals
-            value: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}' && readOnly] [] | length(@) }}"
+            any:
+            - key: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}'][] | length(@) }}"
+              operator: NotEquals
+              value: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}' && readOnly] [] | length(@) }}"
