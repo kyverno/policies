@@ -26,13 +26,15 @@ spec:
         urlPath: "/api/v1/namespaces/{{request.namespace}}/pods/{{request.name}}"
         jmesPath: "metadata.labels.exec"
     preconditions:
-    - key: "{{ request.operation }}"
-      operator: Equals
-      value: CONNECT
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: CONNECT
     validate:
       message: Exec'ing into Pods protected with the label `exec=false` is forbidden.
       deny:
         conditions:
+          all:
           - key: "{{ podexeclabel }}"
             operator: Equals
             value: "false"

@@ -26,13 +26,15 @@ spec:
         urlPath: "/api/v1/namespaces/{{request.namespace}}"
         jmesPath: "metadata.labels.exec"
     preconditions:
-    - key: "{{ request.operation }}"
-      operator: Equals
-      value: CONNECT
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: CONNECT
     validate:
       message: Executing a command in a container is forbidden for Pods running in Namespaces protected with the label "exec=false".
       deny:
         conditions:
+          any:
           - key: "{{ nslabelexec }}"
             operator: Equals
             value: "false"
