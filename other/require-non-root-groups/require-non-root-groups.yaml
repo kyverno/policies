@@ -56,9 +56,10 @@ spec:
                   runAsGroup: ">0"
     - name: check-supplementalgroups
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Containers cannot run with a root primary or supplementary GID. The field
@@ -70,9 +71,10 @@ spec:
               =(supplementalGroups): ">0"
     - name: check-fsgroup
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       validate:
         message: >-
           Containers cannot run with a root primary or supplementary GID. The field

@@ -41,9 +41,10 @@ spec:
                   value: "{{ element.securityContext.capabilities.drop || '' }}"
     - name: adding-capabilities-strict
       match:
-        resources:
-          kinds:
-            - Pod
+        any:
+        - resources:
+            kinds:
+              - Pod
       preconditions:
         all:
         - key: "{{ request.operation }}"
