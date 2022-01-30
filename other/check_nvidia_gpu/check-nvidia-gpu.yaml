@@ -17,7 +17,7 @@ metadata:
       request a GPU to ensure they have been authored with this environment
       variable.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   rules:
   - name: check-nvidia-gpus
     match:
