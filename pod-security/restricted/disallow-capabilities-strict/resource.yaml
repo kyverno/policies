@@ -1426,9 +1426,6 @@ spec:
   - name: container01
     image: dummyimagename
 ---
-##################################################
-## Rule: adding-capabilities-strict-controllers ##
-##################################################
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
@@ -1937,9 +1934,6 @@ spec:
       - name: container01
         image: dummyimagename
 ---
-###############################################
-## Rule: adding-capabilities-strict-cronjobs ##
-###############################################
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
