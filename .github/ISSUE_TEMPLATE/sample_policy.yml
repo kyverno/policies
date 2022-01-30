@@ -1,0 +1,74 @@
+name: "Sample Policy"
+description: Suggest a new policy that you would like Kyverno to support. This issue type is not for problems with existing policies.
+title: "[Sample] "
+labels: ["sample"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please tell us about the sample policy you wish to see.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: Describe the problem.
+      placeholder: A clear and concise description of the problem statement.
+      # value: "asdf"
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Solution Description
+      description: Describe the solution you'd like.
+      placeholder: A clear and concise description of what you want to happen.
+      # value: "asdf"
+    validations:
+      required: true
+  - type: textarea
+    id: validate-good
+    attributes:
+      label: Example "Good" Resource
+      description: >-
+        For a validate rule, provide an example of one or more "good" Kubernetes resources which should be allowed.
+        For other types of policies, provide a sample input resource.
+        YAML syntax highlighting will be applied automatically.
+      render: yaml
+  - type: textarea
+    id: validate-bad
+    attributes:
+      label: Example "Bad" Resource
+      description: >-
+        For a validate rule, provide an example of one or more "bad" Kubernetes resources which should be denied.
+        For other types of policies, provide a sample output resource.
+        YAML syntax highlighting will be applied automatically.
+      render: yaml
+  - type: textarea
+    id: other
+    attributes:
+      label: Other Comments
+      description: Provide any other comments.
+      placeholder: Any other relevant comments.
+      # value: "asdf"
+    validations:
+      required: false
+  - type: input
+    id: slack
+    attributes:
+      label: Slack discussion
+      description: >-
+        If this issue is the result of a discussion thread on Slack, please provide the link to the discussion for reference.
+      # placeholder: ex. email@example.com
+    validations:
+      required: false
+  - type: checkboxes
+    id: troubleshooting
+    attributes:
+      label: Troubleshooting
+      description: >-
+        By submitting this issue, you agree that you have performed some basic attempts at researching and solving your problem.
+      options:
+        - label: I have read and followed the documentation AND the [troubleshooting guide](https://kyverno.io/docs/troubleshooting/).
+          required: true
+        - label: I have verified the policy does not exist in the [samples library](https://kyverno.io/policies/).
+          required: true
