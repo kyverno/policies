@@ -1,0 +1,328 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-badpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - CHOWN
+        - NET_BIND_SERVICE
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: addcap-goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - NET_BIND_SERVICE
+  containers:
+  - name: container01
+    image: dummyimagename
