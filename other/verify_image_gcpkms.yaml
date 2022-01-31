@@ -20,9 +20,10 @@ spec:
   background: false
   rules:
     - name: verify-image
-      any:
-        resources:
-          kinds:
+      match:
+        any:
+          resources:
+            kinds:
             - Pod
       verifyImages:
         - image: "ghcr.io/kyverno/test-verify-image:*"
