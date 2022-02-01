@@ -14,7 +14,7 @@ metadata:
       verification policy looks like a global key in a ConfigMap
       and also an image-specific key in the same ConfigMap.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: enforce
   background: false
   rules:
     - name: check-image-with-two-keys
