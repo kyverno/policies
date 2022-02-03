@@ -1,3 +1,6 @@
+bases:
+  - ../baseline
+  
 resources:
   - disallow-capabilities-strict/disallow-capabilities-strict.yaml
   - disallow-privilege-escalation/disallow-privilege-escalation.yaml
