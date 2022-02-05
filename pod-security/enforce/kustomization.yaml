@@ -1,0 +1,10 @@
+bases:
+- ../restricted
+
+patches:
+  - patch: |-
+      - op: replace
+        path: /spec/validationFailureAction
+        value: enforce
+    target:
+      kind: ClusterPolicy 
