@@ -33,10 +33,10 @@ results:
     resource: myapp-pod2
     kind: Pod
     patchedResource: patchedResource3.yaml
-    result: fail
+    result: pass
   - policy: replace-image-registry
     rule: replace-image-registry-pod-initcontainers
     resource: myapp-pod2
     kind: Pod
     patchedResource: patchedResource3.yaml
-    result: fail
+    result: pass
