@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod
+  name: myapp-pod01
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 spec:
@@ -14,13 +14,11 @@ spec:
   volumes:
     - name: mydir
       emptyDir: {}
-
 ---
-
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod
+  name: myapp-pod02
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 spec:
@@ -34,3 +32,34 @@ spec:
     - name: myfile
       hostPath:
         path: "*"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod03
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.1
+    volumeMounts:
+    - mountPath: /var/local/aaa
+      name: mydir
+  volumes:
+    - name: mydir
+      emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod04
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.1
+    volumeMounts:
+    - mountPath: /var/local/aaa
+      name: myfile
+  volumes:
+    - name: myfile
+      hostPath:
+        path: "/foo"
