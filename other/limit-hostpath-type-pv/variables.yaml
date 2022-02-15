@@ -1,0 +1,9 @@
+policies:
+  - name: limit-hostpath-type-pv
+    resources:
+      - name: good-pv
+        values:
+          request.operation: CREATE
+      - name: bad-pv
+        values:
+          request.operation: CREATE
