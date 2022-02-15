@@ -6,7 +6,6 @@ metadata:
     policies.kyverno.io/title: Limit hostPath PersistentVolumes to Specific Directories
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/subject: PersistentVolume
     policies.kyverno.io/description: >-
       hostPath persistentvolumes consume the underlying node's file system. If hostPath volumes
