@@ -1,11 +1,21 @@
 name: restrict_node_port
 policies:
-  -  restrict_node_port.yaml
+  - restrict_node_port.yaml
 resources:
-  -  resource.yaml
+  - resource.yaml
 results:
   - policy: restrict-nodeport
     rule: validate-nodeport
-    resource: my-service
+    resource: badservice01
     kind: Service
     result: fail
+  - policy: restrict-nodeport
+    rule: validate-nodeport
+    resource: goodservice01
+    kind: Service
+    result: pass
+  - policy: restrict-nodeport
+    rule: validate-nodeport
+    resource: goodservice02
+    kind: Service
+    result: pass

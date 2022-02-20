@@ -1,7 +1,55 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod
+  name: goodpod01
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: k8s.gcr.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 7070
+      periodSeconds: 20
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: k8s.gcr.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 7070
+      periodSeconds: 20
+  - name: busybox
+    image: busybox
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+    livenessProbe:
+      tcpSocket:
+        port: 7070
+      periodSeconds: 20
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
   labels:
     app: myapp
 spec:
@@ -14,3 +62,35 @@ spec:
       tcpSocket:
         port: 8080
       periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: k8s.gcr.io/goproxy:0.1
+    ports:
+    - containerPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: k8s.gcr.io/goproxy:0.1
+    ports:
+    - containerPort: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+  - name: nginx
+    image: nginx:latest

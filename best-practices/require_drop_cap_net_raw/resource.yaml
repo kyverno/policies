@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities
+  name: drop-good
 spec:
   initContainers:
   - name: init
@@ -15,3 +15,30 @@ spec:
     securityContext:
       capabilities:
         drop: ["CAP_NET_RAW"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  initContainers:
+  - name: init
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["CAP_NET_RAW"]
+  containers:
+  - name: add-capabilities
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["CAP_CHOWN"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: add-capabilities
+    image: gcr.io/google-samples/node-hello:1.0
