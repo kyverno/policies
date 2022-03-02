@@ -19,8 +19,9 @@ spec:
   rules:
     - name: block-stale-images
       match:
-        resources:
-          kinds:
+        any:
+        - resources:
+            kinds:
             - Pod
       validate:
         message: "Images built more than 6 months ago are prohibited."
