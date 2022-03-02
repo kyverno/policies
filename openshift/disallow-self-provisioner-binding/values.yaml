@@ -1,0 +1,8 @@
+policies:
+  - name: disallow-self-provisioner-binding
+    rules:
+      - name: check-self-provisioner-binding-no-subject
+    resources:
+      - name: self-provisioners
+        values: 
+          request.operation: UPDATE
