@@ -18,9 +18,10 @@ spec:
   rules:
   - name: check-etcd-encryption
     match:
-      resources:
-        kinds:
-        - config.openshift.io/v1/APIServer
+      any:
+      - resources:
+          kinds:
+          - config.openshift.io/v1/APIServer
     validate:
       message: >-
         Encryption should be enabled for etcd

@@ -18,10 +18,11 @@ spec:
   rules:
   - name: check-security-context-constraint
     match:
-      resources:
-        kinds:
-        - ClusterRole
-        - Role
+      any:
+      - resources:
+          kinds:
+          - ClusterRole
+          - Role
     validate:
       message: >-
         Use of the SecurityContextConstraint (SCC) anyuid is not allowed
@@ -38,10 +39,11 @@ spec:
               value: true
   - name: check-security-context-roleref
     match:
-      resources:
-        kinds:
-        - ClusterRoleBinding
-        - RoleBinding
+      any:
+      - resources:
+          kinds:
+          - ClusterRoleBinding
+          - RoleBinding
     validate:
       message: >-
         Use of the SecurityContextConstraint (SCC) anyuid is not allowed

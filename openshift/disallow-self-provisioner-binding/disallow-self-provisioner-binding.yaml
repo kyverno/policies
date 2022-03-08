@@ -18,9 +18,10 @@ spec:
   rules:
   - name: check-self-provisioner-binding-no-subject
     match:
-      resources:
-        kinds:
-        - ClusterRoleBinding
+      any:
+      - resources:
+          kinds:
+          - ClusterRoleBinding
     preconditions:
       all:
       - key: "{{request.object.metadata.name}}"
@@ -36,9 +37,10 @@ spec:
         =(subjects): {}
   - name: check-self-provisioner-binding-with-subject
     match:
-      resources:
-        kinds:
-        - ClusterRoleBinding
+      any:
+      - resources:
+          kinds:
+          - ClusterRoleBinding
     preconditions:
       all:
       - key: "{{request.object.metadata.name || ''}}"

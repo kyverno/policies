@@ -22,12 +22,13 @@ spec:
   rules:
   - name: check-deprecated-apis
     match:
-      resources:
-        kinds:
-        - authorization.openshift.io/v1/ClusterRole
-        - authorization.openshift.io/v1/ClusterRoleBinding
-        - authorization.openshift.io/v1/Role
-        - authorization.openshift.io/v1/RoleBinding
+      any:
+      - resources:
+          kinds:
+          - authorization.openshift.io/v1/ClusterRole
+          - authorization.openshift.io/v1/ClusterRoleBinding
+          - authorization.openshift.io/v1/Role
+          - authorization.openshift.io/v1/RoleBinding
     validate:
       message: >-
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated.
