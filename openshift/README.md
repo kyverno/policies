@@ -9,7 +9,7 @@
 5. Disallow the use of the SecurityContextConstraint (SCC) anyuid which allows a pod to run with the UID as declared in the image instead of a random UID
 6. Disallow the use of non HTTPS OpenShift Routes
 
-## Running Tests
+## Running Tests to verify policies
 
 1. Install the [Kyverno CLI](https://kyverno.io/docs/kyverno-cli/).
 2. Clone this repo and `cd` to it.
