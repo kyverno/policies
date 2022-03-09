@@ -1,0 +1,26 @@
+name: check-routes
+policies:
+  - check-routes.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: check-routes
+    rule: require-tls-routes
+    resource: hello-openshift-http
+    kind: Route
+    result: fail
+  - policy: check-routes
+    rule: require-tls-routes
+    resource: frontend
+    kind: Route
+    result: pass
+  - policy: check-routes
+    rule: require-tls-routes
+    resource: frontend-edge
+    kind: Route
+    result: pass
+  - policy: check-routes
+    rule: require-tls-routes
+    resource: route-passthrough-secured
+    kind: Route
+    result: pass
