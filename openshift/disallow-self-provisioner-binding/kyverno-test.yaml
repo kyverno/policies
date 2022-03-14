@@ -1,0 +1,27 @@
+name: check-routes
+policies:
+  - disallow-self-provisioner-binding.yaml
+resources:
+  - resources.yaml
+variables: values.yaml
+results:
+  - policy: disallow-self-provisioner-binding
+    rule: check-self-provisioner-binding-no-subject
+    resource: self-provisioners
+    kind: ClusterRoleBinding
+    result: pass
+  - policy: disallow-self-provisioner-binding
+    rule: check-self-provisioner-binding-with-subject
+    resource: self-provisioners-custom
+    kind: ClusterRoleBinding
+    result: fail
+  - policy: disallow-self-provisioner-binding
+    rule: check-self-provisioner-binding-with-subject
+    resource: self-provisioners-custom-test
+    kind: ClusterRoleBinding
+    result: fail
+  - policy: disallow-self-provisioner-binding
+    rule: check-self-provisioner-binding-with-subject
+    resource: system:openshift:scc:privileged
+    kind: ClusterRoleBinding
+    result: pass

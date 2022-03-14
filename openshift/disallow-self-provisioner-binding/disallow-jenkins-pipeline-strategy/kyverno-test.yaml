@@ -1,0 +1,26 @@
+name: check-policy
+policies:
+  - disallow-jenkins-pipeline-strategy.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: disallow-jenkins-pipeline-strategy
+    rule: check-build-strategy
+    resource: sample-jenkins-pipeline
+    kind: BuildConfig
+    result: fail
+  - policy: disallow-jenkins-pipeline-strategy
+    rule: check-build-strategy
+    resource: sample-pipeline-no-jenkins
+    kind: BuildConfig
+    result: pass
+  - policy: disallow-jenkins-pipeline-strategy
+    rule: check-build-strategy
+    resource: sample-jenkins-pipeline-new
+    kind: BuildConfig
+    result: fail
+  - policy: disallow-jenkins-pipeline-strategy
+    rule: check-build-strategy
+    resource: sample-pipeline-no-jenkins-new
+    kind: BuildConfig
+    result: pass
