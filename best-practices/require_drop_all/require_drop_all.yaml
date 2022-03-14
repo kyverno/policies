@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Drop All Capabilities
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.5.0
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Capabilities permit privileged actions without giving full root access. All
@@ -15,104 +15,27 @@ metadata:
       ability.      
 spec:
   validationFailureAction: audit
-  background: false
+  background: true
   rules:
-  # Checks initContainers and containers to ensure they all specify a securityContext.capabilities.drop section
-  - name: check-for-drop-initcontainers
-    match:
-      resources:
-        kinds:
-        - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: In
-        value:
-        - CREATE
-        - UPDATE
-      - key: "{{ request.object.spec.initContainers[] | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-    validate:
-      message: All initContainers must specify the securityContext.capabilities.drop section.
-      deny:
-        conditions:
-          any:
-          # Deny if every initContainer in the Pod doesn't specify the `drop[]` array (doesn't exist)
-          - key: "{{request.object.spec.initContainers[].securityContext.capabilities.drop | length(@) }}"
-            operator: NotEquals
-            value: "{{request.object.spec.initContainers[] | length(@) }}"
-  # Checks containers to ensure they all specify a securityContext.capabilities.drop section
-  - name: check-for-drop-containers
-    match:
-      resources:
-        kinds:
-        - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: In
-        value:
-        - CREATE
-        - UPDATE
-    validate:
-      message: All containers must specify the securityContext.capabilities.drop section.
-      deny:
-        conditions:
-          any:
-          # Deny if every container in the Pod doesn't specify the `drop[]` array (doesn't exist)
-          - key: "{{request.object.spec.containers[].securityContext.capabilities.drop | length(@) }}"
-            operator: NotEquals
-            value: "{{request.object.spec.containers[] | length(@) }}"
-  # Checks initContainers to ensure they drop ALL
-  - name: drop-all-initcontainers
-    match:
-      resources:
-        kinds:
-        - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: In
-        value:
-        - CREATE
-        - UPDATE
-      # Check if initContainers even exist in the Pod
-      - key: "{{ request.object.spec.initContainers[] | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-    validate:
-      message: The capability ALL must be explicitly dropped.
-      foreach:
-      - list: "request.object.spec.initContainers[].securityContext.capabilities"
-        deny:
-          conditions:
-            any:
-            # Loop over the `drop[]` array in each container looking for `ALL` and deny if not found
-            - key: "{{ element.drop  | contains(@, 'ALL') }}"
-              operator: Equals
-              value: false
-  # Checks containers to ensure they drop ALL
-  - name: drop-all-containers
-    match:
-      resources:
-        kinds:
-        - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: In
-        value:
-        - CREATE
-        - UPDATE
-    validate:
-      message: The capability ALL must be explicitly dropped.
-      foreach:
-      - list: "request.object.spec.containers[].securityContext.capabilities"
-        deny:
-          conditions:
-            any:
-            # Loop over the `drop[]` array in each container looking for `ALL` and deny if not found
-            - key: "{{ element.drop  | contains(@, 'ALL') }}"
-              operator: Equals
-              value: false
+    - name: require-drop-all
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      preconditions:
+        all:
+        - key: "{{ request.operation }}"
+          operator: NotEquals
+          value: DELETE
+      validate:
+        message: >-
+          Containers must drop `ALL` capabilities.
+        foreach:
+          - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+            deny:
+              conditions:
+                all:
+                - key: ALL
+                  operator: AnyNotIn
+                  value: "{{ element.securityContext.capabilities.drop || '' }}"

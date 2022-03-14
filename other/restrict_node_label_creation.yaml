@@ -29,9 +29,9 @@ spec:
       - key: "{{request.operation}}"
         operator: Equals
         value: UPDATE
-      - key: "{{request.object.metadata.labels.foo}}"
+      - key: "{{request.object.metadata.labels.foo || '' }}"
         operator: Equals
-        value: "*"
+        value: "?*"
     validate:
       message: "Setting the `foo` label on a Node is not allowed."
       deny: {}

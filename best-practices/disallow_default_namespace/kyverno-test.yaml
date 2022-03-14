@@ -4,13 +4,25 @@ policies:
 resources:
   -  resource.yaml
 results:
-  - policy: disallow-default-namespace
-    rule: require-namespace
-    resource: myapp-pod
-    kind: Pod
-    result: pass
+  # validate-namespace
   - policy: disallow-default-namespace
     rule: validate-namespace
-    resource: myapp-pod
+    resource: badpod01
     kind: Pod
     result: fail
+  - policy: disallow-default-namespace
+    rule: validate-namespace
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  # validate-podcontroller-namespace
+  - policy: disallow-default-namespace
+    rule: validate-podcontroller-namespace
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-default-namespace
+    rule: validate-podcontroller-namespace
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass

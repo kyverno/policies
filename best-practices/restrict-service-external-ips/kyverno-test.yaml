@@ -6,6 +6,16 @@ resources:
 results:
   - policy: restrict-external-ips
     rule: check-ips
-    resource: my-service
+    resource: goodservice01
     kind: Service
     result: pass
+  - policy: restrict-external-ips
+    rule: check-ips
+    resource: badservice01
+    kind: Service
+    result: fail
+  - policy: restrict-external-ips
+    rule: check-ips
+    resource: badservice02
+    kind: Service
+    result: fail

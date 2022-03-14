@@ -1,8 +1,8 @@
 name: limit_dnsnames
 policies:
-  -  limit-dnsnames.yaml
+  - limit-dnsnames.yaml
 resources:
-  -  resource.yaml
+  - resource.yaml
 results:
   - policy: cert-manager-limit-dnsnames
     rule: limit-dnsnames

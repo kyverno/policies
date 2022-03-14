@@ -28,12 +28,12 @@ spec:
       deny:
         conditions:
           all:
-          - key: "{{ request.object.metadata.labels.foo }}"
-            operator: "NotEquals"
+          - key: "{{ request.object.metadata.labels.foo || '' }}"
+            operator: NotEquals
             value: ""
-          - key: "{{ request.object.metadata.labels.foo }}"
-            operator: "NotEquals"
-            value: "{{ request.oldObject.metadata.labels.foo }}"
+          - key: "{{ request.object.metadata.labels.foo || '' }}"
+            operator: NotEquals
+            value: "{{ request.oldObject.metadata.labels.foo || '' }}"
   - name: prevent-label-key-removal
     match:
       resources:
@@ -42,11 +42,11 @@ spec:
     preconditions:
       all:
       - key: "{{ request.operation }}"
-        operator: "Equals"
+        operator: Equals
         value: UPDATE
-      - key: "{{ request.oldObject.metadata.labels.foo }}"
-        operator: "Equals"
-        value: "*"
+      - key: "{{ request.oldObject.metadata.labels.foo || '' }}"
+        operator: Equals
+        value: "?*"
     validate:
       message: "Removing the `foo` label on a Node is not allowed."
       pattern:
