@@ -1,0 +1,108 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ensure-production-matches-staging
+  annotations:
+    policies.kyverno.io/title: Ensure Production matches staging
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/description: >-
+         Having two environments (production,staging) with namespaces for each, 
+         make sure that
+         * every deployment in production has a corresponding deployment in staging
+         * that a production deployment uses same image name as its staging counterpart
+         * that a production deployment uses an older or equal image version as its staging counterpart
+
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+
+  - name: require-staging-deployment
+    match:
+      resources:
+        namespaces:
+        - production
+        kinds:
+        - Deployment
+    preconditions:
+      any:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE        
+        - UPDATE
+    context:
+    - name: deployment_count
+      apiCall:
+        urlPath: "/apis/apps/v1/namespaces/staging/deployments"
+        jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ]  | length(@)"
+    validate:
+      message: "Every Deployment in prod requires a corresponding Deployment in staging"
+      deny:
+        conditions:
+          any:
+          - key: "{{deployment_count}}"
+            operator: Equals
+            value: 0
+
+
+
+  - name: require-same-image
+    match:
+      resources:
+        namespaces:
+        - production
+        kinds:
+        - Deployment
+    preconditions:
+      any:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE        
+        - UPDATE
+    context:
+    - name: deployment_image
+      apiCall:
+        urlPath: "/apis/apps/v1/namespaces/staging/deployments"
+        jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ]  | [0].spec.template.spec.containers[0].image || '' |  split(@, ':') | [0] "
+    validate:
+      message: "Every Deployment in production is required to use the same image as in staging"
+      deny:
+        conditions:
+          any:
+          - key: "{{ request.object.spec.template.spec.containers[0].image  | split(@, ':') | [0] }}"
+            operator: NotEquals
+            value: "{{ deployment_image }}"
+
+
+
+  - name: require-same-or-older-imageversiom
+    match:
+      resources:
+        namespaces:
+        - production
+        kinds:
+        - Deployment
+    preconditions:
+      any:
+      - key: "{{request.operation}}"
+        operator: In
+        value:
+        - CREATE        
+        - UPDATE
+    context:
+    - name: deployment_ver
+      apiCall:
+        urlPath: "/apis/apps/v1/namespaces/staging/deployments"
+        jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ] | [0].spec.template.spec.containers[0].image || ':' | split(@, ':') | [1]"
+    validate:
+      message: "Every Deployment in production is required to use the same image as in staging"
+      deny:
+        conditions:
+          any:
+          - key: "{{ request.object.spec.template.spec.containers[0].image  | split(@, ':') | [1] }}"
+            operator: GreaterThan
+            value: "{{ deployment_ver }}"            
