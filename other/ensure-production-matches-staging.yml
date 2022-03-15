@@ -57,13 +57,20 @@ spec:
         kinds:
         - Deployment
     preconditions:
-      any:
+      all:
       - key: "{{request.operation}}"
         operator: In
         value:
         - CREATE        
         - UPDATE
+      - key: "{{ deployment_count }}"
+        operator: GreaterThan
+        value: 0
     context:
+    - name: deployment_count
+      apiCall:
+        urlPath: "/apis/apps/v1/namespaces/staging/deployments"
+        jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ]  | length(@)"
     - name: deployment_image
       apiCall:
         urlPath: "/apis/apps/v1/namespaces/staging/deployments"
@@ -79,7 +86,7 @@ spec:
 
 
 
-  - name: require-same-or-older-imageversiom
+  - name: require-same-or-older-imageversion
     match:
       resources:
         namespaces:
@@ -87,22 +94,30 @@ spec:
         kinds:
         - Deployment
     preconditions:
-      any:
+      all:
       - key: "{{request.operation}}"
         operator: In
         value:
         - CREATE        
         - UPDATE
+      - key: "{{ deployment_count }}"
+        operator: GreaterThan
+        value: 0
     context:
+    - name: deployment_count
+      apiCall:
+        urlPath: "/apis/apps/v1/namespaces/staging/deployments"
+        jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ]  | length(@)"
     - name: deployment_ver
       apiCall:
         urlPath: "/apis/apps/v1/namespaces/staging/deployments"
         jmesPath: "items[? metadata.name == '{{ request.object.metadata.name}}'  ] | [0].spec.template.spec.containers[0].image || ':' | split(@, ':') | [1]"
     validate:
-      message: "Every Deployment in production is required to use the same image as in staging"
+      message: "Every Deployment in production is required to use an image version less than or equal to the one in staging"
       deny:
         conditions:
           any:
           - key: "{{ request.object.spec.template.spec.containers[0].image  | split(@, ':') | [1] }}"
             operator: GreaterThan
             value: "{{ deployment_ver }}"            
+
