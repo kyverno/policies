@@ -10,11 +10,4 @@ resources:
   - restrict-apparmor-profiles/restrict-apparmor-profiles.yaml
   - restrict-seccomp/restrict-seccomp.yaml
   - restrict-sysctls/restrict-sysctls.yaml
-
-patches:
-  - patch: |-
-      - op: replace
-        path: /spec/validationFailureAction
-        value: enforce
-    target:
-      kind: ClusterPolicy
+  
