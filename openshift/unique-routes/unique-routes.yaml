@@ -42,5 +42,5 @@ spec:
           conditions:
             all:
               - key: "{{ request.object.spec.host }}"
-                operator: In
+                operator: AnyIn
                 value: "{{ hosts }}"
