@@ -14,4 +14,4 @@ results:
     rule: limit-configmap-for-sa-developer
     resource: any-configmap-name-bad
     kind: ConfigMap
-    result: skip
+    result: fail

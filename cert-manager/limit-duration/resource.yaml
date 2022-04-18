@@ -41,6 +41,7 @@ spec:
     name: letsencrypt-prod
     kind: Issuer
     group: cert-manager.io
+  duration: 3400h0m0s
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
