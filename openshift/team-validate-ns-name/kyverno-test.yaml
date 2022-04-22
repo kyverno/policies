@@ -1,0 +1,16 @@
+name: team-validate-ns-name
+policies:
+  - team-validate-ns-name.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: team-validate-ns-name
+    rule: team-validate-ns-name
+    resource: team1-test
+    kind: Namespace
+    result: pass
+  - policy: team-validate-ns-name
+    rule: team-validate-ns-name
+    resource: test-namespace
+    kind: Namespace
+    result: fail
