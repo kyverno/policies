@@ -14,9 +14,10 @@ spec:
   rules:
     - name: check-paths
       match:
-        resources:
-          kinds:
-            - Ingress
+        any:
+        - resources:
+            kinds:
+            - networking.k8s.io/v1/Ingress
       validate:
         message: "spec.rules[].http.paths[].path value is not allowed"
         deny:
