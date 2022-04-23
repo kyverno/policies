@@ -1,0 +1,61 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-ingress-paths
+  annotations:
+    policies.kyverno.io/title: Restrict NGINX Ingress path values 
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Ingress, NGINX Ingress
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: |-
+      This policy mitigates CVE-2021-25745 by restricting `spec.rules[].http.paths[].path` to safe values.
+spec:
+  rules:
+    - name: check-paths
+      match:
+        resources:
+          kinds:
+            - Ingress
+      validate:
+        message: "spec.rules[].http.paths[].path value is not allowed"
+        deny:
+          conditions:
+            any:
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'load_module') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'lua_package') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'_by_lua_') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'location') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'root') }}"
+              operator: AnyIn            
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'proxy_pass') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'serviceaccount') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'{') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'}') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'alias') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/etc') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/run/secrets') }}"
+              operator: AnyIn
+              value: [true]
+

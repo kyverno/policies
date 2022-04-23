@@ -1,0 +1,31 @@
+name: restrict-annotations
+policies:
+  -  restrict-path.yaml
+resources:
+  -  resources.yaml
+results:
+  - policy: restrict-ingress-paths
+    rule: check-paths
+    resource: good-paths
+    kind: Ingress
+    result: pass
+  - policy: restrict-ingress-paths
+    rule: check-paths
+    resource: bad-path-root
+    kind: Ingress
+    result: fail
+  - policy: restrict-ingress-paths
+    rule: check-paths
+    resource: bad-path-etc
+    kind: Ingress
+    result: fail
+  - policy: restrict-ingress-paths
+    rule: check-paths
+    resource: bad-path-serviceaccount
+    kind: Ingress
+    result: fail
+  - policy: restrict-ingress-paths
+    rule: check-paths
+    resource: bad-path-secrets
+    kind: Ingress
+    result: fail

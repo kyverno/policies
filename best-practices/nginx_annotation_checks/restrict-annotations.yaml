@@ -1,0 +1,41 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-annotations
+  annotations:
+    policies.kyverno.io/title: Restrict NGINX Ingress annotation values
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Ingress, NGINX Ingress
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: |-
+      This policy mitigates CVE-2021-25746 by restricting use of metadata.annotations.values to safe values
+      as specified in https://github.com/kubernetes/ingress-nginx/blame/main/internal/ingress/inspector/rules.go.
+spec:
+  rules:
+    - name: check-annotation-values
+      match:
+        resources:
+          kinds:
+            - Ingress
+      validate:
+        message: "metadata.annotations value is not allowed"
+        deny:
+          conditions:
+            any:
+              - key: "{{request.object.metadata.annotations.values(@)[].regex_match('\\s*alias\\s*.*;', @)}}"
+                operator: AnyIn
+                value: [true]
+              - key: "{{request.object.metadata.annotations.values(@)[].regex_match('\\s*root\\s*.*;', @)}}"
+                operator: AnyIn
+                value: [true]    
+              - key: "{{request.object.metadata.annotations.values(@)[].regex_match('/etc/(passwd|shadow|group|nginx|ingress-controller)', @)}}"
+                operator: AnyIn
+                value: [true]     
+              - key: "{{request.object.metadata.annotations.values(@)[].regex_match('/var/run/secrets', @)}}"
+                operator: AnyIn
+                value: [true]  
+              - key: "{{request.object.metadata.annotations.values(@)[].regex_match('.*_by_lua.*', @)}}"
+                operator: AnyIn
+                value: [true]
+
