@@ -23,40 +23,12 @@ spec:
         deny:
           conditions:
             any:
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'load_module') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'lua_package') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'_by_lua_') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'location') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'root') }}"
-              operator: AnyIn            
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'proxy_pass') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'serviceaccount') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'{') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'}') }}"
-              operator: AnyIn
-              value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'alias') }}"
-              operator: AnyIn
-              value: [true]
             - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/etc') }}"
               operator: AnyIn
               value: [true]
             - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/run/secrets') }}"
               operator: AnyIn
               value: [true]
-
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/secrets') }}"
+              operator: AnyIn
+              value: [true]
