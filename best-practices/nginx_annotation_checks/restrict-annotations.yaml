@@ -7,9 +7,6 @@ metadata:
     policies.kyverno.io/category: Security
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Ingress
-    policies.kyverno.io/minversion: "1.6.0"
-    kyverno.io/kyverno-version: "1.6.0"
-    kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
       This policy mitigates CVE-2021-25746 by restricting `metadata.annotations` to safe values.
       See: https://github.com/kubernetes/ingress-nginx/blame/main/internal/ingress/inspector/rules.go.
