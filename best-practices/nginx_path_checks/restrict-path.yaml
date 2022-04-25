@@ -8,8 +8,11 @@ metadata:
     policies.kyverno.io/severity: high
     policies.kyverno.io/subject: Ingress, NGINX Ingress
     policies.kyverno.io/minversion: 1.6.0
-    policies.kyverno.io/description: |-
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: 1.23
+    policies.kyverno.io/description: >-
       This policy mitigates CVE-2021-25745 by restricting `spec.rules[].http.paths[].path` to safe values.
+      Additional paths can be added as required. Please refer to the CVE for details.
 spec:
   rules:
     - name: check-paths
