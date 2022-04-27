@@ -33,6 +33,12 @@ spec:
             - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/run/secrets') }}"
               operator: AnyIn
               value: [true]
-            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/secrets') }}"
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/root') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/var/run/kubernetes/serviceaccount') }}"
+              operator: AnyIn
+              value: [true]
+            - key: "{{ request.object.spec.rules[].http.paths[].path.contains(@,'/etc/kubernetes/admin.conf') }}"
               operator: AnyIn
               value: [true]
