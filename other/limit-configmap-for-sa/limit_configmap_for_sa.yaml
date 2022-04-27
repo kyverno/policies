@@ -20,10 +20,10 @@ spec:
       - resources:
           kinds:
           - ConfigMap
-        subjects:
-        - kind: ServiceAccount
-          name: developer
-          namespace: kube-system
+        # subjects:
+        # - kind: ServiceAccount
+        #   name: developer
+        #   namespace: kube-system
       - resources:
           kinds:
           - ConfigMap
