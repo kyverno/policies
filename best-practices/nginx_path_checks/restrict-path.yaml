@@ -15,6 +15,7 @@ metadata:
       Additional paths can be added as required. This issue has been fixed in NGINX Ingress v1.2.0. 
       Please refer to the CVE for details.
 spec:
+  validationFailureAction: enforce
   rules:
     - name: check-paths
       match:
