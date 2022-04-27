@@ -4,9 +4,9 @@ metadata:
   name: restrict-ingress-paths
   annotations:
     policies.kyverno.io/title: Restrict NGINX Ingress path values 
-    policies.kyverno.io/category: Security
+    policies.kyverno.io/category: Security, NGINX Ingress
     policies.kyverno.io/severity: high
-    policies.kyverno.io/subject: Ingress, NGINX Ingress
+    policies.kyverno.io/subject: Ingress
     policies.kyverno.io/minversion: "1.6.0"
     kyverno.io/kyverno-version: "1.6.0"
     kyverno.io/kubernetes-version: "1.23"
@@ -15,6 +15,7 @@ metadata:
       Additional paths can be added as required. This issue has been fixed in NGINX Ingress v1.2.0. 
       Please refer to the CVE for details.
 spec:
+  validationFailureAction: enforce
   rules:
     - name: check-paths
       match:
