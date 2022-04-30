@@ -1,0 +1,18 @@
+---
+name: unique-routes-tests
+policies:
+  - unique-routes.yaml
+resources:
+  - resources.yaml
+variables: mock.yaml
+results:
+  - policy: unique-routes
+    rule: require-unique-routes
+    resource: hello-openshift-good
+    kind: Route
+    result: pass
+  - policy: unique-routes
+    rule: require-unique-routes
+    resource: hello-openshift-bad
+    kind: Route
+    result: fail

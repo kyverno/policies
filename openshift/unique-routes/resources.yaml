@@ -1,0 +1,23 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-openshift-good
+spec:
+  host: hello-openshift-good.mydomain
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: hello-openshift
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: hello-openshift-bad
+spec:
+  host: hello-openshift-bad.mydomain
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: hello-openshift
