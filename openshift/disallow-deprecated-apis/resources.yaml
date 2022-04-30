@@ -1,11 +1,11 @@
-# apiVersion: authorization.openshift.io/v1
-# kind: ClusterRole
-# metadata:
-#   name: openshift-cluster-role-deprecated
-# spec:
-# - apiGroups: [""]
-#   resources: ["pods"]
-#   verbs: ["get", "watch", "list"]
+apiVersion: authorization.openshift.io/v1
+kind: ClusterRole
+metadata:
+  name: openshift-cluster-role-deprecated
+spec:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "watch", "list"]
 ---
 apiVersion: authorization.openshift.io/v1
 kind: ClusterRoleBinding
