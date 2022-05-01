@@ -11,7 +11,10 @@ metadata:
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/subject: Namespace
     policies.kyverno.io/description: >-
-      Denies the creation of a namespace if the name of the namespace does
+      Naming patterns are commonplace in clusters where creation activities
+      are granted to other users. In order to maintain organization, it is often
+      such that patterns should be established for organizational consistency.
+      This policy denies the creation of a Namespace if the name of the Namespace does
       not follow a specific naming defined by the cluster admins.
 spec:
   validationFailureAction: audit
@@ -25,11 +28,11 @@ spec:
             - Namespace
             - ProjectRequest
             - Project
-        subjects:
-        - kind: Group
-          name: "system:authenticated"
+        # subjects:
+        # - kind: Group
+        #   name: "system:authenticated"
     validate:
-      message: The only names approved for your namespaces are the ones starting by {{request.userInfo.groups[?contains(@,':') == `false`]}}-*
+      message: The only names approved for your Namespaces are the ones starting by {{request.userInfo.groups[?contains(@,':') == `false`]}}-*
       deny:
         conditions:
           any:

@@ -1,0 +1,12 @@
+name: apply-pss-restricted-profile
+policies:
+- apply-pss-restricted-profile.yaml
+resources:
+- resource.yaml
+results:
+- policy: apply-pss-restricted-profile
+  rule: add-pss-fields
+  resource: mypod
+  kind: Pod
+  patchedResource: mutatedmypod.yaml
+  result: pass
