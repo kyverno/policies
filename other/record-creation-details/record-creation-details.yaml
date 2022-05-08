@@ -1,0 +1,87 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: record-creation-details
+  annotations:
+    policies.kyverno.io/title: Record Creation Details
+    policies.kyverno.io/category: other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: Annotation
+    policies.kyverno.io/description: >-
+      Kubernetes by default does not make a record of who or what
+      created a resource in that resource itself. It must be retrieved from
+      an audit log, if enabled, which can make it difficult for cluster
+      operators to know who was responsible for an object's creation.
+      This policy writes an annotation with the key `kyverno.io/created-by`
+      having all the userInfo fields present in the AdmissionReview request
+      for any object being created. It then protects this annotation from
+      tampering or removal making it immutable.
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: add-userinfo
+    match:
+      any:
+      - resources:
+          kinds:
+          - '*'
+    preconditions:
+      any:
+      - key: "{{request.operation}}"
+        operator: Equals
+        value: CREATE
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          annotations:
+            kyverno.io/created-by: "{{ request.userInfo | to_string(@) }}"
+  - name: prevent-updates-userinfo
+    match:
+      any:
+      - resources:
+          kinds:
+          - '*'
+          annotations:
+            kyverno.io/created-by: "?*"
+    preconditions:
+      any:
+      - key: "{{request.operation}}"
+        operator: Equals
+        value: UPDATE
+    validate:
+      message: The annotation kyverno.io/created-by is protected and may not be altered.
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+            operator: NotEquals
+            value: ""
+          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+            operator: NotEquals
+            value: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" }}"
+  - name: prevent-removals-userinfo
+    match:
+      any:
+      - resources:
+          kinds:
+          - '*'
+          annotations:
+            kyverno.io/created-by: "?*"
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: Equals
+        value: UPDATE
+      - key: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+        operator: Equals
+        value: "?*"
+    validate:
+      message: The annotation kyverno.io/created-by is protected and may not removed.
+      pattern:
+        metadata:
+          annotations:
+            kyverno.io/created-by: "?*"
