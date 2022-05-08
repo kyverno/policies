@@ -1,0 +1,64 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: allowed-base-image-mappings
+  annotations:
+    policies.kyverno.io/title: Allowed Base Image Mappings
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.7.0
+    policies.kyverno.io/minversion: 1.7.0
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Building images which specify a base as their origin is a good start
+      to improving supply chain security, but over time organizations
+      may want to build a dictionary or mapping to specify which bases
+      are allowed per workload container run in the cluster. This policy ensures
+      that a container's base, found in an OCI annotation, is in a cluster-wide
+      allow list for the workload container being run. That allow list, or mapping,
+      is declared in a ConfigMap in the `platform` Namespace where the key is the
+      workload container being run and the value is an array of allowable base image names. 
+spec:
+  validationFailureAction: audit
+  rules:
+  - name: check-base-image
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation}}"
+        operator: NotEquals
+        value: DELETE
+    context:
+    - name: baseimages
+      configMap:
+        name: image-mappings
+        namespace: platform
+    validate:
+      message: >-
+        This container image's base is not in the approved list or is not specified. Only pre-approved
+        base images may be used with certain workload images. Please contact the platform team for assistance.
+      foreach:
+      - list: "request.object.spec.containers"
+        context:
+        - name: imageData
+          imageRegistry: 
+            reference: "{{ element.image }}"
+        - name: imagename
+          variable:
+            jmesPath: split(element.image,'/')[-1].split(@,':')[0]
+            default: ''
+        - name: basename
+          variable:
+            jmesPath: imageData.manifest.annotations."org.opencontainers.image.base.name"
+            default: ''
+        deny:
+          conditions:
+            all:
+              - key: "{{ basename }}"
+                operator: AnyNotIn
+                value: "{{ baseimages.data.\"{{imagename}}\" }}"
