@@ -63,7 +63,6 @@ metadata:
   name: gooddeployment01
   labels:
     app: busybox
-  namespace: foo
 spec:
   replicas: 1
   selector:
@@ -85,7 +84,6 @@ metadata:
   name: baddeployment01
   labels:
     app: busybox
-  namespace: foo
 spec:
   replicas: 1
   selector:
@@ -107,7 +105,6 @@ metadata:
   name: vit-baddeployment01
   labels:
     app: busybox
-  namespace: foo
 spec:
   replicas: 1
   selector:
