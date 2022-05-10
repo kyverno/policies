@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: allowed-base-image-mappings
+  name: allowed-base-images
   annotations:
-    policies.kyverno.io/title: Allowed Base Image Mappings
+    policies.kyverno.io/title: Allowed Base Images
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.7.0
@@ -13,12 +13,10 @@ metadata:
     policies.kyverno.io/description: >-
       Building images which specify a base as their origin is a good start
       to improving supply chain security, but over time organizations
-      may want to build a dictionary or mapping to specify which bases
-      are allowed per workload container run in the cluster. This policy ensures
+      may want to build an allow list of specific base images which
+      are allowed to be used when constructing containers. This policy ensures
       that a container's base, found in an OCI annotation, is in a cluster-wide
-      allow list for the workload container being run. That allow list, or mapping,
-      is declared in a ConfigMap in the `platform` Namespace where the key is the
-      workload container being run and the value is an array of allowable base image names. 
+      allow list.
 spec:
   validationFailureAction: audit
   rules:
@@ -36,22 +34,18 @@ spec:
     context:
     - name: baseimages
       configMap:
-        name: image-mappings
+        name: baseimages
         namespace: platform
     validate:
       message: >-
         This container image's base is not in the approved list or is not specified. Only pre-approved
-        base images may be used with certain workload images. Please contact the platform team for assistance.
+        base images may be used. Please contact the platform team for assistance.
       foreach:
       - list: "request.object.spec.containers"
         context:
         - name: imageData
           imageRegistry: 
             reference: "{{ element.image }}"
-        - name: imagename
-          variable:
-            jmesPath: split(element.image,'/')[-1].split(@,':')[0]
-            default: ''
         - name: basename
           variable:
             jmesPath: imageData.manifest.annotations."org.opencontainers.image.base.name"
@@ -61,4 +55,4 @@ spec:
             all:
               - key: "{{ basename }}"
                 operator: AnyNotIn
-                value: "{{ baseimages.data.\"{{imagename}}\" }}"
+                value: "{{ baseimages.data.allowedbaseimages }}"
