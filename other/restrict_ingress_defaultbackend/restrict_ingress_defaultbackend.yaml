@@ -24,7 +24,7 @@ spec:
   - name: restrict-ingress-defaultbackend
     match:
       any:
-        resources:
+      - resources:
           kinds:
           - Ingress
     validate:
