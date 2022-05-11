@@ -19,7 +19,7 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * Use the [Kyverno annotations](https://github.com/kyverno/policies/wiki/Kyverno-annotations) to mark your policy with descriptive metadata. This is not only important to explain your policy, but to allow the filtering logic on the [policies page](https://kyverno.io/policies/) to work effectively.
 
-* Name your policy something descriptive which matches its function.
+* Name your policy something descriptive which matches its function. Either dashes or underscores are permitted.
 
 * Provide test resources (where possible) which allow your policy to be validated using the Kyverno CLI. See an example of a complete policy, resource, and test [here](https://github.com/kyverno/policies/tree/main/pod-security/baseline/disallow-capabilities). If unfamiliar with the Kyverno CLI and its test ability, please see the documentation [here](https://kyverno.io/docs/testing-policies/).
 
