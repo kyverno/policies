@@ -16,7 +16,7 @@ metadata:
       your Ingress resources. If none of the hosts or paths match the HTTP request in the Ingress
       objects, the traffic is routed to your default backend. In a multi-tenant environment, you
       want users to use explicit hosts, they should not be able to overwrite the global default backend
-      service.
+      service. This policy prohibits the use of the defaultBackend field.
 spec:
   validationFailureAction: audit
   background: true
