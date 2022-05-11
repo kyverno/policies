@@ -1,0 +1,18 @@
+name: restrict-node-defaultbackend
+policies:
+  -  restrict_ingress_defaultbackend.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-ingress-defaultbackend
+    rule: restrict-ingress-defaultbackend
+    resource: sample-app-1
+    kind: Ingress
+    namespace: default
+    result: fail  
+  - policy: restrict-ingress-defaultbackend
+    rule: restrict-ingress-defaultbackend
+    resource: sample-app-2
+    kind: Ingress
+    namespace: default
+    result: pass
