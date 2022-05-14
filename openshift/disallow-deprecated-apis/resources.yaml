@@ -1,4 +1,4 @@
-apiVersion:  authorization.openshift.io/v1
+apiVersion: authorization.openshift.io/v1
 kind: ClusterRole
 metadata:
   name: openshift-cluster-role-deprecated
@@ -20,7 +20,7 @@ roleRef:
   name: openshift-cluster-role-deprecated
   apiGroup: authorization.openshift.io/v1
 ---
-apiVersion:  authorization.openshift.io/v1
+apiVersion: authorization.openshift.io/v1
 kind: Role
 metadata:
   name: openshift-role-deprecated

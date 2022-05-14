@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: goodclaim
+  annotations:
+    nfs.io/storage-path: "mypath"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: nfs-client
+  selector:
+    matchLabels:
+      release: "stable"
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: badclaim
+  annotations:
+    nfs.io/storage-path: ""
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: nfs-client
+  selector:
+    matchLabels:
+      release: "stable"
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: skipclaim
+  annotations:
+    nfs.io/storage-path: ""
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: goldstorage
+  selector:
+    matchLabels:
+      release: "stable"
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}

@@ -1,0 +1,41 @@
+name: restrict-annotations
+policies:
+  -  restrict-annotations.yaml
+resources:
+  -  resources.yaml
+results:
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: no-annotations
+    kind: Ingress
+    result: pass
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: good-annotations
+    kind: Ingress
+    result: pass    
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: alias
+    kind: Ingress
+    result: fail
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: root
+    kind: Ingress
+    result: fail 
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: etc-passwd
+    kind: Ingress
+    result: fail
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: var-run-secrets
+    kind: Ingress
+    result: fail 
+  - policy: restrict-annotations
+    rule: check-ingress
+    resource: lua
+    kind: Ingress
+    result: fail

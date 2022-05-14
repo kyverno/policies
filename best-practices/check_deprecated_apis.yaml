@@ -14,12 +14,18 @@ metadata:
       ConfigMap to remove filters.
 spec:
   validationFailureAction: audit
-  background: true
+  background: false
   rules:
   - name: validate-v1-22-removals
     match:
       resources:
         kinds:
+        - "*"
+    preconditions:
+      all:
+      - key: "{{request.object.apiVersion}}"
+        operator: In
+        value:
         - admissionregistration.k8s.io/v1beta1/ValidatingWebhookConfiguration
         - admissionregistration.k8s.io/v1beta1/MutatingWebhookConfiguration
         - apiextensions.k8s.io/v1beta1/CustomResourceDefinition
@@ -51,6 +57,12 @@ spec:
     match:
       resources:
         kinds:
+        - "*"
+    preconditions:
+      all:
+      - key: "{{request.object.apiVersion}}"
+        operator: In
+        value:
         - batch/v1beta1/CronJob
         - discovery.k8s.io/v1beta1/EndpointSlice
         - events.k8s.io/v1beta1/Event
