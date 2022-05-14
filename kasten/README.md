@@ -2,7 +2,7 @@
 
 ## What are the Data Protection Guardrails (DPG)?
   
-DPG are a set of K8s Native Data Protection Policies using Kyverno.  In Greek mythology, Soteria is the goddess of safety and salvation, deliverance, and preservation from harm. Translated to an IT context, Soteria aims to **enforce** the protection of IT infrastructure and data from IT risks such as security incidents (ransomware), disasters (both natural and accidental), human error, and other incidents that would impact the availability of cloud native applications and services.  
+DPG is a set of K8s Native Data Protection Policies using Kyverno. DPG aims to **enforce** data protection of stateful cloud native applications from risks such as security incidents (ransomware), disasters (both natural and accidental), human error, and other incidents that would impact the availability of cloud native applications and services.  
   
 DPG implements the [WG-Policy Management Whitepaper](https://github.com/kubernetes/community/blob/c61508a8651fcb49036188410becc36a3750217b/sig-security/policy/kubernetes-policy-management.md) in a data protection context.
 
