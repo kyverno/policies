@@ -1,0 +1,29 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k10-data-protection-by-label
+  annotations:
+    policies.kyverno.io/title: Check Data Protection By Label
+    policies.kyverno.io/category: Kasten K10 by Veeam
+    policies.kyverno.io/subject: Deployment, StatefulSet
+    policies.kyverno.io/description: >-
+      Check the 'dataprotection' label that production Deployments and StatefulSet have a named K10 Policy.
+      Use in combination with 'generate' ClusterPolicy to 'generate' a specific K10 Policy by name.
+spec:
+  validationFailureAction: audit
+  rules:
+  - name: k10-data-protection-by-label
+    match:
+      resources:
+        kinds:
+        - Deployment
+        - StatefulSet
+        selector:
+          matchLabels:
+            purpose: production
+    validate:
+      message: "Deployments and StatefulSets that specify 'dataprotection' label must have a valid k10-?* name (use labels: dataprotection: k10-<policyname>)"
+      pattern:
+        metadata:
+          labels:
+            dataprotection: "k10-*"
