@@ -8,16 +8,11 @@ metadata:
     policies.kyverno.io/subject: Policy
     policies.kyverno.io/description: >-
       K10 Policy resources can be validated to adhere to common compliance retention standards. 
-      Uncomment the number of copies you want to maintain according to GFS retention.
-      Check below for a reference of common compliance requirements:
-      Federal Information Security Management Act (FISMA): 3 Years 
-      National Energy Commission (NERC): 3 to 6 Years  
-      Basel II Capital Accord: 3 to 7 Years 
-      Sarbanes-Oxley Act of 2002 (SOX): 7 Years 
-      Health Insurance Portability and Accountability Act (HIPAA):  6 Years   
-      National Industrial Security Program Operating Manual (NISPOM): 6 to 12 Months 
-      Payment Card Industry Data Security Standard (PCI-DSS): Varies
-      This policy can also be used go reduce retentions to enforce cost optimization.
+      Uncomment the regulation/compliance standards you want to enforce for according to GFS retention.
+      This policy deletes the retention value in the backup operation and replaces it with the specified retention.
+      Note: K10 Policy uses the GFS retention scheme and export operations default to use the retention of the backup operation.
+      To use different 
+      This policy can also be used go reduce retentions lengths to enforce cost optimization.
 spec:
   rules:
   - name: k10-policy-minimum-retention
@@ -27,17 +22,44 @@ spec:
           kinds:
           - config.kio.kasten.io/v1alpha1/Policy
     mutate: 
-      # HIPAA example (replace existing values only: ie yearly with 6)
-      #patchStrategicMerge:
-      #  spec:
-      #    retention:
-      #      hourly: 24
-      #      daily: 30
-      #      weekly: 4
-      #      monthly: 12
-      #      yearly: 6
-      # NISPOM example requires removing unwanted conditions (ie. remove any yearly, replace monthly with 6)
+      # Federal Information Security Management Act (FISMA): 3 Years 
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":3}
+      
+      # Health Insurance Portability and Accountability Act (HIPAA):  6 Years   
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":6}
+         
+      # National Energy Commission (NERC): 3 to 6 Years  
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":3}
+      
+      # Basel II Capital Accord: 3 to 7 Years 
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":3}
+      
+      # Sarbanes-Oxley Act of 2002 (SOX): 7 Years
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":7}
+      
+      # National Industrial Security Program Operating Manual (NISPOM): 6 to 12 Months 
+      #patchesJson6902: |-
+      #  - path: "/spec/retention"
+      #    op: replace
+      #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":6}
+      
+      # Cost Optimization (Maximum Retention: 3 Months)
       patchesJson6902: |-
         - path: "/spec/retention"
           op: replace
-          value: {"hourly":24,"daily":30,"weekly":4,"monthly":6}
+          value: {"hourly":24,"daily":30,"weekly":4,"monthly":3}
