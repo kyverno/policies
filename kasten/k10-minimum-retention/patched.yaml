@@ -3,6 +3,7 @@ apiVersion: config.kio.kasten.io/v1alpha1
 metadata:
   name: hourly-policy
   namespace: kasten-io
+  labels:
     appPriority: Mission-Critical
 spec:
   comment: My sample custom backup policy
