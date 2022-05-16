@@ -19,12 +19,12 @@ spec:
     match:
       any: 
       - resources:
-        kinds:
-        - Deployment
-        - StatefulSet
-        selector:
-          matchLabels:
-            purpose: production
+          kinds:
+          - Deployment
+          - StatefulSet
+          selector:
+            matchLabels:
+              purpose: production
     validate:
       message: "Deployments and StatefulSets that specify 'dataprotection' label must have a valid k10-?* name (use labels: dataprotection: k10-<policyname>)"
       pattern:
