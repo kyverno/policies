@@ -22,7 +22,7 @@ spec:
     hourly: 24
     daily: 30
     weekly: 4
-    monthly: 6
+    monthly: 3
   selector:
     matchLabels:
       k10.kasten.io/appNamespace: sampleApp
