@@ -1,0 +1,14 @@
+name: add-default-resources
+policies:
+  - add-default-resources.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: add-default-resources
+    rule: add-default-requests
+    resource: nginx-demo
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    result: pass
+

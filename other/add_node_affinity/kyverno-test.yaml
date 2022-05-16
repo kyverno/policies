@@ -1,0 +1,12 @@
+name: add-node-affinity
+policies:
+  - add_node_affinity.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-node-affinity
+    rule: add-node-affinity-deployment
+    resource: tomcat-deployment
+    patchedResource: patchedResource.yaml
+    kind: Deployment
+    result: pass

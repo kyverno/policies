@@ -1,0 +1,6 @@
+policies:
+- name: add-default-resources
+  resources:
+  - name: nginx-demo
+    values:
+      request.operation: CREATE
