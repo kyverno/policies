@@ -5,6 +5,9 @@ metadata:
   annotations:
     policies.kyverno.io/title: Check Hourly RPO
     policies.kyverno.io/category: Kasten K10 by Veeam
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.2
+    kyverno.io/kubernetes-version: "1.21-1.22"
     policies.kyverno.io/subject: Policy
     policies.kyverno.io/description: >-
       K10 Policy resources can be educated to adhere to common Recovery Point Objective (RPO) best practices. 
@@ -14,12 +17,13 @@ spec:
   rules:
   - name: k10-policy-hourly-rpo
     match:
-      resources:
-        kinds:
-        - config.kio.kasten.io/v1alpha1/Policy
-        selector:
-          matchLabels:
-            appPriority: Mission-Critical
+      any:
+      - resources:
+          kinds:
+          - config.kio.kasten.io/v1alpha1/Policy
+          selector:
+            matchLabels:
+              appPriority: Mission-Critical
     validate:
       message: "Mission Critical RPO frequency should use no shorter than @hourly frequency"
       pattern:
