@@ -5,6 +5,9 @@ metadata:
   annotations:
     policies.kyverno.io/title: Generate Gold Backup Policy
     policies.kyverno.io/category: Kasten K10 by Veeam
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.2
+    kyverno.io/kubernetes-version: "1.21-1.22"
     policies.kyverno.io/subject: Policy
     policies.kyverno.io/description: >-
       Generate a backup policy for any Deployment or StatefulSet that adds the labels "dataprotection: k10-goldpolicy"
@@ -14,13 +17,14 @@ spec:
   rules:
   - name: k10-generate-gold-backup-policy
     match:
-      resources:
-        kinds:
-          - Deployment
-          - StatefulSet
-        selector:
-          matchLabels:
-            dataprotection: k10-goldpolicy # match with a corresponding ClusterPolicy that checks for this label
+      any:
+      - resources:
+          kinds:
+            - Deployment
+            - StatefulSet
+          selector:
+            matchLabels:
+              dataprotection: k10-goldpolicy # match with a corresponding ClusterPolicy that checks for this label
     generate:
       apiVersion: config.kio.kasten.io/v1alpha1
       kind: Policy
