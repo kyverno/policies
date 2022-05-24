@@ -1,0 +1,17 @@
+name: unique-external-dns
+policies:
+  -  require_unique_external_dns.yaml
+resources:
+  - resource.yaml
+variables: values.yaml  
+results:
+  - policy: unique-external-dns
+    rule: ensure-valid-externaldns-annotation
+    resource: bad-svc
+    kind: Service
+    result: fail
+  - policy: unique-external-dns
+    rule: ensure-valid-externaldns-annotation
+    resource: good-svc
+    kind: Service
+    result: pass
