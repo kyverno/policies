@@ -1,12 +1,13 @@
 apiVersion: kyverno.io/v1
-kind: Policy
+kind: ClusterPolicy
 metadata:
   name: create-default-pdb
-  namespace: hello-world
   annotations:
     policies.kyverno.io/title: Add Pod Disruption Budget
     policies.kyverno.io/category: Sample
-    policies.kyverno.io/subject: Deployment, Pod
+    kyverno.io/kyverno-version: 1.7.0
+    policies.kyverno.io/minversion: 1.7.0
+    policies.kyverno.io/subject: Deployment
     policies.kyverno.io/description: >-
       A PodDisruptionBudget limits the number of Pods of a replicated application that
       are down simultaneously from voluntary disruptions. For example, a quorum-based
