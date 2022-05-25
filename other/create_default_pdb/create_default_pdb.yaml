@@ -5,8 +5,6 @@ metadata:
   annotations:
     policies.kyverno.io/title: Add Pod Disruption Budget
     policies.kyverno.io/category: Sample
-    kyverno.io/kyverno-version: 1.7.0
-    policies.kyverno.io/minversion: 1.7.0
     policies.kyverno.io/subject: Deployment
     policies.kyverno.io/description: >-
       A PodDisruptionBudget limits the number of Pods of a replicated application that
