@@ -1,0 +1,34 @@
+name: check-deprecated-apis
+policies:
+  - check_deprecated_apis.yaml
+resources:
+  - resource.yaml
+results:
+  
+  - policy: check-deprecated-apis
+    rule: validate-v1-22-removals
+    resource: pod-reader
+    kind: Role
+    result: fail
+  
+  - policy: check-deprecated-apis
+    rule: validate-v1-22-removals
+    resource: mystorageclass
+    kind: StorageClass
+    result: skip
+  
+  - policy: check-deprecated-apis
+    rule: validate-v1-25-removals
+    resource: bad-cronjob
+    kind: CronJob
+    result: fail
+  
+  - policy: check-deprecated-apis
+    rule: validate-v1-25-removals
+    resource: good-cronjob
+    kind: CronJob
+    result: skip
+
+ 
+    
+    
