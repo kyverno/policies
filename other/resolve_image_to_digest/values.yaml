@@ -1,0 +1,10 @@
+policies:
+  - name: resolve-image-to-digest
+    rules:
+      - name: resolve-to-digest
+        values:
+          resolvedRef: "busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47"
+    resources:
+      - name: busybox
+        values:
+          request.operation: UPDATE
