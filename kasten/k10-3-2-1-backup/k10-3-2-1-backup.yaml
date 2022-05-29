@@ -1,0 +1,36 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k10-3-2-1-backup-policy
+  annotations:
+    policies.kyverno.io/title: Check 3-2-1 Backup Policy
+    policies.kyverno.io/category: Kasten K10 by Veeam
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.2
+    kyverno.io/kubernetes-version: "1.21-1.22"
+    policies.kyverno.io/subject: Policy
+    policies.kyverno.io/description: >-
+      The rule of 3-2-1 recommends that you have at least 3 copies of data, on 2 different storage targets, and 1 being offsite. 
+      3-2-1 ensures a health mix of redundancy options for data recovery of the application for localized & multi-region cloud failures or compromise.
+      In K8s/K10, this translates to the original StatefulSet (the original PersistentVolumeClaim), a backup (a snapshot of the PVC on prod storage),
+      and an export to cloud object storage (a secondary cloud copy of the PVC snapshot).
+spec:
+  validationFailureAction: audit  
+  rules:
+  - name: k10-3-2-1-backup-policy
+    match:
+      any:
+      - resources:
+          kinds:
+          - config.kio.kasten.io/v1alpha1/Policy
+    validate:
+      message: "The rule of 3-2-1 recommends you have 'action: backup' followed by an 'action: export' defined in the backup Policy."
+      deny:
+        conditions:
+          all:
+          - key:
+            - backup
+            - export
+            operator: AllNotIn
+            value: "{{ request.object.spec.actions[].action }}"

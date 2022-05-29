@@ -1,0 +1,16 @@
+name: kyverno_data_protection_tests
+policies:
+  - k10-check-data-protection-by-label.yaml
+resources:
+  - nginx-deployment.yaml
+results:
+- policy: k10-data-protection-by-label
+  rule: k10-data-protection-by-label
+  resource: nginx-deployment
+  kind: Deployment
+  result: pass
+- policy: k10-data-protection-by-label
+  rule: k10-data-protection-by-label
+  resource: nginx-deployment-invalid
+  kind: Deployment
+  result: fail
