@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod01
+  namespace: default
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod02
+  namespace: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod03
+  namespace: prod
+  labels:
+    foo: bar
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12    
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod01
+  namespace: demo
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12        

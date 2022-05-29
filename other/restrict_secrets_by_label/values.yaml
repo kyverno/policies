@@ -1,0 +1,17 @@
+policies:
+  - name: restrict-secrets-by-label
+    rules:
+      - name: secrets-lookup-from-env
+        values:
+          request.operation: CREATE
+          status: "demo"
+      
+      - name: secrets-lookup-from-envfrom
+        values:
+          request.operation: UPDATE
+          status: "protected" 
+
+      - name: secrets-lookup-from-volumes
+        values:
+          request.operation: CREATE
+          status: "bar"  
