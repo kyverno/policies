@@ -1,0 +1,25 @@
+policies:
+  - name: ensure-production-matches-staging
+    rules:
+      - name: require-staging-deployment
+        values:
+          request.namespace: staging
+          deployment_count: 2
+     
+      - name: require-same-image
+        values:
+          deployment_count: 2
+          request.namespace: staging
+          deployment_images: nginx
+
+      - name: require-same-or-older-imageversion
+        values:
+          request.namespace: staging
+          deployment_count: 2    
+          deployment_containers: 1.22.0
+
+    resources:
+      - name: deploy1
+        values:
+          request.namespace: production
+          request.operation: CREATE      

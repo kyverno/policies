@@ -4,6 +4,7 @@ policies:
 resources:
   -  resource.yaml
 results:
+# testing secret-env-pod pod resource against all three rules
   - policy: no-secrets
     rule: secrets-not-from-env
     resource: secret-env-pod
@@ -22,7 +23,9 @@ results:
     kind: Pod
     namespace: default
     result: pass
- 
+
+ # testing secret-ref-pod pod resource against all three rules
+
   - policy: no-secrets
     rule: secrets-not-from-env
     resource: secret-ref-pod
@@ -42,6 +45,7 @@ results:
     namespace: default
     result: pass
 
+# testing secret-vol-pod pod resource against all three rules
   - policy: no-secrets
     rule: secrets-not-from-env
     resource: secret-vol-pod

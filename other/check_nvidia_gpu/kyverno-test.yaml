@@ -12,7 +12,7 @@ results:
     rule: check-nvidia-gpus
     resource: goodpod01
     kind: Pod
-    result: pass
+    result: fail
   
   - policy: check-nvidia-gpus
     rule: check-nvidia-gpus
