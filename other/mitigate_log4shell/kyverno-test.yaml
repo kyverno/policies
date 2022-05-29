@@ -4,6 +4,7 @@ policies:
 resources:
   - resource.yaml
 results:
+# checking demo-pod01 pod resource on both rules
   - policy: log4shell-mitigation
     rule: add-log4shell-mitigation-initcontainers
     resource: demo-pod01
@@ -16,10 +17,18 @@ results:
     patchedResource: patchedResource.yaml
     kind: Pod
     result: pass
+
+# checking demo-pod02 pod resource on both rules
   - policy: log4shell-mitigation
     rule: add-log4shell-mitigation-containers
     resource: demo-pod02
     patchedResource: patchedResource1.yaml
     kind: Pod
     result: pass
+  - policy: log4shell-mitigation
+    rule: add-log4shell-mitigation-initcontainers
+    resource: demo-pod02
+    patchedResource: patchedResource1.yaml
+    kind: Pod
+    result: skip 
   
