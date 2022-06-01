@@ -16,4 +16,4 @@ results:
     rule: only-allow-trusted-images
     resource: pod-with-root-user
     kind: Pod
-    result: fail
+    result: pass
