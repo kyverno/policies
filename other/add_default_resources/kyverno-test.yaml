@@ -1,0 +1,20 @@
+name: add-default-resources
+policies:
+  - add-default-resources.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: add-default-resources
+    rule: add-default-requests
+    resource: nginx-demo1
+    patchedResource: patchedResource1.yaml
+    kind: Pod
+    result: pass
+# nginx-demo2 will get skip as resource already has memory and cpu requests
+  - policy: add-default-resources
+    rule: add-default-requests
+    resource: nginx-demo2
+    patchedResource: patchedResource2.yaml
+    kind: Pod
+    result: skip

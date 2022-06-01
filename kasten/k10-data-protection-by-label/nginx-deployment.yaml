@@ -1,0 +1,60 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx
+  labels:
+    name: nginx
+    purpose: production
+    dataprotection: k10-goldpolicy
+    immutable: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+  labels:
+    app: nginx
+    purpose: production
+    dataprotection: k10-goldpolicy # set a policy to use our 'gold' standard data protection policy (generate-gold-backup-policy)
+    immutable: enabled
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-invalid
+  namespace: nginx
+  labels:
+    app: nginx
+    purpose: production
+    dataprotection: none # invalid named K10 Policy!!
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80

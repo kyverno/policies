@@ -1,0 +1,16 @@
+name: kyverno_data_protection_tests
+policies:
+  - k10-3-2-1-backup.yaml
+resources:
+  - k10-backup-policy.yaml
+results:
+- policy: k10-3-2-1-backup-policy
+  rule: k10-3-2-1-backup-policy
+  resource: sample-custom-backup-policy
+  kind: Policy
+  result: pass
+- policy: k10-3-2-1-backup-policy
+  rule: k10-3-2-1-backup-policy
+  resource: sample-custom-backup-policy-invalid
+  kind: Policy
+  result: fail
