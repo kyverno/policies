@@ -22,8 +22,6 @@ spec:
   - name: exclude-namespaces-dynamically
     context:
       - name: namespacefilters
-        # The source ConfigMap should contain an array of strings in either YAML block scalars
-        # (Kyverno 1.3.5+) or JSON-encoded format.
         configMap:
           name: namespace-filters
           namespace: default

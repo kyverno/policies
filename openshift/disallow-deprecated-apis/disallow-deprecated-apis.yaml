@@ -9,7 +9,7 @@ metadata:
     kyverno.io/kyverno-version: 1.6.0
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kubernetes-version: "1.20"
-    policies.kyverno.io/subject: ClusterRole,ClusterRoleBinding,Role,RoleBinding
+    policies.kyverno.io/subject: ClusterRole,ClusterRoleBinding,Role,RoleBinding,RBAC
     policies.kyverno.io/description: >-
       OpenShift APIs are sometimes deprecated and removed after a few releases.
       As a best practice, older API versions should be replaced with newer versions.
