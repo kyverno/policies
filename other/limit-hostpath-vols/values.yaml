@@ -1,0 +1,9 @@
+policies:
+  - name: limit-hostpath-vols
+    resources:
+      - name: good-pods-all
+        values:
+          request.operation: CREATE
+      - name: bad-pods-all
+        values:
+          request.operation: UPDATE

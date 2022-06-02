@@ -1,0 +1,16 @@
+name: restrict-service-port-range
+policies:
+  -  restrict-service-port-range.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: restrict-service-port-range
+    rule: restrict-port-range
+    resource: bad-service
+    kind: Service
+    result: fail
+  - policy: restrict-service-port-range
+    rule: restrict-port-range
+    resource: good-service
+    kind: Service
+    result: pass

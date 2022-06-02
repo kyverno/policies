@@ -1,0 +1,7 @@
+policies:
+  - name: block-stale-images
+    rules:
+      - name: block-stale-images
+        values:
+          imageData.configData.created: "2020-05-01T03:15:12-07:00"
+    

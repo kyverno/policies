@@ -1,0 +1,9 @@
+policies:
+- name:  ensure-readonly-hostpath
+  resources:
+  - name:  bad-pod-01
+    values:
+      request.operation: CREATE
+  - name: good-pod-01
+    values:
+      request.operation: UPDATE

@@ -1,0 +1,8 @@
+policies:
+  - name: restrict-service-account
+    rules:
+      - name: validate-service-account
+        values:
+          saMap.data.busybox: "[\"docker.io/busybox\",\"docker.io/busybox:1.28\"]"
+          request.object.spec.serviceAccountName: "busybox"
+    

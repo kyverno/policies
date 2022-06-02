@@ -1,0 +1,13 @@
+policies:
+  - name: block-images-with-volumes
+    rules:
+      - name: block-images-with-vols
+        values:
+          imageData.configData.config.Volumes: "1" 
+    resources:
+    - name: busybox
+      values:
+        request.operation: CREATE
+    - name: image-vol
+      values:
+        request.operation: CREATE

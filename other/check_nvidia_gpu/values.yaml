@@ -1,0 +1,22 @@
+policies:
+  - name: check-nvidia-gpus
+    rules:
+      - name: check-nvidia-gpus
+        values:
+          imageData.configData.config.Env: "all"
+    resources:
+      - name: goodpod01
+        values:
+          request.operation: CREATE
+      
+      - name: goodpod02
+        values:
+          request.operation: CREATE
+      
+      - name: goodpod03
+        values:
+          request.operation: UPDATE    
+      
+      - name: badpod01
+        values:
+          request.operation: UPDATE     

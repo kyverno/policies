@@ -1,0 +1,18 @@
+name: restrict-service-account
+policies:
+  - restrict_service_account.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: restrict-service-account
+    rule: validate-service-account
+    resource: goodpod01
+    kind: Pod
+    result: pass
+    
+  - policy: restrict-service-account
+    rule: validate-service-account
+    resource: badpod01
+    kind: Pod
+    result: fail

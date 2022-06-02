@@ -1,0 +1,18 @@
+policies:
+  - name: require-image-source
+    rules:
+      - name: check-source
+        values:
+          imageData:
+            labels:
+              org.opencontainers.image.source: "https://github.com/kyverno/kyverno-examples"
+          imageData:
+            annotations:
+              org.opencontainers.image.source: "https://github.com/kyverno/kyverno-examples"
+    resources:
+      - name: badpod01
+        values:
+          request.operation: CREATE
+      - name: goodpod01
+        values:
+          request.operation: UPDATE
