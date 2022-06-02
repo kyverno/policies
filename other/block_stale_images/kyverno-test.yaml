@@ -1,0 +1,16 @@
+name: block-stale-images
+policies:
+  - block-stale-images.yaml
+resources:
+  - bad.yaml
+  - good.yaml
+variables: values.yaml
+results:
+  - policy: block-stale-images
+    rule: block-stale-images
+    resource: redis
+    kind: Pod
+    result: fail
+  
+    
+ 

@@ -6,7 +6,8 @@ metadata:
     policies.kyverno.io/title: Check deprecated APIs
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/subject: Kubernetes APIs
-    policies.kyverno.io/minversion: 1.6.2
+    kyverno.io/kyverno-version: 1.6.2
+    kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
       Kubernetes APIs are sometimes deprecated and removed after a few releases.
       As a best practice, older API versions should be replaced with newer versions.

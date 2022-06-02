@@ -1,0 +1,12 @@
+name: require-pdb
+policies:
+  - require_pdb.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: require-pdb
+    rule: require-pdb
+    resource: nginx-deploy
+    kind: Deployment
+    result: fail
