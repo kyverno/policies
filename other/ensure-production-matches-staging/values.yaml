@@ -21,5 +21,4 @@ policies:
     resources:
       - name: deploy1
         values:
-          request.namespace: production
-          request.operation: CREATE      
+          request.namespace: production     

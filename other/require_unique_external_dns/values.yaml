@@ -5,9 +5,6 @@ policies:
         values:
           alldns: "[\"test.external-dns-test.my-org.com\"]"
     resources:
-      - name: good-svc
-        values:
-          request.operation: CREATE
       - name: bad-svc
         values:
           request.operation: UPDATE

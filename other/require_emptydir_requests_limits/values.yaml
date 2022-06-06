@@ -1,9 +1,6 @@
 policies:
   - name: require-emptydir-requests-and-limits
     resources:
-      - name: good-pod
-        values:
-          request.operation: CREATE
       - name: bad-pod
         values:
           request.operation: UPDATE

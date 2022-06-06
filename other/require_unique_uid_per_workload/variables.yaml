@@ -1,5 +1,3 @@
-globalValues:
-  request.operation: CREATE
 policies:
   - name: require-unique-uid-per-workload
     rules:

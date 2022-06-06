@@ -3,9 +3,6 @@ policies:
     rules:
       - name: block-updates-deletes
     resources:
-      - name: my-service-1
-        values: 
-          request.operation: CREATE
       - name: my-service-2
         values: 
           request.operation: UPDATE
