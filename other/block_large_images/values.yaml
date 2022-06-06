@@ -4,8 +4,4 @@ policies:
       - name: block-over-twogi
         values:
           imageSize: "3Gi"
-    resources:
-    - name: large-image
-      values:
-        request.operation: CREATE
    

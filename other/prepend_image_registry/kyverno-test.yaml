@@ -5,7 +5,6 @@ resources:
   - resource.yaml
   - resourceFailed.yaml
   - withoutinitcontainer.yaml
-variables: values.yaml
 results:
   - policy: prepend-registry
     rule: prepend-registry-containers

@@ -3,7 +3,6 @@ policies:
   - restrict-ingress-wildcard.yaml
 resources:
   - resources.yaml
-variables: variables.yaml
 results:
   - policy: restrict-ingress-wildcard
     rule: block-ingress-wildcard

@@ -7,9 +7,6 @@ policies:
           imageData.configData.config.User: "root"
           
     resources:
-      - name: pod-with-trusted-registry
-        values:
-          request.operation: CREATE
       - name: pod-with-root-user
         values:
           request.operation: UPDATE

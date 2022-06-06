@@ -3,7 +3,6 @@ policies:
   - appproject-clusterresourceblacklist.yaml
 resources:
   - resources.yaml
-variables: variables.yaml
 results:
   - policy: appproject-clusterresourceblacklist
     rule: has-wildcard

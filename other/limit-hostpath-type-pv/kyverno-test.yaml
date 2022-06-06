@@ -3,7 +3,6 @@ policies:
   - limit_hostpath_type_pv.yaml
 resources:
   - resource.yaml
-variables: variables.yaml
 results:
   - policy: limit-hostpath-type-pv
     rule: limit-hostpath-type-pv-to-slash-data
