@@ -3,7 +3,6 @@ policies:
   - add_certificates_volume.yaml
 resources:
   - resource.yaml
-variables: values.yaml
 results:
   - policy: add-certificates-volume
     rule: add-ssl-certs

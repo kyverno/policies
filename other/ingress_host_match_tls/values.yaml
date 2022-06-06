@@ -1,9 +1,0 @@
-policies:
-- name:  ingress-host-match-tls
-  resources:
-  - name: tls-good-ingress
-    values:
-      request.operation: CREATE
-  - name: tls-bad-ingress
-    values:
-      request.operation: CREATE

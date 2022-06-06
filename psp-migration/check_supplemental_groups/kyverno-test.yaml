@@ -3,7 +3,6 @@ policies:
   - check-supplemental-groups.yaml
 resources:
   - resource.yaml
-variables: variables.yaml
 results:
   - policy: psp-check-supplemental-groups
     rule: supplementalgroup-ranges

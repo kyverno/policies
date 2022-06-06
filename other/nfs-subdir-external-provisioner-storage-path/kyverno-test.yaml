@@ -3,7 +3,6 @@ policies:
   - nfs-subdir-external-provisioner-storage-path.yaml
 resources:
   - resource.yaml
-variables: variables.yaml
 results:
   - policy: nfs-subdir-external-provisioner-storage-path
     rule: enforce-storage-path
