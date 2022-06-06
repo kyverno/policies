@@ -5,13 +5,6 @@ policies:
         values:
           imageData.configData.config.Env: "all"
     resources:
-      - name: goodpod01
-        values:
-          request.operation: CREATE
-      
-      - name: goodpod02
-        values:
-          request.operation: CREATE
       
       - name: goodpod03
         values:

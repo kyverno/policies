@@ -3,7 +3,6 @@ policies:
   - restrict-secrets-by-name.yaml
 resources:
   - resource.yaml
-variables: values.yaml
 results:
   - policy: restrict-secrets-by-name
     rule: safe-secrets-from-envfrom

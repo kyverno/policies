@@ -1,9 +1,6 @@
 policies:
 - name:  enforce-resources-as-ratio
   resources:
-  - name: badpod
-    values:
-      request.operation: CREATE
   - name: goodpod
     values:
       request.operation: UPDATE

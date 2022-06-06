@@ -3,7 +3,6 @@ policies:
     rules:
       - name: secrets-lookup-from-env
         values:
-          request.operation: CREATE
           status: "demo"
       
       - name: secrets-lookup-from-envfrom
@@ -13,5 +12,4 @@ policies:
 
       - name: secrets-lookup-from-volumes
         values:
-          request.operation: CREATE
           status: "bar"  

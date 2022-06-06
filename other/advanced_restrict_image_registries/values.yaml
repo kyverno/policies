@@ -7,9 +7,6 @@ policies:
           clusterregistries.data.registries:  "docker.io/*"
           request.namespace: default
     resources:
-      - name: good-pod
-        values:
-          request.operation: CREATE
       - name: bad-pod
         values:
           request.operation: UPDATE

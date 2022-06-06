@@ -3,7 +3,6 @@ policies:
   -  ingress-host-match-tls.yaml
 resources:
   - resource.yaml
-variables: values.yaml
 results:
   - policy: ingress-host-match-tls
     rule: host-match-tls

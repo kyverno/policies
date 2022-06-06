@@ -10,9 +10,6 @@ policies:
             annotations:
               org.opencontainers.image.source: "https://github.com/kyverno/kyverno-examples"
     resources:
-      - name: badpod01
-        values:
-          request.operation: CREATE
       - name: goodpod01
         values:
           request.operation: UPDATE

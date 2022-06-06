@@ -3,7 +3,6 @@ policies:
   - limit_containers_per_pod.yaml
 resources:
   - resource.yaml
-variables: values.yaml
 results:
   - policy: limit-containers-per-pod
     rule: limit-containers-per-pod-bare

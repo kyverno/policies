@@ -4,7 +4,3 @@ policies:
     - name: require-pdb
       values:
         pdb_count: "0"
-    resources:
-      - name: nginx-deploy
-        values:
-          request.operation: CREATE
