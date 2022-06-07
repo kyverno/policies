@@ -44,7 +44,7 @@ spec:
             reference: "{{ element.image }}"
         - name: mobysource
           variable:
-            jmesPath: imageData.configData."moby.buildkit.buildinfo.v1" | base64_decode(@).parse_json(@) | sources[].ref | length(@)
+            jmesPath: imageData.configData."moby.buildkit.buildinfo.v1" | base64_decode(@).parse_json(@) | sources[?type == 'docker-image'].ref | length(@)
             default: 0
         - name: ocisourcelabels
           variable:
