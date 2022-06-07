@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod
+  name: goodpod01
   namespace: awesomeapps
   labels:
     app: myapp
@@ -11,3 +11,27 @@ spec:
     image: nginx:1.12
   imagePullSecrets:
   - name: myregistrykey
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+  namespace: awesomeapps
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: skippod01
+  namespace: awesomeapps
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: ghcr.io/nginx:1.12
