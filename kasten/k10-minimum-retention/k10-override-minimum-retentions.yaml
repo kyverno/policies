@@ -4,7 +4,7 @@ metadata:
   name: k10-policy-minimum-retention
   annotations:
     policies.kyverno.io/title: Minimum Backup Retention
-    policies.kyverno.io/category: Kasten K10
+    policies.kyverno.io/category: Kasten K10 by Veeam
     kyverno.io/kyverno-version: 1.6.2
     policies.kyverno.io/minversion: 1.6.2
     kyverno.io/kubernetes-version: "1.21-1.22"
@@ -36,7 +36,7 @@ spec:
       #  - path: "/spec/retention"
       #    op: replace
       #    value: {"hourly":24,"daily":30,"weekly":4,"monthly":12,"yearly":6}
-         
+      
       # National Energy Commission (NERC): 3 to 6 Years  
       #patchesJson6902: |-
       #  - path: "/spec/retention"
