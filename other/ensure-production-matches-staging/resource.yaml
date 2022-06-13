@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploy1
-  namespace: production
+  namespace: staging
 spec:
   replicas: 2
   selector:
@@ -24,7 +24,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: deploy1
-  namespace: staging
+  namespace: production
 spec:
   replicas: 2
   selector:
