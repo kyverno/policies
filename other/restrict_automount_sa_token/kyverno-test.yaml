@@ -14,3 +14,13 @@ results:
     resource: mydeploy
     kind: Deployment
     result: fail
+  - policy: restrict-automount-sa-token
+    rule: validate-automountServiceAccountToken
+    resource: policy-reporter
+    kind: Pod
+    result: skip
+  - policy: restrict-automount-sa-token
+    rule: validate-automountServiceAccountToken
+    resource: deploy-policy-reporter
+    kind: Deployment
+    result: skip
