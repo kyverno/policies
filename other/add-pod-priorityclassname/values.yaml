@@ -1,0 +1,7 @@
+namespaceSelector:
+  - name: foo
+    labels:
+      env: foo
+  - name: production
+    labels:
+      env: production

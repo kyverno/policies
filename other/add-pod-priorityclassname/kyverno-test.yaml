@@ -1,0 +1,20 @@
+name: add-pod-priorityclassname
+policies:
+  - add-pod-priorityclassname.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: add-pod-priorityclassname
+    rule: add-priorityclass
+    resource: blank
+    kind: Pod
+    namespace: foo
+    patchedResource: patchedResource.yaml
+    result: pass
+  - policy: add-pod-priorityclassname
+    rule: add-priorityclass
+    resource: second
+    kind: Pod
+    namespace: production
+    result: skip
