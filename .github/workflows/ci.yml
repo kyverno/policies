@@ -33,5 +33,5 @@ jobs:
           go-version: 1.17
 
       - name: Test Policy
-        run: go run cmd/cli/kubectl-kyverno/main.go test ../policies
+        run: go run ./cmd/cli/kubectl-kyverno test ../policies
         working-directory: kyverno
