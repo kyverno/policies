@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: blank
+  namespace: foo
+spec:
+  containers:
+  - name: busybox
+    image: sfsdafasdfsadfsadf
+  priorityClassName: non-production
