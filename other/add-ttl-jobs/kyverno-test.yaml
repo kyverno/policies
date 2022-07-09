@@ -1,0 +1,22 @@
+name: add-ttl-jobs
+policies:
+- add-ttl-jobs.yaml
+resources:
+- resource.yaml
+results:
+- policy: add-ttl-jobs
+  rule: add-ttlSecondsAfterFinished
+  resource: addjob01
+  kind: Job
+  patchedResource: patched01.yaml
+  result: pass
+- policy: add-ttl-jobs
+  rule: add-ttlSecondsAfterFinished
+  resource: skipjob01
+  kind: Job
+  result: skip
+- policy: add-ttl-jobs
+  rule: add-ttlSecondsAfterFinished
+  resource: skipjob02
+  kind: Job
+  result: skip
