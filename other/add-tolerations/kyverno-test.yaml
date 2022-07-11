@@ -1,0 +1,23 @@
+name: apply-pss-restricted-profile
+policies:
+- add-tolerations.yaml
+resources:
+- resource.yaml
+results:
+- policy: add-tolerations
+  rule: service-toleration
+  resource: addpod01
+  kind: Pod
+  patchedResource: patched01.yaml
+  result: pass
+- policy: add-tolerations
+  rule: service-toleration
+  resource: addpod02
+  kind: Pod
+  patchedResource: patched02.yaml
+  result: pass
+- policy: add-tolerations
+  rule: service-toleration
+  resource: skippod01
+  kind: Pod
+  result: skip

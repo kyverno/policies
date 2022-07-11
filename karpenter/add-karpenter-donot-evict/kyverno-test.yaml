@@ -1,0 +1,18 @@
+name: add-karpenter-donot-evict
+policies:
+- add-karpenter-donot-evict.yaml
+resources:
+- resource.yaml
+results:
+- policy: add-karpenter-donot-evict
+  rule: do-not-evict-jobs
+  resource: addjob01
+  kind: Job
+  patchedResource: patched01.yaml
+  result: pass
+- policy: add-karpenter-donot-evict
+  rule: do-not-evict-cronjobs
+  resource: addcronjob01
+  kind: CronJob
+  patchedResource: patched02.yaml
+  result: pass
