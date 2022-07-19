@@ -8,7 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.6.0
     policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kubernetes-version: "1.20, 1.21"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
       Ingress resources which name a host name that is not present
@@ -33,13 +33,9 @@ spec:
         value: CREATE
     validate:
       message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
-      foreach:
-        - list: "request.object.spec.rules"
-          elementScope: false
-          deny:
-            conditions:
-              all:
-              - key: "{{ request.object.spec.tls[].hosts[] }}"
-                operator: AnyNotIn
-                value:
-                - "{{ element.host }}"
+      deny:
+        conditions:
+          all:
+          - key: "{{sort(request.object.spec.rules[].host)}}"
+            operator: AllNotIn
+            value: "{{sort(request.object.spec.tls[].hosts[])}}"
