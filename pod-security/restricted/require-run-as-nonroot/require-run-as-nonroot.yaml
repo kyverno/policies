@@ -32,23 +32,23 @@ spec:
         anyPattern:
         - spec:
             securityContext:
-              runAsNonRoot: true
+              runAsNonRoot: "true"
             =(ephemeralContainers):
             - =(securityContext):
-                =(runAsNonRoot): true
+                =(runAsNonRoot): "true"
             =(initContainers):
             - =(securityContext):
-                =(runAsNonRoot): true
+                =(runAsNonRoot): "true"
             containers:
             - =(securityContext):
-                =(runAsNonRoot): true
+                =(runAsNonRoot): "true"
         - spec:
             =(ephemeralContainers):
             - securityContext:
-                runAsNonRoot: true
+                runAsNonRoot: "true"
             =(initContainers):
             - securityContext:
-                runAsNonRoot: true
+                runAsNonRoot: "true"
             containers:
             - securityContext:
-                runAsNonRoot: true
+                runAsNonRoot: "true"
