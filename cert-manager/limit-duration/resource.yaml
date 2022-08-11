@@ -51,6 +51,7 @@ spec:
   dnsNames:
   - example.com
   issuerRef:
-    name: acme-prod
+    name: letsencrypt-test
     kind: Issuer
     group: cert-manager.io
+  duration: 2164h0m0s
