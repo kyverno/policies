@@ -8,18 +8,7 @@ results:
     rule: certificate-duration-max-100days 
     resource: letsencrypt-crt
     kind: Certificate
-    result: error
-    # duration field absent in resource, therefore request.object.spec.duration = nil.
-    # policy throws an error, as nil value assigned to variable.
-    # status/result --> error
-
-  - policy: cert-manager-limit-duration
-    rule: certificate-duration-max-100days 
-    resource: acme-crt
-    kind: Certificate
     result: skip
-    # Status/result = skip, because preconditions blocked doesn't match.
-
   - policy: cert-manager-limit-duration
     rule: certificate-duration-max-100days 
     resource: acme-crt-short
