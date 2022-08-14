@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-linkerd-policy-annotation
+  annotations:
+    policies.kyverno.io/title: Add Policy Annotation
+    policies.kyverno.io/category: Linkerd
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      WIP     
+spec:
+  rules:
+  - name: namespaces-all-authenticated
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          annotations:
+            config.linkerd.io/default-inbound-policy: all-authenticated
