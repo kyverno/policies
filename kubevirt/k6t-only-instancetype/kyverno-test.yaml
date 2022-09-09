@@ -1,0 +1,18 @@
+name: kubevirt_only_instancetype_test
+policies:
+  - k6t-require-instancetype.yaml
+resources:
+  - vm.yaml
+results:
+- policy: k6t-require-instancetype
+  rule: k6t-dont-allow-domain-template
+  kind: VirtualMachine
+  resources:
+  - vm-valid
+  result: pass
+- policy: k6t-require-instancetype
+  rule: k6t-dont-allow-domain-template
+  kind: VirtualMachine
+  resources:
+  - vm-invalid
+  result: fail
