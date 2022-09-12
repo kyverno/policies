@@ -5,13 +5,12 @@ metadata:
   annotations:
     policies.kyverno.io/title: Require instanceType
     policies.kyverno.io/category: KubeVirt
-    kyverno.io/kyverno-version: 1.6.2
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.25"
     policies.kyverno.io/subject: VirtualMachine
     policies.kyverno.io/description: >-
       Check VirtualMachines and validate that they are not using a domain template (`.spec.template.domain`)
       but instead are based on instaceTypes and preferences only.
+    kyverno.io/kyverno-version: "1.8.0-rc2"
+    kyverno.io/kubernetes-version: "1.24-1.25"
 spec:
   validationFailureAction: enforce
   rules:
