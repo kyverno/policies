@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: k6t-require-instancetype
+  name: k6t-enforce-instancetype
   annotations:
-    policies.kyverno.io/title: Require instanceType
+    policies.kyverno.io/title: Enforce instanceTypes
     policies.kyverno.io/category: KubeVirt
     policies.kyverno.io/subject: VirtualMachine
     policies.kyverno.io/description: >-
