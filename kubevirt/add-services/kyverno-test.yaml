@@ -1,0 +1,13 @@
+name: add-service-ssh
+policies:
+  - add-services.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: k6t-add-services
+    rule: k6t-add-service-ssh
+    kind: VirtualMachineInstance
+    resources:
+    - vmi-name
+    generatedResource: generatedResource.yaml
+    result: pass

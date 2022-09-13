@@ -1,0 +1,18 @@
+name: enforce-instancetype
+policies:
+  - enforce-instancetype.yaml
+resources:
+  - resource.yaml
+results:
+- policy: k6t-enforce-instancetype
+  rule: k6t-dont-allow-domain-template
+  kind: VirtualMachine
+  resources:
+  - vm-valid
+  result: pass
+- policy: k6t-enforce-instancetype
+  rule: k6t-dont-allow-domain-template
+  kind: VirtualMachine
+  resources:
+  - vm-invalid
+  result: fail
