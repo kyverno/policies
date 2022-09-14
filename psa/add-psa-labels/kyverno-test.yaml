@@ -3,6 +3,7 @@ policies:
   - add-psa-labels.yaml
 resources:
   - resource.yaml
+  - resourcefail.yaml
 results:
   - policy: add-psa-labels
     rule: add-baseline-enforce-restricted-warn
@@ -10,3 +11,9 @@ results:
     patchedResource: patchedResource.yaml
     kind: Namespace
     result: pass
+  - policy: add-psa-labels
+    rule: add-baseline-enforce-restricted-warn
+    resource: test-fail
+    patchedResource: patchedResourcefail.yaml
+    kind: Namespace
+    result: fail
