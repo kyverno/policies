@@ -47,6 +47,9 @@ spec:
         - storage.k8s.io/*/VolumeAttachment
     preconditions:
       all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: NotEquals
+        value: DELETE
       - key: "{{request.object.apiVersion}}"
         operator: AnyIn
         value:
@@ -79,6 +82,9 @@ spec:
         - node.k8s.io/*/RuntimeClass
     preconditions:
       all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: NotEquals
+        value: DELETE
       - key: "{{request.object.apiVersion}}"
         operator: AnyIn
         value:
@@ -101,6 +107,9 @@ spec:
         - autoscaling/*/HorizontalPodAutoscaler
     preconditions:
       all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: NotEquals
+        value: DELETE
       - key: "{{request.object.apiVersion}}"
         operator: AnyIn
         value:
@@ -118,6 +127,9 @@ spec:
         - storage.k8s.io/*/CSIStorageCapacity
     preconditions:
       all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: NotEquals
+        value: DELETE
       - key: "{{request.object.apiVersion}}"
         operator: AnyIn
         value:
