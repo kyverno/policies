@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce-baseline-exclude-all-hostProcesses-all-containers-nginx
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: enforce-baseline-exclude-all-hostProcesses-all-containers-nginx
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      podSecurity:
+        level: restricted
+        version: v1.24
+        exclude:
+        - controlName: Running as Non-root
+          images:
+          - nginx
+          - nodejs

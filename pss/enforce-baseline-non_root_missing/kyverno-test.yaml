@@ -1,0 +1,12 @@
+name: enforce-baseline-exclude-all-hostProcesses-all-containers-nginx-missing
+policies:
+  - policy.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: enforce-baseline-exclude-all-hostProcesses
+    rule: enforce-baseline-exclude-all-hostProcesses
+    resource: nginx-baseline-privileged-container-fail
+    kind: Pod
+    result: pass
+
