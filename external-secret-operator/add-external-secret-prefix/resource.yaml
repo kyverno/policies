@@ -16,7 +16,11 @@ spec:
     remoteRef:
       key: remote-secret
       property: "name.first" # Tom
+      conversionStrategy: Default
+      decodingStrategy: None
   - secretKey: first_friend
     remoteRef:
       key: remote-secret
       property: "friends.1.first" # Roger
+      conversionStrategy: Default
+      decodingStrategy: None

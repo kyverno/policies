@@ -14,9 +14,13 @@ spec:
   data:
   - secretKey: firstname
     remoteRef:
-      key: default-remote-secret
-      property: "name.first" # Tom
+      key: prefix-remote-secret
+      property: "name.first"
+      conversionStrategy: Default
+      decodingStrategy: None
   - secretKey: first_friend
     remoteRef:
-      key: default-remote-secret
-      property: "friends.1.first" # Roger
+      key: prefix-remote-secret
+      property: "friends.1.first"
+      conversionStrategy: Default
+      decodingStrategy: None
