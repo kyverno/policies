@@ -1,0 +1,12 @@
+name: add-external-secret-prefix
+policies:
+- add-external-secret-prefix.yaml
+resources:
+- resource.yaml
+results:
+- policy: add-external-secret-prefix
+  rule: add-external-secret-prefix
+  resource: example
+  kind: ExternalSecret
+  patchedResource: patched.yaml
+  result: pass
