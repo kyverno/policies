@@ -6,12 +6,12 @@ resources:
 results:
   - policy: restricted_runAsNonRoot
     rule: restricted_runAsNonRoot
-    resource: nginx-baseline-privileged-container
+    resource: nginx
     kind: Pod
     result: fail
   - policy: restricted_runAsNonRoot
     rule: restricted_runAsNonRoot
-    resource: nginx-baseline-privileged-container-pass
+    resource: nginx-pass
     kind: Pod
     result: pass
 

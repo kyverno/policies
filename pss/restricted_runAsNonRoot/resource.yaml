@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-baseline-privileged-container
+  name: nginx
 spec:
   securityContext:
     runAsNonRoot: false
@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: nginx-baseline-privileged-container-pass
+  name: nginx-pass
 spec:
   securityContext:
     runAsNonRoot: false

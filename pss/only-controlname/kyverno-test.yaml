@@ -1,0 +1,17 @@
+name: seccompProfile_defines_all_violate
+policies:
+  - policy.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: seccompProfile_defines_all_violate
+    rule: seccompProfile_defines_all_violate
+    resource:  nginx
+    kind: Pod
+    result: fail
+  - policy: seccompProfile_defines_all_violate
+    rule: seccompProfile_defines_all_violate
+    resource:  nginx-pass
+    kind: Pod
+    result: pass
+

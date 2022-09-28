@@ -6,12 +6,17 @@ resources:
 results:
   - policy: wildcard_images_violate_true_image_not_match_wildcard
     rule: wildcard_images_violate_true_image_not_match_wildcard
-    resource: nginx-baseline-privileged-container
+    resource: nginx
     kind: Pod
     result: pass
   - policy: wildcard_images_violate_true_image_not_match_wildcard
     rule: wildcard_images_violate_true_image_not_match_wildcard
-    resource: busybox-baseline-privileged-container
+    resource: nginx-with-version
+    kind: Pod
+    result: pass
+  - policy: wildcard_images_violate_true_image_not_match_wildcard
+    rule: wildcard_images_violate_true_image_not_match_wildcard
+    resource: busybox
     kind: Pod
     result: fail
 

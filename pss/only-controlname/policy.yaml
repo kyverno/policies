@@ -1,0 +1,19 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: seccompProfile_defines_all_violate
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: seccompProfile_defines_all_violate
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      podSecurity:
+        level: baseline
+        version: v1.24
+        exclude:
+        - controlName: Seccomp
