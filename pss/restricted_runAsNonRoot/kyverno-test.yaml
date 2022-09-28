@@ -14,4 +14,14 @@ results:
     resource: nginx-pass
     kind: Pod
     result: pass
+  - policy: restricted_runAsNonRoot
+    rule: restricted_runAsNonRoot
+    resource: nginx-deployment
+    kind: Deployment
+    result: pass
+  - policy: restricted_runAsNonRoot
+    rule: restricted_runAsNonRoot
+    resource: nginx-bad-deployment
+    kind: Deployment
+    result: fail
 
