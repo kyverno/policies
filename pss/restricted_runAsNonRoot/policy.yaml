@@ -7,9 +7,10 @@ spec:
   rules:
   - name: restricted_runAsNonRoot
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+          - Pod
     validate:
       podSecurity:
         level: restricted

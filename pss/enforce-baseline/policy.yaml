@@ -7,9 +7,10 @@ spec:
   rules:
   - name: enforce-baseline-exclude-all-hostProcesses-all-containers-nginx
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+          - Pod
     validate:
       podSecurity:
         level: restricted
