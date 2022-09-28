@@ -1,0 +1,17 @@
+name: restricted_runAsNonRoot
+policies:
+  - policy.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: restricted_runAsNonRoot
+    rule: restricted_runAsNonRoot
+    resource: nginx-baseline-privileged-container
+    kind: Pod
+    result: fail
+  - policy: restricted_runAsNonRoot
+    rule: restricted_runAsNonRoot
+    resource: nginx-baseline-privileged-container-pass
+    kind: Pod
+    result: pass
+

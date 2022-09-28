@@ -1,0 +1,20 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: wildcard_images_violate_true_image_not_match_wildcard
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: wildcard_images_violate_true_image_not_match_wildcard
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      podSecurity:
+        level: baseline
+        version: v1.24
+        exclude:
+        - controlName: Privileged Containers
+          images:
+          - nginx*
