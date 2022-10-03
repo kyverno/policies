@@ -30,8 +30,10 @@ spec:
     preconditions:
       all:
       - key: "{{ request.operation }}"
-        operator: Equals
-        value: CREATE
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
     validate:
       message: Creating a TaskRun is not allowed.
       deny: {}
