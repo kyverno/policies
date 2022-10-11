@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Security
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: RoleBinding, ClusterRoleBinding, RBAC
-    kyverno.io/kyverno-version: 1.6.2
+    kyverno.io/kyverno-version: 1.8.0
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
@@ -29,7 +29,7 @@ spec:
       validate:
         message: "Binding to system:anonymous is not allowed."
         pattern:
-          subjects:
+          roleRef:
             name: "!system:anonymous"
     - name: restrict-unauthenticated
       match:
@@ -41,7 +41,7 @@ spec:
       validate:
         message: "Binding to system:unauthenticated is not allowed."
         pattern:
-          subjects:
+          roleRef:
             name: "!system:unauthenticated"
     - name: restrict-masters
       match:
@@ -53,5 +53,5 @@ spec:
       validate:
         message: "Binding to system:masters is not allowed."
         pattern:
-          subjects:
+          roleRef:
             name: "!system:masters"
