@@ -29,7 +29,7 @@ spec:
           - v1/Pod.status
     preconditions:
       all:
-      - key: "{{request.operation}}"
+      - key: "{{request.operation || 'BACKGROUND'}}"
         operator: Equals
         value: UPDATE
       - key: "{{request.object.status.containerStatuses[0].restartCount}}"
