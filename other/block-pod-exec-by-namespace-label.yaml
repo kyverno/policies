@@ -27,7 +27,7 @@ spec:
         jmesPath: "metadata.labels.exec"
     preconditions:
       all:
-      - key: "{{ request.operation }}"
+      - key: "{{ request.operation || 'BACKGROUND' }}"
         operator: Equals
         value: CONNECT
     validate:

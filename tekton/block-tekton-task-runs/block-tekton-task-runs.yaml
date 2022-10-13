@@ -29,7 +29,7 @@ spec:
           name: "system:serviceaccount:tekton-pipelines:tekton-pipelines-controller"
     preconditions:
       all:
-      - key: "{{ request.operation }}"
+      - key: "{{ request.operation || 'BACKGROUND' }}"
         operator: AnyIn
         value:
         - CREATE

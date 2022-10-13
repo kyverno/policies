@@ -41,7 +41,7 @@ spec:
         - Node
     preconditions:
       all:
-      - key: "{{ request.operation }}"
+      - key: "{{ request.operation || 'BACKGROUND' }}"
         operator: Equals
         value: UPDATE
       - key: "{{ request.oldObject.metadata.labels.foo || '' }}"
