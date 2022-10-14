@@ -1,0 +1,16 @@
+name: podsecurity-subrule-restricted-seccomp
+policies:
+  - restricted-exclude-seccomp.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: podsecurity-subrule-restricted-seccomp
+    rule: restricted-exempt-seccomp
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: podsecurity-subrule-restricted-seccomp
+    rule: restricted-exempt-seccomp
+    resource: goodpod01
+    kind: Pod
+    result: pass

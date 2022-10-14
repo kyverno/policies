@@ -1,0 +1,16 @@
+name: podsecurity-subrule-baseline
+policies:
+  - baseline-latest.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: podsecurity-subrule-baseline
+    rule: baseline
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: podsecurity-subrule-baseline
+    rule: baseline
+    resource: goodpod01
+    kind: Pod
+    result: pass
