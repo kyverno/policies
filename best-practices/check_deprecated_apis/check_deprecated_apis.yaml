@@ -14,37 +14,43 @@ metadata:
       As a best practice, older API versions should be replaced with newer versions.
       This policy validates for APIs that are deprecated or scheduled for removal.
       Note that checking for some of these resources may require modifying the Kyverno
-      ConfigMap to remove filters. This policy requires Kyverno v1.7.3+ to function properly.
+      ConfigMap to remove filters. In the validate-v1-22-removals rule, the Lease kind
+      has been commented out due to a check for this kind having a performance penalty
+      on Kubernetes clusters with many leases. Its enabling should be attended carefully
+      and is not recommended on large clusters. PodSecurityPolicy is removed in v1.25
+      so therefore the validate-v1-25-removals rule may not completely work on 1.25+.
+      This policy requires Kyverno v1.7.4+ to function properly.
 spec:
   validationFailureAction: audit
   background: true
   rules:
   - name: validate-v1-22-removals
     match:
-      resources:
-        kinds:
-        - admissionregistration.k8s.io/*/ValidatingWebhookConfiguration
-        - admissionregistration.k8s.io/*/MutatingWebhookConfiguration
-        - apiextensions.k8s.io/*/CustomResourceDefinition
-        - apiregistration.k8s.io/*/APIService
-        - authentication.k8s.io/*/TokenReview
-        - authorization.k8s.io/*/SubjectAccessReview
-        - authorization.k8s.io/*/LocalSubjectAccessReview
-        - authorization.k8s.io/*/SelfSubjectAccessReview
-        - certificates.k8s.io/*/CertificateSigningRequest
-        - coordination.k8s.io/*/Lease
-        - extensions/*/Ingress
-        - networking.k8s.io/*/Ingress
-        - networking.k8s.io/*/IngressClass
-        - rbac.authorization.k8s.io/*/ClusterRole
-        - rbac.authorization.k8s.io/*/ClusterRoleBinding
-        - rbac.authorization.k8s.io/*/Role
-        - rbac.authorization.k8s.io/*/RoleBinding
-        - scheduling.k8s.io/*/PriorityClass
-        - storage.k8s.io/*/CSIDriver
-        - storage.k8s.io/*/CSINode
-        - storage.k8s.io/*/StorageClass
-        - storage.k8s.io/*/VolumeAttachment
+      any:
+      - resources:
+          kinds:
+          - admissionregistration.k8s.io/*/ValidatingWebhookConfiguration
+          - admissionregistration.k8s.io/*/MutatingWebhookConfiguration
+          - apiextensions.k8s.io/*/CustomResourceDefinition
+          - apiregistration.k8s.io/*/APIService
+          - authentication.k8s.io/*/TokenReview
+          - authorization.k8s.io/*/SubjectAccessReview
+          - authorization.k8s.io/*/LocalSubjectAccessReview
+          - authorization.k8s.io/*/SelfSubjectAccessReview
+          - certificates.k8s.io/*/CertificateSigningRequest
+          # - coordination.k8s.io/*/Lease
+          - extensions/*/Ingress
+          - networking.k8s.io/*/Ingress
+          - networking.k8s.io/*/IngressClass
+          - rbac.authorization.k8s.io/*/ClusterRole
+          - rbac.authorization.k8s.io/*/ClusterRoleBinding
+          - rbac.authorization.k8s.io/*/Role
+          - rbac.authorization.k8s.io/*/RoleBinding
+          - scheduling.k8s.io/*/PriorityClass
+          - storage.k8s.io/*/CSIDriver
+          - storage.k8s.io/*/CSINode
+          - storage.k8s.io/*/StorageClass
+          - storage.k8s.io/*/VolumeAttachment
     preconditions:
       all:
       - key: "{{ request.operation || 'BACKGROUND' }}"
@@ -72,14 +78,16 @@ spec:
       deny: {}
   - name: validate-v1-25-removals
     match:
-      resources:
-        kinds:
-        - batch/*/CronJob
-        - discovery.k8s.io/*/EndpointSlice
-        - events.k8s.io/*/Event
-        - policy/*/PodDisruptionBudget
-        - policy/*/PodSecurityPolicy
-        - node.k8s.io/*/RuntimeClass
+      any:
+      - resources:
+          # NOTE: PodSecurityPolicy is completely removed in 1.25.
+          kinds:
+          - batch/*/CronJob
+          - discovery.k8s.io/*/EndpointSlice
+          - events.k8s.io/*/Event
+          - policy/*/PodDisruptionBudget
+          - policy/*/PodSecurityPolicy
+          - node.k8s.io/*/RuntimeClass
     preconditions:
       all:
       - key: "{{ request.operation || 'BACKGROUND' }}"
@@ -100,11 +108,12 @@ spec:
       deny: {}
   - name: validate-v1-26-removals
     match:
-      resources:
-        kinds:
-        - flowcontrol.apiserver.k8s.io/*/FlowSchema
-        - flowcontrol.apiserver.k8s.io/*/PriorityLevelConfiguration
-        - autoscaling/*/HorizontalPodAutoscaler
+      any:
+      - resources:
+          kinds:
+          - flowcontrol.apiserver.k8s.io/*/FlowSchema
+          - flowcontrol.apiserver.k8s.io/*/PriorityLevelConfiguration
+          - autoscaling/*/HorizontalPodAutoscaler
     preconditions:
       all:
       - key: "{{ request.operation || 'BACKGROUND' }}"
@@ -122,9 +131,10 @@ spec:
       deny: {}
   - name: validate-v1-27-removals
     match:
-      resources:
-        kinds:
-        - storage.k8s.io/*/CSIStorageCapacity
+      any:
+      - resources:
+          kinds:
+          - storage.k8s.io/*/CSIStorageCapacity
     preconditions:
       all:
       - key: "{{ request.operation || 'BACKGROUND' }}"
