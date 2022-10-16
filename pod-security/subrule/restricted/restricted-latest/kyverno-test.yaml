@@ -1,0 +1,16 @@
+name: restricted-latest
+policies:
+  - restricted-latest.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: podsecurity-subrule-restricted
+    rule: restricted
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: podsecurity-subrule-restricted
+    rule: restricted
+    resource: goodpod01
+    kind: Pod
+    result: pass

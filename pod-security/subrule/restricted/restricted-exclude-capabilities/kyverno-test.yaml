@@ -1,0 +1,16 @@
+name: podsecurity-subrule-restricted-capabilities
+policies:
+  - restricted-exclude-capabilities.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: podsecurity-subrule-restricted-capabilities
+    rule: restricted-exempt-capabilities
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: podsecurity-subrule-restricted-capabilities
+    rule: restricted-exempt-capabilities
+    resource: goodpod01
+    kind: Pod
+    result: pass
