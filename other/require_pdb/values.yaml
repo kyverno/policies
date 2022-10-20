@@ -1,6 +1,6 @@
 policies:
   - name: require-pdb
     rules:
-    - name: require-pdb
-      values:
-        pdb_count: "0"
+      - name: require-pdb
+        values:
+          pdb_count: "1"
