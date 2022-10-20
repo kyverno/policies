@@ -26,13 +26,14 @@ spec:
         name: kubeadm-config 
         namespace: kube-system
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+          - Pod
     preconditions:
       any:
       - key: "{{ request.object.spec.dnsPolicy }}"
-        operator: In
+        operator: AnyIn
         value: 
         - ClusterFirst
         - ClusterFirstWithHostNet
@@ -53,5 +54,5 @@ spec:
               value: "1"
             searches:
             - svc.{{dictionary.data.ClusterConfiguration | parse_yaml(@).clusterName}}
-            - '{{ request.namespace }}.svc.{{ dictionary.data.ClusterConfiguration | parse_yaml(@).clusterName }}'
+            - "{{ request.namespace }}.svc.{{ dictionary.data.ClusterConfiguration | parse_yaml(@).clusterName }}"
           dnsPolicy: None
