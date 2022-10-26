@@ -1,0 +1,34 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-env-vars
+  annotations:
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Check envirnoment variables
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kubernetes-version: "1.22-1.23"
+    kyverno.io/kyverno-version: 1.6.0
+    policies.kyverno.io/description: >-
+      To test services, it is handy to disable the Open Policy Agent. 
+      In production environments, OPA is required to perform access control.
+
+spec:
+  background: false
+  validationFailureAction: audit
+  rules:
+    - name: check-disable-opa
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: "DISABLE_OPA=true should not be used in production"
+        pattern:
+          spec:
+            containers:
+              - name: "*"
+                =(env):
+                  - (name): DISABLE_OPA
+                    value: "!true"
