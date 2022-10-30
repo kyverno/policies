@@ -14,43 +14,44 @@ metadata:
       Pods which mount emptyDir volumes may be allowed to potentially overrun
       the medium backing the emptyDir volume. This sample ensures that any
       initContainers or containers mounting an emptyDir volume have
-      ephemeral-storage requests and limits set.   
+      ephemeral-storage requests and limits set. Policy will be skipped if
+      the volume has already a sizeLimit set.
 spec:
   background: false
   validationFailureAction: audit
   rules:
-  - name: check-emptydir-requests-limits
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    preconditions:
-      all:
-      - key: "{{ request.object.spec.volumes[?contains(keys(@), 'emptyDir')] || '' | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
-    validate:
-      message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
-      foreach:
-      - list: "request.object.spec.volumes[?contains(keys(@), 'emptyDir')]"
-        elementScope: false
-        deny:
-          conditions:
-            any:
-              # get the number of containers (based on name) which mount this emptyDir (by name)
-            - key: "{{request.object.spec.[initContainers, containers][].volumeMounts[?name == '{{ element.name }}' ][].name | length(@) }}"
-              operator: NotEquals
-              # compare it to the number of containers (also mounting this same emptyDir vol by name) which have ephemeral-storage requests.
-              # block if the two numbers aren't equal. If limits are specified but not requests, requests are automatically
-              # set equal to the value of the limit. Therefore, this condition only works effectively if both requests and limits are not set.
-              value: "{{request.object.spec.[initContainers, containers[?volumeMounts[?name == '{{element.name}}' ]]][].resources.requests.\"ephemeral-storage\" | length(@) }}"
-            - key: "{{request.object.spec.[initContainers, containers][].volumeMounts[?name == '{{ element.name }}' ][].name | length(@) }}"
-              operator: NotEquals
-              # same as above but with limits
-              value: "{{request.object.spec.[initContainers, containers[?volumeMounts[?name == '{{element.name}}' ]]][].resources.limits.\"ephemeral-storage\" | length(@) }}"
+    - name: check-emptydir-requests-limits
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ request.object.spec.volumes[?contains(keys(@), 'emptyDir')] || '' | length(@) }}"
+            operator: GreaterThanOrEquals
+            value: 1
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: AnyIn
+            value:
+              - CREATE
+              - UPDATE
+      validate:
+        message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
+        foreach:
+          - list: "request.object.spec.volumes[?contains(keys(@), 'emptyDir') && !contains(keys(emptyDir), 'sizeLimit')]"
+            elementScope: false
+            deny:
+              conditions:
+                any:
+                  # get the number of containers (based on name) which mount this emptyDir (by name)
+                  - key: "{{request.object.spec.[initContainers, containers][].volumeMounts[?name == '{{ element.name }}' ][].name | length(@) }}"
+                    operator: NotEquals
+                    # compare it to the number of containers (also mounting this same emptyDir vol by name) which have ephemeral-storage requests.
+                    # block if the two numbers aren't equal. If limits are specified but not requests, requests are automatically
+                    # set equal to the value of the limit. Therefore, this condition only works effectively if both requests and limits are not set.
+                    value: '{{request.object.spec.[initContainers, containers[?volumeMounts[?name == ''{{element.name}}'' ]]][].resources.requests."ephemeral-storage" | length(@) }}'
+                  - key: "{{request.object.spec.[initContainers, containers][].volumeMounts[?name == '{{ element.name }}' ][].name | length(@) }}"
+                    operator: NotEquals
+                    # same as above but with limits
+                    value: '{{request.object.spec.[initContainers, containers[?volumeMounts[?name == ''{{element.name}}'' ]]][].resources.limits."ephemeral-storage" | length(@) }}'

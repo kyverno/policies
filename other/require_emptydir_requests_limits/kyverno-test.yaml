@@ -2,16 +2,26 @@ name: require-emptydir-requests-and-limits
 policies:
   - require-emptydir-requests-limits.yaml
 resources:
-  - resource.yaml
+  - resource-fail.yaml
+  - resource-pass.yaml
+  - resource-skip.yaml
 variables: values.yaml
 results:
   - policy: require-emptydir-requests-and-limits
     rule: check-emptydir-requests-limits
-    resource: good-pod
+    resources:
+      - fail-pod
+    kind: Pod
+    result: fail
+  - policy: require-emptydir-requests-and-limits
+    rule: check-emptydir-requests-limits
+    resources:
+      - pass-pod
     kind: Pod
     result: pass
   - policy: require-emptydir-requests-and-limits
     rule: check-emptydir-requests-limits
-    resource: bad-pod
+    resources:
+      - skip-pod
     kind: Pod
-    result: fail
+    result: skip
