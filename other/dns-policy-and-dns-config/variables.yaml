@@ -1,5 +1,5 @@
 policies:
-  - name: dns-policy
+  - name: change-dns-config-policy
     rules:
     - name: dns-policy
       values:
