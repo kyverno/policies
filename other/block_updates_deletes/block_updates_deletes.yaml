@@ -18,22 +18,24 @@ spec:
   rules:
   - name: block-updates-deletes
     match:
-      resources:
-        kinds:
-        - Service
-        selector:
-          matchLabels:
-            protected: "true"
+      any:
+      - resources:
+          kinds:
+          - Service
+          selector:
+            matchLabels:
+              protected: "true"
     exclude:
-      clusterRoles:
-      - cluster-admin
+      any:
+      - clusterRoles:
+        - cluster-admin
     validate:
       message: "This resource is protected and changes are not allowed. Please seek a cluster-admin."
       deny:
         conditions:
           any:
             - key: "{{request.operation || 'BACKGROUND'}}"
-              operator: In
+              operator: AnyIn
               value:
               - DELETE
               - UPDATE

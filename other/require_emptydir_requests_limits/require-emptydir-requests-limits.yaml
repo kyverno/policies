@@ -31,7 +31,7 @@ spec:
         operator: GreaterThanOrEquals
         value: 1
       - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: In
+        operator: AnyIn
         value:
         - CREATE
         - UPDATE
