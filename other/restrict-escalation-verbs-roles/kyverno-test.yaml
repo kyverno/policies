@@ -1,0 +1,32 @@
+name: restrict-escalation-verbs-roles
+policies:
+- restrict-escalation-verbs-roles.yaml
+resources:
+- resource.yaml
+results:
+- policy: restrict-escalation-verbs-roles
+  rule: escalate
+  resources:
+  - goodclusterrole01
+  - goodclusterrole02
+  kind: ClusterRole
+  result: pass
+- policy: restrict-escalation-verbs-roles
+  rule: escalate
+  resources:
+  - badclusterrole01
+  - badclusterrole02
+  kind: ClusterRole
+  result: fail
+- policy: restrict-escalation-verbs-roles
+  rule: escalate
+  resources:
+  - goodrole01
+  kind: Role
+  result: pass
+- policy: restrict-escalation-verbs-roles
+  rule: escalate
+  resources:
+  - badrole01
+  kind: Role
+  result: fail
