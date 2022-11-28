@@ -1,0 +1,45 @@
+name: topologyspreadconstraints
+policies:
+  - topologyspreadconstraints-policy.yaml
+resources:
+  - resource-fail1.yaml
+  - resource-fail2.yaml
+  - resource-fail3.yaml
+  - resource-pass.yaml
+  - resource-skip.yaml
+results:
+  - policy: topologyspreadconstraints-policy
+    rule: spread-pods
+    resources:
+      - pass
+    namespace: monitoring
+    kind: StatefulSet
+    result: pass
+  - policy: topologyspreadconstraints-policy
+    rule: spread-pods
+    resources:
+      - fail1
+    namespace: monitoring
+    kind: StatefulSet
+    result: fail
+  - policy: topologyspreadconstraints-policy
+    rule: spread-pods
+    resources:
+      - fail2
+    namespace: monitoring
+    kind: StatefulSet
+    result: fail
+  - policy: topologyspreadconstraints-policy
+    rule: spread-pods
+    resources:
+      - fail3
+    namespace: monitoring
+    kind: StatefulSet
+    result: fail
+  - policy: topologyspreadconstraints-policy
+    rule: spread-pods
+    resources:
+      - skip
+    namespace: monitoring
+    kind: StatefulSet
+    result: skip
