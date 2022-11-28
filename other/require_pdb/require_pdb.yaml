@@ -17,26 +17,31 @@ spec:
   validationFailureAction: audit
   background: false
   rules:
-  - name: require-pdb
-    match:
-      resources:
-        kinds:
-        - Deployment
-    preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
-    context:
-    - name: pdb_count
-      apiCall:
-        urlPath: "/apis/policy/v1/namespaces/{{request.namespace}}/poddisruptionbudgets"
-        jmesPath: "items[?label_match(spec.selector.matchLabels, `{{request.object.spec.template.metadata.labels}}`)] | length(@)"
-    validate:
-      message: "There is no corresponding PodDisruptionBudget found for this Deployment."
-      deny:
-        conditions:
-          any:
-          - key: "{{pdb_count}}"
-            operator: LessThan
-            value: 1
+    - name: require-pdb
+      match:
+        any:
+          - resources:
+              kinds:
+                - Deployment
+                - StatefulSet
+      preconditions:
+        all:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: Equals
+            value: CREATE
+          - key: "{{ request.object.spec.replicas }}"
+            operator: GreaterThanOrEquals
+            value: 3
+      context:
+        - name: pdb_count
+          apiCall:
+            urlPath: "/apis/policy/v1/namespaces/{{request.namespace}}/poddisruptionbudgets"
+            jmesPath: "items[?label_match(spec.selector.matchLabels, `{{request.object.spec.template.metadata.labels}}`)] | length(@)"
+      validate:
+        message: "There is no corresponding PodDisruptionBudget found for this Deployment."
+        deny:
+          conditions:
+            any:
+              - key: "{{pdb_count}}"
+                operator: LessThan
+                value: 1
