@@ -1,0 +1,14 @@
+name: change-dns-config-policy
+policies:
+  - dns-policy-and-dns-config.yaml
+resources:
+  - resource.yaml
+variables: variables.yaml
+results:
+  - policy: change-dns-config-policy
+    rule: dns-policy
+    resource: myapp-pod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    namespace: default
+    result: pass
