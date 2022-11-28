@@ -13,9 +13,7 @@ metadata:
     policies.kyverno.io/description: >-
       The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to
       privilege escalation and should be tightly controlled. This policy prevents
-      use of these verbs in Role or ClusterRole resources. In order to
-      fully implement this control, it is recommended to pair this policy with another which
-      also prevents use of the wildcard ('*') in the verbs list.
+      use of these verbs in Role or ClusterRole resources.
 spec:
   validationFailureAction: audit
   background: true
@@ -29,9 +27,23 @@ spec:
               - ClusterRole
       validate:
         message: "Use of verbs `escalate`, `bind`, and `impersonate` are forbidden."
-        deny:
-          conditions:
-            any:
-            - key: ["escalate","bind","impersonate"]
-              operator: AnyIn
-              value: "{{ request.object.rules[].verbs[] }}"
+        foreach:
+        - list: "request.object.rules[]"
+          deny:
+            conditions:
+              all:
+              - key: "{{ element.apiGroups || '' }}"
+                operator: AnyIn
+                value:
+                - rbac.authorization.k8s.io
+              - key: "{{ element.resources || '' }}"
+                operator: AnyIn
+                value:
+                - clusterroles
+                - roles
+              - key: "{{ element.verbs }}"
+                operator: AnyIn
+                value:
+                - bind
+                - escalate
+                - impersonate
