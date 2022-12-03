@@ -1,6 +1,6 @@
 name: opa-env
 policies:
-  - require-opa-enabled.yaml
+  - check-env-vars.yaml
 resources:
   - resource.yaml
 results:
