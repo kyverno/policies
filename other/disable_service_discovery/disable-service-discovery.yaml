@@ -4,7 +4,7 @@ metadata:
   name: disable-service-discovery
   annotations:
     policies.kyverno.io/title: Disable Service Discovery
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/category: Other, EKS Best Practices
     policies.kyverno.io/subject: Pod
     kyverno.io/kyverno-version: 1.8.0-rc2
     kyverno.io/kubernetes-version: "1.24"
