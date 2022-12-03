@@ -13,12 +13,8 @@ results:
   ###### Pods - Good
   - policy: validate-env-vars
     rule: check-disable-opa
-    resource: pod-with-opa-disabled
+    resources:
+    - pod-with-opa-disabled
+    - pod-without-opa-env
     kind: Pod
     result: pass
-  - policy: validate-env-vars
-    rule: check-disable-opa
-    resource: pod-without-opa-env
-    kind: Pod
-    result: pass
-
