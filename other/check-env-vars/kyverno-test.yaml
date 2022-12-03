@@ -5,13 +5,13 @@ resources:
   - resource.yaml
 results:
   ###### Pods - Bad
-  - policy: validate-env-vars
+  - policy: check-env-vars
     rule: check-disable-opa
     resource: pod-with-opa-enabled
     kind: Pod
     result: fail
   ###### Pods - Good
-  - policy: validate-env-vars
+  - policy: check-env-vars
     rule: check-disable-opa
     resources:
     - pod-with-opa-disabled
