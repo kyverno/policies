@@ -1,0 +1,20 @@
+name: opa-env
+policies:
+  - check-env-vars.yaml
+resources:
+  - resource.yaml
+results:
+  ###### Pods - Bad
+  - policy: check-env-vars
+    rule: check-disable-opa
+    resource: pod-with-opa-enabled
+    kind: Pod
+    result: fail
+  ###### Pods - Good
+  - policy: check-env-vars
+    rule: check-disable-opa
+    resources:
+    - pod-with-opa-disabled
+    - pod-without-opa-env
+    kind: Pod
+    result: pass
