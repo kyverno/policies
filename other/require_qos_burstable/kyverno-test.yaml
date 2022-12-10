@@ -1,0 +1,21 @@
+name: require-qos-burstable
+policies:
+  - require_qos_burstable.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: require-qos-burstable
+    rule: burstable
+    resources:
+    - goodpod01
+    - goodpod02
+    - goodpod03
+    kind: Pod
+    result: pass
+  - policy: require-qos-burstable
+    rule: burstable
+    resources:
+    - badpod01
+    - badpod02
+    kind: Pod
+    result: fail
