@@ -49,7 +49,7 @@ spec:
         pathType: Prefix
   tls:
   - hosts:
-    - endpoint01
+    - endpoint03
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress

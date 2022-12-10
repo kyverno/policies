@@ -55,7 +55,7 @@ spec:
     weekly: 4
     monthly: 6
   actions:
-  - action: backup
+  - action: import
   #- action: export  # comment this line out to test 'enforce_3-2-1' policy
     exportParameters:
       frequency: '@monthly'
