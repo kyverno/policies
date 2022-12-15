@@ -7,7 +7,7 @@ results:
 ##### Pods - Bad
   - policy: enforce-min-tls-version
     rule: adding-capabilities
-    resource: mesh01
+    resource: badmesh
     kind: Mesh
     result: fail
   ###### Pods - Good
