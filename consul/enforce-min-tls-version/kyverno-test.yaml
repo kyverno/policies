@@ -1,0 +1,16 @@
+name: enforce-min-tls-version
+policies:
+  - enforce-min-tls-version.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: enforce-min-tls-version
+    rule: check-for-tls-version
+    resource: badmesh
+    kind: Mesh
+    result: fail
+  - policy: enforce-min-tls-version
+    rule: check-for-tls-version
+    resource: goodmesh
+    kind: Mesh
+    result: pass
