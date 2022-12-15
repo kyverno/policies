@@ -4,15 +4,13 @@ policies:
 resources:
   - resource.yaml
 results:
-##### Pods - Bad
   - policy: enforce-min-tls-version
-    rule: adding-capabilities
+    rule: check-for-tls-version
     resource: badmesh
     kind: Mesh
     result: fail
-  ###### Pods - Good
   - policy: enforce-min-tls-version
-    rule: adding-capabilities
+    rule: check-for-tls-version
     resource: goodmesh
     kind: Mesh
     result: pass

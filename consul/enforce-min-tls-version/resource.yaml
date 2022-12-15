@@ -1,4 +1,3 @@
-###### Pods - Bad
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: Mesh
 metadata:
@@ -8,7 +7,6 @@ spec:
     incoming:
       tlsMinVersion: TLSv1_1
 --- 
-###### Pods - Good
 apiVersion: consul.hashicorp.com/v1alpha1
 kind: Mesh
 metadata:
