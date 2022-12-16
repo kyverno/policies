@@ -4,9 +4,9 @@ metadata:
   name: restrict-virtual-service-wildcard
   annotations:
     policies.kyverno.io/title: Restrict Virtual Service Host with Wildcards
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/category: Istio
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.2
+    kyverno.io/kyverno-version: 1.8.4
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/subject: VirtualService
@@ -18,7 +18,7 @@ metadata:
       character and allows for more governance when a single mesh deployment 
       model is used.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   background: true
   rules:
     - name: block-virtual-service-wildcard
