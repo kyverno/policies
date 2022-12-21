@@ -1,0 +1,19 @@
+name: scale-deployment-zero
+policies:
+  -  scale_deployment_zero.yaml
+resources:
+  -  resource_up.yaml
+  -  resource_down.yaml
+results:
+  - policy: scale-deployment-zero
+    rule: annotate-deployment-rule
+    resource: mydeploy-up
+    kind: Deployment
+    patchedResource: patchedResource_up.yaml
+    result: skip
+  - policy: scale-deployment-zero
+    rule: annotate-deployment-rule
+    resource: mydeploy-down
+    kind: Deployment
+    patchedResource: patchedResource_down.yaml
+    result: pass

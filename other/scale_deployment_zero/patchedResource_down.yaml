@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeploy-down
+  annotations:
+    sre.corp.org/troubleshooting-needed: "true"
+spec:
+  replicas: 0
+# TO BE COMPLETED
