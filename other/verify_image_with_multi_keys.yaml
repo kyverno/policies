@@ -4,7 +4,7 @@ metadata:
   name: verify-image-with-multi-keys
   annotations:
     policies.kyverno.io/title: Verify Image with Multiple Keys
-    policies.kyverno.io/category: Sample
+    policies.kyverno.io/category: Software Supply Chain Security
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.7.0
