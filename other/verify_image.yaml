@@ -27,7 +27,7 @@ spec:
               - Pod
       verifyImages:
       - imageReferences:
-        - "ghcr.io/kyverno/test-verify-image:*"
+        - "ghcr.io/kyverno/test-verify-image*"
         mutateDigest: true
         attestors:
         - entries:
