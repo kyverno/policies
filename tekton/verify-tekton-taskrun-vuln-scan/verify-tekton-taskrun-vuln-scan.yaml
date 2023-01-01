@@ -32,16 +32,16 @@ spec:
     verifyImages:
     - imageReferences:
       - "*"
-      attestors:
-      - entries:
-        - keys:
-            publicKeys: |-
-              -----BEGIN PUBLIC KEY-----
-              MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEahmSvGFmxMJABilV1usgsw6ImcQ/
-              gDaxw57Sq+uNGHW8Q3zUSx46PuRqdTI+4qE3Ng2oFZgLMpFN/qMrP0MQQg==
-              -----END PUBLIC KEY-----          
       attestations:
       - predicateType: https://grype.anchore.io/scan
+        attestors:
+        - entries:
+          - keys:
+              publicKeys: |-
+                -----BEGIN PUBLIC KEY-----
+                MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEahmSvGFmxMJABilV1usgsw6ImcQ/
+                gDaxw57Sq+uNGHW8Q3zUSx46PuRqdTI+4qE3Ng2oFZgLMpFN/qMrP0MQQg==
+                -----END PUBLIC KEY-----          
         conditions:
         - any:
           - key: "{{ matches[].vulnerability[].cvss[?metrics.impactScore > '8.0'][] | length(@) }}"
