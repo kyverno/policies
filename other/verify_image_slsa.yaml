@@ -18,7 +18,7 @@ metadata:
       when produced through GitHub Actions. It requires configuration based upon
       your own values.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: audit
   webhookTimeoutSeconds: 30
   rules:
     - name: check-slsa-keyless
@@ -30,24 +30,21 @@ spec:
       verifyImages:
       - imageReferences:
         - "myreg.org/path/repo:*"
-        attestors:
-        - entries:
-          - keyless:
-            # In the case of GitHub Actions, the subject will be set to your Actions workflow responsible
-            # for kicking off the process. Note that this will not be set to the external action
-            # responsible for the provenance generation.
-              subject: "https://github.com/myname/myrepo/.github/workflows/my-workflow.yaml@refs/heads/mybranch"
-              issuer: "https://token.actions.githubusercontent.com"
         attestations:
         - predicateType: https://slsa.dev/provenance/v0.2
+          attestors:
+          - count: 1
+            entries:
+            - keyless:
+                subject: "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v*"
+                issuer: "https://token.actions.githubusercontent.com"
+                rekor:
+                  url: https://rekor.sigstore.dev
           conditions:
           - all:
-            - key: "{{ invocation.configSource.uri }}"
-              operator: Equals
-              value: "git+https://github.com/myname/myrepo@refs/heads/mybranch"
-            - key: "{{ invocation.configSource.entryPoint }}"
-              operator: Equals
-              value: ".github/workflows/my-workflow.yaml"
-            - key: "{{ regex_match('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_generic_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$','{{ builder.id}}') }}"
+            # This expression uses a regex pattern to ensure the builder.id in the attestation is equal to the official
+            # SLSA provenance generator workflow and uses a tagged release in semver format. If using a specific SLSA
+            # provenance generation workflow, you may need to adjust the first input as necessary.
+            - key: "{{ regex_match('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$','{{ builder.id}}') }}"
               operator: Equals
               value: true
