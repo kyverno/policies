@@ -85,6 +85,23 @@ spec:
       deny:
         conditions:
           any:
-          - key: "{{ request.object.spec.match.[any, all][].resources[].namespaces[] }}"
+          - key: "{{ request.object.spec.match.[any, all][].resources[].namespaces[] || `[]`}}"
             operator: AnyNotIn
             value: "{{ request.namespace }}"
+  - name: namespaced-exceptions-only
+    match:
+      any:
+      - resources:
+          kinds:
+          - PolicyException
+    validate:
+      message: >-
+        An exception can only be created for a Namespaced resource, and a Namespace is required.
+      foreach:
+      - list: request.object.spec.match.[any, all][]
+        deny:
+          conditions:
+            any:
+            - key: "{{ element.resources.namespaces[] || `[]` | length(@) }}"
+              operator: Equals
+              value: 0
