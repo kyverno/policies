@@ -149,3 +149,25 @@ spec:
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.27.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
       deny: {}
+  - name: validate-v1-29-removals
+    match:
+      any:
+      - resources:
+          kinds:
+          - flowcontrol.apiserver.k8s.io/*/FlowSchema
+          - flowcontrol.apiserver.k8s.io/*/PriorityLevelConfiguration
+    preconditions:
+      all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: NotEquals
+        value: DELETE
+      - key: "{{request.object.apiVersion}}"
+        operator: AnyIn
+        value:
+        - flowcontrol.apiserver.k8s.io/v1beta2
+    validate:
+      message: >-
+        {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.26.
+        See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
+      deny: {}
+  
