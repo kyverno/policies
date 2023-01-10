@@ -29,6 +29,11 @@ results:
     kind: CronJob
     result: skip
 
+  - policy: check-deprecated-apis
+    rule: validate-v1-29-removals
+    resource: bad-flowschema
+    kind: FlowSchema
+    result: fail
  
     
     
