@@ -167,7 +167,7 @@ spec:
         - flowcontrol.apiserver.k8s.io/v1beta2
     validate:
       message: >-
-        {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.26.
+        {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.29.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
       deny: {}
   
