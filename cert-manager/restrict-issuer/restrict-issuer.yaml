@@ -18,9 +18,10 @@ spec:
   rules:
   - name: restrict-corp-cert-issuer
     match:
-      resources:
-        kinds:
-        - Certificate
+      any:
+      - resources:
+          kinds:
+          - Certificate
     validate:
       message: When requesting a cert for this domain, you must use our corporate issuer.
       pattern:
