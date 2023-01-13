@@ -18,7 +18,9 @@ metadata:
       This policy writes an annotation with the key `kyverno.io/created-by`
       having all the userInfo fields present in the AdmissionReview request
       for any object being created. It then protects this annotation from
-      tampering or removal making it immutable.
+      tampering or removal making it immutable. Although this policy matches on
+      all kinds ("*") it is highly recommend to more narrowly scope it to only
+      the resources which should be labeled.
 spec:
   validationFailureAction: enforce
   background: false

@@ -26,9 +26,10 @@ spec:
           name: namespace-filters
           namespace: default
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+          - Pod
     preconditions:
       all:
       - key: "{{request.object.metadata.namespace}}"
