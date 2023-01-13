@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Restrict node label changes
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Node, Label
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
       Node labels are critical pieces of metadata upon which many other applications and
       logic may depend and should not be altered or removed by regular users.
@@ -20,9 +21,10 @@ spec:
   rules:
   - name: prevent-label-value-changes
     match:
-      resources:
-        kinds:
-        - Node
+      any:
+      - resources:
+          kinds:
+          - Node
     validate:
       message: "Modifying the `foo` label on a Node is not allowed."
       deny:
@@ -36,9 +38,10 @@ spec:
             value: "{{ request.oldObject.metadata.labels.foo || '' }}"
   - name: prevent-label-key-removal
     match:
-      resources:
-        kinds:
-        - Node
+      any:
+      - resources:
+          kinds:
+          - Node
     preconditions:
       all:
       - key: "{{ request.operation || 'BACKGROUND' }}"

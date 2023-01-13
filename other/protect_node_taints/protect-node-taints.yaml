@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Protect Node Taints
     policies.kyverno.io/category: Other
     policies.kyverno.io/subject: Node
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
       Node taints are often used as a control in multi-tenant use cases.
       If users can alter them, they may be able to affect scheduling of
@@ -21,9 +22,10 @@ spec:
   rules:
   - name: protect-node-taints
     match:
-      resources:
-        kinds:
-        - Node
+      any:
+      - resources:
+          kinds:
+          - Node
     exclude:
       clusterRoles:
       - cluster-admin

@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Add Pod Anti-Affinity
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Deployment, Pod
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
       Applications may involve multiple replicas of the same Pod for availability as well as scale
       purposes, yet Kubernetes does not by default provide a solution for availability. This policy
@@ -15,9 +16,10 @@ spec:
   rules:
     - name: insert-pod-antiaffinity
       match:
-        resources:
-          kinds:
-            - Deployment
+        any:
+        - resources:
+            kinds:
+              - Deployment
       preconditions:
         # This precondition selects Pods with the label `app` defined
         all:
