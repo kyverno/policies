@@ -105,3 +105,25 @@ spec:
             - key: "{{ element.resources.namespaces[] || `[]` | length(@) }}"
               operator: Equals
               value: 0
+  - name: policy-namespace-match-polex-namespace
+    match:
+      any:
+      - resources:
+          kinds:
+          - PolicyException
+    validate:
+      message: >-
+        An exception may not be provided for a Namespaced Policy in another Namespace.
+      foreach:
+      - list: request.object.spec.exceptions[]
+        preconditions:
+          any:
+          - key: "{{element.policyName}}"
+            operator: Equals
+            value: "*/*"
+        deny:
+          conditions:
+            any:
+            - key: "{{ element.policyName}}"
+              operator: NotEquals
+              value: "{{request.namespace}}/*"
