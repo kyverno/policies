@@ -18,7 +18,7 @@ metadata:
       with these scoping best practices. These rules may be changed/removed depending
       on the exception practices to be implemented.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: single-policy
