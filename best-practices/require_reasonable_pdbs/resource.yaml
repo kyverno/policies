@@ -1,0 +1,107 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: require-resonable-pdb-percentage-bad
+spec:
+  minAvailable: 100%
+  selector:
+    matchLabels:
+      app: require-resonable-pdb-percentage-bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: require-resonable-pdb-percentage-good
+spec:
+  maxUnavailable: 75%
+  selector:
+    matchLabels:
+      app: require-resonable-pdb-percentage-good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: deployment-replicas-higher-than-pdb-minAvailable-bad
+  namespace: default
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: deployment-replicas-higher-than-pdb-minAvailable-bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: deployment-replicas-higher-than-pdb-minAvailable-good
+  namespace: default
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: deployment-replicas-higher-than-pdb-minAvailable-good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: statefulset-replicas-higher-than-pdb-minAvailable-bad
+  namespace: default
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: statefulset-replicas-higher-than-pdb-minAvailable-bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: replicaset-replicas-higher-than-pdb-minAvailable-good
+  namespace: default
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: replicaset-replicas-higher-than-pdb-minAvailable-good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: replicaset-replicas-higher-than-pdb-minAvailable-bad
+  namespace: default
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: replicaset-replicas-higher-than-pdb-minAvailable-bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: statefulset-replicas-higher-than-pdb-minAvailable-good
+  namespace: default
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: statefulset-replicas-higher-than-pdb-minAvailable-good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-maxUnavailable-zero-bad
+  namespace: default
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: pdb-maxUnavailable-zero-bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-maxUnavailable-zero-good
+  namespace: default
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: pdb-maxUnavailable-zero-good

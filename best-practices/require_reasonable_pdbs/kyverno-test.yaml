@@ -1,0 +1,65 @@
+name: require-reasonable-pdbs
+policies:
+  - require_reasonable_pdbs.yaml
+resources:
+  - resource.yaml
+variables: variables.yaml
+results:
+  - policy: require-reasonable-pdbs
+    rule: require-resonable-pdb-percentage
+    resource: require-resonable-pdb-percentage-bad
+    kind: PodDisruptionBudget
+    result: fail
+  - policy: require-reasonable-pdbs
+    rule: require-resonable-pdb-percentage
+    resource: require-resonable-pdb-percentage-good
+    kind: PodDisruptionBudget
+    result: pass
+  - policy: require-reasonable-pdbs
+    rule: deployment-replicas-higher-than-pdb-minAvailable
+    resource: deployment-replicas-higher-than-pdb-minAvailable-bad
+    kind: PodDisruptionBudget
+    namespace: default
+    result: fail
+  - policy: require-reasonable-pdbs
+    rule: deployment-replicas-higher-than-pdb-minAvailable
+    resource: deployment-replicas-higher-than-pdb-minAvailable-good
+    kind: PodDisruptionBudget
+    namespace: default
+    result: pass
+  - policy: require-reasonable-pdbs
+    rule: statefulset-replicas-higher-than-pdb-minAvailable
+    resource: statefulset-replicas-higher-than-pdb-minAvailable-bad
+    kind: PodDisruptionBudget
+    namespace: default
+    result: fail
+  - policy: require-reasonable-pdbs
+    rule: statefulset-replicas-higher-than-pdb-minAvailable
+    resource: statefulset-replicas-higher-than-pdb-minAvailable-good
+    kind: PodDisruptionBudget
+    namespace: default
+    result: pass
+  - policy: require-reasonable-pdbs
+    rule: replicaset-replicas-higher-than-pdb-minAvailable
+    resource: replicaset-replicas-higher-than-pdb-minAvailable-bad
+    kind: PodDisruptionBudget
+    namespace: default
+    result: fail
+  - policy: require-reasonable-pdbs
+    rule: replicaset-replicas-higher-than-pdb-minAvailable
+    resource: replicaset-replicas-higher-than-pdb-minAvailable-good
+    kind: PodDisruptionBudget
+    namespace: default
+    result: pass
+  - policy: require-reasonable-pdbs
+    rule: pdb-maxUnavailable-zero
+    resource: pdb-maxUnavailable-zero-bad
+    kind: PodDisruptionBudget
+    namespace: default
+    result: fail
+  - policy: require-reasonable-pdbs
+    rule: pdb-maxUnavailable-zero
+    resource: pdb-maxUnavailable-zero-good
+    kind: PodDisruptionBudget
+    namespace: default
+    result: pass

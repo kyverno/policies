@@ -1,0 +1,158 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-reasonable-pdbs
+  annotations:
+    policies.kyverno.io/title: Require Reasonable PDBs
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: PodDisruptionBudget
+    policies.kyverno.io/description: >-
+      PodDisruptionBudget resources are useful to ensuring mimimum availability is maintained at all time.
+      This policy validates that a PodDisruptionBudget with multiple replicas allows disruption.
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: require-resonable-pdb-percentage
+    match:
+      resources:
+        kinds:
+        - PodDisruptionBudget
+    preconditions:
+      any:
+      - key: '{{ regex_match(''^[0-9]+%$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ regex_match(''^[0-9]+%$'', ''{{ request.object.spec.maxUnavailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+    validate:
+      message: PodDisruptionBudget percentages should allow 50% out of service
+      deny:
+        conditions:
+          any:
+          - key: '{{ regex_match(''^([1-9]|[14][0-9]|5[0])%$'', ''{{ request.object.spec.minAvailable || ''50%''}}'') }}'
+            operator: Equals
+            value: false
+          - key: '{{ regex_match(''^([5-9][0-9]|100)%$'', ''{{ request.object.spec.maxUnavailable || ''50%''}}'') }}'
+            operator: Equals
+            value: false
+  - name: deployment-replicas-higher-than-pdb-minAvailable
+    match:
+      resources:
+        kinds:
+        - PodDisruptionBudget
+    context:
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
+      name: deploymentreplicas 
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ deploymentreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+    validate:
+      message: PodDisruption budget minAvailable ({{ request.object.spec.minAvailable }}) cannot be the same or higher than the replica count ({{ deploymentreplicas[0] }})
+      deny:
+        conditions:
+          all:
+          - key: '{{ request.object.spec.minAvailable }}'
+            operator: GreaterThanOrEquals
+            value: '{{ deploymentreplicas[0] }}'
+  - name: statefulset-replicas-higher-than-pdb-minAvailable
+    match:
+      resources:
+        kinds:
+        - PodDisruptionBudget
+    context:
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
+      name: statefulsetreplicas
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ statefulsetreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+    validate:
+      message: PodDisruption budget minAvailable ({{ request.object.spec.minAvailable }}) cannot be the same or higher than the replica count ({{ statefulsetreplicas[0] }})
+      deny:
+        conditions:
+          all:
+          - key: '{{ request.object.spec.minAvailable }}'
+            operator: GreaterThanOrEquals
+            value: '{{ statefulsetreplicas[0] }}'
+  - name: replicaset-replicas-higher-than-pdb-minAvailable
+    match:
+      resources:
+        kinds:
+        - PodDisruptionBudget
+    context:
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
+      name: replicasetreplicas
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ replicasetreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+    validate:
+      message: PodDisruption budget minAvailable ({{ request.object.spec.minAvailable }}) cannot be the same or higher than the replica count ({{ replicasetreplicas[0] }})
+      deny:
+        conditions:
+          any:
+          - key: '{{ request.object.spec.minAvailable }}'
+            operator: GreaterThanOrEquals
+            value: '{{ replicasetreplicas[0] }}'
+  - name: pdb-maxUnavailable-zero
+    match:
+      resources:
+        kinds:
+        - PodDisruptionBudget
+    context:
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
+      name: deploymentreplicas
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
+      name: statefulsetreplicas
+    - apiCall:
+        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
+      name: replicasetreplicas
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.maxUnavailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      any:
+      - key: '{{ deploymentreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+      - key: '{{ statefulsetreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+      - key: '{{ replicasetreplicas[0] }}'
+        operator: GreaterThan
+        value: 1
+    validate:
+      message: PodDisruptionBudget maxUnavailable ({{ request.object.spec.maxUnavailable }}) must be greater than 0
+      deny:
+        conditions:
+        - key: '{{ request.object.spec.maxUnavailable || '''' }}'
+          operator: Equals
+          value: 0

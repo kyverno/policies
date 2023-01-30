@@ -1,0 +1,25 @@
+policies:
+  - name: require-reasonable-pdbs
+    rules:
+      - name: deployment-replicas-higher-than-pdb-minAvailable
+        values:
+          deploymentreplicas:
+          - 3
+          request.namespace: default
+      - name: statefulset-replicas-higher-than-pdb-minAvailable
+        values:
+          statefulsetreplicas:
+          - 3
+          request.namespace: default
+      - name: replicaset-replicas-higher-than-pdb-minAvailable
+        values:
+          replicasetreplicas:
+          - 3
+          request.namespace: default
+      - name: pdb-maxUnavailable-zero
+        values:
+          deploymentreplicas:
+          - 3
+          statefulsetreplicas: []
+          replicasetreplicas: []
+          request.namespace: default
