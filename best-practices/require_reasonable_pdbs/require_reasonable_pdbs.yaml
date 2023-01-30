@@ -44,10 +44,10 @@ spec:
         kinds:
         - PodDisruptionBudget
     context:
-    - apiCall:
+    - name: deploymentreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
-        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
-      name: deploymentreplicas 
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments 
     preconditions:
       all:
       - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
@@ -70,10 +70,10 @@ spec:
         kinds:
         - PodDisruptionBudget
     context:
-    - apiCall:
+    - name: statefulsetreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
-      name: statefulsetreplicas
     preconditions:
       all:
       - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
@@ -96,10 +96,10 @@ spec:
         kinds:
         - PodDisruptionBudget
     context:
-    - apiCall:
+    - name: replicasetreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
-      name: replicasetreplicas
     preconditions:
       all:
       - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
@@ -122,18 +122,18 @@ spec:
         kinds:
         - PodDisruptionBudget
     context:
-    - apiCall:
+    - name: deploymentreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
-      name: deploymentreplicas
-    - apiCall:
+    - name: statefulsetreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
-      name: statefulsetreplicas
-    - apiCall:
+    - name: replicasetreplicas
+      apiCall:
         jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
-      name: replicasetreplicas
     preconditions:
       all:
       - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.maxUnavailable || ''''}}'') }}'

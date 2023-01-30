@@ -1,0 +1,8 @@
+policies:
+  - name: require-replicas-allow-disruption
+    rules:         
+      - name: replicas-allow-voluntary-disruptions
+        values:
+          pdb_minAvailable:
+          - 3
+          request.object.spec.replicas: 3

@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: replicas-allow-voluntary-disruptions-good
+  name: replicas-allow-voluntary-disruptions-good
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: replicas-allow-voluntary-disruptions-good
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: replicas-allow-voluntary-disruptions-good
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: replicas-allow-voluntary-disruptions-bad
+  name: replicas-allow-voluntary-disruptions-bad
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: replicas-allow-voluntary-disruptions-bad
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: replicas-allow-voluntary-disruptions-bad
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}

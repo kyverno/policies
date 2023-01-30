@@ -1,0 +1,19 @@
+name: require-replicas-allow-disruption
+policies:
+  - require-replicas-allow-disruption.yaml
+resources:
+  - resource.yaml
+variables: variables.yaml
+results:
+  - policy: require-replicas-allow-disruption
+    rule: replicas-allow-voluntary-disruptions
+    resource: replicas-allow-voluntary-disruptions-good
+    kind: Deployment
+    namespace: default
+    result: fail
+  - policy: require-replicas-allow-disruption
+    rule: replicas-allow-voluntary-disruptions
+    resource: replicas-allow-voluntary-disruptions-bad
+    kind: Deployment
+    namespace: default
+    result: fail

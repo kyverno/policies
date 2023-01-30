@@ -1,0 +1,45 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-replicas-allow-disruption
+  annotations:
+    policies.kyverno.io/title: Require Replicas Allow Disruption
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment, StatefulSet, ReplicaSet
+    policies.kyverno.io/description: >-
+      Resources with multiple replicas should allow for some disruption.
+      This policy validates that the amount of replicas specified exceeds the minAvailable amount
+      in a matching PodDisruptionBudget
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: replicas-allow-voluntary-disruptions
+    match:
+      resources:
+        kinds:
+        - Deployment
+        - StatefulSet
+        - ReplicaSet
+    context:
+    - name: pdb_minAvailable
+      apiCall:
+        jmesPath: items[?label_match(spec.selector.matchLabels, `{{request.object.spec.template.metadata.labels}}`)].spec.minAvailable
+        urlPath: /apis/policy/v1beta1/namespaces/{{request.namespace}}/poddisruptionbudgets
+    preconditions:
+      all:
+      - key: '{{ request.object.spec.replicas }}'
+        operator: GreaterThan
+        value: 1
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ pdb_minAvailable[0] || ''''}}'') }}'
+        operator: Equals
+        value: true
+    validate:
+      message: Replica count ({{ request.object.spec.replicas }}) cannot be lower
+        than or equal to the PodDisruptionBudget minAvailable ({{ pdb_minAvailable[0] }})
+      deny:
+        conditions:
+        - key: '{{ request.object.spec.replicas }}'
+          operator: LessThanOrEquals
+          value: '{{ pdb_minAvailable[0] }}'
