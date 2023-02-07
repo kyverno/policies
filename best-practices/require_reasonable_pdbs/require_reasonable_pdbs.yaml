@@ -46,7 +46,7 @@ spec:
     context:
     - name: deploymentreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments 
     preconditions:
       all:
@@ -72,7 +72,7 @@ spec:
     context:
     - name: statefulsetreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
     preconditions:
       all:
@@ -98,7 +98,7 @@ spec:
     context:
     - name: replicasetreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
     preconditions:
       all:
@@ -124,15 +124,15 @@ spec:
     context:
     - name: deploymentreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
     - name: statefulsetreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/statefulsets
     - name: replicasetreplicas
       apiCall:
-        jmesPath: items[?label_match(spec.template.metadata.labels, `{{request.object.spec.selector.matchLabels}}`)].spec.replicas || `[0]`
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)].spec.replicas || `[0]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/replicasets
     preconditions:
       all:
