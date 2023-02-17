@@ -8,7 +8,7 @@ spec:
   priorityClassName: foo
   containers:
   - name: goproxy
-    image: k8s.gcr.io/goproxy:0.1
+    image: registry.k8s.io/goproxy:0.1
 ---
 apiVersion: v1
 kind: Pod
@@ -19,4 +19,4 @@ metadata:
 spec:
   containers:
   - name: goproxy
-    image: k8s.gcr.io/goproxy:0.1
+    image: registry.k8s.io/goproxy:0.1

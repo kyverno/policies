@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: k8s-nginx
-    image: k8s.gcr.io/nginx:1.7.9
+    image: registry.k8s.io/nginx:1.7.9
 ---
 apiVersion: v1
 kind: Pod
@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: k8s-nginx
-    image: k8s.gcr.io/nginx:1.7.9
+    image: registry.k8s.io/nginx:1.7.9
   - name: busybox
     image: bar.io/busybox
 ---
@@ -25,7 +25,7 @@ metadata:
 spec:
   containers:
   - name: k8s-nginx
-    image: k8s.gcr.io/nginx:1.7.9
+    image: registry.k8s.io/nginx:1.7.9
   - name: busybox
     image: eu.foo.io/busybox
 ---
