@@ -1,0 +1,36 @@
+name: pdb-maxunavailable
+
+policies:
+- pdb-maxunavailable.yaml
+
+resources:
+- resource.yaml
+
+results:
+- policy: pdb-maxunavailable
+  rule: pdb-maxunavailable
+  resource: good-pdb
+  namespace: kube-system
+  kind: PodDisruptionBudget
+  result: pass
+
+- policy: pdb-maxunavailable
+  rule: pdb-maxunavailable
+  resource: good-pdb-none
+  namespace: kube-system
+  kind: PodDisruptionBudget
+  result: pass
+
+- policy: pdb-maxunavailable
+  rule: pdb-maxunavailable
+  resource: bad-pdb-zero
+  namespace: kube-system
+  kind: PodDisruptionBudget
+  result: fail
+
+- policy: pdb-maxunavailable
+  rule: pdb-maxunavailable
+  resource: bad-pdb-negative-one
+  namespace: kube-system
+  kind: PodDisruptionBudget
+  result: fail

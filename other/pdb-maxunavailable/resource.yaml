@@ -1,0 +1,42 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-pdb
+  namespace: kube-system
+spec:
+  maxUnavailable: 2
+  selector:
+    matchLabels:
+      app: good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-pdb-none
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: good
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-pdb-zero
+  namespace: kube-system
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: bad
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-pdb-negative-one
+  namespace: kube-system
+spec:
+  maxUnavailable: -1
+  selector:
+    matchLabels:
+      app: bad
