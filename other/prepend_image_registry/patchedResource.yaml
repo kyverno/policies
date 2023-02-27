@@ -5,12 +5,12 @@ metadata:
 spec:
   automountServiceAccountToken: false
   initContainers:
-  - name: alpine
-    image: registry.io/alpine:latest
+  - name: kyverno
+    image: registry.io/kyverno/kyverno:latest
   - name: busybox
     image: registry.io/busybox:1.28
   containers:
-  - name: nginx
-    image: registry.io/nginx:1.2.3
+  - name: kyverno
+    image: registry.io/kyverno/kyverno:1.2.3
   - name: redis
     image: registry.io/redis:latest
