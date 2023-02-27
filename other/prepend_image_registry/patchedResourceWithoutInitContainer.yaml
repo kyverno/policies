@@ -5,7 +5,7 @@ metadata:
 spec:
   automountServiceAccountToken: false
   containers:
-  - name: nginx
-    image: nginx:1.2.3
+  - name: kyverno
+    image: kyverno/kyverno:1.2.3
   - name: redis
     image: redis:latest

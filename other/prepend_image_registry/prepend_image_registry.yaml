@@ -63,4 +63,4 @@ spec:
           spec:
             initContainers:
             - name: "{{ element.name }}"           
-              image: registry.io/{{ images.initContainers."{{element.name}}".name}}:{{images.initContainers."{{element.name}}".tag}}
+              image: registry.io/{{ images.initContainers."{{element.name}}".path}}:{{images.initContainers."{{element.name}}".tag}}
