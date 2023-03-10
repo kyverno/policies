@@ -1,0 +1,12 @@
+name: restrict-deprecated-registry
+policies:
+  -  restrict_deprecated_registry.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-deprecated-registry
+    rule: restrict-deprecated-registry
+    resource: test-pod
+    kind: Pod
+    namespace: policy-test
+    result: fail
