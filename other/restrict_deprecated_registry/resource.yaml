@@ -1,25 +1,13 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: test-pod
+  name: test-pod-bad
   namespace: policy-test
   labels:
     app: test
 spec:
   containers:
-    - name: test1
-      image: registry.k8s.io/google-containers/pause:3.2
-      imagePullPolicy: Always
-      securityContext:  
-        allowPrivilegeEscalation: false  
-        runAsUser: 1000  
-        readOnlyRootFilesystem: true
-        runAsNonRoot: true
-        capabilities:
-          drop: ["ALL"]  
-        seccompProfile:
-          type: "RuntimeDefault"
-    - name: test2
+    - name: test
       image: k8s.gcr.io/google-containers/pause:3.2
       imagePullPolicy: Always
       securityContext:  
@@ -31,3 +19,26 @@ spec:
           drop: ["ALL"]  
         seccompProfile:
           type: "RuntimeDefault"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod-good
+  namespace: policy-test
+  labels:
+    app: test
+spec:
+  containers:
+    - name: test
+      image: registry.k8s.io/google-containers/pause:3.2
+      imagePullPolicy: Always
+      securityContext:  
+        allowPrivilegeEscalation: false  
+        runAsUser: 1000  
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        capabilities:
+          drop: ["ALL"]  
+        seccompProfile:
+          type: "RuntimeDefault"
+

@@ -6,7 +6,13 @@ resources:
 results:
   - policy: restrict-deprecated-registry
     rule: restrict-deprecated-registry
-    resource: test-pod
+    resource: test-pod-bad
     kind: Pod
     namespace: policy-test
     result: fail
+  - policy: restrict-deprecated-registry
+    rule: restrict-deprecated-registry
+    resource: test-pod-good
+    kind: Pod
+    namespace: policy-test
+    result: pass
