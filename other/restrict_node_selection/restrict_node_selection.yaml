@@ -34,6 +34,12 @@ spec:
       - resources:
           kinds:
           - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: Equal
+        value:
+        - CREATE
     validate:
       message: Setting the nodeName field is prohibited.
       pattern:
