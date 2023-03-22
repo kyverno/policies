@@ -37,9 +37,8 @@ spec:
     preconditions:
       all:
       - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equal
-        value:
-        - CREATE
+        operator: Equals
+        value: CREATE
     validate:
       message: Setting the nodeName field is prohibited.
       pattern:
