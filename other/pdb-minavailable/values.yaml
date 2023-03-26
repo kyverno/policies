@@ -1,0 +1,10 @@
+policies:
+  - name: pdb-minavailable-check
+    rules:
+      - name: pdb-minavailable
+        values:
+          minavailable: "2"
+    resources:
+      - name: bad-pdb
+        values:
+          request.operation: CREATE
