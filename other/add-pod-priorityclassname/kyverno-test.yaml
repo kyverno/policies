@@ -6,14 +6,14 @@ resources:
 variables: values.yaml
 results:
   - policy: add-pod-priorityclassname
-    rule: add-priorityclass
+    rule: add-priorityclass-pods
     resource: blank
     kind: Pod
     namespace: foo
     patchedResource: patchedResource.yaml
     result: pass
   - policy: add-pod-priorityclassname
-    rule: add-priorityclass
+    rule: add-priorityclass-pods
     resource: second
     kind: Pod
     namespace: production
