@@ -1,0 +1,16 @@
+name: kyverno_data_protection_tests
+policies:
+  - k10-check-data-protection-by-preset-label.yaml
+resources:
+  - k10-create-ns-test.yaml
+results:
+- policy: k10-data-protection-by-preset-label
+  rule: k10-data-protection-by-preset-label
+  resource: namespace-valid
+  kind: Namespace
+  result: pass
+- policy: k10-data-protection-by-preset-label
+  rule: k10-data-protection-by-preset-label
+  resource: namespace-invalid
+  kind: Namespace
+  result: fail
