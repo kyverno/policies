@@ -1,0 +1,10 @@
+policies:
+  - name: k10-generate-policy-by-preset-label
+    rules:
+    - name: k10-generate-policy-by-preset-label
+      values:
+        existingPolicy: 0
+    resources:
+    - name: test-namespace
+      values:
+        request.namespace: test-namespace

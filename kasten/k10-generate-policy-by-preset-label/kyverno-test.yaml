@@ -1,0 +1,13 @@
+name: k10-generate-policy-by-preset-label-test
+policies:
+  - k10-generate-policy-by-preset-label.yaml
+resources:
+  - test-resource.yaml
+variables: test-values.yaml
+results:
+  - policy: k10-generate-policy-by-preset-label
+    rule: k10-generate-policy-by-preset-label
+    resource: test-namespace
+    generatedResource: generatedResource.yaml
+    kind: Namespace
+    result: pass
