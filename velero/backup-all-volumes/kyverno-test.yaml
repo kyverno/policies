@@ -1,0 +1,34 @@
+name: backup-all-volumes
+policies:
+  - backup-all-volumes.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: backup-all-volumes
+    rule: backup-velero-pv
+    resource: first
+    kind: Pod
+    namespace: foo
+    patchedResource: patchedResource.yaml
+    result: pass
+  - policy: backup-all-volumes
+    rule: backup-velero-pv
+    resource: second
+    kind: Pod
+    namespace: bar
+    result: skip
+  - policy: backup-all-volumes
+    rule: backup-velero-pv
+    resource: third
+    kind: Pod
+    namespace: foo
+    patchedResource: patchedResource-third.yaml
+    result: pass
+  - policy: backup-all-volumes
+    rule: autogen-backup-velero-pv
+    resource: fourth
+    kind: Deployment
+    namespace: foo
+    patchedResource: patchedResource-fourth.yaml
+    result: pass
