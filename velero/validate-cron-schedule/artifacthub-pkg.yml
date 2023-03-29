@@ -1,0 +1,13 @@
+# Artifact Hub package metadata file
+---
+version: 1.0.0
+name: validate-cron-schedule
+displayName: Validate Cron Schedule
+createdAt: 2023-03-29T00:00:00.000Z
+description: |
+  This policy validates the schedule of a Velero CronJob.
+keywords:
+  - velero
+  - cronjob
+  - schedule
+  - kyverno
