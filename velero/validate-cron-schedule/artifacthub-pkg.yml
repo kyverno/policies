@@ -6,8 +6,23 @@ displayName: Validate Cron Schedule
 createdAt: 2023-03-29T00:00:00.000Z
 description: |
   This policy validates the schedule of a Velero CronJob.
+readme: |
+  This policy validates the schedule of a Velero CronJob.
+  To use this policy, apply it to the namespace containing
+  the Velero CronJob you want to validate.
 keywords:
   - velero
   - cronjob
   - schedule
   - kyverno
+license: Apache-2.0
+maintainers:
+  - name: Chip Zoller
+    email: chip@nirmata.com
+
+# https://kyverno.io/policies/?policytypes=mutate%2Bvalidate%2BverifyImages
+annotations: # (optional, keys and values must be strings)
+  kyverno/categories: "Velero"
+  kyverno/kubernetesVersion: "1.20"
+  kyverno/subject: "Schedule"
+  kyverno/version: "1.0.0"

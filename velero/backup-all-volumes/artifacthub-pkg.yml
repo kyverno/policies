@@ -16,10 +16,22 @@ displayName: Backup All Volumes
 createdAt: 2023-03-29T00:00:00.000Z
 description: |
   This policy backs up all volumes in a namespace.
-
+readme: |
+  This policy backs up all volumes in a namespace.
+  To use this policy, apply it to the namespace you want to backup.
 # Optional fields
 keywords:
   - velero
   - backup
   - volume
   - kyverno
+license: Apache-2.0
+maintainers:
+  - name: Chip Zoller
+    email: chip@nirmata.com
+
+annotations: # (optional, keys and values must be strings)
+  kyverno/categories: "Velero"
+  kyverno/kubernetesVersion: "1.20"
+  kyverno/subject: "Volume"
+  kyverno/version: "1.0.0"
