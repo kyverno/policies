@@ -1,28 +1,23 @@
-# Artifact Hub package metadata file
 ---
 version: 1.0.0
 name: validate-cron-schedule
 displayName: Validate Cron Schedule
-createdAt: 2023-03-29T00:00:00.000Z
-description: |
-  This policy validates the schedule of a Velero CronJob.
-readme: |
-  This policy validates the schedule of a Velero CronJob.
-  To use this policy, apply it to the namespace containing
-  the Velero CronJob you want to validate.
+createdAt: "2023-03-29T00:00:00.000Z"
+description: >-
+      A Velero Schedule is given in Cron format and must be accurate to ensure
+      operation. This policy validates that the schedule is a valid Cron format. 
+install: |-
+    ### Usage
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
+    ```
 keywords:
   - velero
-  - cronjob
-  - schedule
   - kyverno
-license: Apache-2.0
-maintainers:
-  - name: Chip Zoller
-    email: chip@nirmata.com
-
-# https://kyverno.io/policies/?policytypes=mutate%2Bvalidate%2BverifyImages
-annotations: # (optional, keys and values must be strings)
-  kyverno/categories: "Velero"
-  kyverno/kubernetesVersion: "1.20"
+links:
+  - name: Source
+    url: https://github.com/kyverno/policies/blob/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
+annotations:
+  kyverno/category: "Velero"
+  kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Schedule"
-  kyverno/version: "1.0.0"

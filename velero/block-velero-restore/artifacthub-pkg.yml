@@ -1,46 +1,27 @@
-# This file contains the metadata for the policy package
-# that will be displayed on Artifact Hub
-# Some settings like the verified publisher flag or the ignored packages won't
-# be applied until the next time the repository is processed. Please keep in
-# mind that the repository won't be processed if it has not changed since the
-# last time it was processed. Depending on the repository kind, this is checked
-# in a different way. For Helm http based repositories, we consider it has
-# changed if the `index.yaml` file changes. For git based repositories, it does
-# when the hash of the last commit in the branch you set up changes. This does
-# NOT apply to ownership claim operations, which are processed immediately.
-#
 ---
 name: block-velero-restore
 version: 1.0.0
 displayName: Block Velero Restore
-createdAt: 2023-03-29T00:00:00.000Z
-description: |
-  This policy prevents restores from Velero to specific namespaces.
-readme: |
-  This policy prevents restores from Velero to specific namespaces.
-  Velero allows on backup and restore operations and is designed to be
-  run with full cluster admin permissions. It allows on cross
-  namespace restore operations, which means you can restore backup
-  of namespace A to namespace B. This policy protect restore operation
-  into system or any protected namespaces, listed in deny condition section.
-  It checks the Restore CRD object and its namespaceMapping field.
-  If destination match protected namespace then operation fails and
-  warning message is throw.
-
-# Optional fields
+createdAt: "2023-03-29T00:00:00.000Z"
+description: >-
+      Velero allows on backup and restore operations and is designed to be run with full cluster admin permissions.
+      It allows on cross namespace restore operations, which means you can restore backup of namespace A to namespace B.
+      This policy protect restore operation into system or any protected namespaces, listed in deny condition section. 
+      It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
+      then operation fails and warning message is throw.
+install: |-
+    ### Usage
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/block-velero-restore/block-velero-restore.yaml
+    ```
 keywords:
   - velero
-  - restore
-  - namespace
   - kyverno
-license: Apache-2.0
+links:
+  - name: Source
+    url: https://github.com/kyverno/policies/blob/main/velero/block-velero-restore/block-velero-restore.yaml
 
-maintainers:
-  - name: Chip Zoller
-    email: chip@nirmata.com
-
-annotations: # (optional, keys and values must be strings)
-  kyverno/categories: "Velero"
-  kyverno/kubernetesVersion: "1.20"
+annotations:
+  kyverno/category: "Velero"
+  kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Restore"
-  kyverno/version: "1.0.0"
