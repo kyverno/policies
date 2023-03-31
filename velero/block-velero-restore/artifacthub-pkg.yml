@@ -10,17 +10,12 @@ description: >-
       It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
       then operation fails and warning message is throw.
 install: |-
-    ### Usage
     ```shell
     kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/block-velero-restore/block-velero-restore.yaml
     ```
 keywords:
   - velero
   - kyverno
-links:
-  - name: Source
-    url: https://github.com/kyverno/policies/blob/main/velero/block-velero-restore/block-velero-restore.yaml
-
 annotations:
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.23"
