@@ -13,6 +13,27 @@ install: |-
 keywords:
   - velero
   - kyverno
+readme: |
+  # Kyverno Policy: Validate Cron Schedule
+  This repository contains a Kyverno policy package for validating the Cron schedule of Velero backups in a Kubernetes cluster. The policy is designed to work with the Kyverno Kubernetes policy management tool.
+  ## Overview
+  The `validate-cron-schedule` Kyverno policy ensures that the Cron schedule specified for Velero backups is valid and does not overlap with other schedules. This policy enforces best practices for backup scheduling, improving the reliability and consistency of your backups.
+  ## Installation
+  To install the `validate-cron-schedule` Kyverno policy, please apply the Kyverno policy to your cluster:
+  ```bash
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
+  ```
+  ## Uninstallation
+  To uninstall the `validate-cron-schedule` Kyverno policy from your cluster, run:
+  ```bash
+  kubectl delete -f https://raw.githubusercontent.com/kyverno/policies/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
+  ```
+  ## License
+  This project is licensed under the [Apache License, Version 2.0](https://github.com/kyverno/policies/blob/main/LICENSE).
+  ## Kyverno annotations
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+  ## Support
+  If you encounter any issues or need help with this policy, please create an issue in this repository or join the [Kyverno Slack](https://kyverno.io/community/) community for support.
 annotations:
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
