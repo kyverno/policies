@@ -16,6 +16,14 @@ install: |-
 keywords:
   - velero
   - kyverno
+readme: |
+  Velero allows on backup and restore operations and is designed to be run with full cluster admin permissions.
+  It allows on cross namespace restore operations, which means you can restore backup of namespace A to namespace B.
+  This policy protect restore operation into system or any protected namespaces, listed in deny condition section. 
+  It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
+  then operation fails and warning message is throw.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.23"
