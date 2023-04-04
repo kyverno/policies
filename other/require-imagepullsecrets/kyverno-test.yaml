@@ -1,0 +1,21 @@
+name: require-imagepullsecrets
+policies:
+  - require-imagepullsecrets.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: require-imagepullsecrets
+    rule: check-for-image-pull-secrets
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: require-imagepullsecrets
+    rule: check-for-image-pull-secrets
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: require-imagepullsecrets
+    rule: check-for-image-pull-secrets
+    resource: skippod01
+    kind: Pod
+    result: skip

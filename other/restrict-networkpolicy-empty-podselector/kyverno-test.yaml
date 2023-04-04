@@ -1,0 +1,25 @@
+name: restrict-networkpolicy-empty-podselector
+policies:
+  -  restrict-networkpolicy-empty-podselector.yaml
+resources:
+  -  resource.yaml
+results:
+  - policy: restrict-networkpolicy-empty-podselector
+    rule: empty-podselector
+    resources:
+    - badnetworkpolicy
+    kind: NetworkPolicy
+    result: fail
+  - policy: restrict-networkpolicy-empty-podselector
+    rule: empty-podselector
+    resources:
+    - goodnetworkpolicy
+    kind: NetworkPolicy
+    result: pass
+  - policy: restrict-networkpolicy-empty-podselector
+    rule: empty-podselector
+    resources:
+    - default-deny
+    kind: NetworkPolicy
+    result: skip
+  

@@ -1,0 +1,28 @@
+name: disallow-default-namespace
+policies:
+  -  disallow-default-namespace.yaml
+resources:
+  -  resource.yaml
+results:
+  # validate-namespace
+  - policy: disallow-default-namespace
+    rule: validate-namespace
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: disallow-default-namespace
+    rule: validate-namespace
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  # validate-podcontroller-namespace
+  - policy: disallow-default-namespace
+    rule: validate-podcontroller-namespace
+    resource: baddeployment01
+    kind: Deployment
+    result: fail
+  - policy: disallow-default-namespace
+    rule: validate-podcontroller-namespace
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass

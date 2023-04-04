@@ -1,0 +1,12 @@
+name: require-network-policy
+policies:
+  -  require-netpol.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: require-network-policy
+    rule: require-network-policy
+    resource: nginx-deploy
+    kind: Deployment
+    result: fail

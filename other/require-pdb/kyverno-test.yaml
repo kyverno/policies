@@ -1,0 +1,20 @@
+name: require-pdb
+policies:
+  - require-pdb.yaml
+resources:
+  - resource-pass.yaml
+  - resource-skip.yaml
+variables: values.yaml
+results:
+  - policy: require-pdb
+    rule: require-pdb
+    resources:
+      - nginx-deploy-pass
+    kind: Deployment
+    result: pass
+  - policy: require-pdb
+    rule: require-pdb
+    resources:
+      - nginx-deploy-skip
+    kind: Deployment
+    result: skip

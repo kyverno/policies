@@ -1,0 +1,36 @@
+name: disallow-helm-tiller
+policies:
+  - disallow-helm-tiller.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: gooddeployment01
+    kind: Deployment
+    result: pass
+  - policy: disallow-helm-tiller
+    rule: validate-helm-tiller
+    resource: baddeployment01
+    kind: Deployment
+    result: fail

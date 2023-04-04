@@ -1,6 +1,6 @@
 name: limit-hostpath-type-pv
 policies:
-  - limit_hostpath_type_pv.yaml
+  - limit-hostpath-type-pv.yaml
 resources:
   - resource.yaml
 results:

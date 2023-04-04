@@ -1,0 +1,19 @@
+name: ensure-readonly-hostpath
+policies:
+  -  ensure-readonly-hostpath.yaml
+resources:
+  - good-pod-01.yaml
+  - bad-pod-01.yaml
+variables: values.yaml
+results:
+  - policy: ensure-readonly-hostpath
+    rule: ensure-hostpaths-readonly
+    resource:  bad-pod-01
+    kind: Pod
+    result: fail
+  - policy: ensure-readonly-hostpath
+    rule: ensure-hostpaths-readonly
+    resource:  good-pod-01
+    kind: Pod
+    result: pass
+  

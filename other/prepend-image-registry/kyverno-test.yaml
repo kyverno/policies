@@ -1,0 +1,40 @@
+name: prepend-image-registry
+policies:
+  - prepend-image-registry.yaml
+resources:
+  - resource.yaml
+  - resourceFailed.yaml
+  - withoutinitcontainer.yaml
+results:
+  - policy: prepend-registry
+    rule: prepend-registry-containers
+    resource: mypod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    result: pass
+  - policy: prepend-registry
+    rule: prepend-registry-initcontainers
+    resource: mypod
+    patchedResource: patchedResource.yaml
+    kind: Pod
+    result: pass
+  - policy: prepend-registry
+    rule: prepend-registry-containers
+    resource: myfailedpod
+    patchedResource: failpatchedResource.yaml
+    kind: Pod
+    result: fail
+  - policy: prepend-registry
+    rule: prepend-registry-initcontainers
+    resource: myfailedpod
+    patchedResource: failpatchedResource.yaml
+    kind: Pod
+    result: fail
+  - policy: prepend-registry
+    rule: prepend-registry-containers
+    resource: withoutinitcontainer
+    patchedResource: patchedResourceWithoutInitContainer.yaml
+    kind: Pod
+    result: fail
+
+    

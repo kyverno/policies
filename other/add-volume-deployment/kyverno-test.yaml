@@ -1,0 +1,12 @@
+name: add-volume
+policies:
+  - add-volume-deployment.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-volume
+    rule: add-volume
+    resource: mydeploy
+    patchedResource: patchedResource.yaml
+    kind: Deployment
+    result: pass

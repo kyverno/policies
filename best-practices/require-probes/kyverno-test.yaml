@@ -1,0 +1,22 @@
+name: require-pod-probes
+policies:
+  - require-probes.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: require-pod-probes
+    rule: validate-probes
+    resources:
+    - goodpod01
+    - goodpod02
+    - goodpod03
+    - goodpod04
+    kind: Pod
+    result: pass
+  - policy: require-pod-probes
+    rule: validate-probes
+    resources: 
+    - badpod01
+    - badpod02
+    kind: Pod
+    result: fail
