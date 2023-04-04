@@ -1,6 +1,6 @@
 name: unique-external-dns
 policies:
-  -  require_unique_external_dns.yaml
+  -  require-unique-external-dns.yaml
 resources:
   - resource.yaml
 variables: values.yaml  

@@ -1,6 +1,6 @@
 name: require-storageclass
 policies:
-  - require_storageclass.yaml
+  - require-storageclass.yaml
 resources:
   - resource.yaml
 results:

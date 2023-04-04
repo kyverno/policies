@@ -1,6 +1,6 @@
 name: insert-pod-antiaffinity
 policies:
-  - create_pod_antiaffinity.yaml
+  - create-pod-antiaffinity.yaml
 resources:
   - resource.yaml
 results:

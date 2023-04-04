@@ -1,6 +1,6 @@
 name: require-qos-burstable
 policies:
-  - require_qos_burstable.yaml
+  - require-qos-burstable.yaml
 resources:
   - resource.yaml
 results:

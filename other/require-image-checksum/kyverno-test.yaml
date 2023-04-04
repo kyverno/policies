@@ -1,6 +1,6 @@
 name: require-image-checksum
 policies:
-  -  require_image_checksum.yaml
+  -  require-image-checksum.yaml
 resources:
   -  resource.yaml
 results:

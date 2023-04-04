@@ -1,6 +1,6 @@
-name: restrict_node_port
+name: restrict-node-port
 policies:
-  - restrict_node_port.yaml
+  - restrict-node-port.yaml
 resources:
   - resource.yaml
 results:

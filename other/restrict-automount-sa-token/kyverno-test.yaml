@@ -1,6 +1,6 @@
 name: restrict-automount-sa-token
 policies:
-  -  restrict_automount_sa_token.yaml
+  -  restrict-automount-sa-token.yaml
 resources:
   -  resource.yaml
 results:

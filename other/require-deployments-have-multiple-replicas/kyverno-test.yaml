@@ -1,6 +1,6 @@
 name: deployment-has-multiple-replicas
 policies:
-  -  require_deployments_have_multiple_replicas.yaml
+  -  require-deployments-have-multiple-replicas.yaml
 resources:
   -  resource.yaml
 results:

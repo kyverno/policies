@@ -1,6 +1,6 @@
 name: require-pdb
 policies:
-  - require_pdb.yaml
+  - require-pdb.yaml
 resources:
   - resource-pass.yaml
   - resource-skip.yaml

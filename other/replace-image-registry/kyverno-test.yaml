@@ -1,6 +1,6 @@
 name: replace-image-registry
 policies:
-  -  replace_image_registry.yaml
+  -  replace-image-registry.yaml
 resources:
   -  resource.yaml
 results:

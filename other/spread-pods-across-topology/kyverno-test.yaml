@@ -1,6 +1,6 @@
 name: spread-pods
 policies:
-  -  spread_pods_across_topology.yaml
+  -  spread-pods-across-topology.yaml
 resources:
   -  resource.yaml
 results:

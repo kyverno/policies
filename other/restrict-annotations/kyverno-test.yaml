@@ -1,6 +1,6 @@
 name: restrict-annotations
 policies:
-  -  restrict_annotations.yaml
+  -  restrict-annotations.yaml
 resources:
   -  resource.yaml
 results:

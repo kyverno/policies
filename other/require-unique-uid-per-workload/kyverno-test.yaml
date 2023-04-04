@@ -1,6 +1,6 @@
-name: require_unique_uid_per_workload
+name: require-unique-uid-per-workload
 policies:
-  -  require_unique_uid_per_workload.yaml
+  -  require-unique-uid-per-workload.yaml
 resources:
   -  resource.yaml
 variables: variables.yaml

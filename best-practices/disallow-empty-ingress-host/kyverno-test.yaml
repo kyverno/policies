@@ -1,6 +1,6 @@
-name: disallow_empty_ingress_host
+name: disallow-empty-ingress-host
 policies:
-  -  disallow_empty_ingress_host.yaml
+  -  disallow-empty-ingress-host.yaml
 resources:
   -  resource.yaml
 results:

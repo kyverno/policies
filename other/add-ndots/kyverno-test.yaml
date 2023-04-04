@@ -1,6 +1,6 @@
 name: add-ndots
 policies:
-  - add_ndots.yaml
+  - add-ndots.yaml
 resources:
   - resource.yaml
 results:

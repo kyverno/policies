@@ -1,6 +1,6 @@
 name: check-deprecated-apis
 policies:
-  - check_deprecated_apis.yaml
+  - check-deprecated-apis.yaml
 resources:
   - resource.yaml
 results:

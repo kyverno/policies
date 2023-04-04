@@ -1,6 +1,6 @@
 name: limit-containers-per-pod
 policies:
-  - limit_containers_per_pod.yaml
+  - limit-containers-per-pod.yaml
 resources:
   - resource.yaml
 results:

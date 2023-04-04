@@ -1,6 +1,6 @@
 name: deny-all-traffic
 policies:
-  - add_network_policy.yaml
+  - add-network-policy.yaml
 resources:
   - resource.yaml
 results:

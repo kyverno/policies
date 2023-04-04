@@ -1,6 +1,6 @@
 name: no-secrets
 policies:
-  -  disallow_all_secrets.yaml
+  -  disallow-all-secrets.yaml
 resources:
   -  resource.yaml
 results:

@@ -1,6 +1,6 @@
-name: require_ro_rootfs
+name: require-ro-rootfs
 policies:
-  - require_ro_rootfs.yaml
+  - require-ro-rootfs.yaml
 resources:
   - resource.yaml
 results:

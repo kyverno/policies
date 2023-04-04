@@ -1,6 +1,6 @@
 name: ensure-readonly-hostpath
 policies:
-  -  ensure_readonly_hostpath.yaml
+  -  ensure-readonly-hostpath.yaml
 resources:
   - good-pod-01.yaml
   - bad-pod-01.yaml

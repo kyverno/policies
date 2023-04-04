@@ -1,6 +1,6 @@
 name: inject-sidecar
 policies:
-  - inject_sidecar_deployment.yaml
+  - inject-sidecar-deployment.yaml
 resources:
   - resource.yaml
 results:

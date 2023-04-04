@@ -1,6 +1,6 @@
 name: block-updates-deletes
 policies:
-  -  block_updates_deletes.yaml
+  -  block-updates-deletes.yaml
 resources:
   -  resource.yaml
 variables: values.yaml

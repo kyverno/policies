@@ -1,6 +1,6 @@
 name: restrict-node-selection
 policies:
-  -  restrict_node_selection.yaml
+  -  restrict-node-selection.yaml
 resources:
   -  resource.yaml
 results:

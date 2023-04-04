@@ -1,6 +1,6 @@
 name: require-requests-limits
 policies:
-  - require_pod_requests_limits.yaml
+  - require-pod-requests-limits.yaml
 resources:
   - resource.yaml
 results:

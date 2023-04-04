@@ -1,6 +1,6 @@
 name: add-safe-to-evict
 policies:
-  -  add_safe_to_evict.yaml
+  -  add-safe-to-evict.yaml
 resources:
   -  resource.yaml
 results:

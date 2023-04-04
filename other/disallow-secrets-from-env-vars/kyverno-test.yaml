@@ -1,6 +1,6 @@
 name: secrets-not-from-env-vars
 policies:
-  -  disallow_secrets_from_env_vars.yaml
+  -  disallow-secrets-from-env-vars.yaml
 resources:
   -  resource.yaml
 results:

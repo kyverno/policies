@@ -1,6 +1,6 @@
 name: require-pod-probes
 policies:
-  - require_probes.yaml
+  - require-probes.yaml
 resources:
   - resource.yaml
 results:

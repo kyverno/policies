@@ -1,6 +1,6 @@
 name: restrict-storageclass
 policies:
-  -  restrict_storageclass.yaml
+  -  restrict-storageclass.yaml
 resources:
   -  resource.yaml
 results:

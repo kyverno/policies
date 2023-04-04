@@ -1,6 +1,6 @@
 name: require-network-policy
 policies:
-  -  require_netpol.yaml
+  -  require-netpol.yaml
 resources:
   - resource.yaml
 variables: values.yaml

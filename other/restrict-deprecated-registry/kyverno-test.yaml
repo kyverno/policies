@@ -1,6 +1,6 @@
 name: restrict-deprecated-registry
 policies:
-  -  restrict_deprecated_registry.yaml
+  -  restrict-deprecated-registry.yaml
 resources:
   -  resource.yaml
 results:

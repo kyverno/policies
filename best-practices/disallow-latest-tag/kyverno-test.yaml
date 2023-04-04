@@ -1,6 +1,6 @@
-name: disallow_latest_tag
+name: disallow-latest-tag
 policies:
-  - disallow_latest_tag.yaml
+  - disallow-latest-tag.yaml
 resources:
   - resource.yaml
 results:

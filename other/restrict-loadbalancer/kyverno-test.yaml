@@ -1,6 +1,6 @@
 name: no-loadbalancer-service
 policies:
-  -  restrict_loadbalancer.yaml
+  -  restrict-loadbalancer.yaml
 resources:
   -  resource.yaml
 results:

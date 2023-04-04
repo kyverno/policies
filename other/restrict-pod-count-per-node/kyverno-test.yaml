@@ -1,6 +1,6 @@
 name: restrict-pod-count
 policies:
-  -  restrict_pod_count_per_node.yaml
+  -  restrict-pod-count-per-node.yaml
 resources:
   -  resource.yaml
 variables: values.yaml

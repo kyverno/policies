@@ -1,6 +1,6 @@
 name: require-pod-priorityclassname
 policies:
-  - require_pod_priorityclassname.yaml
+  - require-pod-priorityclassname.yaml
 resources:
   - resource.yaml
 results:

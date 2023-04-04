@@ -1,6 +1,6 @@
 name: limit-configmap-for-sa
 policies:
-  - limit_configmap_for_sa.yaml
+  - limit-configmap-for-sa.yaml
 resources:
   - resource.yaml
 variables: variables.yaml

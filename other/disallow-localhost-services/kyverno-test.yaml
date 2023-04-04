@@ -1,6 +1,6 @@
 name: no-localhost-service
 policies:
-  -  disallow_localhost_services.yaml
+  -  disallow-localhost-services.yaml
 resources:
   -  resource.yaml
 results:

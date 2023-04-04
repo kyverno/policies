@@ -1,6 +1,6 @@
 name: prepend-image-registry
 policies:
-  - prepend_image_registry.yaml
+  - prepend-image-registry.yaml
 resources:
   - resource.yaml
   - resourceFailed.yaml

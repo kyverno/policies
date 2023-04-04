@@ -1,6 +1,6 @@
 name: allowed-podpriorities
 policies:
-  -  allowed_pod_priorities.yaml
+  -  allowed-pod-priorities.yaml
 resources:
   -  resource.yaml
 variables: values.yaml

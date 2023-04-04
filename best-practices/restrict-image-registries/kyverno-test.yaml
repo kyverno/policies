@@ -1,6 +1,6 @@
 name: restrict-image-registries
 policies:
-  -  restrict_image_registries.yaml
+  -  restrict-image-registries.yaml
 resources:
   -  resource.yaml
 results:

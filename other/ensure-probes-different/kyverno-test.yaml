@@ -1,6 +1,6 @@
 name: validate-probes
 policies:
-  - ensure_probes_different.yaml
+  - ensure-probes-different.yaml
 resources:
   - resource.yaml
 results:

@@ -1,6 +1,6 @@
 name: restrict-node-affinity
 policies:
-  -  restrict_node_affinity.yaml
+  -  restrict-node-affinity.yaml
 resources:
   -  resource.yaml
 results:

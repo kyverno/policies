@@ -1,9 +1,9 @@
 # Tests for this policy are covered in a more extensive fashion in the PSS restricted profile
 # in disallow-capabilities-strict. Since the only difference is the value being dropped,
 # those tests are sufficient to test for this policy.
-name: require_drop_cap_net_raw
+name: require-drop-cap-net-raw
 policies:
-  - require_drop_cap_net_raw.yaml
+  - require-drop-cap-net-raw.yaml
 resources:
   - resource.yaml
 results:

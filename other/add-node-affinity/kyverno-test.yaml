@@ -1,6 +1,6 @@
 name: add-node-affinity
 policies:
-  - add_node_affinity.yaml
+  - add-node-affinity.yaml
 resources:
   - resource.yaml
 results:

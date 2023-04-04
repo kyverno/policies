@@ -1,6 +1,6 @@
 name: require-imagepullsecrets
 policies:
-  - require_imagepullsecrets.yaml
+  - require-imagepullsecrets.yaml
 resources:
   - resource.yaml
 results:

@@ -1,6 +1,6 @@
 name: check-sa
 policies:
-  - check_serviceaccount.yaml
+  - check-serviceaccount.yaml
 resources:
   - resource.yaml
 variables: values.yaml

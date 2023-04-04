@@ -1,6 +1,6 @@
 name: unique-ingress-host
 policies:
-  - restrict_ingress_host.yaml
+  - restrict-ingress-host.yaml
 resources:
   - resource.yaml
 variables: values.yaml

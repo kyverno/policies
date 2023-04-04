@@ -1,6 +1,6 @@
 name: add-labels
 policies:
-  - add_labels.yaml
+  - add-labels.yaml
 resources:
   - resource.yaml
 results:

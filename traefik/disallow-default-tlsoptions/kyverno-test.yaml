@@ -1,6 +1,6 @@
 name: disallow-default-tlsoptions
 policies:
-  - disallow_default_tlsoptions.yaml
+  - disallow-default-tlsoptions.yaml
 resources:
   -  resource.yaml
 results:

@@ -1,6 +1,6 @@
 name: pdb-test
 policies:
-  - create_default_pdb.yaml
+  - create-default-pdb.yaml
 resources:
   - resource.yaml
 results:

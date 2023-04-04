@@ -1,6 +1,6 @@
 name: restrict-service-account
 policies:
-  - restrict_service_account.yaml
+  - restrict-service-account.yaml
 resources:
   - resource.yaml
 variables: values.yaml

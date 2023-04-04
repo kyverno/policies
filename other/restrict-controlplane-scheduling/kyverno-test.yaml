@@ -1,6 +1,6 @@
 name: restrict-controlplane-scheduling
 policies:
-  -  restrict_controlplane_scheduling.yaml
+  -  restrict-controlplane-scheduling.yaml
 resources:
   -  resource.yaml
 results:

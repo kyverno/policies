@@ -1,6 +1,6 @@
 name: restrict-ingress-classes
 policies:
-  -  restrict_ingress_classes.yaml
+  -  restrict-ingress-classes.yaml
 resources:
   -  resource.yaml
 results:

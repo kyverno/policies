@@ -1,6 +1,6 @@
 name: add-volume
 policies:
-  - add_volume_deployment.yaml
+  - add-volume-deployment.yaml
 resources:
   - resource.yaml
 results:

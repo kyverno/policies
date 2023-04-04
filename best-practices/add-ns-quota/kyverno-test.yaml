@@ -1,6 +1,6 @@
 name: add-quota
 policies:
-  - add_ns_quota.yaml
+  - add-ns-quota.yaml
 resources:
   - resource.yaml
 results:

@@ -1,6 +1,6 @@
 name: exclude-namespaces-example
 policies:
-  - exclude_namespaces_dynamically.yaml
+  - exclude-namespaces-dynamically.yaml
 resources:
   - resource.yaml
 variables: values.yaml

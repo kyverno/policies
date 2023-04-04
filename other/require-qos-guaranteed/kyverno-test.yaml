@@ -1,6 +1,6 @@
 name: require-qos-guaranteed
 policies:
-  - require_qos_guaranteed.yaml
+  - require-qos-guaranteed.yaml
 resources:
   - resource.yaml
 results:

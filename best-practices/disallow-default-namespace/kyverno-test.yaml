@@ -1,6 +1,6 @@
-name: disallow_default_namespace
+name: disallow-default-namespace
 policies:
-  -  disallow_default_namespace.yaml
+  -  disallow-default-namespace.yaml
 resources:
   -  resource.yaml
 results:

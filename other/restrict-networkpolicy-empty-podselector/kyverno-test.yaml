@@ -1,6 +1,6 @@
 name: restrict-networkpolicy-empty-podselector
 policies:
-  -  restrict_networkpolicy_empty_podselector.yaml
+  -  restrict-networkpolicy-empty-podselector.yaml
 resources:
   -  resource.yaml
 results:

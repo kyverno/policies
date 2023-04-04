@@ -1,6 +1,6 @@
 name: disallow-helm-tiller
 policies:
-  - disallow_helm_tiller.yaml
+  - disallow-helm-tiller.yaml
 resources:
   - resource.yaml
 results:

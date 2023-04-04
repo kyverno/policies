@@ -1,6 +1,6 @@
 name: require-labels
 policies:
-  - require_labels.yaml
+  - require-labels.yaml
 resources:
   - resource.yaml
 results:

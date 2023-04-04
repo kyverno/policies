@@ -1,6 +1,6 @@
 name: add-nodeselector
 policies:
-  - add_nodeSelector.yaml
+  - add-nodeSelector.yaml
 resources:
   - resource.yaml
 results:

@@ -1,6 +1,6 @@
 name: restrict-node-defaultbackend
 policies:
-  -  restrict_ingress_defaultbackend.yaml
+  -  restrict-ingress-defaultbackend.yaml
 resources:
   -  resource.yaml
 results:

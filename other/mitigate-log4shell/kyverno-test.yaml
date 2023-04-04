@@ -1,6 +1,6 @@
 name: log4shell-mitigation
 policies:
-  - mitigate_log4shell.yaml
+  - mitigate-log4shell.yaml
 resources:
   - resource.yaml
 results:

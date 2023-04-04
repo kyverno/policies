@@ -1,6 +1,6 @@
 name: add-volume
 policies:
-  - add_certificates_volume.yaml
+  - add-certificates-volume.yaml
 resources:
   - resource.yaml
 results:

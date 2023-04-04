@@ -1,6 +1,6 @@
 name: disallow-cri-sock-mount
 policies:
-  -  disallow_cri_sock_mount.yaml
+  -  disallow-cri-sock-mount.yaml
 resources:
   -  resource.yaml
 results:
