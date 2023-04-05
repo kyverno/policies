@@ -1,6 +1,6 @@
 name: kyverno_data_protection_tests
 policies:
-  - k10-check-data-protection-by-label.yaml
+  - k10-data-protection-by-label.yaml
 resources:
   - nginx-deployment.yaml
 results:
