@@ -58,6 +58,44 @@ spec:
             - Resource
 ```
 
+
+When adding a new policy, please follow these guidelines:
+
+1. Create a new folder with the name of the policy.
+2. Add the Kyverno policy YAML file to the folder.
+3. Add an `artifacthub-pkg.yml` metadata file to the folder. See the [Template Policy Metadata File](https://github.com/artifacthub/hub/blob/master/docs/metadata/artifacthub-pkg.yml) section for an example and instructions on how to complete the contents of this file.
+
+```yaml
+# artifacthub-pkg.yml
+version: '1.0.0'
+name: your_policy_name
+displayName: Your Policy Display Name
+createdAt: "2023-03-29T00:00:00.000Z"
+description: Brief description of your policy
+author: Your Name
+digest: Result of `shasum -a 256 artifacthub-pkg.yml`
+install: |-
+    ```shell
+    kubectl apply -f certain_policy.yaml
+     ```
+license: Apache-2.0
+keywords:
+  - policy
+  - example
+  - security
+readme: |
+  Copy the content of you policy description here.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+
+annotations:
+  kyverno/category: refer to policies.kyverno.io/category in policy file 
+  kyverno/kubernetesVersion: refer to kyverno.io/kubernetes-version in policy file
+  kyverno/subject: refer to policies.kyverno.io/subject in policy file
+  
+```
+
+
 ## Policy Requests
 
 If you're not yet comfortable with Kyverno and would like to see a policy that may not presently exist, or if you're having trouble crafting that perfect policy, a couple resources exist. The most expedient way to get help may be to post on [Kyverno Slack](https://kyverno.io/community/). Kyverno has a rich and active community with its members and maintainers ready to assist. You may also [open an issue](https://github.com/kyverno/policies/issues) to request a certain policy be created to satisfy your needs. If going this route, do keep a few things in mind.
