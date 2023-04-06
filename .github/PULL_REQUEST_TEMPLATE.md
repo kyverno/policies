@@ -19,4 +19,4 @@ them, don't hesitate to ask. We're here to help! This is simply a reminder of wh
 
 - [] I have read the [policy contribution guidelines](https://github.com/kyverno/policies/blob/main/README.md#contribution).
 - [] I have added test manifests and resources covering both positive and negative tests that prove this policy works as intended.
-- [] I have added artifacthub-pkg.yml file with the policy metadata and refer to the [template](https://github.com/artifacthub/hub/blob/master/docs/metadata/artifacthub-pkg.yml)
+- [] I have added the artifacthub-pkg.yml file and have verified it is complete and correct.
