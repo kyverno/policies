@@ -95,7 +95,7 @@ readme: | # readme should be same as policies.kyverno.io/description annotation 
   `velero-backup-pvc=true`.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
-annotations: # Annotations values should be the same as policies.kyverno.io annotations and get annotations from https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations: # See the annotations guide on Artifact Hub here: https://artifacthub.io/docs/topics/annotations/kyverno/
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod, Annotation"
