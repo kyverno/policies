@@ -78,6 +78,12 @@ displayName: Backup All Volumes  # Display name of the policy
 createdAt: "2023-03-29T00:00:00.000Z" # The date this package was created (RFC3339 layout)
 description: >-
 # The description value should be taken from the relevant annotation policies.kyverno.io/description
+      In order for Velero to backup volumes in a Pod using an opt-in approach, it
+      requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
+      value being a comma-separated list of the volumes mounted to that Pod. This policy
+      automatically annotates Pods (and Pod controllers) which refer to a PVC so that
+      all volumes are listed in the aforementioned annotation if a Namespace with the label
+      `velero-backup-pvc=true`.
 digest: 60ca548c88fc3e43db880bd5e466e4fa02af13b7f97c652aee59cb13ca9404e5 # The SHA256 hash String that uniquely identifies this package version
 install: |- # The installation instructions for the package
     ```shell
