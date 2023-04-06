@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: podsecurity-subrule-baseline
+  name: baseline
   annotations:
     policies.kyverno.io/title: Baseline Pod Security Standards
     policies.kyverno.io/category: Pod Security, EKS Best Practices

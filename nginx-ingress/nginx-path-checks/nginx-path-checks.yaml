@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: restrict-ingress-paths
+  name: nginx-path-checks
   annotations:
     policies.kyverno.io/title: Restrict NGINX Ingress path values 
     policies.kyverno.io/category: Security, NGINX Ingress
