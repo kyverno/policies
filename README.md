@@ -35,7 +35,6 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * Use dashes for folder name and policy name instead of underscores.
 
-
 Once your policy is written within these guidelines and tested, please open a standard PR against the `main` branch of kyverno/policies. In order for a policy to make it to the website's [policies page](https://kyverno.io/policies/), it must first be committed to the `main` branch in this repo. Following that, an administrator will render these policies to produce Markdown files in a second PR. You do not need to worry about this process, however.
 
 In order to streamline the process, the beginning "stub" of a ClusterPolicy resource is provided below with an example of how especially the annotations should be completed. Be sure to check the documentation and other sample policies as there is no guarantee this below stub is up to date.
@@ -73,18 +72,18 @@ Add an `artifacthub-pkg.yml` metadata file to the folder. See an example metadat
 
 ```yaml
 ---
-name: backup-all-volumes # The name of the package (only alphanum, no spaces, dashes allowed) (required)
-version: 1.0.0 # Version of the policy (required)
-displayName: Backup All Volumes  # Display name of the policy (required)
-createdAt: "2023-03-29T00:00:00.000Z" # The date this package was created (RFC3339 layout) (required)
+name: backup-all-volumes # The name of the package (only alphanum, no spaces, dashes allowed)
+version: 1.0.0 # Version of the policy
+displayName: Backup All Volumes  # Display name of the policy
+createdAt: "2023-03-29T00:00:00.000Z" # The date this package was created (RFC3339 layout)
 description: >-
 # The description value should be taken from the relevant annotation policies.kyverno.io/description
-digest: 60ca548c88fc3e43db880bd5e466e4fa02af13b7f97c652aee59cb13ca9404e5 # The SHA256 hash String that uniquely identifies this package version (optional)
-install: |- # The installation instructions for the package (optional)
+digest: 60ca548c88fc3e43db880bd5e466e4fa02af13b7f97c652aee59cb13ca9404e5 # The SHA256 hash String that uniquely identifies this package version
+install: |- # The installation instructions for the package
     ```shell
     kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
-     ```   
-keywords: # Keywords should always have "kyverno" and whatever the value of the value of the policies.kyverno.io/category annotation. (optional)
+    ```   
+keywords: # Keywords should always have "kyverno" and whatever the value of the policies.kyverno.io/category annotation. 
   - velero
   - kyverno
 readme: | # readme should be same as policies.kyverno.io/description annotation plus the last sentence as a static value.
@@ -96,7 +95,7 @@ readme: | # readme should be same as policies.kyverno.io/description annotation 
   `velero-backup-pvc=true`.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
-annotations: # Annotations values should be the same as policies.kyverno.io annotations and get annotations from https://artifacthub.io/docs/topics/annotations/kyverno/ (optional)
+annotations: # Annotations values should be the same as policies.kyverno.io annotations and get annotations from https://artifacthub.io/docs/topics/annotations/kyverno/
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod, Annotation"
