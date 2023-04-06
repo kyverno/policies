@@ -1,6 +1,6 @@
 name: restrict-annotations
 policies:
-  -  nginx-path-checks.yaml
+  -  restrict-ingress-paths.yaml
 resources:
   -  resources.yaml
 results:

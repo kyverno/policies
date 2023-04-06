@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: validate-routes
+  name: check-routes
   annotations:
     policies.kyverno.io/title: Require TLS routes in OpenShift
     policies.kyverno.io/category: OpenShift

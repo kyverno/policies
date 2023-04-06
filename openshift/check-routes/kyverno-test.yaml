@@ -1,6 +1,6 @@
 name: check-routes
 policies:
-  - validate-routes.yaml
+  - check-routes.yaml
 resources:
   - resources.yaml
 results:

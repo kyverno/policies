@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: nginx-custom-snippets
+  name: disallow-ingress-nginx-custom-snippets
   annotations:
     policies.kyverno.io/title: Disallow Custom Snippets
     policies.kyverno.io/category: Security, NGINX Ingress

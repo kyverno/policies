@@ -1,6 +1,6 @@
 name: disallow_nginx_custom_snippets
 policies:
-  -  nginx-custom-snippets.yaml
+  -  disallow-ingress-nginx-custom-snippets.yaml
 resources:
   -  resources.yaml
 results:

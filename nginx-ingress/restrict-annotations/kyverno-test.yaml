@@ -1,6 +1,6 @@
 name: restrict-annotations
 policies:
-  -  nginx-annotation-checks.yaml
+  -  restrict-annotations.yaml
 resources:
   -  resources.yaml
 results:
