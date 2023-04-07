@@ -1,6 +1,6 @@
 name: restrict-annotations
 policies:
-  -  restrict-path.yaml
+  -  restrict-ingress-paths.yaml
 resources:
   -  resources.yaml
 results:

@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: k10-policy-minimum-retention
+  name: k10-minimum-retention
   annotations:
     policies.kyverno.io/title: Minimum Backup Retention
     policies.kyverno.io/category: Kasten K10 by Veeam
@@ -18,7 +18,7 @@ metadata:
       This policy can also be used go reduce retentions lengths to enforce cost optimization.
 spec:
   rules:
-  - name: k10-policy-minimum-retention
+  - name: k10-minimum-retention
     match:
       any:
       - resources:

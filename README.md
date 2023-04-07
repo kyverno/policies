@@ -27,6 +27,14 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * String values do not need to be quoted nor do values which contain JMESPath expressions such as `{{request.operation}}`. The exception is if a field's value is *only* such an expression. In those cases, the JMESPath expression needs to be double quoted.
 
+* Create the `artifacthub-pkg.yml` file in the same directory as your policy. See the Artifact Hub section below for more details on its contents.
+
+* A dedicated folder must be created for each policy.
+
+* The folder must be named the same as the policy.
+
+* Use dashes for folder name and policy name instead of underscores.
+
 Once your policy is written within these guidelines and tested, please open a standard PR against the `main` branch of kyverno/policies. In order for a policy to make it to the website's [policies page](https://kyverno.io/policies/), it must first be committed to the `main` branch in this repo. Following that, an administrator will render these policies to produce Markdown files in a second PR. You do not need to worry about this process, however.
 
 In order to streamline the process, the beginning "stub" of a ClusterPolicy resource is provided below with an example of how especially the annotations should be completed. Be sure to check the documentation and other sample policies as there is no guarantee this below stub is up to date.
@@ -56,6 +64,47 @@ spec:
       - resources:
           kinds:
             - Resource
+```
+
+### Artifact Hub
+
+Add an `artifacthub-pkg.yml` metadata file to the folder. See an example metadata file for Kyverno policies below and customize per the comments.
+
+```yaml
+---
+name: backup-all-volumes # The name of the package (only alphanum, no spaces, dashes allowed)
+version: 1.0.0 # Version of the policy
+displayName: Backup All Volumes  # Display name of the policy
+createdAt: "2023-03-29T00:00:00.000Z" # The date this package was created (RFC3339 layout)
+description: >-
+# The description value should be taken from the relevant annotation policies.kyverno.io/description
+      In order for Velero to backup volumes in a Pod using an opt-in approach, it
+      requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
+      value being a comma-separated list of the volumes mounted to that Pod. This policy
+      automatically annotates Pods (and Pod controllers) which refer to a PVC so that
+      all volumes are listed in the aforementioned annotation if a Namespace with the label
+      `velero-backup-pvc=true`.
+digest: 60ca548c88fc3e43db880bd5e466e4fa02af13b7f97c652aee59cb13ca9404e5 # The SHA256 hash String that uniquely identifies this package version
+install: |- # The installation instructions for the package
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
+    ```   
+keywords: # Keywords should always have "kyverno" and whatever the value of the policies.kyverno.io/category annotation. 
+  - velero
+  - kyverno
+readme: | # readme should be same as policies.kyverno.io/description annotation plus the last sentence as a static value.
+  In order for Velero to backup volumes in a Pod using an opt-in approach, it
+  requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
+  value being a comma-separated list of the volumes mounted to that Pod. This policy
+  automatically annotates Pods (and Pod controllers) which refer to a PVC so that
+  all volumes are listed in the aforementioned annotation if a Namespace with the label
+  `velero-backup-pvc=true`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations: # See the annotations guide on Artifact Hub here: https://artifacthub.io/docs/topics/annotations/kyverno/
+  kyverno/category: "Velero"
+  kyverno/kubernetesVersion: "1.25"
+  kyverno/subject: "Pod, Annotation"
 ```
 
 ## Policy Requests

@@ -1,6 +1,6 @@
 name: kyverno_data_protection_tests
 policies:
-  - k10-immutable-backup.yaml
+  - k10-immutable-location-profile.yaml
 resources:
   - immutable-location-profile.yaml
 results:
