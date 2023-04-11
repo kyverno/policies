@@ -1,10 +1,10 @@
 name: restrict-sysctls
 version: 1.0.0
-displayName: restrict sysctls
+displayName: Restrict sysctls
 createdAt: "2023-04-10T23:12:01.000Z"
 description: >-
   Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed "safe" subset. A sysctl is considered safe if it is namespaced in the container or the Pod, and it is isolated from other Pods or processes on the same Node. This policy ensures that only those "safe" subsets can be specified in a Pod.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/restrict-sysctls/restrict-sysctls.yaml
   ```

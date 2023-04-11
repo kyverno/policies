@@ -1,10 +1,10 @@
 name: require-ro-rootfs
 version: 1.0.0
-displayName: require ro rootfs
+displayName: Require Read-Only Root Filesystem
 createdAt: "2023-04-10T19:47:15.000Z"
 description: >-
   A read-only root file system helps to enforce an immutable infrastructure strategy; the container only needs to write on the mounted volume that persists the state. An immutable root filesystem can also prevent malicious binaries from writing to the host system. This policy validates that containers define a securityContext with `readOnlyRootFilesystem: true`.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices/require-ro-rootfs/require-ro-rootfs.yaml
   ```

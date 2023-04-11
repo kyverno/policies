@@ -1,10 +1,10 @@
 name: restrict-ingress-classes
 version: 1.0.0
-displayName: restrict ingress classes
+displayName: Restrict Ingress Classes
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Ingress classes should only be allowed which match up to deployed Ingress controllers in the cluster. Allowing users to define classes which cannot be satisfied by a deployed Ingress controller can result in either no or undesired functionality. This policy checks Ingress resources and only allows those which define `HAProxy` or `nginx` in the respective annotation. This annotation has largely been replaced as of Kubernetes 1.18 with the IngressClass resource.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-ingress-classes/restrict-ingress-classes.yaml
   ```

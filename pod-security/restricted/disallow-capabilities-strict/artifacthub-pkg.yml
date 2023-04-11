@@ -1,10 +1,10 @@
 name: disallow-capabilities-strict
 version: 1.0.0
-displayName: disallow capaUilities strict
+displayName: Disallow Capabilities (Strict)
 createdAt: "2023-04-10T23:16:53.000Z"
 description: >-
   Adding capabilities other than `NET_BIND_SERVICE` is disallowed. In addition, all containers must explicitly drop `ALL` capabilities.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/strict/disallow-capabilities-strict/disallow-capabilities-strict.yaml
   ```

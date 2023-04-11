@@ -1,10 +1,10 @@
 name: disallow-host-ports-range
 version: 1.0.0
-displayName: disallow host ports range
+displayName: Disallow hostPorts Range (Alternate)
 createdAt: "2023-04-10T23:12:01.000Z"
 description: >-
   Access to host ports allows potential snooping of network traffic and should not be allowed, or at minimum restricted to a known list. This policy ensures the `hostPort` field is set to one in the designated list. 
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/disallow-host-ports-range/disallow-host-ports-range.yaml
   ```

@@ -1,10 +1,10 @@
 name: require-tekton-securitycontext
 version: 1.0.0
-displayName: require tekton securitycontext
+displayName: Require securityContext for Tekton TaskRun
 createdAt: "2023-04-10T23:23:45.000Z"
 description: >-
   A securityContext is required for each TaskRun step.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/require-tekton-securitycontext/require-tekton-securitycontext.yaml
   ```

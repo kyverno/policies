@@ -1,10 +1,10 @@
 name: block-ephemeral-containers
 version: 1.0.0
-displayName: Ulock ephemeral containers
+displayName: Block Ephemeral Containers
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   Ephemeral containers, enabled by default in Kubernetes 1.23, allow users to use the `kubectl debug` functionality and attach a temporary container to an existing Pod. This may potentially be used to gain access to unauthorized information executing inside one or more containers in that Pod. This policy blocks the use of ephemeral containers.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-ephemeral-containers/block-ephemeral-containers.yaml
   ```

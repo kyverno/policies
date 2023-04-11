@@ -1,10 +1,10 @@
 name: require-authorizationpolicy
 version: 1.0.0
-displayName: require authorizationpolicy
+displayName: Require Istio AuthorizationPolicies
 createdAt: "2023-04-10T20:07:52.000Z"
 description: >-
   An AuthorizationPolicy is used to provide access controls for traffic in the mesh and can be defined at multiple levels. For the Namespace level, all Namespaces should have at least one AuthorizationPolicy. This policy, designed to run in background mode for reporting purposes, ensures every Namespace has at least one AuthorizationPolicy.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio/require-authorizationpolicy/require-authorizationpolicy.yaml
   ```

@@ -1,10 +1,10 @@
 name: disallow-default-tlsoptions
 version: 1.0.0
-displayName: disallow default tlsoptions
+displayName: Disallow Default TLSOptions
 createdAt: "2023-04-10T23:25:55.000Z"
 description: >-
   The TLSOption CustomResource sets cluster-wide TLS configuration options for Traefik when  none are specified in a TLS router. Since this can take effect for all Ingress resources, creating the `default` TLSOption is a restricted operation. This policy ensures that only a cluster-admin can create the `default` TLSOption resource.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/traefik/disallow-default-tlsoptions/disallow-default-tlsoptions.yaml
   ```

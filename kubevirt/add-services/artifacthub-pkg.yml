@@ -1,10 +1,10 @@
 name: add-services
 version: 1.0.0
-displayName: add services
+displayName: Add Services
 createdAt: "2023-04-10T20:18:08.000Z"
 description: >-
   Add an SSH Service to every VirtualMachineInstance which is getting created. This Service will use a ClusterIP, thus the admin has to ensure that the IP space is large enough and ClusterIP type can be met.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kubevirt/add-services/add-services.yaml
   ```

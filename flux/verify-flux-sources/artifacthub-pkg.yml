@@ -1,10 +1,10 @@
 name: verify-flux-sources
 version: 1.0.0
-displayName: verify flux sources
+displayName: Verify Flux Sources
 createdAt: "2023-04-10T20:06:33.000Z"
 description: >-
   Flux source APIs include a number of different sources such as GitRepository, Bucket, HelmRepository, and ImageRepository resources. Each of these by default can be pointed to any location. In a production environment, it may be desired to restrict these to only known sources to prevent accessing outside sources. This policy verifies that each of the Flux sources comes from a trusted location.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux/verify-flux-sources/verify-flux-sources.yaml
   ```

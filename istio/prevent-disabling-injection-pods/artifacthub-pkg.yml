@@ -1,10 +1,10 @@
 name: prevent-disabling-injection-pods
 version: 1.0.0
-displayName: prevent disaUling injection pods
+displayName: Prevent Disabling Istio Sidecar Injection
 createdAt: "2023-04-10T20:07:52.000Z"
 description: >-
   One way sidecar injection in an Istio service mesh may be accomplished is by defining an annotation at the Pod level. Pods not receiving a sidecar cannot participate in the mesh thereby reducing visibility. This policy ensures that Pods cannot set the annotation `sidecar.istio.io/inject` to a value of `false`.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio/prevent-disabling-injection-pods/prevent-disabling-injection-pods.yaml
   ```

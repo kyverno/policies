@@ -1,10 +1,10 @@
 name: restrict-seccomp-strict
 version: 1.0.0
-displayName: restrict seccomp strict
+displayName: Restrict Seccomp (Strict)
 createdAt: "2023-04-10T23:16:53.000Z"
 description: >-
   The seccomp profile in the Restricted group must not be explicitly set to Unconfined but additionally must also not allow an unset value. This policy,  requiring Kubernetes v1.19 or later, ensures that seccomp is  set to `RuntimeDefault` or `Localhost`. A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/restricted/restrict-seccomp-strict/restrict-seccomp-strict.yaml
   ```

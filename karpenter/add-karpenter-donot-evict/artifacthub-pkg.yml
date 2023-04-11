@@ -1,10 +1,10 @@
 name: add-karpenter-donot-evict
 version: 1.0.0
-displayName: add karpenter donot evict
+displayName: Add Karpenter Do Not Evict
 createdAt: "2023-04-10T20:11:12.000Z"
 description: >-
   If a Pod exists with the annotation `karpenter.sh/do-not-evict: true` on a Node, and a request is made to delete the Node, Karpenter will not drain any Pods from that Node or otherwise try to delete the Node. This is useful for Pods that should run interrupted to completion. This policy mutates Jobs and CronJobs so that Pods spawned by them will contain the `karpenter.sh/do-not-evict: true` annotation.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/karpenter/add-karpenter-donot-evict/add-karpenter-donot-evict.yaml
   ```

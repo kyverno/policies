@@ -1,10 +1,10 @@
 name: block-tekton-task-runs
 version: 1.0.0
-displayName: Ulock tekton task runs
+displayName: Block Tekton TaskRun
 createdAt: "2023-04-10T23:23:45.000Z"
 description: >-
   Restrict creation of TaskRun resources to the Tekton pipelines controller.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/block-tekton-task-runs/block-tekton-task-runs.yaml
   ```

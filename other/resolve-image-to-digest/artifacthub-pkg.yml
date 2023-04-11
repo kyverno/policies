@@ -1,10 +1,10 @@
 name: resolve-image-to-digest
 version: 1.0.0
-displayName: resolve image to digest
+displayName: Resolve Image to Digest
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Image tags are mutable and the change of an image can result in the same tag. This policy resolves the image digest of each image in a container and replaces the image with the fully resolved reference which includes the digest rather than tag.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/resolve-image-to-digest/resolve-image-to-digest.yaml
   ```

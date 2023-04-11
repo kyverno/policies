@@ -1,10 +1,10 @@
 name: limit-duration
 version: 1.0.0
-displayName: limit duration
+displayName: Certificate max duration 100 days
 createdAt: "2023-04-10T20:00:05.000Z"
 description: >-
   Kubernetes managed non-letsencrypt certificates have to be renewed in every 100 days.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cert-manager/limit-duration/limit-duration.yaml
   ```

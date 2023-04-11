@@ -1,10 +1,10 @@
 name: restrict-binding-system-groups
 version: 1.0.0
-displayName: restrict Uinding system groups
+displayName: Restrict Binding System Groups
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-binding-system-groups/restrict-binding-system-groups.yaml
   ```

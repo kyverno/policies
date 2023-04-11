@@ -1,10 +1,10 @@
 name: require-tekton-namespace-pipelinerun
 version: 1.0.0
-displayName: require tekton namespace pipelinerun
+displayName: Require Namespace for Tekton PipelineRun
 createdAt: "2023-04-10T23:23:45.000Z"
 description: >-
   A Namespace is required for a PipelineRun and may not be set to `default`.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/require-tekton-namespace-pipelinerun/require-tekton-namespace-pipelinerun.yaml
   ```

@@ -1,10 +1,10 @@
 name: restrict-loadbalancer
 version: 1.0.0
-displayName: restrict loadUalancer
+displayName: Disallow Service Type LoadBalancer
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Especially in cloud provider environments, a Service having type LoadBalancer will cause the provider to respond by creating a load balancer somewhere in the customer account. This adds cost and complexity to a deployment. Without restricting this ability, users may easily overrun established budgets and security practices set by the organization. This policy restricts use of the Service type LoadBalancer.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-loadbalancer/restrict-loadbalancer.yaml
   ```

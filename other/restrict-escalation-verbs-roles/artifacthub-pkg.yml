@@ -1,10 +1,10 @@
 name: restrict-escalation-verbs-roles
 version: 1.0.0
-displayName: restrict escalation verUs roles
+displayName: Restrict Escalation Verbs in Roles
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-escalation-verbs-roles/restrict-escalation-verbs-roles.yaml
   ```

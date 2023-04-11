@@ -1,10 +1,10 @@
 name: require-run-as-non-root-user
 version: 1.0.0
-displayName: require run as non root user
+displayName: Require Run As Non-Root User
 createdAt: "2023-04-10T23:16:53.000Z"
 description: >-
   Containers must be required to run as non-root users. This policy ensures `runAsUser` is either unset or set to a number greater than zero.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/restricted/require-run-as-non-root-user/require-run-as-non-root-user.yaml
   ```

@@ -1,10 +1,10 @@
 name: application-field-validation
 version: 1.0.0
-displayName: application field validation
+displayName: Application Field Validation
 createdAt: "2023-04-10T00:56:02.000Z"
 description: >-
   This policy performs some best practices validation on Application fields. Path or chart must be specified but never both. And destination.name or destination.server must be specified but never both.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo/application-field-validation/application-field-validation.yaml
   ```

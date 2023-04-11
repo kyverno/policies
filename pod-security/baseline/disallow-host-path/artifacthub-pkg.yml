@@ -1,10 +1,10 @@
 name: disallow-host-path
 version: 1.0.0
-displayName: disallow host path
+displayName: Disallow hostPath
 createdAt: "2023-04-10T23:12:01.000Z"
 description: >-
   HostPath volumes let Pods use host directories and volumes in containers. Using host resources can be used to access shared data or escalate privileges and should not be allowed. This policy ensures no hostPath volumes are in use.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/disallow-host-path/disallow-host-path.yaml
   ```

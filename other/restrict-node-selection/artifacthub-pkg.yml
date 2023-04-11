@@ -1,10 +1,10 @@
 name: restrict-node-selection
 version: 1.0.0
-displayName: restrict node selection
+displayName: Restrict node selection
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   The Kubernetes scheduler uses complex logic to determine the optimal placement for new Pods. Users who have access to set certain fields in a Pod spec may sidestep this logic which in many cases is undesirable. This policy prevents users from targeting specific Nodes for scheduling of Pods by prohibiting the use of the `nodeSelector` and `nodeName` fields. Note that this policy is only designed to work on initial creation and not in background mode.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-node-selection/restrict-node-selection.yaml
   ```

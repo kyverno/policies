@@ -1,10 +1,10 @@
 name: spread-pods-across-topology
 version: 1.0.0
-displayName: spread pods across topology
+displayName: Spread Pods Across Nodes
 createdAt: "2023-04-10T20:30:07.000Z"
 description: >-
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy matches Deployments with the label `distributed=required` and mutates them to spread Pods across zones.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/spread-pods-across-topology/spread-pods-across-topology.yaml
   ```

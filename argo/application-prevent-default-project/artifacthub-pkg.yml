@@ -1,10 +1,10 @@
 name: application-prevent-default-project
 version: 1.0.0
-displayName: application prevent default project
+displayName: Prevent Use of Default Project
 createdAt: "2023-04-10T00:56:02.000Z"
 description: >-
   This policy prevents the use of the default project in an Application.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo/application-prevent-default-project/application-prevent-default-project.yaml
   ```

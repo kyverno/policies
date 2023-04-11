@@ -1,10 +1,10 @@
 name: block-large-images
 version: 1.0.0
-displayName: Ulock large images
+displayName: Block Large Images
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   Pods which run containers of very large image size take longer to pull and require more space to store. A user may either inadvertently or purposefully name an image which is unusually large to disrupt operations. This policy checks the size of every container image and blocks if it is over 2 Gibibytes.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-large-images/block-large-images.yaml
   ```

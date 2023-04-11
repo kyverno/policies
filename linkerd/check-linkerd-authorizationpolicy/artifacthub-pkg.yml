@@ -1,10 +1,10 @@
 name: check-linkerd-authorizationpolicy
 version: 1.0.0
-displayName: check linkerd authorizationpolicy
+displayName: Check Linkerd AuthorizationPolicy
 createdAt: "2023-04-10T20:19:58.000Z"
 description: >-
   As of Linkerd 2.12, an AuthorizationPolicy is a resource used to selectively allow traffic to either a Server or HTTPRoute resource. Creating AuthorizationPolicies is needed when a Server exists in order to control what traffic is permitted within the mesh to the Pods selected by the Server or HTTPRoute. This policy, requiring Linkerd 2.12+, checks incoming AuthorizationPolicy resources to ensure that either a matching Server or HTTPRoute exists first.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd/check-linkerd-authorizationpolicy/check-linkerd-authorizationpolicy.yaml
   ```

@@ -1,10 +1,10 @@
 name: k10-generate-gold-backup-policy
 version: 1.0.0
-displayName: k10 generate gold Uackup policy
+displayName: Generate Gold Backup Policy
 createdAt: "2023-04-10T20:12:53.000Z"
 description: >-
   Generate a backup policy for any Deployment or StatefulSet that adds the labels "dataprotection: k10-goldpolicy" This policy works best to decide the data protection objectives and simply assign backup via application labels.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-generate-gold-backup-policy/k10-generate-gold-backup-policy.yaml
   ```

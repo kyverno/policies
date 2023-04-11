@@ -1,10 +1,10 @@
 name: enforce-etcd-encryption
 version: 1.0.0
-displayName: enforce etcd encryption
+displayName: Enforce etcd encryption in OpenShift
 createdAt: "2023-04-10T20:26:05.000Z"
 description: >-
   Encrption at rest is a security best practice. This policy ensures encryption is enabled for etcd in OpenShift clusters.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift/enforce-etcd-encryption/enforce-etcd-encryption.yaml
   ```

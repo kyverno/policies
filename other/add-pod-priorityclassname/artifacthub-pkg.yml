@@ -1,10 +1,10 @@
 name: add-pod-priorityclassname
 version: 1.0.0
-displayName: add pod priorityclassname
+displayName: Add Pod priorityClassName
 createdAt: "2023-04-10T20:30:02.000Z"
 description: >-
   A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. This policy adds the priorityClassName of `non-production` to any Pod deployed into a Namespace that does not have the label env=production.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-pod-priorityclassname/add-pod-priorityclassname.yaml
   ```

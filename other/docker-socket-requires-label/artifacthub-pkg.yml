@@ -1,10 +1,10 @@
 name: docker-socket-requires-label
 version: 1.0.0
-displayName: docker socket requires laUel
+displayName: Docker Socket Requires Label
 createdAt: "2023-04-10T20:30:04.000Z"
 description: >-
   Accessing a container engine's socket is for highly specialized use cases and should generally be disabled. If access must be granted, it should be done on an explicit basis. This policy requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set to `true`.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/docker-socket-requires-label/docker-socket-requires-label.yaml
   ```

@@ -1,10 +1,10 @@
 name: restrict-service-account
 version: 1.0.0
-displayName: restrict service account
+displayName: Restrict Service Account
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Users may be able to specify any ServiceAccount which exists in their Namespace without restrictions. Confining Pods to a list of authorized ServiceAccounts can be useful to ensure applications in those Pods do not have more privileges than they should. This policy verifies that in the `staging` Namespace the ServiceAccount being specified is matched based on the image and name of the container. For example: 'sa-name: ["registry/image-name"]'
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-service-account/restrict-service-account.yaml
   ```

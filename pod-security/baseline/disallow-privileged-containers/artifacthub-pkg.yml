@@ -1,10 +1,10 @@
 name: disallow-privileged-containers
 version: 1.0.0
-displayName: disallow privileged containers
+displayName: Disallow Privileged Containers
 createdAt: "2023-04-10T23:12:01.000Z"
 description: >-
   Privileged mode disables most security mechanisms and must not be allowed. This policy ensures Pods do not call for privileged mode.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/disallow-privileged-containers/disallow-privileged-containers.yaml
   ```

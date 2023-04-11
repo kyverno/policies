@@ -1,10 +1,10 @@
 name: team-validate-ns-name
 version: 1.0.0
-displayName: team validate ns name
+displayName: Validate Team Namespace Schema
 createdAt: "2023-04-10T20:26:05.000Z"
 description: >-
   Naming patterns are commonplace in clusters where creation activities are granted to other users. In order to maintain organization, it is often such that patterns should be established for organizational consistency. This policy denies the creation of a Namespace if the name of the Namespace does not follow a specific naming defined by the cluster admins.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift/team-validate-ns-name/team-validate-ns-name.yaml
   ```

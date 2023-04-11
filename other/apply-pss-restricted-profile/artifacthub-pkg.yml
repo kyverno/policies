@@ -1,10 +1,10 @@
 name: apply-pss-restricted-profile
 version: 1.0.0
-displayName: apply pss restricted profile
+displayName: Apply PSS Restricted Profile
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   Pod Security Standards define the fields and their options which are allowable for Pods to achieve certain security best practices. While these are typically validation policies, workloads will either be accepted or rejected based upon what has already been defined. It is also possible to mutate incoming Pods to achieve the desired PSS level rather than reject. This policy sets all the fields necessary to pass the PSS Restricted profile.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/apply-pss-restricted-profile/apply-pss-restricted-profile.yaml
   ```

@@ -1,10 +1,10 @@
 name: verify-tekton-taskrun-vuln-scan
 version: 1.0.0
-displayName: verify tekton taskrun vuln scan
+displayName: Check Tekton TaskRun Vulnerability Scan
 createdAt: "2023-04-10T23:23:45.000Z"
 description: >-
   A signed bundle is required and a vulnerability scan made by Grype must return no vulnerabilities greater than 8.0.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/verify-tekton-taskrun-vuln-scan/verify-tekton-taskrun-vuln-scan.yaml
   ```

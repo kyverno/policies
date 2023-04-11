@@ -1,10 +1,10 @@
 name: k10-hourly-rpo
 version: 1.0.0
-displayName: k10 hourly rpo
+displayName: Check Hourly RPO
 createdAt: "2023-04-10T20:12:53.000Z"
 description: >-
   K10 Policy resources can be educated to adhere to common Recovery Point Objective (RPO) best practices.  This policy is advising to use an RPO frequency that with hourly granularity if it has the appPriority: Mission Critical
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-hourly-rpo/k10-hourly-rpo.yaml
   ```

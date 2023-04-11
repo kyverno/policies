@@ -1,10 +1,10 @@
 name: check-routes
 version: 1.0.0
-displayName: check routes
+displayName: Require TLS routes in OpenShift
 createdAt: "2023-04-10T20:26:05.000Z"
 description: >-
   HTTP traffic is not encrypted and hence insecure. This policy prevents configuration of OpenShift HTTP routes.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift/check-routes/check-routes.yaml
   ```

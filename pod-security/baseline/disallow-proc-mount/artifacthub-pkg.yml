@@ -1,10 +1,10 @@
 name: disallow-proc-mount
 version: 1.0.0
-displayName: disallow proc mount
+displayName: Disallow procMount
 createdAt: "2023-04-10T23:12:01.000Z"
 description: >-
   The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Note that in order for users to deviate from the `Default` procMount requires setting a feature gate at the API server.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/baseline/disallow-proc-mount/disallow-proc-mount.yaml
   ```

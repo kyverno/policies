@@ -1,10 +1,10 @@
 name: advertise-node-extended-resources
 version: 1.0.0
-displayName: advertise node extended resources
+displayName: Advertise Node Extended Resources
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   Kubernetes Nodes, in addition to standard compute resources like CPU and memory, may offer extended resources such as FPGAs and GPUs, both of which can be defined per custom design. These extended resources are advertised in the `status` object of a Node. This policy, functional only starting in Kyverno 1.9, adds the extended resource `example.com/dongle` with a value/capacity of `2` to Kubernetes Nodes.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/advertise-node-extended-resources/advertise-node-extended-resources.yaml
   ```

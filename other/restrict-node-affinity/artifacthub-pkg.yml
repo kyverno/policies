@@ -1,10 +1,10 @@
 name: restrict-node-affinity
 version: 1.0.0
-displayName: restrict node affinity
+displayName: Restrict Node Affinity
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
   Pods may use several mechanisms to prefer scheduling on a set of nodes, and nodeAffinity is one of them. nodeAffinity uses expressions to select eligible nodes for scheduling decisions and may override intended placement options by cluster administrators. This policy ensures that nodeAffinity is not used in a Pod spec.
-install: |- # The installation instructions for the package
+install: |- 
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-node-affinity/restrict-node-affinity.yaml
   ```

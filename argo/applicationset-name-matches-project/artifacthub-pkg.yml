@@ -1,10 +1,10 @@
 name: applicationset-name-matches-project
 version: 1.0.0
-displayName: applicationset name matches project
+displayName: Ensure ApplicationSet Name Matches Project
 createdAt: "2023-04-10T00:56:03.000Z"
 description: >-
   This policy ensures that the name of the ApplicationSet is the same value provided in the project.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo/applicationset-name-matches-project/applicationset-name-matches-project.yaml
   ```

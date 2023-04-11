@@ -1,10 +1,10 @@
 name: require-deployments-have-multiple-replicas
 version: 1.0.0
-displayName: require deployments have multiple replicas
+displayName: Require Multiple Replicas
 createdAt: "2023-04-10T20:30:05.000Z"
 description: >-
   Deployments with a single replica cannot be highly available and thus the application may suffer downtime if that one replica goes down. This policy validates that Deployments have more than one replica.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-deployments-have-multiple-replicas/require-deployments-have-multiple-replicas.yaml
   ```

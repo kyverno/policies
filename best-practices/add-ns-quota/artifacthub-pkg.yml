@@ -1,10 +1,10 @@
 name: add-ns-quota
 version: 1.0.0
-displayName: add ns quota
+displayName: Add Quota
 createdAt: "2023-04-10T19:47:15.000Z"
 description: >-
   To better control the number of resources that can be created in a given Namespace and provide default resource consumption limits for Pods, ResourceQuota and LimitRange resources are recommended. This policy will generate ResourceQuota and LimitRange resources when a new Namespace is created.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices/add-ns-quota/add-ns-quota.yaml
   ```

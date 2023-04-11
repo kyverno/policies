@@ -1,10 +1,10 @@
 name: scale-deployment-zero
 version: 1.0.0
-displayName: scale deployment zero
+displayName: Scale Deployment to Zero
 createdAt: "2023-04-10T20:30:07.000Z"
 description: >-
   If a Deployment's Pods are seen crashing multiple times it usually indicates there is an issue that must be manually resolved. Removing the failing Pods and marking the Deployment is often a useful troubleshooting step. This policy watches existing Pods and if any are observed to have restarted more than once, indicating a potential crashloop, Kyverno scales its parent deployment to zero and writes an annotation signaling to an SRE team that troubleshooting is needed. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/scale-deployment-zero/scale-deployment-zero.yaml
   ```

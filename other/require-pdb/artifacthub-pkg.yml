@@ -1,10 +1,10 @@
 name: require-pdb
 version: 1.0.0
-displayName: require pdb
+displayName: Require PodDisruptionBudget
 createdAt: "2023-04-10T20:30:05.000Z"
 description: >-
   PodDisruptionBudget resources are useful to ensuring minimum availability is maintained at all times. This policy checks all incoming Deployments and StatefulSets to ensure they have a matching, preexisting PodDisruptionBudget. Note: This policy must be run in `enforce` mode to ensure accuracy.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-pdb/require-pdb.yaml
   ```

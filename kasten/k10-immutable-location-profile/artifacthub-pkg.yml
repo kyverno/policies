@@ -1,10 +1,10 @@
 name: k10-immutable-location-profile
 version: 1.0.0
-displayName: k10 immutaUle location profile
+displayName: Check Immutable Location Profile
 createdAt: "2023-04-10T20:12:53.000Z"
 description: >-
   K10 Object Storage Location Profiles store K10 RestorePoints (App Backups) for import and export operations. AWS S3 or S3 compatible object storage that supports object lock can store immutable backups.  Immutability is typically not enabled by default due to the increased costs of retaining storage.  This policy checks that the Profile contains a 'protectionPeriod' which is the main configuration for immutability. 
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-immutable-location-profile/k10-immutable-location-profile.yaml
   ```

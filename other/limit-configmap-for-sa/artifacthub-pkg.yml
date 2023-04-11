@@ -1,10 +1,10 @@
 name: limit-configmap-for-sa
 version: 1.0.0
-displayName: limit configmap for sa
+displayName: Limit ConfigMap to ServiceAccounts for a User
 createdAt: "2023-04-10T20:30:04.000Z"
 description: >-
   This policy shows how to restrict certain operations on specific ConfigMaps by ServiceAccounts.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/limit-configmap-for-sa/limit-configmap-for-sa.yaml
   ```

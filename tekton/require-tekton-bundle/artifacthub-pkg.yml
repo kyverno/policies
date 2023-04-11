@@ -1,10 +1,10 @@
 name: require-tekton-bundle
 version: 1.0.0
-displayName: require tekton Uundle
+displayName: Require Tekton Bundle
 createdAt: "2023-04-10T23:23:45.000Z"
 description: >-
   PipelineRun and TaskRun resources must be executed from a bundle
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/require-tekton-bundle/require-tekton-bundle.yaml
   ```

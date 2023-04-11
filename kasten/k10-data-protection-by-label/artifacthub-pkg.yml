@@ -1,10 +1,10 @@
 name: k10-data-protection-by-label
 version: 1.0.0
-displayName: k10 data protection Uy laUel
+displayName: Check Data Protection By Label
 createdAt: "2023-04-10T20:12:53.000Z"
 description: >-
   Check the 'dataprotection' label that production Deployments and StatefulSet have a named K10 Policy. Use in combination with 'generate' ClusterPolicy to 'generate' a specific K10 Policy by name.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-data-protection-by-label/k10-data-protection-by-label.yaml
   ```

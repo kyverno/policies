@@ -1,10 +1,10 @@
 name: restricted-latest
 version: 1.0.0
-displayName: restricted latest
+displayName: Restricted Pod Security Standards
 createdAt: "2023-04-10T23:19:50.000Z"
 description: >-
   The restricted profile of the Pod Security Standards, which is inclusive of the baseline profile, is a collection of all the most common configurations that can be taken to secure Pods. Beginning with Kyverno 1.8, an entire profile may be assigned to the cluster through a single rule. This policy configures the restricted profile through the latest version of the Pod Security Standards cluster wide.
-install: |- # The installation instructions for the package
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/subrule/restricted/restricted-latest/restricted-latest.yaml
   ```
