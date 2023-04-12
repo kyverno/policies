@@ -19,3 +19,4 @@ annotations:
   kyverno/category: "OpenShift"
   kyverno/kubernetesVersion: "1.20"
   kyverno/subject: "ClusterRole,ClusterRoleBinding,Role,RoleBinding,RBAC"
+digest: 6dc3d2073fc8593b7cb4ce3a9cbb2d15503cca54b2eb2976bd3db0629815e3b4
