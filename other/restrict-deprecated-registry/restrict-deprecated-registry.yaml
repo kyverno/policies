@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: restrict-deprecated-registry
   annotations:
-    policies.kyverno.io/title: "Restrict Deprecated Registry"
+    policies.kyverno.io/title: Restrict Deprecated Registry
     policies.kyverno.io/category: Best Practices, EKS Best Practices
     policies.kyverno.io/severity: high
     policies.kyverno.io/minversion: 1.9.0

@@ -11,9 +11,12 @@ metadata:
     policies.kyverno.io/minversion: 1.9.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
-      Kubernetes applications are typically deployed into a single, logical namespace. Kasten K10 policies will discover and protect all resources within the selected namespace(s). This policy ensures all new namespaces include a label referencing a valid K10 SLA (Policy Preset) for data protection.
-
-      This policy can be used in combination with generate ClusterPolicy to automatically create a K10 policy based on the specified SLA. The combination ensures that new applications are not inadvertently left unprotected.
+      Kubernetes applications are typically deployed into a single, logical namespace. 
+      Kasten K10 policies will discover and protect all resources within the selected namespace(s). 
+      This policy ensures all new namespaces include a label referencing a valid K10 SLA 
+      (Policy Preset) for data protection.This policy can be used in combination with generate 
+      ClusterPolicy to automatically create a K10 policy based on the specified SLA. 
+      The combination ensures that new applications are not inadvertently left unprotected.
 spec:
   validationFailureAction: Audit
   rules:
