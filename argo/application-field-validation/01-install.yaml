@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- crd.yaml
+- application-field-validation.yaml
+assert:
+- policy-ready.yaml
