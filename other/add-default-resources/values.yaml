@@ -1,6 +1,0 @@
-policies:
-- name: add-default-resources
-  resources:
-  - name: nginx-demo2
-    values:
-      request.operation: UPDATE
