@@ -35,3 +35,25 @@ jobs:
       - name: Test Policy
         run: go run ./cmd/cli/kubectl-kyverno test ../policies
         working-directory: kyverno
+
+      - name: Validate all policies
+        run: |
+          #!/bin/bash
+
+          set -euo pipefail
+
+          # Loop through each policy directory in the repository
+          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*'); do
+            # Validate that policy is named the same as the folder
+            if [[ $(basename "$policy_dir") != $(basename "$(dirname "$policy_dir")") ]]; then
+              echo "Policy in directory $policy_dir is not named the same as the folder"
+              exit 1
+            fi
+
+            # Validate that artifacthub-pkg.yml file is found in the same folder as the policy
+            if [[ ! -f "$policy_dir/artifacthub-pkg.yml" ]]; then
+              echo "artifacthub-pkg.yml file is not found in the same folder as the policy in directory $policy_dir"
+              exit 1
+            fi
+          done
+
