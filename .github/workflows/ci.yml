@@ -44,8 +44,17 @@ jobs:
 
           # Loop through each policy directory in the repository
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*'); do
+            # Validate that the folder name contains only dashes as the non-alphanumeric characters
+            if [[ ! $(basename "$policy_dir") =~ ^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$ ]]; then
+              echo "Policy folder name in directory $policy_dir contains invalid characters"
+              exit 1
+            fi
+
             # Validate that policy is named the same as the folder
-            if [[ $(basename "$policy_dir") != $(basename "$(dirname "$policy_dir")") ]]; then
+            policy_file=$(find "$policy_dir" -maxdepth 1 -type f -name '*.yaml')
+            policy_name=$(basename "$policy_file" .yaml)
+
+            if [[ $(basename "$policy_dir") != "$policy_name" ]]; then
               echo "Policy in directory $policy_dir is not named the same as the folder"
               exit 1
             fi
@@ -56,4 +65,3 @@ jobs:
               exit 1
             fi
           done
-
