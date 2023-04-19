@@ -9,7 +9,6 @@ description: >-
       This policy protect restore operation into system or any protected namespaces, listed in deny condition section. 
       It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
       then operation fails and warning message is throw.
-digest: 52fa945f2ddced3532c567c2760782b990b2fc44acd7a88e4c905e1130f85336
 install: |-
     ```shell
     kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/block-velero-restore/block-velero-restore.yaml
@@ -29,3 +28,4 @@ annotations:
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Restore"
+digest: 500b198fc73f3ae28348f527e425e62e714aa87f010384fc0e3de70297c897e7
