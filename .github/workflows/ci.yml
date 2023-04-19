@@ -50,14 +50,15 @@ jobs:
               exit 1
             fi
 
-            # Validate that policy is named the same as the folder
-            policy_file=$(find "$policy_dir" -maxdepth 1 -type f -name '*.yaml')
-            policy_name=$(basename "$policy_file" .yaml)
-
-            if [[ $(basename "$policy_dir") != "$policy_name" ]]; then
-              echo "Policy in directory $policy_dir is not named the same as the folder"
-              exit 1
-            fi
+            # Validate that each policy file in the directory has the same parent folder name as part of its name
+            policy_files=$(find "$policy_dir" -maxdepth 1 -type f -name '*.yaml')
+            for policy_file in $policy_files; do
+              policy_name=$(basename "$policy_file" .yaml)
+              if [[ ! "$policy_name" =~ ^$(basename "$policy_dir") ]]; then
+                echo "Policy $policy_file in directory $policy_dir does not have the same parent folder name"
+                exit 1
+              fi
+            done
 
             # Validate that artifacthub-pkg.yml file is found in the same folder as the policy
             if [[ ! -f "$policy_dir/artifacthub-pkg.yml" ]]; then
