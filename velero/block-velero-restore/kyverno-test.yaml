@@ -6,6 +6,16 @@ resources:
 results:
   - policy: block-velero-restore
     rule: block-velero-restore-to-protected-namespace
-    resource: my-restore-backup-0000111122223333
+    resource: badrestore01
     kind: Restore
     result: fail
+  - policy: block-velero-restore
+    rule: block-velero-restore-to-protected-namespace
+    resource: restore-without-namespace-mapping
+    kind: Restore
+    result: pass
+  - policy: block-velero-restore
+    rule: block-velero-restore-to-protected-namespace
+    resource: goodrestore01
+    kind: Restore
+    result: pass
