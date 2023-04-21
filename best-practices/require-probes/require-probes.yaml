@@ -26,6 +26,13 @@ spec:
       - resources:
           kinds:
           - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
     validate:
       message: "Liveness, readiness, or startup probes are required for all containers."
       foreach:
