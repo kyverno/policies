@@ -19,3 +19,17 @@ spec:
       requests:
         memory: "200Mi" 
         cpu: "200m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-demo3
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    resources:
+      requests:
+        memory: "200Mi" 
+  - name: busybox
+    image: busybox:latest

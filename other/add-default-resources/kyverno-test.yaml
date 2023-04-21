@@ -3,7 +3,6 @@ policies:
   - add-default-resources.yaml
 resources:
   - resource.yaml
-variables: values.yaml
 results:
   - policy: add-default-resources
     rule: add-default-requests
@@ -17,4 +16,10 @@ results:
     resource: nginx-demo2
     patchedResource: patchedResource2.yaml
     kind: Pod
-    result: skip
+    result: pass
+  - policy: add-default-resources
+    rule: add-default-requests
+    resource: nginx-demo3
+    patchedResource: patchedResource3.yaml
+    kind: Pod
+    result: pass

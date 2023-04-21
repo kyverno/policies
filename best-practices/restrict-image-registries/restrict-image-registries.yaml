@@ -7,6 +7,7 @@ metadata:
     policies.kyverno.io/category: Best Practices, EKS Best Practices
     policies.kyverno.io/severity: medium
     policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Images from unknown, public registries can be of dubious quality and may not be
@@ -28,5 +29,9 @@ spec:
       message: "Unknown image registry."
       pattern:
         spec:
+          =(ephemeralContainers):
+          - image: "eu.foo.io/* | bar.io/*"
+          =(initContainers):
+          - image: "eu.foo.io/* | bar.io/*"
           containers:
           - image: "eu.foo.io/* | bar.io/*"
