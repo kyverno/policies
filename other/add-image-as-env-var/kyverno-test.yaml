@@ -1,19 +1,24 @@
 name: add-image-as-env-var
 policies:
-  -  add-image-as-env-var.yaml
+  - add-image-as-env-var.yaml
 resources:
   - resource.yaml
 results:
   - policy: add-image-as-env-var
-    rule: pod-containers-1-inject-image
-    resource: envar-demo
-    patchedResource: patchedResource.yaml
+    rule: pod-containers-inject-image
+    resource: pod01
+    patchedResource: patched-pod01.yaml
     kind: Pod
     result: pass
   - policy: add-image-as-env-var
-    rule: pod-containers-2-inject-image
-    resource: envar-demo
-    patchedResource: patchedResource.yaml
+    rule: pod-containers-inject-image
+    resource: pod02
+    patchedResource: patched-pod02.yaml
     kind: Pod
-    result: skip
-
+    result: pass
+  - policy: add-image-as-env-var
+    rule: pod-containers-inject-image
+    resource: pod03
+    patchedResource: patched-pod03.yaml
+    kind: Pod
+    result: pass
