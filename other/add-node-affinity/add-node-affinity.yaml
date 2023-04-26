@@ -26,4 +26,8 @@ spec:
       patchesJson6902: |-
         - path: "/spec/template/spec/affinity/nodeAffinity/requiredDuringSchedulingIgnoredDuringExecution/nodeSelectorTerms/-1/matchExpressions/-1"
           op: add
-          value: {"key":"zone_weight","operator":"Lt","values":["400"]}
+          value:
+            key: zone_weight
+            operator: Lt
+            values:
+            - "400"

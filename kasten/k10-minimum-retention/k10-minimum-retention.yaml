@@ -65,4 +65,8 @@ spec:
       patchesJson6902: |-
         - path: "/spec/retention"
           op: replace
-          value: {"hourly":24,"daily":30,"weekly":4,"monthly":3}
+          value:
+            hourly: 24
+            daily: 30
+            weekly: 4
+            monthly: 3

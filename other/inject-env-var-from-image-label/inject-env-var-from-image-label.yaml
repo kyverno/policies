@@ -45,4 +45,6 @@ spec:
         patchesJson6902: |-
           - op: add
             path: "/spec/containers/{{elementIndex}}/env/-"
-            value: {"name":"MAINTAINER","value":"{{maintainer}}"}
+            value:
+              name: MAINTAINER
+              value: "{{maintainer}}"

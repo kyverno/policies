@@ -12,7 +12,7 @@ metadata:
       Sometimes Kubernetes Nodes may have a maximum number of Pods they can accommodate due to
       resources outside CPU and memory such as licensing, or in some
       development cases. This policy restricts Pod count on a Node named `minikube` to be no more than 10.
-    # pod-policies.kyverno.io/autogen-controllers: None
+    # pod-policies.kyverno.io/autogen-controllers: none
 spec:
   validationFailureAction: audit
   background: false
