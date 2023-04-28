@@ -29,13 +29,13 @@ spec:
     mutate:
       patchesJson6902: |-
         - op: add
-          path: /spec/template/spec/volumes
+          path: /spec/template/spec/volumes/-
           value:
-          - name: vault-secret
+            name: vault-secret
             emptyDir:
               medium: Memory
         - op: add
-          path: /spec/template/spec/containers/0/volumeMounts
+          path: /spec/template/spec/containers/0/volumeMounts/-
           value:
-          - mountPath: /secret
+            mountPath: /secret
             name: vault-secret
