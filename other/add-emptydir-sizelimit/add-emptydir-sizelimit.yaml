@@ -3,6 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: add-emptydir-sizelimit
   annotations:
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Add emptyDir sizeLimit
     policies.kyverno.io/category: Other
     policies.kyverno.io/subject: Pod

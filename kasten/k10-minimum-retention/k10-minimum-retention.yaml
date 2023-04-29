@@ -17,6 +17,7 @@ metadata:
       To use different 
       This policy can also be used go reduce retentions lengths to enforce cost optimization.
 spec:
+  schemaValidation: false
   rules:
   - name: k10-minimum-retention
     match:
