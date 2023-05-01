@@ -1,6 +1,6 @@
 name: deny-commands-in-exec-probe
 policies:
-  - cpol.yaml
+  - deny-commands-in-exec-probe.yaml
 resources:
   - resource.yaml
 results:
