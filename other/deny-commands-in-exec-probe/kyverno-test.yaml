@@ -1,0 +1,29 @@
+name: deny-commands-in-exec-probe
+policies:
+  - cpol.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: deny-commands-in-exec-probe
+    rule: check-commands
+    resources:
+    - badpod01
+    - badpod02
+    - badpod03
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: deny-commands-in-exec-probe
+    rule: check-commands
+    resources:
+    - goodpod01
+    kind: Pod
+    result: skip
+  - policy: deny-commands-in-exec-probe
+    rule: check-commands
+    resources:
+    - goodpod02
+    - goodpod03
+    kind: Pod
+    result: pass
