@@ -84,7 +84,6 @@ description: >-
       automatically annotates Pods (and Pod controllers) which refer to a PVC so that
       all volumes are listed in the aforementioned annotation if a Namespace with the label
       `velero-backup-pvc=true`.
-digest: 60ca548c88fc3e43db880bd5e466e4fa02af13b7f97c652aee59cb13ca9404e5 # The SHA256 hash String that uniquely identifies this package version
 install: |- # The installation instructions for the package
     ```shell
     kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
@@ -105,6 +104,7 @@ annotations: # See the annotations guide on Artifact Hub here: https://artifacth
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod, Annotation"
+digest: 795012387c2755c61fa802fea900011c45520c2cffb27238210933ebb9a7f2c0 # The SHA256 hash String that uniquely identifies this package version
 ```
 
 ## Policy Requests
