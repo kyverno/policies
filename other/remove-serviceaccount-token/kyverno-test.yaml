@@ -1,4 +1,4 @@
-name: remove-hostpath-volumes
+name: remove-serviceaccount-token
 policies:
   - remove-serviceaccount-token.yaml
 resources:
