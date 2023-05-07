@@ -1,0 +1,22 @@
+name: require-kubecost-labels
+policies:
+  - require-kubecost-labels.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: require-kubecost-labels
+    rule: require-labels
+    resources:
+    - goodpod
+    kind: Pod
+    result: pass
+  - policy: require-kubecost-labels
+    rule: require-labels
+    resources:
+    - badpod01
+    - badpod02
+    - badpod03
+    - badpod04
+    - badpod05
+    kind: Pod
+    result: fail
