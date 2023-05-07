@@ -1,0 +1,24 @@
+apiVersion: kyverno.io/v2beta1
+kind: ClusterPolicy
+metadata:
+  name: require-kubecost-labels
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+  - name: require-labels
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods."
+      pattern:
+        metadata:
+          labels:
+            owner: "?*"
+            team: "?*"
+            department: "?*"
+            app: "?*"
+            env: "?*"
