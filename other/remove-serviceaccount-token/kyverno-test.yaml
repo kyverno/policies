@@ -1,0 +1,12 @@
+name: remove-hostpath-volumes
+policies:
+  - remove-serviceaccount-token.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: remove-serviceaccount-token
+    rule: remove-vol-volmount
+    resource: busybox
+    kind: Pod
+    patchedResource: patchedResource.yaml
+    result: pass
