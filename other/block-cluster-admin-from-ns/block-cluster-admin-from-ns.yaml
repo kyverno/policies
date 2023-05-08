@@ -1,0 +1,36 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-cluster-admin-from-ns
+  annotations:
+    policies.kyverno.io/title: Block Cluster Admin from Namespace
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: RBAC
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: block-cluster-admin-from-ns
+    match:
+      any:
+      - resources:
+          kinds:
+          - "*"
+          namespaces:
+          - testnamespace
+        clusterRoles:
+        - cluster-admin
+        subjects:
+        - kind: User
+          name: testuser
+    validate:
+      message: "The cluster-admin 'testuser' user cannot touch testnamespace Namespace."
+      deny:
+        conditions:
+          any:
+            - key: "{{request.operation || 'BACKGROUND'}}"
+              operator: AnyIn
+              value:
+              - CREATE
+              - UPDATE
+              - DELETE
