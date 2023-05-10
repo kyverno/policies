@@ -1,5 +1,5 @@
 apiVersion: kyverno.io/v1
-kind: Changed
+kind: ClusterPolicy
 metadata:
   name: application-field-validation
 status:
