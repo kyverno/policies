@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- ns.yaml
+- add-image-as-env-var.yaml
+assert:
+- policy-ready.yaml

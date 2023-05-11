@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- ns.yaml
+- k10-minimum-retention.yaml
+assert:
+- policy-ready.yaml
