@@ -1,0 +1,17 @@
+name: enable-kubecost-continuous-rightsizing
+policies:
+  - enable-kubecost-continuous-rightsizing.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: enable-kubecost-continuous-rightsizing
+    rule: enable-kubecost-autoscaling
+    resource: deploy01
+    kind: Deployment
+    result: skip
+  - policy: enable-kubecost-continuous-rightsizing
+    rule: enable-kubecost-autoscaling
+    resource: deploy02
+    patchedResource: patchedResource1.yaml
+    kind: Deployment
+    result: pass
