@@ -40,8 +40,9 @@ jobs:
         run: |
           #!/bin/bash
           set -euo pipefail
+
           # Loop through each policy directory in the repository
-          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*'); do
+          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*' ! -name '.*' ! -path '*/\.*' ! -name '*_*'); do
             # Validate that policy is named the same as the folder
             if [[ $(basename "$policy_dir") != $(basename "$(dirname "$policy_dir")") ]]; then
               echo "Policy in directory $policy_dir is not named the same as the folder"
@@ -53,3 +54,4 @@ jobs:
               exit 1
             fi
           done
+
