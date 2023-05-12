@@ -50,6 +50,12 @@ jobs:
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*' ! -name '.*' ! -path '*/\.*' ! -name '*_*'); do
             # Get the name of the directory
             dir_name=$(basename "$policy_dir")
+            
+            # Check if the directory name only contains alphanumeric characters and dashes
+            if [[ ! $dir_name =~ ^[a-zA-Z0-9-]+$ ]]; then
+              echo "Directory $dir_name contains invalid characters. Only alphanumeric characters and dashes are allowed."
+              exit 1
+            fi
 
             # Check if the directory contains any other directories
             if find "$policy_dir" -mindepth 1 -type d | read; then
