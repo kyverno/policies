@@ -51,8 +51,8 @@ jobs:
             # Validate that policy is named the same as the folder
             dir_name=$(basename "$policy_dir")
             # Check if a .yml file with the same name as the directory exists in the directory
-            if [[ ! -f "$policy_dir/$dir_name.yml" ]]; then
-              echo "No .yml file named $dir_name found in directory $policy_dir"
+            if [[ ! -f "$policy_dir/$dir_name.yaml" ]]; then
+              echo "No file named $dir_name.yaml found in directory $policy_dir"
               exit 1
             fi
             # Validate that artifacthub-pkg.yml file is found in the same folder as the policy
