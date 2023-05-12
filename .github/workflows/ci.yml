@@ -31,16 +31,12 @@ jobs:
         uses: actions/setup-go@4d34df0c2316fe8122ab82dc22947d607c0c91f9
         with:
           go-version: "1.20"
-
-      - name: Test Policy
-        run: go run ./cmd/cli/kubectl-kyverno test ../policies
-        working-directory: kyverno
-    
+      
       - name: Checkout kyverno/policies
         uses: actions/checkout@v2
         with:
           repository: kyverno/policies
-      
+          
       - name: Validate all policies
         run: |
           #!/bin/bash
@@ -81,3 +77,11 @@ jobs:
               exit 1
             fi
           done
+
+      - name: Test Policy
+        run: go run ./cmd/cli/kubectl-kyverno test ../policies
+        working-directory: kyverno
+    
+      
+      
+      

@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: enforce_namespace_labels
+  name: enforce-namespace-labels
 spec:
   rules:
   - name: enforce_environment_label
