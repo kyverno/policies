@@ -49,8 +49,10 @@ jobs:
           # Loop through each policy directory in the repository
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*' ! -name '.*' ! -path '*/\.*' ! -name '*_*'); do
             # Validate that policy is named the same as the folder
-            if [[ $(basename "$policy_dir") != $(basename "$(dirname "$policy_dir")") ]]; then
-              echo "Policy in directory $policy_dir is not named the same as the folder"
+            dir_name=$(basename "$policy_dir")
+            # Check if a .yml file with the same name as the directory exists in the directory
+            if [[ ! -f "$policy_dir/$dir_name.yml" ]]; then
+              echo "No .yml file named $dir_name found in directory $policy_dir"
               exit 1
             fi
             # Validate that artifacthub-pkg.yml file is found in the same folder as the policy
