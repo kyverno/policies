@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: kyverno/policies
-          
+
       - name: Validate all policies
         run: |
           #!/bin/bash
@@ -50,7 +50,7 @@ jobs:
             fi
             
             # Skip directories that contain subdirectories
-            if find "$policy_dir" -mindepth 1 -type d | read; then
+            if find "$policy_dir" -mindepth 1 -type d -print -quit | read; then
               # If it does, skip the filename validation
               continue
             fi
