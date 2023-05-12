@@ -35,6 +35,11 @@ jobs:
       - name: Test Policy
         run: go run ./cmd/cli/kubectl-kyverno test ../policies
         working-directory: kyverno
+    
+      - name: Checkout kyverno/policies
+        uses: actions/checkout@v2
+        with:
+          repository: kyverno/policies
       
       - name: Validate all policies
         run: |
