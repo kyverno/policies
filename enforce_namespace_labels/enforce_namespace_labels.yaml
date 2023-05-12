@@ -1,0 +1,17 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enforce_namespace_labels
+spec:
+  rules:
+  - name: enforce_environment_label
+    match:
+      resources:
+        kinds:
+        - Namespace
+    validate:
+      message: "Namespace must have the label environment: production"
+      pattern:
+        metadata:
+          labels:
+            environment: production

@@ -1,0 +1,18 @@
+---
+version: 1
+name: enforce-namespace-labels
+displayName: Enforce Namespace Labels
+description: "This policy ensures that all namespaces have certain labels."
+maintainers:
+  - name: Haoyu Guo
+    email: haoyuguo@usc.edu
+categories:
+  - Security
+  - Compliance
+  - Best Practices
+license: Apache-2.0
+keywords:
+  - kubernetes
+  - kyverno
+  - namespace
+digest: 5778182498dbed003f95d3749d411e2d74fdbcf3fe252f9c5be441a521d12905
