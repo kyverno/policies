@@ -47,7 +47,7 @@ jobs:
           set -euo pipefail
 
           # Loop through each policy directory in the repository
-          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*' ! -name '.*' ! -path '*/\.*' ! -name '*_*'); do
+          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d ! -name '.*' ! -path '*/\.*'); do
             # Get the name of the directory
             dir_name=$(basename "$policy_dir")
 
