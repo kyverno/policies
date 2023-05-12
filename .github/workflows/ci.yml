@@ -48,6 +48,12 @@ jobs:
 
           # Loop through each policy directory in the repository
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d ! -name '.*' ! -path '*/\.*'); do
+            # Skip directories that contain subdirectories
+            if find "$policy_dir" -mindepth 1 -type d | read; then
+              # If it does, skip the filename validation
+              continue
+            fi
+
             # Get the name of the directory
             dir_name=$(basename "$policy_dir")
 
@@ -57,12 +63,7 @@ jobs:
               exit 1
             fi
 
-            # Check if the directory contains any other directories
-            if find "$policy_dir" -mindepth 1 -type d | read; then
-              # If it does, skip the filename validation
-              continue
-            fi
-
+            
             # Check if a .yml or .yaml file with the same name as the directory exists in the directory
             if [[ ! -f "$policy_dir/$dir_name.yml" ]] && [[ ! -f "$policy_dir/$dir_name.yaml" ]]; then
               echo "No .yml or .yaml file named $dir_name found in directory $policy_dir"
