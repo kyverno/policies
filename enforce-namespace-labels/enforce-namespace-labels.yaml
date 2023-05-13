@@ -2,6 +2,15 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: enforce-namespace-labels
+  annotations:
+    policies.kyverno.io/title: Enforce Namespace Labels
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: low
+    policies.kyverno.io/subject: Namespace
+    kyverno.io/kyverno-version: 1.9.2
+    kyverno.io/kubernetes-version: "1.25"
+    policies.kyverno.io/description: >-
+      This policy enforces that all Namespaces have the label `environment: production`.
 spec:
   rules:
   - name: enforce_environment_label
