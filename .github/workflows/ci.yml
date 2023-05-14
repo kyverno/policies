@@ -35,3 +35,43 @@ jobs:
       - name: Test Policy
         run: go run ./cmd/cli/kubectl-kyverno test ../policies
         working-directory: kyverno
+    
+      - name: Checkout kyverno/policies
+        uses: actions/checkout@v2
+        with:
+          repository: kyverno/policies
+      
+      - name: Validate all policies
+        run: |
+          #!/bin/bash
+          set -euo pipefail
+
+          # Loop through each policy directory in the repository
+          for policy_dir in $(find "$GITHUB_WORKSPACE" -type d -name '*-*' ! -name '.*' ! -path '*/\.*' ! -name '*_*'); do
+            # Get the name of the directory
+            dir_name=$(basename "$policy_dir")
+
+            # Check if the directory name only contains alphanumeric characters and dashes
+            if [[ ! $dir_name =~ ^[a-zA-Z0-9-]+$ ]]; then
+              echo "Directory $dir_name contains invalid characters. Only alphanumeric characters and dashes are allowed."
+              exit 1
+            fi
+
+            # Check if the directory contains any other directories
+            if find "$policy_dir" -mindepth 1 -type d | read; then
+              # If it does, skip the filename validation
+              continue
+            fi
+
+            # Check if a .yml or .yaml file with the same name as the directory exists in the directory
+            if [[ ! -f "$policy_dir/$dir_name.yml" ]] && [[ ! -f "$policy_dir/$dir_name.yaml" ]]; then
+              echo "No .yml or .yaml file named $dir_name found in directory $policy_dir"
+              exit 1
+            fi
+
+            # Validate that artifacthub-pkg.yml or artifacthub-pkg.yaml file is found in the same folder as the policy
+            if [[ ! -f "$policy_dir/artifacthub-pkg.yml" ]] && [[ ! -f "$policy_dir/artifacthub-pkg.yaml" ]]; then
+              echo "artifacthub-pkg.yml or artifacthub-pkg.yaml file is not found in the same folder as the policy in directory $policy_dir"
+              exit 1
+            fi
+          done
