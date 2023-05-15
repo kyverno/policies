@@ -26,6 +26,7 @@ spec:
         message: "The Ingress host name must be defined, not empty."
         deny:
           conditions:
+            all:
             - key: "{{ request.object.spec.rules[].host || `[]` | length(@) }}"
               operator: NotEquals
               value: "{{ request.object.spec.rules[].http || `[]` | length(@) }}"
