@@ -26,10 +26,11 @@ spec:
             kinds:
               - Ingress
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: NotEquals
-          value: DELETE
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: NotEquals
+            value: DELETE
       context:
         - name: rules
           apiCall:

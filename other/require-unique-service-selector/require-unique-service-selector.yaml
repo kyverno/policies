@@ -24,10 +24,11 @@ spec:
               kinds:
                 - Service
       preconditions:
-        all:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: NotEquals
-            value: DELETE
+        conditions:
+          all:
+            - key: "{{request.operation || 'BACKGROUND'}}"
+              operator: NotEquals
+              value: DELETE
       context:
         - name: services
           apiCall:

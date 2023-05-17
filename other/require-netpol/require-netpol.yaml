@@ -25,10 +25,11 @@ spec:
           kinds:
           - Deployment
     preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        any:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: CREATE
     context:
     - name: policies_count
       apiCall:

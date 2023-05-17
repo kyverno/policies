@@ -23,10 +23,11 @@ spec:
             kinds:
               - route.openshift.io/v1/Route
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: NotEquals
-          value: ["DELETE"]
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: NotEquals
+            value: ["DELETE"]
       validate:
         message: >-
           HTTP routes are not allowed. Configure TLS for secure routes.

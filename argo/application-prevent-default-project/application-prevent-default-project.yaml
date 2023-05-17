@@ -23,10 +23,11 @@ spec:
             kinds:
               - Application
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: NotEquals
-          value: DELETE
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: NotEquals
+            value: DELETE
       validate:
         message: "The default project may not be used in an Application."
         pattern:

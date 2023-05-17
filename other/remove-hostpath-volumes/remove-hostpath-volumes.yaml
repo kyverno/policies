@@ -30,10 +30,11 @@ spec:
         variable:
           jmesPath: request.object.spec.volumes[?hostPath].name
       preconditions:
-        all:
-        - key: "{{ length(hostpathvolnames) }}"
-          operator: GreaterThan
-          value: 0
+        conditions:
+          all:
+          - key: "{{ length(hostpathvolnames) }}"
+            operator: GreaterThan
+            value: 0
       mutate:
         foreach:
           - list: request.object.spec.volumes[]

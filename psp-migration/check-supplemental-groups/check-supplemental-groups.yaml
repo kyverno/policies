@@ -26,12 +26,13 @@ spec:
           kinds:
             - Pod
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: Any supplementalGroup ID must be within the range 100-200 or 500-600.
       pattern:

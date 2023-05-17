@@ -33,10 +33,11 @@ spec:
           - Job
           - CronJob
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: UPDATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: UPDATE
     validate:
       message: "The only label that may be removed or changed is `breakglass`."
       deny:

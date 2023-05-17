@@ -27,12 +27,13 @@ spec:
           kinds:
           - PersistentVolumeClaim
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: nfs.io/storage-path annotation must not be empty.
       pattern:

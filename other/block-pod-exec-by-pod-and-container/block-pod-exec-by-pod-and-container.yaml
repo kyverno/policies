@@ -23,13 +23,14 @@ spec:
           kinds:
           - Pod/exec
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: CONNECT
-      - key: "{{ request.name }}"
-        operator: Equals
-        value: myapp-maintenance*
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: CONNECT
+        - key: "{{ request.name }}"
+          operator: Equals
+          value: myapp-maintenance*
     validate:
       message: Nginx containers inside myapp-maintanence Pods may not be exec'd into.
       deny:

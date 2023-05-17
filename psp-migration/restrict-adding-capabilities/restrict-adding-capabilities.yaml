@@ -28,10 +28,11 @@ spec:
             kinds:
               - Pod
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: NotEquals
-          value: DELETE
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: NotEquals
+            value: DELETE
       validate:
         message: >-
           Any capabilities added other than NET_BIND_SERVICE or CAP_CHOWN are disallowed.

@@ -23,10 +23,11 @@ spec:
           kinds:
           - Pod
     preconditions:
-      any:
-      - key: "org.com/role"
-        operator: AnyNotIn
-        value: "{{ request.object.spec.tolerations[].key || `[]` }}"
+      conditions:
+        any:
+        - key: "org.com/role"
+          operator: AnyNotIn
+          value: "{{ request.object.spec.tolerations[].key || `[]` }}"
     mutate:
       patchesJson6902: |-
         - op: add

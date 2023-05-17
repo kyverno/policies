@@ -28,12 +28,13 @@ spec:
             kinds:
             - ConfigMap
       preconditions:
-        all:
-          # Get the hour of the current time
-        - key: "{{ time_now_utc().time_to_cron(@).split(@,' ') | [1].to_number(@) }}"
-          operator: AnyIn
-          # Only operate during business hours, 8am-5pm EST, in UTC
-          value: 13-22
+        conditions:
+          all:
+            # Get the hour of the current time
+          - key: "{{ time_now_utc().time_to_cron(@).split(@,' ') | [1].to_number(@) }}"
+            operator: AnyIn
+            # Only operate during business hours, 8am-5pm EST, in UTC
+            value: 13-22
       validate:
         message: "The foo label must be set."
         pattern:

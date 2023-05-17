@@ -26,12 +26,13 @@ spec:
           kinds:
           - Pod
     preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        any:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     mutate:
       foreach:
       - list: "request.object.spec.containers[]"

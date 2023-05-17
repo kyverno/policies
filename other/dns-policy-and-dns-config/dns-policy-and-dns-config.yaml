@@ -32,13 +32,14 @@ spec:
           kinds:
           - Pod
     preconditions:
-      any:
-      - key: "{{ request.object.spec.dnsPolicy }}"
-        operator: AnyIn
-        value: 
-        - ClusterFirst
-        - ClusterFirstWithHostNet
-        - None
+      conditions:
+        any:
+        - key: "{{ request.object.spec.dnsPolicy }}"
+          operator: AnyIn
+          value: 
+          - ClusterFirst
+          - ClusterFirstWithHostNet
+          - None
     mutate:
       patchStrategicMerge:
         spec:

@@ -28,10 +28,11 @@ spec:
             kinds:
               - VirtualService
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: AnyIn
-          value: ["CREATE", "UPDATE"]
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: AnyIn
+            value: ["CREATE", "UPDATE"]
       validate:
         message: "Wildcards are not permitted as hosts."
         foreach:

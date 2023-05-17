@@ -26,10 +26,11 @@ spec:
                 - Deployment
                 - StatefulSet
       preconditions:
-        all:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: Equals
-            value: CREATE
+        conditions:
+          all:
+            - key: "{{request.operation || 'BACKGROUND'}}"
+              operator: Equals
+              value: CREATE
       context:
         - name: minavailable
           apiCall:

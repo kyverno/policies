@@ -33,10 +33,11 @@ spec:
             matchLabels:
               kyverno.io/watch: "true"
     preconditions:
-      all:
-      - key: "{{request.operation}}"
-        operator: Equals
-        value: UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation}}"
+          operator: Equals
+          value: UPDATE
     mutate:
       targets:
         - apiVersion: apps/v1

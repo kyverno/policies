@@ -23,10 +23,11 @@ spec:
           kinds:
           - Pod/exec
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: CONNECT
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: CONNECT
     validate:
       message: Exec'ing into Pods called "myapp-maintenance" is not allowed.
       deny:

@@ -23,10 +23,11 @@ spec:
             kinds:
               - Application
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: Equals
-          value: UPDATE
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: Equals
+            value: UPDATE
       validate:
         message: "The spec.project cannot be changed once the Application is created."
         deny:

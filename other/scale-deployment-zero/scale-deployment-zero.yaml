@@ -28,13 +28,14 @@ spec:
           kinds:
           - v1/Pod.status
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
-      - key: "{{request.object.status.containerStatuses[0].restartCount}}"
-        operator: GreaterThan
-        value: 1
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
+        - key: "{{request.object.status.containerStatuses[0].restartCount}}"
+          operator: GreaterThan
+          value: 1
     context:
     - name: rsname
       variable:

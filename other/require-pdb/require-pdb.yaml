@@ -26,13 +26,14 @@ spec:
                 - Deployment
                 - StatefulSet
       preconditions:
-        all:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: Equals
-            value: CREATE
-          - key: "{{ request.object.spec.replicas }}"
-            operator: GreaterThanOrEquals
-            value: 3
+        conditions:
+          all:
+            - key: "{{request.operation || 'BACKGROUND'}}"
+              operator: Equals
+              value: CREATE
+            - key: "{{ request.object.spec.replicas }}"
+              operator: GreaterThanOrEquals
+              value: 3
       context:
         - name: pdb_count
           apiCall:

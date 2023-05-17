@@ -37,10 +37,11 @@ spec:
             urlPath: "/apis/networking.k8s.io/v1/namespaces/{{request.object.metadata.namespace}}/ingresses"
             jmesPath: "items[].spec.rules[].http.paths[].path"
       preconditions:
-        any:
-        - key: "{{request.operation || 'BACKGROUND'}}"
-          operator: Equals
-          value: "CREATE"
+        conditions:
+          any:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: Equals
+            value: "CREATE"
       validate:
         message: >-
           The root path /{{request.object.spec.rules[].http.paths[].path | [0] | to_string(@) | split(@, '/') | [1]}} exists

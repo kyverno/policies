@@ -41,12 +41,13 @@ spec:
             name: clusterregistries
             namespace: default
       preconditions:
-        any:
-        - key: "{{request.operation || 'BACKGROUND'}}"
-          operator: AnyIn
-          value:
-          - CREATE
-          - UPDATE
+        conditions:
+          any:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: AnyIn
+            value:
+            - CREATE
+            - UPDATE
       validate:
         message: This Pod names an image that is not from an approved registry.
         foreach:

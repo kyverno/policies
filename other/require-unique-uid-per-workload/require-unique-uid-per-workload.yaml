@@ -36,10 +36,11 @@ spec:
           # see https://github.com/kyverno/website/blob/b08d6d8356bd46b8d55ab52324a9cfa243399b01/content/en/docs/Writing%20policies/preconditions.md?plain=1#L154
           jmesPath: "items[?@.metadata.ownerReferences == false || metadata.ownerReferences[?uid != '{{ request.object.metadata.keys(@).contains(@, 'ownerReferences') && request.object.metadata.ownerReferences[0].uid }}']].spec.containers[].securityContext.to_string(runAsUser)"
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: CREATE
     validate:
       message: "Only cluster-unique UIDs are allowed"
       deny:

@@ -27,13 +27,14 @@ spec:
           kinds:
           - Node
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
-      - key: "{{request.object.metadata.labels.foo || '' }}"
-        operator: Equals
-        value: "?*"
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
+        - key: "{{request.object.metadata.labels.foo || '' }}"
+          operator: Equals
+          value: "?*"
     validate:
       message: "Setting the `foo` label on a Node is not allowed."
       deny: {}

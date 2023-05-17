@@ -27,10 +27,11 @@ spec:
           kinds:
           - Deployment
     preconditions:
-      all:
-      - key: "{{ request.object.spec.template.spec.containers[].ports[] || `[]` | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
+      conditions:
+        all:
+        - key: "{{ request.object.spec.template.spec.containers[].ports[] || `[]` | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
     context:
     - name: server_count
       apiCall:

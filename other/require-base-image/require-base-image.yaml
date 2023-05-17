@@ -30,10 +30,11 @@ spec:
           kinds:
           - Pod
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: NotEquals
-        value: DELETE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: NotEquals
+          value: DELETE
     validate:
       message: "Images must specify a source/base image from which they are built."
       foreach:

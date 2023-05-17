@@ -34,12 +34,13 @@ spec:
             urlPath: "/api/v1/services"
             jmesPath: "items[].metadata.annotations.\"external-dns.alpha.kubernetes.io/hostname\""
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: AnyIn
-          value:
-            - CREATE
-            - UPDATE
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: AnyIn
+            value:
+              - CREATE
+              - UPDATE
       validate:
         message: >-
           External DNS entry "{{request.object.metadata.annotations."external-dns.alpha.kubernetes.io/hostname"}}" is already

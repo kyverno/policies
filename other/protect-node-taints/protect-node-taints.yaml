@@ -30,10 +30,11 @@ spec:
       clusterRoles:
       - cluster-admin
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
     validate:
       message: "Node taints may not be altered."
       deny:

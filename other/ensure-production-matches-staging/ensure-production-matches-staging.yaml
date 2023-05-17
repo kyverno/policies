@@ -34,12 +34,13 @@ spec:
           kinds:
           - Deployment
     preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE        
-        - UPDATE
+      conditions:
+        any:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE        
+          - UPDATE
     context:
     - name: deployment_count
       apiCall:
@@ -65,15 +66,16 @@ spec:
           kinds:
           - Deployment
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE        
-        - UPDATE
-      - key: "{{ deployment_count }}"
-        operator: GreaterThan
-        value: 0
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE        
+          - UPDATE
+        - key: "{{ deployment_count }}"
+          operator: GreaterThan
+          value: 0
     context:
     - name: deployment_count
       apiCall:
@@ -106,15 +108,16 @@ spec:
           kinds:
           - Deployment
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE        
-        - UPDATE
-      - key: "{{ deployment_count }}"
-        operator: GreaterThan
-        value: 0
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE        
+          - UPDATE
+        - key: "{{ deployment_count }}"
+          operator: GreaterThan
+          value: 0
     context:
     - name: deployment_count
       apiCall:

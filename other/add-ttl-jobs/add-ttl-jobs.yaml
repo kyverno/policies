@@ -25,10 +25,11 @@ spec:
             kinds:
               - Job
       preconditions:
-        any:
-          - key: "{{ request.object.metadata.ownerReferences || `[]` }}"
-            operator: Equals
-            value: []
+        conditions:
+          any:
+            - key: "{{ request.object.metadata.ownerReferences || `[]` }}"
+              operator: Equals
+              value: []
       mutate:
         patchStrategicMerge:
           spec:

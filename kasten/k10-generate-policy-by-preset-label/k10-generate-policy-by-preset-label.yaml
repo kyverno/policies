@@ -44,10 +44,11 @@ spec:
         urlPath: "/apis/config.kio.kasten.io/v1alpha1/namespaces/kasten-io/policies/" # returns list of K10 policies from kasten-io namespace
         jmesPath: "items[][[@.spec.presetRef][?name=='{{ request.object.metadata.labels.dataprotection }}'] && [@.spec.selector.matchExpressions[].values[?@=='{{ request.namespace }}']]][][][][] | length(@)" # queries if a policy based on the dataprotection label value, covering that app namespace already exists 
     preconditions:
-      any:
-      - key: "{{ existingPolicy }}"
-        operator: Equals
-        value: 0 # Only generate the policy if it does not already exist
+      conditions:
+        any:
+        - key: "{{ existingPolicy }}"
+          operator: Equals
+          value: 0 # Only generate the policy if it does not already exist
     generate:
       apiVersion: config.kio.kasten.io/v1alpha1
       kind: Policy

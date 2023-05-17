@@ -27,10 +27,11 @@ spec:
             kinds:
               - AppProject
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: AnyIn
-          value: ["CREATE", "UPDATE"]
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: AnyIn
+            value: ["CREATE", "UPDATE"]
       validate:
         message: "Wildcards must be present in group and kind for clusterResourceBlacklist."
         foreach:

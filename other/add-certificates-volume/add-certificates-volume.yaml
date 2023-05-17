@@ -25,15 +25,16 @@ spec:
           kinds:
           - Pod
     preconditions:
-      all:
-      - key: '{{request.object.metadata.annotations."inject-certs"}}'
-        operator: Equals
-        value: enabled
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-          - CREATE
-          - UPDATE
+      conditions:
+        all:
+        - key: '{{request.object.metadata.annotations."inject-certs"}}'
+          operator: Equals
+          value: enabled
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+            - CREATE
+            - UPDATE
     mutate:
       foreach:
       - list: "request.object.spec.containers"

@@ -29,13 +29,14 @@ spec:
             urlPath: "/apis/networking.k8s.io/v1/ingresses"
             jmesPath: "items[].spec.rules[].host"
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: Equals
-          value: CREATE
-        - key: "{{ request.object.spec.rules[].host }}"
-          operator: AnyIn
-          value: "{{ hosts }}"
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: Equals
+            value: CREATE
+          - key: "{{ request.object.spec.rules[].host }}"
+            operator: AnyIn
+            value: "{{ hosts }}"
       validate:
         message: "The Ingress host name must be unique."
         deny: {}
@@ -46,13 +47,14 @@ spec:
             kinds:
               - Ingress
       preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: Equals
-          value: CREATE
-        - key: "{{ request.object.spec.rules[].host | length(@)}}"
-          operator: GreaterThan
-          value: 1
+        conditions:
+          all:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: Equals
+            value: CREATE
+          - key: "{{ request.object.spec.rules[].host | length(@)}}"
+            operator: GreaterThan
+            value: 1
       validate:
         message: "An Ingress resource may only contain a single host entry."
         deny: {}

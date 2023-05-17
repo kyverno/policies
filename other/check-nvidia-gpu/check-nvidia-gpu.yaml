@@ -26,10 +26,11 @@ spec:
           kinds:
           - Pod
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: NotEquals
-        value: DELETE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: NotEquals
+          value: DELETE
     validate:
       message: "Images which reserve NVIDIA GPUs must be built to use them."
       foreach:

@@ -23,10 +23,11 @@ spec:
           kinds:
           - PipelineRun
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: CREATE
     validate:
       message: "A namespace is required and may not be set to default."
       pattern:

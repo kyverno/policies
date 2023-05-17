@@ -31,10 +31,11 @@ spec:
             urlPath: "/apis/route.openshift.io/v1/Routes"
             jmesPath: "items[].spec.host"
       preconditions:
-        all:
-          - key: "{{ request.operation || 'BACKGROUND' }}"
-            operator: NotEquals
-            value: "DELETE"
+        conditions:
+          all:
+            - key: "{{ request.operation || 'BACKGROUND' }}"
+              operator: NotEquals
+              value: "DELETE"
       validate:
         message: >-
           The Route host name must be unique.

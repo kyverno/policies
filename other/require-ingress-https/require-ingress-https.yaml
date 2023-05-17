@@ -25,12 +25,13 @@ spec:
           kinds:
           - Ingress
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
       pattern:
@@ -44,12 +45,13 @@ spec:
           kinds:
           - Ingress
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: "TLS must be defined."
       deny:

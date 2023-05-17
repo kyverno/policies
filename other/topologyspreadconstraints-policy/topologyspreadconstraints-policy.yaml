@@ -30,10 +30,11 @@ spec:
                 - Deployment
                 - StatefulSet
       preconditions:
-        all:
-          - key: "{{ request.object.spec.replicas }}"
-            operator: GreaterThanOrEquals
-            value: 3
+        conditions:
+          all:
+            - key: "{{ request.object.spec.replicas }}"
+              operator: GreaterThanOrEquals
+              value: 3
       validate:
         message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
         deny:

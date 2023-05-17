@@ -45,10 +45,11 @@ spec:
             kinds:
             - Pod
       preconditions:
-        all:
-        - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
-          operator: GreaterThanOrEquals
-          value: 1
+        conditions:
+          all:
+          - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
+            operator: GreaterThanOrEquals
+            value: 1
       mutate:
         foreach:
         - list: "request.object.spec.initContainers"

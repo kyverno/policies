@@ -32,10 +32,11 @@ spec:
           kinds:
           - '*'
     preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        any:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: CREATE
     mutate:
       patchStrategicMerge:
         metadata:
@@ -50,10 +51,11 @@ spec:
           annotations:
             kyverno.io/created-by: "?*"
     preconditions:
-      any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
+      conditions:
+        any:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
     validate:
       message: The annotation kyverno.io/created-by is protected and may not be altered.
       deny:
@@ -74,13 +76,14 @@ spec:
           annotations:
             kyverno.io/created-by: "?*"
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
-      - key: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
-        operator: Equals
-        value: "?*"
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
+        - key: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+          operator: Equals
+          value: "?*"
     validate:
       message: The annotation kyverno.io/created-by is protected and may not removed.
       pattern:

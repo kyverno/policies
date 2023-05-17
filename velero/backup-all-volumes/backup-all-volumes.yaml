@@ -28,13 +28,14 @@ spec:
             matchLabels:
               velero-backup-pvc: "true"
     preconditions:
-      all:
-      - key: "{{ request.object.spec.volumes[?contains(keys(@), 'persistentVolumeClaim')] | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-      - key: "{{request.operation}}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        all:
+        - key: "{{ request.object.spec.volumes[?contains(keys(@), 'persistentVolumeClaim')] | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
+        - key: "{{request.operation}}"
+          operator: Equals
+          value: CREATE
     context:
       - name: volumes
         variable:

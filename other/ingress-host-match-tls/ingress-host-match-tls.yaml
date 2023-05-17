@@ -27,10 +27,11 @@ spec:
           kinds:
           - Ingress
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: CREATE
     validate:
       message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
       deny:

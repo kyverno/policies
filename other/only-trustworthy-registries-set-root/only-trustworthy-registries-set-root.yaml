@@ -25,10 +25,11 @@ spec:
           kinds:
           - Pod
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: NotEquals
-        value: DELETE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: NotEquals
+          value: DELETE
     validate:
       message: "Images with root user are not allowed to be pulled from any registry other than ghcr.io."  
       foreach:

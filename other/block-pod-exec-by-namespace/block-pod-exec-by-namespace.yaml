@@ -22,10 +22,11 @@ spec:
           kinds:
           - Pod/exec
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: Equals
-        value: CONNECT
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: Equals
+          value: CONNECT
     validate:
       message: Pods in this namespace may not be exec'd into.
       deny:

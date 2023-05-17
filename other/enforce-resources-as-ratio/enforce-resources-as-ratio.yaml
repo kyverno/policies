@@ -25,12 +25,13 @@ spec:
           kinds:
           - Pod
     preconditions:
-      any:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        any:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: Limits may not exceed 2.5x the requests.
       foreach:

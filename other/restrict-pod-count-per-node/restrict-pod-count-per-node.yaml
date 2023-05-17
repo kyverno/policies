@@ -29,10 +29,11 @@ spec:
             urlPath: "/api/v1/pods"
             jmesPath: "items[?spec.nodeName=='minikube'] | length(@)"
       preconditions:
-        any:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: Equals
-          value: "CREATE"
+        conditions:
+          any:
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: Equals
+            value: "CREATE"
       validate:
         message: "A maximum of 10 Pods are allowed on the Node `minikube`"
         deny:

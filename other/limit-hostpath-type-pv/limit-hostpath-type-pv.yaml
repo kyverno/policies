@@ -24,12 +24,13 @@ spec:
           kinds:
           - PersistentVolume
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: hostPath type persistent volumes are confined to /data.
       pattern:

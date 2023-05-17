@@ -27,15 +27,16 @@ spec:
               kinds:
                 - Pod
       preconditions:
-        all:
-          - key: "{{ request.object.spec.volumes[?contains(keys(@), 'emptyDir')] || '' | length(@) }}"
-            operator: GreaterThanOrEquals
-            value: 1
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: AnyIn
-            value:
-              - CREATE
-              - UPDATE
+        conditions:
+          all:
+            - key: "{{ request.object.spec.volumes[?contains(keys(@), 'emptyDir')] || '' | length(@) }}"
+              operator: GreaterThanOrEquals
+              value: 1
+            - key: "{{request.operation || 'BACKGROUND'}}"
+              operator: AnyIn
+              value:
+                - CREATE
+                - UPDATE
       validate:
         message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
         foreach:

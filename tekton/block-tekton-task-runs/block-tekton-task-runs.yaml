@@ -28,12 +28,13 @@ spec:
         - kind: User 
           name: "system:serviceaccount:tekton-pipelines:tekton-pipelines-controller"
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: Creating a TaskRun is not allowed.
       deny: {}

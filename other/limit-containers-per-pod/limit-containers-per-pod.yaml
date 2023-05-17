@@ -27,10 +27,11 @@ spec:
           - Job
           - StatefulSet
     preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equal
-        value: CREATE
+      conditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equal
+          value: CREATE
     validate:
       message: "Pods can only have a maximum of 4 containers."
       deny:

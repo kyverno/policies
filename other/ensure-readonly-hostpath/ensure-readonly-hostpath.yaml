@@ -28,12 +28,13 @@ spec:
           kinds:
             - Pod
     preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: All hostPath volumes must be mounted as readOnly.
       foreach:

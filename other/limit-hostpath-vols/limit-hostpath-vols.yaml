@@ -28,15 +28,16 @@ spec:
           kinds:
           - Pod
     preconditions:
-      all:
-      - key: "{{ request.object.spec.volumes[?hostPath] | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+      conditions:
+        all:
+        - key: "{{ request.object.spec.volumes[?hostPath] | length(@) }}"
+          operator: GreaterThanOrEquals
+          value: 1
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
     validate:
       message: hostPath volumes are confined to /data.
       foreach:
