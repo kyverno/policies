@@ -25,7 +25,7 @@ jobs:
           set -euo pipefail
 
           # Define through each policy directory in the repository 
-          ignore_dir = "$GITHUB_WORKSPACE/pod-security/enforce"
+          ignore_dir="$GITHUB_WORKSPACE/pod-security/enforce"
 
           # Loop through each policy directory in the repository
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d ! -name '.*' ! -path '*/\.*'); do
