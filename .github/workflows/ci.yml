@@ -24,18 +24,10 @@ jobs:
           #!/bin/bash
           set -euo pipefail
 
-          # Define the directory to ignore
-          ignore_dir="$GITHUB_WORKSPACE/pod-security/enforce"
-
           # Loop through each policy directory in the repository
           for policy_dir in $(find "$GITHUB_WORKSPACE" -type d ! -name '.*' ! -path '*/\.*'); do
             # Skip the root directory
             if [[ "$policy_dir" == "$GITHUB_WORKSPACE" ]]; then
-              continue
-            fi
-            
-            # Skip the ignore directory
-            if [[ "$policy_dir" == "$ignore_dir" ]]; then
               continue
             fi
 
@@ -52,6 +44,11 @@ jobs:
             if [[ ! $dir_name =~ ^[a-zA-Z0-9-]+$ ]]; then
               echo "Directory $dir_name contains invalid characters. Only alphanumeric characters and dashes are allowed."
               exit 1
+            fi
+
+            # Skip if the directory contains a kustomization.yaml file
+            if [[ -f "$policy_dir/kustomization.yaml" ]]; then
+              continue
             fi
 
             # Check if a .yml or .yaml file with the same name as the directory exists in the directory
