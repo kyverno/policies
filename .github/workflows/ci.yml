@@ -14,10 +14,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout kyverno/policies
+      - name: Checkout
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
         with:
-          repository: kyverno/policies
+          path: policies
 
       - name: Validate all policies
         run: |
@@ -63,11 +63,6 @@ jobs:
               exit 1
             fi
           done  
-
-      - name: Checkout
-        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
-        with:
-          path: policies
 
       - name: Clone Kyverno
         uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab
