@@ -1,0 +1,12 @@
+name: add-runtimeClassName
+policies:
+  - add-runtimeClassName.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: add-runtimeclassname
+    rule: add-prodclass
+    resource: pod01
+    kind: Pod
+    patchedResource: patchedResource1.yaml
+    result: pass
