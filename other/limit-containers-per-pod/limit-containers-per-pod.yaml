@@ -29,8 +29,10 @@ spec:
     preconditions:
       all:
       - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equal
-        value: CREATE
+        operator: AllIn
+        value:
+        - CREATE
+        - UPDATE
     validate:
       message: "Pods can only have a maximum of 4 containers."
       deny:
@@ -67,8 +69,10 @@ spec:
     preconditions:
       all:
       - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equal
-        value: CREATE
+        operator: AllIn
+        value:
+        - CREATE
+        - UPDATE
     validate:
       message: "Pods can only have a maximum of 4 containers."
       deny:
