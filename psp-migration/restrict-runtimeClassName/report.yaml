@@ -1,0 +1,61 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: PolicyReport
+metadata:
+  name: cpol-restrict-runtimeclass
+  namespace: restrict-runtimeclassname
+results:
+- category: PSP Migration
+  message: validation rule 'prodclass-or-expclass' passed.
+  policy: restrict-runtimeclass
+  resources:
+  - apiVersion: v1
+    kind: Pod
+    name: goodpod02
+    namespace: restrict-runtimeclassname
+  result: pass
+  rule: prodclass-or-expclass
+  scored: true
+  source: kyverno
+- category: PSP Migration
+  message: validation rule 'prodclass-or-expclass' passed.
+  policy: restrict-runtimeclass
+  resources:
+  - apiVersion: v1
+    kind: Pod
+    name: goodpod01
+    namespace: restrict-runtimeclassname
+  result: pass
+  rule: prodclass-or-expclass
+  scored: true
+  source: kyverno
+- category: PSP Migration
+  message: 'validation error: Only the runtime classes prodclass or expclass may be
+    used. rule prodclass-or-expclass failed at path /spec/runtimeClassName/'
+  policy: restrict-runtimeclass
+  resources:
+  - apiVersion: v1
+    kind: Pod
+    name: badpod01
+    namespace: restrict-runtimeclassname
+  result: fail
+  rule: prodclass-or-expclass
+  scored: true
+  source: kyverno
+- category: PSP Migration
+  message: validation rule 'prodclass-or-expclass' passed.
+  policy: restrict-runtimeclass
+  resources:
+  - apiVersion: v1
+    kind: Pod
+    name: goodpod03
+    namespace: restrict-runtimeclassname
+  result: pass
+  rule: prodclass-or-expclass
+  scored: true
+  source: kyverno
+summary:
+  error: 0
+  fail: 1
+  pass: 3
+  skip: 0
+  warn: 0
