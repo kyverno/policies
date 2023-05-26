@@ -71,6 +71,29 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  name: goodss-novct
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  serviceName: "nginx"
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: nginx
+        image: thisdoesnotexist:0.8
+        ports:
+        - containerPort: 80
+          name: web
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
   name: badss
 spec:
   selector:

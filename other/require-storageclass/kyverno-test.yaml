@@ -21,6 +21,11 @@ results:
     result: pass
   - policy: require-storageclass
     rule: ss-storageclass
+    resource: goodss-novct
+    kind: StatefulSet
+    result: pass
+  - policy: require-storageclass
+    rule: ss-storageclass
     resource: badss
     kind: StatefulSet
     result: fail
