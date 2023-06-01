@@ -1,9 +1,9 @@
 name: Kuttl Tests
 
 on:
-  - workflow_dispatch
-  - pull_request:
-      branches:
+  workflow_dispatch: {}
+  pull_request:
+    branches:
         - 'main'
 
 concurrency:
