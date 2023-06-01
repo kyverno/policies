@@ -1,0 +1,75 @@
+name: Kuttl Tests
+
+on:
+  pull_request:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version:
+          - name: v1.24
+            version: v1.24.12
+          - name: v1.25
+            version: v1.25.8
+          - name: v1.26
+            version: v1.26.3
+          - name: v1.27
+            version: v1.27.1
+        # tests:
+          # - argo
+          # - aws
+          # - best-practices
+          # - cert-manager
+          # - consul
+          # - external-secret-operator
+          # - flux
+          # - istio
+          # - karpenter
+          # - kasten
+          # - kubecost
+          # - kubeops
+          # - kubevirt
+          # - linkerd
+          # - nginx-ingress
+          # - openshift
+          # - other
+          # - pod-security
+          # - psa
+          # - psp-migration
+          # - tekton
+          # - traefik
+          # - velero
+    runs-on: ubuntu-latest
+    name: ${{ matrix.k8s-version.name }} - all
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+      - name: Setup Go
+        uses: actions/setup-go@6edd4406fa81c3da01a34fa6f6343087c207a568 # v3.5.0
+        with:
+          go-version: ~1.20.2
+      - name: Install Tools
+        run: |
+          GOBIN=$(pwd)/.tools/ go install sigs.k8s.io/kind@v0.19.0
+          GOBIN=$(pwd)/.tools/ go install github.com/kyverno/kuttl/cmd/kubectl-kuttl@v0.0.0-20230126200340-834a4dac1ec7
+          curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
+      - name: Create kind cluster
+        run: |
+          ./.tools/kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
+      - name: Install latest kyverno
+        run: |
+          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+      - name: Wait for kyverno ready
+        run: |
+          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+      - name: Test with kuttl
+        run: |
+          ./.tools/kubectl-kuttl test ./ --config ./kuttl-test.yaml
