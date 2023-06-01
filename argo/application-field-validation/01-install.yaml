@@ -1,6 +1,11 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
+<<<<<<< HEAD
 # apply:
 # - crd.yaml
+=======
+apply:
+- crd.yaml
+>>>>>>> 37b98d5d3a3d2c7656ead482e32f68c08268c81f
 assert:
 - crd-assert.yaml

@@ -23,7 +23,11 @@ spec:
         any:
         - resources:
             kinds:
+<<<<<<< HEAD
             - Application
+=======
+            - argoproj.io/v1alpha1/Application
+>>>>>>> 37b98d5d3a3d2c7656ead482e32f68c08268c81f
       validate:
         message: >-
           `spec.source.path` OR `spec.source.chart` should be specified but never both.
@@ -41,7 +45,11 @@ spec:
         any:
         - resources:
             kinds:
+<<<<<<< HEAD
             - Application
+=======
+            - argoproj.io/v1alpha1/Application
+>>>>>>> 37b98d5d3a3d2c7656ead482e32f68c08268c81f
       validate:
         message: >-
           `spec.destination.server` OR `spec.destination.name` should be specified but never both.
