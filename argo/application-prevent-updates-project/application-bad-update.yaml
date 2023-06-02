@@ -4,11 +4,11 @@ metadata:
   name: goodapp
   namespace: default
 spec:
-  project: biz
+  project: newbiz
   source:
     repoURL: https://github.com/argoproj/argocd-example-apps.git
     targetRevision: HEAD
-    path: book
+    path: guestbook
   destination:
     server: https://kubernetes.default.svc
-    namespace: book
+    namespace: guestbook

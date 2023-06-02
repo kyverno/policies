@@ -1,0 +1,13 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: good.yaml
+  shouldFail: false
+- file: bad-both-wildcard.yaml
+  shouldFail: true
+- file: bad-group-wildcard.yaml
+  shouldFail: true
+- file: bad-kind-wildcard.yaml
+  shouldFail: true
+- file: bad-no-blacklist.yaml
+  shouldFail: true

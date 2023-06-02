@@ -4,4 +4,6 @@ apply:
 - file: application.yaml
   shouldFail: false
 - file: application-update.yaml
+  shouldFail: false
+- file: application-bad-update.yaml
   shouldFail: true
