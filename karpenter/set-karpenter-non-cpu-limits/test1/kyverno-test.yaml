@@ -1,0 +1,20 @@
+name: test1
+policies:
+  - ../set-karpenter-non-cpu-limits.yaml
+resources:
+  - pod.yaml
+results:
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-ephemeral-storage
+    resource: test
+    namespace: test
+    kind: Pod
+    patchedResource: pod-ephemeral-storage-patched.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-memory
+    resource: test
+    namespace: test
+    kind: Pod
+    patchedResource: pod-memory-patched.yaml
+    result: pass
