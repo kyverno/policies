@@ -1,6 +1,6 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-- crd.yaml
+- add-ns-quota.yaml
 assert:
-- crd-assert.yaml
+- policy-ready.yaml
