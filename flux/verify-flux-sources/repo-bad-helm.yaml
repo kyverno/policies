@@ -1,0 +1,7 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: helmrepo-03
+spec:
+  interval: 5m0s
+  url: https://helmrepo.github.io/podinfo
