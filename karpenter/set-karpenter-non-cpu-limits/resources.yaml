@@ -10,7 +10,7 @@ spec:
       image: test/test:latest
       resources:
         requests:
-          cpu: 1
+          cpu: "1"
           memory: "1Gi"
           ephemeral-storage: "1Gi"
 ---
@@ -25,7 +25,7 @@ spec:
       image: test/test:latest
       resources:
         limits:
-          cpu: 1
+          cpu: "1"
           memory: "1Gi"
           ephemeral-storage: "1Gi"
 ---
@@ -40,11 +40,11 @@ spec:
       image: test/test:latest
       resources:
         limits:
-          cpu: 1
+          cpu: "1"
           memory: "1Gi"
           ephemeral-storage: "1Gi"
         requests:
-          cpu: 1
+          cpu: "1"
           memory: "500Mi"
           ephemeral-storage: "500Mi"
 ---
