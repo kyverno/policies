@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsencrypt-crt
+spec:
+  secretName: letsencrypt-crt-secret
+  dnsNames:
+  - example.com
+  - foo.example.com
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer
+    group: cert-manager.io
