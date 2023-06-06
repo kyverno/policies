@@ -6,7 +6,5 @@ metadata:
     app: myapp
 spec:
   containers:
-  - name: busybox
-    image: busybox:1.35
-  - name: busybox
+  - name: evil-box
     image: busybox:1.35

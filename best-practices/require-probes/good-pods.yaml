@@ -8,13 +8,6 @@ spec:
   containers:
   - name: busybox
     image: busybox:1.35
-    startupProbe:
-      grpc:
-        port: 8888
-    readinessProbe:
-      tcpSocket:
-        port: 8080
-      periodSeconds: 10
     livenessProbe:
       tcpSocket:
         port: 7070
