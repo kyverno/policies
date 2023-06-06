@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: pod-with-no-volumes
+  name: pod-with-emptydir-volume
 spec:
   containers:
   - name: busybox

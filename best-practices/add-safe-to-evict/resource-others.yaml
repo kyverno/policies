@@ -39,5 +39,5 @@ spec:
     - mountPath: /var/local/aaa
       name: myfile
   volumes:
-    - name: mydir
+    - name: myfile
       emptyDir: {}
