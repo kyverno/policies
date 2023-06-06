@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqro-baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      initContainers:
+      - name: k8s-nginx-init
+        image: bar.io/nginx
+      - name: busybox-init
+        image: busybox
+      containers:
+      - name: busybox
+        image: busybox:1.35
+      - name: k8s-nginx
+        image: bar.io/nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqro-baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      initContainers:
+      - name: k8s-nginx-init
+        image: bar.io/nginx
+      - name: nginx-init
+        image: eu.foo.io/nginx
+      containers:
+      - name: k8s-nginx
+        image: bar.io/nginx
+      - name: busybox
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqro-baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      initContainers:
+      - name: k8s-nginx-init
+        image: bar.io/nginx
+      - name: busybox-init
+        image: busybox:1.35
+      containers:
+      - name: k8s-nginx
+        image: bar.io/nginx
+      - name: nginx
+        image: eu.foo.io/nginx
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqro-badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: k8s-nginx-init
+            image: bar.io/nginx
+          - name: busybox-init
+            image: busybox
+          containers:
+          - name: busybox
+            image: busybox:1.35
+          - name: k8s-nginx
+            image: bar.io/nginx
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqro-badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: k8s-nginx-init
+            image: bar.io/nginx
+          - name: nginx-init
+            image: eu.foo.io/nginx
+          containers:
+          - name: k8s-nginx
+            image: bar.io/nginx
+          - name: busybox
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqro-badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: k8s-nginx-init
+            image: bar.io/nginx
+          - name: busybox-init
+            image: busybox:1.35
+          containers:
+          - name: k8s-nginx
+            image: bar.io/nginx
+          - name: nginx
+            image: eu.foo.io/nginx

@@ -9,6 +9,9 @@ metadata:
   name: goodpod01-registry
   namespace: ir-pods-namespace
 spec:
+  initContainers:
+  - name: k8s-nginx-init
+    image: bar.io/nginx
   containers:
   - name: k8s-nginx
     image: eu.foo.io/nginx
@@ -19,16 +22,11 @@ metadata:
   name: goodpod02-registry
   namespace: ir-pods-namespace
 spec:
-  containers:
-  - name: k8s-nginx
+  initContainers:
+  - name: nginx-init
     image: bar.io/nginx
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod03-registry
-  namespace: ir-pods-namespace
-spec:
+  - name: busybox-init
+    image: eu.foo.io/busybox
   containers:
   - name: k8s-nginx
     image: bar.io/nginx

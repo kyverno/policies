@@ -3,7 +3,9 @@ kind: TestStep
 apply:
 - file: good-pod.yaml
   shouldFail: false
-- file: bad-pod-latest.yaml
+- file: bad-pod-latest-fail-first.yaml
+  shouldFail: true
+- file: bad-pod-latest-success-first.yaml
   shouldFail: true
 - file: bad-pod-no-tag.yaml
   shouldFail: true

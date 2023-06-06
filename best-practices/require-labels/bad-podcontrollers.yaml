@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqlabels-baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqlabels-badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            foo: bar
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: busybox
+            image: busybox:1.35

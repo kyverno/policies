@@ -10,3 +10,16 @@ spec:
     image: busybox:1.35
     securityContext:
       readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-roroot
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    securityContext:
+      readOnlyRootFilesystem: true
+  - name: busybox
+    image: busybox:1.35

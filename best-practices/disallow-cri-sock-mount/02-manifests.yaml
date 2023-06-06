@@ -9,3 +9,7 @@ apply:
   shouldFail: true
 - file: pod-crio-sock.yaml
   shouldFail: true
+- file: pod-emptydir-vol.yaml
+  shouldFail: false
+- file: pod-no-volumes.yaml
+  shouldFail: false

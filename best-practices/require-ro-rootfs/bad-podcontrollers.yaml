@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqro-baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+      - name: busybox-again
+        image: busybox:1.35
+        securityContext:
+          readOnlyRootFilesystem: true
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqro-badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: busybox
+            image: busybox:1.35
+          - name: busybox-again
+            image: busybox:1.35
+            securityContext:
+              readOnlyRootFilesystem: true

@@ -15,5 +15,7 @@ spec:
         app: busybox
     spec:
       containers:
+      - image: busybox
+        name: busybox:1.35
       - image: docker.io/tiller:latest
         name: helm-tiller

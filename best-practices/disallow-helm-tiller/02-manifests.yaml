@@ -9,3 +9,7 @@ apply:
   shouldFail: true
 - file: bad-deploy.yaml
   shouldFail: true
+- file: bad-pod-fail-first.yaml
+  shouldFail: true
+- file: bad-pod-success-first.yaml
+  shouldFail: true

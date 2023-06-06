@@ -6,3 +6,5 @@ spec:
   containers:
   - name: busybox
     image: busybox:latest
+  - name: nginx
+    image: nginx:1.35

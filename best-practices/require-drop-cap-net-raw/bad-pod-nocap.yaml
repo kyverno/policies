@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod-nocap
-spec:
-  containers:
-  - name: add-capabilities
-    image: busybox:1.35

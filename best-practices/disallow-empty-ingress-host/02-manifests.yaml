@@ -5,3 +5,7 @@ apply:
   shouldFail: false
 - file: no-host-ingress.yaml
   shouldFail: true
+- file: no-host-fail-first.yaml
+  shouldFail: true
+- file: no-host-success-first.yaml
+  shouldFail: true

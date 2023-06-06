@@ -1,15 +1,18 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-good
+  name: add-capabilities-bad
 spec:
   initContainers:
   - name: init
     image: busybox:1.35
     securityContext:
       capabilities:
+        add: ["SYS_TIME"]
         drop:
           - ALL
+  - name: init2
+    image: busybox:1.35
   containers:
   - name: add-capabilities
     image: busybox:1.35
@@ -18,7 +21,24 @@ spec:
         add: ["SYS_TIME"]
         drop:
           - ALL
-  - name: add-capabilities-again
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-bad
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+  - name: init2
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - ALL
+  containers:
+  - name: add-capabilities
     image: busybox:1.35
     securityContext:
       capabilities:
