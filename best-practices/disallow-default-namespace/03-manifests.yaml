@@ -1,0 +1,15 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: good-resources.yaml
+  shouldFail: false
+- file: pod-default.yaml
+  shouldFail: true
+- file: ds-default.yaml
+  shouldFail: true
+- file: job-default.yaml
+  shouldFail: true
+- file: ss-default.yaml
+  shouldFail: true
+- file: deploy-default.yaml
+  shouldFail: true

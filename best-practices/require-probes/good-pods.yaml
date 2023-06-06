@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    livenessProbe:
+      tcpSocket:
+        port: 7070
+      periodSeconds: 20
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    livenessProbe:
+      tcpSocket:
+        port: 7070
+      periodSeconds: 20
+  - name: busybox-again
+    image: busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    startupProbe:
+      grpc:
+        port: 8888

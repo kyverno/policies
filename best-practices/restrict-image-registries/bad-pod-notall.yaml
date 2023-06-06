@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02-registry
+spec:
+  containers:
+  - name: k8s-nginx
+    image: registry.k8s.io/nginx:1.7.9
+  - name: busybox
+    image: bar.io/busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03-registry
+spec:
+  containers:
+  - name: busybox
+    image: eu.foo.io/busybox
+  - name: k8s-nginx
+    image: registry.k8s.io/nginx:1.7.9

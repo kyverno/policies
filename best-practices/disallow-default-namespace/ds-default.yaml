@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: bad-daemonset
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      name: good-daemonset
+  template:
+    metadata:
+      labels:
+        name: good-daemonset
+    spec:
+      containers:
+      - image: busybox:v1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"

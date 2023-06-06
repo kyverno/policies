@@ -1,0 +1,15 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: good-pod.yaml
+  shouldFail: false
+- file: pod-containerd-sock.yaml
+  shouldFail: true
+- file: pod-docker-sock.yaml
+  shouldFail: true
+- file: pod-crio-sock.yaml
+  shouldFail: true
+- file: pod-emptydir-vol.yaml
+  shouldFail: false
+- file: pod-no-volumes.yaml
+  shouldFail: false

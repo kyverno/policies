@@ -35,6 +35,8 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * Use dashes for folder name and policy name instead of underscores.
 
+* When updating a policy already in the library, calculate the new sha256 sum of the changed policy and update the `artifacthub-pkg.yml` file's `digest` field with this value. This is to ensure Artifact Hub picks up the changes once merged.
+
 Once your policy is written within these guidelines and tested, please open a standard PR against the `main` branch of kyverno/policies. In order for a policy to make it to the website's [policies page](https://kyverno.io/policies/), it must first be committed to the `main` branch in this repo. Following that, an administrator will render these policies to produce Markdown files in a second PR. You do not need to worry about this process, however.
 
 In order to streamline the process, the beginning "stub" of a ClusterPolicy resource is provided below with an example of how especially the annotations should be completed. Be sure to check the documentation and other sample policies as there is no guarantee this below stub is up to date.

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-latest
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.35
+  - name: busybox
+    image: busybox:latest
