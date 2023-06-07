@@ -1,0 +1,62 @@
+name: set-karpenter-non-cpu-limits
+policies:
+  - set-karpenter-non-cpu-limits.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-ephemeral-storage
+    resource: test1
+    namespace: test
+    kind: Pod
+    patchedResource: pod-ephemeral-storage-patched1.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-memory
+    resource: test1
+    namespace: test
+    kind: Pod
+    patchedResource: pod-memory-patched1.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-ephemeral-storage
+    resource: test2
+    namespace: test
+    kind: Pod
+    patchedResource: pod-ephemeral-storage-patched2.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-memory
+    resource: test2
+    namespace: test
+    kind: Pod
+    patchedResource: pod-memory-patched2.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-ephemeral-storage
+    resource: test3
+    namespace: test
+    kind: Pod
+    patchedResource: pod-ephemeral-storage-patched3.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-memory
+    resource: test3
+    namespace: test
+    kind: Pod
+    patchedResource: pod-memory-patched3.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-ephemeral-storage
+    resource: test4
+    namespace: test
+    kind: Pod
+    patchedResource: pod-ephemeral-storage-patched4.yaml
+    result: pass
+  - policy: set-karpenter-non-cpu-limits
+    rule: set-memory
+    resource: test4
+    namespace: test
+    kind: Pod
+    patchedResource: pod-memory-patched4.yaml
+    result: pass
