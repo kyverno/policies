@@ -15,7 +15,9 @@ See https://kyverno.io/policies/ for a list of all the policies represented here
 
 ## Contribution
 
-Anyone and everyone is welcome to write and contribute Kyverno policies! We have standardized on several practices to ensure these policies are effective, descriptive, and assist in easy location on the website. Please follow these guidelines when contributing a policy.
+Anyone and everyone is welcome to write and contribute Kyverno policies! We have standardized on several practices to ensure these policies are effective, descriptive, and assist in easy location on the website. Please follow these guidelines when contributing or modifying a policy.
+
+* As a CNCF project, Kyverno requires all contributors to abide by the DCO guidelines published [here](https://github.com/cncf/foundation/blob/main/dco-guidelines.md). This entails signing off on all git commits.
 
 * Use the [Kyverno annotations](https://github.com/kyverno/policies/wiki/Kyverno-annotations) to mark your policy with descriptive metadata. This is not only important to explain your policy, but to allow the filtering logic on the [policies page](https://kyverno.io/policies/) to work effectively.
 
@@ -27,7 +29,7 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * String values do not need to be quoted nor do values which contain JMESPath expressions such as `{{request.operation}}`. The exception is if a field's value is *only* such an expression. In those cases, the JMESPath expression needs to be double quoted.
 
-* Create the `artifacthub-pkg.yml` file in the same directory as your policy. See the Artifact Hub section below for more details on its contents.
+* Since Kyverno policies are made available on [Artifact Hub](https://artifacthub.io/), each new policy requires a separate metadata file. Create the `artifacthub-pkg.yml` file in the same directory as your policy. See the [Artifact Hub](#artifact-hub) section below for more details on its contents.
 
 * A dedicated folder must be created for each policy.
 
