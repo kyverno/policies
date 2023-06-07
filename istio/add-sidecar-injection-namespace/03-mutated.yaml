@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+assert:
+- patched-ns-alt.yaml
+- patched-ns-disabled.yaml
+- patched-ns-enabled.yaml
+- patched-ns-none.yaml
