@@ -27,9 +27,11 @@ spec:
                 - StatefulSet
       preconditions:
         all:
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: Equals
-            value: CREATE
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: AnyIn
+          value:
+          - CREATE
+          - UPDATE
       context:
         - name: minavailable
           apiCall:
