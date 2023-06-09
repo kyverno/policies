@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k10-generate-policy-by-preset-label
+status:
+  ready: true

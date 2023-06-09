@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- k10-generate-policy-by-preset-label.yaml
+assert:
+- policy-ready.yaml
