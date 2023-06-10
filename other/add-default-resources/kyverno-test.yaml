@@ -10,11 +10,13 @@ results:
     patchedResource: patchedResource1.yaml
     kind: Pod
     result: pass
+# nginx-demo2 will get skip as resource already has memory and cpu requests
   - policy: add-default-resources
     rule: add-default-requests
     resource: nginx-demo2
+    patchedResource: patchedResource2.yaml
     kind: Pod
-    result: skip
+    result: pass
   - policy: add-default-resources
     rule: add-default-requests
     resource: nginx-demo3
