@@ -16,17 +16,28 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
-        name: busybox
+      - name: bb-01
+        image: busybox:1.35
         resources:
           limits:
             cpu: "1"
-            ephemeral-storage: 1Gi
-            memory: 1Gi
+            memory: "1Gi"
+            ephemeral-storage: "1Gi"
           requests:
             cpu: "1"
-            ephemeral-storage: 1Gi
-            memory: 1Gi
+            memory: "1Gi"
+            ephemeral-storage: "1Gi"
+      - name: bb-02
+        image: busybox:1.35
+        resources:
+          limits:
+            cpu: "1"
+            memory: "500Mi"
+            ephemeral-storage: "500Mi"
+          requests:
+            cpu: "1"
+            memory: "500Mi"
+            ephemeral-storage: "500Mi"
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -39,7 +50,7 @@ spec:
       template:
         spec:
           containers:
-          - name: hello
+          - name: hello-01
             image: busybox:1.35
             imagePullPolicy: IfNotPresent
             command:
@@ -53,5 +64,20 @@ spec:
               requests:
                 cpu: "1"
                 memory: "1Gi"
+                ephemeral-storage: "1Gi"
+          - name: hello-02
+            image: busybox:1.35
+            imagePullPolicy: IfNotPresent
+            command:
+            - "sleep"
+            - "3600"
+            resources:
+              limits:
+                cpu: "1"
+                memory: "600Mi"
+                ephemeral-storage: "1Gi"
+              requests:
+                cpu: "1"
+                memory: "600Mi"
                 ephemeral-storage: "1Gi"
           restartPolicy: OnFailure
