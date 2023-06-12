@@ -1,0 +1,16 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- ns.yaml
+- file: deployment-good.yaml
+  shouldFail: false
+- file: ss-good.yaml
+  shouldFail: false
+- file: deployment-bad-badlabel.yaml
+  shouldFail: true
+- file: deployment-bad-nolabel.yaml
+  shouldFail: true
+- file: ss-bad-badlabel.yaml
+  shouldFail: true
+- file: ss-bad-nolabel.yaml
+  shouldFail: true
