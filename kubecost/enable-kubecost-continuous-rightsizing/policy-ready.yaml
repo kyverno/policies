@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: enable-kubecost-continuous-rightsizing
+status:
+  ready: true

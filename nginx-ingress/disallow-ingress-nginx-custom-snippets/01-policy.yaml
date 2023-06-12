@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- disallow-ingress-nginx-custom-snippets.yaml
+assert:
+- policy-ready.yaml
