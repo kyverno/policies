@@ -1,0 +1,19 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: roles-good.yaml
+  shouldFail: false
+- file: roles-bad.yaml
+  shouldFail: true
+- file: clusterroles-good.yaml
+  shouldFail: false
+- file: clusterroles-bad.yaml
+  shouldFail: true
+- file: rb-good.yaml
+  shouldFail: false
+- file: rb-bad.yaml
+  shouldFail: true
+- file: crb-good.yaml
+  shouldFail: false
+- file: crb-bad.yaml
+  shouldFail: true
