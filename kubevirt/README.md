@@ -6,4 +6,4 @@ This directory contains a few examples in order to apply policies on
 Examples
 
 - add-services - Add a service for every VMI which is getting created. This is an example for a generating policy.
-- enforce-instancetype - Enforce the use of instance types, prevent the creation of "custom" VMs. This is an example for a validating policy.
+- enforce-instancetype - Enforce the use of instance types and preferences. This is an example for a validating policy.

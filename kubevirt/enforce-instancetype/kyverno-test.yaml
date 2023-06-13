@@ -5,13 +5,13 @@ resources:
   - resource.yaml
 results:
 - policy: k6t-enforce-instancetype
-  rule: k6t-dont-allow-domain-template
+  rule: k6t-ensure-instance-type-and-preference
   kind: VirtualMachine
   resources:
   - vm-valid
   result: pass
 - policy: k6t-enforce-instancetype
-  rule: k6t-dont-allow-domain-template
+  rule: k6t-ensure-instance-type-and-preference
   kind: VirtualMachine
   resources:
   - vm-invalid
