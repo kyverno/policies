@@ -7,15 +7,15 @@ metadata:
   name: vm-valid
 spec:
   running: false
+  instancetype:
+    name: c1.small
+  preference:
+    name: linux
   template:
     metadata:
       labels:
         kubevirt.io/vm: vm-cirros
     spec:
-      instanceType:
-        name: c1.small
-      preference:
-        name: linux
       terminationGracePeriodSeconds: 0
       volumes:
       - containerDisk:
