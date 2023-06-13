@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: kyverno
 rules:
 - apiGroups:
-  - "*"
+  - ""
   resources:
   - services
   verbs:
