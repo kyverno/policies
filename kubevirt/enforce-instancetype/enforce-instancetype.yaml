@@ -7,23 +7,23 @@ metadata:
     policies.kyverno.io/category: KubeVirt
     policies.kyverno.io/subject: VirtualMachine
     policies.kyverno.io/description: >-
-      Check VirtualMachines and validate that they are not using a domain template (`.spec.template.domain`)
-      but instead are based on instaceTypes and preferences only.
+      Check VirtualMachines and validate that they are using an instance type and preference.
     kyverno.io/kyverno-version: "1.8.0-rc2"
     kyverno.io/kubernetes-version: "1.24-1.25"
 spec:
   validationFailureAction: enforce
   rules:
-  - name: k6t-dont-allow-domain-template
+  - name: k6t-ensure-instance-type-and-preference
     match:
       any: 
       - resources:
           kinds:
           - VirtualMachine
     validate:
-      message: "VirtualMachines must only use instanceTypes and preferences, a domain template is not allowed."
+      message: "VirtualMachines must use instance types and preferences"
       pattern:
         spec:
-          template:
-            spec:
-              domain: null
+          instancetype:
+            name: ?*
+          preference:
+            name: ?*

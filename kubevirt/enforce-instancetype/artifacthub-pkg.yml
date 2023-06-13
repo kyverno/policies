@@ -1,9 +1,9 @@
 name: enforce-instancetype
-version: 1.0.0
+version: 1.1.0
 displayName: Enforce instanceTypes
 createdAt: "2023-04-10T20:18:08.000Z"
 description: >-
-  Check VirtualMachines and validate that they are not using a domain template (`.spec.template.domain`) but instead are based on instaceTypes and preferences only.
+  Check VirtualMachines and validate that they are using an instance type and preference.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kubevirt/enforce-instancetype/enforce-instancetype.yaml
@@ -12,11 +12,11 @@ keywords:
   - kyverno
   - KubeVirt
 readme: |
-  Check VirtualMachines and validate that they are not using a domain template (`.spec.template.domain`) but instead are based on instaceTypes and preferences only.
+  Check VirtualMachines and validate that they are using an instance type and preference.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "KubeVirt"
   kyverno/kubernetesVersion: "1.24-1.25"
   kyverno/subject: "VirtualMachine"
-digest: cf4f4910d38aaa599c81554b5b7987ff1e9186bcb8a2163c343f2bb11ec239a3
+digest: fd5e58353ef32aab91803a63e1a1f95ff0e311344f33a88f99ebe37757e64990
