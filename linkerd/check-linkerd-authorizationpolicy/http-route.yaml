@@ -1,0 +1,18 @@
+apiVersion: policy.linkerd.io/v1beta3
+kind: HTTPRoute
+metadata:
+  name: authors-get-route
+spec:
+  parentRefs:
+    - name: authors-server
+      kind: Server
+      group: policy.linkerd.io
+  rules:
+    - matches:
+      - path:
+          value: "/authors.json"
+        method: GET
+      - path:
+          value: "/authors/"
+          type: "PathPrefix"
+        method: GET

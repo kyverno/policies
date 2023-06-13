@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: cm-good.yaml
+  shouldFail: false
+- file: ig-good.yaml
+  shouldFail: false
+- file: cm-bad.yaml
+  shouldFail: true
+- file: ig-bad.yaml
+  shouldFail: true

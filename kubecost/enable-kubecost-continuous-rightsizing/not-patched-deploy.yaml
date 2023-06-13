@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deploy02
+  name: deploy01
   labels:
     app: busybox
     env: test
