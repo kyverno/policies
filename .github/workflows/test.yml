@@ -60,7 +60,7 @@ jobs:
       - name: Install Tools
         run: |
           GOBIN=$(pwd)/.tools/ go install sigs.k8s.io/kind@v0.19.0
-          GOBIN=$(pwd)/.tools/ go install github.com/kyverno/kuttl/cmd/kubectl-kuttl@v0.0.0-20230126200340-834a4dac1ec7
+          GOBIN=$(pwd)/.tools/ go install github.com/kyverno/kuttl/cmd/kubectl-kuttl@main
           curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
       - name: Create kind cluster
         run: |
