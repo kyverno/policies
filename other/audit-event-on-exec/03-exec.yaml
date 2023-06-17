@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: sleep 5
+- command: kubectl exec -n exec-event-ns execevent-pod -- ls /

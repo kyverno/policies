@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: execevent-pod
+  namespace: exec-event-ns
+spec:
+  containers:
+    - image: busybox:1.35
+      name: busybox
+      command: ["sleep","3600"]
