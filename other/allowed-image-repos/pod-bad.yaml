@@ -48,4 +48,4 @@ spec:
     - name: pod-01
       image: myknownimage
     - name: pod-02
-      image: busybox:1.35
+      image: docker.io/busybox:1.35

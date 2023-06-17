@@ -14,9 +14,9 @@ metadata:
 spec:
   containers:
     - name: pod-01
-      image: myknownimage
+      image: ghcr.io/images/myknownimage:1.26
     - name: pod-02
-      image: kyverno
+      image: ghcr.io/kyverno/kyverno:latest
 ---
 apiVersion: v1
 kind: Pod
@@ -25,11 +25,11 @@ metadata:
 spec:
   initContainers:
     - name: pod-01-init
-      image: kyverno
+      image: kyverno:latest
     - name: pod-02-init
       image: myknownimage
   containers:
     - name: pod-01
-      image: myknownimage
+      image: myknownimage:1.14
     - name: pod-02
       image: kyverno
