@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+  namespace: other-certvol-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        inject-certs: enabled
+      labels:
+        app: busybox
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: bb-01
+          image: busybox:1.35
+        - name: bb-02
+          image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment02
+  namespace: other-certvol-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        inject-certs: disabled
+      labels:
+        app: busybox
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: bb-01
+          image: busybox:1.35
+        - name: bb-02
+          image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment03
+  namespace: other-certvol-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        foo: bar
+      labels:
+        app: busybox
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - name: bb-01
+          image: busybox:1.35
+        - name: bb-02
+          image: busybox:1.35

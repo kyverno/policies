@@ -26,7 +26,7 @@ spec:
           - Pod
     preconditions:
       all:
-      - key: '{{request.object.metadata.annotations."inject-certs"}}'
+      - key: '{{request.object.metadata.annotations."inject-certs" || ""}}'
         operator: Equals
         value: enabled
       - key: "{{request.operation || 'BACKGROUND'}}"
