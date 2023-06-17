@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+assert:
+- patched-pod01.yaml
+- patched-pod02.yaml
+- patched-pod03.yaml
+- podcontrollers-patched.yaml
