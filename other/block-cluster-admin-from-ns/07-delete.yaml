@@ -2,4 +2,5 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
 - command: kubectl delete -f good-pod.yaml
-- command: rm ca.crt ca.key ca.srl testuser.crt testuser.csr testuser.key
+- command: find . -name 'ca.*' -delete
+- command: find . -name 'testuser.*' -delete
