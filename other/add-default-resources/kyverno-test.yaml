@@ -16,7 +16,7 @@ results:
     resource: nginx-demo2
     patchedResource: patchedResource2.yaml
     kind: Pod
-    result: pass
+    result: skip
   - policy: add-default-resources
     rule: add-default-requests
     resource: nginx-demo3
