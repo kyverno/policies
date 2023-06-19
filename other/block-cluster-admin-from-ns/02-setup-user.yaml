@@ -1,0 +1,10 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: openssl genrsa -out testuser.key 2048
+- command: openssl req -new -key testuser.key -out testuser.csr -subj "/CN=testuser/O=testorg"
+- command: "docker cp kind-control-plane:/etc/kubernetes/pki/ca.crt ."
+- command: "docker cp kind-control-plane:/etc/kubernetes/pki/ca.key ."
+- command: openssl x509 -req -in testuser.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out testuser.crt -days 10
+- command: kubectl config set-credentials testuser --client-certificate=testuser.crt --client-key=testuser.key
+- command: kubectl config set-context testuser-context --cluster=cluster --user=testuser
