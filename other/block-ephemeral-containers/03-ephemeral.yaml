@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: if kubectl debug -it pod01 --image=busybox:1.35 --target=busybox -n block-ephemeral-ns; then exit 1; else exit 0; fi;
+  - script: if kubectl debug -it pod02 --image=busybox:1.35 --target=busybox02 -n block-ephemeral-ns; then exit 1; else exit 0; fi;
+  - script: if kubectl debug -it pod03 --image=busybox:1.35 --target=busybox -n block-ephemeral-ns; then exit 1; else exit 0; fi;
+  - script: if kubectl debug -it $(kubectl get po -n block-ephemeral-ns | grep deployment01 | awk '{print $1}') --image=busybox:1.35 --target=bb -n block-ephemeral-ns; then exit 1; else exit 0; fi;
