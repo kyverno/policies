@@ -23,23 +23,3 @@ spec:
       - name: bb2
         image: busybox:1.35
         command: ["sleep", "300"]
-# ---
-# apiVersion: batch/v1
-# kind: CronJob
-# metadata:
-#   name: cronjob01
-#   namespace: block-ephemeral-ns
-# spec:
-#   schedule: "* * * * *"
-#   jobTemplate:
-#     spec:
-#       template:
-#         spec:
-#           containers:
-#           - name: bb
-#             image: busybox:1.35
-#             command: ["sleep", "300"]
-#           - name: bb2
-#             image: busybox:1.35
-#             command: ["sleep", "300"]
-#           restartPolicy: OnFailure
