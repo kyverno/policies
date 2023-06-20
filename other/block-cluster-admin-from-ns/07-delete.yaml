@@ -2,5 +2,4 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
 - command: kubectl delete -f good-pod.yaml
-- command: find . -name 'ca.*' -delete
-- command: find . -name 'testuser.*' -delete
+- command: kubectl delete -f good-cm.yaml

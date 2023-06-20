@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- command: kubectl --context=testuser-context create -f good-pod.yaml
-- script: if kubectl --context=testuser-context create -f bad-pod.yaml; then exit 1; else exit 0; fi
-  skipLogOutput: true # should be a kyverno denied error message
