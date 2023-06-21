@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: kubectl config unset users.blocksvcuser
+- command: kubectl config unset contexts.blocksvcuser-context

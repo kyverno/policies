@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - command: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
+  - command: kubectl delete cpol block-stale-images
