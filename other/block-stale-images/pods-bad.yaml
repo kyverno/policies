@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: busybox 
-    image: busybox:1.35
+    image: busybox:latest
   - name: busybox02
     image: busybox:1.28
 ---
@@ -30,4 +30,4 @@ spec:
   - name: busybox 
     image: busybox:1.28
   - name: busybox02
-    image: busybox:1.35
+    image: busybox:latest
