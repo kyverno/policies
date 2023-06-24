@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- dns-policy-and-dns-config.yaml
+- ns.yaml
+assert:
+- policy-ready.yaml

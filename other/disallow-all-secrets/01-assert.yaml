@@ -1,0 +1,7 @@
+apiVersion: kyverno.io/v1
+kind: Policy
+metadata:
+  name: no-secrets
+  namespace: no-secrets-ns
+status:
+  ready: true
