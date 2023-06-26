@@ -2,6 +2,5 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 delete:
 - apiVersion: kyverno.io/v1
-  kind: Policy
+  kind: ClusterPolicy
   name: no-secrets
-  namespace: no-secrets-ns

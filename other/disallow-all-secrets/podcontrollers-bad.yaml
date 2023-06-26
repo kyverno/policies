@@ -4,7 +4,6 @@ metadata:
   labels:
     app: busybox
   name: baddeployment01
-  namespace: no-secrets-ns
 spec:
   replicas: 1
   selector:
@@ -48,7 +47,6 @@ metadata:
   labels:
     app: busybox
   name: baddeployment02
-  namespace: no-secrets-ns
 spec:
   replicas: 1
   selector:
@@ -83,7 +81,6 @@ metadata:
   labels:
     app: busybox
   name: baddeployment03
-  namespace: no-secrets-ns
 spec:
   replicas: 1
   selector:
@@ -109,7 +106,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: badcronjob01
-  namespace: no-secrets-ns
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -147,7 +143,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: badcronjob02
-  namespace: no-secrets-ns
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -176,7 +171,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: badcronjob03
-  namespace: no-secrets-ns
 spec:
   schedule: "* * * * *"
   jobTemplate:

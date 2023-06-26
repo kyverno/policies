@@ -29,3 +29,14 @@ spec:
           memory: "250Mi"
     - image: busybox:1.35
       name: busybox02
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+    - image: busybox:1.35
+      name: busybox
+    - image: busybox:1.35
+      name: busybox02

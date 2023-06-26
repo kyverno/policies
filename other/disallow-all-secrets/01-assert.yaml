@@ -1,7 +1,6 @@
 apiVersion: kyverno.io/v1
-kind: Policy
+kind: ClusterPolicy
 metadata:
   name: no-secrets
-  namespace: no-secrets-ns
 status:
   ready: true
