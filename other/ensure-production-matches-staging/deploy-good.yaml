@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+  namespace: production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep","3600"]
+      - image: busybox:1.28
+        name: busybox02
+        command: ["sleep","3600"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep","3600"]
+      - image: busybox:1.28
+        name: busybox02
+        command: ["sleep","3600"]

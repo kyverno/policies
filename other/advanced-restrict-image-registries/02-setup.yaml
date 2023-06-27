@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    corp.com/allowed-registries: "img.corp.com/*"
+  name: imageregistries-ns01
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    corp.com/allowed-registries: "docker.io/*"
+  name: imageregistries-ns02
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clusterregistries
+  namespace: imageregistries-ns01
+data:
+  registries: "corp.img.io/*"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: clusterregistries
+  namespace: default
+data:
+  registries: "ghcr.io/*"
