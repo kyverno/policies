@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' check-subjectaccessreview.yaml | kubectl create -f - 
+apply:
+- ns.yaml

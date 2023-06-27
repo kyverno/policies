@@ -39,8 +39,8 @@ spec:
             value: authorization.k8s.io/v1
           - key: spec
             value:
-              resource: "namespace"
               resourceAttributes:
+                resource: "namespaces"
                 namespace: "{{ request.namespace }}"
                 verb: "delete"
                 group: ""

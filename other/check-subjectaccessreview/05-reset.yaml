@@ -1,0 +1,9 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: kubectl config unset users.subreviewuser
+- command: kubectl config unset users.badsubreviewuser
+- command: kubectl config unset contexts.subreviewuser-context
+- command: kubectl config unset contexts.badsubreviewuser-context
+- command: kubectl delete cpol check-subjectaccessreview
+- command: kubectl delete -f cm-one.yaml
