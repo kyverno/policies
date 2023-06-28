@@ -5,7 +5,7 @@ metadata:
 spec:
   template:
     metadata:
-      annotations:
+      labels:
         autoscaling.cast.ai/removal-disabled: "true"
     spec:
       containers:
