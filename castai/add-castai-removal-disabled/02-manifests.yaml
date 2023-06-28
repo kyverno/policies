@@ -1,7 +1,5 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-- file: patched01.yaml
-  shouldFail: false
-- file: patched02.yaml
+- file: resources.yaml
   shouldFail: false

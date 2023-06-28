@@ -11,13 +11,12 @@ install: |-
 keywords:
   - kyverno
   - CAST AI
-  - EKS Best Practices
 readme: |
   CAST AI will not downscale a node that includes a pod with the autoscaling.cast.ai/removal-disabled="true" label on it, this protects sensitive workloads from being evicted and can be attributed to any pod to protect against unwanted downscaling. This policy will mutate jobs and cronjobs to add the removal-disabled label to protect against eviction. 
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "CAST AI, EKS Best Practices"
+  kyverno/category: "CAST AI"
   kyverno/kubernetesVersion: "1.23"
-  kyverno/subject: "Pod"
-digest: 14e1fecc09c5d577e29540a58166cff7b0f81f63b5b48b0d6c7dd0afa137c851
+  kyverno/subject: "Job, CronJob"
+digest: a942d7180fafed26255c77829d070fa4a53ba4b049e1b4bd0b3317a32f58d50b
