@@ -6,8 +6,8 @@ metadata:
     policies.kyverno.io/title: Add CAST AI Removal Disabled
     policies.kyverno.io/category: CAST AI
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/subject: Job, CronJob
-    kyverno.io/kyverno-version: 1.9
+    policies.kyverno.io/subject: "Job, CronJob"
+    kyverno.io/kyverno-version: "1.9"
     kyverno.io/kubernetes-version: "1.25"
     policies.kyverno.io/description: >- 
       CAST AI will not downscale a node that includes a pod with the 

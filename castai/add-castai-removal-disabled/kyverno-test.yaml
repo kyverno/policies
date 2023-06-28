@@ -2,7 +2,7 @@ name: add-castai-removal-disabled
 policies:
 - add-castai-removal-disabled.yaml
 resources:
-- resource.yaml
+- resources.yaml
 results:
 - policy: add-castai-removal-disabled
   rule: do-not-evict-jobs
