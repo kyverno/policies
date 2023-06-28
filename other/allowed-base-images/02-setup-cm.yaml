@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: platform
+  name: baseimages
+data:
+  allowedbaseimages: "gcr.io/distroless/static:nonroot"
