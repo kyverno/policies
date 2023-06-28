@@ -1,0 +1,18 @@
+name: add-castai-removal-disabled
+policies:
+- add-castai-removal-disabled.yaml
+resources:
+- resources.yaml
+results:
+- policy: add-castai-removal-disabled
+  rule: do-not-evict-jobs
+  resource: addjob01
+  kind: Job
+  patchedResource: patched01.yaml
+  result: pass
+- policy: add-castai-removal-disabled
+  rule: do-not-evict-cronjobs
+  resource: addcronjob01
+  kind: CronJob
+  patchedResource: patched02.yaml
+  result: pass
