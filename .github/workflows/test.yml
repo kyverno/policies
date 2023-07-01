@@ -17,34 +17,35 @@ jobs:
       matrix:
         k8s-version:
           - name: v1.24
-            version: v1.24.12
+            version: v1.24.15
           - name: v1.25
-            version: v1.25.8
+            version: v1.25.11
           - name: v1.26
-            version: v1.26.3
+            version: v1.26.6
           - name: v1.27
-            version: v1.27.1
-        # tests:
-          # - argo
-          # - aws
-          # - best-practices
-          # - cert-manager
+            version: v1.27.3
+        tests:
+          - argo
+          - aws
+          - best-practices
+          # - castai
+          - cert-manager
           # - consul
-          # - external-secret-operator
-          # - flux
-          # - istio
-          # - karpenter
-          # - kasten
-          # - kubecost
+          - external-secret-operator
+          - flux
+          - istio
+          - karpenter
+          - kasten
+          - kubecost
           # - kubeops
-          # - kubevirt
-          # - linkerd
-          # - nginx-ingress
-          # - openshift
-          # - other
+          - kubevirt
+          - linkerd
+          - nginx-ingress
+          - openshift
+          - other
           # - pod-security
           # - psa
-          # - psp-migration
+          - psp-migration
           # - tekton
           # - traefik
           # - velero
@@ -73,4 +74,4 @@ jobs:
           kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
       - name: Test with kuttl
         run: |
-          ./.tools/kubectl-kuttl test ./ --config ./kuttl-test.yaml
+          ./.tools/kubectl-kuttl test ./${{ matrix.tests }} --config ./kuttl-test.yaml
