@@ -28,7 +28,7 @@ jobs:
           - argo
           - aws
           - best-practices
-          # - castai
+          - castai
           - cert-manager
           # - consul
           - external-secret-operator
