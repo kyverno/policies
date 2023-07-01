@@ -50,7 +50,7 @@ jobs:
           # - traefik
           # - velero
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - all
+    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
