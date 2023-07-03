@@ -3,3 +3,6 @@ kind: TestStep
 commands:
   - command: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
   - command: kubectl delete cpol block-stale-images
+  - command: sleep 10
+  - command: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns # due to test fails
+  - command: sleep 10
