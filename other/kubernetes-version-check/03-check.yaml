@@ -3,5 +3,5 @@ kind: TestStep
 commands:
 - script: |
     version=$(kubectl get secret kversion-secret -n kubversion-ns -o=jsonpath='{.metadata.labels.apiminorversion}')
-    result=$(kubectl version -o json | kyverno jp query "clientVersion.minor == '${version}'" | tail -n 1)
+    result=$(kubectl version -o json | kyverno jp query "serverVersion.minor == '${version}'" | tail -n 1)
     if [ "$result" = "false" ]; then exit 1; else exit 0; fi
