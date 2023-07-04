@@ -39,5 +39,5 @@ spec:
         conditions:
           all:
           - key: "{{ (request.object.spec.rules[].host || `[]`) | sort(@) }}"
-            operator: AllNotIn
+            operator: AnyNotIn
             value: "{{ (request.object.spec.tls[].hosts[] || `[]`) | sort(@) }}"

@@ -63,6 +63,11 @@ jobs:
           GOBIN=$(pwd)/.tools/ go install sigs.k8s.io/kind@v0.19.0
           GOBIN=$(pwd)/.tools/ go install github.com/kyverno/kuttl/cmd/kubectl-kuttl@main
           curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
+      - name: Install Kyverno CLI
+        run: |
+          curl -LO https://github.com/kyverno/kyverno/releases/download/v1.10.0/kyverno-cli_v1.10.0_linux_x86_64.tar.gz
+          tar -xvf kyverno-cli_v1.10.0_linux_x86_64.tar.gz
+          sudo cp kyverno /usr/local/bin/
       - name: Create kind cluster
         run: |
           ./.tools/kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
