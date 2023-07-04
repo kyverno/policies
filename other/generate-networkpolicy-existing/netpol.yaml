@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    created-by: kyverno
+  name: default-deny
+  namespace: foo
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
