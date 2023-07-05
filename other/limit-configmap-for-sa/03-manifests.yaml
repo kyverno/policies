@@ -1,0 +1,20 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    #!/bin/bash
+    set -eu
+
+    # Setting up the SA user
+    export TOKEN_SA=`kubectl get secret another-secret -n another-namespace -ojsonpath='{.data.token}' | base64 -d`
+    kubectl config set-credentials another-user --token=${TOKEN_SA}
+    kubectl config set-context another-context --user=another-user --cluster=cluster --namespace=another-namespace
+
+    # Applying Manifests
+    if kubectl create --context=another-context -f cm-bad.yaml; then exit 1; else echo "success: bad cm failed to create"; fi
+    kubectl create -f cm-bad.yaml
+    kubectl create --context=another-context -f cm-good.yaml
+
+    # Unset the context and user
+    kubectl config unset contexts.another-context
+    kubectl config unset users.another-user

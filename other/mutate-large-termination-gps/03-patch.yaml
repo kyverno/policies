@@ -1,0 +1,9 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+assert:
+- pod-patched01.yaml
+- deploy-patched.yaml
+- cronjob-patched.yaml
+error:
+- pod-not-patched01.yaml
+- pod-not-patched02.yaml

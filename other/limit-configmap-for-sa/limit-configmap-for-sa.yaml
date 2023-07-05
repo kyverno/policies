@@ -17,9 +17,9 @@ spec:
   - name: limit-configmap-for-sa-developer
     match:
       any:
-      - resources:
-          kinds:
-          - ConfigMap
+      # - resources:
+      #     kinds:
+      #     - ConfigMap
         # subjects:
         # - kind: ServiceAccount
         #   name: developer

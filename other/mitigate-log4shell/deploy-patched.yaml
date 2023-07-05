@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      initContainers:
+      - name: busybox-init
+        image: busybox:1.35
+        env:
+        - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+          value: "true"
+      - name: busybox02-init
+        image: busybox:1.35
+        env:
+        - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+          value: "true"
+      containers:
+      - name: busybox
+        image: busybox:1.35
+        env:
+        - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+          value: "true"
+      - name: busybox02
+        image: busybox:1.35
+        env:
+        - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+          value: "true"
+        - name: foo
+          value: bar
