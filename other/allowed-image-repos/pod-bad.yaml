@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: badpod01
+  namespace: allowed-image-repos-ns
 spec:
   containers:
     - name: pod-01
@@ -11,6 +12,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: badpod02
+  namespace: allowed-image-repos-ns
 spec:
   containers:
     - name: pod-01
@@ -22,6 +24,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: badpod03
+  namespace: allowed-image-repos-ns
 spec:
   initContainers:
     - name: pod-01-init
@@ -38,6 +41,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: badpod04
+  namespace: allowed-image-repos-ns
 spec:
   initContainers:
     - name: pod-01-init
