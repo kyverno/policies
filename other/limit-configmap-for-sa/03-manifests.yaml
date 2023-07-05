@@ -11,8 +11,8 @@ commands:
     kubectl config set-context another-context --user=another-user --cluster=cluster --namespace=another-namespace
 
     # Applying Manifests
-    if kubectl create --context=another-context -f cm-bad.yaml; then exit 1; else echo "success: bad cm failed to create"; fi
-    kubectl create -f cm-bad.yaml
+    if kubectl create --context=another-context -f cm-bad.yaml; then exit 1; else echo "success: bad cm failed to create by sa"; fi
+    if kubectl create -f cm-bad.yaml; then exit 1; else echo "success: bad cm failed to create by cluster-admin"; fi
     kubectl create --context=another-context -f cm-good.yaml
 
     # Unset the context and user
