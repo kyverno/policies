@@ -1,0 +1,8 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[SelfSubjectAccessReview,\*,\*\]/\[SelfSubjectAccessReview,\*,\*\] \[Binding,\*,\*\] \[Pod\/binding,\*,\*\]/g' - | kubectl apply -f -
+- command: kubectl label --overwrite nodes kind-worker foo-
+- command: kubectl label --overwrite nodes kind-worker2 foo-
+- command: kubectl label --overwrite nodes kind-worker3 foo-
