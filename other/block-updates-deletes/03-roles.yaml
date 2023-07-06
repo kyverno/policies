@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: svc-manager
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["create", "delete", "update", "get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: svc:blocksvcuser
+subjects:
+- kind: User
+  name: blocksvcuser
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: svc-manager
+  apiGroup: rbac.authorization.k8s.io

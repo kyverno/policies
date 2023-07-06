@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- enable-kubecost-continuous-rightsizing.yaml
+assert:
+- policy-ready.yaml

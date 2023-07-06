@@ -24,6 +24,11 @@ spec:
         - resources:
             kinds:
               - Pod
+      preconditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: NotEquals
+          value: DELETE
       validate:
         message: >-
           Only the following types of volumes may be used: configMap, csi, downwardAPI,

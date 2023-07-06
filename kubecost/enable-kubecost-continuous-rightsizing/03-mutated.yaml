@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+assert:
+- patchedResource1.yaml
+error:
+- not-patched-deploy.yaml

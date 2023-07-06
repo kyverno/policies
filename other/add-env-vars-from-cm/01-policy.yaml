@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- add-env-vars-from-cm.yaml
+assert:
+- policy-ready.yaml

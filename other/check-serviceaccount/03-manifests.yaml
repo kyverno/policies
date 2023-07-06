@@ -1,0 +1,23 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    #!/bin/bash
+    set -eu
+
+    # Setting up the SA user
+    export TOKEN_SA=`kubectl get secret safe-secret -n check-sa-ns -ojsonpath='{.data.token}' | base64 -d`
+    kubectl config set-credentials safe-user --token=${TOKEN_SA}
+    kubectl config set-context safe-context --user=safe-user --cluster=cluster --namespace=check-sa-ns
+    
+    # Applying Manifests
+    kubectl config use-context safe-context
+    kubectl apply -f pod-good.yaml
+    if kubectl apply -f pod-bad.yaml; then exit 1; else echo "badpod01 failed to create"; fi
+    kubectl apply -f podcontroller-good.yaml
+    if kubectl apply -f podcontroller-bad.yaml; then exit 1; else echo "badpodcontrollers failed to create"; fi
+
+    # Unset the context and user
+    kubectl config use-context cluster
+    kubectl config unset contexts.safe-context
+    kubectl config unset users.safe-user

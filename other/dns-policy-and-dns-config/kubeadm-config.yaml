@@ -59,7 +59,7 @@ data:
       timeoutForControlPlane: 5m0s
     apiVersion: kubeadm.k8s.io/v1beta3
     certificatesDir: /etc/kubernetes/ssl
-    clusterName: mycluster
+    clusterName: kind
     controlPlaneEndpoint: 10.10.88.132:6443
     controllerManager:
       extraArgs:
@@ -104,8 +104,5 @@ data:
         readOnly: true
 kind: ConfigMap
 metadata:
-  creationTimestamp: "2022-09-27T12:11:16Z"
   name: kubeadm-config
   namespace: kube-system
-  resourceVersion: "214"
-  uid: 7af5aa43-c8f9-4272-ba34-b7e6ad2f323f

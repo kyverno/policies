@@ -11,6 +11,6 @@ metadata:
 spec:
   ports:
   - protocol: TCP
-    targetPort: 22
-    selector:
-      kubevirt.io/domain: "vmi-name"
+    port: 22
+  selector:
+    kubevirt.io/domain: "vmi-name"

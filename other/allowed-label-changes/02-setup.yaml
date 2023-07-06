@@ -1,0 +1,133 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+    breakglass: dont
+  name: pod01
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+  name: pod03
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    foo: bar
+    breakglass: dont
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    foo: bar
+    breakglass: dont
+  name: ss01
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  serviceName: "busybox"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ds01
+  labels:
+    breakglass: dont
+    foo: bar
+    k8s-app: fluentd-logging
+spec:
+  selector:
+    matchLabels:
+      name: ds01
+  template:
+    metadata:
+      labels:
+        name: ds01
+    spec:
+      containers:
+      - name: ds01
+        image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    foo: bar
+    breakglass: dont
+  name: job01
+spec:
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+        command: ["sleep", "3600"]
+      restartPolicy: Never
+  backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    foo: bar
+    breakglass: dont
+  name: cronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: bb
+            image: busybox:1.35
+            imagePullPolicy: IfNotPresent
+            command: ["sleep", "3600"]
+          restartPolicy: OnFailure

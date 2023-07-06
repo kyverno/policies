@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  keytwo: foo plus bar
+kind: ConfigMap
+metadata:
+  name: cmtwo
+  namespace: bar

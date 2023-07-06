@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - command: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns01
+  - command: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns02
+  - command: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns03
+  - command: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns04

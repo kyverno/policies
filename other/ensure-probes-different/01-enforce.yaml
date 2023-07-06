@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ensure-probes-different.yaml | kubectl create -f - 
+apply:
+- ns.yaml
