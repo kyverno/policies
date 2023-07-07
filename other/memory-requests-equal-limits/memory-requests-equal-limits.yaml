@@ -16,7 +16,7 @@ spec:
   validationFailureAction: audit
   background: false
   rules:
-  - name: memory-requests-equal-limits-pod
+  - name: memory-requests-equal-limits
     match:
       any:
       - resources:
