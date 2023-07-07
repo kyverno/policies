@@ -1,7 +1,7 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-- ns.yaml
+- label-existing-namespaces.yaml
 assert:
 - patched-ns01.yaml
 - patched-ns02.yaml

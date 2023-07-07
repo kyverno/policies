@@ -5,22 +5,22 @@ resources:
   - resource.yaml
 results:
   - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod-bare
+    rule: limit-containers-per-pod
     resource: myapp-pod-1
     kind: Pod
     result: pass
   - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod-bare
+    rule: limit-containers-per-pod
     resource: myapp-pod-2
     kind: Pod
     result: fail
   - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod-controllers
+    rule: autogen-limit-containers-per-pod
     resource: mydeploy
     kind: Deployment
     result: pass
   - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod-cronjob
+    rule: autogen-cronjob-limit-containers-per-pod
     resource: mycronjob
     kind: CronJob
     result: fail

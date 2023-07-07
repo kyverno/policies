@@ -55,3 +55,26 @@ spec:
       containers:
       - image: busybox:1.35
         name: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mydeploy04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+    spec:
+      initContainers:
+      - image: busybox:1.35
+        name: busybox-init
+      containers:
+      - image: busybox:1.35
+        name: busybox

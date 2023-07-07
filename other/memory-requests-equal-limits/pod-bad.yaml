@@ -32,3 +32,45 @@ spec:
         memory: "100Mi"
       limits:
         memory: "150Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    resources:
+      requests:
+        memory: "120Mi"
+      limits:
+        memory: "120Mi"
+  - name: busybox02
+    image: busybox:1.35
+    resources:
+      requests:
+        memory: "100Mi"
+      limits:
+        memory: "150Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: busybox02
+    image: busybox:1.35
+    resources:
+      requests:
+        memory: "100Mi"
+      limits:
+        memory: "200Mi"
+  - name: busybox
+    image: busybox:1.35
+    resources:
+      requests:
+        memory: "100Mi"
+      limits:
+        memory: "100Mi"

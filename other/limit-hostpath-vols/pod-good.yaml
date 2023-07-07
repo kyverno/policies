@@ -40,3 +40,32 @@ spec:
       items:
         - key: foo
           path: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: config-vol
+    configMap:
+      name: foo
+      items:
+        - key: foo
+          path: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
