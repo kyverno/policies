@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: nfs-subdir-external-provisioner-storage-path
+status:
+  ready: true

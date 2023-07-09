@@ -3,7 +3,6 @@ kind: ClusterPolicy
 metadata:
   name: memory-requests-equal-limits
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Memory Requests Equal Limits
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
@@ -17,24 +16,7 @@ spec:
   validationFailureAction: audit
   background: false
   rules:
-  - name: memory-requests-equal-limits-deployment
-    match:
-      any:
-      - resources:
-          kinds:
-          - Deployment
-          - DaemonSet
-          - StatefulSet
-          - Job
-    validate:
-      message: "resources.requests.memory must be equal to resources.limits.memory"
-      deny:
-        conditions:
-          any:
-          - key: "{{ request.object.spec.template.spec.containers[?resources.requests.memory!=resources.limits.memory] | length(@) }}"
-            operator: NotEquals
-            value: 0
-  - name: memory-requests-equal-limits-pod
+  - name: memory-requests-equal-limits
     match:
       any:
       - resources:
@@ -46,19 +28,5 @@ spec:
         conditions:
           any:
           - key: "{{ request.object.spec.containers[?resources.requests.memory!=resources.limits.memory] | length(@) }}"
-            operator: NotEquals
-            value: 0
-  - name: memory-requests-equal-limits-cronjob
-    match:
-      any:
-      - resources:
-          kinds:
-          - CronJob
-    validate:
-      message: "resources.requests.memory must be equal to resources.limits.memory"
-      deny:
-        conditions:
-          any:
-          - key: "{{ request.object.spec.jobTemplate.spec.template.spec.containers[?resources.requests.memory!=resources.limits.memory] | length(@) }}"
             operator: NotEquals
             value: 0

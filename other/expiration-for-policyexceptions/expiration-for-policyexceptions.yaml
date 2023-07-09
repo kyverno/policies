@@ -19,6 +19,7 @@ metadata:
       is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller
       ServiceAccounts additional permissions to operate this policy.
 spec:
+  rules:
   - name: expire-four-hours
     match:
       any:
