@@ -5,7 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Inject Sidecar Container
     policies.kyverno.io/category: Sample
-    policies.kyverno.io/subject: Pod,Volume
+    policies.kyverno.io/subject: Deployment,Volume
     policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
       The sidecar pattern is very common in Kubernetes whereby other applications can
