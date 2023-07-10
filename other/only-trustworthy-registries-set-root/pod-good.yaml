@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  namespace: trust-registry-ns
+spec:
+  containers:
+  - name: kyverno
+    image: ghcr.io/kyverno/kyverno:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+  namespace: trust-registry-ns
+spec:
+  containers:
+  - name: kyverno01
+    image: ghcr.io/kyverno/kyverno:latest
+  - name: kyverno02
+    image: ghcr.io/kyverno/kyverno:latest
