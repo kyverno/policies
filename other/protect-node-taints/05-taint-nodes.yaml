@@ -1,0 +1,23 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    #!/bin/bash
+    node=$(kubectl get nodes --no-headers | awk '{print $1}' | head -n 1)
+    if kubectl --context nodetaintuser-context taint nodes "$node" foo=bar:NoExecute; then
+        echo "Failed: Success altering node taint by nodetaintuser";
+        exit 1;
+    else
+        echo "Success: Failed to alter node taint by nodetaintuser";
+        exit 0;
+    fi;
+- script: |
+    #!/bin/bash
+    node=$(kubectl get nodes --no-headers | awk '{print $1}' | head -n 1)
+    if kubectl taint nodes "$node" foo=bar:NoExecute; then
+        echo "Success altering node taint by cluster-admin";
+        exit 0;
+    else
+        echo "Failed to alter node taint by cluster-admin";
+        exit 1;
+    fi;

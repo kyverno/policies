@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: kyverno
+    image: kyverno/kyverno:1.2.3
+  - name: redis
+    image: redis:latest

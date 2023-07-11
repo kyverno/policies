@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+  namespace: trust-registry-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: kyverno01
+        image: ghcr.io/kyverno/kyverno:latest
+      - name: kyverno02
+        image: ghcr.io/kyverno/kyverno:latest
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+  namespace: trust-registry-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: kyverno01
+            image: ghcr.io/kyverno/kyverno:latest
+          - name: kyverno02
+            image: ghcr.io/kyverno/kyverno:latest
+          restartPolicy: OnFailure
