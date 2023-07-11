@@ -5,7 +5,7 @@ metadata:
 spec:
   automountServiceAccountToken: false
   initContainers:
-  - name: kyverno
+  - name: kyverno-init
     image: registry.io/kyverno/kyverno:latest
   - name: busybox
     image: registry.io/busybox:1.28
