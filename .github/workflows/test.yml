@@ -30,14 +30,14 @@ jobs:
           - best-practices
           - castai
           - cert-manager
-          # - consul
+          - consul
           - external-secret-operator
           - flux
           - istio
           - karpenter
           - kasten
           - kubecost
-          # - kubeops
+          - kubeops
           - kubevirt
           - linkerd
           - nginx-ingress

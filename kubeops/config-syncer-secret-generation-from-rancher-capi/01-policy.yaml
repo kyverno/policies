@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- config-syncer-secret-generation-from-rancher-capi.yaml
+- setup.yaml
+assert:
+- policy-ready.yaml

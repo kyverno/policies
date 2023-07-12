@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- argo-cluster-generation-from-rancher-capi.yaml
+- setup.yaml
+assert:
+- policy-ready.yaml
