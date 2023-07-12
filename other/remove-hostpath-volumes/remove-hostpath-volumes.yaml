@@ -48,7 +48,7 @@ spec:
                 op: remove
           - list: request.object.spec.containers[]
             foreach:
-            - list: element.volumeMounts
+            - list: " element.volumeMounts || `[]` "
               order: Descending
               preconditions:
                 all:

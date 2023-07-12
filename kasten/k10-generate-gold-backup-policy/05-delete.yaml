@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns01
+- command: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns02
+- command: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns03
+- command: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns04
