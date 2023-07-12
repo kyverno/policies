@@ -18,7 +18,7 @@ spec:
   - name: busybox
     image: busybox:1.35
   - name: kyverno02
-    image: ghcr.io/kyverno/kyverno:latest
+    image: ghcr.io/nginx-proxy/nginx-proxy:latest
 ---
 apiVersion: v1
 kind: Pod
@@ -28,6 +28,6 @@ metadata:
 spec:
   containers:
   - name: kyverno01
-    image: ghcr.io/kyverno/kyverno:latest
+    image: ghcr.io/nginx-proxy/nginx-proxy:latest
   - name: busybox
     image: busybox:1.35
