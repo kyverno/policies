@@ -1,0 +1,13 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- resource.yaml
+- withoutinitcontainer.yaml
+- resourceFailed.yaml
+- pods.yaml
+assert:
+- patchedResource.yaml
+- pods-patched.yaml
+errors:
+- patchedResourceWithoutInitContainer.yaml
+- failpatchedResource.yaml

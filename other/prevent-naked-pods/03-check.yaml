@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: sleep 5
+- script: if [ $(kubectl get pods -n prevent-naked-pods-ns | grep gooddeployment01 | wc -l) -gt 0 ]; then exit 0; else exit 1; fi
