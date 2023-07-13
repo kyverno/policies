@@ -3,4 +3,5 @@ kind: TestStep
 apply:
 - cluster.yaml
 assert:
-- secret-generated.yaml
+- secret-generated01.yaml
+- secret-generated02.yaml

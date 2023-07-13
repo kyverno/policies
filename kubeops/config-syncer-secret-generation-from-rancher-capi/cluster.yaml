@@ -1,8 +1,6 @@
 kind: Cluster
 apiVersion: provisioning.cattle.io/v1
 metadata:
-  labels:
-    foo: bar
   name: sample-cluster
   namespace: kubeops-cluster-ns
 spec:
