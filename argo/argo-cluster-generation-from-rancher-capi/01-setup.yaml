@@ -29,8 +29,6 @@ data:
 kind: Cluster
 apiVersion: provisioning.cattle.io/v1
 metadata:
-  labels:
-    foo: bar
   name: rancher-cluster
   namespace: argo-rancher-cluster-ns
 spec:
