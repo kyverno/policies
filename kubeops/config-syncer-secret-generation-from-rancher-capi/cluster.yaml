@@ -1,0 +1,15 @@
+kind: Cluster
+apiVersion: provisioning.cattle.io/v1
+metadata:
+  name: sample-cluster
+  namespace: kubeops-cluster-ns
+spec:
+  rkeConfig:
+    machinePools:
+      - name: machine01
+        controlPlaneRole: true
+        quantity: 1
+        machineConfigRef:
+          apiVersion: elemental.cattle.io/v1beta1
+          kind: MachineInventorySelectorTemplate
+          name: configref01
