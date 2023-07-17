@@ -13,6 +13,34 @@ metadata:
 spec:
   podSelector:
     matchLabels:
-        app: nginx
+      app: nginx
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: some-deny
+  namespace: require-netpol-ns
+spec:
+  podSelector:
+    matchLabels:
+      foo: bar
+      app: busybox
+      see: saw
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: no-deny
+  namespace: require-netpol-ns
+spec:
+  podSelector:
+    matchLabels:
+      bar: foo
+      saw: see
+      app: nginbox
   policyTypes:
   - Egress
