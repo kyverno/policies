@@ -8,10 +8,9 @@ metadata:
     app.kubernetes.io/part-of: kyverno
 rules:
 - apiGroups:
-  - '*'
+  - 'config.kio.kasten.io'
   resources:
   - policies
-  - namespaces
   verbs:
   - create
   - update

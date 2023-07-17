@@ -29,13 +29,13 @@ spec:
   - name: foo
     hostPath:
       path: /data
-  - name: bar
-    hostPath:
-      path: /data/junk
   - name: empty
     emptyDir:
       medium: memory
       sizeLimit: 20Mi
+  - name: bar
+    hostPath:
+      path: /data/junk
 ---
 apiVersion: v1
 kind: Pod

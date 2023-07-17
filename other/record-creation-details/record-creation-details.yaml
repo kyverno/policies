@@ -41,7 +41,7 @@ spec:
         metadata:
           annotations:
             kyverno.io/created-by: "{{ request.userInfo | to_string(@) }}"
-  - name: prevent-updates-userinfo
+  - name: prevent-updates-deletes-userinfo-annotations
     match:
       any:
       - resources:
