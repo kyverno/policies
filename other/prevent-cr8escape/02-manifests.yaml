@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: pods-good.yaml
+  shouldFail: false
+- file: pods-bad.yaml
+  shouldFail: true
+- file: podcontroller-good.yaml
+  shouldFail: false
+- file: podcontroller-bad.yaml
+  shouldFail: true

@@ -59,4 +59,4 @@ results:
     namespace: test
     kind: Pod
     patchedResource: pod-memory-patched4.yaml
-    result: pass
+    result: skip

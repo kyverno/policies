@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pdb-minavailable-ns
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb01
+  namespace: pdb-minavailable-ns
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: busybox

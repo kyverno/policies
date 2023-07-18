@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: config-syncer-secret-generation-from-rancher-capi
+status:
+  ready: true
