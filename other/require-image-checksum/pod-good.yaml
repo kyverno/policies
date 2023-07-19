@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+    - name: busybox
+      image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+    - name: busybox02
+      image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: busybox
+    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+  - name: nginx
+    image: nginx@sha256:1bb5c4b86cb7c1e9f0209611dc2135d8a2c1c3a6436163970c99193787d067ea
