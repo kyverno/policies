@@ -18,6 +18,7 @@ spec:
       containers:
       - image: busybox:1.35
         name: busybox
+        command: ["sleep", "3600"]
         env:
         - name: ENV_SECRET
           valueFrom:
@@ -47,6 +48,7 @@ spec:
       containers:
       - image: busybox:1.35
         name: busybox
+        command: ["sleep", "3600"]
         env:
         - name: ENV_SECRET
           valueFrom:
@@ -76,6 +78,7 @@ spec:
       containers:
       - image: busybox:1.35
         name: busybox
+        command: ["sleep", "3600"]
         env:
         - name: ENV_SECRET
           valueFrom:

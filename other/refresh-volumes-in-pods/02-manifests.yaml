@@ -7,6 +7,10 @@ spec:
   containers:
   - image: busybox:1.35
     name: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /mnt/foo
+      name: refresh-vol
   volumes:
   - name: refresh-vol
     configMap:
@@ -23,7 +27,14 @@ spec:
   containers:
   - image: busybox:1.35
     name: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /mnt/foo
+      name: refresh-vol
   volumes:
+  - name: foo
+    hostPath:
+      path: /data
   - name: refresh-vol
     configMap:
       name: refresh-cm
@@ -39,6 +50,7 @@ spec:
   containers:
   - image: busybox:1.35
     name: busybox
+    command: ["sleep", "3600"]
 ---
 apiVersion: v1
 kind: Pod
@@ -51,7 +63,13 @@ spec:
   containers:
   - image: busybox:1.35
     name: busybox
+    command: ["sleep", "3600"]
+    volumeMounts:
+    - mountPath: /mnt/foo
+      name: refresh-vol
   volumes:
+  - name: empty
+    emptyDir: {}
   - name: refresh-vol
     configMap:
       name: not-refresh-cm
