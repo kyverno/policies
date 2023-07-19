@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+      - name: nginx
+        image: nginx@sha256:1bb5c4b86cb7c1e9f0209611dc2135d8a2c1c3a6436163970c99193787d067ea
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: busybox
+            image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+          - name: bb
+            image: busybox:latest
+          restartPolicy: OnFailure
