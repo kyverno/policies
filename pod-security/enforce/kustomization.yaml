@@ -1,4 +1,4 @@
-bases:
+resources:
 - ../restricted
 
 patches:
@@ -7,4 +7,4 @@ patches:
         path: /spec/validationFailureAction
         value: enforce
     target:
-      kind: ClusterPolicy 
+      kind: ClusterPolicy
