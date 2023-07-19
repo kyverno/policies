@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: only-trustworthy-registries-set-root
+status:
+  ready: true

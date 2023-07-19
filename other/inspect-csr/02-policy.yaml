@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- inspect-csr.yaml
+- crolb-user.yaml
+assert:
+- policy-ready.yaml
