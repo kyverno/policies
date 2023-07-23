@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: require-pdb-ns
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: default-pdb
+  namespace: require-pdb-ns
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app: busybox
+      foo: bar

@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- require-pod-priorityclassname.yaml
+- pc.yaml
+assert:
+- policy-ready.yaml
