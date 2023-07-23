@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  - name: busybox02
+    image: busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  - name: busybox03
+    image: busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
