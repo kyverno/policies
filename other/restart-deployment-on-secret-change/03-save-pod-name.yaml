@@ -1,4 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-  - script: "kubectl get pods -n default --no-headers | grep busybox | awk 'NR==1{print $1}' > pod-name.txt"
