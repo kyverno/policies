@@ -1,0 +1,8 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- restart-deployment-on-secret-change.yaml
+assert:
+- policy-ready.yaml
+commands:
+- script: kubectl get secret -n default mysecret -o jsonpath='{.metadata.resourceVersion}' > resource-version.txt

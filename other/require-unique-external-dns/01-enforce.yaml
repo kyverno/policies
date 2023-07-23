@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' require-unique-external-dns.yaml | kubectl create -f - 
+apply:
+- svc.yaml
