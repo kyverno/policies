@@ -41,40 +41,14 @@ spec:
         metadata:
           annotations:
             kyverno.io/created-by: "{{ request.userInfo | to_string(@) }}"
-  - name: prevent-updates-userinfo
+  - name: prevent-updates-deletes-userinfo-annotations
     match:
       any:
       - resources:
           kinds:
           - '*'
-          annotations:
-            kyverno.io/created-by: "?*"
     preconditions:
       any:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: UPDATE
-    validate:
-      message: The annotation kyverno.io/created-by is protected and may not be altered.
-      deny:
-        conditions:
-          all:
-          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
-            operator: NotEquals
-            value: ""
-          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
-            operator: NotEquals
-            value: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" }}"
-  - name: prevent-removals-userinfo
-    match:
-      any:
-      - resources:
-          kinds:
-          - '*'
-          annotations:
-            kyverno.io/created-by: "?*"
-    preconditions:
-      all:
       - key: "{{request.operation || 'BACKGROUND'}}"
         operator: Equals
         value: UPDATE
@@ -82,8 +56,13 @@ spec:
         operator: Equals
         value: "?*"
     validate:
-      message: The annotation kyverno.io/created-by is protected and may not removed.
-      pattern:
-        metadata:
-          annotations:
-            kyverno.io/created-by: "?*"
+      message: The annotation kyverno.io/created-by is protected and may not be altered or removed.
+      deny:
+        conditions:
+          any:
+          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+            operator: Equals
+            value: ""
+          - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+            operator: NotEquals
+            value: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" }}"

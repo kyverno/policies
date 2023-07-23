@@ -1,0 +1,65 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: k10-k10-gp-ns01-gold-backup-policy
+  namespace: k10-gp-ns01
+spec:
+  actions:
+  - action: backup
+  - action: export
+    exportParameters:
+      exportData:
+        enabled: true
+      frequency: '@monthly'
+      profile:
+        name: object-lock-s3
+        namespace: kasten-io
+    retention:
+      monthly: 12
+      yearly: 5
+  comment: K10 "gold" immutable production backup policy
+  frequency: '@daily'
+  retention:
+    daily: 7
+    monthly: 12
+    weekly: 4
+    yearly: 7
+  selector:
+    matchExpressions:
+    - key: k10.kasten.io/appNamespace
+      operator: In
+      values:
+      - k10-gp-ns01
+---
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: k10-k10-gp-ns02-gold-backup-policy
+  namespace: k10-gp-ns02
+spec:
+  actions:
+  - action: backup
+  - action: export
+    exportParameters:
+      exportData:
+        enabled: true
+      frequency: '@monthly'
+      profile:
+        name: object-lock-s3
+        namespace: kasten-io
+    retention:
+      monthly: 12
+      yearly: 5
+  comment: K10 "gold" immutable production backup policy
+  frequency: '@daily'
+  retention:
+    daily: 7
+    monthly: 12
+    weekly: 4
+    yearly: 7
+  selector:
+    matchExpressions:
+    - key: k10.kasten.io/appNamespace
+      operator: In
+      values:
+      - k10-gp-ns02

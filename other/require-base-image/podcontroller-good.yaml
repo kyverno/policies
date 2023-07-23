@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+  namespace: require-base-image-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: cowrie
+        image: docker.io/trithemius/cowrie:latest
+      - name: ko
+        image: ghcr.io/dlorenc/hello-ko
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+  namespace: require-base-image-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+          - name: myapp
+            image: ghcr.io/samj1912/myapp:latest
+          - name: kyverno
+            image: ghcr.io/kyverno/kyverno:latest
+          restartPolicy: OnFailure

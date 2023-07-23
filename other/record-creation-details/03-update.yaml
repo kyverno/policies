@@ -1,0 +1,9 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: pod-patch01.yaml
+  shouldFail: true
+- file: pod-patch02.yaml
+  shouldFail: true
+commands:
+- script: if kubectl annotate namespace record-create-ns kyverno.io/created-by-; then exit 1; exit 0; fi
