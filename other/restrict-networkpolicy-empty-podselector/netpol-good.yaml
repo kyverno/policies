@@ -1,0 +1,34 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: goodnetpol01
+spec:
+  podSelector:
+    matchLabels:
+      foo: bar
+      app: busybox
+      see: saw
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: goodnetpol02
+spec:
+  podSelector:
+    matchLabels:
+      bar: foo
+      saw: see
+      app: nginbox
+  policyTypes:
+  - Egress
