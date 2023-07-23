@@ -1,0 +1,38 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: badrb01
+subjects:
+- kind: User
+  name: foo
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: "system:anonymous"
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: badrb02
+subjects:
+- kind: ServiceAccount
+  name: foo
+  namespace: foo
+roleRef:
+  kind: Role
+  name: "system:unauthenticated"
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: badrb03
+subjects:
+- kind: ServiceAccount
+  name: foo
+  namespace: foo
+roleRef:
+  kind: Role
+  name: "system:masters"
+  apiGroup: rbac.authorization.k8s.io
