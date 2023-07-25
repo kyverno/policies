@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: netpol-good.yaml
+  shouldFail: false
+- file: netpol-bad.yaml
+  shouldFail: true
