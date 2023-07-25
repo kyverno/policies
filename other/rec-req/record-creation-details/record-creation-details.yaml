@@ -41,26 +41,27 @@ spec:
         metadata:
           annotations:
             kyverno.io/created-by: "{{ request.userInfo | to_string(@) }}"
-  - name: prevent-updates-userinfo
+  - name: prevent-updates-deletes-userinfo-annotations
     match:
       any:
       - resources:
           kinds:
           - '*'
-          annotations:
-            kyverno.io/created-by: "?*"
     preconditions:
       any:
       - key: "{{request.operation || 'BACKGROUND'}}"
         operator: Equals
         value: UPDATE
+      - key: "{{ request.oldObject.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
+        operator: Equals
+        value: "?*"
     validate:
-      message: The annotation kyverno.io/created-by is protected and may not be altered.
+      message: The annotation kyverno.io/created-by is protected and may not be altered or removed.
       deny:
         conditions:
-          all:
+          any:
           - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
-            operator: NotEquals
+            operator: Equals
             value: ""
           - key: "{{ request.object.metadata.annotations.\"kyverno.io/created-by\" || '' }}"
             operator: NotEquals
