@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress01
+spec:
+  rules:
+  - host: endpoint01
+    https:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress02
+spec:
+  rules:
+  - host: endpoint02
+    https:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
