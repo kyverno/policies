@@ -42,6 +42,7 @@ jobs:
           - linkerd
           - nginx-ingress
           - openshift
+          # - other
           - other/a
           - other/b-d
           - other/e-l
