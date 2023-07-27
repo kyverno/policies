@@ -1,0 +1,22 @@
+name: cordon-and-drain-node
+version: 1.0.0
+displayName: Cordon and Drain Node
+createdAt: "2023-07-27T21:52:03.000Z"
+description: >-
+  There are cases where either an operations or security incident may occur and Nodes should be evacuated and placed in an unused state for further analysis. For example, a Node is found to be running a vulnerable version of a CRI engine or kernel and to minimize chances of a compromise may need to be decommissioned so another can be built. This policy shows how to use Kyverno to both cordon and drain a given Node and uses a hypothetical label being written to it called `testing=drain` to illustrate the point. For production use, the match block should be modified to trigger on the appropriate condition.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/cordon-and-drain-node/cordon-and-drain-node.yaml
+  ```
+keywords:
+  - kyverno
+  - other
+readme: |
+  There are cases where either an operations or security incident may occur and Nodes should be evacuated and placed in an unused state for further analysis. For example, a Node is found to be running a vulnerable version of a CRI engine or kernel and to minimize chances of a compromise may need to be decommissioned so another can be built. This policy shows how to use Kyverno to both cordon and drain a given Node and uses a hypothetical label being written to it called `testing=drain` to illustrate the point. For production use, the match block should be modified to trigger on the appropriate condition.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "other"
+  kyverno/kubernetesVersion: "1.26"
+  kyverno/subject: "Node"
+digest: 67ff7112606cbb626b2eb4a034d013553757283ba1e7fa8b9e3dfe640cc8bf21
