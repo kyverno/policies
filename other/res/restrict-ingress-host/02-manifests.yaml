@@ -5,3 +5,7 @@ apply:
   shouldFail: false
 - file: ingress-bad.yaml
   shouldFail: true
+- file: ingress-updates-bad.yaml
+  shouldFail: true
+- file: ingress-updates-good.yaml
+  shouldFail: false

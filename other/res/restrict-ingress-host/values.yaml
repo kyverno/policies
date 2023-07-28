@@ -1,6 +1,6 @@
 policies:
 - name: unique-ingress-host
   rules:
-  - name: check-single-host
+  - name: check-single-host-create
     values:
       hosts: "[\"www.github.com\", \"www.kyverno.com\", \"www.nirmata.com\"]"

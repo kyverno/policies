@@ -17,7 +17,7 @@ spec:
   validationFailureAction: audit
   background: false
   rules:
-    - name: check-single-host
+    - name: check-single-host-create
       match:
         any:
         - resources:
@@ -31,16 +31,40 @@ spec:
       preconditions:
         all:
         - key: "{{request.operation || 'BACKGROUND'}}"
-          operator: AnyIn
-          value:
-          - CREATE
-          - UPDATE
-        - key: "{{ request.object.spec.rules[].host }}"
-          operator: AnyIn
-          value: "{{ hosts }}"
+          operator: Equals
+          value: CREATE
       validate:
         message: "The Ingress host name must be unique."
-        deny: {}
+        deny:
+          conditions:
+            all:
+              - key: "{{ request.object.spec.rules[].host }}"
+                operator: AnyIn
+                value: "{{ hosts }}"
+    - name: check-single-host-update
+      match:
+        any:
+        - resources:
+            kinds:
+              - Ingress
+      preconditions:
+        all:
+        - key: "{{request.operation || 'BACKGROUND'}}"
+          operator: Equals
+          value: UPDATE
+      context:
+        - name: allhosts
+          apiCall:
+            urlPath: "/apis/networking.k8s.io/v1/ingresses"
+            jmesPath: "items[?metadata.uid!='{{ request.object.metadata.uid }}'].spec.rules[].host"
+      validate:
+        message: "The Ingress host name must be unique."
+        deny:
+          conditions:
+            all:
+              - key: "{{ request.object.spec.rules[].host }}"
+                operator: AnyIn
+                value: "{{ allhosts }}"
     - name: deny-multiple-hosts
       match:
         any:
