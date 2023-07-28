@@ -1,0 +1,20 @@
+name: forbid-cpu-limits
+policies:
+  - forbid-cpu-limits.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: forbid-cpu-limits
+    rule: check-cpu-limits
+    resources:
+    - good01
+    - good02
+    kind: Pod
+    result: pass
+  - policy: forbid-cpu-limits
+    rule: check-cpu-limits
+    resources:
+    - bad01
+    - bad02
+    kind: Pod
+    result: fail
