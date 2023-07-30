@@ -73,8 +73,7 @@ jobs:
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
       - name: Install latest Kyverno CLI
         run: |
-          download_url=$(curl -s "https://api.github.com/repos/kyverno/kyverno/releases/latest" | grep browser_download_url | grep kyverno-cli | grep linux_x86_64.tar.gz\" | cut -d '"' -f 4)
-          curl -L "$download_url" -o kyverno-cli.tar.gz
+          curl -L "https://github.com/kyverno/kyverno/releases/download/v1.10.2/kyverno-cli_v1.10.2_linux_x86_64.tar.gz" -o kyverno-cli.tar.gz
           tar -xvf kyverno-cli.tar.gz
           sudo cp kyverno /usr/local/bin/
       - name: Create kind cluster
