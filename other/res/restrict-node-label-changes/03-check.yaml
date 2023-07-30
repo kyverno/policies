@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+    if kubectl label --overwrite nodes $node foo=foo; then echo "Failure: successfully modified foo"; exit 1; else echo "Success: failed to modify label foo"; fi
+    if kubectl label nodes $node foo-; then echo "Failure: successfully removed foo"; exit 1; else echo "Success: failed to remove label foo"; fi
