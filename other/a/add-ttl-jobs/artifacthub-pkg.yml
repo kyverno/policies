@@ -6,7 +6,7 @@ description: >-
   Jobs which are user created can often pile up and consume excess space in the cluster. In Kubernetes 1.23, the TTL-after-finished controller is stable and will automatically clean up these Jobs if the ttlSecondsAfterFinished is specified. This policy adds the ttlSecondsAfterFinished field to an Job that does not have an ownerReference set if not already specified.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-ttl-jobs/add-ttl-jobs.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-ttl-jobs/add-ttl-jobs.yaml
   ```
 keywords:
   - kyverno

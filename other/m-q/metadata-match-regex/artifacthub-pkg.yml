@@ -6,7 +6,7 @@ description: >-
   Rather than a simple check to see if given metadata such as labels and annotations are present, in some cases they need to be present and the values match a specified regular expression. This policy illustrates how to ensure a label with key `corp.org/version` is both present and matches a given regex, in this case ensuring semver is met.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/metadata-match-regex/metadata-match-regex.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/m-q/metadata-match-regex/metadata-match-regex.yaml
   ```
 keywords:
   - kyverno

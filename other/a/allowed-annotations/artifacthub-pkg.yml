@@ -6,7 +6,7 @@ description: >-
   Rather than creating a deny list of annotations, it may be more useful to invert that list and create an allow list which then denies any others. This policy demonstrates how to allow two annotations with a specific key name of fluxcd.io/ while denying others that do not meet the pattern.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/allowed-annotations/allowed-annotations.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/allowed-annotations/allowed-annotations.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Containers may define ports on which they listen. In addition to a port number, a name field may optionally be used. Including a name makes it easier when defining Service resource definitions and others since the name may be referenced allowing the port number to change. This policy requires that for every containerPort defined there is also a name specified.      
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-container-port-names/require-container-port-names.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-container-port-names/require-container-port-names.yaml
   ```
 keywords:
   - kyverno

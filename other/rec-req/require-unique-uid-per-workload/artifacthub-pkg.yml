@@ -6,7 +6,7 @@ description: >-
   Two distinct workloads should not share a UID so that in a multitenant environment, applications  from different projects never run as the same user ID. When using persistent storage,  any files created by applications will also have different ownership in the file system. Running processes for applications as different user IDs means that if a security  vulnerability were ever discovered in the underlying container runtime, and an application  were able to break out of the container to the host, they would not be able to interact  with processes owned by other users, or from other applications, in other projects.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-unique-uid-per-workload/require-unique-uid-per-workload.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-unique-uid-per-workload/require-unique-uid-per-workload.yaml
   ```
 keywords:
   - kyverno

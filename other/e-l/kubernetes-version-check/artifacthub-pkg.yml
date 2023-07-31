@@ -6,7 +6,7 @@ description: >-
   It is often needed to make decisions for resources based upon the version of the Kubernetes API server in the cluster. This policy serves as an example for how to retrieve the minor version of the Kubernetes API server and subsequently use in a policy behavior. It will mutate a Secret upon its creation with a label called `apiminorversion` the value of which is the minor version of the API server.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/kubernetes-version-check/kubernetes-version-check.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/kubernetes-version-check/kubernetes-version-check.yaml
   ```
 keywords:
   - kyverno

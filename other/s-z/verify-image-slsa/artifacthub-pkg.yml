@@ -6,7 +6,7 @@ description: >-
   Provenance is used to identify how an artifact was produced and from where it originated. SLSA provenance is an industry-standard method of representing that provenance. This policy verifies that an image has SLSA provenance and was signed by the expected subject and issuer when produced through GitHub Actions. It requires configuration based upon your own values.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/verify-image-slsa/verify-image-slsa.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/s-z/verify-image-slsa/verify-image-slsa.yaml
   ```
 keywords:
   - kyverno

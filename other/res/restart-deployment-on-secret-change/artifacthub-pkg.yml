@@ -6,7 +6,7 @@ description: >-
   If Secrets are mounted in ways which do not naturally allow updates to be live refreshed it may be necessary to modify a Deployment. This policy watches a Secret and if it changes will write an annotation to one or more target Deployments thus triggering a new rollout and thereby refreshing the referred Secret. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restart-deployment-on-secret-change/restart-deployment-on-secret-change.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restart-deployment-on-secret-change/restart-deployment-on-secret-change.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Rather than blocking Pods which come from outside registries, it is also possible to mutate them so the pulls are directed to approved registries. In some cases, those registries may function as pull-through proxies and can fetch the image if not cached. This policy mutates all images either in the form 'image:tag' or 'registry.corp.com/image:tag' to be `myregistry.corp.com/`. Any path in the image name will be preserved. Note that this mutates Pods directly and not their controllers. It can be changed if desired but if so may need to not match on Pods.      
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/replace-image-registry/replace-image-registry.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/replace-image-registry/replace-image-registry.yaml
   ```
 keywords:
   - kyverno

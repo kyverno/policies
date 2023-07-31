@@ -6,7 +6,7 @@ description: >-
   ServiceAccounts which have the ability to edit/patch workloads which they created may potentially use that privilege to update to a different ServiceAccount with higher privileges. This policy, intended to be run in `enforce` mode, blocks updates to Pod controllers if those updates modify the serviceAccountName field. Updates to Pods directly for this field are not possible as it is immutable once set.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-pod-controller-serviceaccount-updates/restrict-pod-controller-serviceaccount-updates.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-pod-controller-serviceaccount-updates/restrict-pod-controller-serviceaccount-updates.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   The NFS subdir external provisioner project allows defining a StorageClass with a pathPattern, a template used to provision subdirectories on NFS exports. This can be controlled with an annotation on a PVC called `nfs.io/storage-path`. This policy ensures that if the StorageClass name `nfs-client` is used by a PVC, corresponding to the NFS subdir external provisioner, and if it sets the nfs.io/storage-path annotation that it cannot be empty, which may otherwise result in it consuming the root of the designated path.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/nfs-subdir-external-provisioner-storage-path/nfs-subdir-external-provisioner-storage-path.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/m-q/nfs-subdir-external-provisioner-storage-path/nfs-subdir-external-provisioner-storage-path.yaml
   ```
 keywords:
   - kyverno
