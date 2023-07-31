@@ -1,0 +1,42 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: require-run-as-nonroot
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "(!has(object.spec.securityContext) || \
+                   !has(object.spec.securityContext.runAsNonRoot) || \
+                   object.spec.securityContext.runAsNonRoot == true) \
+                   && \
+                   (object.spec.containers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.runAsNonRoot) || \
+                   container.securityContext.runAsNonRoot == true)) \
+                   && \
+                   (!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.runAsNonRoot) || \
+                   container.securityContext.runAsNonRoot == true)) \
+                   && \
+                   (!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.runAsNonRoot) || \
+                   container.securityContext.runAsNonRoot == true))"
+      message: "Running as root is not allowed."
+    
+    - expression: "has(object.spec.securityContext) || \
+                   (object.spec.containers.all(container, has(container.securityContext) && has(container.securityContext.runAsNonRoot)) \
+                   && \
+                   (!has(object.spec.initContainers) || object.spec.initContainers.all(container, has(container.securityContext) && has(container.securityContext.runAsNonRoot))) \
+                   && \
+                   (!has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.all(container, has(container.securityContext) && has(container.securityContext.runAsNonRoot))))"
+      message: "Either the field spec.securityContext.runAsNonRoot \
+                must be set to `true`, or the fields spec.containers[*].securityContext.runAsNonRoot, \
+                spec.initContainers[*].securityContext.runAsNonRoot, and spec.ephemeralContainers[*].securityContext.runAsNonRoot \
+                must be set to `true`."

@@ -1,0 +1,95 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  hostPID: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  hostIPC: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  hostPID: true
+  hostIPC: true
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  hostPID: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  hostIPC: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  hostNetwork: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: container01
+    image: dummyimagename

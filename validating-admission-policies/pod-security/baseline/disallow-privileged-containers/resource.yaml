@@ -1,0 +1,151 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      privileged: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      privileged: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      privileged: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      privileged: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      privileged: true
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      privileged: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      privileged: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      privileged: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      privileged: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      privileged: false

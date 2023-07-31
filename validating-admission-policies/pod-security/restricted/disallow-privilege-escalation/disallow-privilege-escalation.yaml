@@ -1,0 +1,28 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-privilege-escalation
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "object.spec.containers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.allowPrivilegeEscalation) && \
+                   container.securityContext.allowPrivilegeEscalation == false)"
+      message: "Privilege escalation is disallowed. The fields spec.containers[*].securityContext.allowPrivilegeEscalation must be set to `false`."
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.allowPrivilegeEscalation) && \
+                   container.securityContext.allowPrivilegeEscalation == false)"
+      message: "Privilege escalation is disallowed. The fields spec.initContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`."
+    
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.allowPrivilegeEscalation) && \
+                   container.securityContext.allowPrivilegeEscalation == false)"
+      message: "Privilege escalation is disallowed. The fields spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`."

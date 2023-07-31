@@ -1,0 +1,69 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-selinux
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "!has(object.spec.securityContext) || \
+                   !has(object.spec.securityContext.seLinuxOptions) || \
+                   !has(object.spec.securityContext.seLinuxOptions.type) || \
+                   object.spec.securityContext.seLinuxOptions.type == 'container_t' || \
+                   object.spec.securityContext.seLinuxOptions.type == 'container_init_t' || \
+                   object.spec.securityContext.seLinuxOptions.type == 'container_kvm_t'"
+      message: "Setting the SELinux type is restricted. The field spec.securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t)"
+    
+    - expression: "object.spec.containers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   !has(container.securityContext.seLinuxOptions.type) || \
+                   container.securityContext.seLinuxOptions.type == 'container_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_init_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_kvm_t')"
+      message: "Setting the SELinux type is restricted. The field spec.containers[*].securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t)"
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   !has(container.securityContext.seLinuxOptions.type) || \
+                   container.securityContext.seLinuxOptions.type == 'container_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_init_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_kvm_t')"
+      message: "Setting the SELinux type is restricted. The field spec.initContainers[*].securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t)"
+    
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   !has(container.securityContext.seLinuxOptions.type) || \
+                   container.securityContext.seLinuxOptions.type == 'container_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_init_t' || \
+                   container.securityContext.seLinuxOptions.type == 'container_kvm_t')"
+      message: "Setting the SELinux type is restricted. The field spec.ephemeralContainers[*].securityContext.seLinuxOptions.type must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t)"
+    
+    - expression: "!has(object.spec.securityContext) || \
+                   !has(object.spec.securityContext.seLinuxOptions) || \
+                   (!has(object.spec.securityContext.seLinuxOptions.user) && !has(object.spec.securityContext.seLinuxOptions.role))"
+      message: "Setting the SELinux user or role is forbidden. The fields spec.securityContext.seLinuxOptions.user, spec.securityContext.seLinuxOptions.role must be unset"
+
+    - expression: "object.spec.containers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   (!has(container.securityContext.seLinuxOptions.user) && !has(container.securityContext.seLinuxOptions.role)))"
+      message: "Setting the SELinux user or role is forbidden. The fields spec.containers[*].securityContext.seLinuxOptions.user, spec.containers[*].securityContext.seLinuxOptions.role must be unset"
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   (!has(container.securityContext.seLinuxOptions.user) && !has(container.securityContext.seLinuxOptions.role)))"
+      message: "Setting the SELinux user or role is forbidden. The fields spec.initContainers[*].securityContext.seLinuxOptions.user, spec.initContainers[*].securityContext.seLinuxOptions.role must be unset"
+    
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.seLinuxOptions) || \
+                   (!has(container.securityContext.seLinuxOptions.user) && !has(container.securityContext.seLinuxOptions.role)))"
+      message: "Setting the SELinux user or role is forbidden. The fields spec.ephemeralContainers[*].securityContext.seLinuxOptions.user, spec.ephemeralContainers[*].securityContext.seLinuxOptions.role must be unset"
+    

@@ -1,0 +1,362 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod12
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod13
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod14
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod15
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: false
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  - name: initcontainer02
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true

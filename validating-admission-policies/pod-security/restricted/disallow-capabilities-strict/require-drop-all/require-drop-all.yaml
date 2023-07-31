@@ -1,0 +1,31 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: require-drop-all
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "object.spec.containers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.capabilities) && \
+                   has(container.securityContext.capabilities.drop) && \
+                   container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))"
+      message: "Containers must drop `ALL` capabilities."
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.capabilities) && \
+                   has(container.securityContext.capabilities.drop) && \
+                   container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))"
+      message: "Containers must drop `ALL` capabilities."
+    
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, has(container.securityContext) && \
+                   has(container.securityContext.capabilities) && \
+                   has(container.securityContext.capabilities.drop) && \
+                   container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))"
+      message: "Containers must drop `ALL` capabilities."

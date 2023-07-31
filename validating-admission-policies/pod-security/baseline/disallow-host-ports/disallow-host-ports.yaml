@@ -1,0 +1,26 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-host-ports
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "object.spec.containers.all(container, !has(container.ports) || \
+                   container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))"
+      message: "The fields spec.containers[*].ports[*].hostPort must either be unset or set to `0`"
+
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.ports) || \
+                   container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))"
+      message: "The fields spec.initContainers[*].ports[*].hostPort must either be unset or set to `0`"
+
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.ports) || \
+                   container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))"
+      message: "The fields spec.ephemeralContainers[*].ports[*].hostPort must either be unset or set to `0`"

@@ -1,0 +1,269 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seccompProfile:
+      type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seccompProfile:
+      type: Localhost
+      localhostProfile: operator/default/profile1.json
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: operator/default/profile1.json
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename

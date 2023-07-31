@@ -1,0 +1,133 @@
+name: require-run-as-nonroot
+policies:
+  - require-run-as-nonroot.yaml
+resources:
+  - resource.yaml
+results:
+###### Pods - Bad
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod01
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod02
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod03
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod04
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod05
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod06
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod07
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod08
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod09
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod10
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod11
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod12
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod13
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod14
+    kind: Pod
+    result: fail
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: badpod15
+    kind: Pod
+    result: fail
+###### Pods - Good
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod01
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod02
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod03
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod04
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod05
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod06
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod07
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod08
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod09
+    kind: Pod
+    result: pass
+  - policy: require-run-as-nonroot
+    isValidatingAdmissionPolicy: true
+    resource: goodpod10
+    kind: Pod
+    result: pass

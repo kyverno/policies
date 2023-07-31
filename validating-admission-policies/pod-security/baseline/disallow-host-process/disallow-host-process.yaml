@@ -1,0 +1,32 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-host-process
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "object.spec.containers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.windowsOptions) || \
+                   !has(container.securityContext.windowsOptions.hostProcess) || \
+                   container.securityContext.windowsOptions.hostProcess == false)"
+      message: "HostProcess containers are disallowed. The field spec.containers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`"
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.windowsOptions) || \
+                   !has(container.securityContext.windowsOptions.hostProcess) || \
+                   container.securityContext.windowsOptions.hostProcess == false)"
+      message: "HostProcess containers are disallowed. The field spec.initContainers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`"
+
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.windowsOptions) || \
+                   !has(container.securityContext.windowsOptions.hostProcess) || \
+                   container.securityContext.windowsOptions.hostProcess == false)"
+      message: "HostProcess containers are disallowed. The field spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess must either be undefined or set to `false`"

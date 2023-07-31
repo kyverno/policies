@@ -1,0 +1,188 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: true
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  hostNetwork: true
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      windowsOptions:
+        hostProcess: false

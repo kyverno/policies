@@ -1,0 +1,168 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false

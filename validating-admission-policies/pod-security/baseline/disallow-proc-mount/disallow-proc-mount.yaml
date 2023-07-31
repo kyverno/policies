@@ -1,0 +1,29 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-proc-mount
+spec:
+  failurePolicy: Fail
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "object.spec.containers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.procMount) || \
+                   container.securityContext.procMount == 'Default')"
+      message: "procMount mode is disallowed. The field spec.containers[*].securityContext.procMount must either be unset or set to `Default`"
+    
+    - expression: "!has(object.spec.initContainers) || \
+                   object.spec.initContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.procMount) || \
+                   container.securityContext.procMount == 'Default')"
+      message: "procMount mode is disallowed. The field spec.initContainers[*].securityContext.procMount must either be unset or set to `Default`"
+
+    - expression: "!has(object.spec.ephemeralContainers) || \
+                   object.spec.ephemeralContainers.all(container, !has(container.securityContext) || \
+                   !has(container.securityContext.procMount) || \
+                   container.securityContext.procMount == 'Default')"
+      message: "procMount mode is disallowed. The field spec.ephemeralContainers[*].securityContext.procMount must either be unset or set to `Default`"

@@ -1,0 +1,17 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: disallow-host-namespaces
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["pods"]
+  validations:
+    - expression: "(!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) && \
+                   (!has(object.spec.hostIPC) || object.spec.hostIPC == false) && \
+                   (!has(object.spec.hostPID) || object.spec.hostPID == false)"
+      message: "Sharing the host namespaces is disallowed. The fields spec.hostNetwork, spec.hostIPC, and spec.hostPID must be unset or set to `false`."
+
