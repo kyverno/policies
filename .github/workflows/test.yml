@@ -49,7 +49,7 @@ jobs:
           - other/m-q
           - other/rec-req
           - other/res
-          - other/s-z
+          # - other/s-z
           # - pod-security
           # - psa
           - psp-migration

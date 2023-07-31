@@ -97,6 +97,7 @@ spec:
                   secretKeyRef:
                     name: bottom-secret
                     key: foo
+          restartPolicy: OnFailure
 ---
 apiVersion: batch/v1
 kind: CronJob
