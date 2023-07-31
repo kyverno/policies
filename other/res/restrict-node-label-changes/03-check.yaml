@@ -5,3 +5,6 @@ commands:
     node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
     if kubectl label --overwrite nodes $node foo=foo; then echo "Failure: successfully modified foo"; exit 1; else echo "Success: failed to modify label foo"; fi
     if kubectl label nodes $node foo-; then echo "Failure: successfully removed foo"; exit 1; else echo "Success: failed to remove label foo"; fi
+    if kubectl label nodes $node bar=foo; then echo "Success: added label bar"; else echo "Failed to add label bar"; exit 1; fi
+    if kubectl label nodes --overwrite $node bar=bar; then echo "Success: modified label bar"; else echo "Failed to modify label bar"; exit 1; fi
+    if kubectl label nodes $node bar-; then echo "Success: removed label bar"; else echo "Failed to remove label bar"; exit 1; fi

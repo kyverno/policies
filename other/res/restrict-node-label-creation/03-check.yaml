@@ -4,3 +4,6 @@ commands:
 - script: |
     node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
     if kubectl label --overwrite nodes $node foo=bar; then echo "Failure: successfully set label foo"; exit 1; else echo "Success: failed to set label foo"; fi
+    if kubectl label --overwrite nodes $node bar=bar; then echo "Success: set label bar"; else echo "Failed to set label bar"; exit 1; fi
+    if kubectl label --overwrite nodes $node bar=foo; then echo "Success: modified label bar"; else echo "Failed to modify label bar"; exit 1; fi
+    if kubectl label nodes $node bar-; then echo "Success: removed label bar"; else echo "Failed to remove label bar"; exit 1; fi

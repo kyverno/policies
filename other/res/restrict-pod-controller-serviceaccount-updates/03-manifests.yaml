@@ -5,3 +5,7 @@ apply:
   shouldFail: true
 - file: deploy-bad-update.yaml
   shouldFail: true
+- file: cronjob-good-update.yaml
+  shouldFail: false
+- file: deploy-good-update.yaml
+  shouldFail: false

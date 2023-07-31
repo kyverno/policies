@@ -16,26 +16,27 @@ spec:
         app: busybox
     spec:
       initContainers:
-      - name: busybox-init
-        image: busybox:1.35
-        envFrom:
-        - secretRef:
-            name: bottom-secret
-      - name: busybox02-init
-        image: busybox:1.35
+        - name: busybox-init
+          image: busybox:1.35
+          envFrom:
+          - secretRef:
+              name: not-secret
+        - name: busybox02-init
+          image: busybox:1.35
       containers:
-      - name: busybox
-        image: busybox:1.35
-      - name: busybox02
-        image: busybox:1.35
-        env:
-        - name: ENV_FOO
-          value: "bar"
-        - name: ENV_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: bottom-secret
-              key: foo
+        - name: busybox
+          image: busybox:1.35
+          envFrom:
+          - secretRef:
+              name: not-so-secret
+        - name: busybox02
+          image: busybox:1.35
+          env:
+          - name: ENV_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: bottom-secret
+                key: foo
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,27 +76,27 @@ spec:
       template:
         spec:
           initContainers:
-          - name: busybox-init
-            image: busybox:1.35
-            envFrom:
-            - secretRef:
-                name: bottom-secret
-          - name: busybox02-init
-            image: busybox:1.35
+            - name: busybox-init
+              image: busybox:1.35
+              envFrom:
+              - secretRef:
+                  name: not-secret
+            - name: busybox02-init
+              image: busybox:1.35
           containers:
-          - name: busybox
-            image: busybox:1.35
-          - name: busybox02
-            image: busybox:1.35
-            env:
-            - name: ENV_FOO
-              value: "bar"
-            - name: ENV_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bottom-secret
-                  key: foo
-          restartPolicy: OnFailure
+            - name: busybox
+              image: busybox:1.35
+              envFrom:
+              - secretRef:
+                  name: not-so-secret
+            - name: busybox02
+              image: busybox:1.35
+              env:
+              - name: ENV_SECRET
+                valueFrom:
+                  secretKeyRef:
+                    name: bottom-secret
+                    key: foo
 ---
 apiVersion: batch/v1
 kind: CronJob

@@ -87,3 +87,31 @@ spec:
     - name: secret-volume
       secret:
         secretName: bottom-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+    - name: busybox-init
+      image: busybox:1.35
+      envFrom:
+      - secretRef:
+          name: not-secret
+    - name: busybox02-init
+      image: busybox:1.35
+  containers:
+    - name: busybox
+      image: busybox:1.35
+      envFrom:
+      - secretRef:
+          name: not-so-secret
+    - name: busybox02
+      image: busybox:1.35
+      env:
+      - name: ENV_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: bottom-secret
+            key: foo
