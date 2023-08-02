@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodsvc01
+spec:
+  selector:
+    app: nginx
+  ports:
+    - name: port-a
+      port: 32123
+      targetPort: 32123
+      nodePort: 31000
+    - name: port-b
+      port: 32444
+      targetPort: 32444
+      nodePort: 30001
+  type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodsvc02
+spec:
+  selector:
+    app: nginx
+  ports:
+    - name: foo-port
+      port: 32999
+      targetPort: 32999
+      nodePort: 30009
+  type: NodePort
