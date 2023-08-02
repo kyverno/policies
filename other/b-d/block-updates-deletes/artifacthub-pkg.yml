@@ -6,7 +6,7 @@ description: >-
   Kubernetes RBAC allows for controls on kinds of resources or those with specific names. But it does not have the type of granularity often required in more complex environments. This policy restricts updates and deletes to any Service resource that contains the label `protected=true` unless by a cluster-admin.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-updates-deletes/block-updates-deletes.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/block-updates-deletes/block-updates-deletes.yaml
   ```
 keywords:
   - kyverno

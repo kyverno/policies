@@ -6,7 +6,7 @@ description: >-
   Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-emptydir-requests-limits/require-emptydir-requests-limits.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-emptydir-requests-limits/require-emptydir-requests-limits.yaml
   ```
 keywords:
   - kyverno

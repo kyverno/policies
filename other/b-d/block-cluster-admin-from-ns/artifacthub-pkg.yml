@@ -8,7 +8,7 @@ description: >-
           In this policy, Kyverno look for all user operations (`CREATE, UPDATE, DELETE`), on every object kind (Pod,Deployment,Route,Service,etc.), in the testnamespace namespace, and for the `clusterRole cluster-admin`. The `subject User testuser` is also mentioned so it won’t include all the cluster-admins in the cluster, but will be flexiable enough to apply only for a sub-group of the cluster-admins in the cluster.
 install: |- 
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-cluster-admin-from-ns/block-cluster-admin-from-ns.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/block-cluster-admin-from-ns/block-cluster-admin-from-ns.yaml
     ```   
 keywords:
   - rbac

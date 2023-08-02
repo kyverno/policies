@@ -6,7 +6,7 @@ description: >-
   The nodeSelector field uses labels to select the node on which a Pod can be scheduled. This can be useful when Pods have specific needs that only certain nodes in a cluster can provide. This policy adds the nodeSelector field to a Pod spec and configures it with labels `foo` and `color`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-nodeSelector/add-nodeSelector.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-nodeSelector/add-nodeSelector.yaml
   ```
 keywords:
   - kyverno

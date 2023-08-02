@@ -6,7 +6,7 @@ description: >-
   Images that are old usually have some open security vulnerabilities which are not patched. This policy checks the contents of every container image and inspects them for the create time. If it finds any image which was built more than 6 months ago this policy blocks the deployment.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-stale-images/block-stale-images.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/block-stale-images/block-stale-images.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   ExternalDNS, part of Kubernetes SIGs, triggers the creation of external DNS records in supported providers when the annotation`external-dns.alpha.kubernetes.io/hostname` is present. Like with internal DNS, duplicates must be avoided. This policy requires every such Service have a cluster-unique hostname present in the value of the annotation.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-unique-external-dns/require-unique-external-dns.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-unique-external-dns/require-unique-external-dns.yaml
   ```
 keywords:
   - kyverno

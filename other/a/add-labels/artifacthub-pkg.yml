@@ -6,7 +6,7 @@ description: >-
   Labels are used as an important source of metadata describing objects in various ways or triggering other functionality. Labels are also a very basic concept and should be used throughout Kubernetes. This policy performs a simple mutation which adds a label `foo=bar` to Pods, Services, ConfigMaps, and Secrets.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-labels/add-labels.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-labels/add-labels.yaml
   ```
 keywords:
   - kyverno

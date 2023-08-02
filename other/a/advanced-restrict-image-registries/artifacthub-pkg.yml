@@ -6,7 +6,7 @@ description: >-
   In instances where a ClusterPolicy defines all the approved image registries is insufficient, more granular control may be needed to set permitted registries, especially in multi-tenant use cases where some registries may be based on the Namespace. This policy shows an advanced version of the Restrict Image Registries policy which gets a global approved registry from a ConfigMap and, based upon an annotation at the Namespace level, gets the registry approved for that Namespace.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/advanced-restrict-image-registries/advanced-restrict-image-registries.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/advanced-restrict-image-registries/advanced-restrict-image-registries.yaml
   ```
 keywords:
   - kyverno

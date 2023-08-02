@@ -6,7 +6,7 @@ description: >-
   This validation is valuable when annotations are used to define durations, such as to ensure a Pod lifetime annotation does not exceed some site specific max threshold. Pod lifetime annotation can be no greater than 8 hours.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-pod-duration/enforce-pod-duration.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/enforce-pod-duration/enforce-pod-duration.yaml
   ```
 keywords:
   - kyverno

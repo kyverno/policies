@@ -6,7 +6,7 @@ description: >-
   Liveness and readiness probes accomplish different goals, and setting both to the same is an anti-pattern and often results in app problems in the future. This policy checks that liveness and readiness probes are not equal.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/ensure-probes-different/ensure-probes-different.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/ensure-probes-different/ensure-probes-different.yaml
   ```
 keywords:
   - kyverno
