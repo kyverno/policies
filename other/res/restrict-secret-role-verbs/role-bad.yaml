@@ -1,0 +1,32 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: badcr01
+rules:
+- apiGroups: [""]
+  resources: ["namespaces", "secrets", "pods"]
+  verbs: ["get", "create"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: badcr02
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: [""]
+  resources: ["namespaces", "secrets", "pods"]
+  verbs: ["create", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: badcr03
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["update", "list", "create"]
