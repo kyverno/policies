@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: scale-deployment-zero
+status:
+  ready: true
