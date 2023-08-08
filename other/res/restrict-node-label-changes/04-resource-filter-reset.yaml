@@ -1,0 +1,8 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' - | kubectl apply -f -
+- script: |
+    node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}');
+    kubectl label --overwrite nodes $node foo-
