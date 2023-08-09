@@ -1,0 +1,6 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:nodes/system\:thisisjunk/g' - | kubectl apply -f -
+- command: sleep 5
