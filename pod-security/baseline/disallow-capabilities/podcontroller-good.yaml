@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: init
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add:
+              - AUDIT_WRITE
+              - CHOWN
+              - MKNOD
+      containers:
+      - name: add-capabilities
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+      - name: add-capabilities-again
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+            drop:
+            - "ALL"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          initContainers:
+          - name: init
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add:
+                  - AUDIT_WRITE
+                  - CHOWN
+                  - MKNOD
+          containers:
+          - name: add-capabilities
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+          - name: add-capabilities-again
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+                drop:
+                - "ALL"

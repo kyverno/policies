@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: init
+        image: busybox:1.35
+        ports:
+        - containerPort: 8080
+          hostPort: 8090
+      containers:
+      - name: busybox
+        image: busybox:1.35
+      - name: busybox-again
+        image: busybox:1.35
+        ports:
+        - containerPort: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          initContainers:
+          - name: init
+            image: busybox:1.35
+            ports:
+            - containerPort: 8090
+          containers:
+          - name: busybox
+            image: busybox:1.35
+          - name: busybox-again
+            image: busybox:1.35
+            ports:
+            - containerPort: 8088
+              hostPort: 8080

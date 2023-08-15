@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  initContainers:
+  - name: busybox01-init
+    image: busybox:1.35
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+    securityContext:
+      seccompProfile:
+        type: Localhost
+        localhostProfile: profiles/audit.json
+  - name: busybox02
+    image: busybox:1.35
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  - name: busybox02
+    image: busybox:1.35
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  securityContext:
+    seccompProfile:
+      type: Unconfined
+  containers:
+  - name: busybox01
+    image: busybox:1.35

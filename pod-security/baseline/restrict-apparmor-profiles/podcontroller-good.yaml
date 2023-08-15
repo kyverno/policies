@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        oof.org.io/foo: bar
+        container.apparmor.security.beta.kubernetes.io/busybox01: runtime/default
+    spec:
+      containers:
+      - name: busybox01
+        image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            oof.org.io/foo: bar
+            container.apparmor.security.beta.kubernetes.io/busybox01: localhost/foo
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: busybox01
+            image: busybox:1.35

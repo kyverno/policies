@@ -1,0 +1,125 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: busybox01-init
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      containers:
+      - name: busybox01
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            type: container_engine_t
+      - name: busybox02
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: busybox01-init
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      containers:
+      - name: busybox01
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            user: "1000"
+            role: "foo"
+            type: container_kvm_t
+      - name: busybox02
+        image: busybox:1.35
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          initContainers:
+          - name: busybox01-init
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                type: container_engine_t
+          containers:
+          - name: busybox01
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+          - name: busybox02
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                type: container_init_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          initContainers:
+          - name: busybox01-init
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                type: container_engine_t
+          containers:
+          - name: busybox01
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+          - name: busybox02
+            image: busybox:1.35
+            securityContext:
+              seLinuxOptions:
+                user: "1000"
+                role: "foo"
+                type: container_init_t

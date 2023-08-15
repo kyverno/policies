@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  hostPID: true
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  hostIPC: true
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+  - name: busybox02
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  hostNetwork: true
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+  - name: busybox02
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  hostPID: false
+  hostIPC: true
+  hostNetwork: true
+  containers:
+  - name: busybox01
+    image: busybox:1.35
+  - name: busybox02
+    image: busybox:1.35

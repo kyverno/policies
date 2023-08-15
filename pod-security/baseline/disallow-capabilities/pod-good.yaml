@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+          - AUDIT_WRITE
+          - CHOWN
+          - MKNOD
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+  - name: add-capabilities-again
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+        drop:
+        - "ALL"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+          - AUDIT_WRITE
+          - CHOWN
+          - MKNOD
+  - name: init-again
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+        drop:
+        - "ALL"
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+  - name: add-capabilities-again
+    image: busybox:1.35
