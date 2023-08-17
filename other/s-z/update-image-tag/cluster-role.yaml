@@ -13,8 +13,3 @@ rules:
   - deployments
   verbs:
   - update
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: update-image-tag-ns
