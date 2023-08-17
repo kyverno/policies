@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: baddeployment01
+  name: baddeployment01-new
 spec:
   replicas: 1
   selector:
@@ -24,7 +24,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: badcronjob01
+  name: badcronjob01-new
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -39,3 +39,148 @@ spec:
             image: busybox:1.35
           - name: busybox02
             image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostPID: true
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostIPC: true
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostNetwork: true
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostPID: true
+      hostIPC: true
+      hostNetwork: true
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostPID: true
+          containers:
+          - name: container01
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostIPC: true
+          containers:
+          - name: container01
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostNetwork: true
+          containers:
+          - name: container01
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostPID: true
+          hostIPC: true
+          hostNetwork: true
+          containers:
+          - name: container01
+            image: busybox:1.35
+---

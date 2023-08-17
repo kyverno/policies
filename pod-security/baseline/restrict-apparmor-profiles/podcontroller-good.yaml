@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gooddeployment01
+  name: gooddeployment01-new
 spec:
   replicas: 1
   selector:
@@ -22,7 +22,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: goodcronjob01
+  name: goodcronjob01-new
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -36,4 +36,113 @@ spec:
           restartPolicy: Never
           containers:
           - name: busybox01
+            image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/container01: runtime/default
+    spec:
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+      annotations:
+        container.apparmor.security.beta.kubernetes.io/container01: localhost/foo
+    spec:
+      containers:
+      - name: container01
+        image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            container.apparmor.security.beta.kubernetes.io/container01: runtime/default
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            container.apparmor.security.beta.kubernetes.io/container01: localhost/foo
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
             image: busybox:1.35

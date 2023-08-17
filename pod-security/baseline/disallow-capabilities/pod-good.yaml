@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod01
+  name: goodpod01-new
 spec:
   initContainers:
   - name: init
@@ -29,7 +29,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod02
+  name: goodpod02-new
 spec:
   initContainers:
   - name: init
@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod03
+  name: goodpod03-new
 spec:
   containers:
   - name: add-capabilities
@@ -69,10 +69,99 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod04
+  name: goodpod04-new
 spec:
   containers:
   - name: add-capabilities
     image: busybox:1.35
   - name: add-capabilities-again
     image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - DAC_OVERRIDE
+  - name: container02
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - DAC_OVERRIDE
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - DAC_OVERRIDE
+  containers:
+  - name: container01
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID

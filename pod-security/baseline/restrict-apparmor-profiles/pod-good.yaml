@@ -4,7 +4,7 @@ metadata:
   annotations:
     oof.org.io/foo: bar
     container.apparmor.security.beta.kubernetes.io/busybox01: runtime/default
-  name: goodpod01
+  name: goodpod01-new
 spec:
   containers:
   - name: busybox01
@@ -16,7 +16,7 @@ metadata:
   annotations:
     container.apparmor.security.beta.kubernetes.io/busybox01: localhost/foo
     oof.org.io/foo: bar
-  name: goodpod02
+  name: goodpod02-new
 spec:
   containers:
   - name: busybox01
@@ -25,8 +25,39 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod03
+  name: goodpod03-new
 spec:
   containers:
   - name: busybox01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/container01: runtime/default
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/container01: localhost/foo
+spec:
+  containers:
+  - name: container01
     image: busybox:1.35

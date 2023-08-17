@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod01
+  name: goodpod01-new
 spec:
   containers:
   - name: busybox
@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod02
+  name: goodpod02-new
 spec:
   containers:
   - name: busybox
@@ -37,8 +37,33 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod03
+  name: goodpod03-new
 spec:
   containers:
   - name: busybox
     image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    volumeMounts:
+      - name: temp
+        mountPath: /scratch
+  volumes:
+  - name: temp
+    emptyDir: {}
+---

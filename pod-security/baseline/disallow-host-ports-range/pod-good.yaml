@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod01
+  name: goodpod01-new
 spec:
   initContainers:
   - name: init
@@ -19,7 +19,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod02
+  name: goodpod02-new
 spec:
   initContainers:
   - name: init
@@ -42,7 +42,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod03
+  name: goodpod03-new
 spec:
   containers:
   - name: busybox
@@ -51,7 +51,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod04
+  name: goodpod04-new
 spec:
   containers:
   - name: busybox
@@ -59,3 +59,157 @@ spec:
     ports:
     - containerPort: 8088
       hostPort: 5000
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 5555
+      protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 5555
+      protocol: TCP
+    - name: web-insecure
+      containerPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+  - name: container02
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+  - name: container02
+    image: busybox:1.35
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 5555
+      protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+  - name: container02
+    image: busybox:1.35
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 5555
+      protocol: TCP
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+      hostPort: 5555
+  containers:
+  - name: container01
+    image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+      hostPort: 5555
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+  - name: initcontainer02
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+      hostPort: 5555
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: web-insecure
+      containerPort: 8080
+---
