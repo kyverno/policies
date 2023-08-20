@@ -1,0 +1,10 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+delete:
+- apiVersion: kyverno.io/v1
+  kind: ClusterPolicy
+  name: restrict-volume-types
+commands:
+- command: kubectl delete all --all --force --grace-period=0 -n restrict-voltypes-ns
+- command: sleep 30
+- command: kubectl delete ns restrict-voltypes-ns
