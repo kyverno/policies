@@ -46,60 +46,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: restrict-voltypes-ns
-  name: gooddeployment03
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: busybox:1.35
-        volumeMounts:
-        - name: mysettings
-          mountPath: /settings
-      volumes:
-      - name: mysettings
-        configMap:
-          name: settings
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: restrict-voltypes-ns
-  name: gooddeployment04
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: busybox:1.35
-        volumeMounts:
-        - name: warehouse
-          mountPath: /warehouse
-      volumes:
-      - name: warehouse
-        csi:
-          driver: disk.csi.azure.com
-          readOnly: true
-          fsType: xfs
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment05
 spec:
   replicas: 1
@@ -217,32 +163,6 @@ spec:
               path: vault-token
               expirationSeconds: 7200
               audience: vault
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  namespace: restrict-voltypes-ns
-  name: gooddeployment09
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: busybox:1.35
-        volumeMounts:
-        - mountPath: /mysecret
-          name: mysecret
-      volumes:
-      - name: mysecret
-        secret:
-          secretName: mysecret
 ---
 apiVersion: batch/v1
 kind: CronJob
