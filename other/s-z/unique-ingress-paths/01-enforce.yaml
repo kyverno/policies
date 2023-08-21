@@ -1,0 +1,7 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' unique-ingress-paths.yaml | kubectl create -f - 
+apply:
+- ingress.yaml

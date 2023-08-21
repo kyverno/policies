@@ -32,6 +32,7 @@ spec:
       targets:
         - apiVersion: apps/v1
           kind: Deployment
+          name: "{{ request.object.metadata.name }}"
       patchStrategicMerge:
         spec:
           template:
