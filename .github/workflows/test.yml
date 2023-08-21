@@ -49,7 +49,7 @@ jobs:
           - other/rec-req
           - other/res
           - other/s-z
-          # - pod-security
+          - pod-security
           # - psa
           - psp-migration
           # - tekton
