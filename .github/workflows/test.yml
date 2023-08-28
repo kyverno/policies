@@ -50,7 +50,7 @@ jobs:
           - other/res
           - other/s-z
           - pod-security
-          # - psa
+          - psa
           - psp-migration
           # - tekton
           # - traefik
