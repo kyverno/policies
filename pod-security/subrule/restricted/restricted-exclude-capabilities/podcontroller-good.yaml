@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: container01
-          image: nginx:1.1.9
+          image: nginx:dontpull
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
@@ -404,7 +404,7 @@ spec:
             drop:
             - ALL
       - name: container02-init
-        image: redis:7.2
+        image: redis:dontpull
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -415,7 +415,7 @@ spec:
             - SYS_ADMIN
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: nginx:dontpull
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -439,7 +439,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: container01
-              image: nginx:1.1.9
+              image: nginx:dontpull
               securityContext:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: true
@@ -462,7 +462,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: container01
-              image: nginx:1.1.9
+              image: nginx:dontpull
               securityContext:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: true
@@ -828,7 +828,7 @@ spec:
                 drop:
                 - ALL
           - name: container02-init
-            image: redis:7.2
+            image: redis:dontpull
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -839,7 +839,7 @@ spec:
                 - SYS_ADMIN
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: nginx:dontpull
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true

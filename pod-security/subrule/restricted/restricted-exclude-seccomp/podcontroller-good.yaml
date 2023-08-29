@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: container01
-          image: nginx:1.1.9
+          image: nginx:dontpull
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
@@ -367,10 +367,9 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          restartPolicy: OnFailure
           containers:
             - name: container01
-              image: nginx:1.1.9
+              image: nginx:dontpull
               securityContext:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: true
@@ -393,7 +392,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: container01
-              image: nginx:1.1.9
+              image: nginx:dontpull
               securityContext:
                 allowPrivilegeEscalation: false
                 runAsNonRoot: true

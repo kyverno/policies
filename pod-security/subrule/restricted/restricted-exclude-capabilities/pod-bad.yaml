@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: true
       runAsNonRoot: true
@@ -22,7 +22,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: false
@@ -39,7 +39,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -70,7 +70,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsUser: 0
@@ -104,7 +104,7 @@ spec:
         add:
         - SYS_NET_ADMIN
   - name: init-container02
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -142,7 +142,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -164,7 +164,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     ports:
     - name: web-insecure
       containerPort: 8080
@@ -190,7 +190,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -214,7 +214,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       privileged: true
       allowPrivilegeEscalation: false
@@ -236,7 +236,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       seLinuxOptions:
         type: container_engine_t
@@ -261,7 +261,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -284,7 +284,7 @@ spec:
       value: "4"
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -301,7 +301,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -324,7 +324,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       allowPrivilegeEscalation: false
       runAsNonRoot: true
@@ -350,7 +350,7 @@ spec:
       type: RuntimeDefault
   containers:
   - name: container01
-    image: nginx:1.25
+    image: nginx:dontpull
     securityContext:
       seLinuxOptions:
         user: sysadm_u

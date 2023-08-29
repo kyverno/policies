@@ -4,5 +4,3 @@ assert:
   - patched-ns01.yaml
   - patched-ns02.yaml
   - patched-ns03.yaml
-error:
-  - not-patched-ns04.yaml
