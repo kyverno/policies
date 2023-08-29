@@ -6,7 +6,6 @@ policies:
           imageData:
             labels:
               org.opencontainers.image.source: "https://github.com/kyverno/kyverno-examples"
-          imageData:
             annotations:
               org.opencontainers.image.source: "https://github.com/kyverno/kyverno-examples"
     resources:
