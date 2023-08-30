@@ -13,3 +13,4 @@ spec:
     port: 22
   selector:
     kubevirt.io/domain: "vmi-name"
+  type: ClusterIP
