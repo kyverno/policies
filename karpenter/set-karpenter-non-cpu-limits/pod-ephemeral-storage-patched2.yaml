@@ -10,6 +10,7 @@ spec:
       resources:
         requests:
           ephemeral-storage: "1Gi"
+          memory: "1Gi"
         limits:
           cpu: "1"
           memory: "1Gi"
