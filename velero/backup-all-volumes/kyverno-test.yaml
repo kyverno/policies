@@ -1,34 +1,38 @@
 name: backup-all-volumes
 policies:
-  - backup-all-volumes.yaml
+- backup-all-volumes.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: backup-all-volumes
-    rule: backup-velero-pv
-    resource: first
-    kind: Pod
-    namespace: foo
-    patchedResource: patchedResource.yaml
-    result: pass
-  - policy: backup-all-volumes
-    rule: backup-velero-pv
-    resource: second
-    kind: Pod
-    namespace: bar
-    result: skip
-  - policy: backup-all-volumes
-    rule: backup-velero-pv
-    resource: third
-    kind: Pod
-    namespace: foo
-    patchedResource: patchedResource-third.yaml
-    result: pass
-  - policy: backup-all-volumes
-    rule: autogen-backup-velero-pv
-    resource: fourth
-    kind: Deployment
-    namespace: foo
-    patchedResource: patchedResource-fourth.yaml
-    result: pass
+- kind: Pod
+  namespace: foo
+  patchedResource: patchedResource.yaml
+  policy: backup-all-volumes
+  resources:
+  - first
+  result: pass
+  rule: backup-velero-pv
+- kind: Pod
+  namespace: bar
+  policy: backup-all-volumes
+  resources:
+  - second
+  result: skip
+  rule: backup-velero-pv
+- kind: Pod
+  namespace: foo
+  patchedResource: patchedResource-third.yaml
+  policy: backup-all-volumes
+  resources:
+  - third
+  result: pass
+  rule: backup-velero-pv
+- kind: Deployment
+  namespace: foo
+  patchedResource: patchedResource-fourth.yaml
+  policy: backup-all-volumes
+  resources:
+  - fourth
+  result: pass
+  rule: autogen-backup-velero-pv
+variables: values.yaml

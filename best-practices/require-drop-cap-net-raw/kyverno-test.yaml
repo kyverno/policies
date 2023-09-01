@@ -1,24 +1,24 @@
-# Tests for this policy are covered in a more extensive fashion in the PSS restricted profile
-# in disallow-capabilities-strict. Since the only difference is the value being dropped,
-# those tests are sufficient to test for this policy.
 name: require-drop-cap-net-raw
 policies:
-  - require-drop-cap-net-raw.yaml
+- require-drop-cap-net-raw.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: drop-cap-net-raw
-    rule: require-drop-cap-net-raw
-    resource: drop-good
-    kind: Pod
-    result: pass
-  - policy: drop-cap-net-raw
-    rule: require-drop-cap-net-raw
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: drop-cap-net-raw
-    rule: require-drop-cap-net-raw
-    resource: badpod02
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - drop-good
+  result: pass
+  rule: require-drop-cap-net-raw
+- kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod01
+  result: fail
+  rule: require-drop-cap-net-raw
+- kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod02
+  result: fail
+  rule: require-drop-cap-net-raw

@@ -1,17 +1,18 @@
 name: restrict-storageclass
 policies:
-  -  restrict-storageclass.yaml
+- restrict-storageclass.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-storageclass
-    rule: storageclass-delete
-    resource: badstorageclass
-    kind: StorageClass
-    result: fail
-  - policy: restrict-storageclass
-    rule: storageclass-delete
-    resource: goodstorageclass
-    kind: StorageClass
-    result: pass
-  
+- kind: StorageClass
+  policy: restrict-storageclass
+  resources:
+  - badstorageclass
+  result: fail
+  rule: storageclass-delete
+- kind: StorageClass
+  policy: restrict-storageclass
+  resources:
+  - goodstorageclass
+  result: pass
+  rule: storageclass-delete

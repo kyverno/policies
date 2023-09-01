@@ -1,16 +1,18 @@
 name: no-localhost-service
 policies:
-  -  disallow-localhost-services.yaml
+- disallow-localhost-services.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: no-localhost-service
-    rule: no-localhost-service
-    resource: my-service
-    kind: Service
-    result: fail
-  - policy: no-localhost-service
-    rule: no-localhost-service
-    resource: my-np-service
-    kind: Service
-    result: skip
+- kind: Service
+  policy: no-localhost-service
+  resources:
+  - my-service
+  result: fail
+  rule: no-localhost-service
+- kind: Service
+  policy: no-localhost-service
+  resources:
+  - my-np-service
+  result: skip
+  rule: no-localhost-service

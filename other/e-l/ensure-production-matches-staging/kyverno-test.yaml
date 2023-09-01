@@ -1,26 +1,28 @@
 name: ensure-production-matches-staging
 policies:
-  - ensure-production-matches-staging.yaml
+- ensure-production-matches-staging.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: ensure-production-matches-staging
-    rule: require-staging-deployment
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip
-  - policy: ensure-production-matches-staging
-    rule: require-same-image
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip  
-  - policy: ensure-production-matches-staging
-    rule: require-same-or-older-imageversion
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip    
-  
+- kind: Deployment
+  namespace: staging
+  policy: ensure-production-matches-staging
+  resources:
+  - deploy1
+  result: skip
+  rule: require-staging-deployment
+- kind: Deployment
+  namespace: staging
+  policy: ensure-production-matches-staging
+  resources:
+  - deploy1
+  result: skip
+  rule: require-same-image
+- kind: Deployment
+  namespace: staging
+  policy: ensure-production-matches-staging
+  resources:
+  - deploy1
+  result: skip
+  rule: require-same-or-older-imageversion
+variables: values.yaml

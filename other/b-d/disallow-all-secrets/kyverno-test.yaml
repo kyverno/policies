@@ -1,67 +1,69 @@
 name: no-secrets
 policies:
-  -  disallow-all-secrets.yaml
+- disallow-all-secrets.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-# testing secret-env-pod pod resource against all three rules
-  - policy: no-secrets
-    rule: secrets-not-from-env
-    resource: secret-env-pod
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: no-secrets
-    rule: secrets-not-from-envfrom
-    resource: secret-env-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: no-secrets
-    rule: secrets-not-from-volumes
-    resource: secret-env-pod
-    kind: Pod
-    namespace: default
-    result: pass
-
- # testing secret-ref-pod pod resource against all three rules
-
-  - policy: no-secrets
-    rule: secrets-not-from-env
-    resource: secret-ref-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: no-secrets
-    rule: secrets-not-from-envfrom
-    resource: secret-ref-pod
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: no-secrets
-    rule: secrets-not-from-volumes
-    resource: secret-ref-pod
-    kind: Pod
-    namespace: default
-    result: pass
-
-# testing secret-vol-pod pod resource against all three rules
-  - policy: no-secrets
-    rule: secrets-not-from-env
-    resource: secret-vol-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: no-secrets
-    rule: secrets-not-from-envfrom
-    resource: secret-vol-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: no-secrets
-    rule: secrets-not-from-volumes
-    resource: secret-vol-pod
-    kind: Pod
-    namespace: default
-    result: fail
- 
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-env-pod
+  result: fail
+  rule: secrets-not-from-env
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-env-pod
+  result: pass
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-env-pod
+  result: pass
+  rule: secrets-not-from-volumes
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-ref-pod
+  result: pass
+  rule: secrets-not-from-env
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-ref-pod
+  result: fail
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-ref-pod
+  result: pass
+  rule: secrets-not-from-volumes
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-vol-pod
+  result: pass
+  rule: secrets-not-from-env
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-vol-pod
+  result: pass
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  namespace: default
+  policy: no-secrets
+  resources:
+  - secret-vol-pod
+  result: fail
+  rule: secrets-not-from-volumes

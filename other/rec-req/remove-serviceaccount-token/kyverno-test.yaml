@@ -1,12 +1,13 @@
 name: remove-serviceaccount-token
 policies:
-  - remove-serviceaccount-token.yaml
+- remove-serviceaccount-token.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: remove-serviceaccount-token
-    rule: remove-vol-volmount
-    resource: busybox
-    kind: Pod
-    patchedResource: patchedResource.yaml
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: remove-serviceaccount-token
+  resources:
+  - busybox
+  result: pass
+  rule: remove-vol-volmount

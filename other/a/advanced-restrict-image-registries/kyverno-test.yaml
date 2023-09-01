@@ -1,18 +1,19 @@
 name: advanced-restrict-image-registries
 policies:
-  - advanced-restrict-image-registries.yaml
+- advanced-restrict-image-registries.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: advanced-restrict-image-registries
-    rule: validate-corp-registries
-    resource: good-pod
-    kind: Pod
-    result: pass
-  - policy: advanced-restrict-image-registries
-    rule: validate-corp-registries
-    resource: bad-pod
-    kind: Pod
-    result: fail
-  
+- kind: Pod
+  policy: advanced-restrict-image-registries
+  resources:
+  - good-pod
+  result: pass
+  rule: validate-corp-registries
+- kind: Pod
+  policy: advanced-restrict-image-registries
+  resources:
+  - bad-pod
+  result: fail
+  rule: validate-corp-registries
+variables: values.yaml

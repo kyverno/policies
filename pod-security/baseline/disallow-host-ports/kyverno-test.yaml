@@ -1,312 +1,366 @@
 name: disallow-host-ports
 policies:
-  - disallow-host-ports.yaml
+- disallow-host-ports.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-###### Pods - Bad
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod02
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod03
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod04
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod05
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod06
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod07
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod08
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod09
-    kind: Pod
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badpod10
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod02
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod03
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod04
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod05
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod06
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod07
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod08
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod09
-    kind: Pod
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodpod10
-    kind: Pod
-    result: pass
-###### Deployments - Bad
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment01
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment02
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment03
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment04
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment05
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment06
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment07
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment08
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment09
-    kind: Deployment
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: baddeployment10
-    kind: Deployment
-    result: fail
-###### Deployments - Good
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment01
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment02
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment03
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment04
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment05
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment06
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment07
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment08
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment09
-    kind: Deployment
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: gooddeployment10
-    kind: Deployment
-    result: pass
-###### CronJobs - Bad
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob01
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob02
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob03
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob04
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob05
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob06
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob07
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob08
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob09
-    kind: CronJob
-    result: fail
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: badcronjob10
-    kind: CronJob
-    result: fail
-###### CronJobs - Good
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob01
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob02
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob03
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob04
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob05
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob06
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob07
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob08
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob09
-    kind: CronJob
-    result: pass
-  - policy: disallow-host-ports
-    rule: host-ports-none
-    resource: goodcronjob10
-    kind: CronJob
-    result: pass
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod01
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod02
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod03
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod04
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod05
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod06
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod07
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod08
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod09
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - badpod10
+  result: fail
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod01
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod02
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod03
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod04
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod05
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod06
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod07
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod08
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod09
+  result: pass
+  rule: host-ports-none
+- kind: Pod
+  policy: disallow-host-ports
+  resources:
+  - goodpod10
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment01
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment02
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment03
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment04
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment05
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment06
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment07
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment08
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment09
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - baddeployment10
+  result: fail
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment01
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment02
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment03
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment04
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment05
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment06
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment07
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment08
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment09
+  result: pass
+  rule: host-ports-none
+- kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - gooddeployment10
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob01
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob02
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob03
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob04
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob05
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob06
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob07
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob08
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob09
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - badcronjob10
+  result: fail
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob02
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob03
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob04
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob05
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob06
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob07
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob08
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob09
+  result: pass
+  rule: host-ports-none
+- kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - goodcronjob10
+  result: pass
+  rule: host-ports-none

@@ -1,46 +1,54 @@
 name: check-routes
 policies:
-  - disallow-deprecated-apis.yaml
+- disallow-deprecated-apis.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-deprecated
-    kind: ClusterRole
-    result: fail
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-binding-deprecated
-    kind: ClusterRoleBinding
-    result: fail
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role-deprecated
-    kind: Role
-    result: fail
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role-binding-deprecated
-    kind: RoleBinding
-    result: fail
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-valid
-    kind: ClusterRole
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-binding
-    kind: ClusterRoleBinding
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role
-    kind: Role
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role-binding
-    kind: RoleBinding
-    result: skip
+- kind: ClusterRole
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-cluster-role-deprecated
+  result: fail
+  rule: check-deprecated-apis
+- kind: ClusterRoleBinding
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-cluster-role-binding-deprecated
+  result: fail
+  rule: check-deprecated-apis
+- kind: Role
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-role-deprecated
+  result: fail
+  rule: check-deprecated-apis
+- kind: RoleBinding
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-role-binding-deprecated
+  result: fail
+  rule: check-deprecated-apis
+- kind: ClusterRole
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-cluster-role-valid
+  result: skip
+  rule: check-deprecated-apis
+- kind: ClusterRoleBinding
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-cluster-role-binding
+  result: skip
+  rule: check-deprecated-apis
+- kind: Role
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-role
+  result: skip
+  rule: check-deprecated-apis
+- kind: RoleBinding
+  policy: disallow-deprecated-apis
+  resources:
+  - openshift-role-binding
+  result: skip
+  rule: check-deprecated-apis

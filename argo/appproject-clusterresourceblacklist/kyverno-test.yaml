@@ -1,36 +1,42 @@
 name: appproject-clusterresourceblacklist
 policies:
-  - appproject-clusterresourceblacklist.yaml
+- appproject-clusterresourceblacklist.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-  - policy: appproject-clusterresourceblacklist
-    rule: has-wildcard
-    resource: goodappproj01
-    kind: AppProject
-    result: pass
-  - policy: appproject-clusterresourceblacklist
-    rule: validate-clusterresourceblacklist
-    resource: goodappproj02
-    kind: AppProject
-    result: pass
-  - policy: appproject-clusterresourceblacklist
-    rule: has-wildcard
-    resource: badappproj01
-    kind: AppProject
-    result: fail
-  - policy: appproject-clusterresourceblacklist
-    rule: has-wildcard
-    resource: badappproj02
-    kind: AppProject
-    result: fail
-  - policy: appproject-clusterresourceblacklist
-    rule: has-wildcard
-    resource: badappproj03
-    kind: AppProject
-    result: fail
-  - policy: appproject-clusterresourceblacklist
-    rule: validate-clusterresourceblacklist
-    resource: badappproj04
-    kind: AppProject
-    result: fail
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - goodappproj01
+  result: pass
+  rule: has-wildcard
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - goodappproj02
+  result: pass
+  rule: validate-clusterresourceblacklist
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - badappproj01
+  result: fail
+  rule: has-wildcard
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - badappproj02
+  result: fail
+  rule: has-wildcard
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - badappproj03
+  result: fail
+  rule: has-wildcard
+- kind: AppProject
+  policy: appproject-clusterresourceblacklist
+  resources:
+  - badappproj04
+  result: fail
+  rule: validate-clusterresourceblacklist

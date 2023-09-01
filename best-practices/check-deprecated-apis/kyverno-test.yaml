@@ -1,21 +1,24 @@
 name: check-deprecated-apis
 policies:
-  - check-deprecated-apis.yaml
+- check-deprecated-apis.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: check-deprecated-apis
-    rule: validate-v1-25-removals
-    resource: bad-cronjob
-    kind: CronJob
-    result: fail
-  - policy: check-deprecated-apis
-    rule: validate-v1-25-removals
-    resource: good-cronjob
-    kind: CronJob
-    result: skip
-  - policy: check-deprecated-apis
-    rule: validate-v1-29-removals
-    resource: bad-flowschema
-    kind: FlowSchema
-    result: fail
+- kind: CronJob
+  policy: check-deprecated-apis
+  resources:
+  - bad-cronjob
+  result: fail
+  rule: validate-v1-25-removals
+- kind: CronJob
+  policy: check-deprecated-apis
+  resources:
+  - good-cronjob
+  result: skip
+  rule: validate-v1-25-removals
+- kind: FlowSchema
+  policy: check-deprecated-apis
+  resources:
+  - bad-flowschema
+  result: fail
+  rule: validate-v1-29-removals

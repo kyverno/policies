@@ -1,12 +1,12 @@
 name: disallow-default-tlsoptions
 policies:
-  - disallow-default-tlsoptions.yaml
+- disallow-default-tlsoptions.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: disallow-default-tlsoptions
-    rule: disallow-default-tlsoptions
-    resource: default
-    kind: TLSOption
-    result: fail
-  
+- kind: TLSOption
+  policy: disallow-default-tlsoptions
+  resources:
+  - default
+  result: fail
+  rule: disallow-default-tlsoptions

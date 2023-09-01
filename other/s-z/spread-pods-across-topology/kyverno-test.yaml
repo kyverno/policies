@@ -1,12 +1,13 @@
 name: spread-pods
 policies:
-  -  spread-pods-across-topology.yaml
+- spread-pods-across-topology.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: spread-pods
-    rule: spread-pods-across-nodes
-    resource: mydeploy
-    kind: Deployment
-    patchedResource: patchedResource.yaml
-    result: pass
+- kind: Deployment
+  patchedResource: patchedResource.yaml
+  policy: spread-pods
+  resources:
+  - mydeploy
+  result: pass
+  rule: spread-pods-across-nodes

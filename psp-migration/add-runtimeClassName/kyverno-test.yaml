@@ -1,12 +1,13 @@
 name: add-runtimeClassName
 policies:
-  - add-runtimeClassName.yaml
+- add-runtimeClassName.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-runtimeclassname
-    rule: add-prodclass
-    resource: pod01
-    kind: Pod
-    patchedResource: patchedResource1.yaml
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-runtimeclassname
+  resources:
+  - pod01
+  result: pass
+  rule: add-prodclass

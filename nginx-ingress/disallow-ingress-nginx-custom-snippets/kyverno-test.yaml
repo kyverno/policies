@@ -1,36 +1,42 @@
 name: disallow_nginx_custom_snippets
 policies:
-  -  disallow-ingress-nginx-custom-snippets.yaml
+- disallow-ingress-nginx-custom-snippets.yaml
 resources:
-  -  resources.yaml
+- resources.yaml
 results:
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-config-map
-    resource: config-map-true
-    kind: ConfigMap
-    result: fail
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-config-map
-    resource: config-map-false
-    kind: ConfigMap
-    result: pass
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-config-map
-    resource: config-map-other
-    kind: ConfigMap
-    result: pass    
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-config-map
-    resource: config-map-empty
-    kind: ConfigMap
-    result: pass       
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-ingress-annotations
-    resource: cafe-ingress-with-snippets
-    kind: Ingress
-    result: fail
-  - policy: disallow-ingress-nginx-custom-snippets
-    rule: check-ingress-annotations
-    resource: cafe-ingress
-    kind: Ingress
-    result: pass
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-true
+  result: fail
+  rule: check-config-map
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-false
+  result: pass
+  rule: check-config-map
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-other
+  result: pass
+  rule: check-config-map
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-empty
+  result: pass
+  rule: check-config-map
+- kind: Ingress
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - cafe-ingress-with-snippets
+  result: fail
+  rule: check-ingress-annotations
+- kind: Ingress
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - cafe-ingress
+  result: pass
+  rule: check-ingress-annotations

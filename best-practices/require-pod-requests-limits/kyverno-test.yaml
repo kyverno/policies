@@ -1,31 +1,36 @@
 name: require-requests-limits
 policies:
-  - require-pod-requests-limits.yaml
+- require-pod-requests-limits.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: require-requests-limits
-    rule: validate-resources
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: require-requests-limits
-    rule: validate-resources
-    resource: goodpod02
-    kind: Pod
-    result: pass
-  - policy: require-requests-limits
-    rule: validate-resources
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: require-requests-limits
-    rule: validate-resources
-    resource: badpod02
-    kind: Pod
-    result: fail
-  - policy: require-requests-limits
-    rule: validate-resources
-    resource: badpod03
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: require-requests-limits
+  resources:
+  - goodpod01
+  result: pass
+  rule: validate-resources
+- kind: Pod
+  policy: require-requests-limits
+  resources:
+  - goodpod02
+  result: pass
+  rule: validate-resources
+- kind: Pod
+  policy: require-requests-limits
+  resources:
+  - badpod01
+  result: fail
+  rule: validate-resources
+- kind: Pod
+  policy: require-requests-limits
+  resources:
+  - badpod02
+  result: fail
+  rule: validate-resources
+- kind: Pod
+  policy: require-requests-limits
+  resources:
+  - badpod03
+  result: fail
+  rule: validate-resources

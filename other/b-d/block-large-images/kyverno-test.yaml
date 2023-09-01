@@ -1,18 +1,14 @@
 name: block-large-images
 policies:
-  -  block-large-images.yaml
+- block-large-images.yaml
 resources:
-  - good.yaml
-  - bad.yaml
-variables: values.yaml
+- good.yaml
+- bad.yaml
 results:
-  # - policy: block-large-images
-  #   rule: block-over-twogi
-  #   resource: small-image
-  #   kind: Pod
-  #   result: pass
-  - policy: block-large-images
-    rule: block-over-twogi
-    resource: large-image
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: block-large-images
+  resources:
+  - large-image
+  result: fail
+  rule: block-over-twogi
+variables: values.yaml

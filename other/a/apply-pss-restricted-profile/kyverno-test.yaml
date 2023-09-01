@@ -4,9 +4,10 @@ policies:
 resources:
 - resource.yaml
 results:
-- policy: apply-pss-restricted-profile
-  rule: add-pss-fields
-  resource: mypod
-  kind: Pod
+- kind: Pod
   patchedResource: mutatedmypod.yaml
+  policy: apply-pss-restricted-profile
+  resources:
+  - mypod
   result: pass
+  rule: add-pss-fields

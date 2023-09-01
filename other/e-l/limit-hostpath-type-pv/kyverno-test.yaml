@@ -1,16 +1,18 @@
 name: limit-hostpath-type-pv
 policies:
-  - limit-hostpath-type-pv.yaml
+- limit-hostpath-type-pv.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: limit-hostpath-type-pv
-    rule: limit-hostpath-type-pv-to-slash-data
-    resource: good-pv
-    kind: PersistentVolume
-    result: pass
-  - policy: limit-hostpath-type-pv
-    rule: limit-hostpath-type-pv-to-slash-data
-    resource: bad-pv
-    kind: PersistentVolume
-    result: fail
+- kind: PersistentVolume
+  policy: limit-hostpath-type-pv
+  resources:
+  - good-pv
+  result: pass
+  rule: limit-hostpath-type-pv-to-slash-data
+- kind: PersistentVolume
+  policy: limit-hostpath-type-pv
+  resources:
+  - bad-pv
+  result: fail
+  rule: limit-hostpath-type-pv-to-slash-data

@@ -1,21 +1,24 @@
 name: block-velero-restore
 policies:
-  -  block-velero-restore.yaml
+- block-velero-restore.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: block-velero-restore
-    rule: block-velero-restore-to-protected-namespace
-    resource: badrestore01
-    kind: Restore
-    result: fail
-  - policy: block-velero-restore
-    rule: block-velero-restore-to-protected-namespace
-    resource: restore-without-namespace-mapping
-    kind: Restore
-    result: pass
-  - policy: block-velero-restore
-    rule: block-velero-restore-to-protected-namespace
-    resource: goodrestore01
-    kind: Restore
-    result: pass
+- kind: Restore
+  policy: block-velero-restore
+  resources:
+  - badrestore01
+  result: fail
+  rule: block-velero-restore-to-protected-namespace
+- kind: Restore
+  policy: block-velero-restore
+  resources:
+  - restore-without-namespace-mapping
+  result: pass
+  rule: block-velero-restore-to-protected-namespace
+- kind: Restore
+  policy: block-velero-restore
+  resources:
+  - goodrestore01
+  result: pass
+  rule: block-velero-restore-to-protected-namespace

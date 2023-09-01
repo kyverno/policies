@@ -1,34 +1,34 @@
 name: log4shell-mitigation
 policies:
-  - mitigate-log4shell.yaml
+- mitigate-log4shell.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-# checking demo-pod01 pod resource on both rules
-  - policy: log4shell-mitigation
-    rule: add-log4shell-mitigation-initcontainers
-    resource: demo-pod01
-    patchedResource: patchedResource.yaml
-    kind: Pod
-    result: pass
-  - policy: log4shell-mitigation
-    rule: add-log4shell-mitigation-containers
-    resource: demo-pod01
-    patchedResource: patchedResource.yaml
-    kind: Pod
-    result: pass
-
-# checking demo-pod02 pod resource on both rules
-  - policy: log4shell-mitigation
-    rule: add-log4shell-mitigation-containers
-    resource: demo-pod02
-    patchedResource: patchedResource1.yaml
-    kind: Pod
-    result: pass
-  - policy: log4shell-mitigation
-    rule: add-log4shell-mitigation-initcontainers
-    resource: demo-pod02
-    patchedResource: patchedResource1.yaml
-    kind: Pod
-    result: skip 
-  
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod01
+  result: pass
+  rule: add-log4shell-mitigation-initcontainers
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod01
+  result: pass
+  rule: add-log4shell-mitigation-containers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod02
+  result: pass
+  rule: add-log4shell-mitigation-containers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod02
+  result: skip
+  rule: add-log4shell-mitigation-initcontainers

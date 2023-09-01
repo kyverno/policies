@@ -1,36 +1,42 @@
 name: ingress-host-match-tls
 policies:
-  -  ingress-host-match-tls.yaml
+- ingress-host-match-tls.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: badingress01
-    result: fail
-    kind: Ingress
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: badingress02
-    result: fail
-    kind: Ingress
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: goodingress01
-    result: pass
-    kind: Ingress
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: goodingress02
-    result: pass
-    kind: Ingress
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: goodingress03
-    result: pass
-    kind: Ingress
-  - policy: ingress-host-match-tls
-    rule: host-match-tls
-    resource: goodingress04
-    result: pass
-    kind: Ingress
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - badingress01
+  result: fail
+  rule: host-match-tls
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - badingress02
+  result: fail
+  rule: host-match-tls
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - goodingress01
+  result: pass
+  rule: host-match-tls
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - goodingress02
+  result: pass
+  rule: host-match-tls
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - goodingress03
+  result: pass
+  rule: host-match-tls
+- kind: Ingress
+  policy: ingress-host-match-tls
+  resources:
+  - goodingress04
+  result: pass
+  rule: host-match-tls

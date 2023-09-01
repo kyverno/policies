@@ -1,18 +1,18 @@
-# Tests for this policy are covered in a more extensive fashion in the PSS restricted profile
-# in disallow-capabilities-strict.
 name: require-drop-all
 policies:
-  - require-drop-all.yaml
+- require-drop-all.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: drop-all-capabilities
-    rule: require-drop-all
-    resource: add-capabilities
-    kind: Pod
-    result: pass
-  - policy: drop-all-capabilities
-    rule: require-drop-all
-    resource: add-capabilities-bad
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: drop-all-capabilities
+  resources:
+  - add-capabilities
+  result: pass
+  rule: require-drop-all
+- kind: Pod
+  policy: drop-all-capabilities
+  resources:
+  - add-capabilities-bad
+  result: fail
+  rule: require-drop-all

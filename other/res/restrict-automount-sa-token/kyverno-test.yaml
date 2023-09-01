@@ -1,26 +1,30 @@
 name: restrict-automount-sa-token
 policies:
-  -  restrict-automount-sa-token.yaml
+- restrict-automount-sa-token.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-automount-sa-token
-    rule: validate-automountServiceAccountToken
-    resource: myapp-pod
-    kind: Pod
-    result: pass
-  - policy: restrict-automount-sa-token
-    rule: validate-automountServiceAccountToken
-    resource: mydeploy
-    kind: Deployment
-    result: fail
-  - policy: restrict-automount-sa-token
-    rule: validate-automountServiceAccountToken
-    resource: policy-reporter
-    kind: Pod
-    result: skip
-  - policy: restrict-automount-sa-token
-    rule: validate-automountServiceAccountToken
-    resource: deploy-policy-reporter
-    kind: Deployment
-    result: skip
+- kind: Pod
+  policy: restrict-automount-sa-token
+  resources:
+  - myapp-pod
+  result: pass
+  rule: validate-automountServiceAccountToken
+- kind: Deployment
+  policy: restrict-automount-sa-token
+  resources:
+  - mydeploy
+  result: fail
+  rule: validate-automountServiceAccountToken
+- kind: Pod
+  policy: restrict-automount-sa-token
+  resources:
+  - policy-reporter
+  result: skip
+  rule: validate-automountServiceAccountToken
+- kind: Deployment
+  policy: restrict-automount-sa-token
+  resources:
+  - deploy-policy-reporter
+  result: skip
+  rule: validate-automountServiceAccountToken

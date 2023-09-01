@@ -1,147 +1,168 @@
 name: restrict-sysctls
 policies:
-  - restrict-sysctls.yaml
+- restrict-sysctls.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-###### Pods - Bad
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: badpod02
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod02
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod03
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod04
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod05
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod06
-    kind: Pod
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodpod07
-    kind: Pod
-    result: pass
-###### Deployments - Bad
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: baddeployment01
-    kind: Deployment
-    result: fail
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: baddeployment02
-    kind: Deployment
-    result: fail
-###### Deployments - Good
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment01
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment02
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment03
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment04
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment05
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment06
-    kind: Deployment
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: gooddeployment07
-    kind: Deployment
-    result: pass
-###### CronJobs - Bad
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: badcronjob01
-    kind: CronJob
-    result: fail
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: badcronjob02
-    kind: CronJob
-    result: fail
-###### CronJobs - Good
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob01
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob02
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob03
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob04
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob05
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob06
-    kind: CronJob
-    result: pass
-  - policy: restrict-sysctls
-    rule: check-sysctls
-    resource: goodcronjob07
-    kind: CronJob
-    result: pass
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - badpod01
+  result: fail
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - badpod02
+  result: fail
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod02
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod03
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod04
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod05
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod06
+  result: pass
+  rule: check-sysctls
+- kind: Pod
+  policy: restrict-sysctls
+  resources:
+  - goodpod07
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - baddeployment01
+  result: fail
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - baddeployment02
+  result: fail
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment01
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment02
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment03
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment04
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment05
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment06
+  result: pass
+  rule: check-sysctls
+- kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - gooddeployment07
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - badcronjob01
+  result: fail
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - badcronjob02
+  result: fail
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob02
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob03
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob04
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob05
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob06
+  result: pass
+  rule: check-sysctls
+- kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - goodcronjob07
+  result: pass
+  rule: check-sysctls

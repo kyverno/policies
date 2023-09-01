@@ -1,13 +1,14 @@
 name: add-ndots
 policies:
-  - add-ndots.yaml
+- add-ndots.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-ndots
-    rule: add-ndots
-    resource: myapp-pod
-    patchedResource: patchedResource.yaml
-    kind: Pod
-    namespace: default
-    result: pass
+- kind: Pod
+  namespace: default
+  patchedResource: patchedResource.yaml
+  policy: add-ndots
+  resources:
+  - myapp-pod
+  result: pass
+  rule: add-ndots

@@ -1,25 +1,27 @@
 name: add-imagepullsecrets
 policies:
-  - add-imagepullsecrets.yaml
+- add-imagepullsecrets.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-imagepullsecrets
-    rule: add-imagepullsecret
-    resource: myapp-pod-1
-    patchedResource: patchedResource1.yaml
-    kind: Pod
-    result: pass
-    # result should be skip
-  - policy: add-imagepullsecrets
-    rule: add-imagepullsecret
-    resource: myapp-pod-2
-    patchedResource: patchedResource2.yaml
-    kind: Pod
-    result: skip
-  - policy: add-imagepullsecrets
-    rule: add-imagepullsecret
-    resource: myapp-pod-3
-    patchedResource: patchedResource3.yaml
-    kind: Pod
-    result: skip
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-imagepullsecrets
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: add-imagepullsecret
+- kind: Pod
+  patchedResource: patchedResource2.yaml
+  policy: add-imagepullsecrets
+  resources:
+  - myapp-pod-2
+  result: skip
+  rule: add-imagepullsecret
+- kind: Pod
+  patchedResource: patchedResource3.yaml
+  policy: add-imagepullsecrets
+  resources:
+  - myapp-pod-3
+  result: skip
+  rule: add-imagepullsecret

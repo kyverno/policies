@@ -1,31 +1,36 @@
 name: k10-validate-ns-by-preset-label-test
 policies:
-  - k10-validate-ns-by-preset-label.yaml
+- k10-validate-ns-by-preset-label.yaml
 resources:
-  - test-resource.yaml
+- test-resource.yaml
 results:
-- policy: k10-validate-ns-by-preset-label
-  rule: k10-validate-ns-by-preset-label
-  resource: namespace-gold
-  kind: Namespace
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-gold
   result: pass
-- policy: k10-validate-ns-by-preset-label
   rule: k10-validate-ns-by-preset-label
-  resource: namespace-silver
-  kind: Namespace
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-silver
   result: pass
-- policy: k10-validate-ns-by-preset-label
   rule: k10-validate-ns-by-preset-label
-  resource: namespace-bronze
-  kind: Namespace
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-bronze
   result: pass
-- policy: k10-validate-ns-by-preset-label
   rule: k10-validate-ns-by-preset-label
-  resource: namespace-none
-  kind: Namespace
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-none
   result: pass
-- policy: k10-validate-ns-by-preset-label
   rule: k10-validate-ns-by-preset-label
-  resource: namespace-invalid
-  kind: Namespace
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-invalid
   result: fail
+  rule: k10-validate-ns-by-preset-label
