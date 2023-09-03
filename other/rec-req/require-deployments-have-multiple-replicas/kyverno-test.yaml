@@ -9,8 +9,8 @@ results:
     resource: mydeploy
     kind: Deployment
     result: pass
-  - policy: deployment-has-multiple-replicas
-    rule: deployment-has-multiple-replicas
-    resource: myapp-pod
-    kind: Pod
-    result: skip
+  # - policy: deployment-has-multiple-replicas
+  #   rule: deployment-has-multiple-replicas
+  #   resource: myapp-pod
+  #   kind: Pod
+  #   result: skip

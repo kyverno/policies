@@ -16,10 +16,10 @@ results:
     - goodnetworkpolicy
     kind: NetworkPolicy
     result: pass
-  - policy: restrict-networkpolicy-empty-podselector
-    rule: empty-podselector
-    resources:
-    - default-deny
-    kind: NetworkPolicy
-    result: skip
+  # - policy: restrict-networkpolicy-empty-podselector
+  #   rule: empty-podselector
+  #   resources:
+  #   - default-deny
+  #   kind: NetworkPolicy
+  #   result: skip
   

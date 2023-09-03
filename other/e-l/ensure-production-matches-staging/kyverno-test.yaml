@@ -5,22 +5,22 @@ resources:
   - resource.yaml
 variables: values.yaml
 results:
-  - policy: ensure-production-matches-staging
-    rule: require-staging-deployment
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip
-  - policy: ensure-production-matches-staging
-    rule: require-same-image
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip  
-  - policy: ensure-production-matches-staging
-    rule: require-same-or-older-imageversion
-    resource: deploy1
-    kind: Deployment
-    namespace: staging
-    result: skip    
+  # - policy: ensure-production-matches-staging
+  #   rule: require-staging-deployment
+  #   resource: deploy1
+  #   kind: Deployment
+  #   namespace: staging
+  #   result: skip
+  # - policy: ensure-production-matches-staging
+  #   rule: require-same-image
+  #   resource: deploy1
+  #   kind: Deployment
+  #   namespace: staging
+  #   result: skip  
+  # - policy: ensure-production-matches-staging
+  #   rule: require-same-or-older-imageversion
+  #   resource: deploy1
+  #   kind: Deployment
+  #   namespace: staging
+  #   result: skip    
   

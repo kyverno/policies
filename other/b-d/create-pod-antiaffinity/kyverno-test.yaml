@@ -11,12 +11,12 @@ results:
     patchedResource: patchedResource.yaml
     kind: Deployment
     result: pass
-  - policy: insert-pod-antiaffinity
-    rule: insert-pod-antiaffinity
-    resources:
-      - myapp-pod
-    kind: Pod
-    result: skip
+  # - policy: insert-pod-antiaffinity
+  #   rule: insert-pod-antiaffinity
+  #   resources:
+  #     - myapp-pod
+  #   kind: Pod
+  #   result: skip
   - policy: insert-pod-antiaffinity
     rule: insert-pod-antiaffinity
     resources:

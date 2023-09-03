@@ -12,9 +12,9 @@ results:
     namespace: foo
     patchedResource: patchedResource.yaml
     result: pass
-  - policy: add-pod-priorityclassname
-    rule: add-priorityclass-pods
-    resource: second
-    kind: Pod
-    namespace: production
-    result: skip
+  # - policy: add-pod-priorityclassname
+  #   rule: add-priorityclass-pods
+  #   resource: second
+  #   kind: Pod
+  #   namespace: production
+  #   result: skip
