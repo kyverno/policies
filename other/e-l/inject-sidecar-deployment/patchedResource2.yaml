@@ -16,22 +16,5 @@ spec:
         vault.hashicorp.com/agent-inject: "false" 
     spec:
       containers:
-      - image: vault:1.5.4
-        imagePullPolicy: IfNotPresent
-        name: vault-agent
-        volumeMounts:
-        - mountPath: /vault/secrets
-          name: vault-secret
       - image: nginx:latest
         name: nginx
-      initContainers:
-      - image: vault:1.5.4
-        imagePullPolicy: IfNotPresent
-        name: vault-agent-init
-        volumeMounts:
-        - mountPath: /vault/secrets
-          name: vault-secret
-      volumes:
-      - emptyDir:
-          medium: Memory
-        name: vault-secret
