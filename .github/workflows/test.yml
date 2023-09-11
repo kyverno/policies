@@ -73,7 +73,7 @@ jobs:
           curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
       - name: Install latest Kyverno CLI
-        uses: kyverno/action-install-cli@v0.2.0
+        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
       - name: Create kind cluster
         run: |
           ./.tools/kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
