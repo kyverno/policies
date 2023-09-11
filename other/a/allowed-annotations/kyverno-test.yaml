@@ -1,16 +1,18 @@
 name: allowed-annotations
 policies:
-  - allowed-annotations.yaml
+- allowed-annotations.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: allowed-annotations
-    rule: allowed-fluxcd-annotations
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: allowed-annotations
-    rule: allowed-fluxcd-annotations
-    resource: goodpod01
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: allowed-annotations
+  resources:
+  - badpod01
+  result: fail
+  rule: allowed-fluxcd-annotations
+- kind: Pod
+  policy: allowed-annotations
+  resources:
+  - goodpod01
+  result: pass
+  rule: allowed-fluxcd-annotations

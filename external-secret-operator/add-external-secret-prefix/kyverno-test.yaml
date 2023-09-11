@@ -4,9 +4,10 @@ policies:
 resources:
 - resource.yaml
 results:
-- policy: add-external-secret-prefix
-  rule: add-external-secret-prefix
-  resource: example
-  kind: ExternalSecret
+- kind: ExternalSecret
   patchedResource: patched.yaml
+  policy: add-external-secret-prefix
+  resources:
+  - example
   result: pass
+  rule: add-external-secret-prefix

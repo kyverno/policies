@@ -1,30 +1,34 @@
 name: restrict-controlplane-scheduling
 policies:
-  -  restrict-controlplane-scheduling.yaml
+- restrict-controlplane-scheduling.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-controlplane-scheduling
-    rule: restrict-controlplane-scheduling-master
-    resource: myapp-pod-1
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: restrict-controlplane-scheduling
-    rule: restrict-controlplane-scheduling-control-plane
-    resource: myapp-pod-2
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: restrict-controlplane-scheduling
-    rule: restrict-controlplane-scheduling-master
-    resource: myapp-pod-2
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: restrict-controlplane-scheduling
-    rule: restrict-controlplane-scheduling-control-plane
-    resource: myapp-pod-1
-    kind: Pod
-    namespace: default
-    result: pass
+- kind: Pod
+  namespace: default
+  policy: restrict-controlplane-scheduling
+  resources:
+  - myapp-pod-1
+  result: fail
+  rule: restrict-controlplane-scheduling-master
+- kind: Pod
+  namespace: default
+  policy: restrict-controlplane-scheduling
+  resources:
+  - myapp-pod-2
+  result: fail
+  rule: restrict-controlplane-scheduling-control-plane
+- kind: Pod
+  namespace: default
+  policy: restrict-controlplane-scheduling
+  resources:
+  - myapp-pod-2
+  result: pass
+  rule: restrict-controlplane-scheduling-master
+- kind: Pod
+  namespace: default
+  policy: restrict-controlplane-scheduling
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: restrict-controlplane-scheduling-control-plane

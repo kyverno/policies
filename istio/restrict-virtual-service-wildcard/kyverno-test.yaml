@@ -1,16 +1,18 @@
 name: restrict-virtual-service-wildcard
 policies:
-  - restrict-virtual-service-wildcard.yaml
+- restrict-virtual-service-wildcard.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-  - policy: restrict-virtual-service-wildcard
-    rule: block-virtual-service-wildcard
-    resource: badvs
-    kind: VirtualService
-    result: fail
-  - policy: restrict-virtual-service-wildcard
-    rule: block-virtual-service-wildcard
-    resource: goodvs
-    kind: VirtualService
-    result: pass
+- kind: VirtualService
+  policy: restrict-virtual-service-wildcard
+  resources:
+  - badvs
+  result: fail
+  rule: block-virtual-service-wildcard
+- kind: VirtualService
+  policy: restrict-virtual-service-wildcard
+  resources:
+  - goodvs
+  result: pass
+  rule: block-virtual-service-wildcard

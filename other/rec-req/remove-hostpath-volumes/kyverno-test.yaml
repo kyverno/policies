@@ -1,12 +1,13 @@
 name: remove-hostpath-volumes
 policies:
-  - remove-hostpath-volumes.yaml
+- remove-hostpath-volumes.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: remove-hostpath-volumes
-    rule: remove-hostpath-all
-    resource: busybox
-    kind: Pod
-    patchedResource: patchedResource.yaml
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: remove-hostpath-volumes
+  resources:
+  - busybox
+  result: pass
+  rule: remove-hostpath-all

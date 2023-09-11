@@ -1,17 +1,19 @@
 name: block-updates-deletes
 policies:
-  -  block-updates-deletes.yaml
+- block-updates-deletes.yaml
 resources:
-  -  resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: block-updates-deletes
-    rule: block-updates-deletes
-    resource: my-service-1
-    kind: Service
-    result: pass
-  - policy: block-updates-deletes
-    rule: block-updates-deletes
-    resource: my-service-2
-    kind: Service
-    result: fail
+- kind: Service
+  policy: block-updates-deletes
+  resources:
+  - my-service-1
+  result: pass
+  rule: block-updates-deletes
+- kind: Service
+  policy: block-updates-deletes
+  resources:
+  - my-service-2
+  result: fail
+  rule: block-updates-deletes
+variables: values.yaml

@@ -1,16 +1,18 @@
 name: require-pod-priorityclassname
 policies:
-  - require-pod-priorityclassname.yaml
+- require-pod-priorityclassname.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: require-pod-priorityclassname
-    rule: check-priorityclassname
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: require-pod-priorityclassname
-    rule: check-priorityclassname
-    resource: badpod01
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: require-pod-priorityclassname
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-priorityclassname
+- kind: Pod
+  policy: require-pod-priorityclassname
+  resources:
+  - badpod01
+  result: fail
+  rule: check-priorityclassname

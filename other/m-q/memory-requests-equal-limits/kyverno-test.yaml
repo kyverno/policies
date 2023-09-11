@@ -1,21 +1,24 @@
 name: memory-requests-equal-limits
 policies:
-  - memory-requests-equal-limits.yaml
+- memory-requests-equal-limits.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: memory-requests-equal-limits
-    rule: autogen-memory-requests-equal-limits
-    resource: fluentd-elasticsearch
-    kind: DaemonSet
-    status: pass
-  - policy: memory-requests-equal-limits
-    rule: memory-requests-equal-limits
-    resource: myapp-pod
-    kind: Pod
-    status: fail
-  - policy: memory-requests-equal-limits
-    rule: autogen-cronjob-memory-requests-equal-limits
-    resource: hello
-    kind: CronJob
-    status: pass
+- kind: DaemonSet
+  policy: memory-requests-equal-limits
+  resources:
+  - fluentd-elasticsearch
+  result: pass
+  rule: autogen-memory-requests-equal-limits
+- kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - myapp-pod
+  result: fail
+  rule: memory-requests-equal-limits
+- kind: CronJob
+  policy: memory-requests-equal-limits
+  resources:
+  - hello
+  result: pass
+  rule: autogen-cronjob-memory-requests-equal-limits

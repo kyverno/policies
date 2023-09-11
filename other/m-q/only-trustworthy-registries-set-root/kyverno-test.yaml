@@ -1,19 +1,20 @@
 name: only-trustworthy-registries-set-root
 policies:
-  - only-trustworthy-registries-set-root.yaml
+- only-trustworthy-registries-set-root.yaml
 resources:
-  - good.yaml
-  - bad.yaml
-variables: values.yaml
+- good.yaml
+- bad.yaml
 results:
-  - policy: only-trustworthy-registries-set-root
-    rule: only-allow-trusted-images
-    resource: pod-with-trusted-registry
-    kind: Pod
-    result: pass
-    
-  - policy: only-trustworthy-registries-set-root
-    rule: only-allow-trusted-images
-    resource: pod-with-root-user
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: only-trustworthy-registries-set-root
+  resources:
+  - pod-with-trusted-registry
+  result: pass
+  rule: only-allow-trusted-images
+- kind: Pod
+  policy: only-trustworthy-registries-set-root
+  resources:
+  - pod-with-root-user
+  result: pass
+  rule: only-allow-trusted-images
+variables: values.yaml

@@ -1,37 +1,34 @@
 name: add-imagepullsecrets-for-containers-and-initcontainers
 policies:
-  - add-imagepullsecrets-for-containers-and-initcontainers.yaml
+- add-imagepullsecrets-for-containers-and-initcontainers.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-imagepullsecrets-for-containers-and-initcontainers
-    rule: add-imagepullsecret
-    resource: myapp-pod-1
-    patchedResource: patchedResource1.yaml
-    kind: Pod
-    result: pass
-  
-  - policy: add-imagepullsecrets-for-containers-and-initcontainers
-    rule: add-imagepullsecret
-    resource: myapp-pod-2
-    patchedResource: patchedResource2.yaml
-    kind: Pod
-    result: pass
-
-# this will be skip because resource already has imagePullSecrets 
-  - policy: add-imagepullsecrets-for-containers-and-initcontainers
-    rule: add-imagepullsecret
-    resource: myapp-pod-3
-    patchedResource: patchedResource3.yaml
-    kind: Pod
-    result: skip
-
-# this will be skip because resource image doesn't have registry 'corp.reg.com'
-  - policy: add-imagepullsecrets-for-containers-and-initcontainers
-    rule: add-imagepullsecret
-    resource: myapp-pod-4
-    patchedResource: patchedResource4.yaml
-    kind: Pod
-    result: skip
-
-   
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-imagepullsecrets-for-containers-and-initcontainers
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: add-imagepullsecret
+- kind: Pod
+  patchedResource: patchedResource2.yaml
+  policy: add-imagepullsecrets-for-containers-and-initcontainers
+  resources:
+  - myapp-pod-2
+  result: pass
+  rule: add-imagepullsecret
+- kind: Pod
+  patchedResource: patchedResource3.yaml
+  policy: add-imagepullsecrets-for-containers-and-initcontainers
+  resources:
+  - myapp-pod-3
+  result: skip
+  rule: add-imagepullsecret
+- kind: Pod
+  patchedResource: patchedResource4.yaml
+  policy: add-imagepullsecrets-for-containers-and-initcontainers
+  resources:
+  - myapp-pod-4
+  result: skip
+  rule: add-imagepullsecret

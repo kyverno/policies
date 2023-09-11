@@ -1,12 +1,13 @@
 name: add-env-vars-from-cm
 policies:
-  - add-env-vars-from-cm.yaml
+- add-env-vars-from-cm.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-env-vars-from-cm
-    rule: add-env-vars-from-cm
-    resource: mypod
-    patchedResource: patchedResource01.yaml
-    kind: Pod
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource01.yaml
+  policy: add-env-vars-from-cm
+  resources:
+  - mypod
+  result: pass
+  rule: add-env-vars-from-cm

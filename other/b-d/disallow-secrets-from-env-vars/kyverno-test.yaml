@@ -1,31 +1,34 @@
 name: secrets-not-from-env-vars
 policies:
-  -  disallow-secrets-from-env-vars.yaml
+- disallow-secrets-from-env-vars.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: secrets-not-from-env-vars
-    rule: secrets-not-from-env-vars
-    resource: secret-env-pod
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: secrets-not-from-env-vars
-    rule: secrets-not-from-envfrom
-    resource: secret-env-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  - policy: secrets-not-from-env-vars
-    rule: secrets-not-from-envfrom
-    resource: secret-ref-pod
-    kind: Pod
-    namespace: default
-    result: fail
-  - policy: secrets-not-from-env-vars
-    rule: secrets-not-from-env-vars
-    resource: secret-ref-pod
-    kind: Pod
-    namespace: default
-    result: pass
-  
+- kind: Pod
+  namespace: default
+  policy: secrets-not-from-env-vars
+  resources:
+  - secret-env-pod
+  result: fail
+  rule: secrets-not-from-env-vars
+- kind: Pod
+  namespace: default
+  policy: secrets-not-from-env-vars
+  resources:
+  - secret-env-pod
+  result: pass
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  namespace: default
+  policy: secrets-not-from-env-vars
+  resources:
+  - secret-ref-pod
+  result: fail
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  namespace: default
+  policy: secrets-not-from-env-vars
+  resources:
+  - secret-ref-pod
+  result: pass
+  rule: secrets-not-from-env-vars

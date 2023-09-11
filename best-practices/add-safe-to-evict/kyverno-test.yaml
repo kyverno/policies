@@ -1,28 +1,32 @@
 name: add-safe-to-evict
 policies:
-  -  add-safe-to-evict.yaml
+- add-safe-to-evict.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: add-safe-to-evict
-    rule: annotate-empty-dir
-    resource: myapp-pod01
-    kind: Pod
-    result: skip
-  - policy: add-safe-to-evict
-    rule: annotate-host-path
-    resource: myapp-pod02
-    kind: Pod
-    result: skip
-  - policy: add-safe-to-evict
-    rule: annotate-empty-dir
-    resource: myapp-pod03
-    kind: Pod
-    result: pass
-    patchedResource: myapp-pod03-patched.yaml
-  - policy: add-safe-to-evict
-    rule: annotate-host-path
-    resource: myapp-pod04
-    kind: Pod
-    result: pass
-    patchedResource: myapp-pod04-patched.yaml
+- kind: Pod
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod01
+  result: skip
+  rule: annotate-empty-dir
+- kind: Pod
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod02
+  result: skip
+  rule: annotate-host-path
+- kind: Pod
+  patchedResource: myapp-pod03-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod03
+  result: pass
+  rule: annotate-empty-dir
+- kind: Pod
+  patchedResource: myapp-pod04-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod04
+  result: pass
+  rule: annotate-host-path

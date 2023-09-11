@@ -1,14 +1,14 @@
 name: resolve-image-to-digest
 policies:
-  - resolve-image-to-digest.yaml
+- resolve-image-to-digest.yaml
 resources:
-  - pod.yaml
-variables: values.yaml
+- pod.yaml
 results:
-  - policy: resolve-image-to-digest
-    rule: resolve-to-digest
-    resource: busybox
-    patchedResource: patchedResource.yaml
-    kind: Pod
-    result: pass
-
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: resolve-image-to-digest
+  resources:
+  - busybox
+  result: pass
+  rule: resolve-to-digest
+variables: values.yaml

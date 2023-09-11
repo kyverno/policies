@@ -1,26 +1,30 @@
 name: restrict-node-affinity
 policies:
-  -  restrict-node-affinity.yaml
+- restrict-node-affinity.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-node-affinity
-    rule: check-nodeaffinity
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: restrict-node-affinity
-    rule: check-nodeaffinity
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: restrict-node-affinity
-    rule: check-nodeaffinity
-    resource: baddeploy01
-    kind: Deployment
-    result: fail
-  - policy: restrict-node-affinity
-    rule: check-nodeaffinity
-    resource: gooddeploy01
-    kind: Deployment
-    result: pass
+- kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-nodeaffinity
+- kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - badpod01
+  result: fail
+  rule: check-nodeaffinity
+- kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - baddeploy01
+  result: fail
+  rule: check-nodeaffinity
+- kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - gooddeploy01
+  result: pass
+  rule: check-nodeaffinity

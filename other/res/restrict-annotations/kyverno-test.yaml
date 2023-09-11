@@ -1,21 +1,24 @@
 name: restrict-annotations
 policies:
-  -  restrict-annotations.yaml
+- restrict-annotations.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-annotations
-    rule: block-flux-v1
-    resource: myapp-pod
-    kind: Pod
-    result: fail
-  - policy: restrict-annotations
-    rule: block-flux-v1
-    resource: mydeploy
-    kind: Deployment
-    result: fail
-  - policy: restrict-annotations
-    rule: block-flux-v1
-    resource: hello
-    kind: CronJob
-    result: pass
+- kind: Pod
+  policy: restrict-annotations
+  resources:
+  - myapp-pod
+  result: fail
+  rule: block-flux-v1
+- kind: Deployment
+  policy: restrict-annotations
+  resources:
+  - mydeploy
+  result: fail
+  rule: block-flux-v1
+- kind: CronJob
+  policy: restrict-annotations
+  resources:
+  - hello
+  result: pass
+  rule: block-flux-v1

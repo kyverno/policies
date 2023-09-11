@@ -1,19 +1,20 @@
 name: mutate-termination-grace-period-seconds
 policies:
-  - mutate-large-termination-gps.yaml
+- mutate-large-termination-gps.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: mutate-termination-grace-period-seconds
-    rule: mutate-termination-grace-period-seconds
-    resource: demo-pod01
-    patchedResource: patchedResource1.yaml
-    kind: Pod
-    result: pass
-  - policy: mutate-termination-grace-period-seconds
-    rule: mutate-termination-grace-period-seconds
-    resource: demo-pod02
-    patchedResource: patchedResource2.yaml
-    kind: Pod
-    result: skip  
-  
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: mutate-termination-grace-period-seconds
+  resources:
+  - demo-pod01
+  result: pass
+  rule: mutate-termination-grace-period-seconds
+- kind: Pod
+  patchedResource: patchedResource2.yaml
+  policy: mutate-termination-grace-period-seconds
+  resources:
+  - demo-pod02
+  result: skip
+  rule: mutate-termination-grace-period-seconds

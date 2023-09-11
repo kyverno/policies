@@ -1,23 +1,18 @@
 name: nfs-subdir-external-provisioner-storage-path
 policies:
-  - nfs-subdir-external-provisioner-storage-path.yaml
+- nfs-subdir-external-provisioner-storage-path.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: nfs-subdir-external-provisioner-storage-path
-    rule: enforce-storage-path
-    resource: goodclaim
-    kind: PersistentVolumeClaim
-    result: pass
-  - policy: nfs-subdir-external-provisioner-storage-path
-    rule: enforce-storage-path
-    resource: badclaim
-    kind: PersistentVolumeClaim
-    result: fail
-  # The last test is found to be flaky on CLI v1.6.2. Commenting out
-  # until resolved.
-  # - policy: nfs-subdir-external-provisioner-storage-path
-  #   rule: enforce-storage-path
-  #   resource: skipclaim
-  #   kind: PersistentVolumeClaim
-  #   result: skip
+- kind: PersistentVolumeClaim
+  policy: nfs-subdir-external-provisioner-storage-path
+  resources:
+  - goodclaim
+  result: pass
+  rule: enforce-storage-path
+- kind: PersistentVolumeClaim
+  policy: nfs-subdir-external-provisioner-storage-path
+  resources:
+  - badclaim
+  result: fail
+  rule: enforce-storage-path

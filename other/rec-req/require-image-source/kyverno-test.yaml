@@ -1,15 +1,14 @@
 name: require-image-source
 policies:
-  - require-image-source.yaml
+- require-image-source.yaml
 resources:
-  - good.yaml
-  - bad.yaml
+- good.yaml
+- bad.yaml
+results:
+- kind: Pod
+  policy: require-image-source
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-source
 variables: values.yaml
-results:  
-  - policy: require-image-source
-    rule: check-source
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  
- 

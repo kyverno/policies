@@ -1,21 +1,24 @@
 name: restrict-external-ips
 policies:
-  -  restrict-service-external-ips.yaml
+- restrict-service-external-ips.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-external-ips
-    rule: check-ips
-    resource: goodservice01
-    kind: Service
-    result: pass
-  - policy: restrict-external-ips
-    rule: check-ips
-    resource: badservice01
-    kind: Service
-    result: fail
-  - policy: restrict-external-ips
-    rule: check-ips
-    resource: badservice02
-    kind: Service
-    result: fail
+- kind: Service
+  policy: restrict-external-ips
+  resources:
+  - goodservice01
+  result: pass
+  rule: check-ips
+- kind: Service
+  policy: restrict-external-ips
+  resources:
+  - badservice01
+  result: fail
+  rule: check-ips
+- kind: Service
+  policy: restrict-external-ips
+  resources:
+  - badservice02
+  result: fail
+  rule: check-ips

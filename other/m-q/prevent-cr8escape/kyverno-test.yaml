@@ -1,23 +1,24 @@
 name: restrict-
 policies:
-  - prevent-cr8escape.yaml
+- prevent-cr8escape.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-###### Pods - Bad
-  - policy: prevent-cr8escape
-    rule: restrict-sysctls-cr8escape
-    resource: badpod01
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: prevent-cr8escape
-    rule: restrict-sysctls-cr8escape
-    resource: pod-sysctl-good
-    kind: Pod
-    result: pass
-  - policy: prevent-cr8escape
-    rule: restrict-sysctls-cr8escape
-    resource: pod-no-sysctl
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: prevent-cr8escape
+  resources:
+  - badpod01
+  result: fail
+  rule: restrict-sysctls-cr8escape
+- kind: Pod
+  policy: prevent-cr8escape
+  resources:
+  - pod-sysctl-good
+  result: pass
+  rule: restrict-sysctls-cr8escape
+- kind: Pod
+  policy: prevent-cr8escape
+  resources:
+  - pod-no-sysctl
+  result: pass
+  rule: restrict-sysctls-cr8escape

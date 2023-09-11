@@ -1,31 +1,36 @@
 name: require-storageclass
 policies:
-  - require-storageclass.yaml
+- require-storageclass.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: require-storageclass
-    rule: pvc-storageclass
-    resource: goodpvc
-    kind: PersistentVolumeClaim
-    result: pass
-  - policy: require-storageclass
-    rule: pvc-storageclass
-    resource: badpvc
-    kind: PersistentVolumeClaim
-    result: fail
-  - policy: require-storageclass
-    rule: ss-storageclass
-    resource: goodss
-    kind: StatefulSet
-    result: pass
-  - policy: require-storageclass
-    rule: ss-storageclass
-    resource: goodss-novct
-    kind: StatefulSet
-    result: pass
-  - policy: require-storageclass
-    rule: ss-storageclass
-    resource: badss
-    kind: StatefulSet
-    result: fail
+- kind: PersistentVolumeClaim
+  policy: require-storageclass
+  resources:
+  - goodpvc
+  result: pass
+  rule: pvc-storageclass
+- kind: PersistentVolumeClaim
+  policy: require-storageclass
+  resources:
+  - badpvc
+  result: fail
+  rule: pvc-storageclass
+- kind: StatefulSet
+  policy: require-storageclass
+  resources:
+  - goodss
+  result: pass
+  rule: ss-storageclass
+- kind: StatefulSet
+  policy: require-storageclass
+  resources:
+  - goodss-novct
+  result: pass
+  rule: ss-storageclass
+- kind: StatefulSet
+  policy: require-storageclass
+  resources:
+  - badss
+  result: fail
+  rule: ss-storageclass

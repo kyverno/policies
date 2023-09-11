@@ -1,14 +1,14 @@
 name: block-images-with-volumes
 policies:
-  -  block-images-with-volumes.yaml
+- block-images-with-volumes.yaml
 resources:
-  - good.yaml
-  - bad.yaml
-variables: values.yaml
+- good.yaml
+- bad.yaml
 results:
-  - policy: block-images-with-volumes
-    rule: block-images-with-vols
-    resource: image-vol
-    kind: Pod
-    result: fail
-  
+- kind: Pod
+  policy: block-images-with-volumes
+  resources:
+  - image-vol
+  result: fail
+  rule: block-images-with-vols
+variables: values.yaml

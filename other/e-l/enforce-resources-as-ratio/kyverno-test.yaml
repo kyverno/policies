@@ -1,18 +1,19 @@
 name: enforce-resources-as-ratio
 policies:
-  -  enforce-resources-as-ratio.yaml
+- enforce-resources-as-ratio.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: enforce-resources-as-ratio
-    rule: check-memory-requests-limits
-    resource: badpod
-    kind: Pod
-    result: fail
-  - policy: enforce-resources-as-ratio
-    rule: check-memory-requests-limits
-    resource: goodpod
-    kind: Pod
-    result: pass
-  
+- kind: Pod
+  policy: enforce-resources-as-ratio
+  resources:
+  - badpod
+  result: fail
+  rule: check-memory-requests-limits
+- kind: Pod
+  policy: enforce-resources-as-ratio
+  resources:
+  - goodpod
+  result: pass
+  rule: check-memory-requests-limits
+variables: values.yaml

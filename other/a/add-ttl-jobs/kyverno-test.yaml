@@ -4,19 +4,22 @@ policies:
 resources:
 - resource.yaml
 results:
-- policy: add-ttl-jobs
-  rule: add-ttlSecondsAfterFinished
-  resource: addjob01
-  kind: Job
+- kind: Job
   patchedResource: patched01.yaml
+  policy: add-ttl-jobs
+  resources:
+  - addjob01
   result: pass
-- policy: add-ttl-jobs
   rule: add-ttlSecondsAfterFinished
-  resource: skipjob01
-  kind: Job
+- kind: Job
+  policy: add-ttl-jobs
+  resources:
+  - skipjob01
   result: skip
-- policy: add-ttl-jobs
   rule: add-ttlSecondsAfterFinished
-  resource: skipjob02
-  kind: Job
+- kind: Job
+  policy: add-ttl-jobs
+  resources:
+  - skipjob02
   result: skip
+  rule: add-ttlSecondsAfterFinished

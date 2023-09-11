@@ -4,20 +4,23 @@ policies:
 resources:
 - resource.yaml
 results:
-- policy: add-tolerations
-  rule: service-toleration
-  resource: addpod01
-  kind: Pod
+- kind: Pod
   patchedResource: patched01.yaml
+  policy: add-tolerations
+  resources:
+  - addpod01
   result: pass
-- policy: add-tolerations
   rule: service-toleration
-  resource: addpod02
-  kind: Pod
+- kind: Pod
   patchedResource: patched02.yaml
+  policy: add-tolerations
+  resources:
+  - addpod02
   result: pass
-- policy: add-tolerations
   rule: service-toleration
-  resource: skippod01
-  kind: Pod
+- kind: Pod
+  policy: add-tolerations
+  resources:
+  - skippod01
   result: skip
+  rule: service-toleration

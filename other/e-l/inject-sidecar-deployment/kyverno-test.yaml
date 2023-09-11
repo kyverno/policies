@@ -1,18 +1,20 @@
 name: inject-sidecar
 policies:
-  - inject-sidecar-deployment.yaml
+- inject-sidecar-deployment.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: inject-sidecar
-    rule: inject-sidecar
-    resource: mydeploy-1
-    patchedResource: patchedResource1.yaml
-    kind: Deployment
-    result: pass
-  - policy: inject-sidecar
-    rule: inject-sidecar
-    resource: mydeploy-2
-    patchedResource: patchedResource2.yaml
-    kind: Deployment
-    result: skip
+- kind: Deployment
+  patchedResource: patchedResource1.yaml
+  policy: inject-sidecar
+  resources:
+  - mydeploy-1
+  result: pass
+  rule: inject-sidecar
+- kind: Deployment
+  patchedResource: patchedResource2.yaml
+  policy: inject-sidecar
+  resources:
+  - mydeploy-2
+  result: skip
+  rule: inject-sidecar
