@@ -24,23 +24,23 @@ results:
     resource: openshift-role-binding-deprecated
     kind: RoleBinding
     result: fail
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-valid
-    kind: ClusterRole
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-cluster-role-binding
-    kind: ClusterRoleBinding
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role
-    kind: Role
-    result: skip
-  - policy: disallow-deprecated-apis
-    rule: check-deprecated-apis
-    resource: openshift-role-binding
-    kind: RoleBinding
-    result: skip
+  # - policy: disallow-deprecated-apis
+  #   rule: check-deprecated-apis
+  #   resource: openshift-cluster-role-valid
+  #   kind: ClusterRole
+  #   result: skip
+  # - policy: disallow-deprecated-apis
+  #   rule: check-deprecated-apis
+  #   resource: openshift-cluster-role-binding
+  #   kind: ClusterRoleBinding
+  #   result: skip
+  # - policy: disallow-deprecated-apis
+  #   rule: check-deprecated-apis
+  #   resource: openshift-role
+  #   kind: Role
+  #   result: skip
+  # - policy: disallow-deprecated-apis
+  #   rule: check-deprecated-apis
+  #   resource: openshift-role-binding
+  #   kind: RoleBinding
+  #   result: skip
