@@ -1,26 +1,30 @@
 name: restrict-ingress-wildcard
 policies:
-  - restrict-ingress-wildcard.yaml
+- restrict-ingress-wildcard.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-  - policy: restrict-ingress-wildcard
-    rule: block-ingress-wildcard
-    resource: bading01
-    kind: Ingress
-    result: fail
-  - policy: restrict-ingress-wildcard
-    rule: block-ingress-wildcard
-    resource: bading02
-    kind: Ingress
-    result: fail
-  - policy: restrict-ingress-wildcard
-    rule: block-ingress-wildcard
-    resource: gooding01
-    kind: Ingress
-    result: pass
-  - policy: restrict-ingress-wildcard
-    rule: block-ingress-wildcard
-    resource: gooding02
-    kind: Ingress
-    result: pass
+- kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - bading01
+  result: fail
+  rule: block-ingress-wildcard
+- kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - bading02
+  result: fail
+  rule: block-ingress-wildcard
+- kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - gooding01
+  result: pass
+  rule: block-ingress-wildcard
+- kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - gooding02
+  result: pass
+  rule: block-ingress-wildcard

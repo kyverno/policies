@@ -1,20 +1,19 @@
 name: opa-env
 policies:
-  - check-env-vars.yaml
+- check-env-vars.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  ###### Pods - Bad
-  - policy: check-env-vars
-    rule: check-disable-opa
-    resource: pod-with-opa-enabled
-    kind: Pod
-    result: fail
-  ###### Pods - Good
-  - policy: check-env-vars
-    rule: check-disable-opa
-    resources:
-    - pod-with-opa-disabled
-    - pod-without-opa-env
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: check-env-vars
+  resources:
+  - pod-with-opa-enabled
+  result: fail
+  rule: check-disable-opa
+- kind: Pod
+  policy: check-env-vars
+  resources:
+  - pod-with-opa-disabled
+  - pod-without-opa-env
+  result: pass
+  rule: check-disable-opa

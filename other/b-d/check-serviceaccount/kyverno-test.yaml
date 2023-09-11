@@ -1,17 +1,19 @@
 name: check-sa
 policies:
-  - check-serviceaccount.yaml
+- check-serviceaccount.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-  - policy: check-sa
-    rule: check-sa
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: check-sa
-    rule: check-sa
-    resource: goodpod01
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: check-sa
+  resources:
+  - badpod01
+  result: fail
+  rule: check-sa
+- kind: Pod
+  policy: check-sa
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-sa
+variables: values.yaml

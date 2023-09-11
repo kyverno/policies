@@ -1,19 +1,20 @@
 name: no-loadbalancer-service
 policies:
-  -  restrict-loadbalancer.yaml
+- restrict-loadbalancer.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: no-loadbalancer-service
-    rule: no-LoadBalancer
-    resource: my-service-1
-    kind: Service
-    namespace: default
-    result: fail
-  - policy: no-loadbalancer-service
-    rule: no-LoadBalancer
-    resource: my-service-2
-    kind: Service
-    namespace: default
-    result: pass
-  
+- kind: Service
+  namespace: default
+  policy: no-loadbalancer-service
+  resources:
+  - my-service-1
+  result: fail
+  rule: no-LoadBalancer
+- kind: Service
+  namespace: default
+  policy: no-loadbalancer-service
+  resources:
+  - my-service-2
+  result: pass
+  rule: no-LoadBalancer

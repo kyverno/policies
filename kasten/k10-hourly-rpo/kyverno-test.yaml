@@ -1,16 +1,18 @@
 name: kyverno_data_protection_tests
 policies:
-  - k10-hourly-rpo.yaml
+- k10-hourly-rpo.yaml
 resources:
-  - backup-export-policy.yaml
+- backup-export-policy.yaml
 results:
-- policy: k10-policy-hourly-rpo
-  rule: k10-policy-hourly-rpo
-  resource: hourly-policy
-  kind: Policy
+- kind: Policy
+  policy: k10-policy-hourly-rpo
+  resources:
+  - hourly-policy
   result: pass
-- policy: k10-policy-hourly-rpo
   rule: k10-policy-hourly-rpo
-  resource: daily-policy
-  kind: Policy
+- kind: Policy
+  policy: k10-policy-hourly-rpo
+  resources:
+  - daily-policy
   result: fail
+  rule: k10-policy-hourly-rpo

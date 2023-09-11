@@ -1,12 +1,13 @@
 name: add-volume
 policies:
-  - add-certificates-volume.yaml
+- add-certificates-volume.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-certificates-volume
-    rule: add-ssl-certs
-    resource: mypod
-    patchedResource: patchedResource.yaml
-    kind: Pod
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: add-certificates-volume
+  resources:
+  - mypod
+  result: pass
+  rule: add-ssl-certs

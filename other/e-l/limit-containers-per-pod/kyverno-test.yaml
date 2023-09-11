@@ -1,26 +1,30 @@
 name: limit-containers-per-pod
 policies:
-  - limit-containers-per-pod.yaml
+- limit-containers-per-pod.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod
-    resource: myapp-pod-1
-    kind: Pod
-    result: pass
-  - policy: limit-containers-per-pod
-    rule: limit-containers-per-pod
-    resource: myapp-pod-2
-    kind: Pod
-    result: fail
-  - policy: limit-containers-per-pod
-    rule: autogen-limit-containers-per-pod
-    resource: mydeploy
-    kind: Deployment
-    result: pass
-  - policy: limit-containers-per-pod
-    rule: autogen-cronjob-limit-containers-per-pod
-    resource: mycronjob
-    kind: CronJob
-    result: fail
+- kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: limit-containers-per-pod
+- kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-2
+  result: fail
+  rule: limit-containers-per-pod
+- kind: Deployment
+  policy: limit-containers-per-pod
+  resources:
+  - mydeploy
+  result: pass
+  rule: autogen-limit-containers-per-pod
+- kind: CronJob
+  policy: limit-containers-per-pod
+  resources:
+  - mycronjob
+  result: fail
+  rule: autogen-cronjob-limit-containers-per-pod

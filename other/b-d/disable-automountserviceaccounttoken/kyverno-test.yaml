@@ -1,18 +1,13 @@
 name: disable-automountserviceaccounttoken
 policies:
-  - disable-automountserviceaccounttoken.yaml
+- disable-automountserviceaccounttoken.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: disable-automountserviceaccounttoken
-    rule: disable-automountserviceaccounttoken
-    resource: default
-    patchedResource: patchedResource.yaml
-    kind: ServiceAccount
-    result: pass
-  # - policy: disable-automountserviceaccounttoken
-  #   rule: disable-automountserviceaccounttoken
-  #   resource: demo-sa
-  #   kind: ServiceAccount
-  #   result: skip  
-
+- kind: ServiceAccount
+  patchedResource: patchedResource.yaml
+  policy: disable-automountserviceaccounttoken
+  resources:
+  - default
+  result: pass
+  rule: disable-automountserviceaccounttoken

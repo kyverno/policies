@@ -1,19 +1,21 @@
 name: add-psa-labels
 policies:
-  - add-psa-labels.yaml
+- add-psa-labels.yaml
 resources:
-  - resource.yaml
-  - resourcefail.yaml
+- resource.yaml
+- resourcefail.yaml
 results:
-  - policy: add-psa-labels
-    rule: add-baseline-enforce-restricted-warn
-    resource: test
-    patchedResource: patchedResource.yaml
-    kind: Namespace
-    result: pass
-  - policy: add-psa-labels
-    rule: add-baseline-enforce-restricted-warn
-    resource: test-fail
-    patchedResource: patchedResourcefail.yaml
-    kind: Namespace
-    result: fail
+- kind: Namespace
+  patchedResource: patchedResource.yaml
+  policy: add-psa-labels
+  resources:
+  - test
+  result: pass
+  rule: add-baseline-enforce-restricted-warn
+- kind: Namespace
+  patchedResource: patchedResourcefail.yaml
+  policy: add-psa-labels
+  resources:
+  - test-fail
+  result: fail
+  rule: add-baseline-enforce-restricted-warn

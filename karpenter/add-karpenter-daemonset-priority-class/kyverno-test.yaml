@@ -1,13 +1,14 @@
 name: test-add-karpenter-daemonset-priority-class
 policies:
-  - add-karpenter-daemonset-priority-class.yaml
+- add-karpenter-daemonset-priority-class.yaml
 resources:
-  - daemonset.yaml
+- daemonset.yaml
 results:
-  - policy: add-karpenter-daemonset-priority-class
-    rule: add-karpenter-daemonset-priority-class
-    resource: test
-    namespace: test
-    kind: DaemonSet
-    patchedResource: daemonset-patched.yaml
-    result: pass
+- kind: DaemonSet
+  namespace: test
+  patchedResource: daemonset-patched.yaml
+  policy: add-karpenter-daemonset-priority-class
+  resources:
+  - test
+  result: pass
+  rule: add-karpenter-daemonset-priority-class

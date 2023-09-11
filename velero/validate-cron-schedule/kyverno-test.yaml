@@ -1,16 +1,18 @@
 name: validate-cron-schedule
 policies:
-  -  validate-cron-schedule.yaml
+- validate-cron-schedule.yaml
 resources:
-  -  resources.yaml
+- resources.yaml
 results:
-  - policy: validate-cron-schedule
-    rule: validate-cron
-    resource: goodschedule01
-    kind: Schedule
-    result: pass
-  - policy: validate-cron-schedule
-    rule: validate-cron
-    resource: badschedule01
-    kind: Schedule
-    result: fail
+- kind: Schedule
+  policy: validate-cron-schedule
+  resources:
+  - goodschedule01
+  result: pass
+  rule: validate-cron
+- kind: Schedule
+  policy: validate-cron-schedule
+  resources:
+  - badschedule01
+  result: fail
+  rule: validate-cron

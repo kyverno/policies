@@ -1,17 +1,18 @@
----
 name: pod-lifetime
 policies:
-  - enforce-pod-duration.yaml
+- enforce-pod-duration.yaml
 resources:
-  - resources.yaml
+- resources.yaml
 results:
-  - policy: pod-lifetime
-    rule: pods-lifetime
-    resource: test-lifetime-pass
-    kind: Pod
-    result: pass
-  - policy: pod-lifetime
-    rule: pods-lifetime
-    resource: test-lifetime-fail
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: pod-lifetime
+  resources:
+  - test-lifetime-pass
+  result: pass
+  rule: pods-lifetime
+- kind: Pod
+  policy: pod-lifetime
+  resources:
+  - test-lifetime-fail
+  result: fail
+  rule: pods-lifetime

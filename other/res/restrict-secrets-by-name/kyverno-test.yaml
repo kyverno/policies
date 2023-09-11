@@ -1,51 +1,60 @@
 name: test-secrets-policy
 policies:
-  - restrict-secrets-by-name.yaml
+- restrict-secrets-by-name.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-envfrom
-    resource: good-pod-all
-    kind: Pod
-    result: pass
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-env
-    resource: good-pod-all
-    kind: Pod
-    result: pass
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-volumes
-    resource: good-pod-all
-    kind: Pod
-    result: pass
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-volumes
-    resource: bad-pod-vol
-    kind: Pod
-    result: fail
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-env
-    resource: bad-pod-env
-    kind: Pod
-    result: fail
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-envfrom
-    resource: bad-pod-envfrom
-    kind: Pod
-    result: fail
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-env
-    resource: bad-deploy-env
-    kind: Deployment
-    result: fail
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-envfrom
-    resource: bad-deploy-envfrom
-    kind: Deployment
-    result: fail
-  - policy: restrict-secrets-by-name
-    rule: safe-secrets-from-volumes
-    resource: bad-deploy-vol
-    kind: Deployment
-    result: fail
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-env
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-vol
+  result: fail
+  rule: safe-secrets-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-env
+  result: fail
+  rule: safe-secrets-from-env
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-envfrom
+  result: fail
+  rule: safe-secrets-from-envfrom
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-env
+  result: fail
+  rule: safe-secrets-from-env
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-envfrom
+  result: fail
+  rule: safe-secrets-from-envfrom
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-vol
+  result: fail
+  rule: safe-secrets-from-volumes

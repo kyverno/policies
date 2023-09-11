@@ -1,387 +1,456 @@
 name: require-run-as-nonroot
 policies:
-  - require-run-as-nonroot.yaml
+- require-run-as-nonroot.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-###### Pods - Bad
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod02
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod03
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod04
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod05
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod06
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod07
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod08
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod09
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod10
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod11
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod12
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod13
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod14
-    kind: Pod
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badpod15
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod02
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod03
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod04
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod05
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod06
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod07
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod08
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod09
-    kind: Pod
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodpod10
-    kind: Pod
-    result: pass
-###### Deployments - Bad
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment01
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment02
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment03
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment04
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment05
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment06
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment07
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment08
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment09
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment10
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment11
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment12
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment13
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment14
-    kind: Deployment
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: baddeployment15
-    kind: Deployment
-    result: fail
-###### Deployments - Good
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment01
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment02
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment03
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment04
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment05
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment06
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment07
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment08
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment09
-    kind: Deployment
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: gooddeployment10
-    kind: Deployment
-    result: pass
-###### CronJobs - Bad
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob01
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob02
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob03
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob04
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob05
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob06
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob07
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob08
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob09
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob10
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob11
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob12
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob13
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob14
-    kind: CronJob
-    result: fail
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: badcronjob15
-    kind: CronJob
-    result: fail
-###### CronJobs - Good
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob01
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob02
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob03
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob04
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob05
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob06
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob07
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob08
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob09
-    kind: CronJob
-    result: pass
-  - policy: require-run-as-nonroot
-    rule: run-as-non-root
-    resource: goodcronjob10
-    kind: CronJob
-    result: pass
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod01
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod02
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod03
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod04
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod05
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod06
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod07
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod08
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod09
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod10
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod11
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod12
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod13
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod14
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - badpod15
+  result: fail
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod01
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod02
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod03
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod04
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod05
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod06
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod07
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod08
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod09
+  result: pass
+  rule: run-as-non-root
+- kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - goodpod10
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment01
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment02
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment03
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment04
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment05
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment06
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment07
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment08
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment09
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment10
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment11
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment12
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment13
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment14
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - baddeployment15
+  result: fail
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment01
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment02
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment03
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment04
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment05
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment06
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment07
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment08
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment09
+  result: pass
+  rule: run-as-non-root
+- kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - gooddeployment10
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob01
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob02
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob03
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob04
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob05
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob06
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob07
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob08
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob09
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob10
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob11
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob12
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob13
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob14
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - badcronjob15
+  result: fail
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob02
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob03
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob04
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob05
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob06
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob07
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob08
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob09
+  result: pass
+  rule: run-as-non-root
+- kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - goodcronjob10
+  result: pass
+  rule: run-as-non-root

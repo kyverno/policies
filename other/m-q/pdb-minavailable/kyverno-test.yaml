@@ -1,24 +1,21 @@
 name: pdb-minavailable-check
-
 policies:
 - pdb-minavailable.yaml
-
 resources:
 - resource.yaml
-
-variables: values.yaml
-
 results:
-- policy: pdb-minavailable-check
-  rule: pdb-minavailable
-  resource: bad-pdb
+- kind: StatefulSet
   namespace: nginx
-  kind: StatefulSet
+  policy: pdb-minavailable-check
+  resources:
+  - bad-pdb
   result: fail
-
-- policy: pdb-minavailable-check
   rule: pdb-minavailable
-  resource: good-pdb
+- kind: StatefulSet
   namespace: nginx
-  kind: StatefulSet
+  policy: pdb-minavailable-check
+  resources:
+  - good-pdb
   result: pass
+  rule: pdb-minavailable
+variables: values.yaml

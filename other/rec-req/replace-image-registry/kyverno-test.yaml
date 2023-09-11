@@ -1,30 +1,34 @@
 name: replace-image-registry
 policies:
-  -  replace-image-registry.yaml
+- replace-image-registry.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: replace-image-registry
-    rule: replace-image-registry-pod-containers
-    resource: myapp-pod1
-    kind: Pod
-    patchedResource: patchedResource1.yaml
-    result: pass
-  - policy: replace-image-registry
-    rule: replace-image-registry-pod-initcontainers
-    resource: myapp-pod1
-    kind: Pod
-    patchedResource: patchedResource1.yaml
-    result: skip
-  - policy: replace-image-registry
-    rule: replace-image-registry-pod-containers
-    resource: myapp-pod2
-    kind: Pod
-    patchedResource: patchedResource3.yaml
-    result: pass
-  - policy: replace-image-registry
-    rule: replace-image-registry-pod-initcontainers
-    resource: myapp-pod2
-    kind: Pod
-    patchedResource: patchedResource3.yaml
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: replace-image-registry
+  resources:
+  - myapp-pod1
+  result: pass
+  rule: replace-image-registry-pod-containers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: replace-image-registry
+  resources:
+  - myapp-pod1
+  result: skip
+  rule: replace-image-registry-pod-initcontainers
+- kind: Pod
+  patchedResource: patchedResource3.yaml
+  policy: replace-image-registry
+  resources:
+  - myapp-pod2
+  result: pass
+  rule: replace-image-registry-pod-containers
+- kind: Pod
+  patchedResource: patchedResource3.yaml
+  policy: replace-image-registry
+  resources:
+  - myapp-pod2
+  result: pass
+  rule: replace-image-registry-pod-initcontainers

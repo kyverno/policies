@@ -1,59 +1,61 @@
 name: restrict-secrets-by-label
 policies:
-  - restrict-secrets-by-label.yaml
+- restrict-secrets-by-label.yaml
 resources:
-  - resource.yaml
-variables: values.yaml
+- resource.yaml
 results:
-# checking pod resource secret-env-pod against all three rules
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-env
-    resource: secret-env-pod
-    kind: Pod
-    result: pass
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-envfrom
-    resource: secret-env-pod
-    kind: Pod
-    result: skip
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-volumes
-    resource: secret-env-pod
-    kind: Pod
-    result: skip  
-
-# checking pod resource secret-ref-pod against all three rules
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-env
-    resource: secret-ref-pod
-    kind: Pod
-    result: skip
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-envfrom
-    resource: secret-ref-pod
-    kind: Pod
-    result: fail # status : protected
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-volumes
-    resource: secret-ref-pod
-    kind: Pod
-    result: skip  
-
-# checking pod resource secret-vol-pod against all three rules
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-env
-    resource: secret-vol-pod
-    kind: Pod
-    result: skip
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-envfrom
-    resource: secret-vol-pod
-    kind: Pod
-    result: skip 
-  - policy: restrict-secrets-by-label
-    rule: secrets-lookup-from-volumes
-    resource: secret-vol-pod
-    kind: Pod
-    result: pass
-
-  
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  result: pass
+  rule: secrets-lookup-from-env
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  result: skip
+  rule: secrets-lookup-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  result: skip
+  rule: secrets-lookup-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-ref-pod
+  result: skip
+  rule: secrets-lookup-from-env
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-ref-pod
+  result: fail
+  rule: secrets-lookup-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-ref-pod
+  result: skip
+  rule: secrets-lookup-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-vol-pod
+  result: skip
+  rule: secrets-lookup-from-env
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-vol-pod
+  result: skip
+  rule: secrets-lookup-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-vol-pod
+  result: pass
+  rule: secrets-lookup-from-volumes
+variables: values.yaml

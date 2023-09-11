@@ -1,18 +1,20 @@
 name: add-capabilities
 policies:
-  - add-capabilities.yaml
+- add-capabilities.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: add-capabilities
-    rule: add-setfcap-setuid
-    resource: pod01
-    kind: Pod
-    patchedResource: patchedResource1.yaml
-    result: pass
-  - policy: add-capabilities
-    rule: add-setfcap-setuid
-    resource: pod02
-    kind: Pod
-    patchedResource: patchedResource2.yaml
-    result: pass
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-capabilities
+  resources:
+  - pod01
+  result: pass
+  rule: add-setfcap-setuid
+- kind: Pod
+  patchedResource: patchedResource2.yaml
+  policy: add-capabilities
+  resources:
+  - pod02
+  result: pass
+  rule: add-setfcap-setuid

@@ -1,177 +1,204 @@
 name: disallow-privilege-escalation
 policies:
-  - disallow-privilege-escalation.yaml
+- disallow-privilege-escalation.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-###### Pods - Bad
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod01
-    kind: Pod
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod02
-    kind: Pod
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod03
-    kind: Pod
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod04
-    kind: Pod
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod05
-    kind: Pod
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badpod06
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodpod01
-    kind: Pod
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodpod02
-    kind: Pod
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodpod03
-    kind: Pod
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodpod04
-    kind: Pod
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodpod05
-    kind: Pod
-    result: pass
-###### Deployments - Bad
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment01
-    kind: Deployment
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment02
-    kind: Deployment
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment03
-    kind: Deployment
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment04
-    kind: Deployment
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment05
-    kind: Deployment
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: baddeployment06
-    kind: Deployment
-    result: fail
-###### Deployments - Good
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: gooddeployment01
-    kind: Deployment
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: gooddeployment02
-    kind: Deployment
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: gooddeployment03
-    kind: Deployment
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: gooddeployment04
-    kind: Deployment
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: gooddeployment05
-    kind: Deployment
-    result: pass
-###### CronJobs - Bad
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob01
-    kind: CronJob
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob02
-    kind: CronJob
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob03
-    kind: CronJob
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob04
-    kind: CronJob
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob05
-    kind: CronJob
-    result: fail
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: badcronjob06
-    kind: CronJob
-    result: fail
-###### CronJobs - Good
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodcronjob01
-    kind: CronJob
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodcronjob02
-    kind: CronJob
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodcronjob03
-    kind: CronJob
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodcronjob04
-    kind: CronJob
-    result: pass
-  - policy: disallow-privilege-escalation
-    rule: privilege-escalation
-    resource: goodcronjob05
-    kind: CronJob
-    result: pass
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod01
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod02
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod03
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod04
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod05
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - badpod06
+  result: fail
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - goodpod01
+  result: pass
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - goodpod02
+  result: pass
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - goodpod03
+  result: pass
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - goodpod04
+  result: pass
+  rule: privilege-escalation
+- kind: Pod
+  policy: disallow-privilege-escalation
+  resources:
+  - goodpod05
+  result: pass
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment01
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment02
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment03
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment04
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment05
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - baddeployment06
+  result: fail
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - gooddeployment01
+  result: pass
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - gooddeployment02
+  result: pass
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - gooddeployment03
+  result: pass
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - gooddeployment04
+  result: pass
+  rule: privilege-escalation
+- kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - gooddeployment05
+  result: pass
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob01
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob02
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob03
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob04
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob05
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - badcronjob06
+  result: fail
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - goodcronjob02
+  result: pass
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - goodcronjob03
+  result: pass
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - goodcronjob04
+  result: pass
+  rule: privilege-escalation
+- kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - goodcronjob05
+  result: pass
+  rule: privilege-escalation

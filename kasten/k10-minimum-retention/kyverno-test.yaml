@@ -1,12 +1,13 @@
 name: kyverno_data_protection_tests
 policies:
-  - k10-minimum-retention.yaml
+- k10-minimum-retention.yaml
 resources:
-  - backup-export-policy.yaml
+- backup-export-policy.yaml
 results:
-- policy: k10-minimum-retention
-  rule: k10-minimum-retention
-  resource: hourly-policy
-  kind: Policy
+- kind: Policy
   patchedResource: patched.yaml
+  policy: k10-minimum-retention
+  resources:
+  - hourly-policy
   result: pass
+  rule: k10-minimum-retention

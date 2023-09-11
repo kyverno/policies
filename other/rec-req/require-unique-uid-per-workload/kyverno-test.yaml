@@ -1,17 +1,19 @@
 name: require-unique-uid-per-workload
 policies:
-  -  require-unique-uid-per-workload.yaml
+- require-unique-uid-per-workload.yaml
 resources:
-  -  resource.yaml
-variables: variables.yaml
+- resource.yaml
 results:
-  - policy: require-unique-uid-per-workload
-    rule: require-unique-uid
-    resource: already-taken-user
-    kind: Pod
-    result: fail
-  - policy: require-unique-uid-per-workload
-    rule: require-unique-uid
-    resource: free-user
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: require-unique-uid-per-workload
+  resources:
+  - already-taken-user
+  result: fail
+  rule: require-unique-uid
+- kind: Pod
+  policy: require-unique-uid-per-workload
+  resources:
+  - free-user
+  result: pass
+  rule: require-unique-uid
+variables: variables.yaml

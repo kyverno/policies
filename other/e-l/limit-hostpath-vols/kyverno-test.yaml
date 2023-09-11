@@ -1,18 +1,20 @@
 name: limit-hostpath-vols
 policies:
-  - limit-hostpath-vols.yaml
+- limit-hostpath-vols.yaml
 resources:
-  - goodpod.yaml
-  - badpod.yaml
-variables: values.yaml
+- goodpod.yaml
+- badpod.yaml
 results:
-  - policy: limit-hostpath-vols
-    rule: limit-hostpath-to-slash-data
-    resource: good-pods-all
-    kind: Pod
-    result: pass
-  - policy: limit-hostpath-vols
-    rule: limit-hostpath-to-slash-data
-    resource: bad-pods-all
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: limit-hostpath-vols
+  resources:
+  - good-pods-all
+  result: pass
+  rule: limit-hostpath-to-slash-data
+- kind: Pod
+  policy: limit-hostpath-vols
+  resources:
+  - bad-pods-all
+  result: fail
+  rule: limit-hostpath-to-slash-data
+variables: values.yaml
