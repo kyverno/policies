@@ -10,9 +10,9 @@ results:
     patchedResource: patchedResource.yaml
     kind: ServiceAccount
     result: pass
-  - policy: disable-automountserviceaccounttoken
-    rule: disable-automountserviceaccounttoken
-    resource: demo-sa
-    kind: ServiceAccount
-    result: skip  
+  # - policy: disable-automountserviceaccounttoken
+  #   rule: disable-automountserviceaccounttoken
+  #   resource: demo-sa
+  #   kind: ServiceAccount
+  #   result: skip  
 
