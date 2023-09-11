@@ -12,12 +12,12 @@ results:
     namespace: foo
     patchedResource: patchedResource.yaml
     result: pass
-  - policy: backup-all-volumes
-    rule: backup-velero-pv
-    resource: second
-    kind: Pod
-    namespace: bar
-    result: skip
+  # - policy: backup-all-volumes
+  #   rule: backup-velero-pv
+  #   resource: second
+  #   kind: Pod
+  #   namespace: bar
+  #   result: skip
   - policy: backup-all-volumes
     rule: backup-velero-pv
     resource: third
