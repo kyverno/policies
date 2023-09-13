@@ -11,4 +11,9 @@ commands:
 - script: |
     val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo)
     if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
-- command: kubectl delete all --all --force --grace-period=0 -n refresh-vols-ns
+- command: kubectl delete pod --all --force --grace-period=0 -n refresh-vols-ns
+- command: kubectl delete cm --all --force --grace-period=0 -n refresh-vols-ns
+- command: kubectl delete clusterrole kyverno:background-controller:refresh-vols-pods
+- command: kubectl delete cpol --all
+- command: sleep 3
+- command: kubectl delete ns refresh-vols-ns
