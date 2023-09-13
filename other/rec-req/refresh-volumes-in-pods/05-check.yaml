@@ -1,0 +1,14 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: sleep 3
+- script: |
+    val=$(kubectl exec pod01 -n refresh-vols-ns -- cat /mnt/foo/foo)
+    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
+- script: |
+    val=$(kubectl exec pod02 -n refresh-vols-ns -- cat /mnt/foo/foo)
+    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
+- script: |
+    val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo)
+    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
+- command: kubectl delete all --all --force --grace-period=0 -n refresh-vols-ns
