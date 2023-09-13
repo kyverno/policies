@@ -54,4 +54,9 @@ commands:
     else
         exit 1;
     fi
-- command: kubectl delete all --all --force --grace-period=0 -n refresh-env-var-ns
+- command: kubectl delete deployment --all --force --grace-period=0 -n refresh-env-var-ns
+- command: kubectl delete secret --all --force --grace-period=0 -n refresh-env-var-ns
+- command: kubectl delete clusterrole kyverno:background-controller:refresh-env-var-in-pod
+- command: kubectl delete cpol --all
+- command: sleep 3
+- command: kubectl delete ns refresh-env-var-ns
