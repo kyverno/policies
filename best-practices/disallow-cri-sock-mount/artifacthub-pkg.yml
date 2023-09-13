@@ -1,5 +1,5 @@
 name: disallow-cri-sock-mount
-version: 1.1.0
+version: 1.0.0
 displayName: Disallow CRI socket mounts
 createdAt: "2023-04-10T19:47:15.000Z"
 description: >-
@@ -19,10 +19,4 @@ readme: |
 annotations:
   kyverno/category: "Best Practices, EKS Best Practices"
   kyverno/subject: "Pod"
-digest: 2eaa240566025fa1195b0ceb9698b356a4e675a28c8bd4ad469f5b4aa441fee5
-changes:
-  - kind: added
-    description: Add CRI Dockerd socket mount validation
-    links:
-      - name: Github PR
-        url: https://github.com/kyverno/policies/pull/753
+digest: d1d1668af87e2bc2fd5449e13a5db36301a73ed28f71a2d1a5b28a455188d2df
