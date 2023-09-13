@@ -1,0 +1,9 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- command: kubectl delete deployment --all --force --grace-period=0 -n add-ndots
+- command: kubectl delete cj --all --force --grace-period=0 -n add-ndots
+- command: kubectl delete pod --all --force --grace-period=0 -n add-ndots
+- command: kubectl delete cpol --all
+- command: sleep 3
+- command: kubectl delete ns add-ndots

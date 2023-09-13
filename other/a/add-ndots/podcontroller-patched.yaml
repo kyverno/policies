@@ -4,6 +4,7 @@ metadata:
   labels:
     app: busybox
   name: deployment01
+  namespace: add-ndots
 spec:
   replicas: 1
   selector:
@@ -27,6 +28,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: cronjob01
+  namespace: add-ndots
 spec:
   schedule: "* * * * *"
   jobTemplate:

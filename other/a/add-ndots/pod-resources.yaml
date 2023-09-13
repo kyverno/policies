@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pod01
+  namespace: add-ndots
 spec:
   containers:
   - name: bb
@@ -11,6 +12,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pod02
+  namespace: add-ndots
 spec:
   dnsConfig:
     options:

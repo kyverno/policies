@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pod01
+  namespace: add-ndots
 spec:
   dnsConfig:
     options:
@@ -15,6 +16,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: pod02
+  namespace: add-ndots
 spec:
   dnsConfig:
     options:

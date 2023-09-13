@@ -1,5 +1,6 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
+- ns.yaml
 - podcontroller-resources.yaml
 - pod-resources.yaml
