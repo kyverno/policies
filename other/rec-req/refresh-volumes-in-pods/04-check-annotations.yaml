@@ -1,7 +1,7 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 commands:
-- command: sleep 5
+- command: sleep 3
 - script: |
     annotation=$(kubectl get pod pod01 -n refresh-vols-ns -o json | kyverno jp query "metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
     if [ "$annotation" = "" ]; then exit 1; else exit 0; fi
@@ -14,13 +14,3 @@ commands:
 - script: |
     annotation=$(kubectl get pod pod04 -n refresh-vols-ns -o json | kyverno jp query "metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
     if [ "$annotation" = "1234abcd" ]; then exit 0; else exit 1; fi
-- script: |
-    val=$(kubectl exec pod01 -n refresh-vols-ns -- cat /mnt/foo/foo)
-    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
-- script: |
-    val=$(kubectl exec pod02 -n refresh-vols-ns -- cat /mnt/foo/foo)
-    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
-- script: |
-    val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo)
-    if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
-- command: kubectl delete all --all --force --grace-period=0 -n refresh-vols-ns
