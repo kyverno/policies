@@ -1,4 +1,7 @@
-name: deployment-has-multiple-replicas
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deployment-has-multiple-replicas
 policies:
 - require-deployments-have-multiple-replicas.yaml
 resources:

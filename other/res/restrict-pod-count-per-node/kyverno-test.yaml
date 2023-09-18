@@ -1,4 +1,7 @@
-name: restrict-pod-count
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-pod-count
 policies:
 - restrict-pod-count-per-node.yaml
 resources:

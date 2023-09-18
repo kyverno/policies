@@ -1,4 +1,7 @@
-name: mutate-termination-grace-period-seconds
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: mutate-termination-grace-period-seconds
 policies:
 - mutate-large-termination-gps.yaml
 resources:

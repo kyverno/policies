@@ -1,13 +1,16 @@
-name: add-service-ssh
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-service-ssh
 policies:
-  - add-services.yaml
+- add-services.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: k6t-add-services
-    rule: k6t-add-service-ssh
-    kind: VirtualMachineInstance
-    resources:
-    - vmi-name
-    generatedResource: generatedResource.yaml
-    result: pass
+- generatedResource: generatedResource.yaml
+  kind: VirtualMachineInstance
+  policy: k6t-add-services
+  resources:
+  - vmi-name
+  result: pass
+  rule: k6t-add-service-ssh

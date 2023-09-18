@@ -1,4 +1,7 @@
-name: add-capabilities
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-capabilities
 policies:
 - add-capabilities.yaml
 resources:

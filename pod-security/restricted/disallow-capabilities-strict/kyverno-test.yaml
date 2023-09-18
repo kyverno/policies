@@ -1,654 +1,177 @@
-name: disallow-capabilities-strict
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-capabilities-strict
 policies:
 - disallow-capabilities-strict.yaml
 resources:
 - resource.yaml
 results:
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod01
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod02
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod03
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod04
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod05
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod06
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod07
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod08
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod09
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - badpod10
-  result: fail
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod01
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod02
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod03
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod04
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod05
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - goodpod06
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment01
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment02
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment03
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment04
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment05
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment06
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment07
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment08
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment09
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - baddeployment10
-  result: fail
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment01
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment02
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment03
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment04
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment05
-  result: pass
-  rule: require-drop-all
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - gooddeployment06
-  result: pass
-  rule: require-drop-all
 - kind: CronJob
   policy: disallow-capabilities-strict
   resources:
-  - badcronjob01
+  - addcap-badcronjob01
+  - addcap-badcronjob02
+  - addcap-badcronjob03
+  - addcap-badcronjob04
+  - addcap-badcronjob05
+  - addcap-badcronjob06
+  - addcap-badcronjob07
+  - addcap-badcronjob08
+  - addcap-badcronjob09
+  - addcap-badcronjob10
   result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob02
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob03
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob04
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob05
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob06
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob07
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob08
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob09
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - badcronjob10
-  result: fail
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob01
-  result: pass
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob02
-  result: pass
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob03
-  result: pass
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob04
-  result: pass
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob05
-  result: pass
-  rule: require-drop-all
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - goodcronjob06
-  result: pass
-  rule: require-drop-all
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod01
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod02
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod03
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod04
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod05
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod06
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod07
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod08
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod09
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badpod10
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod01
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod02
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod03
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod04
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod05
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod06
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod07
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod08
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod09
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Pod
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-goodpod10
-  result: pass
   rule: adding-capabilities-strict
 - kind: Deployment
   policy: disallow-capabilities-strict
   resources:
   - addcap-baddeployment01
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment02
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment03
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment04
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment05
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment06
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment07
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment08
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment09
-  result: fail
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-baddeployment10
   result: fail
   rule: adding-capabilities-strict
-- kind: Deployment
+- kind: Pod
   policy: disallow-capabilities-strict
   resources:
-  - addcap-gooddeployment01
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment02
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment03
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment04
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment05
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment06
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment07
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment08
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment09
-  result: pass
-  rule: adding-capabilities-strict
-- kind: Deployment
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-gooddeployment10
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob01
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob02
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob03
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob04
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob05
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob06
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob07
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob08
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob09
-  result: fail
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
-  - addcap-badcronjob10
+  - addcap-badpod01
+  - addcap-badpod02
+  - addcap-badpod03
+  - addcap-badpod04
+  - addcap-badpod05
+  - addcap-badpod06
+  - addcap-badpod07
+  - addcap-badpod08
+  - addcap-badpod09
+  - addcap-badpod10
   result: fail
   rule: adding-capabilities-strict
 - kind: CronJob
   policy: disallow-capabilities-strict
   resources:
   - addcap-goodcronjob01
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob02
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob03
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob04
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob05
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob06
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob07
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob08
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob09
-  result: pass
-  rule: adding-capabilities-strict
-- kind: CronJob
-  policy: disallow-capabilities-strict
-  resources:
   - addcap-goodcronjob10
   result: pass
   rule: adding-capabilities-strict
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-gooddeployment01
+  - addcap-gooddeployment02
+  - addcap-gooddeployment03
+  - addcap-gooddeployment04
+  - addcap-gooddeployment05
+  - addcap-gooddeployment06
+  - addcap-gooddeployment07
+  - addcap-gooddeployment08
+  - addcap-gooddeployment09
+  - addcap-gooddeployment10
+  result: pass
+  rule: adding-capabilities-strict
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-goodpod01
+  - addcap-goodpod02
+  - addcap-goodpod03
+  - addcap-goodpod04
+  - addcap-goodpod05
+  - addcap-goodpod06
+  - addcap-goodpod07
+  - addcap-goodpod08
+  - addcap-goodpod09
+  - addcap-goodpod10
+  result: pass
+  rule: adding-capabilities-strict
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  - badcronjob08
+  - badcronjob09
+  - badcronjob10
+  result: fail
+  rule: require-drop-all
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  - baddeployment06
+  - baddeployment07
+  - baddeployment08
+  - baddeployment09
+  - baddeployment10
+  result: fail
+  rule: require-drop-all
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  - badpod10
+  result: fail
+  rule: require-drop-all
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  result: pass
+  rule: require-drop-all
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  result: pass
+  rule: require-drop-all
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  result: pass
+  rule: require-drop-all

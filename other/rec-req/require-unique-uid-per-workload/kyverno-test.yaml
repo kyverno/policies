@@ -1,4 +1,7 @@
-name: require-unique-uid-per-workload
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-unique-uid-per-workload
 policies:
 - require-unique-uid-per-workload.yaml
 resources:

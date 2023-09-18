@@ -1,4 +1,7 @@
-name: add-env-vars-from-cm
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-env-vars-from-cm
 policies:
 - add-env-vars-from-cm.yaml
 resources:

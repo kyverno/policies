@@ -1,4 +1,7 @@
-name: require-imagepullsecrets
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-imagepullsecrets
 policies:
 - require-imagepullsecrets.yaml
 resources:
@@ -7,14 +10,14 @@ results:
 - kind: Pod
   policy: require-imagepullsecrets
   resources:
-  - goodpod01
-  result: pass
+  - badpod01
+  result: fail
   rule: check-for-image-pull-secrets
 - kind: Pod
   policy: require-imagepullsecrets
   resources:
-  - badpod01
-  result: fail
+  - goodpod01
+  result: pass
   rule: check-for-image-pull-secrets
 - kind: Pod
   policy: require-imagepullsecrets

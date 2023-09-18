@@ -1,4 +1,7 @@
-name: remove-hostpath-volumes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: remove-hostpath-volumes
 policies:
 - remove-hostpath-volumes.yaml
 resources:

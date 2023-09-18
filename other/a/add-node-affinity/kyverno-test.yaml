@@ -1,4 +1,7 @@
-name: add-node-affinity
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-node-affinity
 policies:
 - add-node-affinity.yaml
 resources:

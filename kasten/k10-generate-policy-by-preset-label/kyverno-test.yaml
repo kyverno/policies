@@ -1,4 +1,7 @@
-name: k10-generate-policy-by-preset-label-test
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: k10-generate-policy-by-preset-label-test
 policies:
 - k10-generate-policy-by-preset-label.yaml
 resources:

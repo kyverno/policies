@@ -1,69 +1,48 @@
-name: no-secrets
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: no-secrets
 policies:
 - disallow-all-secrets.yaml
 resources:
 - resource.yaml
 results:
 - kind: Pod
-  namespace: default
-  policy: no-secrets
+  policy: default/no-secrets
   resources:
   - secret-env-pod
   result: fail
   rule: secrets-not-from-env
 - kind: Pod
-  namespace: default
-  policy: no-secrets
+  policy: default/no-secrets
+  resources:
+  - secret-ref-pod
+  - secret-vol-pod
+  result: pass
+  rule: secrets-not-from-env
+- kind: Pod
+  policy: default/no-secrets
+  resources:
+  - secret-ref-pod
+  result: fail
+  rule: secrets-not-from-envfrom
+- kind: Pod
+  policy: default/no-secrets
   resources:
   - secret-env-pod
+  - secret-vol-pod
   result: pass
   rule: secrets-not-from-envfrom
 - kind: Pod
-  namespace: default
-  policy: no-secrets
+  policy: default/no-secrets
   resources:
-  - secret-env-pod
-  result: pass
+  - secret-vol-pod
+  result: fail
   rule: secrets-not-from-volumes
 - kind: Pod
-  namespace: default
-  policy: no-secrets
+  policy: default/no-secrets
   resources:
+  - secret-env-pod
   - secret-ref-pod
   result: pass
-  rule: secrets-not-from-env
-- kind: Pod
-  namespace: default
-  policy: no-secrets
-  resources:
-  - secret-ref-pod
-  result: fail
-  rule: secrets-not-from-envfrom
-- kind: Pod
-  namespace: default
-  policy: no-secrets
-  resources:
-  - secret-ref-pod
-  result: pass
-  rule: secrets-not-from-volumes
-- kind: Pod
-  namespace: default
-  policy: no-secrets
-  resources:
-  - secret-vol-pod
-  result: pass
-  rule: secrets-not-from-env
-- kind: Pod
-  namespace: default
-  policy: no-secrets
-  resources:
-  - secret-vol-pod
-  result: pass
-  rule: secrets-not-from-envfrom
-- kind: Pod
-  namespace: default
-  policy: no-secrets
-  resources:
-  - secret-vol-pod
-  result: fail
   rule: secrets-not-from-volumes

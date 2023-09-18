@@ -1,4 +1,7 @@
-name: podsecurity-subrule-restricted-seccomp
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: podsecurity-subrule-restricted-seccomp
 policies:
 - restricted-exclude-seccomp.yaml
 resources:

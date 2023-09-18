@@ -1,366 +1,99 @@
-name: disallow-host-ports-range
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-ports-range
 policies:
 - disallow-host-ports-range.yaml
 resources:
 - resource.yaml
 results:
-- kind: Pod
+- kind: CronJob
   policy: disallow-host-ports-range
   resources:
-  - badpod01
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  - badcronjob08
+  - badcronjob09
+  - badcronjob10
   result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod02
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod03
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod04
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod05
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod06
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod07
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod08
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod09
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - badpod10
-  result: fail
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod01
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod02
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod03
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod04
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod05
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod06
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod07
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod08
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod09
-  result: pass
-  rule: host-port-range
-- kind: Pod
-  policy: disallow-host-ports-range
-  resources:
-  - goodpod10
-  result: pass
   rule: host-port-range
 - kind: Deployment
   policy: disallow-host-ports-range
   resources:
   - baddeployment01
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment02
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment03
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment04
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment05
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment06
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment07
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment08
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment09
-  result: fail
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
   - baddeployment10
   result: fail
   rule: host-port-range
-- kind: Deployment
+- kind: Pod
   policy: disallow-host-ports-range
   resources:
-  - gooddeployment01
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment02
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment03
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment04
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment05
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment06
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment07
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment08
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment09
-  result: pass
-  rule: host-port-range
-- kind: Deployment
-  policy: disallow-host-ports-range
-  resources:
-  - gooddeployment10
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob01
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob02
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob03
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob04
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob05
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob06
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob07
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob08
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob09
-  result: fail
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
-  - badcronjob10
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  - badpod10
   result: fail
   rule: host-port-range
 - kind: CronJob
   policy: disallow-host-ports-range
   resources:
   - goodcronjob01
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob02
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob03
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob04
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob05
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob06
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob07
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob08
-  result: pass
-  rule: host-port-range
-- kind: CronJob
-  policy: disallow-host-ports-range
-  resources:
   - goodcronjob09
+  - goodcronjob10
   result: pass
   rule: host-port-range
-- kind: CronJob
+- kind: Deployment
   policy: disallow-host-ports-range
   resources:
-  - goodcronjob10
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
+  - gooddeployment09
+  - gooddeployment10
+  result: pass
+  rule: host-port-range
+- kind: Pod
+  policy: disallow-host-ports-range
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  - goodpod09
+  - goodpod10
   result: pass
   rule: host-port-range

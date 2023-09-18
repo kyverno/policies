@@ -1,18 +1,21 @@
-name: enforce-instancetype
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-instancetype
 policies:
-  - enforce-instancetype.yaml
+- enforce-instancetype.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-- policy: k6t-enforce-instancetype
-  rule: k6t-ensure-instance-type-and-preference
-  kind: VirtualMachine
-  resources:
-  - vm-valid
-  result: pass
-- policy: k6t-enforce-instancetype
-  rule: k6t-ensure-instance-type-and-preference
-  kind: VirtualMachine
+- kind: VirtualMachine
+  policy: k6t-enforce-instancetype
   resources:
   - vm-invalid
   result: fail
+  rule: k6t-ensure-instance-type-and-preference
+- kind: VirtualMachine
+  policy: k6t-enforce-instancetype
+  resources:
+  - vm-valid
+  result: pass
+  rule: k6t-ensure-instance-type-and-preference

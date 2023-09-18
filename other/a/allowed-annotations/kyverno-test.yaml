@@ -1,4 +1,7 @@
-name: allowed-annotations
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: allowed-annotations
 policies:
 - allowed-annotations.yaml
 resources:

@@ -1,4 +1,7 @@
-name: nfs-subdir-external-provisioner-storage-path
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: nfs-subdir-external-provisioner-storage-path
 policies:
 - nfs-subdir-external-provisioner-storage-path.yaml
 resources:
@@ -7,12 +10,12 @@ results:
 - kind: PersistentVolumeClaim
   policy: nfs-subdir-external-provisioner-storage-path
   resources:
-  - goodclaim
-  result: pass
+  - badclaim
+  result: fail
   rule: enforce-storage-path
 - kind: PersistentVolumeClaim
   policy: nfs-subdir-external-provisioner-storage-path
   resources:
-  - badclaim
-  result: fail
+  - goodclaim
+  result: pass
   rule: enforce-storage-path

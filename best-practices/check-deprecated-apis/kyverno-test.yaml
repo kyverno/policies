@@ -1,4 +1,7 @@
-name: check-deprecated-apis
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-deprecated-apis
 policies:
 - check-deprecated-apis.yaml
 resources:

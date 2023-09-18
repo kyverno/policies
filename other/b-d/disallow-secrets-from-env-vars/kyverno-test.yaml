@@ -1,34 +1,33 @@
-name: secrets-not-from-env-vars
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: secrets-not-from-env-vars
 policies:
 - disallow-secrets-from-env-vars.yaml
 resources:
 - resource.yaml
 results:
 - kind: Pod
-  namespace: default
-  policy: secrets-not-from-env-vars
+  policy: default/secrets-not-from-env-vars
   resources:
   - secret-env-pod
   result: fail
   rule: secrets-not-from-env-vars
 - kind: Pod
-  namespace: default
-  policy: secrets-not-from-env-vars
+  policy: default/secrets-not-from-env-vars
   resources:
-  - secret-env-pod
+  - secret-ref-pod
   result: pass
-  rule: secrets-not-from-envfrom
+  rule: secrets-not-from-env-vars
 - kind: Pod
-  namespace: default
-  policy: secrets-not-from-env-vars
+  policy: default/secrets-not-from-env-vars
   resources:
   - secret-ref-pod
   result: fail
   rule: secrets-not-from-envfrom
 - kind: Pod
-  namespace: default
-  policy: secrets-not-from-env-vars
+  policy: default/secrets-not-from-env-vars
   resources:
-  - secret-ref-pod
+  - secret-env-pod
   result: pass
-  rule: secrets-not-from-env-vars
+  rule: secrets-not-from-envfrom

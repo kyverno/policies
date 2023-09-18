@@ -1,4 +1,7 @@
-name: advanced-restrict-image-registries
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: advanced-restrict-image-registries
 policies:
 - advanced-restrict-image-registries.yaml
 resources:
@@ -7,13 +10,13 @@ results:
 - kind: Pod
   policy: advanced-restrict-image-registries
   resources:
-  - good-pod
-  result: pass
+  - bad-pod
+  result: fail
   rule: validate-corp-registries
 - kind: Pod
   policy: advanced-restrict-image-registries
   resources:
-  - bad-pod
-  result: fail
+  - good-pod
+  result: pass
   rule: validate-corp-registries
 variables: values.yaml

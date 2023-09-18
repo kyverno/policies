@@ -1,4 +1,7 @@
-name: exclude-namespaces-example
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: exclude-namespaces-example
 policies:
 - exclude-namespaces-dynamically.yaml
 resources:
@@ -7,14 +10,8 @@ results:
 - kind: Pod
   policy: exclude-namespaces-example
   resources:
-  - good-pod01
-  result: skip
-  rule: exclude-namespaces-dynamically-pods
-- kind: Pod
-  policy: exclude-namespaces-example
-  resources:
-  - good-pod02
-  result: skip
+  - bad-pod01
+  result: fail
   rule: exclude-namespaces-dynamically-pods
 - kind: Pod
   policy: exclude-namespaces-example
@@ -25,7 +22,8 @@ results:
 - kind: Pod
   policy: exclude-namespaces-example
   resources:
-  - bad-pod01
-  result: fail
+  - good-pod01
+  - good-pod02
+  result: skip
   rule: exclude-namespaces-dynamically-pods
 variables: values.yaml

@@ -1,32 +1,35 @@
-name: restrict-escalation-verbs-roles
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-escalation-verbs-roles
 policies:
 - restrict-escalation-verbs-roles.yaml
 resources:
 - resource.yaml
 results:
-- policy: restrict-escalation-verbs-roles
-  rule: escalate
-  resources:
-  - goodclusterrole01
-  - goodclusterrole02
-  kind: ClusterRole
-  result: pass
-- policy: restrict-escalation-verbs-roles
-  rule: escalate
+- kind: ClusterRole
+  policy: restrict-escalation-verbs-roles
   resources:
   - badclusterrole01
   - badclusterrole02
-  kind: ClusterRole
   result: fail
-- policy: restrict-escalation-verbs-roles
   rule: escalate
-  resources:
-  - goodrole01
-  kind: Role
-  result: pass
-- policy: restrict-escalation-verbs-roles
-  rule: escalate
+- kind: Role
+  policy: restrict-escalation-verbs-roles
   resources:
   - badrole01
-  kind: Role
   result: fail
+  rule: escalate
+- kind: ClusterRole
+  policy: restrict-escalation-verbs-roles
+  resources:
+  - goodclusterrole01
+  - goodclusterrole02
+  result: pass
+  rule: escalate
+- kind: Role
+  policy: restrict-escalation-verbs-roles
+  resources:
+  - goodrole01
+  result: pass
+  rule: escalate

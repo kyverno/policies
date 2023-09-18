@@ -1,25 +1,21 @@
-name: restrict-networkpolicy-empty-podselector
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-networkpolicy-empty-podselector
 policies:
-  -  restrict-networkpolicy-empty-podselector.yaml
+- restrict-networkpolicy-empty-podselector.yaml
 resources:
-  -  resource.yaml
+- resource.yaml
 results:
-  - policy: restrict-networkpolicy-empty-podselector
-    rule: empty-podselector
-    resources:
-    - badnetworkpolicy
-    kind: NetworkPolicy
-    result: fail
-  - policy: restrict-networkpolicy-empty-podselector
-    rule: empty-podselector
-    resources:
-    - goodnetworkpolicy
-    kind: NetworkPolicy
-    result: pass
-  # - policy: restrict-networkpolicy-empty-podselector
-  #   rule: empty-podselector
-  #   resources:
-  #   - default-deny
-  #   kind: NetworkPolicy
-  #   result: skip
-  
+- kind: NetworkPolicy
+  policy: restrict-networkpolicy-empty-podselector
+  resources:
+  - badnetworkpolicy
+  result: fail
+  rule: empty-podselector
+- kind: NetworkPolicy
+  policy: restrict-networkpolicy-empty-podselector
+  resources:
+  - goodnetworkpolicy
+  result: pass
+  rule: empty-podselector
