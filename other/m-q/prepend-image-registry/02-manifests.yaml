@@ -8,6 +8,6 @@ apply:
 assert:
 - patchedResource.yaml
 - pods-patched.yaml
-errors:
+error:
 - patchedResourceWithoutInitContainer.yaml
 - failpatchedResource.yaml
