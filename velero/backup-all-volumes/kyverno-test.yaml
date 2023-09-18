@@ -9,23 +9,23 @@ resources:
 results:
 - kind: Deployment
   patchedResource: patchedResource-fourth.yaml
-  policy: foo/backup-all-volumes
+  policy: backup-all-volumes
   resources:
-  - fourth
+  - foo/fourth
   result: pass
   rule: autogen-backup-velero-pv
 - kind: Pod
   patchedResource: patchedResource-third.yaml
-  policy: foo/backup-all-volumes
+  policy: backup-all-volumes
   resources:
-  - third
+  - foo/third
   result: pass
   rule: backup-velero-pv
 - kind: Pod
   patchedResource: patchedResource.yaml
-  policy: foo/backup-all-volumes
+  policy: backup-all-volumes
   resources:
-  - first
+  - foo/first
   result: pass
   rule: backup-velero-pv
 variables: values.yaml
