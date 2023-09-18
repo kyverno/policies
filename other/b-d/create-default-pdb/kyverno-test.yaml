@@ -9,8 +9,8 @@ resources:
 results:
 - generatedResource: generatedResource.yaml
   kind: Deployment
-  policy: hello-world/create-default-pdb
+  policy: create-default-pdb
   resources:
-  - nginx-deployment
+  - hello-world/nginx-deployment
   result: pass
   rule: create-default-pdb

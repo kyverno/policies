@@ -9,9 +9,9 @@ resources:
 results:
 - kind: Pod
   patchedResource: patchedResource.yaml
-  policy: foo/add-pod-priorityclassname
+  policy: add-pod-priorityclassname
   resources:
-  - blank
+  - foo/blank
   result: pass
   rule: add-priorityclass-pods
 variables: values.yaml

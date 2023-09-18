@@ -8,26 +8,26 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  policy: default/restrict-node-selection
+  policy: restrict-node-selection
   resources:
-  - myapp-pod-2
+  - default/myapp-pod-2
   result: fail
   rule: restrict-nodename
 - kind: Pod
-  policy: default/restrict-node-selection
+  policy: restrict-node-selection
   resources:
-  - myapp-pod-1
+  - default/myapp-pod-1
   result: pass
   rule: restrict-nodename
 - kind: Pod
-  policy: default/restrict-node-selection
+  policy: restrict-node-selection
   resources:
-  - myapp-pod-1
+  - default/myapp-pod-1
   result: fail
   rule: restrict-nodeselector
 - kind: Pod
-  policy: default/restrict-node-selection
+  policy: restrict-node-selection
   resources:
-  - myapp-pod-2
+  - default/myapp-pod-2
   result: pass
   rule: restrict-nodeselector

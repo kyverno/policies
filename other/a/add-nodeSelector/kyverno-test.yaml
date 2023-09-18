@@ -9,8 +9,8 @@ resources:
 results:
 - kind: Pod
   patchedResource: patchedResource.yaml
-  policy: default/add-nodeselector
+  policy: add-nodeselector
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: add-nodeselector

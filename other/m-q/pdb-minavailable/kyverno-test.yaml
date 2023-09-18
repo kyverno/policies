@@ -8,15 +8,15 @@ resources:
 - resource.yaml
 results:
 - kind: StatefulSet
-  policy: nginx/pdb-minavailable-check
+  policy: pdb-minavailable-check
   resources:
-  - bad-pdb
+  - nginx/bad-pdb
   result: fail
   rule: pdb-minavailable
 - kind: StatefulSet
-  policy: nginx/pdb-minavailable-check
+  policy: pdb-minavailable-check
   resources:
-  - good-pdb
+  - nginx/good-pdb
   result: pass
   rule: pdb-minavailable
 variables: values.yaml

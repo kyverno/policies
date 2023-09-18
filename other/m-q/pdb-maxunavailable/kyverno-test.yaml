@@ -8,16 +8,16 @@ resources:
 - resource.yaml
 results:
 - kind: PodDisruptionBudget
-  policy: kube-system/pdb-maxunavailable
+  policy: pdb-maxunavailable
   resources:
-  - bad-pdb-zero
-  - bad-pdb-negative-one
+  - kube-system/bad-pdb-zero
+  - kube-system/bad-pdb-negative-one
   result: fail
   rule: pdb-maxunavailable
 - kind: PodDisruptionBudget
-  policy: kube-system/pdb-maxunavailable
+  policy: pdb-maxunavailable
   resources:
-  - good-pdb
-  - good-pdb-none
+  - kube-system/good-pdb
+  - kube-system/good-pdb-none
   result: pass
   rule: pdb-maxunavailable

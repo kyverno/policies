@@ -9,8 +9,8 @@ resources:
 results:
 - kind: DaemonSet
   patchedResource: daemonset-patched.yaml
-  policy: test/add-karpenter-daemonset-priority-class
+  policy: add-karpenter-daemonset-priority-class
   resources:
-  - test
+  - test/test
   result: pass
   rule: add-karpenter-daemonset-priority-class

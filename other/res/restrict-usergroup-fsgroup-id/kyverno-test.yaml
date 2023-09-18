@@ -8,20 +8,20 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  policy: default/validate-userid-groupid-fsgroup
+  policy: validate-userid-groupid-fsgroup
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: validate-fsgroup
 - kind: Pod
-  policy: default/validate-userid-groupid-fsgroup
+  policy: validate-userid-groupid-fsgroup
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: validate-groupid
 - kind: Pod
-  policy: default/validate-userid-groupid-fsgroup
+  policy: validate-userid-groupid-fsgroup
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: validate-userid

@@ -9,8 +9,8 @@ resources:
 results:
 - kind: Pod
   patchedResource: patchedResource.yaml
-  policy: default/add-ndots
+  policy: add-ndots
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: add-ndots

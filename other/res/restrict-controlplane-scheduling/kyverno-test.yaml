@@ -8,26 +8,26 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  policy: default/restrict-controlplane-scheduling
+  policy: restrict-controlplane-scheduling
   resources:
-  - myapp-pod-2
+  - default/myapp-pod-2
   result: fail
   rule: restrict-controlplane-scheduling-control-plane
 - kind: Pod
-  policy: default/restrict-controlplane-scheduling
+  policy: restrict-controlplane-scheduling
   resources:
-  - myapp-pod-1
+  - default/myapp-pod-1
   result: pass
   rule: restrict-controlplane-scheduling-control-plane
 - kind: Pod
-  policy: default/restrict-controlplane-scheduling
+  policy: restrict-controlplane-scheduling
   resources:
-  - myapp-pod-1
+  - default/myapp-pod-1
   result: fail
   rule: restrict-controlplane-scheduling-master
 - kind: Pod
-  policy: default/restrict-controlplane-scheduling
+  policy: restrict-controlplane-scheduling
   resources:
-  - myapp-pod-2
+  - default/myapp-pod-2
   result: pass
   rule: restrict-controlplane-scheduling-master

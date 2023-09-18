@@ -9,9 +9,9 @@ resources:
 results:
 - kind: Pod
   patchedResource: patchedResource.yaml
-  policy: default/change-dns-config-policy
+  policy: change-dns-config-policy
   resources:
-  - myapp-pod
+  - default/myapp-pod
   result: pass
   rule: dns-policy
 variables: variables.yaml

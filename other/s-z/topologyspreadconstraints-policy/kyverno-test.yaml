@@ -12,22 +12,22 @@ resources:
 - resource-skip.yaml
 results:
 - kind: StatefulSet
-  policy: monitoring/topologyspreadconstraints-policy
+  policy: topologyspreadconstraints-policy
   resources:
-  - fail1
-  - fail2
-  - fail3
+  - monitoring/fail1
+  - monitoring/fail2
+  - monitoring/fail3
   result: fail
   rule: spread-pods
 - kind: StatefulSet
-  policy: monitoring/topologyspreadconstraints-policy
+  policy: topologyspreadconstraints-policy
   resources:
-  - pass
+  - monitoring/pass
   result: pass
   rule: spread-pods
 - kind: StatefulSet
-  policy: monitoring/topologyspreadconstraints-policy
+  policy: topologyspreadconstraints-policy
   resources:
-  - skip
+  - monitoring/skip
   result: skip
   rule: spread-pods

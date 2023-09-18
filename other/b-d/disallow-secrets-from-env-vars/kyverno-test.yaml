@@ -8,26 +8,26 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  policy: default/secrets-not-from-env-vars
+  policy: secrets-not-from-env-vars
   resources:
-  - secret-env-pod
+  - default/secret-env-pod
   result: fail
   rule: secrets-not-from-env-vars
 - kind: Pod
-  policy: default/secrets-not-from-env-vars
+  policy: secrets-not-from-env-vars
   resources:
-  - secret-ref-pod
+  - default/secret-ref-pod
   result: pass
   rule: secrets-not-from-env-vars
 - kind: Pod
-  policy: default/secrets-not-from-env-vars
+  policy: secrets-not-from-env-vars
   resources:
-  - secret-ref-pod
+  - default/secret-ref-pod
   result: fail
   rule: secrets-not-from-envfrom
 - kind: Pod
-  policy: default/secrets-not-from-env-vars
+  policy: secrets-not-from-env-vars
   resources:
-  - secret-env-pod
+  - default/secret-env-pod
   result: pass
   rule: secrets-not-from-envfrom
