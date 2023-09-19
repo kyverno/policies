@@ -56,3 +56,16 @@ spec:
           =(volumes):
             - =(hostPath):
                 path: "!/var/run/crio.sock"
+  - name: validate-dockerd-sock-mount
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Use of the Docker CRI socket is not allowed."
+      pattern:
+        spec:
+          =(volumes):
+            - =(hostPath):
+                path: "!/var/run/cri-dockerd.sock"
