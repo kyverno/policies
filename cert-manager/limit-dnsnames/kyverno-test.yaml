@@ -1,4 +1,7 @@
-name: limit_dnsnames
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit_dnsnames
 policies:
 - limit-dnsnames.yaml
 resources:

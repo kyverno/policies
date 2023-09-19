@@ -1,4 +1,7 @@
-name: add-default-securitycontext
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-default-securitycontext
 policies:
 - add-default-securitycontext.yaml
 resources:

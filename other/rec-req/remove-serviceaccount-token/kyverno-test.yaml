@@ -1,4 +1,7 @@
-name: remove-serviceaccount-token
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: remove-serviceaccount-token
 policies:
 - remove-serviceaccount-token.yaml
 resources:

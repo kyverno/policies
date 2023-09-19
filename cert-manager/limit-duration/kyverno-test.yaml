@@ -1,4 +1,7 @@
-name: limit-duration
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-duration
 policies:
 - limit-duration.yaml
 resources:
@@ -7,8 +10,8 @@ results:
 - kind: Certificate
   policy: cert-manager-limit-duration
   resources:
-  - acme-crt
-  result: skip
+  - acme-crt-long
+  result: fail
   rule: certificate-duration-max-100days
 - kind: Certificate
   policy: cert-manager-limit-duration
@@ -19,6 +22,6 @@ results:
 - kind: Certificate
   policy: cert-manager-limit-duration
   resources:
-  - acme-crt-long
-  result: fail
+  - acme-crt
+  result: skip
   rule: certificate-duration-max-100days

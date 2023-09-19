@@ -1,4 +1,7 @@
-name: check-routes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-routes
 policies:
 - disallow-self-provisioner-binding.yaml
 resources:
@@ -14,11 +17,6 @@ results:
   policy: disallow-self-provisioner-binding
   resources:
   - self-provisioners-custom
-  result: fail
-  rule: check-self-provisioner-binding-with-subject
-- kind: ClusterRoleBinding
-  policy: disallow-self-provisioner-binding
-  resources:
   - self-provisioners-custom-test
   result: fail
   rule: check-self-provisioner-binding-with-subject

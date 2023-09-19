@@ -1,29 +1,30 @@
-name: deny-commands-in-exec-probe
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deny-commands-in-exec-probe
 policies:
-  - deny-commands-in-exec-probe.yaml
+- deny-commands-in-exec-probe.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-###### Pods - Bad
-  - policy: deny-commands-in-exec-probe
-    rule: check-commands
-    resources:
-    - badpod01
-    - badpod02
-    - badpod03
-    kind: Pod
-    result: fail
-###### Pods - Good
-  - policy: deny-commands-in-exec-probe
-    rule: check-commands
-    resources:
-    - goodpod01
-    kind: Pod
-    result: skip
-  - policy: deny-commands-in-exec-probe
-    rule: check-commands
-    resources:
-    - goodpod02
-    - goodpod03
-    kind: Pod
-    result: pass
+- kind: Pod
+  policy: deny-commands-in-exec-probe
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  result: fail
+  rule: check-commands
+- kind: Pod
+  policy: deny-commands-in-exec-probe
+  resources:
+  - goodpod02
+  - goodpod03
+  result: pass
+  rule: check-commands
+- kind: Pod
+  policy: deny-commands-in-exec-probe
+  resources:
+  - goodpod01
+  result: skip
+  rule: check-commands

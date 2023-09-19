@@ -1,4 +1,7 @@
-name: resolve-image-to-digest
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: resolve-image-to-digest
 policies:
 - resolve-image-to-digest.yaml
 resources:

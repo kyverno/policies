@@ -1,4 +1,7 @@
-name: disallow-default-tlsoptions
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-default-tlsoptions
 policies:
 - disallow-default-tlsoptions.yaml
 resources:

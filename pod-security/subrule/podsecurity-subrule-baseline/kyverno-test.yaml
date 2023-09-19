@@ -1,4 +1,7 @@
-name: podsecurity-subrule-baseline
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: podsecurity-subrule-baseline
 policies:
 - podsecurity-subrule-baseline.yaml
 resources:

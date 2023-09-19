@@ -1,4 +1,7 @@
-name: restrict-storageclass
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-storageclass
 policies:
 - restrict-storageclass.yaml
 resources:

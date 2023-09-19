@@ -1,4 +1,7 @@
-name: replace-image-registry
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: replace-image-registry
 policies:
 - replace-image-registry.yaml
 resources:
@@ -12,13 +15,6 @@ results:
   result: pass
   rule: replace-image-registry-pod-containers
 - kind: Pod
-  patchedResource: patchedResource1.yaml
-  policy: replace-image-registry
-  resources:
-  - myapp-pod1
-  result: skip
-  rule: replace-image-registry-pod-initcontainers
-- kind: Pod
   patchedResource: patchedResource3.yaml
   policy: replace-image-registry
   resources:
@@ -31,4 +27,11 @@ results:
   resources:
   - myapp-pod2
   result: pass
+  rule: replace-image-registry-pod-initcontainers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: replace-image-registry
+  resources:
+  - myapp-pod1
+  result: skip
   rule: replace-image-registry-pod-initcontainers

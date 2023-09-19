@@ -1,4 +1,7 @@
-name: disallow-empty-ingress-host
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-empty-ingress-host
 policies:
 - disallow-empty-ingress-host.yaml
 resources:
@@ -7,12 +10,12 @@ results:
 - kind: Ingress
   policy: disallow-empty-ingress-host
   resources:
-  - ingress-wildcard-host
-  result: pass
+  - minimal-ingress
+  result: fail
   rule: disallow-empty-ingress-host
 - kind: Ingress
   policy: disallow-empty-ingress-host
   resources:
-  - minimal-ingress
-  result: fail
+  - ingress-wildcard-host
+  result: pass
   rule: disallow-empty-ingress-host

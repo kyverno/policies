@@ -1,16 +1,12 @@
-name: add-castai-removal-disabled
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-castai-removal-disabled
 policies:
 - add-castai-removal-disabled.yaml
 resources:
 - resources.yaml
 results:
-- kind: Job
-  patchedResource: patched01.yaml
-  policy: add-castai-removal-disabled
-  resources:
-  - addjob01
-  result: pass
-  rule: do-not-evict-jobs
 - kind: CronJob
   patchedResource: patched02.yaml
   policy: add-castai-removal-disabled
@@ -18,3 +14,10 @@ results:
   - addcronjob01
   result: pass
   rule: do-not-evict-cronjobs
+- kind: Job
+  patchedResource: patched01.yaml
+  policy: add-castai-removal-disabled
+  resources:
+  - addjob01
+  result: pass
+  rule: do-not-evict-jobs

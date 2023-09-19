@@ -1,4 +1,7 @@
-name: require-network-policy
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-network-policy
 policies:
 - require-netpol.yaml
 resources:

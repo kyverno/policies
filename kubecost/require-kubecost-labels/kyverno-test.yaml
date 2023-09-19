@@ -1,22 +1,25 @@
-name: require-kubecost-labels
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-kubecost-labels
 policies:
-  - require-kubecost-labels.yaml
+- require-kubecost-labels.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: require-kubecost-labels
-    rule: require-labels
-    resources:
-    - goodpod
-    kind: Pod
-    result: pass
-  - policy: require-kubecost-labels
-    rule: require-labels
-    resources:
-    - badpod01
-    - badpod02
-    - badpod03
-    - badpod04
-    - badpod05
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: require-kubecost-labels
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  result: fail
+  rule: require-labels
+- kind: Pod
+  policy: require-kubecost-labels
+  resources:
+  - goodpod
+  result: pass
+  rule: require-labels

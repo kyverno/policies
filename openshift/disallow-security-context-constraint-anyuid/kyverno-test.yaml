@@ -1,31 +1,24 @@
-name: check-routes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-routes
 policies:
 - disallow-security-context-constraint-anyuid.yaml
 resources:
 - resources.yaml
 results:
-- kind: Role
-  policy: disallow-security-context-constraint-anyuid
-  resources:
-  - pod-role-anyuid-use
-  result: fail
-  rule: check-security-context-constraint
-- kind: Role
-  policy: disallow-security-context-constraint-anyuid
-  resources:
-  - pod-role
-  result: pass
-  rule: check-security-context-constraint
-- kind: Role
-  policy: disallow-security-context-constraint-anyuid
-  resources:
-  - pod-role-anyuid-all
-  result: fail
-  rule: check-security-context-constraint
 - kind: ClusterRole
   policy: disallow-security-context-constraint-anyuid
   resources:
   - secret-reader-anyuid-use
+  - secret-reader-anyuid-all
+  result: fail
+  rule: check-security-context-constraint
+- kind: Role
+  policy: disallow-security-context-constraint-anyuid
+  resources:
+  - pod-role-anyuid-use
+  - pod-role-anyuid-all
   result: fail
   rule: check-security-context-constraint
 - kind: ClusterRole
@@ -34,18 +27,12 @@ results:
   - secret-reader
   result: pass
   rule: check-security-context-constraint
-- kind: ClusterRole
+- kind: Role
   policy: disallow-security-context-constraint-anyuid
   resources:
-  - secret-reader-anyuid-all
-  result: fail
+  - pod-role
+  result: pass
   rule: check-security-context-constraint
-- kind: RoleBinding
-  policy: disallow-security-context-constraint-anyuid
-  resources:
-  - rolebinding-anyuid
-  result: fail
-  rule: check-security-context-roleref
 - kind: ClusterRoleBinding
   policy: disallow-security-context-constraint-anyuid
   resources:
@@ -55,12 +42,18 @@ results:
 - kind: RoleBinding
   policy: disallow-security-context-constraint-anyuid
   resources:
-  - rolebinding-test
-  result: pass
+  - rolebinding-anyuid
+  result: fail
   rule: check-security-context-roleref
 - kind: ClusterRoleBinding
   policy: disallow-security-context-constraint-anyuid
   resources:
   - clusterrolebinding-test
+  result: pass
+  rule: check-security-context-roleref
+- kind: RoleBinding
+  policy: disallow-security-context-constraint-anyuid
+  resources:
+  - rolebinding-test
   result: pass
   rule: check-security-context-roleref

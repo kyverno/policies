@@ -1,8 +1,8 @@
----
-# this will mock the apiCall
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
-  - name: unique-routes
-    rules:
-      - name: require-unique-routes
-        values:
-          hosts: "[\"hello-openshift-bad.mydomain\"]"
+- name: unique-routes
+  rules:
+  - name: require-unique-routes
+    values:
+      hosts: '["hello-openshift-bad.mydomain"]'

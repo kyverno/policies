@@ -1,4 +1,7 @@
-name: restrict-image-registries
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-image-registries
 policies:
 - restrict-image-registries.yaml
 resources:
@@ -8,23 +11,8 @@ results:
   policy: restrict-image-registries
   resources:
   - badpod01
-  result: fail
-  rule: validate-registries
-- kind: Pod
-  policy: restrict-image-registries
-  resources:
   - badpod02
-  result: fail
-  rule: validate-registries
-- kind: Pod
-  policy: restrict-image-registries
-  resources:
   - badpod03
-  result: fail
-  rule: validate-registries
-- kind: Pod
-  policy: restrict-image-registries
-  resources:
   - badpod04
   result: fail
   rule: validate-registries
@@ -32,17 +20,7 @@ results:
   policy: restrict-image-registries
   resources:
   - goodpod01
-  result: pass
-  rule: validate-registries
-- kind: Pod
-  policy: restrict-image-registries
-  resources:
   - goodpod02
-  result: pass
-  rule: validate-registries
-- kind: Pod
-  policy: restrict-image-registries
-  resources:
   - goodpod03
   result: pass
   rule: validate-registries

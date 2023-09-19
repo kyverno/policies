@@ -1,4 +1,7 @@
-name: block-large-images
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-large-images
 policies:
 - block-large-images.yaml
 resources:

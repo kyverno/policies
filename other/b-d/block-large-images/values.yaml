@@ -1,7 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
-  - name: block-large-images
-    rules:
-      - name: block-over-twogi
-        values:
-          imageSize: "3Gi"
-   
+- name: block-large-images
+  rules:
+  - name: block-over-twogi
+    values:
+      imageSize: 3Gi

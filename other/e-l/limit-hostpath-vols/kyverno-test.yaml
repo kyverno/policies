@@ -1,4 +1,7 @@
-name: limit-hostpath-vols
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-hostpath-vols
 policies:
 - limit-hostpath-vols.yaml
 resources:
@@ -8,13 +11,13 @@ results:
 - kind: Pod
   policy: limit-hostpath-vols
   resources:
-  - good-pods-all
-  result: pass
+  - bad-pods-all
+  result: fail
   rule: limit-hostpath-to-slash-data
 - kind: Pod
   policy: limit-hostpath-vols
   resources:
-  - bad-pods-all
-  result: fail
+  - good-pods-all
+  result: pass
   rule: limit-hostpath-to-slash-data
 variables: values.yaml

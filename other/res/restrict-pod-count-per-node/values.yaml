@@ -1,6 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
 - name: restrict-pod-count
   rules:
-    - name: restrict-pod-count
-      values:
-        podcounts: "40"
+  - name: restrict-pod-count
+    values:
+      podcounts: "40"

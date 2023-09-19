@@ -1,12 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
-  - name: advanced-restrict-image-registries
-    rules:
-      - name: validate-corp-registries
-        values:
-          nsregistries: "docker.io/*"
-          clusterregistries.data.registries:  "docker.io/*"
-          request.namespace: default
-    resources:
-      - name: bad-pod
-        values:
-          request.operation: UPDATE
+- name: advanced-restrict-image-registries
+  resources:
+  - name: bad-pod
+    values:
+      request.operation: UPDATE
+  rules:
+  - name: validate-corp-registries
+    values:
+      clusterregistries.data.registries: docker.io/*
+      nsregistries: docker.io/*
+      request.namespace: default

@@ -1,4 +1,7 @@
-name: check-routes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-routes
 policies:
 - disallow-deprecated-apis.yaml
 resources:

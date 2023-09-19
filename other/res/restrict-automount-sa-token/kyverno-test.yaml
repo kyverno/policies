@@ -1,15 +1,12 @@
-name: restrict-automount-sa-token
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-automount-sa-token
 policies:
 - restrict-automount-sa-token.yaml
 resources:
 - resource.yaml
 results:
-- kind: Pod
-  policy: restrict-automount-sa-token
-  resources:
-  - myapp-pod
-  result: pass
-  rule: validate-automountServiceAccountToken
 - kind: Deployment
   policy: restrict-automount-sa-token
   resources:
@@ -19,12 +16,18 @@ results:
 - kind: Pod
   policy: restrict-automount-sa-token
   resources:
-  - policy-reporter
-  result: skip
+  - myapp-pod
+  result: pass
   rule: validate-automountServiceAccountToken
 - kind: Deployment
   policy: restrict-automount-sa-token
   resources:
   - deploy-policy-reporter
+  result: skip
+  rule: validate-automountServiceAccountToken
+- kind: Pod
+  policy: restrict-automount-sa-token
+  resources:
+  - policy-reporter
   result: skip
   rule: validate-automountServiceAccountToken

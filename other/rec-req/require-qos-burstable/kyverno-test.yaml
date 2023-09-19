@@ -1,21 +1,24 @@
-name: require-qos-burstable
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-qos-burstable
 policies:
-  - require-qos-burstable.yaml
+- require-qos-burstable.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: require-qos-burstable
-    rule: burstable
-    resources:
-    - goodpod01
-    - goodpod02
-    - goodpod03
-    kind: Pod
-    result: pass
-  - policy: require-qos-burstable
-    rule: burstable
-    resources:
-    - badpod01
-    - badpod02
-    kind: Pod
-    result: fail
+- kind: Pod
+  policy: require-qos-burstable
+  resources:
+  - badpod01
+  - badpod02
+  result: fail
+  rule: burstable
+- kind: Pod
+  policy: require-qos-burstable
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  result: pass
+  rule: burstable

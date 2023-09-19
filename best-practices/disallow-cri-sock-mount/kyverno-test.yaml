@@ -1,4 +1,7 @@
-name: disallow-cri-sock-mount
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-cri-sock-mount
 policies:
 - disallow-cri-sock-mount.yaml
 resources:
@@ -8,35 +11,25 @@ results:
   policy: disallow-container-sock-mounts
   resources:
   - pod-with-docker-sock-mount
+  - goodpod01
+  result: pass
+  rule: validate-containerd-sock-mount
+- kind: Pod
+  policy: disallow-container-sock-mounts
+  resources:
+  - pod-with-docker-sock-mount
+  - goodpod01
+  result: pass
+  rule: validate-crio-sock-mount
+- kind: Pod
+  policy: disallow-container-sock-mounts
+  resources:
+  - pod-with-docker-sock-mount
   result: fail
   rule: validate-docker-sock-mount
 - kind: Pod
   policy: disallow-container-sock-mounts
   resources:
-  - pod-with-docker-sock-mount
-  result: pass
-  rule: validate-containerd-sock-mount
-- kind: Pod
-  policy: disallow-container-sock-mounts
-  resources:
-  - pod-with-docker-sock-mount
-  result: pass
-  rule: validate-crio-sock-mount
-- kind: Pod
-  policy: disallow-container-sock-mounts
-  resources:
   - goodpod01
   result: pass
   rule: validate-docker-sock-mount
-- kind: Pod
-  policy: disallow-container-sock-mounts
-  resources:
-  - goodpod01
-  result: pass
-  rule: validate-containerd-sock-mount
-- kind: Pod
-  policy: disallow-container-sock-mounts
-  resources:
-  - goodpod01
-  result: pass
-  rule: validate-crio-sock-mount

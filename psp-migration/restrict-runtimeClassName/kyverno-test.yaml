@@ -1,4 +1,7 @@
-name: restrict-runtimeclass
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-runtimeclass
 policies:
 - restrict-runtimeClassName.yaml
 resources:
@@ -14,17 +17,7 @@ results:
   policy: restrict-runtimeclass
   resources:
   - goodpod01
-  result: pass
-  rule: prodclass-or-expclass
-- kind: Pod
-  policy: restrict-runtimeclass
-  resources:
   - goodpod02
-  result: pass
-  rule: prodclass-or-expclass
-- kind: Pod
-  policy: restrict-runtimeclass
-  resources:
   - goodpod03
   result: pass
   rule: prodclass-or-expclass

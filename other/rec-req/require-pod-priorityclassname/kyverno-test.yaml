@@ -1,4 +1,7 @@
-name: require-pod-priorityclassname
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-pod-priorityclassname
 policies:
 - require-pod-priorityclassname.yaml
 resources:
@@ -7,12 +10,12 @@ results:
 - kind: Pod
   policy: require-pod-priorityclassname
   resources:
-  - goodpod01
-  result: pass
+  - badpod01
+  result: fail
   rule: check-priorityclassname
 - kind: Pod
   policy: require-pod-priorityclassname
   resources:
-  - badpod01
-  result: fail
+  - goodpod01
+  result: pass
   rule: check-priorityclassname

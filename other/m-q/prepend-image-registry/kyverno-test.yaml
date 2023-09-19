@@ -1,4 +1,7 @@
-name: prepend-image-registry
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: prepend-image-registry
 policies:
 - prepend-image-registry.yaml
 resources:
@@ -7,33 +10,12 @@ resources:
 - withoutinitcontainer.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
-  policy: prepend-registry
-  resources:
-  - mypod
-  result: pass
-  rule: prepend-registry-containers
-- kind: Pod
-  patchedResource: patchedResource.yaml
-  policy: prepend-registry
-  resources:
-  - mypod
-  result: pass
-  rule: prepend-registry-initcontainers
-- kind: Pod
   patchedResource: failpatchedResource.yaml
   policy: prepend-registry
   resources:
   - myfailedpod
   result: fail
   rule: prepend-registry-containers
-- kind: Pod
-  patchedResource: failpatchedResource.yaml
-  policy: prepend-registry
-  resources:
-  - myfailedpod
-  result: fail
-  rule: prepend-registry-initcontainers
 - kind: Pod
   patchedResource: patchedResourceWithoutInitContainer.yaml
   policy: prepend-registry
@@ -41,3 +23,24 @@ results:
   - withoutinitcontainer
   result: fail
   rule: prepend-registry-containers
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - mypod
+  result: pass
+  rule: prepend-registry-containers
+- kind: Pod
+  patchedResource: failpatchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - myfailedpod
+  result: fail
+  rule: prepend-registry-initcontainers
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - mypod
+  result: pass
+  rule: prepend-registry-initcontainers

@@ -1,4 +1,7 @@
-name: enforce-min-tls-version
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-min-tls-version
 policies:
 - enforce-min-tls-version.yaml
 resources:

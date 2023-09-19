@@ -1,4 +1,7 @@
-name: add-psa-labels
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-psa-labels
 policies:
 - add-psa-labels.yaml
 resources:
@@ -6,16 +9,16 @@ resources:
 - resourcefail.yaml
 results:
 - kind: Namespace
-  patchedResource: patchedResource.yaml
-  policy: add-psa-labels
-  resources:
-  - test
-  result: pass
-  rule: add-baseline-enforce-restricted-warn
-- kind: Namespace
   patchedResource: patchedResourcefail.yaml
   policy: add-psa-labels
   resources:
   - test-fail
   result: fail
+  rule: add-baseline-enforce-restricted-warn
+- kind: Namespace
+  patchedResource: patchedResource.yaml
+  policy: add-psa-labels
+  resources:
+  - test
+  result: pass
   rule: add-baseline-enforce-restricted-warn

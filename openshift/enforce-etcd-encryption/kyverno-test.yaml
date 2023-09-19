@@ -1,4 +1,7 @@
-name: check-policy
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-policy
 policies:
 - enforce-etcd-encryption.yaml
 resources:
