@@ -1,4 +1,7 @@
-name: apply-pss-restricted-profile
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: apply-pss-restricted-profile
 policies:
 - apply-pss-restricted-profile.yaml
 resources:

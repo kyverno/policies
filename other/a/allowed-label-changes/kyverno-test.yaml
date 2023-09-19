@@ -1,4 +1,7 @@
-name: allowed-label-changes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: allowed-label-changes
 policies:
 - allowed-label-changes.yaml
 resources:

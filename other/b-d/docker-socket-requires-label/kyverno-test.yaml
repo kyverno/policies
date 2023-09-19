@@ -1,26 +1,29 @@
-name: docker-socket-check
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: docker-socket-check
 policies:
-  - docker-socket-requires-label.yaml
+- docker-socket-requires-label.yaml
 resources:
-  - resource.yaml
+- resource.yaml
 results:
-  - policy: docker-socket-check
-    rule: conditional-anchor-dockersock
-    resources:
-    - nginx-bad-1
-    - nginx-bad-2
-    kind: Pod
-    result: fail
-  - policy: docker-socket-check
-    rule: conditional-anchor-dockersock
-    resources:
-    - nginx-allow-2
-    kind: Pod
-    result: pass
-  - policy: docker-socket-check
-    rule: conditional-anchor-dockersock
-    resources:
-    - nginx-allow-1
-    - nginx-allow-3
-    kind: Pod
-    result: skip
+- kind: Pod
+  policy: docker-socket-check
+  resources:
+  - nginx-bad-1
+  - nginx-bad-2
+  result: fail
+  rule: conditional-anchor-dockersock
+- kind: Pod
+  policy: docker-socket-check
+  resources:
+  - nginx-allow-2
+  result: pass
+  rule: conditional-anchor-dockersock
+- kind: Pod
+  policy: docker-socket-check
+  resources:
+  - nginx-allow-1
+  - nginx-allow-3
+  result: skip
+  rule: conditional-anchor-dockersock

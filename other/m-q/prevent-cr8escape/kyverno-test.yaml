@@ -1,4 +1,7 @@
-name: restrict-
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-
 policies:
 - prevent-cr8escape.yaml
 resources:
@@ -14,11 +17,6 @@ results:
   policy: prevent-cr8escape
   resources:
   - pod-sysctl-good
-  result: pass
-  rule: restrict-sysctls-cr8escape
-- kind: Pod
-  policy: prevent-cr8escape
-  resources:
   - pod-no-sysctl
   result: pass
   rule: restrict-sysctls-cr8escape

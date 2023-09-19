@@ -1,4 +1,7 @@
-name: k10-validate-ns-by-preset-label-test
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: k10-validate-ns-by-preset-label-test
 policies:
 - k10-validate-ns-by-preset-label.yaml
 resources:
@@ -7,30 +10,15 @@ results:
 - kind: Namespace
   policy: k10-validate-ns-by-preset-label
   resources:
-  - namespace-gold
-  result: pass
-  rule: k10-validate-ns-by-preset-label
-- kind: Namespace
-  policy: k10-validate-ns-by-preset-label
-  resources:
-  - namespace-silver
-  result: pass
-  rule: k10-validate-ns-by-preset-label
-- kind: Namespace
-  policy: k10-validate-ns-by-preset-label
-  resources:
-  - namespace-bronze
-  result: pass
-  rule: k10-validate-ns-by-preset-label
-- kind: Namespace
-  policy: k10-validate-ns-by-preset-label
-  resources:
-  - namespace-none
-  result: pass
-  rule: k10-validate-ns-by-preset-label
-- kind: Namespace
-  policy: k10-validate-ns-by-preset-label
-  resources:
   - namespace-invalid
   result: fail
+  rule: k10-validate-ns-by-preset-label
+- kind: Namespace
+  policy: k10-validate-ns-by-preset-label
+  resources:
+  - namespace-gold
+  - namespace-silver
+  - namespace-bronze
+  - namespace-none
+  result: pass
   rule: k10-validate-ns-by-preset-label

@@ -1,4 +1,7 @@
-name: limit-configmap-for-sa
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-configmap-for-sa
 policies:
 - limit-configmap-for-sa.yaml
 resources:

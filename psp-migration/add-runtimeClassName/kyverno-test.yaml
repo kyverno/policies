@@ -1,4 +1,7 @@
-name: add-runtimeClassName
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-runtimeClassName
 policies:
 - add-runtimeClassName.yaml
 resources:

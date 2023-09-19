@@ -1,4 +1,7 @@
-name: block-velero-restore
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-velero-restore
 policies:
 - block-velero-restore.yaml
 resources:
@@ -14,11 +17,6 @@ results:
   policy: block-velero-restore
   resources:
   - restore-without-namespace-mapping
-  result: pass
-  rule: block-velero-restore-to-protected-namespace
-- kind: Restore
-  policy: block-velero-restore
-  resources:
   - goodrestore01
   result: pass
   rule: block-velero-restore-to-protected-namespace

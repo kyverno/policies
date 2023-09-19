@@ -1,20 +1,21 @@
-name: restrict-node-defaultbackend
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-node-defaultbackend
 policies:
 - restrict-ingress-defaultbackend.yaml
 resources:
 - resource.yaml
 results:
 - kind: Ingress
-  namespace: default
   policy: restrict-ingress-defaultbackend
   resources:
-  - sample-app-1
+  - default/sample-app-1
   result: fail
   rule: restrict-ingress-defaultbackend
 - kind: Ingress
-  namespace: default
   policy: restrict-ingress-defaultbackend
   resources:
-  - sample-app-2
+  - default/sample-app-2
   result: pass
   rule: restrict-ingress-defaultbackend

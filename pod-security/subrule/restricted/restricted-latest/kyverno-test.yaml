@@ -1,4 +1,7 @@
-name: restricted-latest
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restricted-latest
 policies:
 - restricted-latest.yaml
 resources:

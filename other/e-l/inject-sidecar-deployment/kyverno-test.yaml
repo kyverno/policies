@@ -1,4 +1,7 @@
-name: inject-sidecar
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-sidecar
 policies:
 - inject-sidecar-deployment.yaml
 resources:

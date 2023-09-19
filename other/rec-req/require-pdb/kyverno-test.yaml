@@ -1,20 +1,23 @@
-name: require-pdb
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-pdb
 policies:
-  - require-pdb.yaml
+- require-pdb.yaml
 resources:
-  - resource-pass.yaml
-  - resource-skip.yaml
-variables: values.yaml
+- resource-pass.yaml
+- resource-skip.yaml
 results:
-  - policy: require-pdb
-    rule: require-pdb
-    resources:
-      - nginx-deploy-pass
-    kind: Deployment
-    result: pass
-  - policy: require-pdb
-    rule: require-pdb
-    resources:
-      - nginx-deploy-skip
-    kind: Deployment
-    result: skip
+- kind: Deployment
+  policy: require-pdb
+  resources:
+  - nginx-deploy-pass
+  result: pass
+  rule: require-pdb
+- kind: Deployment
+  policy: require-pdb
+  resources:
+  - nginx-deploy-skip
+  result: skip
+  rule: require-pdb
+variables: values.yaml

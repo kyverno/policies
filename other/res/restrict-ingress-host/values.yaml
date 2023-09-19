@@ -1,6 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
 - name: unique-ingress-host
   rules:
   - name: check-single-host-create
     values:
-      hosts: "[\"www.github.com\", \"www.kyverno.com\", \"www.nirmata.com\"]"
+      hosts: '["www.github.com", "www.kyverno.com", "www.nirmata.com"]'

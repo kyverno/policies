@@ -1,4 +1,7 @@
-name: add-pod-proxies
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-pod-proxies
 policies:
 - add-pod-proxies.yaml
 resources:

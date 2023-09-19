@@ -1,4 +1,7 @@
-name: restrict-service-port-range
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-service-port-range
 policies:
 - restrict-service-port-range.yaml
 resources:

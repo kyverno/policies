@@ -1,5 +1,7 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
-- name:  enforce-resources-as-ratio
+- name: enforce-resources-as-ratio
   resources:
   - name: goodpod
     values:

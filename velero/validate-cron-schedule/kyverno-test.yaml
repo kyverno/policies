@@ -1,4 +1,7 @@
-name: validate-cron-schedule
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-cron-schedule
 policies:
 - validate-cron-schedule.yaml
 resources:
@@ -7,12 +10,12 @@ results:
 - kind: Schedule
   policy: validate-cron-schedule
   resources:
-  - goodschedule01
-  result: pass
+  - badschedule01
+  result: fail
   rule: validate-cron
 - kind: Schedule
   policy: validate-cron-schedule
   resources:
-  - badschedule01
-  result: fail
+  - goodschedule01
+  result: pass
   rule: validate-cron

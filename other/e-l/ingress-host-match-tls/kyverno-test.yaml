@@ -1,4 +1,7 @@
-name: ingress-host-match-tls
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: ingress-host-match-tls
 policies:
 - ingress-host-match-tls.yaml
 resources:
@@ -8,11 +11,6 @@ results:
   policy: ingress-host-match-tls
   resources:
   - badingress01
-  result: fail
-  rule: host-match-tls
-- kind: Ingress
-  policy: ingress-host-match-tls
-  resources:
   - badingress02
   result: fail
   rule: host-match-tls
@@ -20,23 +18,8 @@ results:
   policy: ingress-host-match-tls
   resources:
   - goodingress01
-  result: pass
-  rule: host-match-tls
-- kind: Ingress
-  policy: ingress-host-match-tls
-  resources:
   - goodingress02
-  result: pass
-  rule: host-match-tls
-- kind: Ingress
-  policy: ingress-host-match-tls
-  resources:
   - goodingress03
-  result: pass
-  rule: host-match-tls
-- kind: Ingress
-  policy: ingress-host-match-tls
-  resources:
   - goodingress04
   result: pass
   rule: host-match-tls

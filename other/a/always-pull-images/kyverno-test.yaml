@@ -1,4 +1,7 @@
-name: always-pull-images
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: always-pull-images
 policies:
 - always-pull-images.yaml
 resources:

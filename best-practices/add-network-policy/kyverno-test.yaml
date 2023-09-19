@@ -1,4 +1,7 @@
-name: deny-all-traffic
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deny-all-traffic
 policies:
 - add-network-policy.yaml
 resources:

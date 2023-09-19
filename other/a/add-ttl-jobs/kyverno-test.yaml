@@ -1,4 +1,7 @@
-name: add-ttl-jobs
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-ttl-jobs
 policies:
 - add-ttl-jobs.yaml
 resources:
@@ -15,11 +18,6 @@ results:
   policy: add-ttl-jobs
   resources:
   - skipjob01
-  result: skip
-  rule: add-ttlSecondsAfterFinished
-- kind: Job
-  policy: add-ttl-jobs
-  resources:
   - skipjob02
   result: skip
   rule: add-ttlSecondsAfterFinished

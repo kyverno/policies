@@ -1,4 +1,7 @@
-name: check-routes
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-routes
 policies:
 - check-routes.yaml
 resources:
@@ -14,17 +17,7 @@ results:
   policy: check-routes
   resources:
   - frontend
-  result: pass
-  rule: require-tls-routes
-- kind: Route
-  policy: check-routes
-  resources:
   - frontend-edge
-  result: pass
-  rule: require-tls-routes
-- kind: Route
-  policy: check-routes
-  resources:
   - route-passthrough-secured
   result: pass
   rule: require-tls-routes

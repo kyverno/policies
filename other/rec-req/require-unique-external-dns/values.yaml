@@ -1,10 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
 policies:
-  - name: unique-external-dns
-    rules:
-      - name: ensure-valid-externaldns-annotation
-        values:
-          alldns: "[\"test.external-dns-test.my-org.com\"]"
-    resources:
-      - name: bad-svc
-        values:
-          request.operation: UPDATE
+- name: unique-external-dns
+  resources:
+  - name: bad-svc
+    values:
+      request.operation: UPDATE
+  rules:
+  - name: ensure-valid-externaldns-annotation
+    values:
+      alldns: '["test.external-dns-test.my-org.com"]'

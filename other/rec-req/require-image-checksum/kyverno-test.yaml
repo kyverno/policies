@@ -1,14 +1,17 @@
-name: require-image-checksum
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-image-checksum
 policies:
 - require-image-checksum.yaml
 resources:
 - resource.yaml
 results:
-- kind: Pod
+- kind: CronJob
   policy: require-image-checksum
   resources:
-  - myapp-pod-1
-  result: pass
+  - hello
+  result: fail
   rule: require-image-checksum
 - kind: Pod
   policy: require-image-checksum
@@ -22,9 +25,9 @@ results:
   - mydeploy
   result: pass
   rule: require-image-checksum
-- kind: CronJob
+- kind: Pod
   policy: require-image-checksum
   resources:
-  - hello
-  result: fail
+  - myapp-pod-1
+  result: pass
   rule: require-image-checksum

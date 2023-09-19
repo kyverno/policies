@@ -1,4 +1,7 @@
-name: ensure-readonly-hostpath
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: ensure-readonly-hostpath
 policies:
 - ensure-readonly-hostpath.yaml
 resources:

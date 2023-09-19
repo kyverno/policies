@@ -1,4 +1,7 @@
-name: opa-env
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: opa-env
 policies:
 - check-env-vars.yaml
 resources:

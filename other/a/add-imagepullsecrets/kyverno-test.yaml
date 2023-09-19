@@ -1,4 +1,7 @@
-name: add-imagepullsecrets
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-imagepullsecrets
 policies:
 - add-imagepullsecrets.yaml
 resources:

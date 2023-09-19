@@ -1,4 +1,7 @@
-name: psp-restrict-adding-capabilities
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: psp-restrict-adding-capabilities
 policies:
 - restrict-adding-capabilities.yaml
 resources:
@@ -8,59 +11,14 @@ results:
   policy: psp-restrict-adding-capabilities
   resources:
   - addcap-badpod01
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod02
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod03
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod04
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod05
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod06
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod07
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod08
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod09
-  result: fail
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-badpod10
   result: fail
   rule: allowed-capabilities
@@ -68,59 +26,14 @@ results:
   policy: psp-restrict-adding-capabilities
   resources:
   - addcap-goodpod01
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod02
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod03
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod04
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod05
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod06
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod07
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod08
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod09
-  result: pass
-  rule: allowed-capabilities
-- kind: Pod
-  policy: psp-restrict-adding-capabilities
-  resources:
   - addcap-goodpod10
   result: pass
   rule: allowed-capabilities

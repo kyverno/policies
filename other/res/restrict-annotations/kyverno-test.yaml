@@ -1,19 +1,22 @@
-name: restrict-annotations
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-annotations
 policies:
 - restrict-annotations.yaml
 resources:
 - resource.yaml
 results:
-- kind: Pod
-  policy: restrict-annotations
-  resources:
-  - myapp-pod
-  result: fail
-  rule: block-flux-v1
 - kind: Deployment
   policy: restrict-annotations
   resources:
   - mydeploy
+  result: fail
+  rule: block-flux-v1
+- kind: Pod
+  policy: restrict-annotations
+  resources:
+  - myapp-pod
   result: fail
   rule: block-flux-v1
 - kind: CronJob

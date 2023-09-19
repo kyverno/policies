@@ -1,4 +1,7 @@
-name: add-volume
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-volume
 policies:
 - add-volume-deployment.yaml
 resources:
