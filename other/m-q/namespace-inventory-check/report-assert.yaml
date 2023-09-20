@@ -1,0 +1,56 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: ClusterPolicyReport
+metadata:
+  ownerReferences:
+  - apiVersion: v1
+    kind: Namespace
+    name: inventory-check-ns01
+results:
+- result: fail
+  rule: networkpolicies
+- result: pass
+  rule: resourcequotas
+summary:
+  error: 0
+  fail: 1
+  pass: 1
+  skip: 0
+  warn: 0
+---
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: ClusterPolicyReport
+metadata:
+  ownerReferences:
+  - apiVersion: v1
+    kind: Namespace
+    name: inventory-check-ns02
+results:
+- result: pass
+  rule: networkpolicies
+- result: fail
+  rule: resourcequotas
+summary:
+  error: 0
+  fail: 1
+  pass: 1
+  skip: 0
+  warn: 0
+---
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: ClusterPolicyReport
+metadata:
+  ownerReferences:
+  - apiVersion: v1
+    kind: Namespace
+    name: inventory-check-ns03
+results:
+- result: pass
+  rule: networkpolicies
+- result: pass
+  rule: resourcequotas
+summary:
+  error: 0
+  fail: 0
+  pass: 2
+  skip: 0
+  warn: 0
