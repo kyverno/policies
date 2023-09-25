@@ -4,7 +4,7 @@ displayName: Require runAsNonRoot
 createdAt: "2023-04-10T23:16:53.000Z"
 description: >-
   Containers must be required to run as non-root users. This policy ensures `runAsNonRoot` is set to `true`. A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
-install: |- 
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/restricted/require-run-as-nonroot/require-run-as-nonroot.yaml
   ```

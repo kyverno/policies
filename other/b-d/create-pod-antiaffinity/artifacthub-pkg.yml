@@ -4,7 +4,7 @@ displayName: Add Pod Anti-Affinity
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   Applications may involve multiple replicas of the same Pod for availability as well as scale purposes, yet Kubernetes does not by default provide a solution for availability. This policy sets a Pod anti-affinity configuration on Deployments which contain an `app` label if it is not already present.
-install: |- 
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/create-pod-antiaffinity/create-pod-antiaffinity.yaml
   ```

@@ -6,7 +6,7 @@ description: >-
   Setting of CPU limits is a debatable poor practice as it can result, when defined, in potentially starving applications of much-needed CPU cycles even when they are available. Ensuring that CPU limits are not set may ensure apps run more effectively. This policy forbids any container in a Pod from defining CPU limits.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/e-l/forbid-cpu-limits/forbid-cpu-limits.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/forbid-cpu-limits/forbid-cpu-limits.yaml
   ```
 keywords:
   - kyverno
@@ -19,4 +19,4 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.26"
   kyverno/subject: "Pod"
-digest: ab06fedd32b519429eff449321a29c84db403982f3732621b32188ce9c98f767
+digest: d83f7beccf5eacc5a32cfb36225689b76007755b2f4d04876db11f75459baa62
