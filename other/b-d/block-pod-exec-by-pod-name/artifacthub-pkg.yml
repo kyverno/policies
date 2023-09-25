@@ -7,7 +7,6 @@ description: >-
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/block-pod-exec-by-pod-name/block-pod-exec-by-pod-name.yaml
-  ``
   ```
 keywords:
   - kyverno
