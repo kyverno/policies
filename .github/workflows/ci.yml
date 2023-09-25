@@ -50,6 +50,11 @@ jobs:
               continue
             fi
 
+            # Skip if it is the .hack directory
+            if [[ $dir_name == ".hack" ]]; then
+              continue
+            fi
+
             # Check if the directory name only contains alphanumeric characters and dashes
             if [[ ! $dir_name =~ ^[a-zA-Z0-9-]+$ ]]; then
               echo "Directory $dir_name contains invalid characters. Only alphanumeric characters and dashes are allowed."
