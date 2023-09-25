@@ -7,9 +7,9 @@ description: >-
       A Velero Schedule is given in Cron format and must be accurate to ensure
       operation. This policy validates that the schedule is a valid Cron format. 
 install: |-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
-    ```
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/validate-cron-schedule/validate-cron-schedule.yaml
+  ```
 keywords:
   - velero
   - kyverno

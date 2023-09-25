@@ -5,7 +5,7 @@ createdAt: "2023-05-01T00:00:00.000Z"
 description: >-
   Developers may feel compelled to use simple shell commands as a workaround to creating "proper" liveness or readiness probes for a Pod. Such a practice can be discouraged via detection of those commands. This policy prevents the use of certain commands `jcmd`, `ps`, or `ls` if found in a Pod's liveness exec probe.
 
-install: |- 
+install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/deny-commands-in-exec-probe/deny-commands-in-exec-probe.yaml
   ```
