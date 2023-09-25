@@ -21,4 +21,4 @@ annotations:
   policies.kyverno.io/category: other
   policies.kyverno.io/subject: Namespace, ClusterRole, User
   policies.kyverno.io/minversion: 1.9.0
-digest: 8b212d6056e1871537018ab93e1236f971b42a4c
+digest: 841724d983a9f27618678d596f30e20717115787e0f24304226b79d2e6b892e0
