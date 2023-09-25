@@ -11,9 +11,9 @@ description: >-
       all volumes are listed in the aforementioned annotation if a Namespace with the label
       `velero-backup-pvc=true`.
 install: |-
-    ```shell
-    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
-     ```
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
+  ```
 keywords:
   - velero
   - kyverno
