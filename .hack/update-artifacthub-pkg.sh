@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-FILES=$(find . -name "artifacthub-pkg.yml")
 SED=sed
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
     SED=gsed
 fi
 
-for FILE in $FILES
+for FILE in $(find . -name "artifacthub-pkg.yml")
 do
     FOLDER=$(dirname "$FILE")
     POLICY=$(basename "$FOLDER")
