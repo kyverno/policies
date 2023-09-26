@@ -1,0 +1,21 @@
+name: prevent-linkerd-pod-injection-override
+version: 1.0.0
+displayName: Prevent Linkerd Pod Injection Override
+createdAt: "2023-04-10T20:19:58.000Z"
+description: >-
+  Setting the annotation on a Pod (or its controller) `linkerd.io/inject` to `disabled` may effectively disable mesh participation for that workload reducing security and visibility. This policy prevents setting the annotation `linkerd.io/inject` to `disabled` for Pods.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd/prevent-linkerd-pod-injection-override/prevent-linkerd-pod-injection-override.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+readme: |
+  Setting the annotation on a Pod (or its controller) `linkerd.io/inject` to `disabled` may effectively disable mesh participation for that workload reducing security and visibility. This policy prevents setting the annotation `linkerd.io/inject` to `disabled` for Pods.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd"
+  kyverno/subject: "Pod"
+digest: f53f4954cf983e1ffd47faf03c76fa07ca01cc2a3d3ac2118c5f77f12e6abbf7

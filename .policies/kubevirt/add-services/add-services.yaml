@@ -1,0 +1,43 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k6t-add-services
+  annotations:
+    policies.kyverno.io/title: Add Services
+    policies.kyverno.io/category: KubeVirt
+    policies.kyverno.io/subject: VirtualMachineInstance
+    policies.kyverno.io/description: >-
+      Add an SSH Service to every VirtualMachineInstance which is getting created.
+      This Service will use a ClusterIP, thus the admin has to ensure that the IP
+      space is large enough and ClusterIP type can be met.
+    kyverno.io/kyverno-version: "1.8.0-rc2"
+    kyverno.io/kubernetes-version: "1.24-1.25"
+spec:
+  background: false
+  rules:
+  - name: k6t-add-service-ssh
+    match:
+      any:
+      - resources:
+          kinds:
+          - VirtualMachineInstance
+    generate:
+      apiVersion: v1
+      kind: Service
+      name: "{{request.object.metadata.name}}"
+      namespace: "{{request.object.metadata.namespace}}"
+      synchronize: true
+      data:
+        metadata:
+          ownerReferences:
+          - apiVersion: kubevirt.io/v1
+            kind: VirtualMachineInstance
+            name: "{{request.object.metadata.name}}"
+            uid: "{{request.object.metadata.uid}}"
+        spec:
+          ports:
+          - protocol: TCP
+            port: 22
+          selector:
+            kubevirt.io/domain: "{{request.object.metadata.name}}"
+          type: ClusterIP

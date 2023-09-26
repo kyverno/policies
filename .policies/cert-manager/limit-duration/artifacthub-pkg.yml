@@ -1,0 +1,21 @@
+name: limit-duration
+version: 1.0.0
+displayName: Certificate max duration 100 days
+createdAt: "2023-04-10T20:00:05.000Z"
+description: >-
+  Kubernetes managed non-letsencrypt certificates have to be renewed in every 100 days.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cert-manager/limit-duration/limit-duration.yaml
+  ```
+keywords:
+  - kyverno
+  - Cert-Manager
+readme: |
+  Kubernetes managed non-letsencrypt certificates have to be renewed in every 100 days.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Cert-Manager"
+  kyverno/subject: "Certificate"
+digest: b205b4f94a9d5b68f571d8c6daa734d257af73a1ec958c283053d5831280cfd6

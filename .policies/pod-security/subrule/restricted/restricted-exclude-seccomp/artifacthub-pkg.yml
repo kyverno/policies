@@ -1,0 +1,22 @@
+name: restricted-exclude-seccomp
+version: 1.0.0
+displayName: Restricted Pod Security Standards with Spec and Container-Level Control Exemption
+createdAt: "2023-04-10T23:19:50.000Z"
+description: >-
+  The restricted profile of the Pod Security Standards, which is inclusive of the baseline profile, is a collection of all the most common configurations that can be taken to secure Pods. Beginning with Kyverno 1.8, an entire profile may be assigned to the cluster through a single rule. In some cases, specific exemptions must be made on a per-control basis. This policy configures the restricted profile through the latest version of the Pod Security Standards cluster wide while completely exempting Seccomp control check.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security/subrule/restricted/restricted-exclude-seccomp/restricted-exclude-seccomp.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security
+readme: |
+  The restricted profile of the Pod Security Standards, which is inclusive of the baseline profile, is a collection of all the most common configurations that can be taken to secure Pods. Beginning with Kyverno 1.8, an entire profile may be assigned to the cluster through a single rule. In some cases, specific exemptions must be made on a per-control basis. This policy configures the restricted profile through the latest version of the Pod Security Standards cluster wide while completely exempting Seccomp control check.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Pod"
+digest: c5b83d86fd4a976412f4bbb1bd732f487d7c0ce37958f1fa41cf33cd12dd71d1

@@ -1,0 +1,21 @@
+name: limit-dnsnames
+version: 1.0.0
+displayName: Limit dnsNames
+createdAt: "2023-04-10T20:00:05.000Z"
+description: >-
+  Some applications will not accept certificates containing more than a single name. This policy ensures that each certificate request contains only one DNS name entry.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cert-manager/limit-dnsnames/limit-dnsnames.yaml
+  ```
+keywords:
+  - kyverno
+  - Cert-Manager
+readme: |
+  Some applications will not accept certificates containing more than a single name. This policy ensures that each certificate request contains only one DNS name entry.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Cert-Manager"
+  kyverno/subject: "Certificate"
+digest: 495d98b2a3568a1123822832d34200d6c0bcec3c99572ef744135d965da905c1

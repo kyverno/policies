@@ -1,0 +1,22 @@
+name: k10-generate-gold-backup-policy
+version: 1.0.0
+displayName: Generate Gold Backup Policy
+createdAt: "2023-04-10T20:12:53.000Z"
+description: >-
+  Generate a backup policy for any Deployment or StatefulSet that adds the labels "dataprotection: k10-goldpolicy" This policy works best to decide the data protection objectives and simply assign backup via application labels.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-generate-gold-backup-policy/k10-generate-gold-backup-policy.yaml
+  ```
+keywords:
+  - kyverno
+  - Kasten K10 by Veeam
+readme: |
+  Generate a backup policy for any Deployment or StatefulSet that adds the labels "dataprotection: k10-goldpolicy" This policy works best to decide the data protection objectives and simply assign backup via application labels.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Kasten K10 by Veeam"
+  kyverno/kubernetesVersion: "1.21-1.22"
+  kyverno/subject: "Policy"
+digest: 9c12e7c601640434411e08b965b408cebd9862cb23760cac545a2a96741036b7

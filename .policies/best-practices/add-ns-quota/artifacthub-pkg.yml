@@ -1,0 +1,22 @@
+name: add-ns-quota
+version: 1.0.0
+displayName: Add Quota
+createdAt: "2023-04-10T19:47:15.000Z"
+description: >-
+  To better control the number of resources that can be created in a given Namespace and provide default resource consumption limits for Pods, ResourceQuota and LimitRange resources are recommended. This policy will generate ResourceQuota and LimitRange resources when a new Namespace is created.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices/add-ns-quota/add-ns-quota.yaml
+  ```
+keywords:
+  - kyverno
+  - Multi-Tenancy
+  - EKS Best Practices
+readme: |
+  To better control the number of resources that can be created in a given Namespace and provide default resource consumption limits for Pods, ResourceQuota and LimitRange resources are recommended. This policy will generate ResourceQuota and LimitRange resources when a new Namespace is created.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Multi-Tenancy, EKS Best Practices"
+  kyverno/subject: "ResourceQuota, LimitRange"
+digest: b262e9ece8f02968f8b7c0af2aea6a134db055b1c5b0ba4ec7e43bd801d66f1d

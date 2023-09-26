@@ -1,0 +1,22 @@
+name: block-tekton-task-runs
+version: 1.0.0
+displayName: Block Tekton TaskRun
+createdAt: "2023-04-10T23:23:45.000Z"
+description: >-
+  Restrict creation of TaskRun resources to the Tekton pipelines controller.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/block-tekton-task-runs/block-tekton-task-runs.yaml
+  ```
+keywords:
+  - kyverno
+  - Tekton
+readme: |
+  Restrict creation of TaskRun resources to the Tekton pipelines controller.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Tekton"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "TaskRun"
+digest: 08b6fe5c9990d02fb809bb5145c58a85c071ed1ae4ad1485dec7344290784390

@@ -1,0 +1,33 @@
+---
+name: backup-all-volumes
+version: 1.0.0
+displayName: Backup All Volumes
+createdAt: "2023-03-29T00:00:00.000Z"
+description: >-
+      In order for Velero to backup volumes in a Pod using an opt-in approach, it
+      requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
+      value being a comma-separated list of the volumes mounted to that Pod. This policy
+      automatically annotates Pods (and Pod controllers) which refer to a PVC so that
+      all volumes are listed in the aforementioned annotation if a Namespace with the label
+      `velero-backup-pvc=true`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
+  ```
+keywords:
+  - velero
+  - kyverno
+readme: |
+  In order for Velero to backup volumes in a Pod using an opt-in approach, it
+  requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
+  value being a comma-separated list of the volumes mounted to that Pod. This policy
+  automatically annotates Pods (and Pod controllers) which refer to a PVC so that
+  all volumes are listed in the aforementioned annotation if a Namespace with the label
+  `velero-backup-pvc=true`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Velero"
+  kyverno/kubernetesVersion: "1.25"
+  kyverno/subject: "Pod, Annotation"
+digest: 795012387c2755c61fa802fea900011c45520c2cffb27238210933ebb9a7f2c0

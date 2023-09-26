@@ -1,0 +1,22 @@
+name: add-castai-removal-disabled
+version: 1.0.0
+displayName: Add CAST AI removal disabled
+createdAt: "2023-06-28T14:08:14.000Z"
+description: >-
+  CAST AI will not downscale a node that includes a pod with the autoscaling.cast.ai/removal-disabled="true" label on it, this protects sensitive workloads from being evicted and can be attributed to any pod to protect against unwanted downscaling. This policy will mutate jobs and cronjobs to add the removal-disabled label to protect against eviction. 
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/castai/add-castai-removal-disabled/add-castai-removal-disabled.yaml
+  ```
+keywords:
+  - kyverno
+  - CAST AI
+readme: |
+  CAST AI will not downscale a node that includes a pod with the autoscaling.cast.ai/removal-disabled="true" label on it, this protects sensitive workloads from being evicted and can be attributed to any pod to protect against unwanted downscaling. This policy will mutate jobs and cronjobs to add the removal-disabled label to protect against eviction. 
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "CAST AI"
+  kyverno/kubernetesVersion: "1.25"
+  kyverno/subject: "Job, CronJob"
+digest: 992992b1eb3573e61d58ecf18bf58a2df70ce647b69243bc1e2adcdc5cea30ce

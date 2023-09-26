@@ -1,0 +1,22 @@
+name: add-sidecar-injection-namespace
+version: 1.0.0
+displayName: Add Istio Sidecar Injection
+createdAt: "2023-04-10T20:07:52.000Z"
+description: >-
+  In order for Istio to inject sidecars to workloads deployed into Namespaces, the label `istio-injection` must be set to `enabled`. As an alternative to rejecting Namespace definitions which don't already contain this label, it can be added automatically. This policy adds the label `istio-inject` set to `enabled` for all new Namespaces.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio/add-sidecar-injection-namespace/add-sidecar-injection-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - Istio
+readme: |
+  In order for Istio to inject sidecars to workloads deployed into Namespaces, the label `istio-injection` must be set to `enabled`. As an alternative to rejecting Namespace definitions which don't already contain this label, it can be added automatically. This policy adds the label `istio-inject` set to `enabled` for all new Namespaces.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Istio"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Namespace"
+digest: 42e2af383daf8f2501b1f407b5627358ed55b4991615575ae6c22607a8918ca7
