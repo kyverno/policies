@@ -5,7 +5,7 @@ metadata:
 policies:
 - disallow-host-namespaces.yaml
 resources:
-- ../pod-security/disallow-host-namespaces/resource.yaml
+- ../../../pod-security/baseline/disallow-host-namespaces/resource.yaml
 results:
 - kind: CronJob
   policy: disallow-host-namespaces

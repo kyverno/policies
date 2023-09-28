@@ -5,7 +5,7 @@ metadata:
 policies:
 - disallow-host-ports-range.yaml
 resources:
-- ../pod-security/disallow-host-ports-range/resource.yaml
+- ../../../pod-security/baseline/disallow-host-ports-range/resource.yaml
 results:
 - kind: CronJob
   policy: disallow-host-ports-range
