@@ -1,11 +1,11 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-- file: pod-good.yaml
+- file: ../pod-security/disallow-host-namespaces/pod-good.yaml
   shouldFail: false
-- file: pod-bad.yaml
+- file: ../pod-security/disallow-host-namespaces/pod-bad.yaml
   shouldFail: true
-- file: podcontroller-good.yaml
+- file: ../pod-security/disallow-host-namespaces/podcontroller-good.yaml
   shouldFail: false
-- file: podcontroller-bad.yaml
+- file: ../pod-security/disallow-host-namespaces/podcontroller-bad.yaml
   shouldFail: true
