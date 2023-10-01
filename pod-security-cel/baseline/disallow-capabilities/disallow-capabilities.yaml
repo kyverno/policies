@@ -7,12 +7,12 @@ metadata:
     policies.kyverno.io/category: Pod Security Standards (Baseline) in CEL
     policies.kyverno.io/severity: medium
     policies.kyverno.io/minversion: 1.11.0
-    kyverno/kubernetesVersion: "1.22-1.23"
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Adding capabilities beyond those listed in the policy must be disallowed.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: adding-capabilities
