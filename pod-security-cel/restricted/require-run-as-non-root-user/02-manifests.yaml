@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: ../../../pod-security/restricted/require-run-as-non-root-user/pod-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/restricted/require-run-as-non-root-user/pod-bad.yaml
+  shouldFail: true
+- file: ../../../pod-security/restricted/require-run-as-non-root-user/podcontroller-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/restricted/require-run-as-non-root-user/podcontroller-bad.yaml
+  shouldFail: true

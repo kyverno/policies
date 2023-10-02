@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+- script: |
+    sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' require-run-as-nonroot.yaml | kubectl create -f - 

@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: ../../../pod-security/restricted/restrict-volume-types/pod-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/restricted/restrict-volume-types/pod-bad.yaml
+  shouldFail: true
+- file: ../../../pod-security/restricted/restrict-volume-types/podcontroller-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/restricted/restrict-volume-types/podcontroller-bad.yaml
+  shouldFail: true
