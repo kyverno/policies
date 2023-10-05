@@ -29,7 +29,7 @@ spec:
       validate:
         message: "Binding to system:anonymous is not allowed."
         pattern:
-          roleRef:
+          subjects:
             name: "!system:anonymous"
     - name: restrict-unauthenticated
       match:
@@ -41,7 +41,7 @@ spec:
       validate:
         message: "Binding to system:unauthenticated is not allowed."
         pattern:
-          roleRef:
+          subjects:
             name: "!system:unauthenticated"
     - name: restrict-masters
       match:
@@ -53,5 +53,5 @@ spec:
       validate:
         message: "Binding to system:masters is not allowed."
         pattern:
-          roleRef:
+          subjects:
             name: "!system:masters"
