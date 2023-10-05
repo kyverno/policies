@@ -4,11 +4,11 @@ metadata:
   name: badcrb01
 subjects:
 - kind: Group
-  name: manager
+  name: "system:anonymous"
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
-  name: "system:anonymous"
+  name: manager
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -18,10 +18,11 @@ metadata:
 subjects:
 - kind: ServiceAccount
   namespace: foo
-  name: manager
+  name: "system:unauthenticated"
+  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
-  name: "system:unauthenticated"
+  name: manager
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -31,8 +32,9 @@ metadata:
 subjects:
 - kind: ServiceAccount
   namespace: foo
-  name: manager
+  name: "system:masters"
+  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
-  name: "system:masters"
+  name: manager
   apiGroup: rbac.authorization.k8s.io
