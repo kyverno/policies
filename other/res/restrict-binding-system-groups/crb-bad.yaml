@@ -30,7 +30,7 @@ kind: ClusterRoleBinding
 metadata:
   name: badcrb03
 subjects:
-- kind: ServiceAccount
+- kind: Group
   namespace: foo
   name: "system:masters"
   apiGroup: rbac.authorization.k8s.io

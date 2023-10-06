@@ -30,7 +30,7 @@ spec:
         message: "Binding to system:anonymous is not allowed."
         pattern:
           subjects:
-            name: "!system:anonymous"
+            - name: "!system:anonymous"
     - name: restrict-unauthenticated
       match:
         any:
@@ -42,7 +42,7 @@ spec:
         message: "Binding to system:unauthenticated is not allowed."
         pattern:
           subjects:
-            name: "!system:unauthenticated"
+            - name: "!system:unauthenticated"
     - name: restrict-masters
       match:
         any:
@@ -54,5 +54,5 @@ spec:
         message: "Binding to system:masters is not allowed."
         pattern:
           subjects:
-            name: "!system:masters"
+            - name: "!system:masters"
             
