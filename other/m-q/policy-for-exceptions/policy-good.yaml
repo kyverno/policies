@@ -1,4 +1,4 @@
-apiVersion: kyverno.io/v2alpha1
+apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: goodpe01
@@ -9,7 +9,7 @@ spec:
     - rule01
   match: {}
 ---
-apiVersion: kyverno.io/v2alpha1
+apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: goodpe02
@@ -33,7 +33,7 @@ spec:
         namespace: some-ns
         name: kube-admin
 ---
-apiVersion: kyverno.io/v2alpha1
+apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: goodpe03
@@ -58,7 +58,7 @@ spec:
         namespace: some-ns
         name: kube-admin
 ---
-apiVersion: kyverno.io/v2alpha1
+apiVersion: kyverno.io/v2beta1
 kind: PolicyException
 metadata:
   name: goodpe04
