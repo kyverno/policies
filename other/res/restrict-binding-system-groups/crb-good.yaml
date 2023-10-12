@@ -4,11 +4,11 @@ metadata:
   name: goodcrb01
 subjects:
 - kind: Group
-  name: manager
+  name: secret-reader
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
-  name: secret-reader
+  name: manager
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -18,10 +18,10 @@ metadata:
 subjects:
 - kind: ServiceAccount
   namespace: foo
-  name: manager
+  name: foo-reader
 roleRef:
   kind: ClusterRole
-  name: foo-reader
+  name: manager
   apiGroup: rbac.authorization.k8s.io
 
 ---
@@ -32,8 +32,8 @@ metadata:
 subjects:
 - kind: ServiceAccount
   namespace: foo
-  name: manager
+  name: "system.foo"
 roleRef:
   kind: ClusterRole
-  name: "system:foo"
+  name: manager
   apiGroup: rbac.authorization.k8s.io

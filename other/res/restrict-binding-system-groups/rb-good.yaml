@@ -30,9 +30,9 @@ metadata:
   name: goodrb03
 subjects:
 - kind: Group
-  name: foo
+  name: "system:foo"
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
-  name: "system:foo"
+  name: foo
   apiGroup: rbac.authorization.k8s.io
