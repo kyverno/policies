@@ -16,7 +16,7 @@ metadata:
       In K8s/K10, this translates to the original StatefulSet (the original PersistentVolumeClaim), a backup (a snapshot of the PVC on prod storage),
       and an export to cloud object storage (a secondary cloud copy of the PVC snapshot).
 spec:
-  validationFailureAction: audit  
+  validationFailureAction: Audit  
   rules:
   - name: k10-3-2-1-backup-policy
     match:
