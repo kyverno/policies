@@ -30,6 +30,4 @@ spec:
       data:
         spec:
           minAvailable: 1
-          selector:
-            matchLabels:
-              "{{request.object.metadata.labels}}"
+          selector: "{{request.object.spec.selector}}"
