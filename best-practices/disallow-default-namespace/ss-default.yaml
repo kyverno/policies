@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:v1.35
+      - image: busybox:1.35
         name: busybox
         command:
         - "sleep"
