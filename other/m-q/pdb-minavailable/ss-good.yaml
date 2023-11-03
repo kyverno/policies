@@ -6,12 +6,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: busybox
+      app: bb1
   replicas: 2
   template:
     metadata:
       labels:
-        app: busybox
+        app: bb1
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -25,12 +25,12 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: busybox
+      app: bb2
   replicas: 1
   template:
     metadata:
       labels:
-        app: busybox
+        app: bb2
     spec:
       terminationGracePeriodSeconds: 10
       containers:
@@ -45,12 +45,32 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: bb
+      app: bb3
   replicas: 1
   template:
     metadata:
       labels:
-        app: bb
+        app: bb3
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: busbyox
+        image: busybox:1.35
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: goodss04
+  namespace: pdb-minavailable-ns
+spec:
+  selector:
+    matchLabels:
+      app: bb4
+  replicas: 0
+  template:
+    metadata:
+      labels:
+        app: bb4
     spec:
       terminationGracePeriodSeconds: 10
       containers:
