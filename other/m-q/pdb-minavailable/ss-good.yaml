@@ -6,18 +6,19 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: bb1
+      app: busybox
   replicas: 2
   template:
     metadata:
       labels:
-        app: bb1
+        app: busybox
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: busbyox
         image: busybox:1.35
 ---
+# Workload is not in PDB namespace.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -25,18 +26,19 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: bb2
+      app: busybox
   replicas: 1
   template:
     metadata:
       labels:
-        app: bb2
+        app: busybox
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: busbyox
         image: busybox:1.35
 ---
+# Workload does not match PDB selector.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -45,32 +47,32 @@ metadata:
 spec:
   selector:
     matchLabels:
-      app: bb3
+      app: bb
   replicas: 1
   template:
     metadata:
       labels:
-        app: bb3
+        app: bb
     spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: busbyox
         image: busybox:1.35
 ---
+# Workload has 0 replicas and is not in PDB namespace.
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: goodss04
-  namespace: pdb-minavailable-ns
 spec:
   selector:
     matchLabels:
-      app: bb4
+      app: busybox
   replicas: 0
   template:
     metadata:
       labels:
-        app: bb4
+        app: busybox
     spec:
       terminationGracePeriodSeconds: 10
       containers:
