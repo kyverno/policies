@@ -24,8 +24,7 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset.
         cel:
           expressions:
             - expression: "!has(object.spec.volumes) || object.spec.volumes.all(volume, !has(volume.hostPath))"
+              message: "HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset"

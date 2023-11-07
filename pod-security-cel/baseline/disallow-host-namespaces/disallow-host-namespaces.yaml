@@ -25,12 +25,12 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
-          spec.hostIPC, and spec.hostPID must be unset or set to `false`.
         cel:
           expressions:
             - expression: >-
                 (!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) &&
                 (!has(object.spec.hostIPC) || object.spec.hostIPC == false) &&
                 (!has(object.spec.hostPID) || object.spec.hostPID == false)
+              message: >-
+                Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
+                spec.hostIPC, and spec.hostPID must be unset or set to `false`.

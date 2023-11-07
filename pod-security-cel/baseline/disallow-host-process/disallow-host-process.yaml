@@ -25,11 +25,6 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          HostProcess containers are disallowed. The fields spec.securityContext.windowsOptions.hostProcess,
-          spec.containers[*].securityContext.windowsOptions.hostProcess, spec.initContainers[*].securityContext.windowsOptions.hostProcess,
-          and spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess must either be undefined
-          or set to `false`.
         cel:
           expressions:
             - expression: >- 
@@ -37,6 +32,9 @@ spec:
                 !has(container.securityContext.windowsOptions) ||
                 !has(container.securityContext.windowsOptions.hostProcess) ||
                 container.securityContext.windowsOptions.hostProcess == false)
+              message: >-
+                HostProcess containers are disallowed. The field spec.containers[*].securityContext.windowsOptions.hostProcess
+                must either be undefined or set to `false`.
 
             - expression: >- 
                 !has(object.spec.initContainers) ||
@@ -44,6 +42,9 @@ spec:
                 !has(container.securityContext.windowsOptions) ||
                 !has(container.securityContext.windowsOptions.hostProcess) ||
                 container.securityContext.windowsOptions.hostProcess == false)
+              message: >-
+                HostProcess containers are disallowed. The field spec.initContainers[*].securityContext.windowsOptions.hostProcess
+                must either be undefined or set to `false`.
 
             - expression: >- 
                 !has(object.spec.ephemeralContainers) ||
@@ -51,3 +52,6 @@ spec:
                 !has(container.securityContext.windowsOptions) ||
                 !has(container.securityContext.windowsOptions.hostProcess) ||
                 container.securityContext.windowsOptions.hostProcess == false)
+              message: >-
+                HostProcess containers are disallowed. The field spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess
+                must either be undefined or set to `false`.

@@ -24,20 +24,24 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          The only permitted hostPorts are in the range 5000-6000.
         cel:
           expressions:
             - expression: >- 
                 object.spec.containers.all(container, !has(container.ports) ||
                 container.ports.all(port, !has(port.hostPort) || (port.hostPort >= 5000 && port.hostPort <= 6000)))
+              message: >-
+                The only permitted hostPorts are in the range 5000-6000.
 
             - expression: >- 
                 !has(object.spec.initContainers) ||
                 object.spec.initContainers.all(container, !has(container.ports) ||
                 container.ports.all(port, !has(port.hostPort) || (port.hostPort >= 5000 && port.hostPort <= 6000)))
+              message: >-
+                The only permitted hostPorts are in the range 5000-6000.
 
             - expression: >- 
                 !has(object.spec.ephemeralContainers) ||
                 object.spec.ephemeralContainers.all(container, !has(container.ports) ||
                 container.ports.all(port, !has(port.hostPort) || (port.hostPort >= 5000 && port.hostPort <= 6000)))
+              message: >-
+                The only permitted hostPorts are in the range 5000-6000.
