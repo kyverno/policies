@@ -23,24 +23,30 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged
-          and spec.initContainers[*].securityContext.privileged must be unset or set to `false`.
         cel:
           expressions:
             - expression: >-
                 object.spec.containers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.privileged) ||
                 container.securityContext.privileged == false)
+              message: >-
+                Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged
+                must be unset or set to `false`.
 
             - expression: >-
                 !has(object.spec.initContainers) ||
                 object.spec.initContainers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.privileged) ||
                 container.securityContext.privileged == false)
+              message: >-
+                Privileged mode is disallowed. The fields spec.initContainers[*].securityContext.privileged
+                must be unset or set to `false`.
 
             - expression: >-
                 !has(object.spec.ephemeralContainers) ||
                 object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.privileged) ||
                 container.securityContext.privileged == false)
+              message: >-
+                Privileged mode is disallowed. The fields spec.ephemeralContainers[*].securityContext.privileged
+                must be unset or set to `false`.

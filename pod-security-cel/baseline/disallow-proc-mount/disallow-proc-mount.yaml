@@ -25,26 +25,30 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Changing the proc mount from the default is not allowed. The fields
-          spec.containers[*].securityContext.procMount, spec.initContainers[*].securityContext.procMount,
-          and spec.ephemeralContainers[*].securityContext.procMount must be unset or
-          set to `Default`.
         cel:
           expressions:
             - expression: >- 
                 object.spec.containers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.procMount) ||
                 container.securityContext.procMount == 'Default')
+              message: >-
+                Changing the proc mount from the default is not allowed. The field
+                spec.containers[*].securityContext.procMount must be unset or set to `Default`.
       
             - expression: >-
                 !has(object.spec.initContainers) ||
                 object.spec.initContainers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.procMount) ||
                 container.securityContext.procMount == 'Default')
+              message: >-
+                Changing the proc mount from the default is not allowed. The field
+                spec.initContainers[*].securityContext.procMount must be unset or set to `Default`.
               
             - expression: >- 
                 !has(object.spec.ephemeralContainers) ||
                 object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.procMount) ||
                 container.securityContext.procMount == 'Default')
+              message: >-
+                Changing the proc mount from the default is not allowed. The field
+                spec.ephemeralContainers[*].securityContext.procMount must be unset or set to `Default`.
