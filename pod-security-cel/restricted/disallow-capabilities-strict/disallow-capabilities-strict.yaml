@@ -53,8 +53,6 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Any capabilities added other than NET_BIND_SERVICE are disallowed.
         cel:
           expressions:
           - expression: >- 
@@ -62,6 +60,8 @@ spec:
               !has(container.securityContext.capabilities) ||
               !has(container.securityContext.capabilities.add) ||
               ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.
     
           - expression: >- 
               !has(object.spec.initContainers) ||
@@ -69,6 +69,8 @@ spec:
               !has(container.securityContext.capabilities) ||
               !has(container.securityContext.capabilities.add) ||
               ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.
           
           - expression: >- 
               !has(object.spec.ephemeralContainers) ||
@@ -76,3 +78,5 @@ spec:
               !has(container.securityContext.capabilities) ||
               !has(container.securityContext.capabilities.add) ||
               ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.

@@ -24,9 +24,6 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Only the following types of volumes may be used: configMap, csi, downwardAPI,
-          emptyDir, ephemeral, persistentVolumeClaim, projected, and secret.
         cel: 
           expressions:
             - expression: >- 
@@ -39,3 +36,6 @@ spec:
                 has(vol.persistentVolumeClaim) ||
                 has(vol.projected) ||
                 has(vol.secret))
+              message: >-
+                Only the following types of volumes may be used: configMap, csi, downwardAPI,
+                emptyDir, ephemeral, persistentVolumeClaim, projected, and secret.

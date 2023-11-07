@@ -24,11 +24,6 @@ spec:
             kinds:
               - Pod
       validate:
-        message: >-
-          Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot
-          must be set to `true`, or the fields spec.containers[*].securityContext.runAsNonRoot,
-          spec.initContainers[*].securityContext.runAsNonRoot, and spec.ephemeralContainers[*].securityContext.runAsNonRoot
-          must be set to `true`.
         cel:
           expressions:
             - expression: >- 
@@ -49,6 +44,11 @@ spec:
                 object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
                 !has(container.securityContext.runAsNonRoot) ||
                 container.securityContext.runAsNonRoot == true))
+              message: >-
+                Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot
+                must be set to `true`, or the fields spec.containers[*].securityContext.runAsNonRoot,
+                spec.initContainers[*].securityContext.runAsNonRoot, and spec.ephemeralContainers[*].securityContext.runAsNonRoot
+                must be set to `true`.
     
             - expression: >- 
                 has(object.spec.securityContext) || 
@@ -57,3 +57,8 @@ spec:
                 (!has(object.spec.initContainers) || object.spec.initContainers.all(container, has(container.securityContext) && has(container.securityContext.runAsNonRoot)))
                 &&
                 (!has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.all(container, has(container.securityContext) && has(container.securityContext.runAsNonRoot))))
+              message: >-
+                Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot
+                must be set to `true`, or the fields spec.containers[*].securityContext.runAsNonRoot,
+                spec.initContainers[*].securityContext.runAsNonRoot, and spec.ephemeralContainers[*].securityContext.runAsNonRoot
+                must be set to `true`.
