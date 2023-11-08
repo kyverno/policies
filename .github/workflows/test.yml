@@ -52,6 +52,7 @@ jobs:
           - other/res
           - other/s-z
           - pod-security
+          - pod-security-cel
           - psa
           - psp-migration
           # - tekton

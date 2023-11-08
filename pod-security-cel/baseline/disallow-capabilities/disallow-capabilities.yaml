@@ -1,0 +1,61 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-capabilities
+  annotations:
+    policies.kyverno.io/title: Disallow Capabilities in CEL expressions
+    policies.kyverno.io/category: Pod Security Standards (Baseline) in CEL
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Adding capabilities beyond those listed in the policy must be disallowed.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: adding-capabilities
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      validate:
+        cel:
+          expressions:
+            - expression: >-
+                object.spec.containers.all(container,
+                !has(container.securityContext) ||
+                !has(container.securityContext.capabilities) ||
+                !has(container.securityContext.capabilities.add) ||
+                container.securityContext.capabilities.add.all(capability,
+                ['AUDIT_WRITE','CHOWN','DAC_OVERRIDE','FOWNER','FSETID','KILL','MKNOD','NET_BIND_SERVICE','SETFCAP','SETGID','SETPCAP','SETUID','SYS_CHROOT'].exists(secureCapability, secureCapability == capability)))
+              message: >-
+                Any capabilities added beyond the allowed list (AUDIT_WRITE, CHOWN, DAC_OVERRIDE, FOWNER,
+                FSETID, KILL, MKNOD, NET_BIND_SERVICE, SETFCAP, SETGID, SETPCAP, SETUID, SYS_CHROOT)
+                are disallowed.
+    
+            - expression: >-
+                !has(object.spec.initContainers) || 
+                object.spec.initContainers.all(container, !has(container.securityContext) || 
+                !has(container.securityContext.capabilities) || 
+                !has(container.securityContext.capabilities.add) || 
+                container.securityContext.capabilities.add.all(capability, 
+                ['AUDIT_WRITE','CHOWN','DAC_OVERRIDE','FOWNER','FSETID','KILL','MKNOD','NET_BIND_SERVICE','SETFCAP','SETGID','SETPCAP','SETUID','SYS_CHROOT'].exists(secureCapability, secureCapability == capability)))
+              message: >-
+                Any capabilities added beyond the allowed list (AUDIT_WRITE, CHOWN, DAC_OVERRIDE, FOWNER,
+                FSETID, KILL, MKNOD, NET_BIND_SERVICE, SETFCAP, SETGID, SETPCAP, SETUID, SYS_CHROOT)
+                are disallowed.
+              
+            - expression: >- 
+                !has(object.spec.ephemeralContainers) ||
+                object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
+                !has(container.securityContext.capabilities) ||
+                !has(container.securityContext.capabilities.add) ||
+                container.securityContext.capabilities.add.all(capability,
+                ['AUDIT_WRITE','CHOWN','DAC_OVERRIDE','FOWNER','FSETID','KILL','MKNOD','NET_BIND_SERVICE','SETFCAP','SETGID','SETPCAP','SETUID','SYS_CHROOT'].exists(secureCapability, secureCapability == capability)))
+              message: >-
+                Any capabilities added beyond the allowed list (AUDIT_WRITE, CHOWN, DAC_OVERRIDE, FOWNER,
+                FSETID, KILL, MKNOD, NET_BIND_SERVICE, SETFCAP, SETGID, SETPCAP, SETUID, SYS_CHROOT)
+                are disallowed.

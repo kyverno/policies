@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: ../../../pod-security/baseline/disallow-host-process/pod-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/disallow-host-process/pod-bad.yaml
+  shouldFail: true
+- file: ../../../pod-security/baseline/disallow-host-process/podcontroller-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/disallow-host-process/podcontroller-bad.yaml
+  shouldFail: true

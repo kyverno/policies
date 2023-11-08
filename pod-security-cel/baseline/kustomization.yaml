@@ -1,0 +1,7 @@
+resources:
+  - disallow-capabilities/disallow-capabilities.yaml
+  - disallow-host-namespaces/disallow-host-namespaces.yaml
+  - disallow-host-path/disallow-host-path.yaml
+  - disallow-host-ports/disallow-host-ports.yaml
+  - disallow-host-ports-range/disallow-host-ports-range.yaml
+  - disallow-host-process/disallow-host-process.yaml
