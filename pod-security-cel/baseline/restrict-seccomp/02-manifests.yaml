@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: ../../../pod-security/baseline/restrict-seccomp/pod-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/restrict-seccomp/pod-bad.yaml
+  shouldFail: true
+- file: ../../../pod-security/baseline/restrict-seccomp/podcontroller-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/restrict-seccomp/podcontroller-bad.yaml
+  shouldFail: true

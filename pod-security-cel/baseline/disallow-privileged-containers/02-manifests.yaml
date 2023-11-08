@@ -1,0 +1,11 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+apply:
+- file: ../../../pod-security/baseline/disallow-privileged-containers/pod-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/disallow-privileged-containers/pod-bad.yaml
+  shouldFail: true
+- file: ../../../pod-security/baseline/disallow-privileged-containers/podcontroller-good.yaml
+  shouldFail: false
+- file: ../../../pod-security/baseline/disallow-privileged-containers/podcontroller-bad.yaml
+  shouldFail: true
