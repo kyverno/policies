@@ -7,4 +7,4 @@ timeout: 90
 parallel: 1
 fullName: true
 skipTestRegex: '_.+'
-crdDir: ./CRDs
+# crdDir: ./CRDs
