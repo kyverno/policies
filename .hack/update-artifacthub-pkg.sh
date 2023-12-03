@@ -20,6 +20,7 @@ do
     echo "  Digest: $DIGEST"
     $SED -i "s/^digest:.*/digest: $DIGEST/" $FILE
     if ! grep -q "createdAt:" "$FILE"; then
-        echo "createdAt: \"$(date -u +%FT%T)\"" >> $FILE
+        NOW=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+        echo "createdAt: \"${NOW}\"" >> $FILE
     fi
 done
