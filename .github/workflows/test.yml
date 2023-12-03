@@ -31,7 +31,7 @@ jobs:
           - aws
           - best-practices
           - castai
-          - cert-manager
+          # - cert-manager
           - consul
           - external-secret-operator
           - flux
@@ -59,7 +59,7 @@ jobs:
           # - traefik
           # - velero
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    name: kuttl - ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -137,7 +137,7 @@ jobs:
           # - traefik
           # - velero
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    name: chainsaw - ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -176,14 +176,12 @@ jobs:
       - name: Install Chainsaw
         uses: kyverno/chainsaw/.github/actions/install@5ca138ff5ad87bfb2c41e52cde8c00154756e4c5 # v0.0.7
         with:
-          release: v0.0.7
+          release: v0.0.8-alpha.1
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          ./.tools/kubectl-kuttl test ./${{ matrix.tests }} --config ./kuttl-test.yaml
-
           chainsaw test --config .chainsaw.yaml --test-dir ./${{ matrix.tests }} --no-color=false
       - name: Debug failure
         if: failure()
