@@ -86,6 +86,7 @@ jobs:
           kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
       - name: Install CRDs
         run: |
+          set -e
           kubectl apply -f ./CRDs
       - name: Test with kuttl
         run: |
@@ -165,10 +166,6 @@ jobs:
         run: |
           set -e
           kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
-      - name: Install CRDs
-        run: |
-          set -e
-          kubectl apply -f ./CRDs
       - name: Install CRDs
         run: |
           set -e
