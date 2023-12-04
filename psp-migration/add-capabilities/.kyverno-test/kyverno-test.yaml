@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-capabilities
+policies:
+- ../add-capabilities.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-capabilities
+  resources:
+  - pod01
+  result: pass
+  rule: add-setfcap-setuid
+- kind: Pod
+  patchedResource: patchedResource2.yaml
+  policy: add-capabilities
+  resources:
+  - pod02
+  result: pass
+  rule: add-setfcap-setuid

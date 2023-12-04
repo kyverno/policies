@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: topologyspreadconstraints
+policies:
+- ../topologyspreadconstraints-policy.yaml
+resources:
+- resource-fail1.yaml
+- resource-fail2.yaml
+- resource-fail3.yaml
+- resource-pass.yaml
+- resource-skip.yaml
+results:
+- kind: StatefulSet
+  policy: topologyspreadconstraints-policy
+  resources:
+  - monitoring/fail1
+  - monitoring/fail2
+  - monitoring/fail3
+  result: fail
+  rule: spread-pods
+- kind: StatefulSet
+  policy: topologyspreadconstraints-policy
+  resources:
+  - monitoring/pass
+  result: pass
+  rule: spread-pods
+- kind: StatefulSet
+  policy: topologyspreadconstraints-policy
+  resources:
+  - monitoring/skip
+  result: skip
+  rule: spread-pods

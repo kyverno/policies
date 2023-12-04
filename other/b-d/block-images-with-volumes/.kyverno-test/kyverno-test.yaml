@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-images-with-volumes
+policies:
+- ../block-images-with-volumes.yaml
+resources:
+- good.yaml
+- bad.yaml
+results:
+- kind: Pod
+  policy: block-images-with-volumes
+  resources:
+  - image-vol
+  result: fail
+  rule: block-images-with-vols
+variables: values.yaml

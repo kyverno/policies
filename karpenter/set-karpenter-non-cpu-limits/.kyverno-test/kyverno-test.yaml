@@ -1,0 +1,65 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: set-karpenter-non-cpu-limits
+policies:
+- ../set-karpenter-non-cpu-limits.yaml
+resources:
+- resources.yaml
+results:
+- kind: Pod
+  patchedResource: pod-ephemeral-storage-patched1.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test1
+  result: pass
+  rule: set-ephemeral-storage
+- kind: Pod
+  patchedResource: pod-ephemeral-storage-patched2.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test2
+  result: pass
+  rule: set-ephemeral-storage
+- kind: Pod
+  patchedResource: pod-ephemeral-storage-patched3.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test3
+  result: pass
+  rule: set-ephemeral-storage
+- kind: Pod
+  patchedResource: pod-ephemeral-storage-patched4.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test4
+  result: pass
+  rule: set-ephemeral-storage
+- kind: Pod
+  patchedResource: pod-memory-patched1.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test1
+  result: pass
+  rule: set-memory
+- kind: Pod
+  patchedResource: pod-memory-patched2.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test2
+  result: pass
+  rule: set-memory
+- kind: Pod
+  patchedResource: pod-memory-patched3.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test3
+  result: pass
+  rule: set-memory
+- kind: Pod
+  patchedResource: pod-memory-patched4.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test4
+  result: skip
+  rule: set-memory

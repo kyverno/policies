@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: unique-external-dns
+policies:
+- ../require-unique-external-dns.yaml
+resources:
+- resource.yaml
+results:
+- kind: Service
+  policy: unique-external-dns
+  resources:
+  - bad-svc
+  result: fail
+  rule: ensure-valid-externaldns-annotation
+- kind: Service
+  policy: unique-external-dns
+  resources:
+  - good-svc
+  result: pass
+  rule: ensure-valid-externaldns-annotation
+variables: values.yaml

@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-large-images
+policies:
+- ../block-large-images.yaml
+resources:
+- good.yaml
+- bad.yaml
+results:
+- kind: Pod
+  policy: block-large-images
+  resources:
+  - large-image
+  result: fail
+  rule: block-over-twogi
+variables: values.yaml

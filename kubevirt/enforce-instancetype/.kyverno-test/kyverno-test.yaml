@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-instancetype
+policies:
+- ../enforce-instancetype.yaml
+resources:
+- resource.yaml
+results:
+- kind: VirtualMachine
+  policy: k6t-enforce-instancetype
+  resources:
+  - vm-invalid
+  result: fail
+  rule: k6t-ensure-instance-type-and-preference
+- kind: VirtualMachine
+  policy: k6t-enforce-instancetype
+  resources:
+  - vm-valid
+  result: pass
+  rule: k6t-ensure-instance-type-and-preference

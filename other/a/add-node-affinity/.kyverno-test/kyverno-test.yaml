@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-node-affinity
+policies:
+- ../add-node-affinity.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResource: patchedResource.yaml
+  policy: add-node-affinity
+  resources:
+  - tomcat-deployment
+  result: pass
+  rule: add-node-affinity-deployment

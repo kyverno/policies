@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-safe-to-evict
+policies:
+- ../add-safe-to-evict.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: myapp-pod03-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod03
+  result: pass
+  rule: annotate-empty-dir
+- kind: Pod
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod01
+  result: skip
+  rule: annotate-empty-dir
+- kind: Pod
+  patchedResource: myapp-pod04-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod04
+  result: pass
+  rule: annotate-host-path
+- kind: Pod
+  policy: add-safe-to-evict
+  resources:
+  - myapp-pod02
+  result: skip
+  rule: annotate-host-path

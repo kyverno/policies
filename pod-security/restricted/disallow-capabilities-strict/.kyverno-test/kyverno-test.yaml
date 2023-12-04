@@ -1,0 +1,177 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-capabilities-strict
+policies:
+- ../disallow-capabilities-strict.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-badcronjob01
+  - addcap-badcronjob02
+  - addcap-badcronjob03
+  - addcap-badcronjob04
+  - addcap-badcronjob05
+  - addcap-badcronjob06
+  - addcap-badcronjob07
+  - addcap-badcronjob08
+  - addcap-badcronjob09
+  - addcap-badcronjob10
+  result: fail
+  rule: adding-capabilities-strict
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-baddeployment01
+  - addcap-baddeployment02
+  - addcap-baddeployment03
+  - addcap-baddeployment04
+  - addcap-baddeployment05
+  - addcap-baddeployment06
+  - addcap-baddeployment07
+  - addcap-baddeployment08
+  - addcap-baddeployment09
+  - addcap-baddeployment10
+  result: fail
+  rule: adding-capabilities-strict
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-badpod01
+  - addcap-badpod02
+  - addcap-badpod03
+  - addcap-badpod04
+  - addcap-badpod05
+  - addcap-badpod06
+  - addcap-badpod07
+  - addcap-badpod08
+  - addcap-badpod09
+  - addcap-badpod10
+  result: fail
+  rule: adding-capabilities-strict
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-goodcronjob01
+  - addcap-goodcronjob02
+  - addcap-goodcronjob03
+  - addcap-goodcronjob04
+  - addcap-goodcronjob05
+  - addcap-goodcronjob06
+  - addcap-goodcronjob07
+  - addcap-goodcronjob08
+  - addcap-goodcronjob09
+  - addcap-goodcronjob10
+  result: pass
+  rule: adding-capabilities-strict
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-gooddeployment01
+  - addcap-gooddeployment02
+  - addcap-gooddeployment03
+  - addcap-gooddeployment04
+  - addcap-gooddeployment05
+  - addcap-gooddeployment06
+  - addcap-gooddeployment07
+  - addcap-gooddeployment08
+  - addcap-gooddeployment09
+  - addcap-gooddeployment10
+  result: pass
+  rule: adding-capabilities-strict
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-goodpod01
+  - addcap-goodpod02
+  - addcap-goodpod03
+  - addcap-goodpod04
+  - addcap-goodpod05
+  - addcap-goodpod06
+  - addcap-goodpod07
+  - addcap-goodpod08
+  - addcap-goodpod09
+  - addcap-goodpod10
+  result: pass
+  rule: adding-capabilities-strict
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  - badcronjob08
+  - badcronjob09
+  - badcronjob10
+  result: fail
+  rule: require-drop-all
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  - baddeployment06
+  - baddeployment07
+  - baddeployment08
+  - baddeployment09
+  - baddeployment10
+  result: fail
+  rule: require-drop-all
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  - badpod10
+  result: fail
+  rule: require-drop-all
+- kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  result: pass
+  rule: require-drop-all
+- kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  result: pass
+  rule: require-drop-all
+- kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  result: pass
+  rule: require-drop-all

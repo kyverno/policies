@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: only-trustworthy-registries-set-root
+policies:
+- ../only-trustworthy-registries-set-root.yaml
+resources:
+- good.yaml
+- bad.yaml
+results:
+- kind: Pod
+  policy: only-trustworthy-registries-set-root
+  resources:
+  - pod-with-trusted-registry
+  - pod-with-root-user
+  result: pass
+  rule: only-allow-trusted-images
+variables: values.yaml

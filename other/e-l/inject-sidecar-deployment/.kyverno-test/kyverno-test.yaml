@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-sidecar
+policies:
+- ../inject-sidecar-deployment.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResource: patchedResource1.yaml
+  policy: inject-sidecar
+  resources:
+  - mydeploy-1
+  result: pass
+  rule: inject-sidecar
+- kind: Deployment
+  patchedResource: patchedResource2.yaml
+  policy: inject-sidecar
+  resources:
+  - mydeploy-2
+  result: skip
+  rule: inject-sidecar

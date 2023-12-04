@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enable-kubecost-continuous-rightsizing
+policies:
+- ../enable-kubecost-continuous-rightsizing.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResource: patchedResource1.yaml
+  policy: enable-kubecost-continuous-rightsizing
+  resources:
+  - deploy02
+  result: pass
+  rule: enable-kubecost-autoscaling
+- kind: Deployment
+  policy: enable-kubecost-continuous-rightsizing
+  resources:
+  - deploy01
+  result: skip
+  rule: enable-kubecost-autoscaling

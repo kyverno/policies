@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: remove-hostpath-volumes
+policies:
+- ../remove-hostpath-volumes.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: remove-hostpath-volumes
+  resources:
+  - busybox
+  result: pass
+  rule: remove-hostpath-all

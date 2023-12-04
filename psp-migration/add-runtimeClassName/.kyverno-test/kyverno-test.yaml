@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-runtimeClassName
+policies:
+- ../add-runtimeClassName.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: add-runtimeclassname
+  resources:
+  - pod01
+  result: pass
+  rule: add-prodclass

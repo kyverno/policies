@@ -2,6 +2,6 @@ apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
 - ns.yaml
-- resources.yaml
+- .kyverno-test/resources.yaml
 - podcontroller-resources.yaml
 - pod-others.yaml

@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-node-affinity
+policies:
+- ../restrict-node-affinity.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - baddeploy01
+  result: fail
+  rule: check-nodeaffinity
+- kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - badpod01
+  result: fail
+  rule: check-nodeaffinity
+- kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - gooddeploy01
+  result: pass
+  rule: check-nodeaffinity
+- kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-nodeaffinity

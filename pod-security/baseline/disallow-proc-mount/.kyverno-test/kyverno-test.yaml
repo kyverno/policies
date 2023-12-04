@@ -1,0 +1,72 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-proc-mount
+policies:
+- ../disallow-proc-mount.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: disallow-proc-mount
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  result: fail
+  rule: check-proc-mount
+- kind: Deployment
+  policy: disallow-proc-mount
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  result: fail
+  rule: check-proc-mount
+- kind: Pod
+  policy: disallow-proc-mount
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  result: fail
+  rule: check-proc-mount
+- kind: CronJob
+  policy: disallow-proc-mount
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  result: pass
+  rule: check-proc-mount
+- kind: Deployment
+  policy: disallow-proc-mount
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  result: pass
+  rule: check-proc-mount
+- kind: Pod
+  policy: disallow-proc-mount
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  result: pass
+  rule: check-proc-mount

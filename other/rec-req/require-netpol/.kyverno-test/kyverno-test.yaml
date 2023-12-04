@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-network-policy
+policies:
+- ../require-netpol.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  policy: require-network-policy
+  resources:
+  - nginx-deploy
+  result: fail
+  rule: require-network-policy
+variables: values.yaml

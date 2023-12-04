@@ -1,0 +1,49 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-secrets-by-label
+policies:
+- ../restrict-secrets-by-label.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  result: pass
+  rule: secrets-lookup-from-env
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-ref-pod
+  - secret-vol-pod
+  result: skip
+  rule: secrets-lookup-from-env
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-ref-pod
+  result: fail
+  rule: secrets-lookup-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  - secret-vol-pod
+  result: skip
+  rule: secrets-lookup-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-vol-pod
+  result: pass
+  rule: secrets-lookup-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-label
+  resources:
+  - secret-env-pod
+  - secret-ref-pod
+  result: skip
+  rule: secrets-lookup-from-volumes
+variables: values.yaml

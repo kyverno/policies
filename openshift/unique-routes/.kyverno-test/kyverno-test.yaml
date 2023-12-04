@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: unique-routes-tests
+policies:
+- ../unique-routes.yaml
+resources:
+- resources.yaml
+results:
+- kind: Route
+  policy: unique-routes
+  resources:
+  - hello-openshift-bad
+  result: fail
+  rule: require-unique-routes
+- kind: Route
+  policy: unique-routes
+  resources:
+  - hello-openshift-good
+  result: pass
+  rule: require-unique-routes
+variables: mock.yaml

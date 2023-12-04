@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-issuer
+policies:
+- ../restrict-issuer.yaml
+resources:
+- resource.yaml
+results:
+- kind: Certificate
+  policy: cert-manager-restrict-issuer
+  resources:
+  - acme-crt
+  result: fail
+  rule: restrict-corp-cert-issuer
+- kind: Certificate
+  policy: cert-manager-restrict-issuer
+  resources:
+  - letsencrypt-crt
+  result: pass
+  rule: restrict-corp-cert-issuer

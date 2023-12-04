@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: change-dns-config-policy
+policies:
+- ../dns-policy-and-dns-config.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: change-dns-config-policy
+  resources:
+  - default/myapp-pod
+  result: pass
+  rule: dns-policy
+variables: variables.yaml

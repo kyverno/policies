@@ -1,0 +1,37 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: log4shell-mitigation
+policies:
+- ../mitigate-log4shell.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod01
+  result: pass
+  rule: add-log4shell-mitigation-containers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod02
+  result: pass
+  rule: add-log4shell-mitigation-containers
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod01
+  result: pass
+  rule: add-log4shell-mitigation-initcontainers
+- kind: Pod
+  patchedResource: patchedResource1.yaml
+  policy: log4shell-mitigation
+  resources:
+  - demo-pod02
+  result: skip
+  rule: add-log4shell-mitigation-initcontainers
