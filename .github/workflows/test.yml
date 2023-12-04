@@ -51,10 +51,10 @@ jobs:
           - other/rec-req
           - other/res
           - other/s-z
-          - pod-security
-          - pod-security-cel
-          - psa
-          - psp-migration
+          # - pod-security
+          # - pod-security-cel
+          # - psa
+          # - psp-migration
           # - tekton
           # - traefik
           # - velero
@@ -126,10 +126,10 @@ jobs:
           # - other/rec-req
           # - other/res
           # - other/s-z
-          # - pod-security
-          # - pod-security-cel
-          # - psa
-          # - psp-migration
+          - pod-security
+          - pod-security-cel
+          - psa
+          - psp-migration
           # - tekton
           # - traefik
           # - velero
