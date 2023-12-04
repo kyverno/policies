@@ -48,7 +48,7 @@ jobs:
           - other/b-d
           - other/e-l
           # - other/m-q
-          - other/rec-req
+          # - other/rec-req
           # - other/res
           # - other/s-z
           # - pod-security
@@ -123,7 +123,7 @@ jobs:
           # - other/b-d
           # - other/e-l
           - other/m-q
-          # - other/rec-req
+          - other/rec-req
           - other/res
           - other/s-z
           - pod-security

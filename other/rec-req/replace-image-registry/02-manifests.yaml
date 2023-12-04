@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- pods.yaml
-assert:
-- pod-patched.yaml
-- pod-patched02.yaml
-- pod-patched03.yaml

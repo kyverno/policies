@@ -1,0 +1,38 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: record-creation-details
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../record-creation-details.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pod.yaml
+    - apply:
+        file: ns.yaml
+    - assert:
+        file: pod-patched.yaml
+    - assert:
+        file: ns-patched.yaml
+  - name: step-03
+    try:
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-patch01.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-patch02.yaml
+    - script:
+        content: |
+          if kubectl annotate namespace record-create-ns kyverno.io/created-by-; then exit 1; exit 0; fi

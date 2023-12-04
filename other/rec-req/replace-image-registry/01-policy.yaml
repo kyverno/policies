@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- replace-image-registry.yaml
-- ns.yaml
-assert:
-- policy-ready.yaml
