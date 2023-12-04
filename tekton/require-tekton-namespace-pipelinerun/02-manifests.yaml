@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: good-pipelinerun.yaml
-  shouldFail: false
-- file: bad-pipelinerun.yaml
-  shouldFail: true

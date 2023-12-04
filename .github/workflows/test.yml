@@ -38,12 +38,12 @@ jobs:
           # - istio
           # - karpenter
           # - kasten
-          - kubecost
-          - kubeops
-          - kubevirt
-          - linkerd
-          - nginx-ingress
-          - openshift
+          # - kubecost
+          # - kubeops
+          # - kubevirt
+          # - linkerd
+          # - nginx-ingress
+          # - openshift
           - other/a
           - other/b-d
           - other/e-l
@@ -113,12 +113,12 @@ jobs:
           - istio
           - karpenter
           - kasten
-          # - kubecost
-          # - kubeops
-          # - kubevirt
-          # - linkerd
-          # - nginx-ingress
-          # - openshift
+          - kubecost
+          - kubeops
+          - kubevirt
+          - linkerd
+          - nginx-ingress
+          - openshift
           # - other/a
           # - other/b-d
           # - other/e-l
