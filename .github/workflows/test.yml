@@ -30,10 +30,10 @@ jobs:
           - argo
           - aws
           - best-practices
-          - castai
+          # - castai
           # - cert-manager
-          - consul
-          - external-secret-operator
+          # - consul
+          # - external-secret-operator
           - flux
           - istio
           - karpenter
@@ -105,10 +105,10 @@ jobs:
           # - argo
           # - aws
           # - best-practices
-          # - castai
+          - castai
           - cert-manager
-          # - consul
-          # - external-secret-operator
+          - consul
+          - external-secret-operator
           # - flux
           # - istio
           # - karpenter
