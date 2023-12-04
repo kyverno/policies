@@ -28,7 +28,7 @@ jobs:
             version: v1.28.0
         tests:
           - argo
-          - aws
+          # - aws
           - best-practices
           - castai
           # - cert-manager
@@ -103,7 +103,7 @@ jobs:
             version: v1.28.0
         tests:
           # - argo
-          # - aws
+          - aws
           # - best-practices
           # - castai
           - cert-manager
