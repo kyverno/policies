@@ -1,0 +1,43 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: audit-event-on-exec
+spec:
+  steps:
+  - name: step-00
+    try:
+    - apply:
+        file: chainsaw-step-00-apply-1.yaml
+  - name: step-01
+    try:
+    - apply:
+        file: ../audit-event-on-exec.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: pod.yaml
+  - name: step-03
+    try:
+    - command:
+        args:
+        - "5"
+        entrypoint: sleep
+    - command:
+        args:
+        - exec
+        - -n
+        - exec-event-ns
+        - execevent-pod
+        - --
+        - ls
+        - /
+        entrypoint: kubectl
+  - name: step-04
+    try:
+    - assert:
+        file: chainsaw-step-04-assert-1.yaml

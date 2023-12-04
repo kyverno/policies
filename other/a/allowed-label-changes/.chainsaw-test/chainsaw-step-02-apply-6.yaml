@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    breakglass: dont
+    foo: bar
+    k8s-app: fluentd-logging
+  name: ds01
+spec:
+  selector:
+    matchLabels:
+      name: ds01
+  template:
+    metadata:
+      labels:
+        name: ds01
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: ds01

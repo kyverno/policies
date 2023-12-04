@@ -44,7 +44,7 @@ jobs:
           # - linkerd
           # - nginx-ingress
           # - openshift
-          - other/a
+          # - other/a
           - other/b-d
           - other/e-l
           - other/m-q
@@ -119,7 +119,7 @@ jobs:
           - linkerd
           - nginx-ingress
           - openshift
-          # - other/a
+          - other/a
           # - other/b-d
           # - other/e-l
           # - other/m-q
