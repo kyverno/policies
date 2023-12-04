@@ -1,0 +1,54 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: disallow-default-namespace
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../disallow-default-namespace.yaml | kubectl create -f -
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: chainsaw-step-02-apply-1.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: good-resources.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-default.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ds-default.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: job-default.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ss-default.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: deploy-default.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: disallow-default-namespace

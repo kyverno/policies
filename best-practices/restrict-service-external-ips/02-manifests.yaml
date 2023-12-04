@@ -1,9 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: good-services.yaml
-  shouldFail: false
-- file: bad-service-oneip.yaml
-  shouldFail: true
-- file: bad-service-twoeip.yaml
-  shouldFail: true

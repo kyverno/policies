@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- add-safe-to-evict.yaml
-assert:
-- policy-ready.yaml

@@ -1,0 +1,27 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: add-ns-quota
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: old-resource.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../add-ns-quota.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: ../.kyverno-test/resource.yaml
+  - name: step-04
+    try:
+    - assert:
+        file: ../.kyverno-test/generatedResourceQuota.yaml
+    - assert:
+        file: ../.kyverno-test/generatedLimitRange.yaml
