@@ -46,6 +46,7 @@ spec:
           # Unset the context and user
           kubectl config unset contexts.another-context
           kubectl config unset users.another-user
+          echo "---------"
   - name: step-99
     try:
     - delete:
