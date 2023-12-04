@@ -1,0 +1,15 @@
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: rancher-cluster
+  namespace: argo-rancher-cluster-ns
+spec:
+  rkeConfig:
+    machinePools:
+    - controlPlaneRole: true
+      machineConfigRef:
+        apiVersion: elemental.cattle.io/v1beta1
+        kind: MachineInventorySelectorTemplate
+        name: configref01
+      name: machine01
+      quantity: 1
