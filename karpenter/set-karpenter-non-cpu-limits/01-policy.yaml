@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- set-karpenter-non-cpu-limits.yaml
-assert:
-- policy-ready.yaml

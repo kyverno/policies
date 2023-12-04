@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: k10-good-policy.yaml
-  shouldFail: false
-- file: k10-bad-policy.yaml
-  shouldFail: true
