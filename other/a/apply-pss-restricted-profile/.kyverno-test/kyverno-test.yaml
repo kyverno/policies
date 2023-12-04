@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: apply-pss-restricted-profile
+policies:
+- ../apply-pss-restricted-profile.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: mutatedmypod.yaml
+  policy: apply-pss-restricted-profile
+  resources:
+  - mypod
+  result: pass
+  rule: add-pss-fields

@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-external-secret-prefix
+policies:
+- ../add-external-secret-prefix.yaml
+resources:
+- resource.yaml
+results:
+- kind: ExternalSecret
+  patchedResource: patched.yaml
+  policy: add-external-secret-prefix
+  resources:
+  - example
+  result: pass
+  rule: add-external-secret-prefix

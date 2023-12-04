@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: pdb-minavailable-check
+policies:
+- ../pdb-minavailable.yaml
+resources:
+- resource.yaml
+results:
+- kind: StatefulSet
+  policy: pdb-minavailable-check
+  resources:
+  - nginx/bad-pdb
+  result: fail
+  rule: pdb-minavailable
+- kind: StatefulSet
+  policy: pdb-minavailable-check
+  resources:
+  - nginx/good-pdb
+  result: pass
+  rule: pdb-minavailable
+variables: values.yaml

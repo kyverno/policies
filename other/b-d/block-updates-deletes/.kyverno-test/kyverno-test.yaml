@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-updates-deletes
+policies:
+- ../block-updates-deletes.yaml
+resources:
+- resource.yaml
+results:
+- kind: Service
+  policy: block-updates-deletes
+  resources:
+  - my-service-2
+  result: fail
+  rule: block-updates-deletes
+- kind: Service
+  policy: block-updates-deletes
+  resources:
+  - my-service-1
+  result: pass
+  rule: block-updates-deletes
+variables: values.yaml

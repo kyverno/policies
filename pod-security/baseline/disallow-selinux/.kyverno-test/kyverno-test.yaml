@@ -1,0 +1,216 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-selinux
+policies:
+- ../disallow-selinux.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: disallow-selinux
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  result: fail
+  rule: selinux-type
+- kind: Deployment
+  policy: disallow-selinux
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  - baddeployment06
+  - baddeployment07
+  result: fail
+  rule: selinux-type
+- kind: Pod
+  policy: disallow-selinux
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  result: fail
+  rule: selinux-type
+- kind: CronJob
+  policy: disallow-selinux
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  - goodcronjob07
+  - goodcronjob08
+  - goodcronjob09
+  - goodcronjob10
+  - goodcronjob11
+  - goodcronjob12
+  - goodcronjob13
+  - goodcronjob14
+  result: pass
+  rule: selinux-type
+- kind: Deployment
+  policy: disallow-selinux
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
+  - gooddeployment09
+  - gooddeployment10
+  - gooddeployment11
+  - gooddeployment12
+  - gooddeployment13
+  - gooddeployment14
+  result: pass
+  rule: selinux-type
+- kind: Pod
+  policy: disallow-selinux
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  - goodpod09
+  - goodpod10
+  - goodpod11
+  - goodpod12
+  - goodpod13
+  - goodpod14
+  result: pass
+  rule: selinux-type
+- kind: CronJob
+  policy: disallow-selinux
+  resources:
+  - selur-badcronjob01
+  - selur-badcronjob02
+  - selur-badcronjob03
+  - selur-badcronjob04
+  - selur-badcronjob05
+  - selur-badcronjob06
+  - selur-badcronjob07
+  - selur-badcronjob08
+  - selur-badcronjob09
+  - selur-badcronjob10
+  - selur-badcronjob11
+  - selur-badcronjob12
+  - selur-badcronjob13
+  - selur-badcronjob14
+  - selur-badcronjob15
+  - selur-badcronjob16
+  - selur-badcronjob17
+  result: fail
+  rule: selinux-user-role
+- kind: Deployment
+  policy: disallow-selinux
+  resources:
+  - selur-baddeployment01
+  - selur-baddeployment02
+  - selur-baddeployment03
+  - selur-baddeployment04
+  - selur-baddeployment05
+  - selur-baddeployment06
+  - selur-baddeployment07
+  - selur-baddeployment08
+  - selur-baddeployment09
+  - selur-baddeployment10
+  - selur-baddeployment11
+  - selur-baddeployment12
+  - selur-baddeployment13
+  - selur-baddeployment14
+  - selur-baddeployment15
+  - selur-baddeployment16
+  - selur-baddeployment17
+  result: fail
+  rule: selinux-user-role
+- kind: Pod
+  policy: disallow-selinux
+  resources:
+  - selur-badpod01
+  - selur-badpod02
+  - selur-badpod03
+  - selur-badpod04
+  - selur-badpod05
+  - selur-badpod06
+  - selur-badpod07
+  - selur-badpod08
+  - selur-badpod09
+  - selur-badpod10
+  - selur-badpod11
+  - selur-badpod12
+  - selur-badpod13
+  - selur-badpod14
+  - selur-badpod15
+  - selur-badpod16
+  - selur-badpod17
+  result: fail
+  rule: selinux-user-role
+- kind: CronJob
+  policy: disallow-selinux
+  resources:
+  - selur-goodcronjob01
+  - selur-goodcronjob02
+  - selur-goodcronjob03
+  - selur-goodcronjob04
+  - selur-goodcronjob05
+  - selur-goodcronjob06
+  - selur-goodcronjob07
+  - selur-goodcronjob08
+  - selur-goodcronjob09
+  - selur-goodcronjob10
+  - selur-goodcronjob11
+  result: pass
+  rule: selinux-user-role
+- kind: Deployment
+  policy: disallow-selinux
+  resources:
+  - selur-gooddeployment01
+  - selur-gooddeployment02
+  - selur-gooddeployment03
+  - selur-gooddeployment04
+  - selur-gooddeployment05
+  - selur-gooddeployment06
+  - selur-gooddeployment07
+  - selur-gooddeployment08
+  - selur-gooddeployment09
+  - selur-gooddeployment10
+  - selur-gooddeployment11
+  result: pass
+  rule: selinux-user-role
+- kind: Pod
+  policy: disallow-selinux
+  resources:
+  - selur-goodpod01
+  - selur-goodpod02
+  - selur-goodpod03
+  - selur-goodpod04
+  - selur-goodpod05
+  - selur-goodpod06
+  - selur-goodpod07
+  - selur-goodpod08
+  - selur-goodpod09
+  - selur-goodpod10
+  - selur-goodpod11
+  result: pass
+  rule: selinux-user-role

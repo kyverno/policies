@@ -1,0 +1,34 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: unique-ingress-host
+policies:
+- ../restrict-ingress-host.yaml
+resources:
+- resource.yaml
+results:
+- kind: Ingress
+  policy: unique-ingress-host
+  resources:
+  - ingress-kyverno-host
+  result: fail
+  rule: check-single-host-create
+- kind: Ingress
+  policy: unique-ingress-host
+  resources:
+  - ingress-foo-host
+  result: pass
+  rule: check-single-host-create
+- kind: Ingress
+  policy: unique-ingress-host
+  resources:
+  - ingress-foo-host
+  result: fail
+  rule: deny-multiple-hosts
+- kind: Ingress
+  policy: unique-ingress-host
+  resources:
+  - ingress-kyverno-host
+  result: skip
+  rule: deny-multiple-hosts
+variables: values.yaml

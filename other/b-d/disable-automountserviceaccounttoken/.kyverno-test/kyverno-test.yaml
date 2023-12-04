@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disable-automountserviceaccounttoken
+policies:
+- ../disable-automountserviceaccounttoken.yaml
+resources:
+- resource.yaml
+results:
+- kind: ServiceAccount
+  patchedResource: patchedResource.yaml
+  policy: disable-automountserviceaccounttoken
+  resources:
+  - default
+  result: pass
+  rule: disable-automountserviceaccounttoken

@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-ndots
+policies:
+- ../add-ndots.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: add-ndots
+  resources:
+  - default/myapp-pod
+  result: pass
+  rule: add-ndots

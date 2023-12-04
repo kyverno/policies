@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: block-stale-images
+policies:
+- ../block-stale-images.yaml
+resources:
+- bad.yaml
+- good.yaml
+results:
+- kind: Pod
+  policy: block-stale-images
+  resources:
+  - redis
+  result: fail
+  rule: block-stale-images
+variables: values.yaml

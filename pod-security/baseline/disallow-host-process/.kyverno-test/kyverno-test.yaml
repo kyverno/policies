@@ -1,0 +1,72 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-process
+policies:
+- ../disallow-host-process.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: disallow-host-process
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  result: fail
+  rule: host-process-containers
+- kind: Deployment
+  policy: disallow-host-process
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  result: fail
+  rule: host-process-containers
+- kind: Pod
+  policy: disallow-host-process
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  result: fail
+  rule: host-process-containers
+- kind: CronJob
+  policy: disallow-host-process
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  result: pass
+  rule: host-process-containers
+- kind: Deployment
+  policy: disallow-host-process
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  result: pass
+  rule: host-process-containers
+- kind: Pod
+  policy: disallow-host-process
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  result: pass
+  rule: host-process-containers

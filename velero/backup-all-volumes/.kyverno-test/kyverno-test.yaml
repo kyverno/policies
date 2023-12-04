@@ -1,0 +1,31 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: backup-all-volumes
+policies:
+- ../backup-all-volumes.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResource: patchedResource-fourth.yaml
+  policy: backup-all-volumes
+  resources:
+  - foo/fourth
+  result: pass
+  rule: autogen-backup-velero-pv
+- kind: Pod
+  patchedResource: patchedResource-third.yaml
+  policy: backup-all-volumes
+  resources:
+  - foo/third
+  result: pass
+  rule: backup-velero-pv
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: backup-all-volumes
+  resources:
+  - foo/first
+  result: pass
+  rule: backup-velero-pv
+variables: values.yaml

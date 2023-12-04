@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-default-securitycontext
+policies:
+- ../add-default-securitycontext.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: add-default-securitycontext
+  resources:
+  - myapp-pod
+  result: pass
+  rule: add-default-securitycontext

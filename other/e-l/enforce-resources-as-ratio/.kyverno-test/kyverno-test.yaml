@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-resources-as-ratio
+policies:
+- ../enforce-resources-as-ratio.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: enforce-resources-as-ratio
+  resources:
+  - badpod
+  result: fail
+  rule: check-memory-requests-limits
+- kind: Pod
+  policy: enforce-resources-as-ratio
+  resources:
+  - goodpod
+  result: pass
+  rule: check-memory-requests-limits
+variables: values.yaml

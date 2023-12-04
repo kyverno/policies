@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deny-all-traffic
+policies:
+- ../add-network-policy.yaml
+resources:
+- resource.yaml
+results:
+- generatedResource: generatedResource.yaml
+  kind: Namespace
+  policy: add-networkpolicy
+  resources:
+  - hello-world-namespace
+  result: pass
+  rule: default-deny

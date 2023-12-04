@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-node-port
+policies:
+- ../restrict-node-port.yaml
+resources:
+- resource.yaml
+results:
+- kind: Service
+  policy: restrict-nodeport
+  resources:
+  - badservice01
+  result: fail
+  rule: validate-nodeport
+- kind: Service
+  policy: restrict-nodeport
+  resources:
+  - goodservice01
+  - goodservice02
+  result: pass
+  rule: validate-nodeport

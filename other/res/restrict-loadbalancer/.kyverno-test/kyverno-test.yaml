@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: no-loadbalancer-service
+policies:
+- ../restrict-loadbalancer.yaml
+resources:
+- resource.yaml
+results:
+- kind: Service
+  policy: no-loadbalancer-service
+  resources:
+  - default/my-service-1
+  result: fail
+  rule: no-LoadBalancer
+- kind: Service
+  policy: no-loadbalancer-service
+  resources:
+  - default/my-service-2
+  result: pass
+  rule: no-LoadBalancer

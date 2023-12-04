@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-nvidia-gpus
+policies:
+- ../check-nvidia-gpu.yaml
+resources:
+- good01.yaml
+- good02.yaml
+- good03.yaml
+- bad.yaml
+results:
+- kind: Pod
+  policy: check-nvidia-gpus
+  resources:
+  - goodpod01
+  - badpod01
+  result: fail
+  rule: check-nvidia-gpus
+- kind: Pod
+  policy: check-nvidia-gpus
+  resources:
+  - goodpod02
+  - goodpod03
+  result: pass
+  rule: check-nvidia-gpus
+variables: values.yaml

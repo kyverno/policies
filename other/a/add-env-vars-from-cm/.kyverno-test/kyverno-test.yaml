@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-env-vars-from-cm
+policies:
+- ../add-env-vars-from-cm.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource01.yaml
+  policy: add-env-vars-from-cm
+  resources:
+  - mypod
+  result: pass
+  rule: add-env-vars-from-cm

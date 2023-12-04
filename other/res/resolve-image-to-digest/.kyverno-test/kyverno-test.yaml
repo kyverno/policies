@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: resolve-image-to-digest
+policies:
+- ../resolve-image-to-digest.yaml
+resources:
+- pod.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: resolve-image-to-digest
+  resources:
+  - busybox
+  result: pass
+  rule: resolve-to-digest
+variables: values.yaml

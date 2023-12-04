@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-containers-per-pod
+policies:
+- ../limit-containers-per-pod.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: limit-containers-per-pod
+  resources:
+  - mycronjob
+  result: fail
+  rule: autogen-cronjob-limit-containers-per-pod
+- kind: Deployment
+  policy: limit-containers-per-pod
+  resources:
+  - mydeploy
+  result: pass
+  rule: autogen-limit-containers-per-pod
+- kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-2
+  result: fail
+  rule: limit-containers-per-pod
+- kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: limit-containers-per-pod

@@ -1,0 +1,15 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: team-validate-ns-name
+policies:
+- ../team-validate-ns-name.yaml
+resources:
+- resource.yaml
+results:
+- kind: Namespace
+  policy: team-validate-ns-name
+  resources:
+  - team1-test
+  result: pass
+  rule: team-validate-ns-name

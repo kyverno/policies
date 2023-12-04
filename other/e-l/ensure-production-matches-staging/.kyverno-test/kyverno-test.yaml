@@ -1,0 +1,9 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: ensure-production-matches-staging
+policies:
+- ../ensure-production-matches-staging.yaml
+resources:
+- resource.yaml
+variables: values.yaml

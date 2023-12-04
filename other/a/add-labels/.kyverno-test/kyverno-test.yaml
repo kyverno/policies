@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-labels
+policies:
+- ../add-labels.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: add-labels
+  resources:
+  - default/myapp-pod
+  result: pass
+  rule: add-labels
+- kind: Service
+  patchedResource: patchedResource1.yaml
+  policy: add-labels
+  resources:
+  - default/my-service
+  result: pass
+  rule: add-labels

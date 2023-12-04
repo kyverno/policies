@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: insert-pod-antiaffinity
+policies:
+- ../create-pod-antiaffinity.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResource: patchedResource.yaml
+  policy: insert-pod-antiaffinity
+  resources:
+  - mydeploy
+  result: pass
+  rule: insert-pod-antiaffinity
+- kind: Deployment
+  policy: insert-pod-antiaffinity
+  resources:
+  - mydeploy-missing-label
+  result: skip
+  rule: insert-pod-antiaffinity

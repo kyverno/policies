@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-networkpolicy-empty-podselector
+policies:
+- ../restrict-networkpolicy-empty-podselector.yaml
+resources:
+- resource.yaml
+results:
+- kind: NetworkPolicy
+  policy: restrict-networkpolicy-empty-podselector
+  resources:
+  - badnetworkpolicy
+  result: fail
+  rule: empty-podselector
+- kind: NetworkPolicy
+  policy: restrict-networkpolicy-empty-podselector
+  resources:
+  - goodnetworkpolicy
+  result: pass
+  rule: empty-podselector

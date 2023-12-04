@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: apply-pss-restricted-profile
+policies:
+- ../add-tolerations.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patched01.yaml
+  policy: add-tolerations
+  resources:
+  - addpod01
+  result: pass
+  rule: service-toleration
+- kind: Pod
+  patchedResource: patched02.yaml
+  policy: add-tolerations
+  resources:
+  - addpod02
+  result: pass
+  rule: service-toleration
+- kind: Pod
+  policy: add-tolerations
+  resources:
+  - skippod01
+  result: skip
+  rule: service-toleration

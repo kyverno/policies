@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-add-karpenter-daemonset-priority-class
+policies:
+- ../add-karpenter-daemonset-priority-class.yaml
+resources:
+- daemonset.yaml
+results:
+- kind: DaemonSet
+  patchedResource: daemonset-patched.yaml
+  policy: add-karpenter-daemonset-priority-class
+  resources:
+  - test/test
+  result: pass
+  rule: add-karpenter-daemonset-priority-class

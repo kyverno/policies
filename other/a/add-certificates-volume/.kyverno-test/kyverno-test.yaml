@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-volume
+policies:
+- ../add-certificates-volume.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResource: patchedResource.yaml
+  policy: add-certificates-volume
+  resources:
+  - mypod
+  result: pass
+  rule: add-ssl-certs

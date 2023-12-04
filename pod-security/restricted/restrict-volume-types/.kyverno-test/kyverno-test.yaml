@@ -1,0 +1,126 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-volume-types
+policies:
+- ../restrict-volume-types.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: restrict-volume-types
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  - badcronjob08
+  - badcronjob09
+  - badcronjob10
+  - badcronjob11
+  - badcronjob12
+  - badcronjob13
+  - badcronjob14
+  - badcronjob15
+  - badcronjob16
+  - badcronjob17
+  - badcronjob18
+  - badcronjob19
+  - badcronjob20
+  result: fail
+  rule: restricted-volumes
+- kind: Deployment
+  policy: restrict-volume-types
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  - baddeployment06
+  - baddeployment07
+  - baddeployment08
+  - baddeployment09
+  - baddeployment10
+  - baddeployment11
+  - baddeployment12
+  - baddeployment13
+  - baddeployment14
+  - baddeployment15
+  - baddeployment16
+  - baddeployment17
+  - baddeployment18
+  - baddeployment19
+  - baddeployment20
+  result: fail
+  rule: restricted-volumes
+- kind: Pod
+  policy: restrict-volume-types
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  - badpod10
+  - badpod11
+  - badpod12
+  - badpod13
+  - badpod14
+  - badpod15
+  - badpod16
+  - badpod17
+  - badpod18
+  - badpod19
+  - badpod20
+  result: fail
+  rule: restricted-volumes
+- kind: CronJob
+  policy: restrict-volume-types
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  - goodcronjob07
+  - goodcronjob08
+  - goodcronjob09
+  result: pass
+  rule: restricted-volumes
+- kind: Deployment
+  policy: restrict-volume-types
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
+  - gooddeployment09
+  result: pass
+  rule: restricted-volumes
+- kind: Pod
+  policy: restrict-volume-types
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  - goodpod09
+  result: pass
+  rule: restricted-volumes
