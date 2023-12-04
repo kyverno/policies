@@ -1,4 +1,4 @@
-name: Kuttl Tests
+name: E2E Tests
 
 permissions: {}
 
@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  kuttl:
     strategy:
       fail-fast: false
       matrix:
@@ -31,7 +31,7 @@ jobs:
           - aws
           - best-practices
           - castai
-          - cert-manager
+          # - cert-manager
           - consul
           - external-secret-operator
           - flux
@@ -59,7 +59,7 @@ jobs:
           # - traefik
           # - velero
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    name: kuttl - ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -87,3 +87,95 @@ jobs:
       - name: Test with kuttl
         run: |
           ./.tools/kubectl-kuttl test ./${{ matrix.tests }} --config ./kuttl-test.yaml
+
+  chainsaw:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version:
+          - name: v1.25
+            version: v1.25.11
+          - name: v1.26
+            version: v1.26.6
+          - name: v1.27
+            version: v1.27.3
+          - name: v1.28
+            version: v1.28.0
+        tests:
+          # - argo
+          # - aws
+          # - best-practices
+          # - castai
+          - cert-manager
+          # - consul
+          # - external-secret-operator
+          # - flux
+          # - istio
+          # - karpenter
+          # - kasten
+          # - kubecost
+          # - kubeops
+          # - kubevirt
+          # - linkerd
+          # - nginx-ingress
+          # - openshift
+          # - other/a
+          # - other/b-d
+          # - other/e-l
+          # - other/m-q
+          # - other/rec-req
+          # - other/res
+          # - other/s-z
+          # - pod-security
+          # - pod-security-cel
+          # - psa
+          # - psp-migration
+          # - tekton
+          # - traefik
+          # - velero
+    runs-on: ubuntu-latest
+    name: chainsaw - ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Setup Go
+        uses: actions/setup-go@93397bea11091df50f3d7e59dc26a7711a8bcfbe # v4.1.0
+        with:
+          go-version: ~1.21.1
+      - name: Install Tools
+        run: |
+          set -e
+          GOBIN=$(pwd)/.tools/ go install sigs.k8s.io/kind@v0.19.0
+          curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      - name: Install latest Kyverno CLI
+        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+      - name: Create kind cluster
+        run: |
+          set -e
+          ./.tools/kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
+      - name: Install latest kyverno
+        run: |
+          set -e
+          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+      - name: Wait for kyverno ready
+        run: |
+          set -e
+          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+      - name: Install CRDs
+        run: |
+          set -e
+          kubectl apply -f ./CRDs
+      - name: Install Chainsaw
+        uses: kyverno/chainsaw/.github/actions/install@5ca138ff5ad87bfb2c41e52cde8c00154756e4c5 # v0.0.7
+        with:
+          release: v0.0.8
+      - name: Test with Chainsaw
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          chainsaw test --config .chainsaw.yaml --test-dir ./${{ matrix.tests }} --no-color=false
+      - name: Debug failure
+        if: failure()
+        uses: ./.github/actions/kyverno-logs

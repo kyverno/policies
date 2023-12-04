@@ -1,0 +1,32 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-issuer
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: "sed 's/validationFailureAction: audit/validationFailureAction: Enforce/'
+          restrict-issuer.yaml | kubectl create -f - \n"
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+    - assert:
+        file: chainsaw-step-01-assert-2.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: cert-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: cert-bad.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: cert-manager-restrict-issuer
