@@ -1,13 +1,13 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 apply:
-- resource.yaml
-- withoutinitcontainer.yaml
-- resourceFailed.yaml
+- .kyverno-test/resource.yaml
+- .kyverno-test/withoutinitcontainer.yaml
+- .kyverno-test/resourceFailed.yaml
 - pods.yaml
 assert:
-- patchedResource.yaml
+- .kyverno-test/patchedResource.yaml
 - pods-patched.yaml
 error:
-- patchedResourceWithoutInitContainer.yaml
-- failpatchedResource.yaml
+- .kyverno-test/patchedResourceWithoutInitContainer.yaml
+- .kyverno-test/failpatchedResource.yaml

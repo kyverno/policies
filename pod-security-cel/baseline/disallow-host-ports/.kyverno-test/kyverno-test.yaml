@@ -5,7 +5,7 @@ metadata:
 policies:
 - ../disallow-host-ports.yaml
 resources:
-- ../../../pod-security/baseline/disallow-host-ports/resource.yaml
+- ../../../../pod-security/baseline/disallow-host-ports/.kyverno-test/resource.yaml
 results:
 - kind: CronJob
   policy: disallow-host-ports

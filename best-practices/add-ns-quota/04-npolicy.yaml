@@ -1,5 +1,5 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 assert:
-- generatedResourceQuota.yaml
-- generatedLimitRange.yaml
+- .kyverno-test/generatedResourceQuota.yaml
+- .kyverno-test/generatedLimitRange.yaml

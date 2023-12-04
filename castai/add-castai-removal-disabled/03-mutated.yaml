@@ -1,5 +1,5 @@
 apiVersion: kuttl.dev/v1beta1
 kind: TestStep
 assert:
-- patched01.yaml
-- patched02.yaml
+- .kyverno-test/patched01.yaml
+- .kyverno-test/patched02.yaml
