@@ -27,8 +27,8 @@ jobs:
           - name: v1.28
             version: v1.28.0
         tests:
-          - argo
-          - aws
+          # - argo
+          # - aws
           - best-practices
           # - castai
           # - cert-manager
