@@ -49,7 +49,7 @@ jobs:
           - other/e-l
           # - other/m-q
           - other/rec-req
-          - other/res
+          # - other/res
           # - other/s-z
           # - pod-security
           # - pod-security-cel
@@ -124,7 +124,7 @@ jobs:
           # - other/e-l
           - other/m-q
           # - other/rec-req
-          # - other/res
+          - other/res
           - other/s-z
           - pod-security
           - pod-security-cel

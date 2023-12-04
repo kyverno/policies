@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' restrict-secrets-by-label.yaml | kubectl create -f - 
-apply:
-- secret.yaml

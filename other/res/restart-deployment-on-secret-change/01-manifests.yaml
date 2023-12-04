@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- secret.yaml
-- cluster-role.yaml
-- deploy.yaml
