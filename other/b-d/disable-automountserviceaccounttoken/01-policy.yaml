@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- disable-automountserviceaccounttoken.yaml
-assert:
-- policy-ready.yaml

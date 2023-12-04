@@ -45,8 +45,8 @@ jobs:
           # - nginx-ingress
           # - openshift
           # - other/a
-          - other/b-d
-          - other/e-l
+          # - other/b-d
+          # - other/e-l
           - other/m-q
           - other/rec-req
           - other/res
@@ -120,8 +120,8 @@ jobs:
           - nginx-ingress
           - openshift
           - other/a
-          # - other/b-d
-          # - other/e-l
+          - other/b-d
+          - other/e-l
           # - other/m-q
           # - other/rec-req
           # - other/res

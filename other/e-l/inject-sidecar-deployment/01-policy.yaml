@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- inject-sidecar-deployment.yaml
-assert:
-- policy-ready.yaml

@@ -1,0 +1,23 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: ClusterPolicyReport
+metadata:
+  ownerReferences:
+  - apiVersion: certificates.k8s.io/v1
+    kind: CertificateSigningRequest
+    name: inspect-csr-user
+results:
+- category: Other
+  message: A CSR was created by {"groups":["testorg","system:authenticated"],"username":"inspect-csr-user"}
+    holding ClusterRoles ["csr-manager","system:basic-user","system:discovery","system:public-info-viewer"]
+    and Roles null. The subjects and groups requested in the CSR were "{"CommonName":"inspect-csr-user","Country":null,"ExtraNames":null,"Locality":null,"Names":[{"Type":[2,5,4,10],"Value":"testorg"},{"Type":[2,5,4,3],"Value":"inspect-csr-user"}],"Organization":["testorg"],"OrganizationalUnit":null,"PostalCode":null,"Province":null,"SerialNumber":"","StreetAddress":null}"
+  policy: inspect-csr
+  result: fail
+  rule: csr
+  scored: true
+  source: kyverno
+summary:
+  error: 0
+  fail: 1
+  pass: 0
+  skip: 0
+  warn: 0

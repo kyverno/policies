@@ -2,16 +2,14 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: allowed-image-repos
+  name: imagepullpolicy-always
 spec:
   steps:
   - name: step-01
     try:
-    - apply:
-        file: ns.yaml
     - script:
         content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../allowed-image-repos.yaml | kubectl create -f -
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../imagepullpolicy-always.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -30,23 +28,10 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
-    finally:
-    - sleep:
-        duration: 5s
   - name: step-99
     try:
     - delete:
         ref:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
-          name: allowed-image-repos
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - allowed-image-repos-ns
-        entrypoint: kubectl
+          name: imagepullpolicy-always

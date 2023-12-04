@@ -2,7 +2,7 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: allowed-image-repos
+  name: ensure-probes-different
 spec:
   steps:
   - name: step-01
@@ -11,35 +11,25 @@ spec:
         file: ns.yaml
     - script:
         content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../allowed-image-repos.yaml | kubectl create -f -
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../ensure-probes-different.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
     - apply:
-        file: pod-good.yaml
-    - apply:
-        file: podcontroller-good.yaml
+        file: podcontrollers-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: pod-bad.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: podcontroller-bad.yaml
-    finally:
-    - sleep:
-        duration: 5s
+        file: podcontrollers-bad.yaml
   - name: step-99
     try:
     - delete:
         ref:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
-          name: allowed-image-repos
+          name: validate-probes
     - command:
         args:
         - delete
@@ -48,5 +38,5 @@ spec:
         - --force
         - --grace-period=0
         - -n
-        - allowed-image-repos-ns
+        - ensure-probes-different-ns
         entrypoint: kubectl
