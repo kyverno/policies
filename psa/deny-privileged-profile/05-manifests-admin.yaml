@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: ns-good.yaml
-  shouldFail: false
-- file: ns-bad.yaml
-  shouldFail: false

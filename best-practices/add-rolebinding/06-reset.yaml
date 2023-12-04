@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- command: kubectl config unset users.addrbuser
-- command: kubectl config unset contexts.addrbuser-context
-- command: kubectl delete -f ns-rb.yaml
