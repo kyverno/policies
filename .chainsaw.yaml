@@ -5,8 +5,6 @@ metadata:
   name: configuration
 spec:
   parallel: 1
-  testDirs:
-  - ./
   timeouts:
     apply: 1m30s
     assert: 1m30s
@@ -14,3 +12,4 @@ spec:
     delete: 1m30s
     error: 1m30s
     exec: 1m30s
+  forceTerminationGracePeriod: 5s

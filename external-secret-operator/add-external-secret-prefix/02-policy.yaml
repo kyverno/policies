@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- ns.yaml
-- add-external-secret-prefix.yaml
-assert:
-- policy-ready.yaml
