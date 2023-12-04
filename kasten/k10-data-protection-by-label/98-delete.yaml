@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-  - command: kubectl delete deployments --all --force --grace-period=0 -n k10-dplabel-ns
-  - command: kubectl delete statefulsets --all --force --grace-period=0 -n k10-dplabel-ns
-  - command: kubectl delete pods --all --force --grace-period=0 -n k10-dplabel-ns

@@ -2,25 +2,28 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: add-castai-removal-disabled
+  name: add-karpenter-donot-evict
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: ../add-castai-removal-disabled.yaml
+        file: ../add-karpenter-donot-evict.yaml
     - assert:
         file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
-        file: ../.kyverno-test/resources.yaml
-    finally:
-    - sleep:
-        duration: 5s
+        file: ../.kyverno-test/resource.yaml
+    - apply:
+        file: resource-others.yaml
   - name: step-03
     try:
     - assert:
         file: ../.kyverno-test/patched01.yaml
     - assert:
         file: ../.kyverno-test/patched02.yaml
+    - assert:
+        file: patched03.yaml
+    - assert:
+        file: patched04.yaml

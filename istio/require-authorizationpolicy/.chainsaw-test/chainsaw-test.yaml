@@ -1,0 +1,25 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-authorizationpolicy
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: chainsaw-step-01-apply-1.yaml
+    - apply:
+        file: chainsaw-step-01-apply-2.yaml
+    - apply:
+        file: chainsaw-step-01-apply-3.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../require-authorizationpolicy.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - assert:
+        file: report-assert.yaml
