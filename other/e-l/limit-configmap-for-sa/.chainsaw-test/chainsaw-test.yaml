@@ -31,7 +31,7 @@ spec:
     - script:
         content: |
           #!/bin/bash
-          set -eu
+          set -euxv
 
           # Setting up the SA user
           export TOKEN_SA=`kubectl get secret another-secret -n another-namespace -ojsonpath='{.data.token}' | base64 -d`
