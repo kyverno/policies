@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- disallow-security-context-constraint-anyuid.yaml
-assert:
-- policy-ready.yaml

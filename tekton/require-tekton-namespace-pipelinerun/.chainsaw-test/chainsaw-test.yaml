@@ -1,0 +1,36 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-tekton-namespace-pipelinerun
+spec:
+  steps:
+  - name: step-00
+    try:
+    - assert:
+        file: chainsaw-step-00-assert-1.yaml
+  - name: step-01
+    try:
+    - apply:
+        file: ns.yaml
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-tekton-namespace-pipelinerun.yaml | kubectl create -f -
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: good-pipelinerun.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pipelinerun.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: require-tekton-namespace-pipelinerun

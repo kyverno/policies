@@ -1,9 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: crb-good.yaml
-  shouldFail: false
-- file: crb-bad-roleref.yaml
-  shouldFail: true
-- file: crb-bad-sub-update.yaml
-  shouldFail: true
