@@ -1,0 +1,40 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: disallow-latest-tag
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../disallow-latest-tag.yaml | kubectl create -f -
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: good-pod.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-latest-fail-first.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-latest-success-first.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-no-tag.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: disallow-latest-tag
