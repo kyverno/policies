@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- cluster.yaml
-assert:
-- secret-generated01.yaml
-- secret-generated02.yaml
