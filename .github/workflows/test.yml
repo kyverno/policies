@@ -50,7 +50,7 @@ jobs:
           # - other/m-q
           - other/rec-req
           - other/res
-          - other/s-z
+          # - other/s-z
           # - pod-security
           # - pod-security-cel
           # - psa
@@ -125,7 +125,7 @@ jobs:
           - other/m-q
           # - other/rec-req
           # - other/res
-          # - other/s-z
+          - other/s-z
           - pod-security
           - pod-security-cel
           - psa

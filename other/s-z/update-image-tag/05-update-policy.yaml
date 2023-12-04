@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- policy-update.yaml
-assert:
-- deploy00-patched-again.yaml
-- deploy01-patched-again.yaml
-- deploy02-patched-again.yaml

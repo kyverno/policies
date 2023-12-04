@@ -4,4 +4,4 @@ data:
 kind: Secret
 metadata:
   name: regcred
-  namespace: default
+  namespace: sync-secrets-ns01
