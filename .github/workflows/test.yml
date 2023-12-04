@@ -47,7 +47,7 @@ jobs:
           - other/a
           - other/b-d
           - other/e-l
-          - other/m-q
+          # - other/m-q
           - other/rec-req
           - other/res
           - other/s-z
@@ -122,7 +122,7 @@ jobs:
           # - other/a
           # - other/b-d
           # - other/e-l
-          # - other/m-q
+          - other/m-q
           # - other/rec-req
           # - other/res
           # - other/s-z
