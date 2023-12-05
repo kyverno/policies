@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- ns.yaml
-- replace-ingress-hosts.yaml
-assert:
-- policy-ready.yaml

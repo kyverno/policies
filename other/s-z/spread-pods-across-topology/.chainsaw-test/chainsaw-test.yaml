@@ -2,25 +2,30 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: create-pod-antiaffinity
+  name: spread-pods-across-topology
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: ../create-pod-antiaffinity.yaml
+        file: ../spread-pods-across-topology.yaml
     - assert:
         file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
-        file: deployments.yaml
+        file: deploy.yaml
+    finally:
+    - sleep:
+        duration: 5s
+  - name: step-03
+    try:
     - assert:
-        file: patched-deploy01.yaml
+        file: deploy01-patched.yaml
     - error:
-        file: not-patched-deploy02.yaml
+        file: deploy02-not-patched.yaml
     - error:
-        file: not-patched-deploy03.yaml
+        file: deploy03-not-patched.yaml
     finally:
     - sleep:
         duration: 5s

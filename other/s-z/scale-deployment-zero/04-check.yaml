@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-assert:
-- deploy01-patched.yaml
-- deploy03-patched.yaml
-error:
-- deploy02-not-patched.yaml

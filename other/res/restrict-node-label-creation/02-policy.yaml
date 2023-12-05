@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- restrict-node-label-creation.yaml
-assert:
-- policy-ready.yaml

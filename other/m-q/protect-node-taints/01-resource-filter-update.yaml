@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
-    node=$(kubectl get nodes --no-headers | awk '{print $1}' | head -n 1)
-    kubectl taint nodes "$node" foo=bar:NoSchedule
-- command: sleep 5

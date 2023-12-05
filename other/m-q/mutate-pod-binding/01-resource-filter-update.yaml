@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[Binding,\*,\*\]//g' - | sed 's/\[Pod\/binding,\*,\*\]//g' - | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
-- command: sleep 5
-apply:
-- crb.yaml

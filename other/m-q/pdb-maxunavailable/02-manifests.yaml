@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: pdb-good.yaml
-  shouldFail: false
-- file: pdb-bad.yaml
-  shouldFail: true

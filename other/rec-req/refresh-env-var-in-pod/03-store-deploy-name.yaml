@@ -1,4 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: kubectl get pod -n refresh-env-var-ns --no-headers | awk '{print $1}' > deploy-names.txt

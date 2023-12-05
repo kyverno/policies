@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
-    kubectl label nodes $node --overwrite foo=bar
