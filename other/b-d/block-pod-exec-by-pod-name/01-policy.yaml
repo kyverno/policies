@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- block-pod-exec-by-pod-name.yaml
-assert:
-- policy-ready.yaml

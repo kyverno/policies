@@ -1,5 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' check-env-vars.yaml | kubectl create -f - 

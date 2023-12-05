@@ -1,0 +1,33 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: add-pod-priorityclassname
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: ../add-pod-priorityclassname.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pod.yaml
+    - assert:
+        file: pod-mutated.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: deployment.yaml
+    - assert:
+        file: deployment-mutated.yaml
+  - name: step-04
+    try:
+    - apply:
+        file: cronjob.yaml
+    - assert:
+        file: cronjob-mutated.yaml

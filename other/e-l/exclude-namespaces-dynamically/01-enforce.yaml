@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' exclude-namespaces-dynamically.yaml | kubectl create -f - 
-apply:
-- cm.yaml
-- ns.yaml

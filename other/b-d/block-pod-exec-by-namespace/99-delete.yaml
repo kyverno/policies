@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-  - command: kubectl delete deployments --all --force --grace-period=0 -n pci
-  - command: kubectl delete deployments --all --force --grace-period=0 -n block-pod-exec-ns
-  - command: kubectl delete pods --all --force --grace-period=0 -n pci
-  - command: kubectl delete pods --all --force --grace-period=0 -n block-pod-exec-ns

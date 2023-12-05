@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- block-updates-deletes.yaml
-- ns.yaml
-assert:
-- policy-ready.yaml

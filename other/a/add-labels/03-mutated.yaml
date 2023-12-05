@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-assert:
-- pod-resources-patched.yaml
-- svc-patched.yaml
-- cm-patched.yaml
-- secret-patched.yaml

@@ -1,0 +1,94 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: block-pod-exec-by-namespace
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../block-pod-exec-by-namespace.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: pods.yaml
+    - apply:
+        file: podcontrollers.yaml
+  - name: step-03
+    try:
+    - command:
+        args:
+        - "5"
+        entrypoint: sleep
+  - name: step-04
+    try:
+    - script:
+        content: if kubectl exec -n pci pod02 -- ls; then exit 1;else exit 0; fi
+    - script:
+        content: if kubectl exec -n pci deploy/deployment01 -- ls; then exit 1;else
+          exit 0; fi
+    - command:
+        args:
+        - exec
+        - -n
+        - block-pod-exec-ns
+        - pod01
+        - --
+        - ls
+        entrypoint: kubectl
+    - command:
+        args:
+        - exec
+        - -n
+        - block-pod-exec-ns
+        - deploy/deployment02
+        - --
+        - ls
+        entrypoint: kubectl
+  - name: step-99
+    try:
+    - command:
+        args:
+        - delete
+        - deployments
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - pci
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - deployments
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - block-pod-exec-ns
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - pods
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - pci
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - pods
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - block-pod-exec-ns
+        entrypoint: kubectl
