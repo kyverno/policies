@@ -6,7 +6,7 @@ description: >-
   Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-controlplane-scheduling/restrict-controlplane-scheduling.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-controlplane-scheduling/restrict-controlplane-scheduling.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Pods with large terminationGracePeriodSeconds (tGPS) might prevent cluster nodes from getting drained, ultimately making the whole cluster unstable. This policy mutates all incoming Pods to set their tGPS under 50s. If the user creates a pod without specifying tGPS, then the Kubernetes default of 30s is maintained.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/m-q/mutate-large-termination-gps/mutate-large-termination-gps.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/mutate-large-termination-gps/mutate-large-termination-gps.yaml
   ```
 keywords:
   - kyverno

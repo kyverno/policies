@@ -6,7 +6,7 @@ description: >-
   Pulling images from outside registries may be undesirable due to untrustworthiness or simply because the traffic results in an excess of bandwidth usage. Instead of blocking them, they can be mutated to divert to an internal registry which may already contain them or function as a pull-through proxy. This policy prepends all images in both containers and initContainers to come from `registry.io`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/m-q/prepend-image-registry/prepend-image-registry.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/prepend-image-registry/prepend-image-registry.yaml
   ```
 keywords:
   - kyverno

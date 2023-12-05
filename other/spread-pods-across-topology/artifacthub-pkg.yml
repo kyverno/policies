@@ -6,7 +6,7 @@ description: >-
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy matches Deployments with the label `distributed=required` and mutates them to spread Pods across zones.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/s-z/spread-pods-across-topology/spread-pods-across-topology.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/spread-pods-across-topology/spread-pods-across-topology.yaml
   ```
 keywords:
   - kyverno

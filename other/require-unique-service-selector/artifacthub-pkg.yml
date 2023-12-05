@@ -6,7 +6,7 @@ description: >-
   Services select eligible Pods by way of label matches. Having multiple Service apply based on same labels can cause conflicts and have unintended consequences. This policy ensures that within the same Namespace a Service has a unique set of labels as a selector.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-unique-service-selector/require-unique-service-selector.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-unique-service-selector/require-unique-service-selector.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Similar to the ability to check the uniqueness of hosts and paths independently, it is possible to check for uniqueness of them both together across a cluster. This policy ensures that no Ingress can be created or updated unless it is globally unique with respect to host plus path combination.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/s-z/unique-ingress-host-and-path/unique-ingress-host-and-path.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/unique-ingress-host-and-path/unique-ingress-host-and-path.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Secrets used as environment variables containing sensitive information may, if not carefully controlled,  be printed in log output which could be visible to unauthorized people and captured in forwarding applications. This policy disallows using Secrets as environment variables.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/disallow-secrets-from-env-vars/disallow-secrets-from-env-vars.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/disallow-secrets-from-env-vars/disallow-secrets-from-env-vars.yaml
   ```
 keywords:
   - kyverno

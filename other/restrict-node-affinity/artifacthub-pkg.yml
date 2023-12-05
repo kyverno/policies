@@ -6,7 +6,7 @@ description: >-
   Pods may use several mechanisms to prefer scheduling on a set of nodes, and nodeAffinity is one of them. nodeAffinity uses expressions to select eligible nodes for scheduling decisions and may override intended placement options by cluster administrators. This policy ensures that nodeAffinity is not used in a Pod spec.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-node-affinity/restrict-node-affinity.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-node-affinity/restrict-node-affinity.yaml
   ```
 keywords:
   - kyverno

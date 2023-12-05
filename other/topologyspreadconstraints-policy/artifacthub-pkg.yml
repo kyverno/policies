@@ -6,7 +6,7 @@ description: >-
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/s-z/topologyspreadconstraints-policy/topologyspreadconstraints-policy.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/topologyspreadconstraints-policy/topologyspreadconstraints-policy.yaml
   ```
 keywords:
   - kyverno

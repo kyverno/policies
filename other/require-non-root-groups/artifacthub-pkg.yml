@@ -6,7 +6,7 @@ description: >-
   Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/require-non-root-groups/require-non-root-groups.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-non-root-groups/require-non-root-groups.yaml
   ```
 keywords:
   - kyverno

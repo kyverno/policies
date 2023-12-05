@@ -6,7 +6,7 @@ description: >-
   In some cases you would need to trust custom CA certificates for all the containers of a Pod. It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation. This policy adds a volume to all containers in a Pod containing the certificate if the annotation called `inject-certs` with value `enabled` is found.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-certificates-volume/add-certificates-volume.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-certificates-volume/add-certificates-volume.yaml
   ```
 keywords:
   - kyverno

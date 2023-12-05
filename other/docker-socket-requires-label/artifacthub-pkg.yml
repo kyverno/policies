@@ -6,7 +6,7 @@ description: >-
   Accessing a container engine's socket is for highly specialized use cases and should generally be disabled. If access must be granted, it should be done on an explicit basis. This policy requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set to `true`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/docker-socket-requires-label/docker-socket-requires-label.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/docker-socket-requires-label/docker-socket-requires-label.yaml
   ```
 keywords:
   - kyverno

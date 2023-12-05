@@ -6,7 +6,7 @@ description: >-
   This policy shows how to restrict certain operations on specific ConfigMaps by ServiceAccounts.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/limit-configmap-for-sa/limit-configmap-for-sa.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/limit-configmap-for-sa/limit-configmap-for-sa.yaml
   ```
 keywords:
   - kyverno

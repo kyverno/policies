@@ -6,7 +6,7 @@ description: >-
   Kubernetes by default does not make a record of who or what created a resource in that resource itself. It must be retrieved from an audit log, if enabled, which can make it difficult for cluster operators to know who was responsible for an object's creation. This policy writes an annotation with the key `kyverno.io/created-by` having all the userInfo fields present in the AdmissionReview request for any object being created. It then protects this annotation from tampering or removal making it immutable. Although this policy matches on all kinds ("*") it is highly recommend to more narrowly scope it to only the resources which should be labeled.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/record-creation-details/record-creation-details.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/record-creation-details/record-creation-details.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Resource requests often need to be tailored to the type of workload in the container/Pod. With many different types of applications in a cluster, enforcing hard limits on requests or limits may not work and a ratio may be better suited instead. This policy checks every container in a Pod and ensures that memory limits are no more than 2.5x its requests.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/enforce-resources-as-ratio/enforce-resources-as-ratio.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-resources-as-ratio/enforce-resources-as-ratio.yaml
   ```
 keywords:
   - kyverno

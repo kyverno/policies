@@ -6,7 +6,7 @@ description: >-
   Building images which specify a base as their origin is a good start to improving supply chain security, but over time organizations may want to build an allow list of specific base images which are allowed to be used when constructing containers. This policy ensures that a container's base, found in an OCI annotation, is in a cluster-wide allow list.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/allowed-base-images/allowed-base-images.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/allowed-base-images/allowed-base-images.yaml
   ```
 keywords:
   - kyverno

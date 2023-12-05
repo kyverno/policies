@@ -6,7 +6,7 @@ description: >-
   A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. This policy adds the priorityClassName of `non-production` to any Pod deployed into a Namespace that does not have the label env=production.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-pod-priorityclassname/add-pod-priorityclassname.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-pod-priorityclassname/add-pod-priorityclassname.yaml
   ```
 keywords:
   - kyverno

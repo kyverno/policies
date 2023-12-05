@@ -6,7 +6,7 @@ description: >-
   Containers which request use of an NVIDIA GPU often need to be authored to consume them via a CUDA environment variable called NVIDIA_VISIBLE_DEVICES. This policy checks the containers which request a GPU to ensure they have been authored with this environment variable.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/check-nvidia-gpu/check-nvidia-gpu.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-nvidia-gpu/check-nvidia-gpu.yaml
   ```
 keywords:
   - kyverno

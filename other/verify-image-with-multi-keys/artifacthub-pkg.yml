@@ -6,7 +6,7 @@ description: >-
   There may be multiple keys used to sign images based on the parties involved in the creation process. This image verification policy requires the named image be signed by two separate keys. It will search for a global "production" key in a ConfigMap called `key` in the `default` Namespace and also a Namespace key in the same ConfigMap.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/s-z/verify-image-with-multi-keys/verify-image-with-multi-keys.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/verify-image-with-multi-keys/verify-image-with-multi-keys.yaml
   ```
 keywords:
   - kyverno

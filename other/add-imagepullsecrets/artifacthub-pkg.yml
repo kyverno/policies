@@ -6,7 +6,7 @@ description: >-
   Images coming from certain registries require authentication in order to pull them, and the kubelet uses this information in the form of an imagePullSecret to pull those images on behalf of your Pod. This policy searches for images coming from a registry called `corp.reg.com` and, if found, will mutate the Pod to add an imagePullSecret called `my-secret`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-imagepullsecrets/add-imagepullsecrets.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-imagepullsecrets/add-imagepullsecrets.yaml
   ```
 keywords:
   - kyverno

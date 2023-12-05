@@ -6,7 +6,7 @@ description: >-
   Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/m-q/memory-requests-equal-limits/memory-requests-equal-limits.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/memory-requests-equal-limits/memory-requests-equal-limits.yaml
   ```
 keywords:
   - kyverno

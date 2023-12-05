@@ -6,7 +6,7 @@ description: >-
   An Ingress may specify host names at a variety of locations in the same resource. In some cases, those host names should be modified to, for example, update domain names silently. The replacement must be done in all the fields where a host name can be specified. This policy, illustrating the use of nested foreach loops and operable in Kyverno 1.9+, replaces host names that end with `old.com` with `new.com`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/rec-req/replace-ingress-hosts/replace-ingress-hosts.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/replace-ingress-hosts/replace-ingress-hosts.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Wildcards ('*') in verbs grants all access to the resources referenced by it and does not follow the principal of least privilege. As much as possible, avoid such open verbs unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the verbs list found in any rule.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-wildcard-verbs/restrict-wildcard-verbs.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-wildcard-verbs/restrict-wildcard-verbs.yaml
   ```
 keywords:
   - kyverno

@@ -6,7 +6,7 @@ description: >-
   Container images which use metadata such as the LABEL directive in a Dockerfile do not surface this information to apps running within. In some cases, running the image as a container may need access to this information. This policy injects the value of a label set in a Dockerfile named `maintainer` as an environment variable to the corresponding container in the Pod.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/inject-env-var-from-image-label/inject-env-var-from-image-label.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/inject-env-var-from-image-label/inject-env-var-from-image-label.yaml
   ```
 keywords:
   - kyverno

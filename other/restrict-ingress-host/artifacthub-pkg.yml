@@ -6,7 +6,7 @@ description: >-
   An Ingress host is a URL at which services may be made available externally. In most cases, these hosts should be unique across the cluster to ensure no routing conflicts occur. This policy checks an incoming Ingress resource to ensure its hosts are unique to the cluster. It also ensures that only a single host may be specified in a given manifest.      
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-ingress-host/restrict-ingress-host.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-ingress-host/restrict-ingress-host.yaml
   ```
 keywords:
   - kyverno

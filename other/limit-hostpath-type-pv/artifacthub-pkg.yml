@@ -6,7 +6,7 @@ description: >-
   hostPath persistentvolumes consume the underlying node's file system. If hostPath volumes are not to be universally disabled, they should be restricted to only certain host paths so as not to allow access to sensitive information. This policy ensures the only directory that can be mounted as a hostPath volume is /data.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/e-l/limit-hostpath-type-pv/limit-hostpath-type-pv.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/limit-hostpath-type-pv/limit-hostpath-type-pv.yaml
   ```
 keywords:
   - kyverno

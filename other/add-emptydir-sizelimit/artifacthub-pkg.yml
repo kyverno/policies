@@ -6,7 +6,7 @@ description: >-
   When a Pod requests an emptyDir, by default it does not have a size limit which may allow it to consume excess or all of the space in the medium backing the volume. This can quickly overrun a Node and may result in a denial of service for other workloads. This policy adds a sizeLimit field to all Pods mounting emptyDir volumes, if not present, and sets it to 100Mi.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/a/add-emptydir-sizelimit/add-emptydir-sizelimit.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-emptydir-sizelimit/add-emptydir-sizelimit.yaml
   ```
 keywords:
   - kyverno

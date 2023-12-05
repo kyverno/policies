@@ -6,7 +6,7 @@ description: >-
   ServiceAccounts with privileges to create Pods may be able to do so and name a ServiceAccount other than the one used to create it. This policy checks the Pod, if created by a ServiceAccount, and ensures the `serviceAccountName` field matches the actual ServiceAccount.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/b-d/check-serviceaccount/check-serviceaccount.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-serviceaccount/check-serviceaccount.yaml
   ```
 keywords:
   - kyverno

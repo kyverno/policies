@@ -6,7 +6,7 @@ description: >-
   Users may be able to specify any ServiceAccount which exists in their Namespace without restrictions. Confining Pods to a list of authorized ServiceAccounts can be useful to ensure applications in those Pods do not have more privileges than they should. This policy verifies that in the `staging` Namespace the ServiceAccount being specified is matched based on the image and name of the container. For example: 'sa-name: ["registry/image-name"]'
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/res/restrict-service-account/restrict-service-account.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-service-account/restrict-service-account.yaml
   ```
 keywords:
   - kyverno
