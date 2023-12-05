@@ -1,0 +1,21 @@
+name: add-env-vars-from-cm
+version: 1.0.0
+displayName: Add Environment Variables from ConfigMap
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  Instead of defining a common set of environment variables multiple times either in manifests or separate policies, Pods can reference entire collections stored in a ConfigMap. This policy mutates all initContainers (if present) and containers in a Pod with environment variables defined in a ConfigMap named `nsenvvars` that must exist in the destination Namespace.     
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-env-vars-from-cm/add-env-vars-from-cm.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Instead of defining a common set of environment variables multiple times either in manifests or separate policies, Pods can reference entire collections stored in a ConfigMap. This policy mutates all initContainers (if present) and containers in a Pod with environment variables defined in a ConfigMap named `nsenvvars` that must exist in the destination Namespace.     
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/subject: "Pod"
+digest: 8ad6007469632e3bca174d678394c4c7d32f7ee6d27a78cf2ee50d435db16386

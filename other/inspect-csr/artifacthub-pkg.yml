@@ -1,0 +1,21 @@
+name: inspect-csr
+version: 1.0.0
+displayName: Inspect CertificateSigningRequest
+createdAt: "2023-04-25T00:00:00.000Z"
+description: >-
+  The Kubernetes API includes a CertificateSigningRequest resource which can be used to generate a certificate for an entity. Because this API can be abused to create a long-lived credential, it is important to be able to audit this API to understand who/what is creating these CSRs and for what actors they are being created. This policy, intended to always be run in Audit mode and produce failure results in a Policy Report, inspects all incoming CertificateSigningRequests and writes out into the Policy Report information on who/what requested it and parsing the CSR to show the Subject information of that CSR resource.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/inspect-csr/inspect-csr.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  The Kubernetes API includes a CertificateSigningRequest resource which can be used to generate a certificate for an entity. Because this API can be abused to create a long-lived credential, it is important to be able to audit this API to understand who/what is creating these CSRs and for what actors they are being created. This policy, intended to always be run in Audit mode and produce failure results in a Policy Report, inspects all incoming CertificateSigningRequests and writes out into the Policy Report information on who/what requested it and parsing the CSR to show the Subject information of that CSR resource.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/subject: "CertificateSigningRequest"
+digest: 38f92a5a0355cbd28ef808a738139a1ed9da76e27464f26d5882cd71f0498b50

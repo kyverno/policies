@@ -1,0 +1,22 @@
+name: block-updates-deletes
+version: 1.0.0
+displayName: Block Updates and Deletes
+createdAt: "2023-04-10T20:30:03.000Z"
+description: >-
+  Kubernetes RBAC allows for controls on kinds of resources or those with specific names. But it does not have the type of granularity often required in more complex environments. This policy restricts updates and deletes to any Service resource that contains the label `protected=true` unless by a cluster-admin.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-updates-deletes/block-updates-deletes.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Kubernetes RBAC allows for controls on kinds of resources or those with specific names. But it does not have the type of granularity often required in more complex environments. This policy restricts updates and deletes to any Service resource that contains the label `protected=true` unless by a cluster-admin.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "null"
+  kyverno/subject: "RBAC"
+digest: d53b77cab7e2dfe835323faa1124221ab793a2b7f39941c4302a545bafd2f0aa

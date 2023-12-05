@@ -1,0 +1,21 @@
+name: sync-secrets
+version: 1.0.0
+displayName: Sync Secrets
+createdAt: "2023-04-10T20:30:07.000Z"
+description: >-
+  Secrets like registry credentials often need to exist in multiple Namespaces so Pods there have access. Manually duplicating those Secrets is time consuming and error prone. This policy will copy a Secret called `regcred` which exists in the `default` Namespace to new Namespaces when they are created. It will also push updates to the copied Secrets should the source Secret be changed.      
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/sync-secrets/sync-secrets.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Secrets like registry credentials often need to exist in multiple Namespaces so Pods there have access. Manually duplicating those Secrets is time consuming and error prone. This policy will copy a Secret called `regcred` which exists in the `default` Namespace to new Namespaces when they are created. It will also push updates to the copied Secrets should the source Secret be changed.      
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Secret"
+digest: b61dd45800ab0c2b2c9cdf5c15a9d02aebab3982a86d1e8b245e46af0d74eba1

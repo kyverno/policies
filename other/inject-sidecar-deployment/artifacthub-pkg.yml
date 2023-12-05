@@ -1,0 +1,21 @@
+name: inject-sidecar-deployment
+version: 1.0.0
+displayName: Inject Sidecar Container
+createdAt: "2023-04-10T20:30:04.000Z"
+description: >-
+  The sidecar pattern is very common in Kubernetes whereby other applications can insert components via tacit modification of a submitted resource. This is, for example, often how service meshes and secrets applications are able to function transparently. This policy injects a sidecar container, initContainer, and volume into Pods that match an annotation called `vault.hashicorp.com/agent-inject: true`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/inject-sidecar-deployment/inject-sidecar-deployment.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  The sidecar pattern is very common in Kubernetes whereby other applications can insert components via tacit modification of a submitted resource. This is, for example, often how service meshes and secrets applications are able to function transparently. This policy injects a sidecar container, initContainer, and volume into Pods that match an annotation called `vault.hashicorp.com/agent-inject: true`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod,Volume"
+digest: a9fbbbe66d00fdddec27c2db1784d9e40ca549b3c31c1b4dc2a883383696f218

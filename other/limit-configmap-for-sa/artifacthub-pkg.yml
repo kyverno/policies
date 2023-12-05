@@ -1,0 +1,22 @@
+name: limit-configmap-for-sa
+version: 1.0.0
+displayName: Limit ConfigMap to ServiceAccounts for a User
+createdAt: "2023-04-10T20:30:04.000Z"
+description: >-
+  This policy shows how to restrict certain operations on specific ConfigMaps by ServiceAccounts.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/limit-configmap-for-sa/limit-configmap-for-sa.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  This policy shows how to restrict certain operations on specific ConfigMaps by ServiceAccounts.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.20-1.23"
+  kyverno/subject: "ConfigMap, ServiceAccount"
+digest: 2cdbadb9f955d03dc445b0b04405d9c8483d437c863d0fda1d9e4876fd8242de

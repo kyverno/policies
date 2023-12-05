@@ -1,0 +1,22 @@
+name: add-node-affinity
+version: 1.0.0
+displayName: Add Node Affinity
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  Node affinity, similar to node selection, is a way to specify which node(s) on which Pods will be scheduled but based on more complex conditions. This policy will add node affinity to a Deployment and if one already exists an expression will be added to it.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-node-affinity/add-node-affinity.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Node affinity, similar to node selection, is a way to specify which node(s) on which Pods will be scheduled but based on more complex conditions. This policy will add node affinity to a Deployment and if one already exists an expression will be added to it.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.21"
+  kyverno/subject: "Deployment"
+digest: 5fd607e909b17bde3c1522d9dadd715700511da8ae54e5881d90cfc8e6579863

@@ -1,0 +1,22 @@
+name: add-emptydir-sizelimit
+version: 1.0.0
+displayName: Add emptyDir sizeLimit
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  When a Pod requests an emptyDir, by default it does not have a size limit which may allow it to consume excess or all of the space in the medium backing the volume. This can quickly overrun a Node and may result in a denial of service for other workloads. This policy adds a sizeLimit field to all Pods mounting emptyDir volumes, if not present, and sets it to 100Mi.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-emptydir-sizelimit/add-emptydir-sizelimit.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  When a Pod requests an emptyDir, by default it does not have a size limit which may allow it to consume excess or all of the space in the medium backing the volume. This can quickly overrun a Node and may result in a denial of service for other workloads. This policy adds a sizeLimit field to all Pods mounting emptyDir volumes, if not present, and sets it to 100Mi.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Pod"
+digest: f8bfc9437350e3be2bcf662dd3360485ad78c2302efc999b7ccb56f8d40686e3

@@ -35,9 +35,6 @@ spec:
         file: chainsaw-step-03-apply-7.yaml
     - apply:
         file: chainsaw-step-03-apply-8.yaml
-    finally:
-    - sleep:
-        duration: 10s
   - name: step-04
     try:
     - assert:

@@ -1,0 +1,22 @@
+name: pdb-minavailable
+version: 1.0.0
+displayName: Check PodDisruptionBudget minAvailable
+createdAt: "2023-04-10T20:30:05.000Z"
+description: >-
+  When a Pod controller which can run multiple replicas is subject to an active PodDisruptionBudget, if the replicas field has a value equal to the minAvailable value of the PodDisruptionBudget it may prevent voluntary disruptions including Node drains which may impact routine maintenance tasks and disrupt operations. This policy checks incoming Deployments and StatefulSets which have a matching PodDisruptionBudget to ensure these two values do not match.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/pdb-minavailable/pdb-minavailable.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  When a Pod controller which can run multiple replicas is subject to an active PodDisruptionBudget, if the replicas field has a value equal to the minAvailable value of the PodDisruptionBudget it may prevent voluntary disruptions including Node drains which may impact routine maintenance tasks and disrupt operations. This policy checks incoming Deployments and StatefulSets which have a matching PodDisruptionBudget to ensure these two values do not match.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "PodDisruptionBudget, Deployment, StatefulSet"
+digest: f6f12d2b34642666ce110807b85756d86012a840a15f236c53e2a4866347b628

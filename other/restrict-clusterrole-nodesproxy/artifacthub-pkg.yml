@@ -1,0 +1,22 @@
+name: restrict-clusterrole-nodesproxy
+version: 1.0.0
+displayName: Restrict ClusterRole with Nodes Proxy
+createdAt: "2023-04-10T20:30:06.000Z"
+description: >-
+  A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-clusterrole-nodesproxy/restrict-clusterrole-nodesproxy.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "ClusterRole, RBAC"
+digest: e1c5ea5cb9a1834459d8c5de5b52ea487e3a4b716c110f3a64f00d9c72a65c68

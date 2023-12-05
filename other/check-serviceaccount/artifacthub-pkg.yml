@@ -1,0 +1,22 @@
+name: check-serviceaccount
+version: 1.0.0
+displayName: Check ServiceAccount
+createdAt: "2023-04-10T20:30:03.000Z"
+description: >-
+  ServiceAccounts with privileges to create Pods may be able to do so and name a ServiceAccount other than the one used to create it. This policy checks the Pod, if created by a ServiceAccount, and ensures the `serviceAccountName` field matches the actual ServiceAccount.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-serviceaccount/check-serviceaccount.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  ServiceAccounts with privileges to create Pods may be able to do so and name a ServiceAccount other than the one used to create it. This policy checks the Pod, if created by a ServiceAccount, and ensures the `serviceAccountName` field matches the actual ServiceAccount.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.21"
+  kyverno/subject: "Pod,ServiceAccount"
+digest: c01a1820fe70be2bec253ce6299f9af3dd82f3e1186e4d3f29894e538c47dc56

@@ -1,0 +1,21 @@
+name: limit-containers-per-pod
+version: 1.0.0
+displayName: Limit Containers per Pod
+createdAt: "2023-04-10T20:30:04.000Z"
+description: >-
+  Pods can have many different containers which are tightly coupled. It may be desirable to limit the amount of containers that can be in a single Pod to control best practice application or so policy can be applied consistently. This policy checks all Pods to ensure they have no more than four containers.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/limit-containers-per-pod/limit-containers-per-pod.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Pods can have many different containers which are tightly coupled. It may be desirable to limit the amount of containers that can be in a single Pod to control best practice application or so policy can be applied consistently. This policy checks all Pods to ensure they have no more than four containers.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: 375b0ea0b5a26365b69af559cbbda54c352e8a13c838fdbbdcb9d3f01b4941e9

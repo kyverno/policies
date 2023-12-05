@@ -15,9 +15,6 @@ spec:
     try:
     - apply:
         file: resource.yaml
-    finally:
-    - sleep:
-        duration: 10s
   - name: step-03
     try:
     - assert:

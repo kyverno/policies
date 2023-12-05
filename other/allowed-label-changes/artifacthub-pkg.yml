@@ -1,0 +1,22 @@
+name: allowed-label-changes
+version: 1.0.0
+displayName: Allowed Label Changes
+createdAt: "2023-04-10T20:30:03.000Z"
+description: >-
+  In some cases, operations teams need a type of limited access to change resources during troubleshooting or outage mitigation. This policy demonstrates how to prevent modification to labels except one with the key `breakglass`. Changing, adding, or deleting any other labels is denied.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/allowed-label-changes/allowed-label-changes.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  In some cases, operations teams need a type of limited access to change resources during troubleshooting or outage mitigation. This policy demonstrates how to prevent modification to labels except one with the key `breakglass`. Changing, adding, or deleting any other labels is denied.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod,Label"
+digest: 0f5a355dfc386b660a4f015b640bba3528691cdb95799ec5721ab06dbbd5afe0

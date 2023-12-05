@@ -1,0 +1,21 @@
+name: add-pod-proxies
+version: 1.0.0
+displayName: Add Pod Proxies
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  In restricted environments, Pods may not be allowed to egress directly to all destinations and some overrides to specific addresses may need to go through a corporate proxy. This policy adds proxy information to Pods in the form of environment variables. It will add the `env` array if not present. If any Pods have any of these env vars, they will be overwritten with the value(s) in this policy.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-pod-proxies/add-pod-proxies.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  In restricted environments, Pods may not be allowed to egress directly to all destinations and some overrides to specific addresses may need to go through a corporate proxy. This policy adds proxy information to Pods in the form of environment variables. It will add the `env` array if not present. If any Pods have any of these env vars, they will be overwritten with the value(s) in this policy.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: a31810ab046c378ca562eab05f7a0be847da3eb65731fe1cdac31f5af42c9afd

@@ -1,0 +1,21 @@
+name: add-default-securitycontext
+version: 1.0.0
+displayName: Add Default securityContext
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  A Pod securityContext entry defines fields such as the user and group which should be used to run the Pod. Sometimes choosing default values for users rather than blocking is a better alternative to not impede such Pod definitions. This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-default-securitycontext/add-default-securitycontext.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  A Pod securityContext entry defines fields such as the user and group which should be used to run the Pod. Sometimes choosing default values for users rather than blocking is a better alternative to not impede such Pod definitions. This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: 2a2a0d28bd08bf9026be26045863c24b55a48f4017b58b38f25e02f25535fe53

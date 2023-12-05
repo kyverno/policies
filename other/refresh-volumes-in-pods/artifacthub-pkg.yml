@@ -1,0 +1,22 @@
+name: refresh-volumes-in-pods
+version: 1.0.0
+displayName: Refresh Volumes in Pods
+createdAt: "2023-04-10T20:30:05.000Z"
+description: >-
+  Although ConfigMaps and Secrets mounted as volumes to a Pod, when the contents change, will eventually propagate to the Pods mounting them, this process may take between 60-90 seconds. In order to reduce that time, a modification made to downstream Pods will cause the changes to take effect almost instantly. This policy watches for changes to ConfigMaps which have been marked for this quick reloading process which contain the label `kyverno.io/watch=true` and will write an annotation to any Pods which mount them as volumes causing a fast refresh in their contents. See the related policy entitled "Refresh Environment Variables in Pods" for a similar reloading process when ConfigMaps and Secrets are consumed as environment variables instead. Use of this policy may require providing the Kyverno ServiceAccount with permission to update Pods.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/refresh-volumes-in-pods/refresh-volumes-in-pods.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Although ConfigMaps and Secrets mounted as volumes to a Pod, when the contents change, will eventually propagate to the Pods mounting them, this process may take between 60-90 seconds. In order to reduce that time, a modification made to downstream Pods will cause the changes to take effect almost instantly. This policy watches for changes to ConfigMaps which have been marked for this quick reloading process which contain the label `kyverno.io/watch=true` and will write an annotation to any Pods which mount them as volumes causing a fast refresh in their contents. See the related policy entitled "Refresh Environment Variables in Pods" for a similar reloading process when ConfigMaps and Secrets are consumed as environment variables instead. Use of this policy may require providing the Kyverno ServiceAccount with permission to update Pods.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Pod,ConfigMap"
+digest: 25b4c5dffbcf3c7d4f77f42aa5eafdb17570398eac4e7f570210fff27455de6b

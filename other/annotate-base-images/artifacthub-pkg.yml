@@ -1,0 +1,22 @@
+name: annotate-base-images
+version: 1.0.0
+displayName: Annotate Base Images
+createdAt: "2023-04-10T20:30:03.000Z"
+description: >-
+  A base image used to construct a container image is not accessible by any Kubernetes component and not a field in a Pod spec as it must be fetched from a registry. Having this information available in the resource referencing the containers helps to provide a clearer understanding of its contents. This policy adds an annotation to a Pod or its controllers with the base image used for each container if present in an OCI annotation.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/annotate-base-images/annotate-base-images.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  A base image used to construct a container image is not accessible by any Kubernetes component and not a field in a Pod spec as it must be fetched from a registry. Having this information available in the resource referencing the containers helps to provide a clearer understanding of its contents. This policy adds an annotation to a Pod or its controllers with the base image used for each container if present in an OCI annotation.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: 1aa592a7d3d49643b835c56d97220b9a8728ac3e2160d4be83fbe590db252e9a

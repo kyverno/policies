@@ -1,0 +1,24 @@
+---
+name: block-cluster-admin-from-ns 
+version: 1.0.0 
+displayName: Block a Cluster Admin/s from CREATE/UPDATE/DELETE any object in a Namespace
+createdAt: "2023-05-18T00:00:00.000Z"
+description: >-
+  In some cases we would want to block operations (CREATE/UPDATE/DELETE) of certain privileged users (i.e. cluster-admins), in a specific namespace.
+          In this policy, Kyverno look for all user operations (`CREATE, UPDATE, DELETE`), on every object kind (Pod,Deployment,Route,Service,etc.), in the testnamespace namespace, and for the `clusterRole cluster-admin`. The `subject User testuser` is also mentioned so it won’t include all the cluster-admins in the cluster, but will be flexiable enough to apply only for a sub-group of the cluster-admins in the cluster.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-cluster-admin-from-ns/block-cluster-admin-from-ns.yaml
+  ```   
+keywords:
+  - rbac
+  - cluster-admin 
+  - kyverno
+readme: | 
+  In some cases we would want to block operations (CREATE/UPDATE/DELETE) of certain privileged users (i.e. cluster-admins), in a specific namespace.
+          In this policy, Kyverno look for all user operations (`CREATE, UPDATE, DELETE`), on every object kind (Pod,Deployment,Route,Service,etc.), in the testnamespace namespace, and for the `clusterRole cluster-admin`. The `subject User testuser` is also mentioned so it won’t include all the cluster-admins in the cluster, but will be flexiable enough to apply only for a sub-group of the cluster-admins in the cluster.  
+annotations: 
+  policies.kyverno.io/category: other
+  policies.kyverno.io/subject: Namespace, ClusterRole, User
+  policies.kyverno.io/minversion: 1.9.0
+digest: 841724d983a9f27618678d596f30e20717115787e0f24304226b79d2e6b892e0

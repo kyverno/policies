@@ -1,0 +1,22 @@
+name: block-stale-images
+version: 1.0.0
+displayName: Block Stale Images
+createdAt: "2023-04-10T20:30:03.000Z"
+description: >-
+  Images that are old usually have some open security vulnerabilities which are not patched. This policy checks the contents of every container image and inspects them for the create time. If it finds any image which was built more than 6 months ago this policy blocks the deployment.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-stale-images/block-stale-images.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Images that are old usually have some open security vulnerabilities which are not patched. This policy checks the contents of every container image and inspects them for the create time. If it finds any image which was built more than 6 months ago this policy blocks the deployment.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: 8e0fab0441480492ab506e9401eda165e86156c63b8768953386dffe7a0efc6b

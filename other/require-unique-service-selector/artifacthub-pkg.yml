@@ -1,0 +1,22 @@
+name: require-unique-service-selector
+version: 1.0.0
+displayName: Require Unique Service Selector
+createdAt: "2023-04-10T20:30:05.000Z"
+description: >-
+  Services select eligible Pods by way of label matches. Having multiple Service apply based on same labels can cause conflicts and have unintended consequences. This policy ensures that within the same Namespace a Service has a unique set of labels as a selector.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-unique-service-selector/require-unique-service-selector.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Services select eligible Pods by way of label matches. Having multiple Service apply based on same labels can cause conflicts and have unintended consequences. This policy ensures that within the same Namespace a Service has a unique set of labels as a selector.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Service"
+digest: 5e6dd5321e79e2317b3d48f72404ec38fe5ab197e588b41af0e12697b4d02e82

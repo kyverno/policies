@@ -1,0 +1,22 @@
+name: resolve-image-to-digest
+version: 1.0.0
+displayName: Resolve Image to Digest
+createdAt: "2023-04-10T20:30:06.000Z"
+description: >-
+  Image tags are mutable and the change of an image can result in the same tag. This policy resolves the image digest of each image in a container and replaces the image with the fully resolved reference which includes the digest rather than tag.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/resolve-image-to-digest/resolve-image-to-digest.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Image tags are mutable and the change of an image can result in the same tag. This policy resolves the image digest of each image in a container and replaces the image with the fully resolved reference which includes the digest rather than tag.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: 17ee7c56d856f58ab55b7bb0222ca96224798f64b719fcb52ef5e017e7aee7f9
