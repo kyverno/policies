@@ -25,8 +25,6 @@ spec:
     try:
     - apply:
         file: deploy.yaml
-  - name: step-04
-    try:
     - assert:
         file: deploy00-patched.yaml
     - assert:
@@ -37,8 +35,6 @@ spec:
         file: deploy03-not-patched.yaml
     - error:
         file: deploy04-not-patched.yaml
-  - name: step-05
-    try:
     - apply:
         file: policy-update.yaml
     - assert:
@@ -47,15 +43,6 @@ spec:
         file: deploy01-patched-again.yaml
     - assert:
         file: deploy02-patched-again.yaml
-  - name: step-99
-    try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - update-image-tag-ns
-        entrypoint: kubectl
+    finally:
+    - sleep:
+        duration: 5s

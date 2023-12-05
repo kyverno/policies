@@ -15,11 +15,12 @@ spec:
     try:
     - apply:
         file: deployments.yaml
-  - name: step-03
-    try:
     - assert:
         file: patched-deploy01.yaml
     - error:
         file: not-patched-deploy02.yaml
     - error:
         file: not-patched-deploy03.yaml
+    finally:
+    - sleep:
+        duration: 5s

@@ -23,6 +23,9 @@ spec:
         - check:
             ($error != null): true
         file: ss-bad.yaml
+    finally:
+    - sleep:
+        duration: 5s
   - name: step-99
     try:
     - delete:
