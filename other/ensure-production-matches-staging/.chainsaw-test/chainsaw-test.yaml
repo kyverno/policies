@@ -17,9 +17,6 @@ spec:
     try:
     - apply:
         file: deployments.yaml
-    finally:
-    - sleep:
-        duration: 5s
   - name: step-03
     try:
     - apply:

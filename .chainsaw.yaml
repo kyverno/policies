@@ -12,5 +12,6 @@ spec:
     delete: 1m30s
     error: 1m30s
     exec: 1m30s
+  fullName: true
   forceTerminationGracePeriod: 5s
   delayBeforeCleanup: 3s

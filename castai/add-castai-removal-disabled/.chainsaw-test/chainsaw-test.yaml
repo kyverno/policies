@@ -15,9 +15,6 @@ spec:
     try:
     - apply:
         file: ../.kyverno-test/resources.yaml
-    finally:
-    - sleep:
-        duration: 5s
   - name: step-03
     try:
     - assert:

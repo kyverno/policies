@@ -43,6 +43,3 @@ spec:
         file: deploy01-patched-again.yaml
     - assert:
         file: deploy02-patched-again.yaml
-    finally:
-    - sleep:
-        duration: 5s

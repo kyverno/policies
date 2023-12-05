@@ -4,6 +4,7 @@ metadata:
   creationTimestamp: null
   name: mutate-large-termination-gps
 spec:
+  forceTerminationGracePeriod: 0s
   steps:
   - name: step-01
     try:
