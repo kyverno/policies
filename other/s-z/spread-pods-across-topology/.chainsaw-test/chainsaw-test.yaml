@@ -15,6 +15,9 @@ spec:
     try:
     - apply:
         file: deploy.yaml
+    finally:
+    - sleep:
+        duration: 5s
   - name: step-03
     try:
     - assert:
@@ -23,3 +26,6 @@ spec:
         file: deploy02-not-patched.yaml
     - error:
         file: deploy03-not-patched.yaml
+    finally:
+    - sleep:
+        duration: 5s
