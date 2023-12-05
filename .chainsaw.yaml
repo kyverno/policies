@@ -13,3 +13,4 @@ spec:
     error: 1m30s
     exec: 1m30s
   forceTerminationGracePeriod: 5s
+  delayBeforeCleanup: 3s
