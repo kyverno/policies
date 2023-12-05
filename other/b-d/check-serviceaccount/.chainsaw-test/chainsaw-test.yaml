@@ -1,0 +1,68 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: check-serviceaccount
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../check-serviceaccount.yaml | kubectl create -f -
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: chainsaw-step-02-apply-1.yaml
+    - apply:
+        file: chainsaw-step-02-apply-2.yaml
+    - apply:
+        file: chainsaw-step-02-apply-3.yaml
+    - apply:
+        file: chainsaw-step-02-apply-4.yaml
+    - apply:
+        file: chainsaw-step-02-apply-5.yaml
+    - apply:
+        file: chainsaw-step-02-apply-6.yaml
+  - name: step-03
+    try:
+    - script:
+        content: |
+          #!/bin/bash
+          set -eu
+
+          # Setting up the SA user
+          export TOKEN_SA=`kubectl get secret safe-secret -n check-sa-ns -ojsonpath='{.data.token}' | base64 -d`
+          kubectl config set-credentials safe-user --token=${TOKEN_SA}
+          kubectl config set-context safe-context --user=safe-user --cluster=kind-kind --namespace=check-sa-ns
+
+          # Applying Manifests
+          kubectl config use-context safe-context
+          kubectl apply -f pod-good.yaml
+          if kubectl apply -f pod-bad.yaml; then exit 1; else echo "badpod01 failed to create"; fi
+          kubectl apply -f podcontroller-good.yaml
+          if kubectl apply -f podcontroller-bad.yaml; then exit 1; else echo "badpodcontrollers failed to create"; fi
+
+          # Unset the context and user
+          kubectl config use-context kind-kind
+          kubectl config unset contexts.safe-context
+          kubectl config unset users.safe-user
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: check-sa
+    - command:
+        args:
+        - delete
+        - all
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - check-sa-ns
+        entrypoint: kubectl

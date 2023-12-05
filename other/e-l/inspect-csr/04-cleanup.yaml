@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- command: kubectl delete csr inspect-csr-user
-- command: kubectl config unset users.inspect-csr-user
-- command: kubectl config unset contexts.inspect-csr-user-context

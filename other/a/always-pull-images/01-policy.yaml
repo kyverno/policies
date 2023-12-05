@@ -1,6 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- always-pull-images.yaml
-assert:
-- policy-ready.yaml

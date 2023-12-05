@@ -1,0 +1,49 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: check-nvidia-gpu
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../check-nvidia-gpu.yaml | kubectl create -f -
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: pods-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pods-bad.yaml
+    - apply:
+        file: podcontrollers-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: podcontrollers-bad.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: check-nvidia-gpus
+    - command:
+        args:
+        - delete
+        - all
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - nvidia-gpu-ns
+        entrypoint: kubectl

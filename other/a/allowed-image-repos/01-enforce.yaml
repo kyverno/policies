@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' allowed-image-repos.yaml | kubectl create -f - 
-apply:
-- ns.yaml

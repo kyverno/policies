@@ -1,8 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- command: kubectl create -f good-cm.yaml
-- script: if kubectl --context=testuser-context apply -f bad-cm-update.yaml; then exit 1; else exit 0; fi
-- script: if kubectl --context=testuser-context delete -f good-cm.yaml; then exit 1; else exit 0; fi
-- command: kubectl --context=testuser-context create -f good-pod.yaml
-- script: if kubectl --context=testuser-context create -f bad-pod.yaml; then exit 1; else exit 0; fi

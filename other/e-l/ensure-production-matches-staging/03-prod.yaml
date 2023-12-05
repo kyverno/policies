@@ -1,9 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-apply:
-- file: deploy-bad-name.yaml
-  shouldFail: true
-- file: deploy-bad-image.yaml
-  shouldFail: true
-- file: deploy-bad-imversion.yaml
-  shouldFail: true
