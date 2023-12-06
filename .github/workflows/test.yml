@@ -6,7 +6,7 @@ on:
   workflow_dispatch: {}
   pull_request:
     branches:
-        - 'main'
+      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -70,15 +70,24 @@ jobs:
       - name: Install Tools
         run: |
           set -e
-          GOBIN=$(pwd)/.tools/ go install sigs.k8s.io/kind@v0.19.0
           curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
           sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      - name: Install kind
+        shell: bash
+        run: |
+          set -e
+          # For AMD64 / x86_64
+          [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          # For ARM64
+          [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
       - name: Install latest Kyverno CLI
         uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
       - name: Create kind cluster
         run: |
           set -e
-          ./.tools/kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
+          kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
       - name: Install latest kyverno
         run: |
           set -e
@@ -90,7 +99,7 @@ jobs:
       - name: Install CRDs
         run: |
           set -e
-          kubectl apply -f ./CRDs
+          kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
         uses: kyverno/chainsaw/.github/actions/install@5ca138ff5ad87bfb2c41e52cde8c00154756e4c5 # v0.0.7
         with:
