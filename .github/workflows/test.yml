@@ -101,7 +101,7 @@ jobs:
           set -e
           kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
-        uses: kyverno/chainsaw/.github/actions/install@5ca138ff5ad87bfb2c41e52cde8c00154756e4c5 # v0.0.7
+        uses: kyverno/chainsaw/.github/actions/install@7885ebe21beb083fea3dc5651fe2ae8002a5f45a # v0.0.9
         with:
           release: v0.0.9
       - name: Test with Chainsaw
