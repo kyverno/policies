@@ -154,3 +154,54 @@ spec:
     - name: foo
       hostPath: 
         path: /var/foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  initContainers:
+    - name: certificates
+      image: busybox
+      volumeMounts:
+        - name: etc-ssl-certs
+          mountPath: /etc/ssl/certs
+      resources:
+        limits:
+          ephemeral-storage: 256Mi
+        requests:
+          ephemeral-storage: 256Mi
+    - name: configure
+      image: busybox
+      volumeMounts:
+        - name: etc-ssl-certs
+          mountPath: /etc/ssl/certs/
+        - name: my-app-secrets
+          mountPath: /init-secrets
+      resources:
+        limits:
+          ephemeral-storage: 256Mi
+        requests:
+          ephemeral-storage: 256Mi
+  containers:
+    - name: my-app
+      image: busybox
+      resources:
+        limits:
+          cpu: "2"
+          ephemeral-storage: 1Gi
+          memory: 500Mi
+        requests:
+          ephemeral-storage: 500Mi
+      volumeMounts:
+        - name: etc-ssl-certs
+          mountPath: /etc/ssl/certs/
+        - name: my-app-secrets
+          mountPath: /etc/secrets
+  volumes:
+    - name: my-app-secrets
+      emptyDir:
+        medium: Memory
+    - name: etc-ssl-certs
+      emptyDir:
+        medium: "Memory"
