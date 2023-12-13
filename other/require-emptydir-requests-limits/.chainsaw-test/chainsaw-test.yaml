@@ -9,7 +9,7 @@ spec:
     try:
     - script:
         content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-emptydir-requests-limits.yaml | kubectl create -f -
+          sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../require-emptydir-requests-limits.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
