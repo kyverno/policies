@@ -56,7 +56,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: badcronjob01
-  namespace: allowed-image-repos-ns
 spec:
   schedule: "* * * * *"
   jobTemplate:
