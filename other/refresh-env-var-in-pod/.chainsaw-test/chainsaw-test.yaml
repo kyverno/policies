@@ -40,15 +40,15 @@ spec:
         duration: 5s
     - script:
         content: |
-          annotation=$(kubectl get deploy deployment01 -n refresh-env-var-ns -o json | kubectl kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
+          annotation=$(kubectl get deploy deployment01 -n refresh-env-var-ns -o json | kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
           if [ "$annotation" = "" ]; then exit 1; exit 0; fi
     - script:
         content: |
-          annotation=$(kubectl get deploy deployment02 -n refresh-env-var-ns -o json | kubectl kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
+          annotation=$(kubectl get deploy deployment02 -n refresh-env-var-ns -o json | kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
           if [ "$annotation" = "1234abcd" ]; then exit 1; exit 0; fi
     - script:
         content: |
-          annotation=$(kubectl get deploy deployment03 -n refresh-env-var-ns -o json | kubectl kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
+          annotation=$(kubectl get deploy deployment03 -n refresh-env-var-ns -o json | kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
           if [ "$annotation" = "1234abcd" ]; then exit 0; exit 1; fi
     - sleep:
         duration: 5s
