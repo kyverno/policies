@@ -25,11 +25,15 @@ spec:
         file: deployment.yaml
   - name: step-03
     try:
+    - sleep:
+        duration: 5s
     - script:
         content: |
           kubectl get pod -n refresh-env-var-ns --no-headers | awk '{print $1}' > deploy-names.txt
   - name: step-04
     try:
+    - sleep:
+        duration: 5s
     - apply:
         file: chainsaw-step-04-apply-1.yaml
     - apply:
