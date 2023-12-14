@@ -9,9 +9,9 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/description: >-
-      Pods which have memory limits equal to requests are given a QoS class of Guaranteed
-      which is the highest schedulable class. This policy checks that all containers in
-      a given Pod have memory requests equal to limits.
+      Pods which have memory limits equal to requests could be given a QoS class of Guaranteed if
+      they also set CPU limits equal to requests. Guaranteed is the highest schedulable class. 
+      This policy checks that all containers in a given Pod have memory requests equal to limits.
 spec:
   validationFailureAction: audit
   background: false

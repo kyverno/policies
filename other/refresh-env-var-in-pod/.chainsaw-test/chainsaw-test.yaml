@@ -25,21 +25,23 @@ spec:
         file: deployment.yaml
   - name: step-03
     try:
+    - sleep:
+        duration: 5s
     - script:
         content: |
           kubectl get pod -n refresh-env-var-ns --no-headers | awk '{print $1}' > deploy-names.txt
   - name: step-04
     try:
+    - sleep:
+        duration: 5s
     - apply:
         file: chainsaw-step-04-apply-1.yaml
     - apply:
         file: chainsaw-step-04-apply-2.yaml
   - name: step-05
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
     - script:
         content: |
           annotation=$(kubectl get deploy deployment01 -n refresh-env-var-ns -o json | kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
@@ -52,6 +54,8 @@ spec:
         content: |
           annotation=$(kubectl get deploy deployment03 -n refresh-env-var-ns -o json | kyverno jp query "spec.template.metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
           if [ "$annotation" = "1234abcd" ]; then exit 0; exit 1; fi
+    - sleep:
+        duration: 5s
     - script:
         content: |
           pod_one=$(kubectl get pod --no-headers -n refresh-env-var-ns | awk '{print $1}' | grep deployment01 | awk 'NR==1{print $1}')
@@ -67,6 +71,8 @@ spec:
           else
               exit 0;
           fi
+    - sleep:
+        duration: 5s
     - script:
         content: |
           pod_one=$(kubectl get pod --no-headers -n refresh-env-var-ns | awk '{print $1}' | grep deployment02 | awk 'NR==1{print $1}')
@@ -82,20 +88,26 @@ spec:
           else
               exit 0;
           fi
+    - sleep:
+        duration: 5s
     - script:
         content: |
           pod_one=$(kubectl get pod --no-headers -n refresh-env-var-ns | awk '{print $1}' | grep deployment03 | awk 'NR==1{print $1}')
           pod_two=$(kubectl get pod --no-headers -n refresh-env-var-ns | awk '{print $1}' | grep deployment03 | awk 'NR==2{print $1}')
           old_name=$(cat deploy-names.txt | grep deployment03)
+          echo "pod_one is $pod_one"
+          echo "pod_two is $pod_two"
+          echo "old_name is $old_name"
           if [ "$pod_one" = "$old_name" ]; then
-              env_one=$(kubectl exec -n refresh-env-var-ns $pod_one -- printenv ENV_SECRET)
+              three_env_one=$(kubectl exec -n refresh-env-var-ns $pod_one -- printenv ENV_SECRET)
           else
               echo "Fail: deployment03 was patched unexpectedly.";
               exit 1;
           fi
-          if [ "$env_one" = "foo" ]; then
+          if [ "$three_env_one" = "foo" ]; then
               exit 0;
           else
+              echo "Failed. Value of ENV_SECRET is currently $three_env_one."
               exit 1;
           fi
     - command:

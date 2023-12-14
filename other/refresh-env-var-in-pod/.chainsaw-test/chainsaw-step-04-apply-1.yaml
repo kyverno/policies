@@ -5,3 +5,5 @@ kind: Secret
 metadata:
   name: env-secret
   namespace: refresh-env-var-ns
+  labels:
+    kyverno.io/watch: "true"
