@@ -1,0 +1,54 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: copy-namespace-labels
+  annotations:
+    policies.kyverno.io/title: Copy Namespace Labels
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment, Label, Namespace
+    kyverno.io/kyverno-version: 1.11.1
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/description: >-
+      It is common for Namespaced resources to need access to labels which have been assigned
+      to the Namespace in which they reside. This policy demonstrates two different ways of
+      assigning Namespace labels to a Deployment. The first method copies only the `owner` label
+      while the second copies all labels except for `kubernetes.io/metadata.name`.
+spec:
+  rules:
+  - name: owner-label-deployment-from-ns
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+          operations:
+          - CREATE
+    context:
+      - name: owner
+        apiCall:
+          urlPath: "/api/v1/namespaces/{{ request.object.metadata.namespace }}"
+          jmesPath: metadata.labels.owner || 'empty'
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            owner: "{{ owner }}"
+  - name: all-label-deployment-from-ns
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+          operations:
+          - CREATE
+    context:
+      - name: alllabels
+        apiCall:
+          urlPath: "/api/v1/namespaces/{{ request.object.metadata.namespace }}"
+          jmesPath: metadata.labels | merge(@, {"kubernetes.io/metadata.name":null})
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            "{{ alllabels }}"
