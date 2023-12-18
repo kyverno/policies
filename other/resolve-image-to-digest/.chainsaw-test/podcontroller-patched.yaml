@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: index.docker.io/library/busybox@sha256:713223f59872d6ee1ae186e2a5970cd2efbc1bacfe7553b316ecb6dd363dc941
+        image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
       - name: busybox02
-        image: index.docker.io/library/busybox@sha256:713223f59872d6ee1ae186e2a5970cd2efbc1bacfe7553b316ecb6dd363dc941
+        image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: index.docker.io/library/busybox@sha256:713223f59872d6ee1ae186e2a5970cd2efbc1bacfe7553b316ecb6dd363dc941
+            image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
           - name: busybox02
-            image: index.docker.io/library/busybox@sha256:713223f59872d6ee1ae186e2a5970cd2efbc1bacfe7553b316ecb6dd363dc941
+            image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
           restartPolicy: OnFailure
