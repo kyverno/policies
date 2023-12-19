@@ -34,4 +34,4 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: ghcr.io/nginx:1.12
+    image: ghcr.io/kyverno/test-verify-image:unsigned

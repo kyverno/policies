@@ -4,8 +4,8 @@ metadata:
   name: badpod01
 spec:
   containers:
-  - name: busybox
-    image: busybox:1.35
+  - name: test-verify-image
+    image: ghcr.io/kyverno/test-verify-image:unsigned
 ---
 apiVersion: v1
 kind: Pod
@@ -15,8 +15,8 @@ spec:
   containers:
   - name: annotations
     image: ghcr.io/kyverno/kyverno-annotations-example:latest
-  - name: busybox
-    image: busybox:1.35
+  - name: test-verify-image
+    image: ghcr.io/kyverno/test-verify-image:unsigned
 ---
 apiVersion: v1
 kind: Pod
@@ -24,7 +24,7 @@ metadata:
   name: badpod03
 spec:
   containers:
-  - name: busybox
-    image: busybox:1.35
+  - name: test-verify-image
+    image: ghcr.io/kyverno/test-verify-image:unsigned
   - name: annotations
     image: ghcr.io/kyverno/kyverno-annotations-example:latest
