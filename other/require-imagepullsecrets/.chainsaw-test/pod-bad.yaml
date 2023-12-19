@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: ghcr.io/nginx:1.12
+    image: ghcr.io/kyverno/test-verify-image:unsigned
   - name: busybox
     image: busybox:1.35
 ---
@@ -27,7 +27,7 @@ spec:
   - name: busybox
     image: busybox:1.35
   - name: nginx
-    image: ghcr.io/nginx:1.12
+    image: ghcr.io/kyverno/test-verify-image:unsigned
 ---
 apiVersion: v1
 kind: Pod
