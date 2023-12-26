@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
 ---
 apiVersion: v1
 kind: Pod
@@ -14,6 +14,6 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
   - name: busybox02
-    image: index.docker.io/library/busybox@sha256:0fac7d303b1d9c0b4f5a596b7bd95525c94578f72146393f7a2534bfe3e4b2c0
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
