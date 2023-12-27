@@ -4,7 +4,7 @@ metadata:
   labels:
     app: busybox
   name: deployment02
-  namespace: other-certvol-ns
+  namespace: Other-certvol-ns
 spec:
   replicas: 1
   selector:
@@ -40,7 +40,7 @@ metadata:
   labels:
     app: busybox
   name: deployment03
-  namespace: other-certvol-ns
+  namespace: Other-certvol-ns
 spec:
   replicas: 1
   selector:

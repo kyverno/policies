@@ -44,7 +44,7 @@ body:
         YAML syntax highlighting will be applied automatically.
       render: yaml
   - type: textarea
-    id: other
+    id: Other
     attributes:
       label: Other Comments
       description: Provide any other comments.
