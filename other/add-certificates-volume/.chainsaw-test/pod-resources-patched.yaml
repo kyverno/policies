@@ -4,7 +4,7 @@ metadata:
   annotations:
     inject-certs: enabled
   name: pod01
-  namespace: Other-certvol-ns
+  namespace: other-certvol-ns
 spec:
   containers:
   - name: pod01-01

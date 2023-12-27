@@ -4,7 +4,7 @@ metadata:
   labels:
     app: busybox
   name: deployment01
-  namespace: Other-certvol-ns
+  namespace: other-certvol-ns
 spec:
   replicas: 1
   selector:
