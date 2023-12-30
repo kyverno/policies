@@ -16,7 +16,7 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "other"
+  kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.20"
   kyverno/subject: "Pod"
-digest: 61b942e2ca31bc5caa4f70b1ad2627e38a214a2e5cdd1d03283389138aeff556
+digest: d735c7ebe5977a2d4367c8b39cbbb3ec3358785973cb676af32ba8d85be05859 
