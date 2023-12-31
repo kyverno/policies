@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: ReadWriteOnce-Pod
+  annotations:
+    policies.kyverno.io/title: Enforce ReadWriteOncePod
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/subject: PersistentVolumeClaim
+    policies.kyverno.io/description: >-
+      This validation is valuable when the persistent volumes should be
+      accessed by one single pod it can be useful in an environment where
+      the volumes should be restrictive and should be accessed by only handfull
+spec:
+  validationFailureAction: audit
+  background: true
+  rules:
+  - name: ReadWriteOnce-Pod
+    match:
+      any:
+      - resources:
+          kinds:
+          - PersistentVolumeClaim
+    validate:
+      message: "access mode of persistent volume claims not set to ReadWriteOncePod"
+      deny:
+        conditions:
+          any:
+          - key: "{{ request.object.spec.accessModes }}"
+            operator: NotEquals
+            value: ReadWriteOncePod

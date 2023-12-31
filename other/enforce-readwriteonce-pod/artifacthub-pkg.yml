@@ -1,0 +1,19 @@
+name: enforce-readwriteonce-pod
+version: 1.0.0
+displayName: Enforce readwriteoncepod
+createdAt: "2023-12-31T16:10:04.000Z"
+description: >-
+  This validation is valuable when the persistent volumes should be accessed by one single pod it can be useful in an environment where the volumes should be restrictive and should be accessed by only handfull
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-readwriteonce-pod/enforce-readwriteonce-pod.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  This validation is valuable when the persistent volumes should be accessed by one single pod it can be useful in an environment where the volumes should be restrictive and should be accessed by only handfull
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "PersistentVolumeClaims"
+digest: 824a79a443d97548d9e96e2daa7aa680c8c3a8c44648a5684ad52b01d7eb8c93 
