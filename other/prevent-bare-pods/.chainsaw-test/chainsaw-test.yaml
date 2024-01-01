@@ -40,7 +40,7 @@ spec:
         ref:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
-          name: prevent-naked-pods
+          name: prevent-bare-pods
     - command:
         args:
         - delete
