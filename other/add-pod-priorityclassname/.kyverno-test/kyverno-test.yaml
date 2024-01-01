@@ -7,11 +7,11 @@ policies:
 resources:
 - resource.yaml
 results:
-- kind: Pod
+- kind: Deployment
   patchedResource: patchedResource.yaml
   policy: add-pod-priorityclassname
   resources:
-  - foo/blank
+  - blank
   result: pass
-  rule: add-priorityclass-pods
+  rule: add-priorityclass-controllers
 variables: values.yaml
