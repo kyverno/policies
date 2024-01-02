@@ -1,0 +1,49 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-volume-types
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/ns.yaml
+    - script:
+        content: |
+          sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../restrict-volume-types.yaml | kubectl create -f -
+    - assert:
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/pod-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/pod-bad.yaml
+    - apply:
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/podcontroller-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/podcontroller-bad.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: restrict-volume-types
+    - command:
+        args:
+        - delete
+        - all
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - restrict-voltypes-ns
+        entrypoint: kubectl

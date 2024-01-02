@@ -1,7 +1,0 @@
-apiVersion: kuttl.dev/v1beta1
-kind: TestStep
-commands:
-- script: |
-    sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' restrict-volume-types.yaml | kubectl create -f - 
-apply:
-- ../../../pod-security/restricted/restrict-volume-types/ns.yaml

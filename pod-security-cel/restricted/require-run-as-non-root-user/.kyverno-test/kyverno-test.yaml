@@ -1,14 +1,14 @@
 apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: disallow-privilege-escalation
+  name: require-run-as-non-root-user
 policies:
-- disallow-privilege-escalation.yaml
+- ../require-run-as-non-root-user.yaml
 resources:
-- ../../../pod-security/restricted/disallow-privilege-escalation/resource.yaml
+- ../../../../pod-security/restricted/require-run-as-non-root-user/.kyverno-test/resource.yaml
 results:
 - kind: CronJob
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - badcronjob01
   - badcronjob02
@@ -17,9 +17,9 @@ results:
   - badcronjob05
   - badcronjob06
   result: fail
-  rule: privilege-escalation
+  rule: run-as-non-root-user
 - kind: Deployment
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - baddeployment01
   - baddeployment02
@@ -28,9 +28,9 @@ results:
   - baddeployment05
   - baddeployment06
   result: fail
-  rule: privilege-escalation
+  rule: run-as-non-root-user
 - kind: Pod
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - badpod01
   - badpod02
@@ -39,34 +39,49 @@ results:
   - badpod05
   - badpod06
   result: fail
-  rule: privilege-escalation
+  rule: run-as-non-root-user
 - kind: CronJob
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - goodcronjob01
   - goodcronjob02
   - goodcronjob03
   - goodcronjob04
   - goodcronjob05
+  - goodcronjob06
+  - goodcronjob07
+  - goodcronjob08
+  - goodcronjob09
+  - goodcronjob10
   result: pass
-  rule: privilege-escalation
+  rule: run-as-non-root-user
 - kind: Deployment
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - gooddeployment01
   - gooddeployment02
   - gooddeployment03
   - gooddeployment04
   - gooddeployment05
+  - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
+  - gooddeployment09
+  - gooddeployment10
   result: pass
-  rule: privilege-escalation
+  rule: run-as-non-root-user
 - kind: Pod
-  policy: disallow-privilege-escalation
+  policy: require-run-as-non-root-user
   resources:
   - goodpod01
   - goodpod02
   - goodpod03
   - goodpod04
   - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  - goodpod09
+  - goodpod10
   result: pass
-  rule: privilege-escalation
+  rule: run-as-non-root-user
