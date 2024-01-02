@@ -3,7 +3,12 @@ version: 1.0.0
 displayName: Enforce readwriteoncepod
 createdAt: "2023-12-31T16:10:04.000Z"
 description: >-
-  This validation is valuable when the persistent volumes should be accessed by one single pod it can be useful in an environment where the volumes should be restrictive and should be accessed by only handfull
+      Some stateful workloads with multiple replicas only allow a single Pod to write
+      to a given volume at a time. Beginning in Kubernetes 1.22 and enabled by default
+      in 1.27, a new setting called ReadWriteOncePod, available
+      for CSI volumes only, allows volumes to be writable from only a single Pod. For more
+      information see the blog https://kubernetes.io/blog/2023/04/20/read-write-once-pod-access-mode-beta/.
+      This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-readwriteonce-pod/enforce-readwriteonce-pod.yaml
@@ -12,8 +17,13 @@ keywords:
   - kyverno
   - Sample
 readme: |
-  This validation is valuable when the persistent volumes should be accessed by one single pod it can be useful in an environment where the volumes should be restrictive and should be accessed by only handfull
+      Some stateful workloads with multiple replicas only allow a single Pod to write
+      to a given volume at a time. Beginning in Kubernetes 1.22 and enabled by default
+      in 1.27, a new setting called ReadWriteOncePod, available
+      for CSI volumes only, allows volumes to be writable from only a single Pod. For more
+      information see the blog https://kubernetes.io/blog/2023/04/20/read-write-once-pod-access-mode-beta/.
+      This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "PersistentVolumeClaims"
-digest: 824a79a443d97548d9e96e2daa7aa680c8c3a8c44648a5684ad52b01d7eb8c93 
+digest: a73b5d2b5adcbdfce5f0d3e64957396ecb29d95a933445b1de042b41e3f4c9ef
