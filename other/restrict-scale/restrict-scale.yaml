@@ -32,8 +32,8 @@ spec:
     validate:
       message: The replica count for this Deployment may not exceed 8.
       pattern:
-        =(status):
-          =(selector): "*type=monitoring*"
+        (status):
+          (selector): "*type=monitoring*"
         spec:
           replicas: <9
   # This rule can be used for more advanced decision making, for example limiting scale based

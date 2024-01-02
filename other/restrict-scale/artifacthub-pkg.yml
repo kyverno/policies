@@ -1,5 +1,5 @@
 name: restrict-scale
-version: 1.0.0
+version: 2.0.0
 displayName: Restrict Scale
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
@@ -19,4 +19,4 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Deployment"
-digest: bbc9d272baaba8f51f2c6a0339b5541c8ba7e3bfb66f4090ba13e7500d541a5b
+digest: 80c2bc5cbe9081ae7ca6598f8ef435467bb487818df49a6b4c95e35f442be0e2
