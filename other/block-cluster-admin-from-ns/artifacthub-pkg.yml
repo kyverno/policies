@@ -1,6 +1,6 @@
 name: block-cluster-admin-from-ns 
 version: 1.0.0 
-displayName: Block a Cluster Admin/s from CREATE/UPDATE/DELETE any object in a Namespace
+displayName: Block cluster-admin from modifying any object in a Namespace
 createdAt: "2023-05-18T00:00:00.000Z"
 description: >-
   In some cases, it may be desirable to block operations of certain privileged users (i.e. cluster-admins) in a specific namespace. In this policy, Kyverno will look for all user operations (CREATE, UPDATE, DELETE), on every object kind, in the testnamespace namespace, and for the ClusterRole cluster-admin. The user testuser is also mentioned so it won't include all the cluster-admins in the cluster, but will be flexible enough to apply only for a sub-group of the cluster-admins in the cluster.
@@ -19,4 +19,5 @@ readme: |
 annotations: 
   kyverno/category: Other
   kyverno/subject: Namespace, ClusterRole, User
-digest: 21b650c1fcde8ef1d5cd7c5e64f1506cdcf5d94e303c27646ac245beb7c8f285  
+  kyverno/version: "1.9.0"
+digest: bcb4d35c1f9b9611408308d5e6ab47b61ebb5c4c5a648c99d77e631f1c5538de  
