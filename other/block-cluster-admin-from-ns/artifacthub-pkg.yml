@@ -1,11 +1,9 @@
----
 name: block-cluster-admin-from-ns 
 version: 1.0.0 
 displayName: Block a Cluster Admin/s from CREATE/UPDATE/DELETE any object in a Namespace
 createdAt: "2023-05-18T00:00:00.000Z"
 description: >-
-  In some cases we would want to block operations (CREATE/UPDATE/DELETE) of certain privileged users (i.e. cluster-admins), in a specific namespace.
-          In this policy, Kyverno look for all user operations (`CREATE, UPDATE, DELETE`), on every object kind (Pod,Deployment,Route,Service,etc.), in the testnamespace namespace, and for the `clusterRole cluster-admin`. The `subject User testuser` is also mentioned so it won’t include all the cluster-admins in the cluster, but will be flexiable enough to apply only for a sub-group of the cluster-admins in the cluster.
+  In some cases, it may be desirable to block operations of certain privileged users (i.e. cluster-admins) in a specific namespace. In this policy, Kyverno will look for all user operations (CREATE, UPDATE, DELETE), on every object kind, in the testnamespace namespace, and for the ClusterRole cluster-admin. The user testuser is also mentioned so it won't include all the cluster-admins in the cluster, but will be flexible enough to apply only for a sub-group of the cluster-admins in the cluster.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-cluster-admin-from-ns/block-cluster-admin-from-ns.yaml
@@ -15,10 +13,10 @@ keywords:
   - cluster-admin 
   - kyverno
 readme: | 
-  In some cases we would want to block operations (CREATE/UPDATE/DELETE) of certain privileged users (i.e. cluster-admins), in a specific namespace.
-          In this policy, Kyverno look for all user operations (`CREATE, UPDATE, DELETE`), on every object kind (Pod,Deployment,Route,Service,etc.), in the testnamespace namespace, and for the `clusterRole cluster-admin`. The `subject User testuser` is also mentioned so it won’t include all the cluster-admins in the cluster, but will be flexiable enough to apply only for a sub-group of the cluster-admins in the cluster.  
+  In some cases, it may be desirable to block operations of certain privileged users (i.e. cluster-admins) in a specific namespace. In this policy, Kyverno will look for all user operations (CREATE, UPDATE, DELETE), on every object kind, in the testnamespace namespace, and for the ClusterRole cluster-admin. The user testuser is also mentioned so it won't include all the cluster-admins in the cluster, but will be flexible enough to apply only for a sub-group of the cluster-admins in the cluster.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations: 
-  policies.kyverno.io/category: Other
-  policies.kyverno.io/subject: Namespace, ClusterRole, User
-  policies.kyverno.io/minversion: 1.9.0
-digest: 79d9764a4e94898017f1ca1f39e66d27078e22d490626415cc8ba44de30c2366  
+  kyverno/category: Other
+  kyverno/subject: Namespace, ClusterRole, User
+digest: 21b650c1fcde8ef1d5cd7c5e64f1506cdcf5d94e303c27646ac245beb7c8f285  
