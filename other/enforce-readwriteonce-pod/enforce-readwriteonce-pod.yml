@@ -1,7 +1,7 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: readwriteOnce-pod
+  name: readwriteonce-pod
   annotations:
     policies.kyverno.io/title: Enforce ReadWriteOncePod
     policies.kyverno.io/category: Sample
