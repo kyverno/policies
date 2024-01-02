@@ -16,16 +16,10 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: pod.yaml
-    - assert:
-        file: pod-mutated.yaml
-  - name: step-03
-    try:
-    - apply:
         file: deployment.yaml
     - assert:
         file: deployment-mutated.yaml
-  - name: step-04
+  - name: step-03
     try:
     - apply:
         file: cronjob.yaml

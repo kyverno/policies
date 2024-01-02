@@ -294,6 +294,29 @@ spec:
         - name: web-insecure
           containerPort: 8080
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: busybox:1.35
+        ports:
+        - name: admin
+          containerPort: 8000
+          hostPort: 0
+          protocol: TCP
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:

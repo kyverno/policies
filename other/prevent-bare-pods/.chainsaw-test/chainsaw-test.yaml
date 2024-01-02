@@ -11,7 +11,7 @@ spec:
         file: ns.yaml
     - script:
         content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../prevent-naked-pods.yaml | kubectl create -f -
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../prevent-bare-pods.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -40,7 +40,7 @@ spec:
         ref:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
-          name: prevent-naked-pods
+          name: prevent-bare-pods
     - command:
         args:
         - delete
