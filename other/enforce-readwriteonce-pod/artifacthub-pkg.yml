@@ -23,7 +23,9 @@ readme: |
       for CSI volumes only, allows volumes to be writable from only a single Pod. For more
       information see the blog https://kubernetes.io/blog/2023/04/20/read-write-once-pod-access-mode-beta/.
       This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
+
+      Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "PersistentVolumeClaims"
-digest: 408c8011fc0befd3648fc5b89f14e9ac9307e836d2feaa1389ed52bc315643cb
+digest: 482af13e5b907bafd2b62e3a6b55f5dbc13f2cce47e4d1025a12fcc0d3d3c200
