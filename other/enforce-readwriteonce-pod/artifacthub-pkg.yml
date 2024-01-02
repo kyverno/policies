@@ -11,7 +11,7 @@ description: >-
       This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-readwriteonce-pod/enforce-readwriteonce-pod.yml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/enforce-readwriteonce-pod/enforce-readwriteonce-pod.yaml
   ```
 keywords:
   - kyverno
@@ -26,4 +26,4 @@ readme: |
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "PersistentVolumeClaims"
-digest: 4ae04a363554ac48f9358e0269434d3b7a9f1c07f2109282e5bc1a0f206ea67e
+digest: 408c8011fc0befd3648fc5b89f14e9ac9307e836d2feaa1389ed52bc315643cb
