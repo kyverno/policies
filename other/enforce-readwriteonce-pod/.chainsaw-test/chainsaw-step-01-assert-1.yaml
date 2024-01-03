@@ -1,6 +1,0 @@
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: readwriteonce-pod
-status:
-  ready: true
