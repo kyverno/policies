@@ -4,7 +4,7 @@ metadata:
   name: record-creation-details
   annotations:
     policies.kyverno.io/title: Record Creation Details
-    policies.kyverno.io/category: other
+    policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.6.2
     policies.kyverno.io/minversion: 1.6.0

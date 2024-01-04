@@ -343,6 +343,20 @@ spec:
     - name: web-insecure
       containerPort: 8080
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 0
+      protocol: TCP
+---
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
@@ -867,6 +881,29 @@ spec:
         - name: web-insecure
           containerPort: 8080
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        ports:
+        - name: admin
+          containerPort: 8000
+          hostPort: 0
+          protocol: TCP
+---
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
@@ -1330,3 +1367,24 @@ spec:
             ports:
             - name: web-insecure
               containerPort: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            ports:
+            - name: admin
+              containerPort: 8000
+              hostPort: 0
+              protocol: TCP
+---

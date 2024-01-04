@@ -213,3 +213,16 @@ spec:
     - name: web-insecure
       containerPort: 8080
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+    ports:
+    - name: admin
+      containerPort: 8000
+      hostPort: 0
+      protocol: TCP

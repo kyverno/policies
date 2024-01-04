@@ -16,7 +16,7 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "other"
+  kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Namespace, NetworkPolicy"
-digest: 72ed828266bb4fb0e04ee324792999ebba0d1b7de7f5fee97380b11b49a082c0
+digest: 4cf8c5f46d007fdeb4f4da902003f65cbf9c783458ec752c342e5521eccf8c38

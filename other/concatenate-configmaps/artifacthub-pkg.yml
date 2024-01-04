@@ -16,7 +16,7 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "other"
+  kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "ConfigMap"
-digest: 9692704212f51117b6bdf2ddf5d1fcfd743ef738052ce050525a954a48921546
+digest: c733fc7f29f0b0c778760023d8ae5b53d68050f5cf37415ff76414cbcfa6142b

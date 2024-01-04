@@ -1,6 +1,6 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: prevent-naked-pods
+  name: prevent-bare-pods
 status:
   ready: true

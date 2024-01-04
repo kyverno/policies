@@ -16,7 +16,7 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "other"
+  kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Deployment"
-digest: 2bb4984d0c38dfb12cccb1a920cf2ec28bb1e1773628993ff432ec13199b9960
+digest: 01f230890156f2da6a48757126f47cec68895cd77df7d3169c3198ed9b0902b2
