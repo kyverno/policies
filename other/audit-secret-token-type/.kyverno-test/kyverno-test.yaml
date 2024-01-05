@@ -1,0 +1,53 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: audit-service-account-token-secrets
+policies:
+  - ../audit-service-account-token-secrets.yaml  
+resources:
+  - resource.yaml  
+results:
+  - kind: Secret
+    policy: audit-service-account-token-secrets
+    resources:
+      - my-secret-1
+      - my-secret-2
+    result: pass  
+    rule: validate-service-account-token-secrets
+  - kind: ServiceAccount
+    policy: audit-service-account-token-secrets
+    resources:
+      - my-sa
+    result: pass  
+    rule: validate-service-account-token-secrets
+  - kind: Pod
+    policy: audit-service-account-token-secrets
+    resources:
+      - my-good-pod
+    result: pass
+    rule: validate-service-account-token-secrets
+  - kind: Pod
+    policy: audit-service-account-token-secrets
+    resources:
+      - my-volume-pod
+    result: pass
+    rule: validate-service-account-token-secrets
+  - kind: Pod
+    policy: audit-service-account-token-secrets
+    resources:
+      -  my-bad-pod    
+    result: fail
+    rule: validate-service-account-token-secrets
+  - kind: Pod
+    policy: audit-service-account-token-secrets
+    resources:
+      -  default-pod   
+    result: fail
+    rule: validate-service-account-token-secrets
+  - kind: Pod
+    policy: audit-service-account-token-secrets
+    resources:
+      - secret-env-pod    
+    result: fail
+    rule: validate-service-account-token-secrets
+

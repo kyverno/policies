@@ -1,0 +1,21 @@
+name: audit-service-account-token-secrets
+version: 1.0.0
+displayName: Audit Service Account Token Secrets
+createdAt: "2024-01-3T20:30:06.000Z"
+description: >-
+  This policy audits for secrets of type 'kubernetes.io/service-account-token'.
+  In version v1.24, more enhancements have been introduced, affecting the behavior of 
+  service accounts and their secrets.In previous versions, when you create a service account, 
+  it automatically creates a secret resource associated with the service account.In version
+  v1.24 when you create a service account, secrets are no longer automatically created. 
+  To create a token,refer to the documentation for more details  
+  https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/ and
+  https://kubernetes.io/docs/reference/access-authn-authz/service-accounts-admin/
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/audit-service-account-token-secrets/audit-secrets.yaml
+annotations: 
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.22"
+  kyverno/subject: "Secret"
+digest: 289ad4829152c7b7dce3b240c7b9e8a68cd50aee6404e444d9ca22f505ab4832

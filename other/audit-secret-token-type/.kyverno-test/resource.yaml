@@ -1,0 +1,128 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-sa
+
+#Long-Lived Token
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret-1
+  annotations:
+    kubernetes.io/service-account.name: my-sa
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret-2
+  annotations:
+    kubernetes.io/service-account.name: my-sa
+    kubernetes.io/service-account.token.expiration: 3600  
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-env-pod
+spec:
+  containers:
+    - name: secret-test
+      image: nginx
+      command: ['sh', '-c', 'echo "Username: $USER" "Password: $PASSWORD"']
+      env:
+        - name: USER
+          valueFrom:
+            secretKeyRef:
+              name: my-secret-1 
+              key: username.txt  
+        - name: PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: my-secret-1 
+              key: password.txt  
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: default-pod
+spec:
+  containers:
+  - image: nginx
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: myvolume 
+      readOnly: true
+  serviceAccount: default
+  serviceAccountName: default
+  secret:
+    secretName: my-secret-1
+---
+#Time Bound Token
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-volume-pod
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: my-proj-vol
+  serviceAccountName: my-sa 
+  volumes:
+  - name: my-proj-vol
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: my-proj-vol
+          expirationSeconds: 3600 
+    secret:
+      secretName: my-secret-1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-bad-pod
+spec:
+  serviceAccountName: my-sa
+  automountServiceAccountToken: true
+  containers:
+  - image: nginx
+    name: nginx
+  volumes:
+  - name: secret-volume
+    secret:
+      secretName: my-secret-1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-good-pod
+spec:
+  serviceAccountName: my-sa
+  automountServiceAccountToken: true
+  containers:
+  - image: nginx
+    name: nginx
+  volumes:
+  - name: secret-volume2
+    secret:
+      secretName: my-secret-2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
