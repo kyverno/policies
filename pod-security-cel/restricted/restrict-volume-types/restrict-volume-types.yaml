@@ -4,7 +4,7 @@ metadata:
   name: restrict-volume-types
   annotations:
     policies.kyverno.io/title: Restrict Volume Types in CEL
-    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/category: Pod Security Standards (Restricted) in CEL
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod,Volume
     kyverno.io/kubernetes-version: "1.26-1.27"

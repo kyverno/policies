@@ -4,7 +4,7 @@ metadata:
   name: disallow-capabilities-strict
   annotations:
     policies.kyverno.io/title: Disallow Capabilities (Strict) in CEL expressions
-    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/category: Pod Security Standards (Restricted) in CEL
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.11.0
     kyverno.io/kubernetes-version: "1.26-1.27"
