@@ -1,6 +1,6 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: check-svc-account
+  name: check-service-accounts
 status:
   ready: true
