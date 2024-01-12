@@ -1,0 +1,83 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-capabilities-strict
+  annotations:
+    policies.kyverno.io/title: Disallow Capabilities (Strict) in CEL expressions
+    policies.kyverno.io/category: Pod Security Standards (Restricted) in CEL
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Adding capabilities other than `NET_BIND_SERVICE` is disallowed. In addition,
+      all containers must explicitly drop `ALL` capabilities.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: require-drop-all
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      validate:
+        message: >-
+          Containers must drop `ALL` capabilities.
+        cel: 
+          expressions:
+            - expression: >- 
+                object.spec.containers.all(container, has(container.securityContext) &&
+                has(container.securityContext.capabilities) &&
+                has(container.securityContext.capabilities.drop) &&
+                container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))
+    
+            - expression: >- 
+                !has(object.spec.initContainers) ||
+                object.spec.initContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.capabilities) &&
+                has(container.securityContext.capabilities.drop) &&
+                container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))
+            
+            - expression: >- 
+                !has(object.spec.ephemeralContainers) ||
+                object.spec.ephemeralContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.capabilities) &&
+                has(container.securityContext.capabilities.drop) &&
+                container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))
+    - name: adding-capabilities-strict
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      validate:
+        cel:
+          expressions:
+          - expression: >- 
+              object.spec.containers.all(container, !has(container.securityContext) ||
+              !has(container.securityContext.capabilities) ||
+              !has(container.securityContext.capabilities.add) ||
+              ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.
+    
+          - expression: >- 
+              !has(object.spec.initContainers) ||
+              object.spec.initContainers.all(container, !has(container.securityContext) ||
+              !has(container.securityContext.capabilities) ||
+              !has(container.securityContext.capabilities.add) ||
+              ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.
+          
+          - expression: >- 
+              !has(object.spec.ephemeralContainers) ||
+              object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
+              !has(container.securityContext.capabilities) ||
+              !has(container.securityContext.capabilities.add) ||
+              ((size(container.securityContext.capabilities.add) == 1) && (container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE')))
+            message: >-
+              Any capabilities added other than NET_BIND_SERVICE are disallowed.

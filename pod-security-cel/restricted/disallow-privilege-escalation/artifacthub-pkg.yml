@@ -1,0 +1,23 @@
+name: disallow-privilege-escalation-cel
+version: 1.0.0
+displayName: Disallow Privilege Escalation in CEL expressions
+description: >-
+  Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed. This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-cel/restricted/disallow-privilege-escalation/disallow-privilege-escalation.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Restricted)
+  - CEL Expressions
+readme: |
+  Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed. This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Restricted)"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: a656fbec861a5420caab9ad15abf28edf45b47c6d749c3d3943223dfb4d37d7a
+createdAt: "2023-12-04T09:04:49Z"
