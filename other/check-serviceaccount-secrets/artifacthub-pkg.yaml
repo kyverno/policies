@@ -1,4 +1,4 @@
-name: check-service-accounts
+name: check-serviceaccount-secrets
 version: 1.0.0
 displayName: Check Existence of Secrets in ServiceAccount
 createdAt: "2024-01-06T20:14:33.000Z"
@@ -26,7 +26,7 @@ readme: |
   
       Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
-  kyverno/kubernetesVersion: "1.21"
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "Secret,ServiceAccount"
-digest: 4b11a9629bca4fb92d109a74f156092ea3e5d18e35bec31db2f23a373a3aaa29
+digest: 3fd89e5c6fc472be8f9c0c0a55f0c7ea5d5a0091690664c96758122b085d8bac

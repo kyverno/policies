@@ -3,18 +3,18 @@ kind: Test
 metadata:
   name: svc-name
 policies:
-- ../check-service-account.yaml
+- ../check-serviceaccount-secrets.yaml
 resources:
 - resource.yaml
 results:
 - kind: ServiceAccount
-  policy: check-service-accounts
+  policy: check-serviceaccount-secrets
   resources:
   - bad-svc-account
   result: fail
   rule: deny-secrets
 - kind: ServiceAccount
-  policy: check-service-accounts
+  policy: check-serviceaccount-secrets
   resources:
   - good-svc-account
   result: pass
