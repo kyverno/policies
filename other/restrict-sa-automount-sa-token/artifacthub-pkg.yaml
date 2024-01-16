@@ -24,7 +24,7 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
+  kyverno/category: "Security"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "ServiceAccount"
-digest: 4d1c1a64dd33096bb5b40a5175b5dcf5f3f0313bb707d85ea0732a213b0d13bb
+digest: f3ab22501473501edf51568b00c3bbb7c20ba2a1a54671bb4b2d8e705d9b080a 
