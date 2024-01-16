@@ -1,0 +1,54 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-privilege-escalation
+  annotations:
+    policies.kyverno.io/title: Disallow Privilege Escalation in CEL
+    policies.kyverno.io/category: Pod Security Standards (Restricted) in CEL
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
+    policies.kyverno.io/description: >-
+      Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed.
+      This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: privilege-escalation
+      match:
+        any:
+        - resources:
+            kinds:
+              - Pod
+      validate:
+        cel:
+          expressions:
+            - expression: >- 
+                object.spec.containers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
+              message: >-
+                Privilege escalation is disallowed. The field
+                spec.containers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+
+            - expression: >- 
+                !has(object.spec.initContainers) ||
+                object.spec.initContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
+              message: >-
+                Privilege escalation is disallowed. The field
+                spec.initContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+
+            - expression: >- 
+                !has(object.spec.ephemeralContainers) ||
+                object.spec.ephemeralContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
+              message: >-
+                Privilege escalation is disallowed. The field
+                spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+                   
