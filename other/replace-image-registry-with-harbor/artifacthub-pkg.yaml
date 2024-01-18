@@ -1,0 +1,36 @@
+name: replace-image-registry-with-harbor
+version: 1.0.0
+displayName: Replace Image Registry With Harbor
+createdAt: "2024-01-18T22:30:05.000Z"
+description: >-
+  This policy is to replace image registry references in Pods 
+  and their containers/init containers from image registry to a specific 
+  harbor registry project.The image registry replacement 
+  is done for containers where the image registry matches specific name of image.
+  The imageData context variable in this policy providing a normalized view
+  of the container image, allowing the policy to make decisions based on various 
+  image details.Refer to the documentation for more details 
+  https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-image-registries    
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/replace-image-registry-with-harbor/replace-image-registry-with-harbor.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  This policy is to replace image registry references in Pods 
+  and their containers/init containers from image registry to a specific 
+  harbor registry project.The image registry replacement 
+  is done for containers where the image registry matches specific name of image.
+  The imageData context variable in this policy providing a normalized view
+  of the container image, allowing the policy to make decisions based on various 
+  image details.Refer to the documentation for more details 
+  https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-image-registries
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: c4ff8bba0c78bdc76c537a52de4a79c4a7fa47ec79eddfe8c2e781891ad4a215

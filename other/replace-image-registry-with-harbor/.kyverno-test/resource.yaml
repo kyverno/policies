@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod1
+spec:
+  containers:
+    - image: docker.io/nginx:latest
+      name: docker-with-registry
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod2
+spec:
+  containers:
+  - name: without-registry
+    image: nginx:latest
+  initContainers:
+  - name: init-without-registry
+    image: busybox:latest
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
