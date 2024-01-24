@@ -1,0 +1,40 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: verify-git-repositories
+  annotations:
+    policies.kyverno.io/title: Verify Git Repositories
+    policies.kyverno.io/category: Flux
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.6.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: GitRepository
+    policies.kyverno.io/description: >-
+      Ensures that Git repositories used for Flux deployments
+      in a cluster originate from a specific, trusted organization.
+      Prevents the use of untrusted or potentially risky Git repositories.
+      Protects the integrity and security of Flux deployments.
+spec:  
+  # This provides users a working example of how an admin
+  # would be able to enforce git repository sources across
+  # all tenants.
+  validationFailureAction: Audit # Change to 'Enforce' once the specific org url is set.
+  rules:
+    - name: github-repositories-only
+      exclude:
+        resources:
+          namespaces:
+            - flux-system
+      match:
+        any:
+        - resources:
+            kinds:
+              - GitRepository
+      validate:
+        message: ".spec.url must be from a repository within the organisation X"
+        anyPattern:
+        - spec:
+            url: "https://github.com/fluxcd/?*" # repositories in fluxcd via https
+        - spec:
+            url: "ssh://git@github.com:fluxcd/?*" # repositories in fluxcd via ssh
