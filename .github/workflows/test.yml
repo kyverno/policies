@@ -35,6 +35,8 @@ jobs:
           - ^consul$
           - ^external-secret-operator$
           - ^flux$
+          - ^flux$/^verify-flux-images$
+          - ^flux$/^verify-git-repositories$
           - ^istio$
           - ^karpenter$
           - ^kasten$
