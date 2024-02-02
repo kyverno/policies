@@ -15,21 +15,25 @@ metadata:
       Leaky Vessels Container Breakout. For additional details and mitigation please refer to
       https://snyk.io/blog/leaky-vessels-docker-runc-container-breakout-vulnerabilities/.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Audit
   background: true
   rules:
     - name: check-workingDir
       match:
-        resources:
-          kinds:
+        any:
+        - resources:
+            kinds: 
             - Pod
       validate:
         message: "Using /proc/self/fd in workingDir is not allowed."
         pattern:
           spec:
+            definitions:
+              customCheck: &customCheckAnchor
+                =(workingDir): "!/proc/self/fd*"
             containers:
-              - =(workingDir): "!/proc/self/fd*"
+              - <<: *customCheckAnchor
             initContainers:
-              - =(workingDir): "!/proc/self/fd*"
+              - <<: *customCheckAnchor
             ephemeralContainers:
-              - =(workingDir): "!/proc/self/fd*"             
+              - <<: *customCheckAnchor
