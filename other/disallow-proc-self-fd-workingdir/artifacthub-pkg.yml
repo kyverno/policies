@@ -1,0 +1,23 @@
+name: disallow-proc-self-fd-workingdir
+version: 1.0.0 
+displayName: Disallow workingDir with self file descriptors
+createdAt: "2024-02-02T00:00:00.000Z" 
+description: >-
+      In order to mitigate CVE-2024-21626, this policy prevent the creation of Pods
+      with workingDir set in /proc/self/fd/*
+install: |-
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/disallow-proc-self-fd-workingdir/disallow-proc-self-fd-workingdir.yaml
+    ```   
+keywords:
+  - runc
+  - CVE-2024-21626
+readme: | 
+  In order to mitigate CVE-2024-21626, this policy prevent the creation of Pods
+  with workingDir set in /proc/self/fd/*
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations: 
+  kyverno/category: "Runc"
+  kyverno/kubernetesVersion: "1.28"
+  kyverno/subject: "Pod"
