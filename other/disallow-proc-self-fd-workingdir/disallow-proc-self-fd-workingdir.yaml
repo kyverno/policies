@@ -1,0 +1,35 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-proc-self-fd-workingdir
+  annotations:
+    policies.kyverno.io/title: Disallow workingDir with self file descriptors
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: Critical
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.11.4
+    kyverno.io/kubernetes-version: "1.28"
+    policies.kyverno.io/description: >-
+      This policy prevents the configuration of a container workingDir with file descriptors
+      that start with /proc/self/fd. This is a partial mitigation for CVE-2024-21626 aka
+      Leaky Vessels Container Breakout. For additional details and mitigation please refer to
+      https://snyk.io/blog/leaky-vessels-docker-runc-container-breakout-vulnerabilities/.
+spec:
+  validationFailureAction: enforce
+  background: true
+  rules:
+    - name: check-workingDir
+      match:
+        resources:
+          kinds:
+            - Pod
+      validate:
+        message: "Using /proc/self/fd in workingDir is not allowed."
+        pattern:
+          spec:
+            containers:
+              - =(workingDir): "!/proc/self/fd*"
+            initContainers:
+              - =(workingDir): "!/proc/self/fd*"
+            ephemeralContainers:
+              - =(workingDir): "!/proc/self/fd*"             
