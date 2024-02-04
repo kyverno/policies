@@ -28,7 +28,7 @@ spec:
         any:
           - resources:
             kinds:
-              - Pod
+            - Pod
       mutate:
         foreach:
           - list: "request.object.spec.containers"
