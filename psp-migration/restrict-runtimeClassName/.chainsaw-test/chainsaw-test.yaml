@@ -8,9 +8,16 @@ spec:
   steps:
   - name: step-00
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../restrict-runtimeClassName.yaml | kubectl create -f -
+    - apply:
+        file: ../restrict-runtimeClassName.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-runtimeclass
+          spec:
+            validationFailureAction: Enforce
   - name: step-01
     try:
     - assert:
@@ -34,10 +41,3 @@ spec:
         - check:
             ($error != null): true
         file: bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: restrict-runtimeclass

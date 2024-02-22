@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: svc.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-unique-external-dns.yaml | kubectl create -f -
+    - apply:
+        file: ../require-unique-external-dns.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: unique-external-dns
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -24,10 +31,3 @@ spec:
         - check:
             ($error != null): true
         file: svc-bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: unique-external-dns

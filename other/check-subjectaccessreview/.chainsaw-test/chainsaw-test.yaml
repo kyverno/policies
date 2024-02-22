@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../check-subjectaccessreview.yaml | kubectl create -f -
+    - apply:
+        file: ../check-subjectaccessreview.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: check-subjectaccessreview
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02

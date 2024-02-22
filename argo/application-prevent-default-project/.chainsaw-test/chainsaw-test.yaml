@@ -12,9 +12,16 @@ spec:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../application-prevent-default-project.yaml | kubectl create -f -
+    - apply:
+        file: ../application-prevent-default-project.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: application-prevent-default-project
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-02-assert-1.yaml
   - name: step-03
@@ -26,10 +33,3 @@ spec:
         - check:
             ($error != null): true
         file: bad-application.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: application-prevent-default-project

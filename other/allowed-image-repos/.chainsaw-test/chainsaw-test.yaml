@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../allowed-image-repos.yaml | kubectl create -f -
+    - apply:
+        file: ../allowed-image-repos.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: allowed-image-repos
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -33,10 +40,5 @@ spec:
         file: podcontroller-bad.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: allowed-image-repos
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n allowed-image-repos-ns

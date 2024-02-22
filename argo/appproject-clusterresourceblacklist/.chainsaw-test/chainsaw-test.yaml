@@ -12,9 +12,16 @@ spec:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
-    - script:
-        content: |
-            sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../appproject-clusterresourceblacklist.yaml | kubectl create -f -
+    - apply:
+        file: ../appproject-clusterresourceblacklist.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: appproject-clusterresourceblacklist
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-02-assert-1.yaml
   - name: step-03
@@ -41,10 +48,3 @@ spec:
         - check:
             ($error != null): true
         file: bad-no-blacklist.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: appproject-clusterresourceblacklist
