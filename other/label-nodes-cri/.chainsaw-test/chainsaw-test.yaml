@@ -27,10 +27,8 @@ spec:
     try:
     - sleep:
         duration: 10s
-    - command:
-        args:
-        - ./label-check.sh
-        entrypoint: bash
+    - script:
+        content: ./label-check.sh
   - name: step-04
     try:
     - script:
