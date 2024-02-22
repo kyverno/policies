@@ -28,6 +28,8 @@ spec:
         content: |
           #!/bin/bash
           set -eu
+          cp $KUBECONFIG temp
+          export KUBECONFIG=./temp
           export USERNAME=subreviewuser
           export BADUSERNAME=badsubreviewuser
           export CA=ca.crt
@@ -82,8 +84,6 @@ spec:
           # Delete CSR
           kubectl delete csr $USERNAME
           kubectl delete csr $BADUSERNAME
-  - name: step-03
-    try:
     - apply:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
@@ -94,24 +94,30 @@ spec:
         file: chainsaw-step-03-apply-4.yaml
     - apply:
         file: chainsaw-step-03-apply-5.yaml
-  - name: step-04
-    try:
     - script:
-        content: kubectl create --context=subreviewuser-context -f cm-one.yaml
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=subreviewuser-context -f cm-one.yaml
     - script:
-        content: if kubectl create --context=badsubreviewuser-context -f cm-two.yaml;
-          then exit 1; else exit 0; fi
-  - name: step-05
-    try:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl create --context=badsubreviewuser-context -f cm-two.yaml; then exit 1; else exit 0; fi
+    finally:
     - script:
-        content: kubectl config unset users.subreviewuser
+        content: |
+          set -e
+          kubectl delete cpol check-subjectaccessreview
     - script:
-        content: kubectl config unset users.badsubreviewuser
+        content: |
+          set -e
+          kubectl delete -f cm-one.yaml --ignore-not-found
     - script:
-        content: kubectl config unset contexts.subreviewuser-context
+        content: |
+          set -e
+          kubectl delete -f cm-two.yaml --ignore-not-found
     - script:
-        content: kubectl config unset contexts.badsubreviewuser-context
-    - script:
-        content: kubectl delete cpol check-subjectaccessreview
-    - script:
-        content: kubectl delete -f cm-one.yaml
+        content: |
+          set -e
+          rm ./temp

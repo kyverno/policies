@@ -20,6 +20,8 @@ spec:
         content: |
           #!/bin/bash
           set -eu
+          cp $KUBECONFIG temp
+          export KUBECONFIG=./temp
           export USERNAME=blocksvcuser
           export CA=ca.crt
           #### Get CA certificate from kubeconfig assuming it's the first in the list.
@@ -55,33 +57,47 @@ spec:
           kubectl config set-context $USERNAME-context --user=$USERNAME --cluster=$CLUSTER
           # Delete CSR
           kubectl delete csr $USERNAME
-  - name: step-03
-    try:
     - apply:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
         file: chainsaw-step-03-apply-2.yaml
-  - name: step-04
-    try:
     - script:
-        content: kubectl create --context=blocksvcuser-context -n block-updates-deletes-ns -f svc.yaml
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=blocksvcuser-context -n block-updates-deletes-ns -f svc.yaml
     - script:
-        content: kubectl apply --context=blocksvcuser-context -n block-updates-deletes-ns -f svc-good-update.yaml
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl apply --context=blocksvcuser-context -n block-updates-deletes-ns -f svc-good-update.yaml
     - script:
-        content: if kubectl apply --context=blocksvcuser-context -n block-updates-deletes-ns
-          -f svc-bad-update.yaml; then exit 1; else exit 0; fi
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl apply --context=blocksvcuser-context -n block-updates-deletes-ns -f svc-bad-update.yaml; then exit 1; else exit 0; fi
     - script:
-        content: kubectl delete svc --context=blocksvcuser-context -n block-updates-deletes-ns svc01
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl apply -n block-updates-deletes-ns -f svc-bad-update.yaml
     - script:
-        content: if kubectl delete svc --context=blocksvcuser-context -n block-updates-deletes-ns
-          svc02; then exit 1; else exit 0; fi
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl delete svc --context=blocksvcuser-context -n block-updates-deletes-ns svc02; then exit 1; else exit 0; fi
     - script:
-        content: kubectl apply -n block-updates-deletes-ns -f svc-bad-update.yaml
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl delete svc --context=blocksvcuser-context -n block-updates-deletes-ns svc01
+    finally:
     - script:
-        content: kubectl delete svc -n block-updates-deletes-ns svc02
-  - name: step-05
-    try:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl delete svc -n block-updates-deletes-ns svc02 --ignore-not-found
     - script:
-        content: kubectl config unset users.blocksvcuser
-    - script:
-        content: kubectl config unset contexts.blocksvcuser-context
+        content: |
+          set -e
+          rm ./temp
