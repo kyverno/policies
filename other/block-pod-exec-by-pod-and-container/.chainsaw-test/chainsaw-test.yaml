@@ -23,57 +23,20 @@ spec:
         file: chainsaw-step-02-apply-4.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-04
     try:
     - script:
         content: if kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container
           nginx -- ls; then exit 1;else exit 0; fi
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podcontainer-ns
-        - myapp-maintenance-01
-        - --container
-        - busybox
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podcontainer-ns
-        - myapp-maintenance-02
-        - --container
-        - busybox
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podcontainer-ns
-        - not-myapp
-        - --container
-        - nginx
-        - --
-        - ls
-        entrypoint: kubectl
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container busybox -- ls
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-02 --container busybox -- ls
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns not-myapp --container nginx -- ls
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - bpe-podcontainer-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n bpe-podcontainer-ns

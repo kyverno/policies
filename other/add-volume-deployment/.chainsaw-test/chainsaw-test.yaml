@@ -19,7 +19,5 @@ spec:
         file: resource-mutated.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "10"
-        entrypoint: sleep
+    - sleep:
+        duration: 10s

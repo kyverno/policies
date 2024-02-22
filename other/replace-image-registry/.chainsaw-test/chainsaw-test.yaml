@@ -25,13 +25,5 @@ spec:
         file: pod-patched03.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - replace-registry-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n replace-registry-ns

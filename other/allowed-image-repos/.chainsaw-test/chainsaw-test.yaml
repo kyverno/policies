@@ -37,13 +37,5 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: allowed-image-repos
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - allowed-image-repos-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n allowed-image-repos-ns

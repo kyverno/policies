@@ -37,13 +37,5 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: require-base-image
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - require-base-image-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n require-base-image-ns

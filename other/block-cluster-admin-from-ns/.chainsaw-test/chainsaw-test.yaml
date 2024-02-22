@@ -60,57 +60,32 @@ spec:
         file: chainsaw-step-03-apply-1.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - create
-        - -f
-        - good-cm.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl create -f good-cm.yaml
     - script:
         content: if kubectl --context=testuser-context apply -f bad-cm-update.yaml;
           then exit 1; else exit 0; fi
     - script:
         content: if kubectl --context=testuser-context delete -f good-cm.yaml; then
           exit 1; else exit 0; fi
-    - command:
-        args:
-        - --context=testuser-context
-        - create
-        - -f
-        - good-pod.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl --context=testuser-context create -f good-pod.yaml
     - script:
         content: if kubectl --context=testuser-context create -f bad-pod.yaml; then
           exit 1; else exit 0; fi
   - name: step-05
     try:
-    - command:
-        args:
-        - config
-        - unset
-        - users.testuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.testuser-context
-        entrypoint: kubectl
+    - script:
+        content: kubectl config unset users.testuser
+    - script:
+        content: kubectl config unset contexts.testuser-context
   - name: step-06
     try:
     - apply:
         file: good-pod-not-admin.yaml
   - name: step-07
     try:
-    - command:
-        args:
-        - delete
-        - -f
-        - good-pod.yaml
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - -f
-        - good-cm.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete -f good-pod.yaml
+    - script:
+        content: kubectl delete -f good-cm.yaml

@@ -37,26 +37,10 @@ spec:
           then exit 1; else exit 0; fi;
   - name: step-98
     try:
-    - command:
-        args:
-        - delete
-        - deployments
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-ephemeral-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - pods
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-ephemeral-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n block-ephemeral-ns
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n block-ephemeral-ns
   - name: step-99
     try:
     - delete:

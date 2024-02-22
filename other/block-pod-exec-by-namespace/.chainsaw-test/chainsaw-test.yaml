@@ -21,10 +21,8 @@ spec:
         file: podcontrollers.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-04
     try:
     - script:
@@ -32,63 +30,17 @@ spec:
     - script:
         content: if kubectl exec -n pci deploy/deployment01 -- ls; then exit 1;else
           exit 0; fi
-    - command:
-        args:
-        - exec
-        - -n
-        - block-pod-exec-ns
-        - pod01
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - block-pod-exec-ns
-        - deploy/deployment02
-        - --
-        - ls
-        entrypoint: kubectl
+    - script:
+        content: kubectl exec -n block-pod-exec-ns pod01 -- ls
+    - script:
+        content: kubectl exec -n block-pod-exec-ns deploy/deployment02 -- ls
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - deployments
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pci
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - deployments
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-pod-exec-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - pods
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pci
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - pods
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-pod-exec-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n pci
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n block-pod-exec-ns
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n pci
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n block-pod-exec-ns
