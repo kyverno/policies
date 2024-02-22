@@ -68,12 +68,8 @@ spec:
     - script:
         content: if kubectl create --context=tlsoptionsuser-context -f tlsoption.yaml;
           then exit 1; else exit 0; fi
-    - command:
-        args:
-        - create
-        - -f
-        - tlsoption.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl create -f tlsoption.yaml
   - name: step-99
     try:
     - delete:

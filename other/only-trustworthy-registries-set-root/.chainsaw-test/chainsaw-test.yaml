@@ -37,13 +37,5 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: only-trustworthy-registries-set-root
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - trust-registry-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n trust-registry-ns

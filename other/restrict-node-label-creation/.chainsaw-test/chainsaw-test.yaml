@@ -10,10 +10,8 @@ spec:
     - script:
         content: |
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-02
     try:
     - apply:

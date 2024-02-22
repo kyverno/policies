@@ -32,37 +32,13 @@ spec:
         file: podcontrollers-bad.yaml
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-staleimg-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - cpol
-        - block-stale-images
-        entrypoint: kubectl
-    - command:
-        args:
-        - "10"
-        entrypoint: sleep
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - block-staleimg-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - "10"
-        entrypoint: sleep
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
+    - script:
+        content: kubectl delete cpol block-stale-images
+    - sleep:
+        duration: 10s
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
+    - sleep:
+        duration: 10s

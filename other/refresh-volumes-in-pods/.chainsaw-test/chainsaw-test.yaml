@@ -37,10 +37,8 @@ spec:
         file: chainsaw-step-03-apply-2.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
     - script:
         content: |
           annotation=$(kubectl get pod pod01 -n refresh-vols-ns -o json | kyverno jp query "metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)
@@ -59,10 +57,8 @@ spec:
           if [ "$annotation" = "1234abcd" ]; then exit 0; else exit 1; fi
   - name: step-05
     try:
-    - command:
-        args:
-        - "3"
-        entrypoint: sleep
+    - sleep:
+        duration: 3s
     - script:
         content: |
           val=$(kubectl exec pod01 -n refresh-vols-ns -- cat /mnt/foo/foo)
@@ -75,13 +71,5 @@ spec:
         content: |
           val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo)
           if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - refresh-vols-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n refresh-vols-ns

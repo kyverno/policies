@@ -28,10 +28,8 @@ spec:
         file: chainsaw-step-03-apply-1.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
     - script:
         content: |
           annotation=$(kubectl get deployment -n default busybox -o json | kyverno jp query "spec.template.metadata.annotations.\"ops.corp.com\/triggerrestart\" || 'annotation-404' " | tail -n 1 | cut -d '"' -f 2)

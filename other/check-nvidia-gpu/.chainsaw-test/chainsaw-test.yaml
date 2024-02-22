@@ -37,13 +37,5 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: check-nvidia-gpus
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - nvidia-gpu-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n nvidia-gpu-ns

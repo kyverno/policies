@@ -66,13 +66,8 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - command:
-        args:
-        - create
-        - --context=addrbuser-context
-        - -f
-        - ns-rb.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl create --context=addrbuser-context -f ns-rb.yaml
   - name: step-05
     try:
     - assert:
@@ -81,21 +76,9 @@ spec:
         file: rb-not-gen.yaml
   - name: step-06
     try:
-    - command:
-        args:
-        - config
-        - unset
-        - users.addrbuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.addrbuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - -f
-        - ns-rb.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl config unset users.addrbuser
+    - script:
+        content: kubectl config unset contexts.addrbuser-context
+    - script:
+        content: kubectl delete -f ns-rb.yaml
