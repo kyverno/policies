@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../restrict-volume-types.yaml | kubectl create -f -
+    - apply:
+        file: ../restrict-volume-types.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-volume-types
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -33,11 +40,6 @@ spec:
         file: podcontroller-bad.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: restrict-volume-types
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n restrict-voltypes-ns
 

@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: pods.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-unique-uid-per-workload.yaml | kubectl create -f -
+    - apply:
+        file: ../require-unique-uid-per-workload.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: require-unique-uid-per-workload
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -24,10 +31,3 @@ spec:
         - check:
             ($error != null): true
         file: pod-bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: require-unique-uid-per-workload

@@ -12,9 +12,16 @@ spec:
         file: cm.yaml
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../exclude-namespaces-dynamically.yaml | kubectl create -f -
+    - apply:
+        file: ../exclude-namespaces-dynamically.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: exclude-namespaces-example
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -33,10 +40,3 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: exclude-namespaces-example

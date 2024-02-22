@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: pdb.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-pdb.yaml | kubectl create -f -
+    - apply:
+        file: ../require-pdb.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: require-pdb
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -31,10 +38,3 @@ spec:
         - check:
             ($error != null): true
         file: ss-bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: require-pdb

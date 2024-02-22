@@ -8,9 +8,16 @@ spec:
   steps:
   - name: step-01
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../block-ephemeral-containers.yaml | kubectl create -f -
+    - apply:
+        file: ../block-ephemeral-containers.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: block-ephemeral-containers
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -42,10 +49,3 @@ spec:
         content: kubectl delete deployments --all --force --grace-period=0 -n block-ephemeral-ns
     - script:
         content: kubectl delete pods --all --force --grace-period=0 -n block-ephemeral-ns
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: block-ephemeral-containers

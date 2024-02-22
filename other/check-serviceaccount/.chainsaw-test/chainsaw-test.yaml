@@ -8,9 +8,16 @@ spec:
   steps:
   - name: step-01
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../check-serviceaccount.yaml | kubectl create -f -
+    - apply:
+        file: ../check-serviceaccount.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: check-sa
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -52,10 +59,5 @@ spec:
           kubectl config unset users.safe-user
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: check-sa
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n check-sa-ns
