@@ -23,20 +23,10 @@ spec:
         file: pod.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
-    - command:
-        args:
-        - exec
-        - -n
-        - exec-event-ns
-        - execevent-pod
-        - --
-        - ls
-        - /
-        entrypoint: kubectl
+    - sleep:
+        duration: 5s
+    - script:
+        content: kubectl exec -n exec-event-ns execevent-pod -- ls /
   - name: step-04
     try:
     - assert:

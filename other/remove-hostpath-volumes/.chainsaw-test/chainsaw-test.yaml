@@ -33,13 +33,5 @@ spec:
         file: not-pod-patched05.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - remove-hostpathvols-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n remove-hostpathvols-ns

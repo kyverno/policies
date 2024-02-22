@@ -61,26 +61,15 @@ spec:
         file: chainsaw-step-03-apply-2.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - --context=denyprivilegeduser-context
-        - create
-        - -f
-        - ns-good.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl --context=denyprivilegeduser-context create -f ns-good.yaml
     - script:
         content: if kubectl --context=denyprivilegeduser-context create -f ns-bad.yaml;
           then exit 1; else exit 0; fi
-    - command:
-        args:
-        - delete
-        - -f
-        - ns-good.yaml
-        entrypoint: kubectl
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - script:
+        content: kubectl delete -f ns-good.yaml
+    - sleep:
+        duration: 5s
   - name: step-05
     try:
     - apply:
@@ -94,15 +83,8 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: deny-privileged-profile
-    - command:
-        args:
-        - config
-        - unset
-        - users.denyprivilegeduser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.denyprivilegeduser-context
-        entrypoint: kubectl
+    - script:
+        content: kubectl config unset users.denyprivilegeduser
+    - script:
+        content: kubectl config unset contexts.denyprivilegeduser-context
+

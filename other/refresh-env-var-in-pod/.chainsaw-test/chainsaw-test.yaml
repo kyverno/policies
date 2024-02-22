@@ -110,13 +110,5 @@ spec:
               echo "Failed. Value of ENV_SECRET is currently $three_env_one."
               exit 1;
           fi
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - refresh-env-var-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n refresh-env-var-ns

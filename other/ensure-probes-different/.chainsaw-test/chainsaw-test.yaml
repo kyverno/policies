@@ -30,13 +30,5 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: validate-probes
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - ensure-probes-different-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n ensure-probes-different-ns

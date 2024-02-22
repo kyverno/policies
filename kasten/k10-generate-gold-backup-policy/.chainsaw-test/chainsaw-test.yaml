@@ -43,43 +43,11 @@ spec:
         file: not-generated-policy.yaml
   - name: step-05
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-gp-ns01
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-gp-ns02
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-gp-ns03
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-gp-ns04
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns01
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns02
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns03
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n k10-gp-ns04

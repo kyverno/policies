@@ -73,21 +73,10 @@ spec:
         file: chainsaw-step-03-assert-1.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - delete
-        - csr
-        - inspect-csr-user
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - users.inspect-csr-user
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.inspect-csr-user-context
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete csr inspect-csr-user
+    - script:
+        content: kubectl config unset users.inspect-csr-user
+    - script:
+        content: kubectl config unset contexts.inspect-csr-user-context
+

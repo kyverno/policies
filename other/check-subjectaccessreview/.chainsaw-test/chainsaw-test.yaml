@@ -88,51 +88,22 @@ spec:
         file: chainsaw-step-03-apply-5.yaml
   - name: step-04
     try:
-    - command:
-        args:
-        - create
-        - --context=subreviewuser-context
-        - -f
-        - cm-one.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl create --context=subreviewuser-context -f cm-one.yaml
     - script:
         content: if kubectl create --context=badsubreviewuser-context -f cm-two.yaml;
           then exit 1; else exit 0; fi
   - name: step-05
     try:
-    - command:
-        args:
-        - config
-        - unset
-        - users.subreviewuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - users.badsubreviewuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.subreviewuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.badsubreviewuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - cpol
-        - check-subjectaccessreview
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - -f
-        - cm-one.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl config unset users.subreviewuser
+    - script:
+        content: kubectl config unset users.badsubreviewuser
+    - script:
+        content: kubectl config unset contexts.subreviewuser-context
+    - script:
+        content: kubectl config unset contexts.badsubreviewuser-context
+    - script:
+        content: kubectl delete cpol check-subjectaccessreview
+    - script:
+        content: kubectl delete -f cm-one.yaml

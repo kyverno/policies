@@ -37,13 +37,6 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: restrict-volume-types
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - restrict-voltypes-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n restrict-voltypes-ns
+

@@ -44,36 +44,12 @@ spec:
         file: ss-bad-nolabel.yaml
   - name: step-98
     try:
-    - command:
-        args:
-        - delete
-        - deployments
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-dplabel-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - statefulsets
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-dplabel-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - pods
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - k10-dplabel-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n k10-dplabel-ns
+    - script:
+        content: kubectl delete statefulsets --all --force --grace-period=0 -n k10-dplabel-ns
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n k10-dplabel-ns
   - name: step-99
     try:
     - delete:

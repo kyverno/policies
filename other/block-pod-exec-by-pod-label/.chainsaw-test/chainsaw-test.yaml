@@ -19,51 +19,20 @@ spec:
         file: pods.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-04
     try:
     - script:
         content: if kubectl exec -n bpe-podlabel-ns pod03 -- ls; then exit 1;else
           exit 0; fi
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podlabel-ns
-        - pod01
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podlabel-ns
-        - pod02
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - bpe-podlabel-ns
-        - pod04
-        - --
-        - ls
-        entrypoint: kubectl
+    - script:
+        content: kubectl exec -n bpe-podlabel-ns pod01 -- ls
+    - script:
+        content: kubectl exec -n bpe-podlabel-ns pod02 -- ls
+    - script:
+        content: kubectl exec -n bpe-podlabel-ns pod04 -- ls
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - bpe-podlabel-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n bpe-podlabel-ns
