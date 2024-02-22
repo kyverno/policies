@@ -31,10 +31,3 @@ spec:
         - check:
             ($error != null): true
         file: no-host-success-first.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: disallow-empty-ingress-host

@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: ingress.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../restrict-ingress-host.yaml | kubectl create -f -
+    - apply:
+        file: ../restrict-ingress-host.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: unique-ingress-host
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -31,10 +38,3 @@ spec:
         file: ingress-updates-bad.yaml
     - apply:
         file: ingress-updates-good.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: unique-ingress-host

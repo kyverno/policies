@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: secret.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../restrict-secrets-by-label.yaml | kubectl create -f -
+    - apply:
+        file: ../restrict-secrets-by-label.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-secrets-by-label
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -31,10 +38,3 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: restrict-secrets-by-label

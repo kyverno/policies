@@ -10,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../prevent-bare-pods.yaml | kubectl create -f -
+    - apply:
+        file: ../prevent-bare-pods.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: prevent-bare-pods
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -35,10 +42,5 @@ spec:
           if [ $(kubectl get pods -n prevent-naked-pods-ns | grep gooddeployment01 | wc -l) -gt 0 ]; then exit 0; else exit 1; fi
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: prevent-bare-pods
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n prevent-naked-pods-ns
