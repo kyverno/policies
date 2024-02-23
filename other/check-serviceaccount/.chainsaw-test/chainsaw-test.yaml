@@ -44,7 +44,7 @@ spec:
           # Setting up the SA user
           export TOKEN_SA=`kubectl get secret safe-secret -n check-sa-ns -ojsonpath='{.data.token}' | base64 -d`
           kubectl config set-credentials safe-user --token=${TOKEN_SA}
-          kubectl config set-context safe-context --user=safe-user --cluster=kind-kind --namespace=check-sa-ns
+          kubectl config set-context safe-context --user=safe-user --cluster=chainsaw --namespace=check-sa-ns
 
           # Applying Manifests
           kubectl config use-context safe-context
@@ -52,12 +52,20 @@ spec:
           if kubectl apply -f pod-bad.yaml; then exit 1; else echo "badpod01 failed to create"; fi
           kubectl apply -f podcontroller-good.yaml
           if kubectl apply -f podcontroller-bad.yaml; then exit 1; else echo "badpodcontrollers failed to create"; fi
-
-          # Unset the context and user
-          kubectl config use-context kind-kind
-          kubectl config unset contexts.safe-context
-          kubectl config unset users.safe-user
-  - name: step-99
-    try:
+    finally:
     - script:
-        content: kubectl delete all --all --force --grace-period=0 -n check-sa-ns
+        content: |
+          set -e
+          kubectl delete -f pod-good.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f pod-bad.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f podcontroller-good.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f podcontroller-bad.yaml --ignore-not-found
