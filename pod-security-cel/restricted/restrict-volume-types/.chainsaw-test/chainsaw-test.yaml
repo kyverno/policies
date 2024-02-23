@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -9,9 +10,16 @@ spec:
     try:
     - apply:
         file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../restrict-volume-types.yaml | kubectl create -f -
+    - apply:
+        file: ../restrict-volume-types.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-volume-types
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -32,18 +40,5 @@ spec:
         file: ../../../../pod-security/restricted/restrict-volume-types/.chainsaw-test/podcontroller-bad.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: restrict-volume-types
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - restrict-voltypes-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n restrict-voltypes-ns

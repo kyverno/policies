@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -9,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../only-trustworthy-registries-set-root.yaml | kubectl create -f -
+    - apply:
+        file: ../only-trustworthy-registries-set-root.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: only-trustworthy-registries-set-root
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -32,18 +40,5 @@ spec:
         file: podcontroller-bad.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: only-trustworthy-registries-set-root
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - trust-registry-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n trust-registry-ns

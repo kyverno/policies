@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -14,10 +15,8 @@ spec:
     - script:
         content: |
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:nodes/system\:thisisjunk/g' - | kubectl apply -f -
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-02
     try:
     - apply:
@@ -41,7 +40,5 @@ spec:
     - script:
         content: |
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:thisisjunk/system\:nodes/g' - | kubectl apply -f -
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -21,10 +22,8 @@ spec:
         file: podcontrollers.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-04
     try:
     - script:
@@ -33,99 +32,25 @@ spec:
     - script:
         content: if kubectl exec -n pod-exec-label-ns02 deploy/deployment02 -- ls;
           then exit 1;else exit 0; fi
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns01
-        - pod01
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns03
-        - pod03
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns04
-        - pod04
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns01
-        - deploy/deployment01
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns03
-        - deploy/deployment03
-        - --
-        - ls
-        entrypoint: kubectl
-    - command:
-        args:
-        - exec
-        - -n
-        - pod-exec-label-ns04
-        - deploy/deployment04
-        - --
-        - ls
-        entrypoint: kubectl
+    - script:
+        content: kubectl exec -n pod-exec-label-ns01 pod01 -- ls
+    - script:
+        content: kubectl exec -n pod-exec-label-ns03 pod03 -- ls
+    - script:
+        content: kubectl exec -n pod-exec-label-ns04 pod04 -- ls
+    - script:
+        content: kubectl exec -n pod-exec-label-ns01 deploy/deployment01 -- ls
+    - script:
+        content: kubectl exec -n pod-exec-label-ns03 deploy/deployment03 -- ls
+    - script:
+        content: kubectl exec -n pod-exec-label-ns04 deploy/deployment04 -- ls
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pod-exec-label-ns01
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pod-exec-label-ns02
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pod-exec-label-ns03
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - pod-exec-label-ns04
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns01
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns02
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns03
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns04
