@@ -24,7 +24,7 @@ metadata:
       It is recommended to use https://kubernetes.io/docs/reference/access-authn-authz/rbac/#aggregated-clusterroles 
 spec:
   rules:
-    - name: add-topology-labels
+    - name: project-foo
       match:
         any:
         - resources:
@@ -35,10 +35,10 @@ spec:
         variable:
           jmesPath: request.object.target.name
           default: ''
-      - name: ZoneLabel
+      - name: foolabel
         apiCall:
           urlPath: "/api/v1/nodes/{{node}}"
-          jmesPath: "metadata.labels.\"topology.kubernetes.io/zone\" || 'empty'"
+          jmesPath: "metadata.labels.foo || 'empty'"
       mutate:
         targets:
         - apiVersion: v1
@@ -48,5 +48,4 @@ spec:
         patchStrategicMerge:
           metadata:
             labels: 
-              # https://kubernetes.io/docs/reference/labels-annotations-taints/#topologykubernetesiozone
-              topology.kubernetes.io/zone: "{{ ZoneLabel }}"
+              foo: "{{ foolabel }}"
