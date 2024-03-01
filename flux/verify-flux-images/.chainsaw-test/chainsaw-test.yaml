@@ -1,0 +1,36 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-images
+spec:
+  steps:
+  - name: 01 - Create policy and verify
+    try:
+    - apply:
+        file: ../verify-flux-images.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: verify-flux-images
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: 02 - Discover tag for fluxcd/source-controller and update Pod
+    try:
+    - script:
+        content: |
+          #!/bin/bash
+          set -eu
+          IMAGEREPO=ghcr.io/fluxcd/source-controller
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n | tail -n1)
+          MANIFEST=pod-ghcr-source-controller.yaml
+          echo "Latest version of $IMAGEREPO is $LATESTTAG"
+          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
+  - name: 03 - Verify fluxcd/source-controller
+    try:
+    - apply:
+        file: pod-ghcr-source-controller.yaml
