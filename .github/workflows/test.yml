@@ -19,13 +19,15 @@ jobs:
       matrix:
         k8s-version:
           - name: v1.25
-            version: v1.25.11
+            version: v1.25.16
           - name: v1.26
-            version: v1.26.6
+            version: v1.26.14
           - name: v1.27
-            version: v1.27.3
+            version: v1.27.11
           - name: v1.28
-            version: v1.28.0
+            version: v1.28.7
+          - name: v1.29
+            version: v1.29.2
         tests:
           - ^argo$
           - ^aws$
@@ -101,9 +103,7 @@ jobs:
           set -e
           kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@56be3cb4ec65a987b6ef4d7ab3a55ee17760a57c # v0.1.2
-        with:
-          release: v0.0.9
+        uses: kyverno/action-install-chainsaw@204730d723e1fd712e54e069031290ba2c1c14bd # v0.1.6
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

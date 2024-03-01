@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -31,27 +32,9 @@ spec:
         file: pod-not-patched.yaml
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - other-certvol-ns
-        entrypoint: kubectl
-    - command:
-        args:
-        - "20"
-        entrypoint: sleep
-    - command:
-        args:
-        - delete
-        - pods
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - other-certvol-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n other-certvol-ns
+    - sleep:
+        duration: 20s
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n other-certvol-ns

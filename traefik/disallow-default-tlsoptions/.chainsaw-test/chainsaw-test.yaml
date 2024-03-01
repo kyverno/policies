@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -11,9 +12,16 @@ spec:
         file: chainsaw-step-00-assert-1.yaml
   - name: step-01
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../disallow-default-tlsoptions.yaml | kubectl create -f -
+    - apply:
+        file: ../disallow-default-tlsoptions.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: disallow-default-tlsoptions
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -68,19 +76,10 @@ spec:
     - script:
         content: if kubectl create --context=tlsoptionsuser-context -f tlsoption.yaml;
           then exit 1; else exit 0; fi
-    - command:
-        args:
-        - create
-        - -f
-        - tlsoption.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl create -f tlsoption.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: disallow-default-tlsoptions
     - script:
         content: |
           kubectl delete -f tlsoption.yaml

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -9,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../check-subjectaccessreview.yaml | kubectl create -f -
+    - apply:
+        file: ../check-subjectaccessreview.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: check-subjectaccessreview
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -20,6 +28,8 @@ spec:
         content: |
           #!/bin/bash
           set -eu
+          cp $KUBECONFIG temp
+          export KUBECONFIG=./temp
           export USERNAME=subreviewuser
           export BADUSERNAME=badsubreviewuser
           export CA=ca.crt
@@ -74,8 +84,6 @@ spec:
           # Delete CSR
           kubectl delete csr $USERNAME
           kubectl delete csr $BADUSERNAME
-  - name: step-03
-    try:
     - apply:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
@@ -86,53 +94,30 @@ spec:
         file: chainsaw-step-03-apply-4.yaml
     - apply:
         file: chainsaw-step-03-apply-5.yaml
-  - name: step-04
-    try:
-    - command:
-        args:
-        - create
-        - --context=subreviewuser-context
-        - -f
-        - cm-one.yaml
-        entrypoint: kubectl
     - script:
-        content: if kubectl create --context=badsubreviewuser-context -f cm-two.yaml;
-          then exit 1; else exit 0; fi
-  - name: step-05
-    try:
-    - command:
-        args:
-        - config
-        - unset
-        - users.subreviewuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - users.badsubreviewuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.subreviewuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.badsubreviewuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - cpol
-        - check-subjectaccessreview
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - -f
-        - cm-one.yaml
-        entrypoint: kubectl
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=subreviewuser-context -f cm-one.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl create --context=badsubreviewuser-context -f cm-two.yaml; then exit 1; else exit 0; fi
+    finally:
+    - script:
+        content: |
+          set -e
+          kubectl delete cpol check-subjectaccessreview
+    - script:
+        content: |
+          set -e
+          kubectl delete -f cm-one.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f cm-two.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          rm ./temp
