@@ -25,7 +25,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/source-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-source-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
@@ -41,7 +41,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/kustomize-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-kustomize-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
@@ -57,7 +57,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/helm-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n -k2,2n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-helm-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
@@ -73,7 +73,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/notification-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-notification-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
@@ -89,7 +89,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/image-reflector-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n -k2,2n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-image-reflector-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
@@ -105,7 +105,7 @@ spec:
           #!/bin/bash
           set -eu
           IMAGEREPO=ghcr.io/fluxcd/image-automation-controller
-          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -t "." -k1,1n -k2,2n | tail -n1)
+          LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-image-automation-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
           sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
