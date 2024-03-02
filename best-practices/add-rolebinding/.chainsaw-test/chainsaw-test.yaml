@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -21,6 +22,8 @@ spec:
         content: |
           #!/bin/bash
           set -eu
+          cp $KUBECONFIG temp
+          export KUBECONFIG=./temp
           export USERNAME=addrbuser
           export CA=ca.crt
           #### Get CA certificate from kubeconfig assuming it's the first in the list.
@@ -56,23 +59,21 @@ spec:
           kubectl config set-context $USERNAME-context --user=$USERNAME --cluster=$CLUSTER
           # Delete CSR
           kubectl delete csr $USERNAME
-  - name: step-03
-    try:
     - apply:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
         file: chainsaw-step-03-apply-2.yaml
-  - name: step-04
-    try:
     - apply:
         file: ns.yaml
-    - command:
-        args:
-        - create
-        - --context=addrbuser-context
-        - -f
-        - ns-rb.yaml
-        entrypoint: kubectl
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=addrbuser-context -f ns-rb.yaml
+    finally:
+    - script:
+        content: |
+          rm ./temp
   - name: step-05
     try:
     - assert:
@@ -81,21 +82,5 @@ spec:
         file: rb-not-gen.yaml
   - name: step-06
     try:
-    - command:
-        args:
-        - config
-        - unset
-        - users.addrbuser
-        entrypoint: kubectl
-    - command:
-        args:
-        - config
-        - unset
-        - contexts.addrbuser-context
-        entrypoint: kubectl
-    - command:
-        args:
-        - delete
-        - -f
-        - ns-rb.yaml
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete -f ns-rb.yaml

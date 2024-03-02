@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -9,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../ensure-probes-different.yaml | kubectl create -f -
+    - apply:
+        file: ../ensure-probes-different.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: validate-probes
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -25,18 +33,5 @@ spec:
         file: podcontrollers-bad.yaml
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: validate-probes
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - ensure-probes-different-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n ensure-probes-different-ns

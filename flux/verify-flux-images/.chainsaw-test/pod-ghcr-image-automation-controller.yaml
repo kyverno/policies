@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ghcr-image-automation-controller
+spec:
+  containers:
+  - name: pod-ghcr-image-automation-controller
+    image: ghcr.io/fluxcd/image-automation-controller:replacethistag

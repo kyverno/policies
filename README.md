@@ -124,4 +124,3 @@ If you're not yet comfortable with Kyverno and would like to see a policy that m
 * Be responsive to the GitHub issue if further follow-up is required by the contributors or maintainers.
 
 Having this information up front will assist others in crafting a policy to meet your needs.
-

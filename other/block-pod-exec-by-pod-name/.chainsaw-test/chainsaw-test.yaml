@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -23,10 +24,8 @@ spec:
         file: chainsaw-step-02-apply-4.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
   - name: step-04
     try:
     - script:
@@ -39,13 +38,5 @@ spec:
         content: kubectl exec -n bpe-podname-ns not-myapp -- ls
   - name: step-99
     try:
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - bpe-podname-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n bpe-podname-ns
