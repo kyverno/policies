@@ -9,7 +9,7 @@ spec:
   - name: version
     value: ($values.kubeVersion)
   - name: minorversion
-    value: (to_number(split($version,'.')[1]))
+    value: (to_number(split($values.version,'.')[1]))
   steps:
   - name: step-01
     try:
