@@ -8,74 +8,56 @@ metadata:
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    kyverno.io/kyverno-version: 1.7.2
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.4
+    kyverno.io/kubernetes-version: "1.27"
     policies.kyverno.io/description: >-
-      This policy is to replace image registry references in Pods 
-      and their containers/init containers from image registry to a specific 
-      harbor registry project. The image registry replacement 
-      is done for containers where the image registry matches specific name of image.
-      The imageData context variable in this policy providing a normalized view
+      Some registries like Harbor offer pull-through caches for images from certain registries.
+      Images can be re-written to be pulled from the redirected registry instead of the original and
+      the registry will proxy pull the image, adding it to its internal cache.
+      The imageData context variable in this policy provides a normalized view
       of the container image, allowing the policy to make decisions based on various 
-      image details. Refer to the documentation for more details 
-      https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-image-registries
+      "live" image details. As a result, it requires access to the source registry and the existence
+      of the target image to verify those details.
 spec:
   rules:
-    - name: replace-image-registry-with-harbor-pod-containers
+    - name: redirect-docker
       match:
         any:
           - resources:
               kinds:
                 - Pod
+              operations:
+                - CREATE
+                - UPDATE
       mutate:
         foreach:
-          - list: "request.object.spec.containers"
+          - list: request.object.spec.initContainers[]
             context:
               - name: imageData
                 imageRegistry:
                   reference: "{{ element.image }}"
             preconditions:
               any:
-                - key: "{{imageData.image}}"
+                - key: "{{imageData.registry}}"
                   operator: Equals
-                  value: "*?"
-                - key: "{{request.operation}}"
-                  operator: AnyIn
-                  value: CREATE
-            patchStrategicMerge:
-              spec:
-                containers:
-                  - name: "{{ element.name }}"
-                    image: "harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}"
-    - name: replace-image-registry-with-harbor-pod-initcontainers
-      match:
-        any:
-        - resources:
-            kinds:
-            - Pod
-      preconditions:
-        all:
-          - key: "{{ request.object.spec.initContainers[] || `[]` | length(@) }}"
-            operator: GreaterThanOrEquals
-            value: 1
-      mutate:
-        foreach:
-          - list: "request.object.spec.initContainers"
-            context:
-              - name: imageData
-                imageRegistry:
-                  reference: "{{ element.image }}"
-            preconditions:
-              any:
-                - key: "{{imageData.image}}"
-                  operator: Equals
-                  value: "*?"
-                - key: "{{request.operation}}"
-                  operator: AnyIn
-                  value: CREATE
+                  value: index.docker.io
             patchStrategicMerge:
               spec:
                 initContainers:
                   - name: "{{ element.name }}"
-                    image: "harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}"
+                    image: harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}
+          - list: request.object.spec.containers[]
+            context:
+              - name: imageData
+                imageRegistry:
+                  reference: "{{ element.image }}"
+            preconditions:
+              any:
+                - key: "{{imageData.registry}}"
+                  operator: Equals
+                  value: index.docker.io
+            patchStrategicMerge:
+              spec:
+                containers:
+                  - name: "{{ element.name }}"
+                    image: harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}

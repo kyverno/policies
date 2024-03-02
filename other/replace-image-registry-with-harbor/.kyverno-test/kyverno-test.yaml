@@ -13,25 +13,11 @@ results:
     resources:
       - myapp-pod1
     result: pass
-    rule: replace-image-registry-with-harbor-pod-containers
+    rule: redirect-docker
   - kind: Pod
     patchedResource: patchedResource2.yaml
     policy: replace-image-registry-with-harbor
     resources:
       - myapp-pod2
     result: pass
-    rule: replace-image-registry-with-harbor-pod-containers
-  - kind: Pod
-    patchedResource: patchedResource.yaml
-    policy: replace-image-registry-with-harbor
-    resources:
-      - myapp-pod1
-    result: skip
-    rule: replace-image-registry-with-harbor-pod-initcontainers
-  - kind: Pod
-    patchedResource: patchedResource2.yaml
-    policy: replace-image-registry-with-harbor
-    resources:
-      - myapp-pod2
-    result: pass
-    rule: replace-image-registry-with-harbor-pod-initcontainers
+    rule: redirect-docker
