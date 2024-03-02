@@ -14,21 +14,20 @@ metadata:
     policies.kyverno.io/description: >-
       This policy is to replace image registry references in Pods 
       and their containers/init containers from image registry to a specific 
-      harbor registry project.The image registry replacement 
+      harbor registry project. The image registry replacement 
       is done for containers where the image registry matches specific name of image.
       The imageData context variable in this policy providing a normalized view
       of the container image, allowing the policy to make decisions based on various 
-      image details.Refer to the documentation for more details 
+      image details. Refer to the documentation for more details 
       https://kyverno.io/docs/writing-policies/external-data-sources/#variables-from-image-registries
 spec:
-  background: false
   rules:
     - name: replace-image-registry-with-harbor-pod-containers
       match:
         any:
           - resources:
-            kinds:
-            - Pod
+              kinds:
+                - Pod
       mutate:
         foreach:
           - list: "request.object.spec.containers"
