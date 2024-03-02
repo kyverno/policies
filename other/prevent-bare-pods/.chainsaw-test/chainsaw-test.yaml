@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -9,9 +10,16 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../prevent-bare-pods.yaml | kubectl create -f -
+    - apply:
+        file: ../prevent-bare-pods.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: prevent-bare-pods
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -27,27 +35,12 @@ spec:
         file: deployment.yaml
   - name: step-03
     try:
-    - command:
-        args:
-        - "5"
-        entrypoint: sleep
+    - sleep:
+        duration: 5s
     - script:
         content: |
           if [ $(kubectl get pods -n prevent-naked-pods-ns | grep gooddeployment01 | wc -l) -gt 0 ]; then exit 0; else exit 1; fi
   - name: step-99
     try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: prevent-bare-pods
-    - command:
-        args:
-        - delete
-        - all
-        - --all
-        - --force
-        - --grace-period=0
-        - -n
-        - prevent-naked-pods-ns
-        entrypoint: kubectl
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n prevent-naked-pods-ns

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ghcr-kustomize-controller
+spec:
+  containers:
+  - name: pod-ghcr-kustomize-controller
+    image: ghcr.io/fluxcd/kustomize-controller:replacethistag

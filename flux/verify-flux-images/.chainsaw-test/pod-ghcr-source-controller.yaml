@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ghcr-source-controller
+spec:
+  containers:
+  - name: pod-ghcr-source-controller
+    image: ghcr.io/fluxcd/source-controller:replacethistag

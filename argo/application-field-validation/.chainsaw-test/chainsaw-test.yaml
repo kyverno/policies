@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -11,9 +12,16 @@ spec:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
-    - script:
-        content: |
-          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../application-field-validation.yaml | kubectl create -f -
+    - apply:
+        file: ../application-field-validation.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: application-field-validation
+          spec:
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-02-assert-1.yaml
   - name: step-03
@@ -25,10 +33,3 @@ spec:
         - check:
             ($error != null): true
         file: bad-application.yaml
-  - name: step-99
-    try:
-    - delete:
-        ref:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          name: application-field-validation
