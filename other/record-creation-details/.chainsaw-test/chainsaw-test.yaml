@@ -2,9 +2,17 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  creationTimestamp: null
   name: record-creation-details
 spec:
+  bindings:
+  # A value named kubeVersion must be passed to Chainsaw using the --values flag the
+  # value of which is expected to be something like 'v1.26.4'. That value will then be
+  # processed by the bindings defined in this test and a final value will be evaluated
+  # by an assertion in the files defined in 'step-02'.
+  - name: version
+    value: ($values.kubeVersion)
+  - name: minorversion
+    value: (to_number(split($version,'.')[1]))
   steps:
   - name: step-01
     try:

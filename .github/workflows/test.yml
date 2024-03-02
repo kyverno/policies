@@ -84,6 +84,8 @@ jobs:
           [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
           chmod +x ./kind
           sudo mv ./kind /usr/local/bin/kind
+      - name: Install oras CLI
+        uses: oras-project/setup-oras@ee7dbe1144cb00080a89497f937dae78f85fce29 # v1.1.0
       - name: Install latest Kyverno CLI
         uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
       - name: Create kind cluster
@@ -103,10 +105,12 @@ jobs:
           set -e
           kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@204730d723e1fd712e54e069031290ba2c1c14bd # v0.1.6
+        uses: kyverno/action-install-chainsaw@3bf0752f44d348d859fefa022f113bda6a24a1ae # v0.1.7
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
-          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
+          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false --values - <<EOF
+          kubeVersion: ${{ matrix.k8s-version.version }}
+          EOF
