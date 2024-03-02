@@ -11,7 +11,7 @@ description: >-
   be of security concern and should be audited.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-service-account/check-service-account.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-serviceaccount-secrets/check-serviceaccount-secrets.yaml
   ```
 keywords:
   - kyverno
