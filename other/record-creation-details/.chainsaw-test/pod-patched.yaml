@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    kyverno.io/created-by: '{"groups":["system:masters","system:authenticated"],"username":"kubernetes-admin"}'
+    kyverno.io/created-by: (($values.minorversion < `29` && '{"groups":["system:masters","system:authenticated"],"username":"kubernetes-admin"}') || '{"groups":["kubeadm:cluster-admins","system:authenticated"],"username":"kubernetes-admin"}')
   name: pod01
 spec:
   containers:

@@ -5,6 +5,11 @@ metadata:
   creationTimestamp: null
   name: record-creation-details
 spec:
+  bindings:
+  - name: version
+    value: ($kubeVersion)
+  - name: minorversion
+    value: (to_number(split($kubeVersion,'.')[1]))
   steps:
   - name: step-01
     try:
