@@ -1,0 +1,32 @@
+name: check-serviceaccount-secrets
+version: 1.0.0
+displayName: Check Existence of Secrets in ServiceAccount
+createdAt: "2024-03-02T06:14:33.000Z"
+description: >-
+  Before version 1.24, Kubernetes automatically generated Secret-based tokens 
+  for ServiceAccounts. To distinguish between automatically generated tokens 
+  and manually created ones, Kubernetes checks for a reference from the 
+  ServiceAccount's secrets field. If the Secret is referenced in the secrets 
+  field, it is considered an auto-generated legacy token. These legacy Tokens can
+  be of security concern and should be audited.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-serviceaccount-secrets/check-serviceaccount-secrets.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Before version 1.24, Kubernetes automatically generated Secret-based tokens 
+  for ServiceAccounts. To distinguish between automatically generated tokens 
+  and manually created ones, Kubernetes checks for a reference from the 
+  ServiceAccount's secrets field. If the Secret is referenced in the secrets 
+  field, it is considered an auto-generated legacy token. These legacy Tokens can
+  be of security concern and should be audited.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Secret,ServiceAccount"
+digest: 43f9a02f3d13e172bbd0a24cae3747184c407f7df2b777247625906e851eff7e 

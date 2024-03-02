@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ghcr-helm-controller
+spec:
+  containers:
+  - name: pod-ghcr-helm-controller
+    image: ghcr.io/fluxcd/helm-controller:replacethistag
