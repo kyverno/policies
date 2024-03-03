@@ -14,7 +14,7 @@ metadata:
       PodDisruptionBudget, specified as percentages, allows 50% of the replicas to be out of service in that
       minAvailable should be no higher than 50% and maxUnavailable should be no lower than 50%.
 spec:
-  validationFailureAction: Enforce
+  validationFailureAction: Audit
   background: true
   rules:
   # Checks if PDB fields minAvailable or maxUnavailable use percentages and, if they do,
