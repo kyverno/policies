@@ -25,6 +25,9 @@ spec:
       - resources:
           kinds:
           - PodDisruptionBudget
+          operations:
+          - CREATE
+          - UPDATE
     context:
     - name: deploymentreplicas
       apiCall:
