@@ -1,0 +1,34 @@
+name: replace-image-registry-with-harbor
+version: 1.0.0
+displayName: Replace Image Registry With Harbor
+createdAt: "2024-03-02T21:27:05.000Z"
+description: >-
+  Some registries like Harbor offer pull-through caches for images from certain registries.
+  Images can be re-written to be pulled from the redirected registry instead of the original and
+  the registry will proxy pull the image, adding it to its internal cache.
+  The imageData context variable in this policy provides a normalized view
+  of the container image, allowing the policy to make decisions based on various 
+  "live" image details. As a result, it requires access to the source registry and the existence
+  of the target image to verify those details.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/replace-image-registry-with-harbor/replace-image-registry-with-harbor.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Some registries like Harbor offer pull-through caches for images from certain registries.
+  Images can be re-written to be pulled from the redirected registry instead of the original and
+  the registry will proxy pull the image, adding it to its internal cache.
+  The imageData context variable in this policy provides a normalized view
+  of the container image, allowing the policy to make decisions based on various 
+  "live" image details. As a result, it requires access to the source registry and the existence
+  of the target image to verify those details.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Pod"
+digest: 8f88cbddbaec89d29c062e6f6c8385b75f46b7d958954e637d686e82e893856c

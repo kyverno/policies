@@ -1,0 +1,20 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: replace-image-registry-with-harbor
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../replace-image-registry-with-harbor.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../.kyverno-test/resource.yaml
+    - assert:
+        file: ../.kyverno-test/patchedResource.yaml
+    - assert:
+        file: ../.kyverno-test/patchedResource2.yaml
