@@ -1,21 +1,23 @@
-name: require-labels
+name: require-labels-cel
 version: 1.0.0
-displayName: Require Labels
-createdAt: "2023-04-10T19:47:15.000Z"
+displayName: Require Labels in CEL expressions
 description: >-
   Define and use labels that identify semantic attributes of your application or Deployment. A common set of labels allows tools to work collaboratively, describing objects in a common manner that all tools can understand. The recommended labels describe applications in a way that can be queried. This policy validates that the label `app.kubernetes.io/name` is specified with some value.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices/require-labels/require-labels.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-cel/require-labels/require-labels.yaml
   ```
 keywords:
   - kyverno
   - Best Practices
+  - CEL Expressions
 readme: |
   Define and use labels that identify semantic attributes of your application or Deployment. A common set of labels allows tools to work collaboratively, describing objects in a common manner that all tools can understand. The recommended labels describe applications in a way that can be queried. This policy validates that the label `app.kubernetes.io/name` is specified with some value.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Best Practices"
+  kyverno/category: "Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod, Label"
-digest: 79836f1230681e6c6738f1067bec25d5d3723058e9dda83d7d619283cba442c0
+digest: 63138ce82239add39f4d4fcbcd0f373040652545364b77cc99c77eadf0bfe7b4
+createdAt: "2024-03-06T19:31:45Z"
