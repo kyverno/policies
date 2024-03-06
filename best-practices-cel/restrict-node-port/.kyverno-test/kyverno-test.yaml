@@ -5,7 +5,7 @@ metadata:
 policies:
 - ../restrict-node-port.yaml
 resources:
-- resource.yaml
+- ../../../best-practices/restrict-node-port/.kyverno-test/resource.yaml
 results:
 - kind: Service
   policy: restrict-nodeport

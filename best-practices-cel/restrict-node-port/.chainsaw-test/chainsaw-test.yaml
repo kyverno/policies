@@ -23,9 +23,9 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: good-services.yaml
+        file: ../../../best-practices/restrict-node-port/.chainsaw-test/good-services.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: bad-service-nodeport.yaml
+        file: ../../../best-practices/restrict-node-port/.chainsaw-test/bad-service-nodeport.yaml
