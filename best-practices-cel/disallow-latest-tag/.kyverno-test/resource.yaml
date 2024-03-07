@@ -1,0 +1,121 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vit-badpod01
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vit-badpod02
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+  - name: nginx
+    image: nginx:latest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep", "9999"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox
+        name: busybox
+        command: ["sleep", "9999"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vit-baddeployment01
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:latest
+        name: busybox
+        command: ["sleep", "9999"]
