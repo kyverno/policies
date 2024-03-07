@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqro-gooddeployment01
+  namespace: ir-pods-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        foo: bar
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      initContainers:
+      - name: k8s-nginx-init
+        image: bar.io/nginx
+      - name: busybox-init
+        image: eu.foo.io/busybox
+      containers:
+      - name: busybox
+        image: eu.foo.io/nginx
+      - name: k8s-nginx
+        image: bar.io/nginx
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqprobes-goodcronjob01
+  namespace: ir-pods-namespace
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: k8s-nginx-init
+            image: bar.io/nginx
+          - name: busybox-init
+            image: eu.foo.io/busybox
+          containers:
+          - name: busybox
+            image: eu.foo.io/nginx
+          - name: k8s-nginx
+            image: bar.io/nginx
