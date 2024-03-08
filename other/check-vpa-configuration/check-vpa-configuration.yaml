@@ -1,0 +1,39 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-vpa-configuration
+  annotations:
+    policies.kyverno.io/title: Check VPA Configuration
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: VerticalPodAutoscaler
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/description: >-
+      This policy checks if a namespace has a VerticalPodAutoscaler (VPA) configured. 
+      It is intended to be used as a component in a more functional rule.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: check-vpa-configuration
+    match:
+      any:
+      - resources:
+          kinds:
+          - Deployment
+          - StatefulSet
+          - ReplicaSet
+          - ReplicationController
+    context:
+    - name: vpa
+      apiCall:
+        urlPath: "/apis"
+        jmesPath: "items[?name=='autoscaling'][0].versions[?version=='v1'].resources[?responseKind.kind=='VerticalPodAutoscaler'] | length(@) "
+    validate:
+      message: "VPA is not configured for the namespace"
+      deny:
+        conditions:
+        - key: "{{ vpa }}"
+          operator: Equals
+          value: 0
