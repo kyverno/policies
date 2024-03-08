@@ -4,9 +4,10 @@ metadata:
   name: disallow-default-namespace
   annotations:
     pod-policies.kyverno.io/autogen-controllers: none
-    policies.kyverno.io/title: Disallow Default Namespace
-    policies.kyverno.io/minversion: 1.6.0
-    policies.kyverno.io/category: Multi-Tenancy
+    policies.kyverno.io/title: Disallow Default Namespace in CEL expressions
+    policies.kyverno.io/minversion: 1.11.0
+    policies.kyverno.io/category: Multi-Tenancy in CEL 
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
@@ -18,7 +19,7 @@ metadata:
       due to Pod controllers need to specify the `namespace` field under the top-level `metadata`
       object and not at the Pod template level.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-namespace
@@ -28,10 +29,10 @@ spec:
           kinds:
           - Pod
     validate:
-      message: "Using 'default' namespace is not allowed."
-      pattern:
-        metadata:
-          namespace: "!default"
+      cel:
+        expressions:
+          - expression: "object.metadata.namespace != 'default'"
+            message: "Using 'default' namespace is not allowed."
   - name: validate-podcontroller-namespace
     match:
       any:
@@ -42,7 +43,7 @@ spec:
           - Job
           - StatefulSet
     validate:
-      message: "Using 'default' namespace is not allowed for pod controllers."
-      pattern:
-        metadata:
-          namespace: "!default"
+      cel:
+        expressions:
+          - expression: "object.metadata.namespace != 'default'"
+            message: "Using 'default' namespace is not allowed for pod controllers."
