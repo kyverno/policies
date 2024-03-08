@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: helm-tiller
+    image: docker.io/tiller:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+  - name: helm-tiller
+    image: docker.io/tiller:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: busybox
+    image: busybox
+  - name: nginx
+    image: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+  labels:
+    app: busybox
+  namespace: foo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep", "9999"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+  labels:
+    app: busybox
+  namespace: foo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: docker.io/tiller:latest
+        name: helm-tiller
