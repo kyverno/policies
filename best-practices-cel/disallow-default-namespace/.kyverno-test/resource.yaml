@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+  namespace: default
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  namespace: foo
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep", "9999"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+  labels:
+    app: busybox
+  namespace: foo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        command: ["sleep", "9999"]

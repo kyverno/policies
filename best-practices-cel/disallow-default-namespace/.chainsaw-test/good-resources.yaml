@@ -1,0 +1,97 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  namespace: not-default-ns
+spec:
+  containers:
+  - name: busybox
+    image: "busybox:v1.35"
+    command:
+    - "sleep"
+    - "3000"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: busybox
+  namespace: not-default-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:v1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: good-daemonset
+  namespace: not-default-ns
+spec:
+  selector:
+    matchLabels:
+      name: good-daemonset
+  template:
+    metadata:
+      labels:
+        name: good-daemonset
+    spec:
+      containers:
+      - image: busybox:v1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: good-job
+  namespace: not-default-ns
+spec:
+  template:
+    spec:
+      containers:
+      - image: busybox:v1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"
+      restartPolicy: Never
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: good-statefulset
+  namespace: not-default-ns
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  serviceName: "busyservice"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:v1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"
