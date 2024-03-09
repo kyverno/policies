@@ -1,0 +1,60 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad01
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Foo
+    name: foobar
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad02
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: deployment
+    name: foobar
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad03
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nothere
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad04
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: DaemonSet
+    name: busybox
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad05
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: busybox
+  updatePolicy:
+    updateMode: Auto
+---
