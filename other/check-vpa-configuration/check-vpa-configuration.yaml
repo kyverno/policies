@@ -1,39 +1,55 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: check-vpa-configuration
+  name: check-matching-vpa
   annotations:
-    policies.kyverno.io/title: Check VPA Configuration
-    policies.kyverno.io/category: Other
-    policies.kyverno.io/subject: VerticalPodAutoscaler
-    kyverno.io/kyverno-version: 1.11.0
-    policies.kyverno.io/minversion: 1.11.0
-    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/title: Ensure Matching VerticalPodAutoscaler 
+    policies.kyverno.io/category: Availability
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.11.4 
+    kyverno.io/kubernetes-version: "1.27"     
+    policies.kyverno.io/subject: Deployment, StatefulSet, ReplicaSet, DaemonSet
     policies.kyverno.io/description: >-
-      This policy checks if a namespace has a VerticalPodAutoscaler (VPA) configured. 
-      It is intended to be used as a component in a more functional rule.
+      This policy enforces that Deployments, StatefulSets, Replicasets, and DaemonSets have 
+      a corresponding VerticalPodAutoscaler to ensure potential automatic resource adjustments. 
 spec:
-  validationFailureAction: Enforce
+  validationFailureAction: Audit
   background: false
   rules:
-  - name: check-vpa-configuration
-    match:
-      any:
-      - resources:
-          kinds:
-          - Deployment
-          - StatefulSet
-          - ReplicaSet
-          - ReplicationController
-    context:
-    - name: vpa
-      apiCall:
-        urlPath: "/apis"
-        jmesPath: "items[?name=='autoscaling'][0].versions[?version=='v1'].resources[?responseKind.kind=='VerticalPodAutoscaler'] | length(@) "
-    validate:
-      message: "VPA is not configured for the namespace"
-      deny:
-        conditions:
-        - key: "{{ vpa }}"
-          operator: Equals
-          value: 0
+    - name: require-vpa
+      match:
+        any:
+        - resources:
+            kinds:
+              - Deployment
+              - StatefulSet
+              - ReplicaSet
+              - DaemonSet
+      validate:
+        message: >-
+          Workload '{{request.object.kind}}/{{request.object.metadata.name}}' 
+          requires a matching VerticalPodAutoscaler (VPA) in the 
+          '{{request.object.metadata.namespace}}' namespace.
+      context:
+      - name: metricsServer
+        apiCall:
+          urlPath: "/apis/metrics.k8s.io/v1beta1/namespaces/{{ request.namespace }}/pods"
+          jmesPath:  
+      preconditions:
+        any:
+        - key: "{{ metricsServer }}"
+          operator: GreaterThan
+          value: 0 
+        foreach:
+          - list: "request.object.kind"
+            context:
+              - name: vpas
+                apiCall:
+                  urlPath: "/apis/autoscaling.k8s.io/v1/namespaces/{{request.object.metadata.namespace}}/verticalpodautoscalers"
+                  jmesPath: "items[?spec.targetRef.kind=='{{ request.object.kind }}'].spec.targetRef.name"
+            validate:
+              conditions:
+                all:
+                  - key: "{{ request.object.metadata.name }}" 
+                    operator: NotIn 
+                    value: "{{ vpas }}"
