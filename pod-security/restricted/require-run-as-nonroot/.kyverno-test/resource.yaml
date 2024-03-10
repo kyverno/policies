@@ -213,6 +213,17 @@ spec:
   securityContext:
     runAsNonRoot: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod16
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    allowPrivilegeEscalation: false
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod

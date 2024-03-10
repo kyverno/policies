@@ -211,3 +211,14 @@ spec:
   securityContext:
     runAsNonRoot: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod16
+spec:
+  containers:
+  - name: container01
+    image: busybox:1.35
+  securityContext:
+    allowPrivilegeEscalation: false
+---

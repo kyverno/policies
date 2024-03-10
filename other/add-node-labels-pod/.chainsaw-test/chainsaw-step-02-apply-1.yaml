@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: label-nodes-all
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Node
+    mutate:
+      patchStrategicMerge:
+        metadata:
+          labels:
+            foo: bar
+      targets:
+      - apiVersion: v1
+        kind: Node
+        name: '{{ request.object.metadata.name }}'
+    name: label-node-foo
