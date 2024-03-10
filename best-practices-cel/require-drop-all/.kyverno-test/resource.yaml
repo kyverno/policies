@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities
+spec:
+  initContainers:
+  - name: init
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+  containers:
+  - name: add-capabilities
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - ALL
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-bad
+spec:
+  initContainers:
+  - name: init
+    image: gcr.io/google-samples/node-hello:1.0
+  containers:
+  - name: add-capabilities
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - ALL
