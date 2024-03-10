@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqprobes-baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      foo: bar
+  template:
+    metadata:
+      labels:
+        foo: bar
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35
+        livenessProbe:
+          tcpSocket:
+            port: 7070
+          periodSeconds: 20
+      - name: busybox-again
+        image: busybox:1.35
