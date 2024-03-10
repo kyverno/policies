@@ -26,5 +26,5 @@ readme: |
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
-  kyverno/subject: "PodDisruptionBudget,Deployment"
-digest: e4495c645b7999a75ac13bf56357cdf813824afcd5931b6cb4b87cab4f2bac68
+  kyverno/subject: "PodDisruptionBudget,Deployment,StatefulSet"
+digest: a8e14a59673114b75a06181d3f342b129c4760b4f012a3f4882b467f3387ccdb
