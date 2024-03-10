@@ -31,7 +31,7 @@ spec:
     context:
     - name: deploymentreplicas
       apiCall:
-        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)] || `[]`
+        jmesPath: items[?label_match(`{{ request.object.spec.selector.matchLabels }}`, spec.template.metadata.labels)] || `[]`
         urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments 
     preconditions:
       all:
