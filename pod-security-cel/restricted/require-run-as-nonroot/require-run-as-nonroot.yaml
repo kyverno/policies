@@ -17,7 +17,7 @@ spec:
   validationFailureAction: Audit
   background: true
   rules:
-    - name: run-as-nonroot
+    - name: run-as-non-root
       match:
         any:
         - resources:
