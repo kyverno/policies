@@ -1,0 +1,56 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: pdb-maxunavailable-with-deployments
+  annotations:
+    policies.kyverno.io/title: PodDisruptionBudget maxUnavailable Non-Zero with Deployments
+    policies.kyverno.io/category: Other
+    kyverno.io/kyverno-version: 1.11.4
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/subject: PodDisruptionBudget, Deployment
+    policies.kyverno.io/description: >-
+      A PodDisruptionBudget which sets its maxUnavailable value to zero prevents
+      all voluntary evictions including Node drains which may impact maintenance tasks.
+      This may be acceptable if there are no matching controllers, but if there are then
+      creation of such a PDB could allow unintended disruption. This policy enforces that
+      a PodDisruptionBudget may not specify the maxUnavailable field as zero if there are
+      any existing matching Deployments having greater than zero replicas.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: pdb-maxunavailable
+    match:
+      any:
+      - resources:
+          kinds:
+          - PodDisruptionBudget
+          operations:
+          - CREATE
+          - UPDATE
+    context:
+    - name: deploymentreplicas
+      apiCall:
+        jmesPath: items[?label_match(`{{request.object.spec.selector.matchLabels}}`, spec.template.metadata.labels)] || `[]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.maxUnavailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ length(deploymentreplicas) }}'
+        operator: GreaterThan
+        value: 0
+    validate:
+      message: >-
+        PodDisruptionBudget must not specify maxUnavailable as zero if there are any existing matching Deployments which
+        have replicas numbering greater than zero. There are {{ length(deploymentreplicas) }} Deployments which match this labelSelector
+        having {{ deploymentreplicas[*].spec.replicas }} replicas.
+      foreach:
+      - list: deploymentreplicas
+        deny:
+          conditions:
+            all:
+            - key: "{{ request.object.spec.maxUnavailable }}"
+              operator: LessThan
+              value: "{{ element.spec.replicas }}"

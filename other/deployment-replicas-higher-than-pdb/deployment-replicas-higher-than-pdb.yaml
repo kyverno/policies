@@ -1,0 +1,57 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deployment-replicas-higher-than-pdb
+  annotations:
+    policies.kyverno.io/title: Ensure Deployment Replicas Higher Than PodDisruptionBudget
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: PodDisruptionBudget, Deployment
+    kyverno.io/kyverno-version: 1.11.4
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/description: >-
+      PodDisruptionBudget resources are useful to ensuring minimum availability is maintained at all times.
+      Introducing a PDB where there are already matching Pod controllers may pose a problem if the author
+      is unaware of the existing replica count. This policy ensures that the minAvailable value is not
+      greater not equal to the replica count of any matching existing Deployment. If other Pod controllers
+      should also be included in this check, additional rules may be added to the policy which match those
+      controllers.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: deployment-replicas-greater-minAvailable
+    match:
+      any:
+      - resources:
+          kinds:
+          - PodDisruptionBudget
+          operations:
+          - CREATE
+          - UPDATE
+    context:
+    - name: deploymentreplicas
+      apiCall:
+        jmesPath: items[?label_match(`{{ request.object.spec.selector.matchLabels }}`, spec.template.metadata.labels)] || `[]`
+        urlPath: /apis/apps/v1/namespaces/{{request.namespace}}/deployments 
+    preconditions:
+      all:
+      - key: '{{ regex_match(''^[0-9]+$'', ''{{ request.object.spec.minAvailable || ''''}}'') }}'
+        operator: Equals
+        value: true
+      - key: '{{ length(deploymentreplicas) }}'
+        operator: GreaterThan
+        value: 0
+    validate:
+      message: >-
+        PodDisruption budget minAvailable ({{ request.object.spec.minAvailable }}) cannot be
+        greater than or equal to the replica count of any matching existing Deployment.
+        There are {{ length(deploymentreplicas) }} Deployments which match this labelSelector
+        having {{ deploymentreplicas[*].spec.replicas }} replicas.
+      foreach:
+        - list: deploymentreplicas
+          deny:
+            conditions:
+              all:
+              - key: "{{ request.object.spec.minAvailable }}"
+                operator: GreaterThanOrEquals
+                value: "{{ element.spec.replicas }}"
