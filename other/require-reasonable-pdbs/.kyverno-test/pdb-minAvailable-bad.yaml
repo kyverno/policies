@@ -1,0 +1,60 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb01
+spec:
+  minAvailable: 51%
+  selector:
+    matchLabels:
+      foo: bar
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb02
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      foo: bar
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb03
+spec:
+  minAvailable: 70%
+  selector:
+    matchLabels:
+      foo: bar
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb04
+spec:
+  minAvailable: 80%
+  selector:
+    matchLabels:
+      foo: bar
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb05
+spec:
+  minAvailable: 90%
+  selector:
+    matchLabels:
+      foo: bar
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb06
+spec:
+  minAvailable: 99%
+  selector:
+    matchLabels:
+      foo: bar
+---

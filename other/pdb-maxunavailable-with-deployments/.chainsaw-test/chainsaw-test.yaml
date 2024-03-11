@@ -1,0 +1,45 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: pdb-maxunavailable-with-deployments
+spec:
+  steps:
+  - name: 01 - Create policy and set to Enforce
+    try:
+    - apply:
+        file: ../pdb-maxunavailable-with-deployments.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: pdb-maxunavailable-with-deployments
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: 02 - Create existing Deployments in cluster
+    try:
+    - apply:
+        file: existing-deployments.yaml
+  - name: 03 - Create good PDBs
+    try:
+    - apply:
+        file: good-pdb.yaml
+  - name: 04 - Update existing Deployments to have one replica
+    try:
+    - patch:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: alpha-busybox
+          spec:
+            replicas: 1
+  - name: 05 - Create bad PDBs
+    try:
+    - apply:
+        file: bad-pdb.yaml
+        expect:
+        - check:
+            ($error != null): true
