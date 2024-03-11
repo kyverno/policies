@@ -31,7 +31,7 @@ spec:
             - name: vpas
               apiCall:
                 urlPath: "/apis/autoscaling.k8s.io/v1/namespaces/{{request.object.metadata.namespace}}/verticalpodautoscalers"
-                jmesPath: "items[?spec.targetRef.kind=='{{ request.object.kind }}'].spec.targetRef.name"
+                jmesPath: "items[?spec.targetRef.kind=='{{ request.object.kind }}' && spec.targetRef.apiVersion == '{{ request.object.apiVersion }}'].spec.targetRef.name"
           validate:
             message: >-
               Workload '{{request.object.kind}}/{{request.object.metadata.name}}' 
