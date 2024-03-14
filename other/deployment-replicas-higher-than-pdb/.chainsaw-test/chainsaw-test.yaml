@@ -1,0 +1,35 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deployment-replicas-higher-than-pdb
+spec:
+  steps:
+  - name: 01 - Create policy and set to Enforce
+    try:
+    - apply:
+        file: ../deployment-replicas-higher-than-pdb.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: deployment-replicas-higher-than-pdb
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: 02 - Create existing Deployments in cluster
+    try:
+    - apply:
+        file: existing-deployments.yaml
+  - name: 03 - Create good PDBs
+    try:
+    - apply:
+        file: good-pdb.yaml
+  - name: 04 - Create bad PDBs
+    try:
+    - apply:
+        file: bad-pdb.yaml
+        expect:
+        - check:
+            ($error != null): true
