@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dropcapnetraw-gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: init
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["SYS_TIME"]
+            drop:
+              - CAP_NET_RAW
+      - name: init2
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["SYS_TIME"]
+            drop:
+              - CAP_NET_RAW
+      containers:
+      - name: add-capabilities
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["SYS_TIME"]
+            drop:
+              - CAP_NET_RAW
+      - name: add-capabilities-again
+        image: busybox:1.35
+        securityContext:
+          capabilities:
+            add: ["SYS_TIME"]
+            drop:
+              - CAP_NET_RAW
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: dropcapnetraw-goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: init
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["SYS_TIME"]
+                drop:
+                  - CAP_NET_RAW
+          - name: init2
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["SYS_TIME"]
+                drop:
+                  - CAP_NET_RAW
+          containers:
+          - name: add-capabilities
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["SYS_TIME"]
+                drop:
+                  - CAP_NET_RAW
+          - name: add-capabilities-again
+            image: busybox:1.35
+            securityContext:
+              capabilities:
+                add: ["SYS_TIME"]
+                drop:
+                  - CAP_NET_RAW

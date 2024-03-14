@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-capnetraw-good
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - CAP_NET_RAW
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - CAP_NET_RAW
+  - name: add-capabilities-again
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - CAP_NET_RAW

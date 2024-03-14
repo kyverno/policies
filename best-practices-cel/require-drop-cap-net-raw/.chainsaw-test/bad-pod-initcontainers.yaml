@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-bad
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - CAP_NET_RAW
+  - name: init2
+    image: busybox:1.35
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - CAP_NET_RAW
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-bad
+spec:
+  initContainers:
+  - name: init
+    image: busybox:1.35
+  - name: init2
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - CAP_NET_RAW
+  containers:
+  - name: add-capabilities
+    image: busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_TIME"]
+        drop:
+          - CAP_NET_RAW
