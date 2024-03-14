@@ -30,29 +30,14 @@ spec:
           name: "Operation should not be DELETE"
       validate:
         cel:
+          variables:
+            - name: allContainers
+              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
           expressions:
             - expression: >-
-                object.spec.containers.all(container, 
+                variables.allContainers.all(container, 
                 has(container.securityContext) &&
                 has(container.securityContext.capabilities) &&
                 has(container.securityContext.capabilities.drop) &&
                 container.securityContext.capabilities.drop.exists(capability, capability.upperAscii() == 'ALL'))
               message: "Containers must drop `ALL` capabilities."
-
-            - expression: >-
-                !has(object.spec.initContainers) ||
-                object.spec.initContainers.all(container, 
-                has(container.securityContext) &&
-                has(container.securityContext.capabilities) &&
-                has(container.securityContext.capabilities.drop) &&
-                container.securityContext.capabilities.drop.exists(capability, capability.upperAscii() == 'ALL'))
-              message: "Init containers must drop `ALL` capabilities."
-
-            - expression: >-
-                !has(object.spec.ephemeralContainers) ||
-                object.spec.ephemeralContainers.all(container, 
-                has(container.securityContext) &&
-                has(container.securityContext.capabilities) &&
-                has(container.securityContext.capabilities.drop) &&
-                container.securityContext.capabilities.drop.exists(capability, capability.upperAscii() == 'ALL'))
-              message: "Ephemeral containers must drop `ALL` capabilities."
