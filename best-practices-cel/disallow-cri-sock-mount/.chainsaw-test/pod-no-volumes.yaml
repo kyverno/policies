@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-no-volumes
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    command:
+    - sleep
+    - "3600"
