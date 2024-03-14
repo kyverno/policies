@@ -10,7 +10,7 @@ spec:
       capabilities:
         drop:
           - CAP_NET_RAW
-  - name: add-capabilities
+  - name: add-capabilities-again
     image: busybox:1.35
     securityContext:
       capabilities:
@@ -28,7 +28,7 @@ spec:
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
-  - name: add-capabilities
+  - name: add-capabilities-again
     image: busybox:1.35
     securityContext:
       capabilities:
