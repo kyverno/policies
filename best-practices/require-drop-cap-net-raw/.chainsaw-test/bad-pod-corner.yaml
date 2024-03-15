@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-bad
+  name: add-capabilities-bad-001
 spec:
   containers:
   - name: add-capabilities
@@ -20,7 +20,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-bad
+  name: add-capabilities-bad-002
 spec:
   containers:
   - name: add-capabilities
