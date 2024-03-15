@@ -48,3 +48,4 @@ spec:
         file: pod-emptydir-vol.yaml
     - apply:
         file: pod-no-volumes.yaml
+

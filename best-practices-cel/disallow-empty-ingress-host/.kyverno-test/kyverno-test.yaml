@@ -19,3 +19,4 @@ results:
   - ingress-wildcard-host
   result: pass
   rule: disallow-empty-ingress-host
+

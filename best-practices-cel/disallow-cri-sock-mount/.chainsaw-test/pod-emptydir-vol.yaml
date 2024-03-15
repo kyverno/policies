@@ -12,3 +12,4 @@ spec:
   volumes:
     - name: mydir
       emptyDir: {}
+

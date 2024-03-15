@@ -13,3 +13,4 @@ spec:
   - name: dockersock
     hostPath:
       path: /var/run/containerd/containerd.sock
+

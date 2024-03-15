@@ -40,3 +40,4 @@ spec:
         expressions:
           - expression: "object.spec.containers.all(container, !container.image.endsWith(':latest'))"
             message: "Using a mutable image tag e.g. 'latest' is not allowed."
+

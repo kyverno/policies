@@ -48,3 +48,4 @@ spec:
         - check:
             ($error != null): true
         file: bad-pod-update.yaml
+

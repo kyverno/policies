@@ -39,3 +39,4 @@ spec:
         - check:
             ($error != null): true
         file: bad-pod-no-tag.yaml
+

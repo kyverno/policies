@@ -46,3 +46,4 @@ spec:
             image: eu.foo.io/nginx
           - name: k8s-nginx
             image: bar.io/nginx
+

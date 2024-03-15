@@ -8,3 +8,4 @@ spec:
     image: nginx:1.35
   - name: busybox
     image: busybox:latest
+

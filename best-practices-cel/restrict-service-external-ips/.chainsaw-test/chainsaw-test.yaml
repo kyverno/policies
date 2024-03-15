@@ -34,3 +34,4 @@ spec:
         - check:
             ($error != null): true
         file: bad-service-twoeip.yaml
+

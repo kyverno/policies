@@ -38,3 +38,4 @@ spec:
               has(container.resources.limits) &&
               has(container.resources.limits.memory))
             message: "CPU and memory resource requests and limits are required."
+

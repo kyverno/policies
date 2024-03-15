@@ -23,3 +23,4 @@ spec:
     image: busybox:1.35
     securityContext:
       readOnlyRootFilesystem: true
+

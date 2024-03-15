@@ -45,3 +45,4 @@ spec:
                 container.image.startsWith('bar.io/'))
               )
             message: "Unknown image registry."
+

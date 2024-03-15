@@ -41,3 +41,4 @@ spec:
                 has(container.securityContext.capabilities.drop) &&
                 container.securityContext.capabilities.drop.exists(capability, capability.upperAscii() == 'ALL'))
               message: "Containers must drop `ALL` capabilities."
+

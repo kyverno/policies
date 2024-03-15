@@ -47,3 +47,4 @@ spec:
         expressions:
           - expression: "object.metadata.namespace != 'default'"
             message: "Using 'default' namespace is not allowed for pod controllers."
+

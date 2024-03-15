@@ -84,3 +84,4 @@ spec:
                 add: ["SYS_TIME"]
                 drop:
                   - CAP_NET_RAW
+

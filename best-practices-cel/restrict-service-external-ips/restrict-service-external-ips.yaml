@@ -33,3 +33,4 @@ spec:
             #     !has(object.spec.externalIPs) || 
             #     object.spec.externalIPs.all(ip, ip in ["37.10.11.53", "153.10.20.1"]) 
             message: "externalIPs are not allowed."
+

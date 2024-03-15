@@ -8,3 +8,4 @@ spec:
     image: docker.io/tiller:latest
   - name: somebox
     image: busybox:1.35
+

@@ -151,3 +151,4 @@ spec:
                   - CAP_NET_RAW
           - name: add-capabilities-again
             image: busybox:1.35
+

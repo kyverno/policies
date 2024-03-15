@@ -19,3 +19,4 @@ spec:
     image: eu.foo.io/busybox
   - name: k8s-nginx
     image: registry.k8s.io/nginx:1.7.9
+

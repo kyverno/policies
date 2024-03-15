@@ -55,3 +55,4 @@ spec:
               variables.hasVolumes || 
               variables.volumesWithHostPath.all(volume, !volume.hostPath.path.matches('/var/run/cri-dockerd.sock'))
             message: "Use of the Docker CRI socket is not allowed."
+

@@ -41,3 +41,4 @@ spec:
         - check:
             ($error != null): true
         file: bad-podcontrollers.yaml
+
