@@ -19,7 +19,7 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: policy-assert.yaml
+        file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
