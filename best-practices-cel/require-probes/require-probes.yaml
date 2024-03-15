@@ -28,9 +28,6 @@ spec:
       - resources:
           kinds:
           - Pod
-    celPreconditions:
-      - expression: "request.operation in ['CREATE', 'UPDATE']"
-        name: "operation must be create or update"
     validate:
       cel:
         expressions:
