@@ -23,16 +23,16 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: ../../../../pod-security/baseline/disallow-host-namespaces/.chainsaw-test/pod-good.yaml
+        file: pod-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ../../../../pod-security/baseline/disallow-host-namespaces/.chainsaw-test/pod-bad.yaml
+        file: pod-bad.yaml
     - apply:
-        file: ../../../../pod-security/baseline/disallow-host-namespaces/.chainsaw-test/podcontroller-good.yaml
+        file: podcontroller-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ../../../../pod-security/baseline/disallow-host-namespaces/.chainsaw-test/podcontroller-bad.yaml
+        file: podcontroller-bad.yaml

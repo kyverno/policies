@@ -1,0 +1,2884 @@
+########################
+## Rule: selinux-type ##
+########################
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      type: spc_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: spc_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      type: container_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      type: container_init_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      type: container_kvm_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_init_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_init_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod12
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod13
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod14
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_init_t
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          type: spc_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: spc_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          type: container_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          type: container_init_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          type: container_kvm_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_kvm_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment13
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment14
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              type: spc_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: spc_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              type: container_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              type: container_init_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              type: container_kvm_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_init_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_init_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob12
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_kvm_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob13
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob14
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_init_t
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+#############################
+## Rule: selinux-user-role ##
+#############################
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      user: sysadm_u
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      user: sysadm_u
+      role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+        role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+        role: sysadm_r
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod10
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: unconfined_t
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod12
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        role: sysadm_r
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod13
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+        role: sysadm_r
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod14
+spec:
+  initContainers:
+  - name: initcontainer02
+    image: dummyimagename
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod15
+spec:
+  initContainers:
+  - name: initcontainer02
+    image: dummyimagename
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        role: sysadm_r
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod16
+spec:
+  initContainers:
+  - name: initcontainer02
+    image: dummyimagename
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+        role: sysadm_r
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-badpod17
+spec:
+  initContainers:
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_init_t
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        user: sysadm_u
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions:
+      level: "s0:c123,c456"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+        level: "s0:c123,c456"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+        type: container_t
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: selur-goodpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        type: container_t
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions:
+        level: "s0:c123,c456"
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          user: sysadm_u
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          user: sysadm_u
+          role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+            role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+            role: sysadm_r
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: unconfined_t
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            role: sysadm_r
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment13
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+            role: sysadm_r
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment14
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer02
+        image: dummyimagename
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment15
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer02
+        image: dummyimagename
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            role: sysadm_r
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer02
+        image: dummyimagename
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+            role: sysadm_r
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-baddeployment17
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_init_t
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            user: sysadm_u
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        seLinuxOptions:
+          level: "s0:c123,c456"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+            level: "s0:c123,c456"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      - name: container02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+            type: container_t
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: selur-gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            type: container_t
+      - name: initcontainer02
+        image: dummyimagename
+        securityContext:
+          seLinuxOptions:
+            level: "s0:c123,c456"
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              user: sysadm_u
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              user: sysadm_u
+              role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+                role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+                role: sysadm_r
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: unconfined_t
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob12
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                role: sysadm_r
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob13
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+                role: sysadm_r
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob14
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer02
+            image: dummyimagename
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob15
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer02
+            image: dummyimagename
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                role: sysadm_r
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob16
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer02
+            image: dummyimagename
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+                role: sysadm_r
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-badcronjob17
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_init_t
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                user: sysadm_u
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            seLinuxOptions:
+              level: "s0:c123,c456"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+                level: "s0:c123,c456"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          - name: container02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+                type: container_t
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: selur-goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                type: container_t
+          - name: initcontainer02
+            image: dummyimagename
+            securityContext:
+              seLinuxOptions:
+                level: "s0:c123,c456"
+          containers:
+          - name: container01
+            image: dummyimagename
