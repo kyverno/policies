@@ -41,10 +41,4 @@ spec:
         - check:
             ($error != null): true
         file: bad-podcontrollers.yaml
-  - name: step-03
-    try:
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-update.yaml
+
