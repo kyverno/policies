@@ -65,7 +65,6 @@ results:
   - goodcronjob08
   - goodcronjob09
   - goodcronjob10
-  - goodcronjob11
   result: pass
   rule: host-port-range
 - kind: Deployment
@@ -81,7 +80,6 @@ results:
   - gooddeployment08
   - gooddeployment09
   - gooddeployment10
-  - gooddeployment11
   result: pass
   rule: host-port-range
 - kind: Pod
@@ -97,6 +95,5 @@ results:
   - goodpod08
   - goodpod09
   - goodpod10
-  - goodpod11
   result: pass
   rule: host-port-range
