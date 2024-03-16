@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: check-matching-vpa
+  name: check-vpa-configuration
   annotations:
-    policies.kyverno.io/title: Ensure Matching VerticalPodAutoscaler 
+    policies.kyverno.io/title: Check for matching VerticalPodAutoscaler (VPA)
     policies.kyverno.io/category: Availability
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.11.4 
@@ -31,7 +31,7 @@ spec:
             - name: vpas
               apiCall:
                 urlPath: "/apis/autoscaling.k8s.io/v1/namespaces/{{request.object.metadata.namespace}}/verticalpodautoscalers"
-                jmesPath: "items[?spec.targetRef.kind=='{{ request.object.kind }}' && spec.targetRef.apiVersion == '{{ request.object.apiVersion }}'].spec.targetRef.name"
+                jmesPath: "items[?spec.targetRef.kind=='{{ request.object.kind }}'].spec.targetRef.name"
           validate:
             message: >-
               Workload '{{request.object.kind}}/{{request.object.metadata.name}}' 

@@ -28,11 +28,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: good-daemonset
+      name: bad-daemonset
   template:
     metadata:
       labels:
-        name: good-daemonset
+        name: bad-daemonset
     spec:
       containers:
       - image: busybox:latest
