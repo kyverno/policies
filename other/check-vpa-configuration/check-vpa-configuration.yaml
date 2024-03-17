@@ -8,7 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.11.4 
     kyverno.io/kubernetes-version: "1.27"     
-    policies.kyverno.io/subject: Deployment, StatefulSet, ReplicaSet, DaemonSet
+    policies.kyverno.io/subject: Deployment, StatefulSet, ReplicaSet, DaemonSet , VerticalPodAutoscaler
     policies.kyverno.io/description: >-
       VerticalPodAutoscaler (VPA) is useful to automatically adjust the resources assigned to Pods. 
       It requires defining a specific target resource by kind and name. There are no built-in 

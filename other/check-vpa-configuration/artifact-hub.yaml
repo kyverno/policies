@@ -9,7 +9,7 @@ description: >-
   This policy ensures that the matching kind has a matching VPA.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/verify-vpa-target/verify-vpa-target.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-vpa-configuration/check-vpa-configuration.yaml
   ```
 keywords:
   - kyverno
@@ -24,5 +24,5 @@ readme: |
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
-  kyverno/subject: "Deployment, StatefulSet, ReplicaSet, DaemonSet"
-digest: 0c0bb3a733bcea27074f4c5a5e51d0d271f7f5164db143025283c7f814a88663
+  kyverno/subject: "Deployment, StatefulSet, ReplicaSet, DaemonSet , VerticalPodAutoscaler"
+digest: 35aac713eada0944073bdb44e8885d23a3886c1a58f0fccc670556ae5e6b8b3e 

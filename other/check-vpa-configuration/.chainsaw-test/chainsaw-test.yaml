@@ -15,7 +15,7 @@ spec:
           metadata:
             name: check-vpa-configuration
           spec:
-            validationFailureAction: Audit
+            validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: 02 - Create VPAs
