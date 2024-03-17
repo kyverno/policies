@@ -5,7 +5,7 @@ metadata:
 policies:
 - ../restrict-volume-types.yaml
 resources:
-- ../../../../pod-security/restricted/restrict-volume-types/.kyverno-test/resource.yaml
+- resource.yaml
 results:
 - kind: CronJob
   policy: restrict-volume-types
