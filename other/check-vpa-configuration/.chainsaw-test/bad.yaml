@@ -2,21 +2,21 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: busybox
-  name: busybox
+    app: bad-busybox
+  name: bad-busybox
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: busybox
+      app: bad-busybox
   template:
     metadata:
       labels:
-        app: busybox
+        app: bad-busybox
     spec:
       containers:
       - image: busybox:latest
-        name: busybox
+        name: bad-busybox
         command:
         - "sleep"
         - "3000"
@@ -24,7 +24,7 @@ spec:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: ds-busybox
+  name: bad-ds-busybox
 spec:
   selector:
     matchLabels:
@@ -44,18 +44,18 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: ss-busybox
+  name: bad-ss-busybox
 spec:
   selector:
     matchLabels:
-      app: busybox
+      app: bad-busybox
   serviceName: busyservice
   replicas: 1
   minReadySeconds: 10
   template:
     metadata:
       labels:
-        app: busybox
+        app: bad-busybox
     spec:
       containers:
       - image: busybox:latest
