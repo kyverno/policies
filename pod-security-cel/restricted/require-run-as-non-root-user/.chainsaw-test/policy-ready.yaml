@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-run-as-non-root-user
+status:
+  ready: true

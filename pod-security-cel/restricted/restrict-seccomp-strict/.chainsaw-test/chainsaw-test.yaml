@@ -19,20 +19,20 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: ../../../../pod-security/restricted/restrict-seccomp-strict/.chainsaw-test/chainsaw-step-01-assert-1.yaml
+        file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
-        file: ../../../../pod-security/restricted/restrict-seccomp-strict/.chainsaw-test/pod-good.yaml
+        file: pod-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ../../../../pod-security/restricted/restrict-seccomp-strict/.chainsaw-test/pod-bad.yaml
+        file: pod-bad.yaml
     - apply:
-        file: ../../../../pod-security/restricted/restrict-seccomp-strict/.chainsaw-test/podcontroller-good.yaml
+        file: podcontroller-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ../../../../pod-security/restricted/restrict-seccomp-strict/.chainsaw-test/podcontroller-bad.yaml
+        file: podcontroller-bad.yaml
