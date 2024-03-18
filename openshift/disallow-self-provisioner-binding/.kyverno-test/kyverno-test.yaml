@@ -11,7 +11,7 @@ results:
   policy: disallow-self-provisioner-binding
   resources:
   - self-provisioners
-  result: pass
+  result: fail
   rule: check-self-provisioner-binding-no-subject
 - kind: ClusterRoleBinding
   policy: disallow-self-provisioner-binding
