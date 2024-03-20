@@ -1,0 +1,37 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-metrics-server-configuration
+  annotations:
+    policies.kyverno.io/title: Check Metrics Server Configuration
+    policies.kyverno.io/category: Availability
+    policies.kyverno.io/severity: medium 
+    policies.kyverno.io/kyverno-version: 1.11.4 
+    policies.kyverno.io/kubernetes-version: "1.27" 
+    policies.kyverno.io/subject: Deployment 
+    policies.kyverno.io/description: >-
+      This policy confirms the metrics server is accessible by making a direct API call. A configured metrics server is essential for resource monitoring and autoscaling.
+spec:
+  validationFailureAction: Audit 
+  background: true 
+  rules:
+    - name: validate-metrics-server
+      match:
+        any:
+        - resources:
+            kinds:
+              - Deployment 
+      context:
+        - name: metrics-api 
+          apiCall:
+            urlPath: "/apis/metrics.k8s.io/v1beta1/namespaces/{{request.object.metadata.namespace}}/Deployments/{{request.object.metadata.name}}/metrics" 
+            jmesPath: "items" 
+      validate:
+        message: "Metrics server is not configured or is inaccessible. Metrics-based decisions may be affected."
+        deny:  
+          conditions:
+            any: 
+              - key: "{{ metrics-api }}"
+                operator: Equal
+                value: null
+
