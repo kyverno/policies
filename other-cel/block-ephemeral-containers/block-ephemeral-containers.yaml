@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: block-ephemeral-containers
   annotations:
-    policies.kyverno.io/title: Block Ephemeral Containers
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Block Ephemeral Containers in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.0
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Ephemeral containers, enabled by default in Kubernetes 1.23, allow users to use the
@@ -16,7 +16,7 @@ metadata:
       This may potentially be used to gain access to unauthorized information executing inside
       one or more containers in that Pod. This policy blocks the use of ephemeral containers.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: block-ephemeral-containers
@@ -26,7 +26,8 @@ spec:
           kinds:
             - Pod
     validate:
-      message: "Ephemeral (debug) containers are not permitted."
-      pattern:
-        spec:
-          X(ephemeralContainers): "null"
+      cel:
+        expressions:
+          - expression: "!has(object.spec.ephemeralContainers)"
+            message: "Ephemeral (debug) containers are not permitted."
+
