@@ -1,22 +1,23 @@
-name: check-env-vars
+name: check-env-vars-cel
 version: 1.0.0
-displayName: Check Environment Variables
-createdAt: "2023-04-10T20:30:03.000Z"
+displayName: Check Environment Variables in CEL expressions
 description: >-
   Environment variables control many aspects of a container's execution and are often the source of many different configuration settings. Being able to ensure that the value of a specific environment variable either is or is not set to a specific string is useful to maintain such controls. This policy checks every container to ensure that if the `DISABLE_OPA` environment variable is defined, it must not be set to a value of `"true"`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-env-vars/check-env-vars.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/check-env-vars/check-env-vars.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Environment variables control many aspects of a container's execution and are often the source of many different configuration settings. Being able to ensure that the value of a specific environment variable either is or is not set to a specific string is useful to maintain such controls. This policy checks every container to ensure that if the `DISABLE_OPA` environment variable is defined, it must not be set to a value of `"true"`.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.24"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod"
-digest: a3bb61fb5b7cc8a92a9c8522432cb2ca580e0ee9dd5fcf58bfb50da0577691de
+digest: 58857846eda62ba894f21d0dcea7e50a33a698038e66ebf1871c7b36922c5589
+createdAt: "2024-03-21T13:31:53Z"
