@@ -8,7 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium 
     policies.kyverno.io/kyverno-version: 1.11.4 
     policies.kyverno.io/kubernetes-version: "1.27" 
-    policies.kyverno.io/subject: Deployment 
+    policies.kyverno.io/subject: Pod , Deployment
     policies.kyverno.io/description: >-
       This policy confirms the metrics server is accessible by making a direct API call. A configured metrics server is essential for resource monitoring and autoscaling.
 spec:
@@ -31,6 +31,6 @@ spec:
         deny:  
           conditions:
             any: 
-              - key: metrics-api
+              - key: "metrics-api"
                 operator: NotEquals
                 value: "metrics.k8s.io/v1beta1"

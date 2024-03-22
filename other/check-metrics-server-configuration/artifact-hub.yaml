@@ -18,5 +18,5 @@ readme: |
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
-  kyverno/subject: "Deployment"
-digest: c82c7e5c72030724cfb082ea5843c3c07ae0b08dd730d5d6be47599a904e607b
+  kyverno/subject: "Pod , Deployment"
+digest: d439ae448b1678d2d71733dc56ce99d38899bf3c8a6c9e35c15f5963dfca7e75

@@ -1,0 +1,47 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-metrics-server-configuration
+spec:
+  steps:
+  - name: 01 - Create policy 
+    try:
+    - apply:
+        file: ../check-metrics-server-configuration.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: check-metrics-server-configuration
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: 02 - Create Pods with no metrics server configured
+    try:
+    - apply:
+        file: pod.yaml
+        expect:
+        - check:
+            ($error != null): true
+  - name: 03 - Delete Pod
+    try:
+    - delete:
+        ref:
+          apiVersion: v1
+          kind: Pod
+          name: nginx
+  - name: 04 - Create metrics server
+    try:
+    - apply:
+        file: https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    - sleep:
+        duration: 30s
+  - name: 05 - Create Pods with metrics server configured
+    try:
+    - apply:
+        file: pod.yaml
+        expect:
+        - check:
+            ($error != null): false
