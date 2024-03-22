@@ -15,23 +15,22 @@ spec:
   validationFailureAction: Audit 
   background: true 
   rules:
-    - name: validate-metrics-server
+    - name: check-metrics-server-configuration
       match:
         any:
         - resources:
             kinds:
-              - Deployment 
+              - Pod
       context:
         - name: metrics-api 
           apiCall:
-            urlPath: "/apis/metrics.k8s.io/v1beta1/namespaces/{{request.object.metadata.namespace}}/Deployments/{{request.object.metadata.name}}/metrics" 
-            jmesPath: "items" 
+            urlPath: "/apis/metrics.k8s.io/v1beta1/namespaces/{{request.object.metadata.namespace}}/pods" 
+            jmesPath: "apiVersion" 
       validate:
         message: "Metrics server is not configured or is inaccessible. Metrics-based decisions may be affected."
         deny:  
           conditions:
             any: 
-              - key: "{{ metrics-api }}"
-                operator: Equal
-                value: null
-
+              - key: metrics-api
+                operator: NotEquals
+                value: "metrics.k8s.io/v1beta1"
