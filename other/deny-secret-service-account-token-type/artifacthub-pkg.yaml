@@ -26,5 +26,5 @@ readme: |
 annotations:
   kyverno/category: "Security"
   kyverno/kubernetesVersion: "1.27"
-  kyverno/subject: "Secret,ServiceAccount"
+  kyverno/subject: "Secret"
 digest: 106c14ef2f33f3426e8bceaa47f696c7a9a10262955862f680497f3daa34c545

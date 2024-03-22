@@ -1,7 +1,6 @@
-name: deny-secret-service-account-token-type
+name: deny-secret-service-account-token-type-cel
 version: 1.0.0
-displayName: Deny Secret Service Account Token Type
-createdAt: "2024-01-07T20:14:33.000Z"
+displayName: Deny Secret Service Account Token Type in CEL expressions
 description: >-
   Before version 1.24, Kubernetes automatically generated Secret-based tokens 
   for ServiceAccounts. When creating a Secret, you can specify its type using the 
@@ -10,11 +9,12 @@ description: >-
   be of security concern and should be audited.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/deny-secret-service-account-token-type/deny-secret-service-account-token-type.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/deny-secret-service-account-token-type/deny-secret-service-account-token-type.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   Before version 1.24, Kubernetes automatically generated Secret-based tokens 
   for ServiceAccounts. When creating a Secret, you can specify its type using the 
@@ -24,7 +24,8 @@ readme: |
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Security"
-  kyverno/kubernetesVersion: "1.27"
-  kyverno/subject: "Secret,ServiceAccount"
-digest: 106c14ef2f33f3426e8bceaa47f696c7a9a10262955862f680497f3daa34c545
+  kyverno/category: "Security in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Secret"
+digest: 7fa15f20634f82aa6de4f5c10c449a2ef43919979671323ed571f0ce233ccefa
+createdAt: "2024-03-22T07:40:19Z"
