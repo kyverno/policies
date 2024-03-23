@@ -17,5 +17,5 @@ results:
   policy: no-localhost-service
   resources:
   - my-np-service
-  result: skip
+  result: pass
   rule: no-localhost-service
