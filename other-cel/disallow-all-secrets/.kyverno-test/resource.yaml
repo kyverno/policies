@@ -50,3 +50,13 @@ spec:
     - name: secret-volume
       readOnly: true
       mountPath: "/etc/secret-volume"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+spec:
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+    

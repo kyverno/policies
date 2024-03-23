@@ -11,38 +11,13 @@ results:
   policy: no-secrets
   resources:
   - default/secret-env-pod
-  result: fail
-  rule: secrets-not-from-env
-- kind: Pod
-  policy: no-secrets
-  resources:
   - default/secret-ref-pod
   - default/secret-vol-pod
-  result: pass
-  rule: secrets-not-from-env
-- kind: Pod
-  policy: no-secrets
-  resources:
-  - default/secret-ref-pod
   result: fail
-  rule: secrets-not-from-envfrom
+  rule: secrets-not-from-env-envFrom-and-volumes
 - kind: Pod
   policy: no-secrets
   resources:
-  - default/secret-env-pod
-  - default/secret-vol-pod
+  - default/good-pod
   result: pass
-  rule: secrets-not-from-envfrom
-- kind: Pod
-  policy: no-secrets
-  resources:
-  - default/secret-vol-pod
-  result: fail
-  rule: secrets-not-from-volumes
-- kind: Pod
-  policy: no-secrets
-  resources:
-  - default/secret-env-pod
-  - default/secret-ref-pod
-  result: pass
-  rule: secrets-not-from-volumes
+  rule: secrets-not-from-env-envFrom-and-volumes
