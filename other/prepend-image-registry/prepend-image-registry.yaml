@@ -59,8 +59,7 @@ spec:
     mutate:
       foreach:
       - list: "request.object.spec.initContainers"
-        patchStrategicMerge:
-          spec:
-            initContainers:
-            - name: "{{ element.name }}"           
-              image: registry.io/{{ images.initContainers."{{element.name}}".path}}:{{images.initContainers."{{element.name}}".tag}}
+        patchesJson6902: |-
+          - op: replace
+            path: /spec/initContainers/{{ elementIndex }}/image
+            value: registry.io/{{ images.initContainers."{{element.name}}".path}}:{{images.initContainers."{{element.name}}".tag}}

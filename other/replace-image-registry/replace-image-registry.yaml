@@ -52,8 +52,7 @@ spec:
       mutate:
         foreach:
         - list: "request.object.spec.initContainers"
-          patchStrategicMerge:
-            spec:
-              initContainers:
-              - name: "{{ element.name }}"
-                image: "{{ regex_replace_all('^(localhost/|(?:[a-z0-9]+\\.)+[a-z0-9]+/)?(.*)$', '{{element.image}}', 'myregistry.corp.com/$2' )}}"
+          patchesJson6902: |-
+            - op: replace
+              path: /spec/initContainers/{{ elementIndex }}/image
+              value: "{{ regex_replace_all('^(localhost/|(?:[a-z0-9]+\\.)+[a-z0-9]+/)?(.*)$', '{{element.image}}', 'myregistry.corp.com/$2' )}}"
