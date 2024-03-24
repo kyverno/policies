@@ -33,3 +33,25 @@ spec:
     - secretRef:
         name: mysecret
   restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+spec:
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+    env:
+    - name: ENV_VAR_1
+      value: "value1"
+    - name: ENV_VAR_2
+      value: "value2"
+    volumeMounts:
+    - name: mysecret
+      mountPath: /mnt/mysecret
+  volumes:
+  - name: mysecret
+    secret:
+      secretName: mysecret
+

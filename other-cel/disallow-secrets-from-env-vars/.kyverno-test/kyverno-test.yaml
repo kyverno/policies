@@ -11,23 +11,13 @@ results:
   policy: secrets-not-from-env-vars
   resources:
   - default/secret-env-pod
+  - default/secret-ref-pod
   result: fail
   rule: secrets-not-from-env-vars
 - kind: Pod
   policy: secrets-not-from-env-vars
   resources:
-  - default/secret-ref-pod
+  - default/good-pod
   result: pass
   rule: secrets-not-from-env-vars
-- kind: Pod
-  policy: secrets-not-from-env-vars
-  resources:
-  - default/secret-ref-pod
-  result: fail
-  rule: secrets-not-from-envfrom
-- kind: Pod
-  policy: secrets-not-from-env-vars
-  resources:
-  - default/secret-env-pod
-  result: pass
-  rule: secrets-not-from-envfrom
+  

@@ -1,23 +1,24 @@
-name: disallow-secrets-from-env-vars
+name: disallow-secrets-from-env-vars-cel
 version: 1.0.0
-displayName: Disallow Secrets from Env Vars
-createdAt: "2023-04-10T20:30:04.000Z"
+displayName: Disallow Secrets from Env Vars in CEL expressions
 description: >-
   Secrets used as environment variables containing sensitive information may, if not carefully controlled,  be printed in log output which could be visible to unauthorized people and captured in forwarding applications. This policy disallows using Secrets as environment variables.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/disallow-secrets-from-env-vars/disallow-secrets-from-env-vars.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/disallow-secrets-from-env-vars/disallow-secrets-from-env-vars.yaml
   ```
 keywords:
   - kyverno
   - Sample
   - EKS Best Practices
+  - CEL Expressions
 readme: |
   Secrets used as environment variables containing sensitive information may, if not carefully controlled,  be printed in log output which could be visible to unauthorized people and captured in forwarding applications. This policy disallows using Secrets as environment variables.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample, EKS Best Practices"
-  kyverno/kubernetesVersion: "null"
+  kyverno/category: "Sample, EKS Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod, Secret"
-digest: 79f059e745a1bd214bb91455e985bbb474f4b40590e871b6babaf60a9672b3c9
+digest: 7a8d2c6c16cc66744f7e274ed11d0065c1dc408644746c43effc25fb4261bb01
+createdAt: "2024-03-24T16:54:45Z"
