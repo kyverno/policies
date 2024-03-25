@@ -27,22 +27,10 @@ spec:
           - Pod
     validate:
       cel:
+        variables:
+          - name: allContainers
+            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
         expressions:
-          - expression: >-
-              (
-                !has(object.spec.ephemeralContainers) || object.spec.ephemeralContainers.all(container,
-                container.image.startsWith('eu.foo.io/') ||
-                container.image.startsWith('bar.io/'))
-              ) &&
-              (
-                !has(object.spec.initContainers) || object.spec.initContainers.all(container, 
-                container.image.startsWith('eu.foo.io/') ||
-                container.image.startsWith('bar.io/'))
-              ) &&
-              (
-                object.spec.containers.all(container, 
-                container.image.startsWith('eu.foo.io/') ||
-                container.image.startsWith('bar.io/'))
-              )
+          - expression: "variables.allContainers.all(container, container.image.startsWith('eu.foo.io/') || container.image.startsWith('bar.io/'))"
             message: "Unknown image registry."
 
