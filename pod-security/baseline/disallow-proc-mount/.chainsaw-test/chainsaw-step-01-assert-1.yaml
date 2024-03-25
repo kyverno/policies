@@ -1,6 +1,6 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: disallow-privileged-containers
+  name: disallow-proc-mount
 status:
   ready: true
