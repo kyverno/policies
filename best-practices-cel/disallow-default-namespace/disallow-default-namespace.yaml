@@ -31,7 +31,7 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "object.metadata.namespace != 'default'"
+          - expression: "namespaceObject.metadata.name != 'default'"
             message: "Using 'default' namespace is not allowed."
   - name: validate-podcontroller-namespace
     match:
@@ -45,6 +45,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "object.metadata.namespace != 'default'"
+          - expression: "namespaceObject.metadata.name != 'default'"
             message: "Using 'default' namespace is not allowed for pod controllers."
 
