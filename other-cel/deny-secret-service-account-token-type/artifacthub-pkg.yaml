@@ -26,6 +26,6 @@ readme: |
 annotations:
   kyverno/category: "Security in CEL"
   kyverno/kubernetesVersion: "1.26-1.27"
-  kyverno/subject: "Secret"
-digest: 7fa15f20634f82aa6de4f5c10c449a2ef43919979671323ed571f0ce233ccefa
+  kyverno/subject: "Secret, ServiceAccount"
+digest: 16324f38031f70d4a971bde9673ca51e70455478b832a005cbb415ee901f5e56
 createdAt: "2024-03-22T07:40:19Z"
