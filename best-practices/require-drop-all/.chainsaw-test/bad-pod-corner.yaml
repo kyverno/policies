@@ -11,13 +11,13 @@ spec:
         add: ["SYS_TIME"]
         drop:
           - ALL
-  - name: add-capabilities
+  - name: add-capabilities-again
     image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
         drop:
-          - ["CAP_NET_RAW"]
+          - CAP_NET_RAW
 ---
 apiVersion: v1
 kind: Pod
@@ -30,7 +30,7 @@ spec:
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
-  - name: add-capabilities
+  - name: add-capabilities-again
     image: busybox:1.35
     securityContext:
       capabilities:
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-good
+  name: add-capabilities-bad
 spec:
   containers:
   - name: init
