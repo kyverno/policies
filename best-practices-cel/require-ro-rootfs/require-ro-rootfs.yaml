@@ -31,6 +31,6 @@ spec:
           - expression: >-
               object.spec.containers.all(container,
               has(container.securityContext) &&
-              container.securityContext.readOnlyRootFilesystem ==  true)
+              container.securityContext.readOnlyRootFilesystem == true)
             message: "Root filesystem must be read-only."
           
