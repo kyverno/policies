@@ -41,7 +41,7 @@ spec:
         This container image's base is not in the approved list or is not specified. Only pre-approved
         base images may be used. Please contact the platform team for assistance.
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context:
         - name: imageData
           imageRegistry: 
