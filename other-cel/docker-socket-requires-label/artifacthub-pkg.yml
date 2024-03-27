@@ -1,22 +1,23 @@
-name: docker-socket-requires-label
+name: docker-socket-requires-label-cel
 version: 1.0.0
-displayName: Docker Socket Requires Label
-createdAt: "2023-04-10T20:30:04.000Z"
+displayName: Docker Socket Requires Label in CEL expressions
 description: >-
   Accessing a container engine's socket is for highly specialized use cases and should generally be disabled. If access must be granted, it should be done on an explicit basis. This policy requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set to `true`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/docker-socket-requires-label/docker-socket-requires-label.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/docker-socket-requires-label/docker-socket-requires-label.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Accessing a container engine's socket is for highly specialized use cases and should generally be disabled. If access must be granted, it should be done on an explicit basis. This policy requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set to `true`.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod"
-digest: 58e37e4980fab8a47f937fffe55803136c1c5f8083ea33dd4915a6fc4c1d69de
+digest: 6453788f2fd528fc85bc30881e012fa625bba4a92700af258b915ef3e9defb34
+createdAt: "2024-03-27T12:13:52Z"
