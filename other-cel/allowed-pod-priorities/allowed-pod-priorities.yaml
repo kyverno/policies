@@ -24,36 +24,6 @@ spec:
       any:
       - resources:
           kinds:
-          - Deployment
-          - DaemonSet
-          - StatefulSet
-          - Job
-    validate:
-      cel:
-        paramKind:
-          apiVersion: v1
-          kind: ConfigMap
-        paramRef:
-          name: allowed-pod-priorities
-          namespace: default
-          parameterNotFoundAction: Deny
-        variables:
-          - name: namespaceName
-            expression: "namespaceObject.metadata.name"
-          - name: priorities
-            expression: "variables.namespaceName in params.data ? params.data[variables.namespaceName].split(', ') : []"
-        expressions:
-          - expression: "variables.priorities == [] || object.spec.template.spec.priorityClassName in variables.priorities"
-            messageExpression: >-
-              'The Pod PriorityClass ' + object.spec.template.spec.priorityClassName + 
-              ' is not in the list of the following PriorityClasses allowed in this Namespace: ' + 
-              params.data[variables.namespaceName]"
-
-  - name: validate-pod-priority-pods
-    match:
-      any:
-      - resources:
-          kinds:
           - Pod
     validate:
       cel:
@@ -75,31 +45,3 @@ spec:
               'The Pod PriorityClass ' + object.spec.priorityClassName +
               ' is not in the list of the following PriorityClasses allowed in this Namespace: ' +
               params.data[variables.namespaceName]
-
-  - name: validate-pod-priority-cronjob
-    match:
-      any:
-      - resources:
-          kinds:
-          - CronJob
-    validate:
-      cel:
-        paramKind:
-          apiVersion: v1
-          kind: ConfigMap
-        paramRef:
-          name: allowed-pod-priorities
-          namespace: default
-          parameterNotFoundAction: Deny
-        variables:
-          - name: namespaceName
-            expression: "namespaceObject.metadata.name"
-          - name: priorities
-            expression: "variables.namespaceName in params.data ? params.data[variables.namespaceName].split(', ') : []"
-        expressions:
-          - expression: "variables.priorities == [] || object.spec.jobTemplate.spec.template.spec.priorityClassName in variables.priorities"
-            messageExpression: >-
-              'The Pod PriorityClass ' + object.spec.jobTemplate.spec.template.spec.priorityClassName +
-              ' is not in the list of the following PriorityClasses allowed in this Namespace: ' +
-              params.data[variables.namespaceName]
-      
