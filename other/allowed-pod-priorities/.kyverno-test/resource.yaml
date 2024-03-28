@@ -35,7 +35,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: hello
+  name: mycronjob
   namespace: production
 spec:
   schedule: "*/1 * * * *"

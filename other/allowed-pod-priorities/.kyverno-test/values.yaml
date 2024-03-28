@@ -2,24 +2,16 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Values
 policies:
 - name: allowed-podpriorities
-  rules:
-  - name: validate-pod-priority-pods
+  resources:
+  - name: myapp-pod
     values:
       podprioritydict.data.default: '["high-priority", "moderate-priority", "low-priority"]'
       request.namespace: default
-  - name: validate-pod-priority
+  - name: mydeploy
     values:
       podprioritydict.data.default: '["high-priority", "moderate-priority", "low-priority"]'
       request.namespace: default
-  - name: validate-pod-priority-cronjob
+  - name: mycronjob
     values:
       podprioritydict.data.production: '["high-priority", "moderate-priority", "low-priority"]'
       request.namespace: production
-  - name: autogen-validate-pod-priority-pods
-    values:
-      podprioritydict.data.default: '["high-priority", "moderate-priority", "low-priority"]'
-      request.namespace: default
-  - name: autogen-cronjob-validate-pod-priority-pods
-    values:
-      podprioritydict.data.default: '["high-priority", "moderate-priority", "low-priority"]'
-      request.namespace: default
