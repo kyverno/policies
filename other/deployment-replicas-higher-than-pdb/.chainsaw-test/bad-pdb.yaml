@@ -1,0 +1,30 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-pdb01
+spec:
+  minAvailable: 3
+  selector:
+    matchLabels:
+      app: busybox
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-pdb02
+spec:
+  minAvailable: 4
+  selector:
+    matchLabels:
+      app: busybox
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-pdb03
+spec:
+  minAvailable: 5
+  selector:
+    matchLabels:
+      app: busybox
+---
