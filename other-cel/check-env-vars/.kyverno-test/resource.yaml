@@ -33,3 +33,4 @@ spec:
   containers:
     - image: quay.io/sdase/sdase-version-collector
       name: myservice
+

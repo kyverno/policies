@@ -57,3 +57,4 @@ spec:
             - name: DISABLE_OPA
               value: "false"
           restartPolicy: OnFailure
+

@@ -48,3 +48,4 @@ spec:
           secretKeyRef:
             name: foo
             key: pass
+

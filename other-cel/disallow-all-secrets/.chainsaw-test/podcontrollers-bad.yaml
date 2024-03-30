@@ -187,3 +187,4 @@ spec:
             secret:
               secretName: foo-secret
           restartPolicy: OnFailure
+

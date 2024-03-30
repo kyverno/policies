@@ -77,3 +77,4 @@ spec:
             - name: bb-01
               image: kyverno
           restartPolicy: OnFailure
+

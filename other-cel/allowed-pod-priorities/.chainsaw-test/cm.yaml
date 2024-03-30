@@ -6,3 +6,4 @@ kind: ConfigMap
 metadata:
   name: allowed-pod-priorities
   namespace: default
+

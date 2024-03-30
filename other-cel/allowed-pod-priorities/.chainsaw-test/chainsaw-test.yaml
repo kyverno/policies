@@ -42,3 +42,4 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
+

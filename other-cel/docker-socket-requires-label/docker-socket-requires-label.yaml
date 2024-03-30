@@ -34,3 +34,4 @@ spec:
         expressions:
           - expression: "!variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
             message: "If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`."
+

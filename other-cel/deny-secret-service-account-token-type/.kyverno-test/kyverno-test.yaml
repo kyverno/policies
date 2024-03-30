@@ -19,3 +19,4 @@ results:
   - good-secret
   result: pass
   rule: deny-secret-service-account-token-type
+

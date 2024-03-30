@@ -63,3 +63,4 @@ spec:
   ephemeralContainers:
   - name: ephcontainer01
     image: dummyimagename
+

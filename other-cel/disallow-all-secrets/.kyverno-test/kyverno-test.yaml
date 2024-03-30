@@ -21,3 +21,4 @@ results:
   - default/good-pod
   result: pass
   rule: secrets-not-from-env-envFrom-and-volumes
+

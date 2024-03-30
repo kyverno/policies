@@ -32,3 +32,4 @@ spec:
                 !object.spec.containers.exists(container, has(container.env) &&
                 container.env.exists(e, e.name == 'DISABLE_OPA' && e.value == 'true'))
               message: "DISABLE_OPA must not be set to true."
+

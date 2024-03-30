@@ -27,3 +27,4 @@ spec:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           name: check-serviceaccount-secrets
+

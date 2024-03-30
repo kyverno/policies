@@ -49,3 +49,4 @@ spec:
         content: kubectl delete deployments --all --force --grace-period=0 -n block-ephemeral-ns
     - script:
         content: kubectl delete pods --all --force --grace-period=0 -n block-ephemeral-ns
+
