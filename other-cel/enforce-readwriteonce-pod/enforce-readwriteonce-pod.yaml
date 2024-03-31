@@ -3,9 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: readwriteonce-pod
   annotations:
-    policies.kyverno.io/title: Enforce ReadWriteOncePod
-    policies.kyverno.io/category: Sample
+    policies.kyverno.io/title: Enforce ReadWriteOncePod in CEL expressions
+    policies.kyverno.io/category: Sample in CEL 
     policies.kyverno.io/subject: PersistentVolumeClaim
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.27-1.28"
     policies.kyverno.io/description: >-
       Some stateful workloads with multiple replicas only allow a single Pod to write
       to a given volume at a time. Beginning in Kubernetes 1.22 and enabled by default
@@ -24,10 +26,8 @@ spec:
           kinds:
           - PersistentVolumeClaim
     validate:
-      message: "The accessMode must be set to ReadWriteOncePod."
-      pattern:
-        spec:
-          accessModes:
-          - ReadWriteOncePod
+      cel:
+        expressions:
+          - expression: "'ReadWriteOncePod' in object.spec.accessModes"
+            message: "The accessMode must be set to ReadWriteOncePod."
 
-          
