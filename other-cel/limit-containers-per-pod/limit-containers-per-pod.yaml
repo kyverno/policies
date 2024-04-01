@@ -3,9 +3,10 @@ kind: ClusterPolicy
 metadata:
   name: limit-containers-per-pod
   annotations:
-    policies.kyverno.io/title: Limit Containers per Pod
-    policies.kyverno.io/category: Sample
-    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/title: Limit Containers per Pod in CEL expressions
+    policies.kyverno.io/category: Sample in CEL 
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Pods can have many different containers which
@@ -14,7 +15,7 @@ metadata:
       be applied consistently. This policy checks all Pods to ensure they have
       no more than four containers.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: limit-containers-per-pod
@@ -23,18 +24,9 @@ spec:
       - resources:
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value: 
-        - CREATE
-        - UPDATE
     validate:
-      message: "Pods can only have a maximum of 4 containers."
-      deny:
-        conditions:
-          any:
-          - key: "{{request.object.spec.containers[] | length(@)}}"
-            operator: GreaterThan
-            value: "4"
+      cel:
+        expressions:
+          - expression: "size(object.spec.containers) <= 4"
+            message: "Pods can only have a maximum of 4 containers."
+
