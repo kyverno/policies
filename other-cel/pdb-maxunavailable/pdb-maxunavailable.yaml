@@ -3,10 +3,10 @@ kind: ClusterPolicy
 metadata:
   name: pdb-maxunavailable
   annotations:
-    policies.kyverno.io/title: PodDisruptionBudget maxUnavailable Non-Zero
-    policies.kyverno.io/category: Other
-    kyverno.io/kyverno-version: 1.9.0
-    kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/title: PodDisruptionBudget maxUnavailable Non-Zero in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: PodDisruptionBudget
     policies.kyverno.io/description: >-
       A PodDisruptionBudget which sets its maxUnavailable value to zero prevents
@@ -14,7 +14,7 @@ metadata:
       This policy enforces that if a PodDisruptionBudget specifies the maxUnavailable field
       it must be greater than zero.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
     - name: pdb-maxunavailable
@@ -24,7 +24,8 @@ spec:
               kinds:
                 - PodDisruptionBudget
       validate:
-        message: "The value of maxUnavailable must be greater than zero."
-        pattern:
-          spec:
-            =(maxUnavailable): ">0"
+        cel:
+          expressions:
+            - expression: "!has(object.spec.maxUnavailable) || int(object.spec.maxUnavailable) > 0"
+              message: "The value of maxUnavailable must be greater than zero."
+
