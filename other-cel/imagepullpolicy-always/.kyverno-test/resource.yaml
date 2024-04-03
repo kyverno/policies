@@ -21,7 +21,7 @@ spec:
   containers:
   - name: nginx
     image: nginx:latest
-
+    imagePullPolicy: "IfNotPresent"
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -40,6 +40,7 @@ spec:
       containers:
       - name: nginx
         image: nginx
+        imagePullPolicy: "IfNotPresent"
         ports:
         - containerPort: 80
 
