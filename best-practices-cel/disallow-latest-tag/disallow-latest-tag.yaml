@@ -18,7 +18,7 @@ spec:
   validationFailureAction: Audit
   background: true
   rules:
-  - name: require-image-tag
+  - name: require-and-validate-image-tag
     match:
       any:
       - resources:
@@ -29,15 +29,6 @@ spec:
         expressions:
           - expression: "object.spec.containers.all(container, container.image.contains(':'))"
             message: "An image tag is required."
-  - name: validate-image-tag
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    validate:
-      cel:
-        expressions:
           - expression: "object.spec.containers.all(container, !container.image.endsWith(':latest'))"
             message: "Using a mutable image tag e.g. 'latest' is not allowed."
 
