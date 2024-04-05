@@ -20,4 +20,4 @@ results:
   - good-pod-01
   result: pass
   rule: ensure-hostpaths-readonly
-variables: values.yaml
+

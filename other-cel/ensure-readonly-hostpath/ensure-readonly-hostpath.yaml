@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: ensure-readonly-hostpath
   annotations:
-    policies.kyverno.io/title: Ensure Read Only hostPath
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Ensure Read Only hostPath in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kyverno-version: 1.6.2
-    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Pods which are allowed to mount hostPath volumes in read/write mode pose a security risk
@@ -19,7 +19,7 @@ metadata:
       explicitly mounted in readOnly mode.
 spec:
   background: false
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: ensure-hostpaths-readonly
     match:
@@ -27,26 +27,17 @@ spec:
       - resources:
           kinds:
             - Pod
-    preconditions:
-      all:
-      - key: "{{ request.operation || 'BACKGROUND' }}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
     validate:
-      message: All hostPath volumes must be mounted as readOnly.
-      foreach:
-      # Fetch all volumes in the Pod which are a hostPath. Store the names in an array. There could be multiple in a Pod so can't assume just one.
-      - list: "request.object.spec.volumes[?hostPath][]"
-        deny:
-          conditions:
-          # For every name found for a hostPath volume (stored as `{{element}}`), check all containers, initContainers, and ephemeralContainers which mount this volume and
-          # total up the number of them. Compare that to the ones with that same name which explicitly specify that `readOnly: true`. If these two
-          # counts aren't equal, deny the Pod because at least one is attempting to mount that hostPath in read/write mode. Note that the absence of
-          # the `readOnly: true` field implies read/write access. Therefore, every hostPath volume must explicitly specify that it should be mounted
-          # in readOnly mode, regardless of where that occurs in a Pod.
-            any:
-            - key: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}'][] | length(@) }}"
-              operator: NotEquals
-              value: "{{ request.object.spec.[containers, initContainers, ephemeralContainers][].volumeMounts[?name == '{{element.name}}' && readOnly] [] | length(@) }}"
+      cel:
+        variables:
+          - name: allContainers
+            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+          - name: hostPathVolumes
+            expression: "has(object.spec.volumes) ? object.spec.volumes.filter(volume, has(volume.hostPath)) : []"
+        expressions:
+          - expression: >-
+              variables.hostPathVolumes.all(hostPath, variables.allContainers.all(container, 
+              !has(container.volumeMounts) || 
+              container.volumeMounts.all(volume, (hostPath.name != volume.name) || has(volume.readOnly) && volume.readOnly == true)))
+            message: All hostPath volumes must be mounted as readOnly.
+      
