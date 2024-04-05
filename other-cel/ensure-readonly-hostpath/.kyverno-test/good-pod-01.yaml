@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-01
+spec:
+  containers:
+  - name: test-webserver
+    image: asdfeasdfasada:latest
+    volumeMounts:
+    - mountPath: /some/dir
+      name: foo
+      readOnly: true
+  volumes:
+  - name: foo
+    hostPath:
+      path: /var/log
