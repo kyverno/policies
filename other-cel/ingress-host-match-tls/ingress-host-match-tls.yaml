@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: ingress-host-match-tls
   annotations:
-    policies.kyverno.io/title: Ingress Host Match TLS
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Ingress Host Match TLS in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.0
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.20, 1.21"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
       Ingress resources which name a host name that is not present
@@ -18,7 +18,7 @@ metadata:
       in the list of TLS hosts.
 spec:
   background: false
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: host-match-tls
     match:
@@ -26,18 +26,15 @@ spec:
       - resources:
           kinds:
           - Ingress
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
     validate:
-      message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
-      deny:
-        conditions:
-          all:
-          - key: "{{ (request.object.spec.rules[].host || `[]`) | sort(@) }}"
-            operator: AnyNotIn
-            value: "{{ (request.object.spec.tls[].hosts[] || `[]`) | sort(@) }}"
+      cel:
+        variables:
+          - name: tls
+            expression: "has(object.spec.tls) ? object.spec.tls : []"
+        expressions:
+          - expression: >-
+              object.spec.rules.all(rule, 
+              !has(rule.host) || 
+              variables.tls.exists(tls, has(tls.hosts) && tls.hosts.exists(tlsHost, tlsHost == rule.host)))
+            message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
+

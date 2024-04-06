@@ -1,22 +1,23 @@
-name: ingress-host-match-tls
+name: ingress-host-match-tls-cel
 version: 1.0.0
-displayName: Ingress Host Match TLS
-createdAt: "2023-04-10T20:30:04.000Z"
+displayName: Ingress Host Match TLS in CEL expressions
 description: >-
   Ingress resources which name a host name that is not present in the TLS section can produce ingress routing failures as a TLS certificate may not correspond to the destination host. This policy ensures that the host name in an Ingress rule is also found in the list of TLS hosts.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/ingress-host-match-tls/ingress-host-match-tls.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/ingress-host-match-tls/ingress-host-match-tls.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Ingress resources which name a host name that is not present in the TLS section can produce ingress routing failures as a TLS certificate may not correspond to the destination host. This policy ensures that the host name in an Ingress rule is also found in the list of TLS hosts.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.20, 1.21"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Ingress"
-digest: 3f3af746f48800ebfdb337b428125c1421f29d91161ab34a0fd8e2225913dbb3
+digest: 5442acaa90c6a45509015995028e241374b76d60cc700fbf6dd9f61178ba432f
+createdAt: "2024-04-06T17:22:38Z"
