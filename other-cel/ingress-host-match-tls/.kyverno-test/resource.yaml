@@ -1,0 +1,169 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress01
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint99
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress02
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  - host: endpoint02
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint03
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress01
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint01
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress02
+spec:
+  ingressClassName: nginx-int
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  - host: endpoint02
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - endpoint01
+    - endpoint02
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress03
+spec:
+  ingressClassName: nginx-int
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  - host: endpoint02
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - endpoint02
+    - endpoint01
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress04
+spec:
+  ingressClassName: nginx-int
+  rules:
+  - host: endpoint02
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  - host: endpoint01
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - endpoint01
+    - endpoint02
