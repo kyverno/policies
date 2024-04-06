@@ -72,3 +72,4 @@ spec:
             hostPath:
               path: /var/log
           restartPolicy: OnFailure
+

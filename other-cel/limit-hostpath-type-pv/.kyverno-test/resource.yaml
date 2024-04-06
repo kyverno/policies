@@ -29,3 +29,4 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   hostPath:
     path: "/etc"
+

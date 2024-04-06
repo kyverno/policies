@@ -13,3 +13,4 @@ spec:
   - name: foo
     hostPath:
       path: /var/log
+

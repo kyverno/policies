@@ -35,3 +35,4 @@ spec:
     try:
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n ensure-probes-different-ns
+

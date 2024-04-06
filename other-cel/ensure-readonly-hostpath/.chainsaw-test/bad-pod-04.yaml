@@ -20,3 +20,4 @@ spec:
   - name: bar
     hostPath:
       path: /etc
+

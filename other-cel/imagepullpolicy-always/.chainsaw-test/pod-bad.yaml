@@ -42,3 +42,4 @@ spec:
       imagePullPolicy: Never
     - name: pod02
       image: busybox:1.35
+
