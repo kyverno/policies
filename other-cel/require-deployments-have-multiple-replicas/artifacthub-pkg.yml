@@ -1,21 +1,24 @@
-name: require-deployments-have-multiple-replicas
+name: require-deployments-have-multiple-replicas-cel
 version: 1.0.0
-displayName: Require Multiple Replicas
-createdAt: "2023-04-10T20:30:05.000Z"
+displayName: Require Multiple Replicas in CEL expressions
 description: >-
   Deployments with a single replica cannot be highly available and thus the application may suffer downtime if that one replica goes down. This policy validates that Deployments have more than one replica.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-deployments-have-multiple-replicas/require-deployments-have-multiple-replicas.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/require-deployments-have-multiple-replicas/require-deployments-have-multiple-replicas.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   Deployments with a single replica cannot be highly available and thus the application may suffer downtime if that one replica goes down. This policy validates that Deployments have more than one replica.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Deployment"
-digest: c51f69dfe47a743104560fa0dadb1c7dcf60d98ed66eb1d142e5891ac7213f1a
+digest: 2fed27452252ffb68d35e12524f0e2ea3075b3c318c639a11ec887eb4ab8fd35
+createdAt: "2024-04-09T16:03:47Z"
+
