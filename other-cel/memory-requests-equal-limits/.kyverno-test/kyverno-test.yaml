@@ -25,3 +25,4 @@ results:
   - myapp-pod
   result: fail
   rule: memory-requests-equal-limits
+

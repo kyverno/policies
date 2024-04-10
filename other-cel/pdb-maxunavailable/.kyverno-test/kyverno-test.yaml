@@ -21,3 +21,4 @@ results:
   - kube-system/good-pdb-none
   result: pass
   rule: pdb-maxunavailable
+

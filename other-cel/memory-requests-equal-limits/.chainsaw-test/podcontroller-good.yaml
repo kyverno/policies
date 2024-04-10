@@ -61,3 +61,4 @@ spec:
               limits:
                 memory: "50Mi"
           restartPolicy: OnFailure
+
