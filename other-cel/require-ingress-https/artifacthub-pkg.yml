@@ -1,22 +1,24 @@
-name: require-ingress-https
+name: require-ingress-https-cel
 version: 1.0.0
-displayName: Require Ingress HTTPS
-createdAt: "2023-04-10T20:30:05.000Z"
+displayName: Require Ingress HTTPS in CEL expressions
 description: >-
   Ingress resources should only allow secure traffic by disabling HTTP and therefore only allowing HTTPS. This policy requires that all Ingress resources set the annotation `kubernetes.io/ingress.allow-http` to `"false"` and specify TLS in the spec.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-ingress-https/require-ingress-https.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/require-ingress-https/require-ingress-https.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Ingress resources should only allow secure traffic by disabling HTTP and therefore only allowing HTTPS. This policy requires that all Ingress resources set the annotation `kubernetes.io/ingress.allow-http` to `"false"` and specify TLS in the spec.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.24"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Ingress"
-digest: 982d69a4f52345017974fd7bb4d7de95223a9ab3570caae9796c5f99374d5e02
+digest: 7137f9f3ee547773d40e4b93d7a7c0f6823c6f8df014e6fd0bdf7a50fcd37a0f
+createdAt: "2024-04-10T18:31:27Z"
+

@@ -3,11 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: require-ingress-https
   annotations:
-    policies.kyverno.io/title: Require Ingress HTTPS
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Require Ingress HTTPS in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.9.0
-    kyverno.io/kubernetes-version: "1.24"
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
       Ingress resources should only allow secure traffic by disabling
@@ -16,7 +16,7 @@ metadata:
       `"false"` and specify TLS in the spec.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: has-annotation
     match:
@@ -24,37 +24,23 @@ spec:
       - resources:
           kinds:
           - Ingress
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
     validate:
-      message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
-      pattern:
-        metadata:
-          annotations:
-            kubernetes.io/ingress.allow-http: "false"
+      cel:
+        expressions:
+          - expression: >-
+              has(object.metadata.annotations) && 
+              'kubernetes.io/ingress.allow-http' in object.metadata.annotations && 
+              object.metadata.annotations['kubernetes.io/ingress.allow-http'] == 'false'
+            message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
   - name: has-tls
     match:
       any:
       - resources:
           kinds:
           - Ingress
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
     validate:
-      message: "TLS must be defined."
-      deny:
-        conditions:
-          all:
-          - key: tls
-            operator: AnyNotIn
-            value: "{{ request.object.spec.keys(@) }}"
+      cel:
+        expressions:
+          - expression: "'tls' in object.spec"
+            message: "TLS must be defined."
+
