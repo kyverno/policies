@@ -10,6 +10,14 @@ spec:
     try:
     - apply:
         file: ../require-pod-priorityclassname.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: require-pod-priorityclassname
+          spec:
+            validationFailureAction: Enforce
     - apply:
         file: pc.yaml
     - assert:
