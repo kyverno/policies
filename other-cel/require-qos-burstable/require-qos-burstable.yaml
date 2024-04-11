@@ -3,10 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: require-qos-burstable
   annotations:
-    policies.kyverno.io/title: Require QoS Burstable
-    policies.kyverno.io/category: Other, Multi-Tenancy
+    policies.kyverno.io/title: Require QoS Burstable in CEL expressions
+    policies.kyverno.io/category: Other, Multi-Tenancy in CEL 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/description: >-
       Pod Quality of Service (QoS) is a mechanism to ensure Pods receive certain
       priority guarantees based upon the resources they define. When a Pod has at least
@@ -16,7 +18,7 @@ metadata:
       This policy is provided with the intention that users will need to control its scope by using
       exclusions, preconditions, and other policy language mechanisms.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: burstable
@@ -26,13 +28,11 @@ spec:
           kinds:
           - Pod
     validate:
-      message: "At least one container in the Pod must define either requests or limits for either CPU or memory."
-      deny:
-        conditions:
-          all:
-          - key: requests
-            operator: AnyNotIn
-            value: "{{ request.object.spec.containers[].resources.keys(@)[] }}"
-          - key: limits
-            operator: AnyNotIn
-            value: "{{ request.object.spec.containers[].resources.keys(@)[] }}"
+      cel:
+        expressions:
+          - expression: >-
+              object.spec.containers.exists(container, 
+              has(container.resources) && 
+              (has(container.resources.requests) || has(container.resources.limits)))
+            message: "At least one container in the Pod must define either requests or limits for either CPU or memory."
+
