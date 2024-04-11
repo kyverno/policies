@@ -1,0 +1,32 @@
+#within ns with owner label
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: within-ns
+  labels:
+    owner: "any-corp"
+---
+#outside ns with owner label
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: without-ns
+  labels:
+    owner: "any-corp"
+---
+#outside ns with label (not including owner label)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: myns
+  labels:
+    app: myapp
+---
+#outside ns with no labels
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demons
+
+
+  

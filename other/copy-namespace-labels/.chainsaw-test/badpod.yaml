@@ -1,0 +1,66 @@
+# Within Namespace, Pod with No Labels at All
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-no-labels
+  namespace: demons
+spec:
+  containers:
+  - name: badpod01
+    image: nginx:1.25
+---
+#Within Namespace, Pod with kubernetes.io/metadata.name label only
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-metadata-withinns
+  namespace: within-ns
+  labels:
+    kubernetes.io/metadata.name: "pod-with-metadata-name-only"
+spec:
+  containers:
+  - name: badpod02
+    image: nginx:1.25
+---
+# Outside Namespace, Pod with kubernetes.io/metadata.name label only
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-metadata-name-only
+  namespace: demons
+  labels:
+    kubernetes.io/metadata.name: "pod-with-metadata-name-only"
+spec:
+  containers:
+  - name: badpod03
+    image: nginx:1.25
+---
+# Outside Namespace, Pod with owner label and kubernetes.io/metadata.name label
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-owner-and-metadata-name
+  namespace: without-ns
+  labels:
+    owner: "any-corp"
+    kubernetes.io/metadata.name: "pod-with-owner-and-metadata-name"
+spec:
+  containers:
+  - name: badpod04
+    image: nginx:1.25
+--- 
+# Outside Namespace, Pod with Multiple Labels (including owner)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-multiple-labels
+  namespace: without-ns
+  labels:
+    owner: "any-corp"
+    app: "my-app"
+spec:
+  containers:
+  - name: badpod05
+    image: nginx:1.25
+
+

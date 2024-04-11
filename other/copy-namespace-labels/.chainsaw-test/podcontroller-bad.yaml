@@ -1,0 +1,48 @@
+#Outside Namespace, Pod with owner label and kubernetes.io/metadata.name label
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-ouside-ns
+  namespace: without-ns
+  labels:
+    app: my-app
+    tier: frontend
+spec:
+  replicas: 1  
+  selector:
+    matchLabels:
+      app: my-app
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: my-app
+        tier: frontend
+        owner: "any-corp"   
+        kubernetes.io/metadata.name: "pod-with-owner-and-metadata-name"
+    spec:
+      containers:
+        - name: badpod04
+          image: nginx:1.25
+---
+# Outside Namespace, Pod with Multiple Labels (including owner)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-multiple-labels
+  namespace: without-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        owner: "any-corp"
+        app: "my-app"
+    spec:
+      containers:
+      - name: badpod05
+        image: nginx:1.25
+

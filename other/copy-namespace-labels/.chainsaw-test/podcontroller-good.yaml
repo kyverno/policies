@@ -1,0 +1,22 @@
+#Within Namespace, Access to Pod with Owner Label
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-with-ns
+  namespace: within-ns
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: my-app
+        tier: frontend
+        owner: "any-corp"
+    spec:
+      containers:
+        - name: goodpod01
+          image: nginx:1.25
