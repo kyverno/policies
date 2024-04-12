@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: goodcrb01
+subjects:
+- kind: Group
+  name: manager
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: secret-reader
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: goodcrb02
+subjects:
+- kind: ServiceAccount
+  namespace: foo
+  name: manager
+roleRef:
+  kind: ClusterRole
+  name: foo-reader
+  apiGroup: rbac.authorization.k8s.io
