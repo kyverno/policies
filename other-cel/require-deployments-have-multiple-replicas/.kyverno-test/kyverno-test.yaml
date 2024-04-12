@@ -19,3 +19,4 @@ results:
   - mydeploybad
   result: fail
   rule: deployment-has-multiple-replicas
+

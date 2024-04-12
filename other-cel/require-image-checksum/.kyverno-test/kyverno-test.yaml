@@ -31,3 +31,4 @@ results:
   - myapp-pod-1
   result: pass
   rule: require-image-checksum
+
