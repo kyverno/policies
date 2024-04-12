@@ -3,10 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: restrict-annotations
   annotations:
-    policies.kyverno.io/title: Restrict Annotations
-    policies.kyverno.io/category: Sample
-    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/title: Restrict Annotations in CEL expressions
+    policies.kyverno.io/category: Sample in CEL 
+    policies.kyverno.io/minversion: 1.11.0
     policies.kyverno.io/subject: Pod, Annotation
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/description: >-
       Some annotations control functionality driven by other cluster-wide tools and are not
       normally set by some class of users. This policy prevents the use of an annotation beginning
@@ -14,7 +15,7 @@ metadata:
       don't set reserved annotations or to force them to use a newer version of an annotation.
     pod-policies.kyverno.io/autogen-controllers: none
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: block-flux-v1
@@ -29,8 +30,8 @@ spec:
           - DaemonSet
           - Pod
     validate:
-      message: Cannot use Flux v1 annotation.
-      pattern:
-        metadata:
-          =(annotations):
-            X(fluxcd.io/*): "*?"
+      cel:
+        expressions:
+          - expression: "!has(object.metadata.annotations) || !object.metadata.annotations.exists(annotation, annotation.startsWith('fluxcd.io/'))"
+            message: Cannot use Flux v1 annotation.
+

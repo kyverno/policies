@@ -1,21 +1,24 @@
-name: restrict-annotations
+name: restrict-annotations-cel
 version: 1.0.0
-displayName: Restrict Annotations
-createdAt: "2023-04-10T20:30:06.000Z"
+displayName: Restrict Annotations in CEL expressions
 description: >-
   Some annotations control functionality driven by other cluster-wide tools and are not normally set by some class of users. This policy prevents the use of an annotation beginning with `fluxcd.io/`. This can be useful to ensure users either don't set reserved annotations or to force them to use a newer version of an annotation.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-annotations/restrict-annotations.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-annotations/restrict-annotations.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   Some annotations control functionality driven by other cluster-wide tools and are not normally set by some class of users. This policy prevents the use of an annotation beginning with `fluxcd.io/`. This can be useful to ensure users either don't set reserved annotations or to force them to use a newer version of an annotation.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod, Annotation"
-digest: a685e92213d17c1848c0374cc959633ce189df2efdfd3d775427d4769ce09efc
+digest: 55b4953e1ca6aa6038d407aae539705d9a8c1136d2ffc277df1686a08ac7c9a8
+createdAt: "2024-04-12T15:55:04Z"
+
