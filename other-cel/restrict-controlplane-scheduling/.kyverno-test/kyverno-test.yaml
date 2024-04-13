@@ -10,24 +10,14 @@ results:
 - kind: Pod
   policy: restrict-controlplane-scheduling
   resources:
-  - default/myapp-pod-2
-  result: fail
-  rule: restrict-controlplane-scheduling-control-plane
-- kind: Pod
-  policy: restrict-controlplane-scheduling
-  resources:
-  - default/myapp-pod-1
-  result: pass
-  rule: restrict-controlplane-scheduling-control-plane
-- kind: Pod
-  policy: restrict-controlplane-scheduling
-  resources:
-  - default/myapp-pod-1
+  - default/badpod01
+  - default/badpod02
   result: fail
   rule: restrict-controlplane-scheduling-master
 - kind: Pod
   policy: restrict-controlplane-scheduling
   resources:
-  - default/myapp-pod-2
+  - default/goodpod01
+  - default/goodpod02
   result: pass
   rule: restrict-controlplane-scheduling-master
