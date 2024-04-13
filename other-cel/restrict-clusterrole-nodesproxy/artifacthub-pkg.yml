@@ -1,22 +1,24 @@
-name: restrict-clusterrole-nodesproxy
+name: restrict-clusterrole-nodesproxy-cel
 version: 1.0.0
-displayName: Restrict ClusterRole with Nodes Proxy
-createdAt: "2023-04-10T20:30:06.000Z"
+displayName: Restrict ClusterRole with Nodes Proxy in CEL expressions
 description: >-
   A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-clusterrole-nodesproxy/restrict-clusterrole-nodesproxy.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-clusterrole-nodesproxy/restrict-clusterrole-nodesproxy.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
-  kyverno/kubernetesVersion: "1.27"
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "ClusterRole, RBAC"
-digest: 0d9a0433d58ccb0d102ef757fed015a7bc8fdf128dd3fa4f8526c9608571d92e
+digest: 54304b50ebe12dab7f36afa09eaadf5f591d39a2bfe3ee83c150df30cbf66c4b
+createdAt: "2024-04-13T16:12:56Z"
+
