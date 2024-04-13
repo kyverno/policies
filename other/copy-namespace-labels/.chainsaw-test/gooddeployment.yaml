@@ -1,4 +1,4 @@
-#Within Namespace, Access to Pod with Owner Label
+#Within Namespace, with Owner Label and additional labels
 apiVersion: apps/v1
 kind: Deployment
 metadata:
