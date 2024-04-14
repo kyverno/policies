@@ -1,22 +1,24 @@
-name: restrict-escalation-verbs-roles
+name: restrict-escalation-verbs-roles-cel
 version: 1.0.0
-displayName: Restrict Escalation Verbs in Roles
-createdAt: "2023-04-10T20:30:06.000Z"
+displayName: Restrict Escalation Verbs in Roles in CEL expressions
 description: >-
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-escalation-verbs-roles/restrict-escalation-verbs-roles.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-escalation-verbs-roles/restrict-escalation-verbs-roles.yaml
   ```
 keywords:
   - kyverno
   - Security
+  - CEL Expressions
 readme: |
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Security"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Security in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: b4e370bcf146a9d1052f80bd63f03f87147216ffd601cfeaf17106db883a9095
+digest: 79d9c85060d55996f3be6bbc06321edfed00daeaca5bd24a7f4436f23a96bd73
+createdAt: "2024-04-14T15:40:58Z"
+
