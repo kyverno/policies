@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: restrict-ingress-wildcard
   annotations:
-    policies.kyverno.io/title: Restrict Ingress Host with Wildcards
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Restrict Ingress Host with Wildcards in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.2
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
       Ingress hosts optionally accept a wildcard as an alternative
@@ -17,7 +17,7 @@ metadata:
       policy enforces that any Ingress host does not contain a wildcard
       character.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: block-ingress-wildcard
@@ -26,18 +26,9 @@ spec:
         - resources:
             kinds:
               - Ingress
-      preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: AnyIn
-          value: ["CREATE", "UPDATE"]
       validate:
-        message: "Wildcards are not permitted as hosts."
-        foreach:
-        - list: "request.object.spec.rules"
-          deny:
-            conditions:
-              any:
-              - key: "{{ contains(element.host, '*') }}"
-                operator: Equals
-                value: true
+        cel:
+          expressions:
+            - expression: "!has(object.spec.rules) || !object.spec.rules.exists(rule, has(rule.host) && rule.host.contains('*'))"
+              message: "Wildcards are not permitted as hosts."
+
