@@ -1,0 +1,22 @@
+name: restrict-ingress-wildcard
+version: 1.0.0
+displayName: Restrict Ingress Host with Wildcards
+createdAt: "2023-04-10T20:30:06.000Z"
+description: >-
+  Ingress hosts optionally accept a wildcard as an alternative to precise matching. In some cases, this may be too permissive as it would direct unintended traffic to the given Ingress resource. This policy enforces that any Ingress host does not contain a wildcard character.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-ingress-wildcard/restrict-ingress-wildcard.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Ingress hosts optionally accept a wildcard as an alternative to precise matching. In some cases, this may be too permissive as it would direct unintended traffic to the given Ingress resource. This policy enforces that any Ingress host does not contain a wildcard character.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Ingress"
+digest: d47ca7c1ce633eef4936ded9deb782cae7b9d7646e3435122826061976aee4ee
