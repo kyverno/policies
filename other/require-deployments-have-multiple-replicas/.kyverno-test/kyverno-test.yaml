@@ -10,6 +10,13 @@ results:
 - kind: Deployment
   policy: deployment-has-multiple-replicas
   resources:
-  - mydeploy
+  - mydeploygood
   result: pass
   rule: deployment-has-multiple-replicas
+- kind: Deployment
+  policy: deployment-has-multiple-replicas
+  resources:
+  - mydeploybad
+  result: fail
+  rule: deployment-has-multiple-replicas
+
