@@ -8,6 +8,8 @@ spec:
   - name: step-01
     try:
     - apply:
+        file: ns.yaml
+    - apply:
         file: ../copy-namespace-labels.yaml
     - assert:
         file: policy-ready.yaml

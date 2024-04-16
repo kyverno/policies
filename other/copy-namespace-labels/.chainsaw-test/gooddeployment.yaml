@@ -4,19 +4,22 @@ kind: Deployment
 metadata:
   name: deployment-with-ns
   namespace: within-ns
+  labels:
+    app: good-app
+    owner: "any-corp"  
+    env: dev
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
-      app: my-app
-      tier: frontend
+      app: good-app
   template:
     metadata:
       labels:
-        app: my-app
-        tier: frontend
+        app: good-app
+        env: dev
         owner: "any-corp"
     spec:
       containers:
-        - name: goodpod01
+        - name: good-app-deploy
           image: nginx:1.25

@@ -22,5 +22,26 @@ spec:
         kubernetes.io/metadata.name: "pod-with-owner-and-metadata-name"
     spec:
       containers:
-        - name: badpod01
+        - name: bad-deploy-outside-ns
           image: nginx:1.25
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deployment
+  namespace: within-ns
+  labels:
+    app: bad-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-app
+  template:
+    metadata:
+      labels:
+        app: bad-app
+    spec:
+      containers:
+      - name: bad-app-deploy
+        image: nginx:1.25
