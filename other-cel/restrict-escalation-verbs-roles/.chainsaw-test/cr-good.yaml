@@ -21,3 +21,4 @@ rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]
   verbs: ["get", "watch", "list"]
+

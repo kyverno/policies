@@ -36,3 +36,4 @@ spec:
         - check:
             ($error != null): true
         file: crb-bad.yaml
+

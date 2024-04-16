@@ -42,3 +42,4 @@ rules:
 - apiGroups: ["batches"]
   resources: ["jobs"]
   verbs: ["get", "watch", "list"]
+

@@ -18,3 +18,4 @@ rules:
 - apiGroups: [""]
   resources: ["pods", "nodes/proxy"]
   verbs: ["get", "watch", "list"]
+

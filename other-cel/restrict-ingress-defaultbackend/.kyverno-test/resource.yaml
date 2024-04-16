@@ -60,3 +60,4 @@ spec:
   - hosts:
     - sample-frontend.example.com
     secretName: sample-frontend-tls
+

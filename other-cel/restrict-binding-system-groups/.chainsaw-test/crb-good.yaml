@@ -37,3 +37,4 @@ roleRef:
   kind: ClusterRole
   name: manager
   apiGroup: rbac.authorization.k8s.io
+
