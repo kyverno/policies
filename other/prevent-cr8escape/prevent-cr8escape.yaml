@@ -16,7 +16,7 @@ metadata:
       and gain root access to the host. The recommended remediation is to disallow
       sysctl settings with + or = in their value.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: true
   rules:
     - name: restrict-sysctls-cr8escape
