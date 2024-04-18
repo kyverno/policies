@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: restrict-node-affinity
   annotations:
-    policies.kyverno.io/title: Restrict Node Affinity
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Restrict Node Affinity in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    kyverno.io/kyverno-version: 1.8.4
-    kyverno.io/kubernetes-version: "1.24"
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/description: >-
       Pods may use several mechanisms to prefer scheduling on a set of nodes,
       and nodeAffinity is one of them. nodeAffinity uses expressions to select
@@ -17,7 +17,7 @@ metadata:
       is not used in a Pod spec.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: check-nodeaffinity
     match:
@@ -26,8 +26,8 @@ spec:
           kinds:
           - Pod
     validate:
-      message: "Node affinity cannot be used."
-      pattern:
-        spec:
-          =(affinity):
-            X(nodeAffinity): "null"
+      cel:
+        expressions:
+          - expression: "!has(object.spec.affinity) || !has(object.spec.affinity.nodeAffinity)"
+            message: "Node affinity cannot be used."
+
