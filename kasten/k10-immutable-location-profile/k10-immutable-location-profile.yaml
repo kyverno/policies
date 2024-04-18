@@ -15,7 +15,7 @@ metadata:
       Immutability is typically not enabled by default due to the increased costs of retaining storage. 
       This policy checks that the Profile contains a 'protectionPeriod' which is the main configuration for immutability. 
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: k10-immutable-location-profile
     match:

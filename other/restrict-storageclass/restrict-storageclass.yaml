@@ -15,7 +15,7 @@ metadata:
       a PersistentVolume cannot be reused across Namespaces. This policy requires
       StorageClasses set a reclaimPolicy of `Delete`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: storageclass-delete

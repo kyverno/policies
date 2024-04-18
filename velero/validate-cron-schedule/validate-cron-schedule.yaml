@@ -11,7 +11,7 @@ metadata:
       operation. This policy validates that the schedule is a valid Cron format.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: validate-cron
     match:

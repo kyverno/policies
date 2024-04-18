@@ -59,7 +59,7 @@ metadata:
     policies.kyverno.io/description: >-
       Adding capabilities beyond those listed in the policy must be disallowed.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: my-rule-name

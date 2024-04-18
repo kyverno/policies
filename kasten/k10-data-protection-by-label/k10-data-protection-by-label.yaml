@@ -13,7 +13,7 @@ metadata:
       Check the 'dataprotection' label that production Deployments and StatefulSet have a named K10 Policy.
       Use in combination with 'generate' ClusterPolicy to 'generate' a specific K10 Policy by name.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: k10-data-protection-by-label
     match:
