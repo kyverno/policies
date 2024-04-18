@@ -1,0 +1,30 @@
+name: restrict-sa-automount-sa-token
+version: 1.0.0
+displayName: Restrict Auto-Mount of Service Account Tokens in Service Account 
+createdAt: "2024-01-13T16:15:06.000Z"
+description: >-
+  Kubernetes automatically mounts ServiceAccount credentials in each ServiceAccount.
+  The ServiceAccount may be assigned roles allowing Pods to access API resources.
+  Blocking this ability is an extension of the least privilege best practice and should
+  be followed if Pods do not need to speak to the API server to function.
+  This policy ensures that mounting of these ServiceAccount tokens is blocked.  
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-sa-automount-sa-token/restrict-sa-automount-sa-token.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Kubernetes automatically mounts ServiceAccount credentials in each ServiceAccount.
+  The ServiceAccount may be assigned roles allowing Pods to access API resources.
+  Blocking this ability is an extension of the least privilege best practice and should
+  be followed if Pods do not need to speak to the API server to function.
+  This policy ensures that mounting of these ServiceAccount tokens is blocked.  
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "ServiceAccount"
+digest: f3ab22501473501edf51568b00c3bbb7c20ba2a1a54671bb4b2d8e705d9b080a 
