@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-secret-role-verbs
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../restrict-secret-role-verbs.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-secret-role-verbs
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: cr-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: cr-bad.yaml
+    - apply:
+        file: role-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: role-bad.yaml
