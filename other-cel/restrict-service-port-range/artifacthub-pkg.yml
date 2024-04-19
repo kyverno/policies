@@ -1,22 +1,24 @@
-name: restrict-service-port-range
+name: restrict-service-port-range-cel
 version: 1.0.0
-displayName: Restrict Service Port Range
-createdAt: "2023-04-10T20:30:06.000Z"
+displayName: Restrict Service Port Range in CEL expressions
 description: >-
   Services which are allowed to expose any port number may be able to impact other applications running on the Node which require them, or may make specifying security policy externally more challenging. This policy enforces that only the port range 32000 to 33000 may be used for Service resources.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-service-port-range/restrict-service-port-range.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-service-port-range/restrict-service-port-range.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Services which are allowed to expose any port number may be able to impact other applications running on the Node which require them, or may make specifying security policy externally more challenging. This policy enforces that only the port range 32000 to 33000 may be used for Service resources.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Service"
-digest: fdd0c49e20e23a9aa4fb79712a0850b474421a33358c110ac586d1c169f66afd
+digest: 3813e2ff29ae51c28c1a9240be2893dc8a6f94e4229402012f587adbc4af7248
+createdAt: "2024-04-19T16:44:39Z"
+

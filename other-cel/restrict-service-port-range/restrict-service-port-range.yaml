@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: restrict-service-port-range
   annotations:
-    policies.kyverno.io/title: Restrict Service Port Range
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Restrict Service Port Range in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.0
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Service
     policies.kyverno.io/description: >-
       Services which are allowed to expose any port number may be able
@@ -17,7 +17,7 @@ metadata:
       This policy enforces that only the port range 32000 to 33000 may
       be used for Service resources.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: restrict-port-range
     match:
@@ -26,8 +26,8 @@ spec:
           kinds:
           - Service
     validate:
-      message: Ports must be between 32000-33000
-      pattern:
-        spec:
-          ports:
-          - port: 32000-33000
+      cel:
+        expressions:
+          - expression: "object.spec.ports.all(p, p.port >= 32000 && p.port <= 33000)"
+            message: Ports must be between 32000-33000
+
