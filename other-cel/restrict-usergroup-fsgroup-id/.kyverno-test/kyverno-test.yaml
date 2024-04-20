@@ -10,18 +10,15 @@ results:
 - kind: Pod
   policy: validate-userid-groupid-fsgroup
   resources:
-  - default/myapp-pod
+  - goodpod
   result: pass
-  rule: validate-fsgroup
+  rule: validate-userid-groupid-fsgroup
 - kind: Pod
   policy: validate-userid-groupid-fsgroup
   resources:
-  - default/myapp-pod
-  result: pass
-  rule: validate-groupid
-- kind: Pod
-  policy: validate-userid-groupid-fsgroup
-  resources:
-  - default/myapp-pod
-  result: pass
-  rule: validate-userid
+  - badpod01
+  - badpod02
+  - badpod03
+  result: fail
+  rule: validate-userid-groupid-fsgroup
+
