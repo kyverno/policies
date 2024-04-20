@@ -1,21 +1,24 @@
-name: restrict-usergroup-fsgroup-id
+name: restrict-usergroup-fsgroup-id-cel
 version: 1.0.0
-displayName: Validate User ID, Group ID, and FS Group
-createdAt: "2023-04-10T20:30:06.000Z"
+displayName: Validate User ID, Group ID, and FS Group in CEL expressions
 description: >-
   All processes inside a Pod can be made to run with specific user and groupID by setting `runAsUser` and `runAsGroup` respectively. `fsGroup` can be specified to make sure any file created in the volume will have the specified groupID. This policy validates that these fields are set to the defined values.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-usergroup-fsgroup-id/restrict-usergroup-fsgroup-id.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-usergroup-fsgroup-id/restrict-usergroup-fsgroup-id.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   All processes inside a Pod can be made to run with specific user and groupID by setting `runAsUser` and `runAsGroup` respectively. `fsGroup` can be specified to make sure any file created in the volume will have the specified groupID. This policy validates that these fields are set to the defined values.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod"
-digest: 6d9326c04e9bb93aac3b2a7d44c922d02032fc35cf9e06cb8174babd16916189
+digest: 4bc42c97f4d88453876a46d9988365409012bf1d4c864edd90cb11b3779ba2c1
+createdAt: "2024-04-20T16:57:00Z"
+
