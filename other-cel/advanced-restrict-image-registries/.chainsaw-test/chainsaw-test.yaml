@@ -28,8 +28,6 @@ spec:
         file: chainsaw-step-02-apply-2.yaml
     - apply:
         file: chainsaw-step-02-apply-3.yaml
-    - apply:
-        file: chainsaw-step-02-apply-4.yaml
   - name: step-03
     try:
     - apply:
