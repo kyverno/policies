@@ -89,3 +89,4 @@ spec:
     - name: secret-volume
       secret:
         secretName: safe-secret
+

@@ -30,3 +30,4 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["update", "list", "create"]
+

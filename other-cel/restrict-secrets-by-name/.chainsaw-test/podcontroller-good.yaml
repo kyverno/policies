@@ -119,3 +119,4 @@ spec:
             secret:
               secretName: safe-secret
           restartPolicy: OnFailure
+

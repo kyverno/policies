@@ -45,3 +45,4 @@ spec:
           - name: busybox02
             image: busybox:1.35
           restartPolicy: OnFailure
+

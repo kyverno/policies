@@ -23,3 +23,4 @@ spec:
     - port: 32000
       targetPort: 80
       nodePort: 32000
+

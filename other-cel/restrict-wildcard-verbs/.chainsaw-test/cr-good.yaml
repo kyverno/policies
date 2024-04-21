@@ -36,3 +36,4 @@ rules:
 - apiGroups: ["apps"]
   resources: ["*"]
   verbs: ["create", "update", "patch"]
+

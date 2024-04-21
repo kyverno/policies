@@ -23,3 +23,4 @@ spec:
       targetPort: 80
       nodePort: 30007
   type: NodePort
+

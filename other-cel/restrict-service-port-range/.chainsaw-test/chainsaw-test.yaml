@@ -29,3 +29,4 @@ spec:
         - check:
             ($error != null): true
         file: svc-bad.yaml
+

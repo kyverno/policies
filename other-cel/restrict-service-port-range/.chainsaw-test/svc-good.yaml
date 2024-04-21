@@ -29,3 +29,4 @@ spec:
       targetPort: 32999
       nodePort: 30009
   type: NodePort
+

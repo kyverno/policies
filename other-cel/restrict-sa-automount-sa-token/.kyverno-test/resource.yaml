@@ -9,3 +9,4 @@ kind: ServiceAccount
 metadata:
   name: bad-svc
 automountServiceAccountToken: true
+
