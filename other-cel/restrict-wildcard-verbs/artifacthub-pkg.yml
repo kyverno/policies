@@ -1,0 +1,23 @@
+name: restrict-wildcard-verbs
+version: 1.0.0
+displayName: Restrict Wildcard in Verbs
+createdAt: "2023-04-10T20:30:07.000Z"
+description: >-
+  Wildcards ('*') in verbs grants all access to the resources referenced by it and does not follow the principal of least privilege. As much as possible, avoid such open verbs unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the verbs list found in any rule.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-wildcard-verbs/restrict-wildcard-verbs.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - EKS Best Practices
+readme: |
+  Wildcards ('*') in verbs grants all access to the resources referenced by it and does not follow the principal of least privilege. As much as possible, avoid such open verbs unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the verbs list found in any rule.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, EKS Best Practices"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Role, ClusterRole, RBAC"
+digest: 3107969ac2e467ebca02514dd6c099b05b9294bc863e8e45b0d58e0ec5c1cbb6
