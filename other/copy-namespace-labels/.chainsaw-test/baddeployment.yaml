@@ -2,24 +2,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: deployment-with-ouside-ns
+  name: bad-deployment-with-outside-ns
   namespace: without-ns
   labels:
-    app: my-app
-    tier: frontend
+    kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
 spec:
   replicas: 1  
   selector:
     matchLabels:
-      app: my-app
-      tier: frontend
+      kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
   template:
     metadata:
       labels:
-        app: my-app
-        tier: frontend
-        owner: "any-corp"   
-        kubernetes.io/metadata.name: "pod-with-owner-and-metadata-name"
+        kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
     spec:
       containers:
         - name: bad-deploy-outside-ns
