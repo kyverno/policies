@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-wildcard-verbs
+policies:
+- ../restrict-wildcard-verbs.yaml
+resources:
+- ../.chainsaw-test/cr-bad.yaml
+- ../.chainsaw-test/cr-good.yaml
+- ../.chainsaw-test/role-bad.yaml
+- ../.chainsaw-test/role-good.yaml
+results:
+- policy: restrict-wildcard-verbs
+  rule: wildcard-verbs
+  kind: ClusterRole
+  resources:
+  - badcr01
+  - badcr02
+  - badcr03
+  result: fail
+- policy: restrict-wildcard-verbs
+  rule: wildcard-verbs
+  kind: ClusterRole
+  resources:
+  - goodcr01
+  - goodcr02
+  - goodcr03
+  - goodcr04
+  result: pass
+- policy: restrict-wildcard-verbs
+  rule: wildcard-verbs
+  kind: Role
+  resources:
+  - badcr01
+  - badcr02
+  - badcr03
+  result: fail
+- policy: restrict-wildcard-verbs
+  rule: wildcard-verbs
+  kind: Role
+  resources:
+  - goodcr01
+  - goodcr02
+  - goodcr03
+  - goodcr04
+  result: pass
