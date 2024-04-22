@@ -1,25 +1,3 @@
-#Outside Namespace, deployment with owner label and kubernetes.io/metadata.name label
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: bad-deployment-with-outside-ns
-  namespace: without-ns
-  labels:
-    kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
-spec:
-  replicas: 1  
-  selector:
-    matchLabels:
-      kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
-  template:
-    metadata:
-      labels:
-        kubernetes.io/metadata.name: "deploy-with-metadata-name-only"
-    spec:
-      containers:
-        - name: bad-deploy-outside-ns
-          image: nginx:1.25
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:

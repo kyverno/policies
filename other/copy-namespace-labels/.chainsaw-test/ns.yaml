@@ -5,10 +5,3 @@ metadata:
   labels:
     owner: "any-corp"  
     env: dev
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: without-ns
-  labels:
-    owner: "any-corp" 
