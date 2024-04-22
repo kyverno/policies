@@ -27,7 +27,7 @@ readme: |
       Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in CEL"
-  kyverno/kubernetesVersion: "1.27-1.28"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "PersistentVolumeClaims"
 digest: de7662c3394731c2de9205ebdda2da9da69e8022b616ca6e4ea9dbfd8ad2b2a8
 createdAt: "2024-03-31T10:53:27Z"
