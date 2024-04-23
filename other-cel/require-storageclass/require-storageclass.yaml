@@ -45,4 +45,3 @@ spec:
               has(volumeClaimTemplate.spec.storageClassName) && volumeClaimTemplate.spec.storageClassName  != '')
             message: "StatefulSets must define a storageClassName."
 
-  
