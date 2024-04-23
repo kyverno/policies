@@ -33,4 +33,3 @@ spec:
           - expression: "!has(object.spec.defaultBackend)"
       message: Setting the defaultBackend field is prohibited.
 
-      

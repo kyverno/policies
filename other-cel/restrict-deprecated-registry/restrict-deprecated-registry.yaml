@@ -17,7 +17,6 @@ metadata:
       https://kubernetes.io/blog/2023/02/06/k8s-gcr-io-freeze-announcement/     
 spec:
   validationFailureAction: Enforce
-  # validationFailureAction: Audit
   background: true
   rules:
   - name: restrict-deprecated-registry
