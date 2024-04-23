@@ -41,6 +41,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "'tls' in object.spec"
+          - expression: "has(object.spec.tls)"
             message: "TLS must be defined."
 
