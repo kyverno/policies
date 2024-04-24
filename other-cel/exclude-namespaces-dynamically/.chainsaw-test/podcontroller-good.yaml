@@ -46,7 +46,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: goodcronjob01
-  namespace: not-exclude-ns
+  namespace: exclude-ns-2
 spec:
   schedule: "* * * * *"
   jobTemplate:

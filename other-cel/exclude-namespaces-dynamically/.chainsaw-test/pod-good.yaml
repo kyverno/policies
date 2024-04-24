@@ -12,7 +12,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod02
-  namespace: not-exclude-ns
+  namespace: exclude-ns-2
 spec:
   containers:
     - name: pod01
@@ -34,7 +34,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod04
-  namespace: not-exclude-ns
+  namespace: exclude-ns-2
   labels:
     foo: bar
 spec:

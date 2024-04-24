@@ -6,4 +6,4 @@ metadata:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: not-exclude-ns
+  name: exclude-ns-2
