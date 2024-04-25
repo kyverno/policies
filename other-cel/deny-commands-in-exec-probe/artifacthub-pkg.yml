@@ -1,23 +1,25 @@
-name: deny-commands-in-exec-probe
+name: deny-commands-in-exec-probe-cel
 version: 1.0.0
-displayName: Deny Commands in Exec Probe
-createdAt: "2023-05-01T00:00:00.000Z"
+displayName: Deny Commands in Exec Probe in CEL expressions
 description: >-
   Developers may feel compelled to use simple shell commands as a workaround to creating "proper" liveness or readiness probes for a Pod. Such a practice can be discouraged via detection of those commands. This policy prevents the use of certain commands `jcmd`, `ps`, or `ls` if found in a Pod's liveness exec probe.
 
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/deny-commands-in-exec-probe/deny-commands-in-exec-probe.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/deny-commands-in-exec-probe/deny-commands-in-exec-probe.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Developers may feel compelled to use simple shell commands as a workaround to creating "proper" liveness or readiness probes for a Pod. Such a practice can be discouraged via detection of those commands. This policy prevents the use of certain commands `jcmd`, `ps`, or `ls` if found in a Pod's liveness exec probe.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.26"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod"
-digest: 3bd86d6873aa7380c01b621c0bfb468a7832ac2d03a5cda4fd8063a432d6d4d1
+digest: 885e0c1bcdcb9835d34a5b25500bbbb87d15c55a82627a887b4ee41a4656e996
+createdAt: "2024-04-25T18:27:10Z"
+
