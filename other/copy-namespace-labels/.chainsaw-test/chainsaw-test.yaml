@@ -15,9 +15,6 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: gooddeployment.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: baddeployment.yaml
+        file: resource.yaml
+    - assert:
+        file: patchresource.yaml
