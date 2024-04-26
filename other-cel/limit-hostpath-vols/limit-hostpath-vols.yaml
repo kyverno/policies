@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: limit-hostpath-vols
   annotations:
-    policies.kyverno.io/title: Limit hostPath Volumes to Specific Directories
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Limit hostPath Volumes to Specific Directories in CEL expressions
+    policies.kyverno.io/category: Other in CEL
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kyverno-version: 1.6.2
-    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       hostPath volumes consume the underlying node's file system. If hostPath volumes
@@ -19,7 +19,7 @@ metadata:
       access is enforced preventing directory escape.
 spec:
   background: false
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: limit-hostpath-to-slash-data
     match:
@@ -27,23 +27,12 @@ spec:
       - resources:
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{ request.object.spec.volumes[?hostPath] | length(@) }}"
-        operator: GreaterThanOrEquals
-        value: 1
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
+    celPreconditions:
+      - name: "has-host-path-volume"
+        expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.hostPath))"
     validate:
-      message: hostPath volumes are confined to /data.
-      foreach:
-      - list: "request.object.spec.volumes[?hostPath].hostPath"
-        deny:
-          conditions:
-            any:
-            - key: "{{ element.path  | to_string(@) | split(@, '/') | [1] }}"
-              operator: NotEquals
-              value: data
+      cel:
+        expressions:
+          - expression: "object.spec.volumes.all(volume, !has(volume.hostPath) || volume.hostPath.path.split('/')[1] == 'data')"
+            message: hostPath volumes are confined to /data.
+
