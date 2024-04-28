@@ -4,8 +4,7 @@ metadata:
   name: badpod01
 spec:
   nodeSelector:
-    matchLabels:
-      foo: bar
+    foo: bar
   containers:
     - name: busybox
       image: busybox:1.35
