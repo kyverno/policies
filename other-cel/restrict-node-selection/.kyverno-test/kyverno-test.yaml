@@ -10,24 +10,14 @@ results:
 - kind: Pod
   policy: restrict-node-selection
   resources:
-  - default/myapp-pod-2
+  - default/badpod01
+  - default/badpod02
   result: fail
-  rule: restrict-nodename
+  rule: restrict-nodeselector-and-nodename
 - kind: Pod
   policy: restrict-node-selection
   resources:
-  - default/myapp-pod-1
+  - default/goodpod01
   result: pass
-  rule: restrict-nodename
-- kind: Pod
-  policy: restrict-node-selection
-  resources:
-  - default/myapp-pod-1
-  result: fail
-  rule: restrict-nodeselector
-- kind: Pod
-  policy: restrict-node-selection
-  resources:
-  - default/myapp-pod-2
-  result: pass
-  rule: restrict-nodeselector
+  rule: restrict-nodeselector-and-nodename
+

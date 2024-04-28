@@ -3,10 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: restrict-node-selection
   annotations:
-    policies.kyverno.io/title: Restrict node selection
-    policies.kyverno.io/category: Sample
+    policies.kyverno.io/title: Restrict node selection in CEL expressions
+    policies.kyverno.io/category: Sample in CEL 
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/description: >-
       The Kubernetes scheduler uses complex logic to determine the optimal placement
       for new Pods. Users who have access to set certain fields in a Pod spec
@@ -16,38 +17,23 @@ metadata:
       this policy is only designed to work on initial creation and not in background
       mode.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
-  - name: restrict-nodeselector
+  - name: restrict-nodeselector-and-nodename
     match:
       any:
       - resources:
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
+    celPreconditions:
+      - name: "operation-should-be-create"
+        expression: "request.operation == 'CREATE'"
     validate:
-      message: Setting the nodeSelector field is prohibited.
-      pattern:
-        spec:
-          X(nodeSelector): "null"
-  - name: restrict-nodename
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
-    validate:
-      message: Setting the nodeName field is prohibited.
-      pattern:
-        spec:
-          X(nodeName): "null"
+      cel:
+        expressions:
+          - expression: "!has(object.spec.nodeSelector)"
+            message: Setting the nodeSelector field is prohibited.
+          - expression: "!has(object.spec.nodeName)"
+            message: Setting the nodeName field is prohibited.
+

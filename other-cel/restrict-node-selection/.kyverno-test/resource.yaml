@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod-1
+  name: badpod01
   labels:
     app: myapp
 spec:
@@ -15,7 +15,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: myapp-pod-2
+  name: badpod02
   labels:
     app: myapp
 spec:
@@ -23,3 +23,15 @@ spec:
   - name: nginx
     image: nginx
   nodeName: kube-01
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+
