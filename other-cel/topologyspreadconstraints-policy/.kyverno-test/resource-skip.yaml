@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: skip
+  name: skipss01
   namespace: monitoring
   labels:
     app: thanos-memcached

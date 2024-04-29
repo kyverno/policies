@@ -14,20 +14,20 @@ results:
 - kind: StatefulSet
   policy: topologyspreadconstraints-policy
   resources:
-  - monitoring/fail1
-  - monitoring/fail2
-  - monitoring/fail3
+  - monitoring/badss01
+  - monitoring/badss02
+  - monitoring/badss03
   result: fail
   rule: spread-pods
 - kind: StatefulSet
   policy: topologyspreadconstraints-policy
   resources:
-  - monitoring/pass
+  - monitoring/goodss01
   result: pass
   rule: spread-pods
 - kind: StatefulSet
   policy: topologyspreadconstraints-policy
   resources:
-  - monitoring/skip
+  - monitoring/skipss01
   result: skip
   rule: spread-pods
