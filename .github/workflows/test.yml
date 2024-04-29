@@ -58,6 +58,7 @@ jobs:
           - ^other-cel$/^[e-l]
           - ^other-cel$/^re[c-q]
           - ^other-cel$/^res
+          - ^other-cel$/^[s-z]
           - ^pod-security$
           - ^pod-security-cel$
           - ^psa$
