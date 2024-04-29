@@ -1,22 +1,24 @@
-name: topologyspreadconstraints-policy
+name: topologyspreadconstraints-policy-cel
 version: 1.0.0
-displayName: Spread Pods Across Nodes & Zones
-createdAt: "2023-04-10T20:30:07.000Z"
+displayName: Spread Pods Across Nodes & Zones in CEL expressions
 description: >-
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/topologyspreadconstraints-policy/topologyspreadconstraints-policy.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/topologyspreadconstraints-policy/topologyspreadconstraints-policy.yaml
   ```
 keywords:
   - kyverno
   - Sample
+  - CEL Expressions
 readme: |
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Sample"
-  kyverno/kubernetesVersion: "1.22-1.23"
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Deployment, StatefulSet"
-digest: 041afd3ce5efff6a08d60eed81a6922a1877a229a64c94a801cfa5fbc082c32c
+digest: bd832758f23632acaaac1ad07ccbe3a819b835ecd77e618f662ba3832fef8476
+createdAt: "2024-04-29T15:49:11Z"
+
