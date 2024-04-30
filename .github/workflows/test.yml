@@ -30,6 +30,7 @@ jobs:
             version: v1.29.2
         tests:
           - ^argo$
+          - ^argo-cel$
           - ^aws$
           - ^best-practices$
           - ^castai$
