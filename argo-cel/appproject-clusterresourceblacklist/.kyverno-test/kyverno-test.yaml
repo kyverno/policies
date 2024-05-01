@@ -13,23 +13,14 @@ results:
   - badappproj01
   - badappproj02
   - badappproj03
+  - badappproj04
   result: fail
-  rule: has-wildcard
+  rule: has-wildcard-and-validate-clusterresourceblacklist
 - kind: AppProject
   policy: appproject-clusterresourceblacklist
   resources:
   - goodappproj01
-  result: pass
-  rule: has-wildcard
-- kind: AppProject
-  policy: appproject-clusterresourceblacklist
-  resources:
-  - badappproj04
-  result: fail
-  rule: validate-clusterresourceblacklist
-- kind: AppProject
-  policy: appproject-clusterresourceblacklist
-  resources:
   - goodappproj02
   result: pass
-  rule: validate-clusterresourceblacklist
+  rule: has-wildcard-and-validate-clusterresourceblacklist
+
