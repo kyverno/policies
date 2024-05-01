@@ -1,22 +1,24 @@
-name: applicationset-name-matches-project
+name: applicationset-name-matches-project-cel
 version: 1.0.0
-displayName: Ensure ApplicationSet Name Matches Project
-createdAt: "2023-04-10T00:56:03.000Z"
+displayName: Ensure ApplicationSet Name Matches Project in CEL expressions
 description: >-
   This policy ensures that the name of the ApplicationSet is the same value provided in the project.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo/applicationset-name-matches-project/applicationset-name-matches-project.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-cel/applicationset-name-matches-project/applicationset-name-matches-project.yaml
   ```
 keywords:
   - kyverno
   - Argo
+  - CEL Expressions
 readme: |
   This policy ensures that the name of the ApplicationSet is the same value provided in the project.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Argo"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "ApplicationSet"
-digest: 7eabf25e8af8b90e044164d4ff2acb12503332f2c40360edebd4e1a908c773c3
+digest: ebec2e044da132ff5b624befabe5c8ed1c082fda605089d7b4fdedb84e429a82
+createdAt: "2024-05-01T16:44:11Z"
+
