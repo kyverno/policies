@@ -36,6 +36,7 @@ jobs:
           - ^castai$
           - ^cert-manager$
           - ^consul$
+          - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
           - ^istio$
