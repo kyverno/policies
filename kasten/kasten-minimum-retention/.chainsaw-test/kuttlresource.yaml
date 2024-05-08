@@ -2,7 +2,7 @@ apiVersion: config.kio.kasten.io/v1alpha1
 kind: Policy
 metadata:
   name: hourly-policy
-  namespace: k10-minimum-retention
+  namespace: kasten-minimum-retention
   labels:
     appPriority: Mission-Critical
 spec:
