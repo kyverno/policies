@@ -4,3 +4,8 @@ metadata:
   name: test-namespace
   labels:
     appPriority: critical
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kasten-io
