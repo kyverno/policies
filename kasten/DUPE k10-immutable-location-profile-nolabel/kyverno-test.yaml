@@ -1,0 +1,16 @@
+name: kyverno_data_protection_tests
+policies:
+  - k10-enforce-immutable-location-profile.yaml
+resources:
+  - immutable-location-profile.yaml
+results:
+- policy: enforce-immutable-location-profile
+  rule: enforce-immutable-location-profile
+  resource: sample-location-profile
+  kind: Profile
+  result: pass
+- policy: enforce-immutable-location-profile
+  rule: enforce-immutable-location-profile
+  resource: sample-location-profile-invalid
+  kind: Profile
+  result: fail

@@ -1,0 +1,30 @@
+name: kasten-validate-ns-by-preset-label
+version: 1.0.1
+displayName: Validate Data Protection with Kasten Preset Label
+createdAt: "2023-05-07T00:00:00.000Z"
+description: >-
+  Kubernetes applications are typically deployed into a single, logical namespace. 
+  Veeam Kasten policies will discover and protect all resources within the selected namespace(s).
+  This policy ensures all new namespaces include a label referencing a valid Kasten SLA 
+  (Policy Preset) for data protection.This policy can be used in combination with /Users/the `kasten-generate-policy-by-preset-label` ClusterPolicy to automatically create a Kasten policy based on the specified SLA.
+  The combination ensures that new applications are not inadvertently left unprotected.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-validate-ns-by-preset-label/kasten-validate-ns-by-preset-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Veeam Kasten
+readme: |
+  Kubernetes applications are typically deployed into a single, logical namespace. 
+  Veeam Kasten policies will discover and protect all resources within the selected namespace(s).
+  This policy ensures all new namespaces include a label referencing a valid Kasten SLA 
+  (Policy Preset) for data protection.This policy can be used in combination with /Users/the `kasten-generate-policy-by-preset-label` ClusterPolicy to automatically create a Kasten policy based on the specified SLA.
+  The combination ensures that new applications are not inadvertently left unprotected.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Veeam Kasten"
+  kyverno/kubernetesVersion: "1.25-1.30"
+  kyverno/subject: "Namespace"
+digest: 3252bfa88a6975af4159acf098d5004e786889509c0fc17f25bad97b8f24e78e
