@@ -3,7 +3,7 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: k10-generate-policy-by-preset-label
+  name: kasten-generate-policy-by-preset-label
 spec:
   steps:
   - name: step-01
@@ -15,7 +15,7 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: ../k10-generate-policy-by-preset-label.yaml
+        file: ../kasten-generate-policy-by-preset-label.yaml
     - assert:
         file: policy-ready.yaml
   - name: step-03
