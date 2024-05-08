@@ -1,24 +1,17 @@
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Policy
 metadata:
-  name: k10-hourlyrpo-badpolicy01
-  labels:
-    appPriority: Mission-Critical
+  name: hourly-policy
+  namespace: kasten-io
 spec:
-  comment: My sample custom backup policy
-  frequency: '@daily'
-  subFrequency:
-    minutes: [30]
-    hours: [22,7]
-    weekdays: [5]
-    days: [15]
+  frequency: '@hourly' 
   retention:
     daily: 14
     weekly: 4
     monthly: 6
   actions:
   - action: backup
-  - action: export
+  - action: export 
     exportParameters:
       frequency: '@monthly'
       profile:
@@ -30,5 +23,8 @@ spec:
       monthly: 12
       yearly: 5
   selector:
-    matchLabels:
-      k10.kasten.io/appNamespace: sampleApp
+    matchExpressions:
+      - key: k10.kasten.io/appNamespace
+        operator: In
+        values:
+          - test-namespace
