@@ -27,7 +27,7 @@ metadata:
   name: my-deployment-2
   namespace: within-ns
   labels:
-    kubernetes.io/metadata.name: "my-deployment-2"
+    app: my-app02
 spec:
   replicas: 1
   selector:

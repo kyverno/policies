@@ -18,3 +18,26 @@ spec:
         file: resource.yaml
     - assert:
         file: patchresource.yaml
+    - error:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: within-ns
+            name: my-deployment-2
+            labels:
+              kubernetes.io/metadata.name: within-ns
+              app: my-app02
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: my-app02
+            template:
+              metadata:
+                labels:
+                  app: my-app02
+              spec:
+                containers:
+                - name: my-app02-deploy
+                  image: nginx:1.25
