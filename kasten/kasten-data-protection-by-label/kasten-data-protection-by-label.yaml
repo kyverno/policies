@@ -14,7 +14,7 @@ metadata:
 
       Use in combination with 'kasten-generate-example-backup-policy' policy to generate a Kasten policy for the workload namespace, if it doesn't already exist.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: kasten-data-protection-by-label
     match:
