@@ -1,23 +1,25 @@
-name: require-encryption-aws-loadbalancers
+name: require-encryption-aws-loadbalancers-cel
 version: 1.0.0
-displayName: Require Encryption with AWS LoadBalancers
-createdAt: "2023-04-10T19:44:17.000Z"
+displayName: Require Encryption with AWS LoadBalancers in CEL expressions
 description: >-
   Services of type LoadBalancer when deployed inside AWS have support for transport encryption if it is enabled via an annotation. This policy requires that Services of type LoadBalancer contain the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert with some value.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/aws/require-encryption-aws-loadbalancers/require-encryption-aws-loadbalancers.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/aws-cel/require-encryption-aws-loadbalancers/require-encryption-aws-loadbalancers.yaml
   ```
 keywords:
   - kyverno
   - AWS
   - EKS Best Practices
+  - CEL Expressions
 readme: |
   Services of type LoadBalancer when deployed inside AWS have support for transport encryption if it is enabled via an annotation. This policy requires that Services of type LoadBalancer contain the annotation service.beta.kubernetes.io/aws-load-balancer-ssl-cert with some value.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "AWS, EKS Best Practices"
-  kyverno/kubernetesVersion: "1.23-1.24"
+  kyverno/category: "AWS, EKS Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Service"
-digest: 6e54a5bb0c445d0f619c75369e8e47a3d0ccebef9ebc44bc7567f3b850c40d27
+digest: d3cbd5f89c52b4efed907bc8a2da5cb5abc383601d6997458ef4aad2ae2d7289
+createdAt: "2024-05-11T16:01:13Z"
+
