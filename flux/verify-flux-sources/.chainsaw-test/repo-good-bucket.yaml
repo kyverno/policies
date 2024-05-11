@@ -1,7 +1,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: Bucket
 metadata:
-  name: bucket-01
+  name: good-bucket-01
 spec:
   interval: 5m0s
   endpoint: minio.myorg.com
@@ -10,7 +10,7 @@ spec:
 apiVersion: source.toolkit.fluxcd.io/v1beta2
 kind: Bucket
 metadata:
-  name: bucket-02
+  name: good-bucket-02
   namespace: flux-system
 spec:
   interval: 5m0s
