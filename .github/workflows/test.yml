@@ -32,6 +32,7 @@ jobs:
           - ^argo$
           - ^argo-cel$
           - ^aws$
+          - ^aws-cel$
           - ^best-practices$
           - ^castai$
           - ^cert-manager$
