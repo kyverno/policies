@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: verify-flux-sources
   annotations:
-    policies.kyverno.io/title: Verify Flux Sources
-    policies.kyverno.io/category: Flux
+    policies.kyverno.io/title: Verify Flux Sources in CEL expressions
+    policies.kyverno.io/category: Flux in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.2
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: GitRepository, Bucket, HelmRepository, ImageRepository
     policies.kyverno.io/description: >-
       Flux source APIs include a number of different sources such as
@@ -18,7 +18,7 @@ metadata:
       accessing outside sources. This policy verifies that each of the Flux
       sources comes from a trusted location.
 spec:  
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
     - name: flux-github-repositories
       match:
@@ -32,10 +32,10 @@ spec:
             namespaces:
               - flux-system
       validate:
-        message: ".spec.url must be from a repository within the myorg organization."
-        pattern:
-          spec:
-            url: "https://github.com/myorg/?* | ssh://git@github.com:myorg/?*"
+        cel:
+          expressions: 
+            - expression: "object.spec.url.startsWith('https://github.com/myorg/') || object.spec.url.startsWith('ssh://git@github.com:myorg/')"
+              message: ".spec.url must be from a repository within the myorg organization."
     - name: flux-buckets
       match:
         any:
@@ -48,10 +48,10 @@ spec:
             namespaces:
               - flux-system
       validate:
-        message: ".spec.endpoint must reference an address within the myorg organization."
-        pattern:
-          spec:
-            endpoint: "*.myorg.com"
+        cel:
+          expressions:
+            - expression: "has(object.spec.endpoint) && object.spec.endpoint.endsWith('.myorg.com')"
+              message: ".spec.endpoint must reference an address within the myorg organization."
     - name: flux-helm-repositories
       match:
         any:
@@ -64,10 +64,10 @@ spec:
             namespaces:
               - flux-system
       validate:
-        message: ".spec.url must be from a repository within the myorg organization."
-        pattern:
-          spec:
-            url: "https://?*.myorg.com/*"
+        cel:
+          expressions:
+            - expression: "object.spec.url.matches('^https://[a-zA-Z0-9-]+[.]myorg[.]com/.*$')"
+              message: ".spec.url must be from a repository within the myorg organization."
     - name: flux-image-repositories
       match:
         any:
@@ -80,7 +80,8 @@ spec:
             namespaces:
               - flux-system
       validate:
-        message: ".spec.image must be from an image repository within the myorg organization."
-        pattern:
-          spec:
-            image: "ghcr.io/myorg/*"
+        cel:
+          expressions:
+            - expression: "has(object.spec.image) && object.spec.image.startsWith('ghcr.io/myorg/')"
+              message: ".spec.image must be from an image repository within the myorg organization."
+
