@@ -21,11 +21,11 @@ spec:
   - name: 02 - Create good GitRepository
     try:
     - apply:
-        file: good.yaml
+        file: good-gitrepositories.yaml
   - name: 03 - Create bad GitRepository
     try:
     - apply:
-        file: bad.yaml
+        file: bad-gitrepositories.yaml
         expect:
         - check:
             ($error != null): true
