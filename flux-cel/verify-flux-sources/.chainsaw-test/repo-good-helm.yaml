@@ -1,0 +1,16 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: helmrepo-01
+spec:
+  interval: 5m0s
+  url: https://helmrepo.myorg.com/podinfo
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: helmrepo-02
+  namespace: flux-system
+spec:
+  interval: 5m0s
+  url: https://notmyorg.github.io/podinfo

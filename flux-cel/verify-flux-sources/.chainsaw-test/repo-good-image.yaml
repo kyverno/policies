@@ -1,0 +1,18 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: imagerepo-01
+spec:
+  image: ghcr.io/myorg/
+  interval: 1h
+  provider: generic
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: imagerepo-02
+  namespace: flux-system
+spec:
+  image: nothing.io/notmyorg/
+  interval: 1h
+  provider: generic
