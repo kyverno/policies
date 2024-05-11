@@ -3,10 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: verify-git-repositories
   annotations:
-    policies.kyverno.io/title: Verify Git Repositories
-    policies.kyverno.io/category: Flux
+    policies.kyverno.io/title: Verify Git Repositories in CEL expressions
+    policies.kyverno.io/category: Flux in CEL 
     policies.kyverno.io/severity: medium
-    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: GitRepository
     policies.kyverno.io/description: >-
       Ensures that Git repositories used for Flux deployments
@@ -28,7 +29,8 @@ spec:
             namespaces:
               - flux-system
       validate:
-        message: .spec.url must be from a repository within the organisation X
-        pattern:
-          spec:
-            url: https://github.com/fluxcd/?* | ssh://git@github.com:fluxcd/?*
+        cel:
+          expressions:
+            - expression: "object.spec.url.startsWith('https://github.com/fluxcd/') || object.spec.url.startsWith('ssh://git@github.com:fluxcd/')"
+              message: .spec.url must be from a repository within the organisation X
+
