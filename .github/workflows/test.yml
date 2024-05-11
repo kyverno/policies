@@ -39,6 +39,7 @@ jobs:
           - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
+          - ^flux-cel$
           - ^istio$
           - ^karpenter$
           - ^kasten$
