@@ -9,7 +9,7 @@ spec:
   - name: step-01
     try:
     - assert:
-        file: chainsaw-step-01-assert-1.yaml
+        file: crd-assert.yaml
   - name: step-02
     try:
     - apply:
@@ -23,7 +23,7 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: chainsaw-step-02-assert-1.yaml
+        file: policy-ready.yaml
   - name: step-03
     try:
     - apply:
