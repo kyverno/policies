@@ -41,9 +41,12 @@ jobs:
           - ^istio-cel$
           - ^karpenter$
           - ^kasten$
+          - ^kasten-cel$
           - ^kubecost$
+          - ^kubecost-cel$
           - ^kubeops$
           - ^kubevirt$
+          - ^kubevirt-cel$
           - ^linkerd$
           - ^nginx-ingress$
           - ^openshift$
