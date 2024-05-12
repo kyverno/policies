@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: enforce-strict-mtls
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../enforce-strict-mtls.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: enforce-strict-mtls
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+    - assert:
+        file: chainsaw-step-01-assert-2.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pa-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pa-bad.yaml
