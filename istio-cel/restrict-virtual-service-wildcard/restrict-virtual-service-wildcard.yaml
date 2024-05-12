@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: restrict-virtual-service-wildcard
   annotations:
-    policies.kyverno.io/title: Restrict Virtual Service Host with Wildcards
-    policies.kyverno.io/category: Istio
+    policies.kyverno.io/title: Restrict Virtual Service Host with Wildcards in CEL expressions
+    policies.kyverno.io/category: Istio in CEL expressions
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.8.4
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.23"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: VirtualService
     policies.kyverno.io/description: >-
       Virtual Services optionally accept a wildcard as an alternative
@@ -18,7 +18,7 @@ metadata:
       character and allows for more governance when a single mesh deployment 
       model is used.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: block-virtual-service-wildcard
@@ -27,18 +27,9 @@ spec:
         - resources:
             kinds:
               - VirtualService
-      preconditions:
-        all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: AnyIn
-          value: ["CREATE", "UPDATE"]
       validate:
-        message: "Wildcards are not permitted as hosts."
-        foreach:
-        - list: "request.object.spec.hosts"
-          deny:
-            conditions:
-              any:
-              - key: "{{ contains(element, '*') }}"
-                operator: Equals
-                value: true
+        cel:
+          expressions: 
+            - expression: "!has(object.spec.hosts) || !object.spec.hosts.exists(host, host.contains('*'))"
+              message: "Wildcards are not permitted as hosts."
+
