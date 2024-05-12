@@ -1,22 +1,24 @@
-name: k10-data-protection-by-label
+name: k10-data-protection-by-label-cel
 version: 1.0.0
-displayName: Check Data Protection By Label
-createdAt: "2023-04-10T20:12:53.000Z"
+displayName: Check Data Protection By Label in CEL expressions
 description: >-
   Check the 'dataprotection' label that production Deployments and StatefulSet have a named K10 Policy. Use in combination with 'generate' ClusterPolicy to 'generate' a specific K10 Policy by name.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/k10-data-protection-by-label/k10-data-protection-by-label.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten-cel/k10-data-protection-by-label/k10-data-protection-by-label.yaml
   ```
 keywords:
   - kyverno
   - Kasten K10 by Veeam
+  - CEL Expressions
 readme: |
   Check the 'dataprotection' label that production Deployments and StatefulSet have a named K10 Policy. Use in combination with 'generate' ClusterPolicy to 'generate' a specific K10 Policy by name.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Kasten K10 by Veeam"
-  kyverno/kubernetesVersion: "1.21-1.22"
+  kyverno/category: "Kasten K10 by Veeam in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Deployment, StatefulSet"
-digest: 7f4a303a81cd673f876f42a4c8bf74f4d197f0a005907f2b3d09f3745bb749dc
+digest: 4df1046ee3ba0839eb9598f6fff8f70ff2ae8567b83c285e01861eb5e40bc69d
+createdAt: "2024-05-12T07:05:48Z"
+
