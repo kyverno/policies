@@ -19,9 +19,9 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: chainsaw-step-01-assert-1.yaml
+        file: policy-ready.yaml
     - assert:
-        file: chainsaw-step-01-assert-2.yaml
+        file: crd-assert.yaml
   - name: step-02
     try:
     - apply:
