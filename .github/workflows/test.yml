@@ -38,6 +38,7 @@ jobs:
           - ^external-secret-operator$
           - ^flux$
           - ^istio$
+          - ^istio-cel$
           - ^karpenter$
           - ^kasten$
           - ^kubecost$
