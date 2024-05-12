@@ -3,15 +3,15 @@ kind: ClusterPolicy
 metadata:
   name: k6t-enforce-instancetype
   annotations:
-    policies.kyverno.io/title: Enforce instanceTypes
-    policies.kyverno.io/category: KubeVirt
+    policies.kyverno.io/title: Enforce instanceTypes in CEL expressions
+    policies.kyverno.io/category: KubeVirt in CEL 
     policies.kyverno.io/subject: VirtualMachine
     policies.kyverno.io/description: >-
       Check VirtualMachines and validate that they are using an instance type and preference.
-    kyverno.io/kyverno-version: "1.8.0-rc2"
-    kyverno.io/kubernetes-version: "1.24-1.25"
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
   - name: k6t-ensure-instance-type-and-preference
     match:
@@ -20,10 +20,12 @@ spec:
           kinds:
           - VirtualMachine
     validate:
-      message: "VirtualMachines must use instance types and preferences"
-      pattern:
-        spec:
-          instancetype:
-            name: ?*
-          preference:
-            name: ?*
+      cel:
+        expressions:
+          - expression: >-
+              has(object.spec.instancetype) && 
+              has(object.spec.instancetype.name) && object.spec.instancetype.name != '' && 
+              has(object.spec.preference) && 
+              has(object.spec.preference.name) && object.spec.preference.name != ''
+            message: "VirtualMachines must use instance types and preferences"
+
