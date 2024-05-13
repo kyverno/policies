@@ -3,19 +3,19 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: restrict-issuer
+  name: limit-dnsnames
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: restrict-issuer.yaml
+        file: ../limit-dnsnames.yaml
     - patch:
         resource:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           metadata:
-            name: cert-manager-restrict-issuer
+            name: cert-manager-limit-dnsnames
           spec:
             validationFailureAction: Enforce
     - assert:
