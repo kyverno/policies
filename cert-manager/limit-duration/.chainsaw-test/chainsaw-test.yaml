@@ -9,7 +9,7 @@ spec:
   - name: step-01
     try:
     - apply:
-        file: limit-duration.yaml
+        file: ../limit-duration.yaml
     - patch:
         resource:
           apiVersion: kyverno.io/v1
