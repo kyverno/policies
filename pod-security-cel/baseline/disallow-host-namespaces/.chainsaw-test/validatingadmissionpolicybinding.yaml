@@ -1,0 +1,13 @@
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  labels:
+    app.kubernetes.io/managed-by: kyverno
+  name: disallow-host-namespaces-binding
+  ownerReferences:
+  - apiVersion: kyverno.io/v1
+    kind: ClusterPolicy
+    name: disallow-host-namespaces
+spec:
+  policyName: disallow-host-namespaces
+  validationActions: [Deny]
