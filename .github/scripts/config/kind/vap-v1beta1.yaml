@@ -1,0 +1,12 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+featureGates:
+  ValidatingAdmissionPolicy: true
+runtimeConfig:
+  admissionregistration.k8s.io/v1beta1: true
+  admissionregistration.k8s.io/v1alpha1: true
+nodes:
+  - role: control-plane
+  - role: worker
+  - role: worker
+  - role: worker
