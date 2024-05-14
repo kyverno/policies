@@ -1,0 +1,27 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-clusteradmin-rolebindings-gcp-2024-003
+spec:
+  validationFailureAction: Enforce
+  rules:
+  - name: validate-restricted-cluster-admin-bindings
+    match:
+      resources:
+        kinds:
+        - ClusterRoleBinding
+        - RoleBinding
+    validate:
+      message: "Binding ClusterRole 'cluster-admin' is restricted, system:authenticated, system:unauthenticated and system:anonymous are not allowed. GCP-2024-003"
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.object.subjects[].name }}"
+            operator: AnyIn
+            value:
+            - system:authenticated
+            - system:unauthenticated
+            - system:anonymous
+          - key: "{{ request.object.roleRef.name }}"
+            operator: Equals
+            value: "cluster-admin"
