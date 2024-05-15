@@ -20,3 +20,4 @@ results:
   - pod-no-sysctl
   result: pass
   rule: restrict-sysctls-cr8escape
+
