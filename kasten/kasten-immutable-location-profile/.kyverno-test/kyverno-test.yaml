@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kyverno_data_protection_tests
+policies:
+- ../kasten-immutable-location-profile.yaml
+resources:
+- immutable-location-profile.yaml
+results:
+- kind: Profile
+  policy: kasten-immutable-location-profile
+  resources:
+  - sample-location-profile-invalid
+  result: fail
+  rule: kasten-immutable-location-profile
+- kind: Profile
+  policy: kasten-immutable-location-profile
+  resources:
+  - sample-location-profile
+  result: pass
+  rule: kasten-immutable-location-profile

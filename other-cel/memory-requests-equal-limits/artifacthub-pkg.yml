@@ -1,0 +1,24 @@
+name: memory-requests-equal-limits-cel
+version: 1.0.0
+displayName: Memory Requests Equal Limits in CEL expressions
+description: >-
+  Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/memory-requests-equal-limits/memory-requests-equal-limits.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - CEL Expressions
+readme: |
+  Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: 176dc9b492d3eee687bc89711d3414f13bf00548b85781e71ccaacd12bbf6f1a
+createdAt: "2024-04-07T11:13:21Z"
+
