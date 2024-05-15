@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: no-localhost-service
+policies:
+- ../disallow-localhost-services.yaml
+resources:
+- resource.yaml
+results:
+- kind: Service
+  policy: no-localhost-service
+  resources:
+  - my-service
+  result: fail
+  rule: no-localhost-service
+- kind: Service
+  policy: no-localhost-service
+  resources:
+  - my-np-service
+  result: pass
+  rule: no-localhost-service
+
