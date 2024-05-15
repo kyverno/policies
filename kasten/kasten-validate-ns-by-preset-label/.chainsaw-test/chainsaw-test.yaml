@@ -3,19 +3,19 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: k10-validate-ns-by-preset-label
+  name: kasten-validate-ns-by-preset-label
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: ../k10-validate-ns-by-preset-label.yaml
+        file: ../kasten-validate-ns-by-preset-label.yaml
     - patch:
         resource:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           metadata:
-            name: k10-validate-ns-by-preset-label
+            name: kasten-validate-ns-by-preset-label
           spec:
             validationFailureAction: Enforce
     - assert:
