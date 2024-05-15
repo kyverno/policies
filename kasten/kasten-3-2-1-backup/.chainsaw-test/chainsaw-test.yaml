@@ -3,19 +3,19 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: k10-3-2-1-backup
+  name: kasten-3-2-1-backup
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: ../k10-3-2-1-backup.yaml
+        file: ../kasten-3-2-1-backup.yaml
     - patch:
         resource:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           metadata:
-            name: k10-3-2-1-backup-policy
+            name: kasten-3-2-1-backup-policy
           spec:
             validationFailureAction: Enforce
     - assert:
