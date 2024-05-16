@@ -16,13 +16,13 @@ results:
 - kind: CronJob
   policy: allowed-podpriorities
   resources:
-  - hello
+  - mycronjob
   result: pass
-  rule: validate-pod-priority-cronjob
+  rule: validate-pod-priority
 - kind: Pod
   policy: allowed-podpriorities
   resources:
   - myapp-pod
   result: pass
-  rule: validate-pod-priority-pods
+  rule: validate-pod-priority
 variables: values.yaml
