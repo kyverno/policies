@@ -1,0 +1,30 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-pod
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../rbac.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: rs.yaml
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: ../cleanup-empty-replicasets-with-timebound.yaml
+    - assert:
+        file: ../cleanup-empty-replicasets-with-timebound.yaml
+  - name: step-04
+    try:
+    - sleep:
+        duration: 1m5s
+  - name: step-05
+    try:
+    - error:
+        file: chainsaw-step-01-assert-1.yaml
