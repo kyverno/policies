@@ -47,9 +47,13 @@ jobs:
           - ^nginx-ingress$
           - ^openshift$
           - ^other$/^a
+          - ^other-cel$/^a
           - ^other$/^[b-d]
+          - ^other-cel$/^[b-d]
           - ^other$/^[e-l]
+          - ^other-cel$/^[e-l]
           - ^other$/^[m-q]
+          - ^other-cel$/^[m-q]
           - ^other$/^re[c-q]
           - ^other$/^res
           - ^other$/^[s-z]
