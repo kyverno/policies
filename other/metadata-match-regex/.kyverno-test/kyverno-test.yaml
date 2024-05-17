@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: metadata-match-regex
+policies:
+- ../metadata-match-regex.yaml
+resources:
+- ../.chainsaw-test/pod-bad.yaml
+- ../.chainsaw-test/pod-good.yaml
+- ../.chainsaw-test/podcontroller-bad.yaml
+- ../.chainsaw-test/podcontroller-good.yaml
+results:
+- policy: metadata-match-regex
+  rule: check-for-regex
+  kind: Pod
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  result: fail
+- policy: metadata-match-regex
+  rule: check-for-regex
+  kind: Deployment
+  resources:
+  - baddeployment01
+  result: fail
+- policy: metadata-match-regex
+  rule: check-for-regex
+  kind: CronJob
+  resources:
+  - badcronjob01
+  result: fail
+- policy: metadata-match-regex
+  rule: check-for-regex
+  kind: Deployment
+  resources:
+  - gooddeployment01
+  result: pass
+- policy: metadata-match-regex
+  rule: check-for-regex
+  kind: CronJob
+  resources:
+  - goodcronjob01
+  result: pass
+
