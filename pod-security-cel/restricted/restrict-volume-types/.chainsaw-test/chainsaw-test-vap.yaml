@@ -25,9 +25,9 @@ spec:
   - name: step-02
     try:
     - assert:
-        file: validatingadmissionpolicy.yaml
+        file: vap-assert.yaml
     - assert:
-        file: validatingadmissionpolicybinding.yaml
+        file: vapbinding-assert.yaml
   - name: step-03
     try:
     - apply:
