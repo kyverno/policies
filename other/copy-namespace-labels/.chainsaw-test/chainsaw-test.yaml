@@ -40,4 +40,4 @@ spec:
               spec:
                 containers:
                 - name: my-app02-deploy
-                  image: nginx:1.25
+                  image: busybox:1.35
