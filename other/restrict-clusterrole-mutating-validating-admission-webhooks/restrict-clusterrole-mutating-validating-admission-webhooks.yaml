@@ -20,7 +20,7 @@ spec:
           kinds:
           - ClusterRole
     validate:
-      message: "Use of verbs `create`, `update`, and `patch` are forbidden for mutating and validating admission webhooks"
+      message: "Use of wildcards in verbs or verbs like `create`, `update`, and `patch` are forbidden for mutating and validating admission webhooks"
       foreach:
       - list: "request.object.rules[]"
         deny:
