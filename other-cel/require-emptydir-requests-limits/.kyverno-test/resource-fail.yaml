@@ -6,6 +6,7 @@ spec:
   containers:
     - image: gcr.io/hello-world:1.0
       name: test
+      resources: {}
       volumeMounts:
         - mountPath: /cache/data
           name: vol

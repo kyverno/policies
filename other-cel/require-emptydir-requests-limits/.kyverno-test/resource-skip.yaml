@@ -10,8 +10,11 @@ spec:
         - mountPath: /cache/data
           name: vol
         - mountPath: /cache/data2
-          name: vo2
+          name: vol2
   volumes:
     - name: vol
-      emptyDir:
-        sizeLimit: 1Gi
+      hostPath:
+        path: /mnt/data
+    - name: vol2
+      hostPath:
+        path: /mnt/data2

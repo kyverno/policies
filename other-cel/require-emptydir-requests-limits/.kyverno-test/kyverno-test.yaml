@@ -18,7 +18,8 @@ results:
 - kind: Pod
   policy: require-emptydir-requests-and-limits
   resources:
-  - pass-pod
+  - pass-pod-01
+  - pass-pod-02
   result: pass
   rule: check-emptydir-requests-limits
 - kind: Pod
@@ -27,4 +28,3 @@ results:
   - skip-pod
   result: skip
   rule: check-emptydir-requests-limits
-variables: values.yaml

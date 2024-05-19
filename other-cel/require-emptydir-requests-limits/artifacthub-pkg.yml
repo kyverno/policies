@@ -1,22 +1,23 @@
-name: require-emptydir-requests-limits
+name: require-emptydir-requests-limits-cel
 version: 1.0.0
-displayName: Require Requests and Limits for emptyDir
-createdAt: "2023-04-10T20:30:05.000Z"
+displayName: Require Requests and Limits for emptyDir in CEL expressions
 description: >-
   Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-emptydir-requests-limits/require-emptydir-requests-limits.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/require-emptydir-requests-limits/require-emptydir-requests-limits.yaml
   ```
 keywords:
   - kyverno
   - Other
+  - CEL Expressions
 readme: |
   Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Other"
-  kyverno/kubernetesVersion: "1.27"
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Pod"
-digest: a8af8eb42f821df85d7f51626642056fc846281435926701184fe7d40f4fe497
+digest: 215ebb88b50f2b2ae8307c5dd85fb35bd97b0849d09a5adee2ffc11b3558015c
+createdAt: "2024-05-19T10:11:00Z"

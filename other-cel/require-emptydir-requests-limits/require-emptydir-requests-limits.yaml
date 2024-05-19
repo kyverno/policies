@@ -3,12 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: require-emptydir-requests-and-limits
   annotations:
-    policies.kyverno.io/title: Require Requests and Limits for emptyDir
-    policies.kyverno.io/category: Other
+    policies.kyverno.io/title: Require Requests and Limits for emptyDir in CEL expressions
+    policies.kyverno.io/category: Other in CEL 
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.9.0
-    kyverno.io/kyverno-version: 1.11.1
-    kyverno.io/kubernetes-version: "1.27"
+    kyverno.io/kyverno-version: 1.12.1
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       Pods which mount emptyDir volumes may be allowed to potentially overrun
@@ -26,32 +25,24 @@ spec:
           - resources:
               kinds:
                 - Pod
-      context:
-      - name: emptydirnames
-        variable:
-          jmesPath: request.object.spec.volumes[?contains(keys(@), 'emptyDir') && !contains(keys(emptyDir), 'sizeLimit')].name
-      preconditions:
-        all:
-          - key: "{{ request.object.spec.volumes[?contains(keys(@), 'emptyDir')] || `[]` | length(@) }}"
-            operator: GreaterThanOrEquals
-            value: 1
-          - key: "{{request.operation || 'BACKGROUND'}}"
-            operator: AnyIn
-            value:
-              - CREATE
-              - UPDATE
+      celPreconditions:
+        - name: "has-emptydir-volume"
+          expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.emptyDir))"
       validate:
-        message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
-        foreach:
-          - list: "request.object.spec.[initContainers, containers][]"
-            preconditions:
-              any:
-              - key: "{{ element.volumeMounts[].name }}"
-                operator: AnyIn
-                value: "{{ emptydirnames }}"
-            pattern:
-              resources:
-                requests:
-                  ephemeral-storage: "?*"
-                limits:
-                  ephemeral-storage: "?*"
+        cel:
+          variables:
+            - name: containers
+              expression: "object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : [])"
+            - name: emptydirnames
+              expression: >-
+                has(object.spec.volumes) ? 
+                object.spec.volumes.filter(volume, has(volume.emptyDir) && !has(volume.emptyDir.sizeLimit)).map(volume, volume.name) : []
+          expressions:
+            - expression: >-
+                variables.containers.all(container,
+                !has(container.volumeMounts) || 
+                !container.volumeMounts.exists(mount, mount.name in variables.emptydirnames) || 
+                container.resources.?requests[?'ephemeral-storage'].hasValue() &&
+                container.resources.?limits[?'ephemeral-storage'].hasValue())
+              message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
+
