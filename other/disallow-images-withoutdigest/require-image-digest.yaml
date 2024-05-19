@@ -3,6 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: require-image-digest
   annotations:
+    policies.kyverno.io/title: Disallow Images Without Digest
+    policies.kyverno.io/category: Other 
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
       Using digests can help in avoiding the pitfalls associated with mutable tags, 
       such as tags being overwritten with different images or potential malicious changes. 
