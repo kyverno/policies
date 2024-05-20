@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v2alpha1
 kind: ClusterCleanupPolicy
 metadata:
-  name: cleanup-empty-replicasets-with-timebound
+  name: cleanup-empty-replicasets
   annotations:
-    policies.kyverno.io/title: Cleanup ReplicaSets 
+    policies.kyverno.io/title: Cleanup Empty ReplicaSets 
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: ReplicaSet
