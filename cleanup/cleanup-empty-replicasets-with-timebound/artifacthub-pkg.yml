@@ -1,0 +1,22 @@
+name: cleanup-empty-replicasets-with-timebound
+version: 1.0.0
+displayName: Cleanup empty replicasets with timebound
+createdAt: 2024-05-20T17:14:03.000Z 
+description: >-
+  ReplicaSets serve as an intermediate controller for various Pod controllers like Deployments. When a new version of a Deployment is initiated, it generates a new ReplicaSet with the specified number of replicas and scales down the current one to zero. Consequently, numerous empty ReplicaSets may accumulate in the cluster, leading to clutter and potential false positives in policy reports if enabled. This cleanup policy is designed to remove empty ReplicaSets across the cluster within a specified timeframe, for instance, ReplicaSets created one day ago, ensuring the ability to rollback to previous ReplicaSets in case of deployment issues
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup/cleanup-empty-replicasets-with-timebound/cleanup-empty-replicasets-with-timebound.yaml
+  ```
+keywords:
+  - kyverno
+  - cleanup
+  - replicaset
+readme: |
+  ReplicaSets serve as an intermediate controller for various Pod controllers like Deployments. When a new version of a Deployment is initiated, it generates a new ReplicaSet with the specified number of replicas and scales down the current one to zero. Consequently, numerous empty ReplicaSets may accumulate in the cluster, leading to clutter and potential false positives in policy reports if enabled. This cleanup policy is designed to remove empty ReplicaSets across the cluster within a specified timeframe, for instance, ReplicaSets created one day ago, ensuring the ability to rollback to previous ReplicaSets in case of deployment issues
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "ReplicaSet"
+digest: 10819e402b030472674d9a508812013d83865f41630d15f877cba0ba1d0d88bd
