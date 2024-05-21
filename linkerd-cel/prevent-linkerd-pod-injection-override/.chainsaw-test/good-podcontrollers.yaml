@@ -49,6 +49,9 @@ spec:
   jobTemplate:
     spec:
       template:
+        metadata:
+          labels:
+            app: busybox
         spec:
           containers:
           - name: hello
