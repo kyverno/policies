@@ -15,7 +15,7 @@ spec:
         app: busybox
       annotations:
         foo: bar
-        config.linkerd.io/skip-inbound-ports: true
+        config.linkerd.io/skip-inbound-ports: "true"
     spec:
       containers:
       - name: busybox
@@ -37,7 +37,7 @@ spec:
       labels:
         app: busybox
       annotations:
-        config.linkerd.io/skip-outbound-ports: true
+        config.linkerd.io/skip-outbound-ports: "true"
         foo: bar
     spec:
       containers:
@@ -61,8 +61,8 @@ spec:
         app: busybox
       annotations:
         foo: bar
-        config.linkerd.io/skip-inbound-ports: true
-        config.linkerd.io/skip-outbound-ports: true
+        config.linkerd.io/skip-inbound-ports: "true"
+        config.linkerd.io/skip-outbound-ports: "true"
     spec:
       containers:
       - name: busybox
@@ -79,7 +79,7 @@ spec:
       template:
         metadata:
           annotations:
-            config.linkerd.io/skip-outbound-ports: true
+            config.linkerd.io/skip-outbound-ports: "true"
             foo: bar
         spec:
           containers:
@@ -102,7 +102,7 @@ spec:
         metadata:
           annotations:
             foo: bar
-            config.linkerd.io/skip-inbound-ports: true
+            config.linkerd.io/skip-inbound-ports: "true"
         spec:
           containers:
           - name: hello
@@ -124,8 +124,8 @@ spec:
         metadata:
           annotations:
             foo: bar
-            config.linkerd.io/skip-outbound-ports: true
-            config.linkerd.io/skip-inbound-ports: true
+            config.linkerd.io/skip-outbound-ports: "true"
+            config.linkerd.io/skip-inbound-ports: "true"
         spec:
           containers:
           - name: hello
