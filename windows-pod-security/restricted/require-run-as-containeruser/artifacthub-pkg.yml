@@ -1,0 +1,22 @@
+name: require-run-as-containeruser
+version: 1.0.0
+displayName: Require runAsContainerUser
+createdAt: "2024-05-21T09:05:16.000Z"
+description: >-
+  Containers must be required to run as ContainerUser. This policy ensures that the fields spec.securityContext.windowsOptions.runAsUserName, spec.containers[*].securityContext.windowsOptions.runAsUserName, spec.initContainers[*].securityContext.windowsOptions.runAsUserName is either unset or set to ContainerUser. 
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/windows-pod-security/restricted/require-run-as-containeruser/require-run-as-containeruser.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Restricted)
+readme: |
+  Containers must be required to run as ContainerUser. This policy ensures that the fields spec.securityContext.windowsOptions.runAsUserName, spec.containers[*].securityContext.windowsOptions.runAsUserName, spec.initContainers[*].securityContext.windowsOptions.runAsUserName is either unset or set to ContainerUser. 
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Restricted)"
+  kyverno/kubernetesVersion: "1.22-1.28"
+  kyverno/subject: "Pod"
+digest: 6f3b4a949e4239ad8041177ff3fc8c89dfce84b28b644709fce45f1da8201236
