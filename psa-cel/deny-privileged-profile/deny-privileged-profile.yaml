@@ -3,12 +3,12 @@ kind: ClusterPolicy
 metadata:
   name: deny-privileged-profile
   annotations:
-    policies.kyverno.io/title: Deny Privileged Profile
-    policies.kyverno.io/category: Pod Security Admission
+    policies.kyverno.io/title: Deny Privileged Profile in CEL expressions
+    policies.kyverno.io/category: Pod Security Admission in CEL expressions
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.7.1
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.24"
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/subject: Namespace
     policies.kyverno.io/description: >-
       When Pod Security Admission (PSA) is enforced at the cluster level
@@ -20,7 +20,7 @@ metadata:
       the cluster-admin ClusterRole may create Namespaces which assign the label
       `pod-security.kubernetes.io/enforce=privileged`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: check-privileged
@@ -37,6 +37,8 @@ spec:
       - clusterRoles:
         - cluster-admin
     validate:
-      message: Only cluster-admins may create Namespaces that allow setting the privileged level.
-      deny: {}
+      cel:
+        expressions:
+          - expression: "false"
+            message: Only cluster-admins may create Namespaces that allow setting the privileged level.
 
