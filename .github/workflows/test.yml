@@ -44,8 +44,11 @@ jobs:
           - ^kubeops$
           - ^kubevirt$
           - ^linkerd$
+          - ^linkerd-cel$
           - ^nginx-ingress$
+          - ^nginx-ingress-cel$
           - ^openshift$
+          - ^openshift-cel$
           - ^other$/^a
           - ^other-cel$/^a
           - ^other$/^[b-d]
@@ -60,9 +63,11 @@ jobs:
           - ^pod-security$
           - ^pod-security-cel$
           - ^psa$
+          - ^psa-cel$
           - ^psp-migration$
           # - ^tekton
           # - ^traefik
+          # - ^traefik-cel
           # - ^velero
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
