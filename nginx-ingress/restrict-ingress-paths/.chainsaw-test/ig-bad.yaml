@@ -36,7 +36,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: bad-path-etc
+  name: bad-path-etc-kubernetes
 spec:
   rules:
   - host: cafe.example.com
@@ -64,5 +64,22 @@ spec:
         backend:
           service:
             name: tea-svc
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bad-path-etc
+spec:
+  rules:
+  - host: example.com
+    http:
+      paths:
+      - path: /etc/config
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-service
             port:
               number: 80
