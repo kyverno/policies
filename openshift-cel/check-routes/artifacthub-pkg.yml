@@ -1,22 +1,23 @@
-name: check-routes
+name: check-routes-cel
 version: 1.0.0
-displayName: Require TLS routes in OpenShift
-createdAt: "2023-04-10T20:26:05.000Z"
+displayName: Require TLS routes in OpenShift in CEL expressions
 description: >-
   HTTP traffic is not encrypted and hence insecure. This policy prevents configuration of OpenShift HTTP routes.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift/check-routes/check-routes.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift-cel/check-routes/check-routes.yaml
   ```
 keywords:
   - kyverno
   - OpenShift
+  - CEL Expressions
 readme: |
   HTTP traffic is not encrypted and hence insecure. This policy prevents configuration of OpenShift HTTP routes.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "OpenShift"
-  kyverno/kubernetesVersion: "1.20"
+  kyverno/category: "OpenShift in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Route"
-digest: a06ecd563e1cff566a0e9913e8f06275b802a190ed3d5d86f7cdf28b73ad4589
+digest: 8751755ca5082672ff48dd147957593c467cf510169d93f9bc9e1264f359ba59
+createdAt: "2024-05-22T07:21:10Z"
