@@ -19,7 +19,7 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: chainsaw-step-01-assert-1.yaml
+        file: policy-ready.yaml
   - name: step-02
     try:
     - script:
@@ -64,9 +64,9 @@ spec:
           # Delete CSR
           kubectl delete csr $USERNAME
     - apply:
-        file: chainsaw-step-03-apply-1.yaml
+        file: cr.yaml
     - apply:
-        file: chainsaw-step-03-apply-2.yaml
+        file: crb.yaml
     - script:
         content: |
           #!/bin/bash
