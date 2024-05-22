@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-routes
+policies:
+- ../disallow-self-provisioner-binding.yaml
+resources:
+- resources.yaml
+results:
+- kind: ClusterRoleBinding
+  policy: disallow-self-provisioner-binding
+  resources:
+  - self-provisioners
+  result: fail
+  rule: check-self-provisioner-binding-no-subject
+- kind: ClusterRoleBinding
+  policy: disallow-self-provisioner-binding
+  resources:
+  - self-provisioners-custom
+  - self-provisioners-custom-test
+  result: fail
+  rule: check-self-provisioner-binding-with-subject
+- kind: ClusterRoleBinding
+  policy: disallow-self-provisioner-binding
+  resources:
+  - system:openshift:scc:privileged
+  result: pass
+  rule: check-self-provisioner-binding-with-subject
+variables: values.yaml
