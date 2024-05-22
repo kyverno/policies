@@ -1,23 +1,24 @@
-name: restrict-ingress-paths
+name: restrict-ingress-paths-cel
 version: 1.0.0
-displayName: Restrict NGINX Ingress path values
-createdAt: "2023-04-10T20:23:06.000Z"
+displayName: Restrict NGINX Ingress path values in CEL expressions
 description: >-
   This policy mitigates CVE-2021-25745 by restricting `spec.rules[].http.paths[].path` to safe values. Additional paths can be added as required. This issue has been fixed in NGINX Ingress v1.2.0.  Please refer to the CVE for details.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress/restrict-ingress-paths/restrict-ingress-paths.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress-cel/restrict-ingress-paths/restrict-ingress-paths.yaml
   ```
 keywords:
   - kyverno
   - Security
   - NGINX Ingress
+  - CEL Expressions
 readme: |
   This policy mitigates CVE-2021-25745 by restricting `spec.rules[].http.paths[].path` to safe values. Additional paths can be added as required. This issue has been fixed in NGINX Ingress v1.2.0.  Please refer to the CVE for details.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Security, NGINX Ingress"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Security, NGINX Ingress in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "Ingress"
-digest: ab86ab56e2f637eb204896effe8bde24dc297efa7dd7557bbb497f01b364518e
+digest: 3f2da9a82f334fe75c271cd4d5181d65b91a6e3688d173385364c375f34fd617
+createdAt: "2024-05-22T07:13:08Z"
