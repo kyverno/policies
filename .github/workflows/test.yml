@@ -65,10 +65,10 @@ jobs:
           - ^psa$
           - ^psa-cel$
           - ^psp-migration$
-          # - ^tekton
-          # - ^traefik
-          # - ^traefik-cel
-          # - ^velero
+          - ^tekton$
+          - ^traefik$
+          - ^traefik-cel$
+          - ^velero$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
