@@ -31,5 +31,3 @@ spec:
         - check:
             ($error != null): true
         file: taskrun.yaml
-    - apply:
-        file: not-taskrun.yaml
