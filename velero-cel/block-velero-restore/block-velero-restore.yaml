@@ -3,9 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: block-velero-restore
   annotations:
-    policies.kyverno.io/title: Block Velero Restore to Protected Namespace
-    policies.kyverno.io/category: Velero
+    policies.kyverno.io/title: Block Velero Restore to Protected Namespace in CEL expressions
+    policies.kyverno.io/category: Velero in CEL 
     policies.kyverno.io/subject: Restore
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.26-1.27"
     policies.kyverno.io/description: >-
       Velero allows on backup and restore operations and is designed to be run with full cluster admin permissions.
       It allows on cross namespace restore operations, which means you can restore backup of namespace A to namespace B.
@@ -13,7 +15,7 @@ metadata:
       It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
       then operation fails and warning message is throw.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: block-velero-restore-to-protected-namespace
@@ -23,12 +25,11 @@ spec:
           kinds:
           - velero.io/v1/Restore
     validate:
-      message: "Warning! Restore to protected namespace: {{request.object.spec.namespaceMapping | values(@)}} is not allowed!"
-      deny:
-        conditions:
-          any:
-            - key: "{{request.object.spec.namespaceMapping || `{}` | values(@)}}"
-              operator: AnyIn
-              value:
-              - kube-system
-              - kube-node-lease
+      cel:
+        variables:
+          - name: namespaceMapping
+            expression: "has(object.spec.namespaceMapping) ? object.spec.namespaceMapping.map(nsmap, object.spec.namespaceMapping[nsmap]) : []"
+        expressions:
+          - expression: "!variables.namespaceMapping.exists(val, val in ['kube-system', 'kube-node-lease'])"
+            messageExpression: "'Warning! Restore to protected namespace: ' + variables.namespaceMapping.join(', ') + ' is not allowed!'"
+
