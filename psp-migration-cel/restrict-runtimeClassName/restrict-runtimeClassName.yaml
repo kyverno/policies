@@ -3,11 +3,11 @@ kind: ClusterPolicy
 metadata:
   name: restrict-runtimeclass
   annotations:
-    policies.kyverno.io/title: Restrict runtimeClass
-    policies.kyverno.io/category: PSP Migration
+    policies.kyverno.io/title: Restrict runtimeClass in CEL expressions
+    policies.kyverno.io/category: PSP Migration in CEL 
     policies.kyverno.io/subject: Pod
-    kyverno.io/kyverno-version: 1.10.0
-    kyverno.io/kubernetes-version: "1.24"
+    kyverno.io/kyverno-version: 1.12.1
+    kyverno.io/kubernetes-version: "1.26-1.27"
     pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       The runtimeClass field of a Pod spec defines which container engine runtime should be used.
@@ -25,13 +25,12 @@ spec:
       - resources:
           kinds:
           - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
+    celPreconditions:
+      - name: "operation-should-be-create"
+        expression: "request.operation == 'CREATE'"
     validate:
-      message: Only the runtime classes prodclass or expclass may be used.
-      pattern:
-        =(spec):
-          =(runtimeClassName): "prodclass | expclass"
+      cel:
+        expressions:
+          - expression: "!has(object.spec.runtimeClassName) || object.spec.runtimeClassName in ['prodclass', 'expclass']"
+            message: Only the runtime classes prodclass or expclass may be used.
+
