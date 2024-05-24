@@ -61,9 +61,12 @@ jobs:
           - ^pod-security-cel$
           - ^psa$
           - ^psp-migration$
-          # - ^tekton
-          # - ^traefik
-          # - ^velero
+          - ^psp-migration-cel$
+          - ^tekton$
+          - ^tekton-cel$
+          - ^traefik$
+          - ^velero$
+          - ^velero-cel$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
