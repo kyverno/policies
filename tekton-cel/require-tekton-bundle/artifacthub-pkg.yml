@@ -1,22 +1,23 @@
-name: require-tekton-bundle
+name: require-tekton-bundle-cel
 version: 1.0.0
-displayName: Require Tekton Bundle
-createdAt: "2023-04-10T23:23:45.000Z"
+displayName: Require Tekton Bundle in CEL expressions
 description: >-
   PipelineRun and TaskRun resources must be executed from a bundle
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton/require-tekton-bundle/require-tekton-bundle.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/tekton-cel/require-tekton-bundle/require-tekton-bundle.yaml
   ```
 keywords:
   - kyverno
   - Tekton
+  - CEL Expressions
 readme: |
   PipelineRun and TaskRun resources must be executed from a bundle
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Tekton"
-  kyverno/kubernetesVersion: "1.23"
+  kyverno/category: "Tekton in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
   kyverno/subject: "TaskRun, PipelineRun"
-digest: 2e136747af729cc2bb5d1c88ff51a2a0d5ec2209e64aa3a79920e52f9c6ab0da
+digest: 32e0fa6f06f1616690ccb523aaa06269ce9a8030d8e26a037c8dea2ab7a222f9
+createdAt: "2024-05-24T04:26:34Z"
