@@ -1,0 +1,11 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-creation-of-resources
+spec:
+  validationFailureAction: Audit
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
