@@ -25,19 +25,19 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: chainsaw-step-02-apply-1.yaml
+        file: ns.yaml
     - apply:
-        file: chainsaw-step-02-apply-2.yaml
+        file: runtimeclass-prod.yaml
     - apply:
-        file: chainsaw-step-02-apply-3.yaml
+        file: runtimeclass-exp.yaml
     - apply:
-        file: chainsaw-step-02-apply-4.yaml
+        file: runtimeclass-foo.yaml
   - name: step-03
     try:
     - apply:
-        file: good.yaml
+        file: good-pods.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: bad.yaml
+        file: bad-pods.yaml
