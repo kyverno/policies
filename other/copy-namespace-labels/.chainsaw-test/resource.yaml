@@ -1,4 +1,3 @@
-#Deployment with Owner Label and additional labels
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -20,36 +19,13 @@ spec:
       - name: good-app-deploy
         image: busybox:1.35
 ---
-#Deployment with `kubernetes.io/metadata.name` label
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-deployment-2
-  namespace: within-ns
-  labels:
-    app: my-app02
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: my-app02
-  template:
-    metadata:
-      labels:
-        app: my-app02
-    spec:
-      containers:
-      - name: my-app02-deploy
-        image: busybox:1.35
----
-#Deployment with only `owner` label
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-deployment-3
   namespace: within-ns
   labels:
-    owner: "any-corp"
+    owner: "dev-team"
 spec:
   replicas: 1
   selector:
@@ -64,7 +40,6 @@ spec:
       - name: my-app03-deploy
         image: busybox:1.35
 ---
-#Deployment with no labels
 apiVersion: apps/v1
 kind: Deployment
 metadata:

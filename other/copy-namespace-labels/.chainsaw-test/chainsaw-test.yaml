@@ -24,20 +24,6 @@ spec:
           kind: Deployment
           metadata:
             namespace: within-ns
-            name: my-deployment-2
             labels:
               kubernetes.io/metadata.name: within-ns
-              app: my-app02
-          spec:
-            replicas: 1
-            selector:
-              matchLabels:
-                app: my-app02
-            template:
-              metadata:
-                labels:
-                  app: my-app02
-              spec:
-                containers:
-                - name: my-app02-deploy
-                  image: busybox:1.35
+          
