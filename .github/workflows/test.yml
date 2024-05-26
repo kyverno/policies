@@ -46,7 +46,6 @@ jobs:
           - ^kubecost-cel$
           - ^kubeops$
           - ^kubevirt$
-          - ^kubevirt-cel$
           - ^linkerd$
           - ^nginx-ingress$
           - ^openshift$
