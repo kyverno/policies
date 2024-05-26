@@ -23,6 +23,6 @@ spec:
           apiVersion: apps/v1
           kind: Deployment
           metadata:
-            namespace: "within-ns"
+            namespace: within-ns
             labels:
-              kubernetes.io/metadata.name: within-ns
+              kubernetes.io/metadata.name: "within-ns"
