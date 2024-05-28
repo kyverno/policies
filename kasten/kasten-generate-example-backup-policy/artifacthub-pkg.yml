@@ -8,7 +8,6 @@ description: >-
   Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-example-backup-policy/create-kasten-policies-clusterrole.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-example-backup-policy/kasten-generate-example-backup-policy.yaml
   ```
 keywords:
