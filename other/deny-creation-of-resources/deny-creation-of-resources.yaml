@@ -16,27 +16,29 @@ metadata:
       over resource modifications during critical periods, ensuring stability and consistency 
       within the Kubernetes environment.
 spec:
+  validationFailureAction: Audit
   background: false
   rules:
-  - match:
-      resources:
-        kinds:
-          - Deployment
-          - Pod
-    name: deny-creation-of-resources
+  - name: deny-creation-of-resources
+    match:
+      any:
+      - resources:
+          kinds:
+            - Deployment
+            - Pod
     preconditions:
       all:
       - key: '{{ time_now_utc().time_to_cron(@).split(@,'' '') | [1].to_number(@)
           }}'
         operator: AnyIn
-        value: 9-10
+        value: 8-10
     validate:
+      message: Creating and updating resources is not allowed at this time, please contact admin!
       deny:
         conditions:
-        - key: '{{request.operation}}'
-          operator: In
-          value:
-          - CREATE
-          - UPDATE
-      message: Creating and updating resources is not allowed at this time, please contact admin!
-  validationFailureAction: Audit
+          all:
+          - key: '{{request.operation}}'
+            operator: In
+            value:
+            - CREATE
+            - UPDATE
