@@ -5,7 +5,7 @@ metadata:
   namespace: k10-dplabel-ns
   labels:
     purpose: production
-    dataprotection: k10-silverpolicy
+    dataprotection: kasten-example
 spec:
   selector:
     matchLabels:

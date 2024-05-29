@@ -3,19 +3,19 @@ apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
   creationTimestamp: null
-  name: k10-data-protection-by-label
+  name: kasten-data-protection-by-label
 spec:
   steps:
   - name: step-01
     try:
     - apply:
-        file: ../k10-data-protection-by-label.yaml
+        file: ../kasten-data-protection-by-label.yaml
     - patch:
         resource:
           apiVersion: kyverno.io/v1
           kind: ClusterPolicy
           metadata:
-            name: k10-data-protection-by-label
+            name: kasten-data-protection-by-label
           spec:
             validationFailureAction: Enforce
     - assert:
