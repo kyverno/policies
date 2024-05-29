@@ -1,9 +1,10 @@
-apiVersion: kyverno.io/v2alpha1
+#The described logic currently deletes the ReplicaSets created 30 seconds ago. You can adjust this timeframe according to your specific requirements.
+apiVersion: kyverno.io/v2beta1
 kind: ClusterCleanupPolicy
 metadata:
   name: cleanup-empty-replicasets
   annotations:
-    policies.kyverno.io/title: Cleanup Empty ReplicaSets 
+    policies.kyverno.io/title: Cleanup Empty ReplicaSets
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: ReplicaSet
@@ -29,7 +30,6 @@ spec:
       operator: Equals
       value: 0
     - key: "{{ time_diff('{{target.metadata.creationTimestamp}}','{{ time_now_utc() }}') }}"
-      operator: "GreaterThan"
+      operator: GreaterThan
       value: "0h0m30s"
   schedule: "*/1 * * * *"
-#The described logic currently deletes the ReplicaSets created 30 seconds ago. You can adjust this timeframe according to your specific requirements.

@@ -1,7 +1,7 @@
-name: cleanup-empty-replicasets-with-timebound
+name: cleanup-empty-replicasets
 version: 1.0.1
-displayName: Cleanup empty replicasets with timebound
-createdAt: 2023-12-12T17:57:28.000Z
+displayName: Cleanup Empty ReplicaSets
+createdAt: "2023-12-12T17:57:28.000Z"
 description: >-
   ReplicaSets serve as an intermediate controller for various Pod controllers like Deployments. When a new version of a Deployment is initiated, it generates a new ReplicaSet with the specified number of replicas and scales down the current one to zero. Consequently, numerous empty ReplicaSets may accumulate in the cluster, leading to clutter and potential false positives in policy reports if enabled. This cleanup policy is designed to remove empty ReplicaSets across the cluster within a specified timeframe, for instance, ReplicaSets created one day ago, ensuring the ability to rollback to previous ReplicaSets in case of deployment issues
 install: |-
@@ -19,4 +19,5 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "ReplicaSet"
-digest: cc19d51548f8a3888a52df526f4661258a0e6b419d7fcba18cf08befbc56d5c8
+digest: 2d0c71608ae0d13c4299f8f7e2186e3e487696d28df277244c766b81ad183497
+
