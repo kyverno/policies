@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: memory-requests-equal-limits
+policies:
+- ../memory-requests-equal-limits.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: memory-requests-equal-limits
+  resources:
+  - hello
+  result: pass
+  rule: autogen-cronjob-memory-requests-equal-limits
+- kind: DaemonSet
+  policy: memory-requests-equal-limits
+  resources:
+  - fluentd-elasticsearch
+  result: pass
+  rule: autogen-memory-requests-equal-limits
+- kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - myapp-pod
+  result: fail
+  rule: memory-requests-equal-limits
+
