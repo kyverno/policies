@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: deny-creation-of-resources
+  name: resource-creation-updation-denied
   annotations:
-    policies.kyverno.io/title: Deny Creation of Resources
+    policies.kyverno.io/title: Deny Creation and Updation of Resources
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.11.1
@@ -19,26 +19,24 @@ spec:
   validationFailureAction: Audit
   background: false
   rules:
-  - name: deny-creation-of-resources
+  - name: deny-creation-updation-of-resources
     match:
       any:
       - resources:
           kinds:
             - Deployment
-            - Pod
     preconditions:
       all:
-      - key: '{{ time_now_utc().time_to_cron(@).split(@,'' '') | [1].to_number(@)
-          }}'
+      - key: '{{ time_now_utc().time_to_cron(@).split(@,'' '') | [1].to_number(@)  }}'
         operator: AnyIn
         value: 8-10
     validate:
-      message: Creating and updating resources is not allowed at this time, please contact admin!
+      message: Creating and updating resources is not allowed at this time.
       deny:
         conditions:
           all:
           - key: '{{request.operation}}'
-            operator: In
+            operator: AnyIn
             value:
             - CREATE
             - UPDATE

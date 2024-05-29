@@ -1,12 +1,12 @@
-name: deny-creation-of-resources
+name: resource-creation-updation-denied
 version: 1.0.0
-displayName: Deny Creation of Resources
+displayName: Deny Creation and Updation of Resources
 createdAt: "2024-05-24T12:40:49.000Z"
 description: >-
   This policy denies the creation and updating of resources specifically for Deployment and Pod kinds during a specified time window. The policy is designed to enhance control over resource modifications during critical periods, ensuring stability and consistency within the Kubernetes environment.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/deny-creation-of-resources/deny-creation-of-resources.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/resource-creation-updation-denied/resource-creation-updation-denied.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,6 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "Pod"
-digest: 8cdd26e241f03fa0fef5e2f4f7d42514b1453c224f74dcd30c599bf395058116
+digest: 427feab8e41be4dd7d940a9cf3dcf656dd818212a2f6a7de53975727afdb73c5
+
 

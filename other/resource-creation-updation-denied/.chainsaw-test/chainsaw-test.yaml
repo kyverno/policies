@@ -1,20 +1,20 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: deny-creation-of-resources
+  name: resource-creation-updation-denied
 spec:
   steps:
-  - name: test-deny-creation-of-resources
+  - name: test-resource-creation-updation-denied
     try:
     - apply:
-        file: ../deny-creation-of-resources.yaml
+        file: ../resource-creation-updation-denied.yaml
     - assert:
         file: policy-assert.yaml
     - script:
         content: |
           current_time=$(date -u +%H)
           current_time_1hour=$(date -u -v +1H +%H)
-          sed -e "s/value: .*/value: ${current_time}-${current_time_1hour}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../deny-creation-of-resources.yaml | kubectl apply -f -
+          sed -e "s/value: .*/value: ${current_time}-${current_time_1hour}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../resource-creation-updation-denied.yaml | kubectl apply -f -
     - assert:
         file: enforce-policy-assert.yaml
     - apply:
@@ -26,7 +26,7 @@ spec:
         content: |
           current_time_2hours=$(date -u -v +2H +%H)
           current_time_3hours=$(date -u -v +3H +%H)
-          sed -e "s/value: .*/value: ${current_time_2hours}-${current_time_3hours}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../deny-creation-of-resources.yaml | kubectl apply -f -
+          sed -e "s/value: .*/value: ${current_time_2hours}-${current_time_3hours}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../resource-creation-updation-denied.yaml | kubectl apply -f -
     - assert:
         file: enforce-policy-assert.yaml
     - apply:
