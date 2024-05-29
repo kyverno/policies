@@ -8,7 +8,6 @@ description: >-
   Use with "kasten-validate-ns-by-preset-label" policy to require "dataprotection" labeling on new namespaces.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-policy-by-preset-label/create-kasten-policies-clusterrole.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-policy-by-preset-label/kasten-generate-policy-by-preset-label.yaml
   ```
 keywords:
