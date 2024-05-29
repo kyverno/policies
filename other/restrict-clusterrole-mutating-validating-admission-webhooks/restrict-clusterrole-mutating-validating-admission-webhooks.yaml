@@ -8,7 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: ClusterRole
     policies.kyverno.io/description: >-
-      ClusterRoles that grant write permissions over admission webhook should be minimized to reduce powerful identities in the cluster. This policy checks to ensure write permissions are not provided to admission webhooks.
+      ClusterRoles that grant write permissions over admission webhook should be minimized to reduce powerful identities in the cluster. This policy checks to ensure write permissions are not provided to  admission webhooks.
 spec:
   validationFailureAction: Audit
   background: true
