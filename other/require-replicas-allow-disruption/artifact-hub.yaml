@@ -1,12 +1,12 @@
 name: require-replicas-allow-disruption
 version: 1.0.0
-displayName: PodDisruptionBudget maxUnavailable Non-Zero with Deployments
+displayName: PodDisruptionBudget maxUnavailable Non-Zero with Deployments/StatefulSets
 createdAt: "2024-03-03T16:54:00.000Z"
 description: >-
   Existing PodDisruptionBudgets can apply to all future matching Pod controllers.
-  If the minAvailable field is defined for such matching PDBs and is lower than the
-  replica count of a new Deployment, then availability could be negatively impacted.
-  This policy specifies that Deployment replicas exceed the minAvailable value of all
+  If the minAvailable field is defined for such matching PDBs and the replica count of a new
+  Deployment or StatefulSet is lower than that, then availability could be negatively impacted.
+  This policy specifies that Deployment/StatefulSet replicas exceed the minAvailable value of all
   matching PodDisruptionBudgets which specify minAvailable as a number and not percentage.
 install: |-
   ```shell
@@ -17,9 +17,9 @@ keywords:
   - Sample
 readme: |
   Existing PodDisruptionBudgets can apply to all future matching Pod controllers.
-  If the minAvailable field is defined for such matching PDBs and is lower than the
-  replica count of a new Deployment, then availability could be negatively impacted.
-  This policy specifies that Deployment replicas exceed the minAvailable value of all
+  If the minAvailable field is defined for such matching PDBs and the replica count of a new
+  Deployment or StatefulSet is lower than that, then availability could be negatively impacted.
+  This policy specifies that Deployment/StatefulSet replicas exceed the minAvailable value of all
   matching PodDisruptionBudgets which specify minAvailable as a number and not percentage.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
