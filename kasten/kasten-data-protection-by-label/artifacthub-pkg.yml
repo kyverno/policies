@@ -1,0 +1,25 @@
+name: kasten-data-protection-by-label
+version: 1.0.1
+displayName: Check Data Protection By Label
+createdAt: "2023-05-07T00:00:00.000Z"
+description: >-
+  Check the 'dataprotection' label for production Deployments and StatefulSet workloads.
+  Use in combination with 'kasten-generate-example-backup-policy' policy to generate a Kasten policy for the workload namespace, if it doesn't already exist.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-data-protection-by-label/kasten-data-protection-by-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Veeam Kasten
+readme: |
+  Check the 'dataprotection' label for production Deployments and StatefulSet workloads.
+      
+  Use in combination with 'kasten-generate-example-backup-policy' policy to generate a Kasten policy for the workload namespace, if it doesn't already exist.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Veeam Kasten"
+  kyverno/kubernetesVersion: "1.24-1.30"
+  kyverno/subject: "Deployment, StatefulSet"
+digest: 8751cca18f18d7a2cd1b923e84b805580af363b1aff8766fc4f3f231d6026601

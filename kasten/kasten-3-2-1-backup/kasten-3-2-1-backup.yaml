@@ -1,0 +1,39 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: kasten-3-2-1-backup-policy
+  annotations:
+    policies.kyverno.io/title: Check Kasten 3-2-1 Backup Policy
+    policies.kyverno.io/category: Veeam Kasten
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.12.1
+    policies.kyverno.io/minversion: 1.12.0
+    kyverno.io/kubernetes-version: "1.24-1.30"
+    policies.kyverno.io/subject: Policy
+    policies.kyverno.io/description: >-
+      The 3-2-1 rule of data protection recommends that you have at least 3 copies of data, on 2 different storage targets, with 1 being offsite. This approach ensures a health mix of redundancy options for data recovery of the application for localized & multi-region cloud failures or compromise. In Kubernetes, this translates to the original running resources, a local snapshot, and a copy of all application resources and volume data exported to an external repository.
+      This policy accomplishes 3-2-1 validation by ensuring each policy contains both 'action: backup' and 'action: export'.
+spec:
+  validationFailureAction: Audit  
+  rules:
+  - name: kasten-3-2-1-backup-policy
+    match:
+      any:
+      - resources:
+          kinds:
+          - config.kio.kasten.io/v1alpha1/Policy
+    exclude:
+      any:
+      - resources:
+          operations:
+          - DELETE
+    validate:
+      message: "The Kasten 3-2-1 policy requires both 'action: backup' and 'action: export' be defined in the Policy."
+      deny:
+        conditions:
+          all:
+          - key:
+            - backup
+            - export
+            operator: AnyNotIn
+            value: "{{ request.object.spec.actions[].action }}"

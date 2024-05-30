@@ -1,0 +1,24 @@
+name: kasten-generate-policy-by-preset-label
+version: 1.0.1
+displayName: Generate Kasten Policy from Preset
+createdAt: "2023-05-07T00:00:00.000Z"
+description: >-
+  Generates a Kasten policy for a new namespace that includes a valid "dataprotection" label, if the policy does not already exist.
+
+  Use with "kasten-validate-ns-by-preset-label" policy to require "dataprotection" labeling on new namespaces.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-policy-by-preset-label/kasten-generate-policy-by-preset-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Veeam Kasten
+readme: |
+  Generates a Kasten policy for a new namespace that includes a valid "dataprotection" label, if the policy does not already exist.
+  Use with "kasten-validate-ns-by-preset-label" policy to require "dataprotection" labeling on new namespaces.
+  
+annotations:
+  kyverno/category: "Veeam Kasten"
+  kyverno/kubernetesVersion: "1.24-1.30"
+  kyverno/subject: "Policy"
+digest: bd6c752cc28abd28792b579956bdddc69864ab0ffae4dd95b3d47de6977b0aae
