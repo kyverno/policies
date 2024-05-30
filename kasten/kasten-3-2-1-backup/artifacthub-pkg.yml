@@ -4,7 +4,6 @@ displayName: Check Kasten 3-2-1 Backup Policy
 createdAt: "2023-05-07T00:00:00.000Z"
 description: >-
   The 3-2-1 rule of data protection recommends that you have at least 3 copies of data, on 2 different storage targets, with 1 being offsite. This approach ensures a health mix of redundancy options for data recovery of the application for localized & multi-region cloud failures or compromise. In Kubernetes, this translates to the original running resources, a local snapshot, and a copy of all application resources and volume data exported to an external repository.
-
   This policy accomplishes 3-2-1 validation by ensuring each policy contains both 'action: backup' and 'action: export'.
 install: |-
   ```shell
@@ -23,4 +22,4 @@ annotations:
   kyverno/category: "Veeam Kasten"
   kyverno/kubernetesVersion: "1.24-1.30"
   kyverno/subject: "Policy"
-digest: 45c8d345b2188ec47fe8b38a417726b7eae951edf18d770abdb602faec7d30a4
+digest: ae3f8af7d3708b5bcbc4e0a5fb368f5100441a85923dad8f096b367f279462a4
