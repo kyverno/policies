@@ -55,6 +55,7 @@ jobs:
           - ^other$/^[m-q]
           - ^other-cel$/^[m-q]
           - ^other$/^re[c-q]
+          - ^other-cel$/^re[c-q]
           - ^other$/^res
           - ^other-cel$/^res
           - ^other$/^[s-z]
@@ -89,8 +90,6 @@ jobs:
           [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
           chmod +x ./kind
           sudo mv ./kind /usr/local/bin/kind
-      - name: Install oras CLI
-        uses: oras-project/setup-oras@ee7dbe1144cb00080a89497f937dae78f85fce29 # v1.1.0
       - name: Install latest Kyverno CLI
         uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
       - name: Create kind cluster
@@ -110,7 +109,7 @@ jobs:
           set -e
           kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@995cddaee7702e849270b84fa44cdcebe7462da8 # v0.1.9
+        uses: kyverno/action-install-chainsaw@ef2517389320aae0fd7c067aa14b060eef08b76d # v0.2.3
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

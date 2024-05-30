@@ -1,0 +1,28 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: copy-namespace-labels
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: ../copy-namespace-labels.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: resource.yaml
+    - assert:
+        file: patchresource.yaml
+    - error:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            namespace: within-ns
+            labels:
+              kubernetes.io/metadata.name: "within-ns"
