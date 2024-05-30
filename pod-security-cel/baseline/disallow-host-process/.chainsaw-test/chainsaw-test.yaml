@@ -5,6 +5,8 @@ metadata:
   creationTimestamp: null
   name: disallow-host-process
 spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
   steps:
   - name: step-01
     try:
