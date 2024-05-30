@@ -19,19 +19,19 @@ spec:
           spec:
             validationFailureAction: Enforce
     - assert:
-        file: chainsaw-step-01-assert-1.yaml
+        file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
-        file: chainsaw-step-02-apply-1.yaml
+        file: ns.yaml
     - apply:
-        file: chainsaw-step-02-apply-2.yaml
+        file: sa-01.yaml
     - apply:
-        file: chainsaw-step-02-apply-3.yaml
+        file: sa-02.yaml
     - apply:
-        file: chainsaw-step-02-apply-4.yaml
+        file: deployment.yaml
     - apply:
-        file: chainsaw-step-02-apply-5.yaml
+        file: cronjob.yaml
   - name: step-03
     try:
     - apply:
