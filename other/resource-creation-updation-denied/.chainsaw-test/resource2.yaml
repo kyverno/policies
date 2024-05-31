@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
   labels:
     app: httpd2
   name: httpd2
@@ -13,12 +12,10 @@ spec:
   strategy: {}
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: httpd2
     spec:
+      terminationGracePeriodSeconds: 5
       containers:
       - image: httpd
         name: httpd
-        resources: {}
-status: {}
