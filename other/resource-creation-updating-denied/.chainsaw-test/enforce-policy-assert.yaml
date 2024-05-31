@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: resource-creation-updation-denied
+  name: resource-creation-updating-denied
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: Enforce
 status:
   conditions:
   - reason: Succeeded
