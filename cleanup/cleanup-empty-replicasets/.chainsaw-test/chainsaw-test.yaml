@@ -7,20 +7,24 @@ spec:
   - name: step-01
     try:
     - apply:
+        file: ../cluster-role.yaml
+  - name: step-02
+    try:
+    - apply:
         file: rs.yaml
     - assert:
-        file: chainsaw-step-01-assert-1.yaml
-  - name: step-02
+        file: chainsaw-assert-1.yaml
+  - name: step-03
     try:
     - apply:
         file: ../cleanup-empty-replicasets.yaml
     - assert:
         file: ../cleanup-empty-replicasets.yaml
-  - name: step-03
+  - name: step-04
     try:
     - sleep:
         duration: 1m5s
-  - name: step-04
+  - name: step-05
     try:
     - error:
-        file: chainsaw-step-01-assert-1.yaml
+        file: chainsaw-assert-1.yaml
