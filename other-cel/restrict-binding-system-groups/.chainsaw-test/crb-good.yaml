@@ -1,10 +1,10 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: badcrb01
+  name: goodcrb01
 subjects:
 - kind: Group
-  name: "system:anonymous"
+  name: secret-reader
   apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: ClusterRole
@@ -14,27 +14,27 @@ roleRef:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: badcrb02
+  name: goodcrb02
 subjects:
-- kind: Group
+- kind: ServiceAccount
   namespace: foo
-  name: "system:unauthenticated"
-  apiGroup: rbac.authorization.k8s.io
+  name: foo-reader
 roleRef:
   kind: ClusterRole
   name: manager
   apiGroup: rbac.authorization.k8s.io
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: badcrb03
+  name: goodcrb03
 subjects:
-- kind: Group
+- kind: ServiceAccount
   namespace: foo
-  name: "system:masters"
-  apiGroup: rbac.authorization.k8s.io
+  name: "system.foo"
 roleRef:
   kind: ClusterRole
   name: manager
   apiGroup: rbac.authorization.k8s.io
+

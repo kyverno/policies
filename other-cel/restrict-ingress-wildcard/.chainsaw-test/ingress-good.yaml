@@ -1,10 +1,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: badingress01
+  name: goodingress01
 spec:
   rules:
-  - host: "*.foo.bar"
+  - host: endpoint01
     https:
       paths:
       - backend:
@@ -18,10 +18,10 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: badingress02
+  name: goodingress02
 spec:
   rules:
-  - host: foo-bar
+  - host: endpoint02
     https:
       paths:
       - path: /testpath
@@ -31,7 +31,7 @@ spec:
             name: test
             port:
               number: 80
-  - host: "*.example.com"
+  - host: endpoint01
     https:
       paths:
       - path: /testpath
@@ -41,30 +41,4 @@ spec:
             name: test
             port:
               number: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: badingress03
-spec:
-  rules:
-  - host: "*.bar"
-    https:
-      paths:
-      - path: /testpath
-        pathType: Prefix
-        backend:
-          service:
-            name: test
-            port:
-              number: 80
-  - host: foo-bar
-    https:
-      paths:
-      - path: /testpath
-        pathType: Prefix
-        backend:
-          service:
-            name: test
-            port:
-              number: 80
+

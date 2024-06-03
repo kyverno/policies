@@ -1,40 +1,41 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: badcrb01
+  name: badrb01
 subjects:
 - kind: Group
   name: "system:anonymous"
   apiGroup: rbac.authorization.k8s.io
 roleRef:
-  kind: ClusterRole
-  name: manager
+  kind: Role
+  name: foo
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: badcrb02
+  name: badrb02
 subjects:
 - kind: Group
-  namespace: foo
   name: "system:unauthenticated"
+  namespace: foo
   apiGroup: rbac.authorization.k8s.io
 roleRef:
-  kind: ClusterRole
-  name: manager
+  kind: Role
+  name: foo
   apiGroup: rbac.authorization.k8s.io
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
+kind: RoleBinding
 metadata:
-  name: badcrb03
+  name: badrb03
 subjects:
 - kind: Group
-  namespace: foo
   name: "system:masters"
+  namespace: foo
   apiGroup: rbac.authorization.k8s.io
 roleRef:
-  kind: ClusterRole
-  name: manager
+  kind: Role
+  name: foo
   apiGroup: rbac.authorization.k8s.io
+

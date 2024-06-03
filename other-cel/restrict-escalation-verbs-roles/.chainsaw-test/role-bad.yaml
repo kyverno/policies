@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: badcr01
+  name: badrole01
 rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]
@@ -14,9 +14,9 @@ rules:
   verbs: ["update", "watch", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: badcr02
+  name: badrole02
 rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]
@@ -29,9 +29,9 @@ rules:
   verbs: ["update", "escalate", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
+kind: Role
 metadata:
-  name: badcr03
+  name: badrole03
 rules:
 - apiGroups: ["rbac.authorization.k8s.io", "apps"]
   resources: ["deployments", "roles"]
@@ -39,16 +39,7 @@ rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]
   verbs: ["get", "watch", "list"]
-- apiGroups: ["batches", "rbac.authorization.k8s.io"]
-  resources: ["clusterroles"]
+- apiGroups: ["batches"]
+  resources: ["jobs"]
   verbs: ["get", "watch", "list"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: badcr04
-rules:
-- apiGroups: ["*"]
-  resources: ["*"]
-  verbs: ["*"]
 
