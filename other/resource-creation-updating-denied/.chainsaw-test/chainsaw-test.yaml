@@ -13,7 +13,7 @@ spec:
     - script:
         content: |
           current_time=$(date -u +%H)
-          current_time_1hour=$(date -u -v +1H +%H)
+          current_time_1hour=$(date -u -d "+1 hour" +%H)
           sed -e "s/value: .*/value: ${current_time}-${current_time_1hour}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../resource-creation-updating-denied.yaml | kubectl apply -f -
     - assert:
         file: enforce-policy-assert.yaml
@@ -24,11 +24,10 @@ spec:
         file: resource.yaml
     - script:
         content: |
-          current_time_2hours=$(date -u -v +2H +%H)
-          current_time_3hours=$(date -u -v +3H +%H)
+          current_time_2hours=$(date -u -d "+2 hour" +%H)
+          current_time_3hours=$(date -u -d "+3 hour" +%H)
           sed -e "s/value: .*/value: ${current_time_2hours}-${current_time_3hours}/" -e  's/validationFailureAction: Audit/validationFailureAction: Enforce/' ../resource-creation-updating-denied.yaml | kubectl apply -f -
     - assert:
         file: enforce-policy-assert.yaml
     - apply:
         file: resource2.yaml
-
