@@ -5,10 +5,7 @@ metadata:
 policies:
 - ../restrict-wildcard-verbs.yaml
 resources:
-- ../.chainsaw-test/cr-bad.yaml
-- ../.chainsaw-test/cr-good.yaml
-- ../.chainsaw-test/role-bad.yaml
-- ../.chainsaw-test/role-good.yaml
+- resource.yaml
 results:
 - policy: restrict-wildcard-verbs
   rule: wildcard-verbs
@@ -26,22 +23,24 @@ results:
   - goodcr02
   - goodcr03
   - goodcr04
+  - default-rules
   result: pass
 - policy: restrict-wildcard-verbs
   rule: wildcard-verbs
   kind: Role
   resources:
-  - badcr01
-  - badcr02
-  - badcr03
+  - badrole01
+  - badrole02
+  - badrole03
   result: fail
 - policy: restrict-wildcard-verbs
   rule: wildcard-verbs
   kind: Role
   resources:
-  - goodcr01
-  - goodcr02
-  - goodcr03
-  - goodcr04
+  - goodrole01
+  - goodrole02
+  - goodrole03
+  - goodrole04
+  - default-rules
   result: pass
 
