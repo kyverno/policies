@@ -57,4 +57,16 @@ spec:
   containers:
   - name: busy
     image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+  labels:
+    app: myapp
+spec:
+  securityContext: {}
+  containers:
+  - name: busy
+    image: busybox
 

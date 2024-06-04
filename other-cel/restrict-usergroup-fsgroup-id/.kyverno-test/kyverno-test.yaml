@@ -19,6 +19,7 @@ results:
   - badpod01
   - badpod02
   - badpod03
+  - badpod04
   result: fail
   rule: validate-userid-groupid-fsgroup
 
