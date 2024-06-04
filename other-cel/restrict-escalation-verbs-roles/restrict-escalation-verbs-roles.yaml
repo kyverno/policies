@@ -36,6 +36,7 @@ spec:
               expression: "['*', 'bind', 'escalate', 'impersonate']"
           expressions:
             - expression: >-
+                object.rules == null || 
                 !object.rules.exists(rule,
                 rule.apiGroups.exists(apiGroup, apiGroup in variables.apiGroups) &&
                 rule.resources.exists(resource, resource in variables.resources) &&
