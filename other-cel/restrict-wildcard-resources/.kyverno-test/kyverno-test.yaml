@@ -5,10 +5,7 @@ metadata:
 policies:
 - ../restrict-wildcard-resources.yaml
 resources:
-- ../.chainsaw-test/cr-bad.yaml
-- ../.chainsaw-test/cr-good.yaml
-- ../.chainsaw-test/role-bad.yaml
-- ../.chainsaw-test/role-good.yaml
+- resource.yaml
 results:
 - policy: restrict-wildcard-resources
   rule: wildcard-resources
@@ -27,6 +24,7 @@ results:
   - goodcr03
   - goodcr04
   - goodcr05
+  - default-rules
   result: pass
 - policy: restrict-wildcard-resources
   rule: wildcard-resources
@@ -45,5 +43,6 @@ results:
   - goodcr03
   - goodcr04
   - goodcr05
+  - default-rules
   result: pass
 
