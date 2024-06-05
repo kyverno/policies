@@ -90,7 +90,7 @@ rules: null
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: badcr01
+  name: badrole01
 rules:
 - apiGroups: [""]
   resources: ["namespaces", "*", "pods"]
@@ -102,7 +102,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: badcr02
+  name: badrole02
 rules:
 - apiGroups: ["apps"]
   resources: ["*"]
@@ -114,7 +114,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: badcr03
+  name: badrole03
 rules:
 - apiGroups: [""]
   resources: ["*"]
@@ -123,7 +123,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: goodcr01
+  name: goodrole01
 rules:
 - apiGroups: [""]
   resources: ["pods", "namespaces"]
@@ -135,7 +135,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: goodcr02
+  name: goodrole02
 rules:
 - apiGroups: ["apps"]
   resources: ["deployments"]
@@ -144,7 +144,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: goodcr03
+  name: goodrole03
 rules:
 - apiGroups: ["batch"]
   resources: ["secrets"]
@@ -153,7 +153,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: goodcr04
+  name: goodrole04
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -162,7 +162,7 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: goodcr05
+  name: goodrole05
 rules:
 - apiGroups: ["*"]
   resources: ["secrets"]
