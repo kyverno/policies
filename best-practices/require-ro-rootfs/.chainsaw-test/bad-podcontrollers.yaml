@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        foo: bar
+        app: app
     spec:
       containers:
       - name: busybox
