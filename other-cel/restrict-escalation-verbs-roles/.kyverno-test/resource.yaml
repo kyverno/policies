@@ -101,8 +101,8 @@ rules:
   verbs:
   - '*'
 ---
-# If the 'rules' field is not specified or is specified as 'rules: ' without a value, 
-# it will be set to null by default
+# In the manifest, if the 'rules' field is not specified or is specified as 'rules: ' without a value, 
+# it will be set to null by default when created in the cluster
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -135,8 +135,8 @@ rules:
   verbs:
   - impersonate
 ---
-# If the 'rules' field is not specified or is specified as 'rules: ' without a value, 
-# it will be set to null by default
+# In the manifest, if the 'rules' field is not specified or is specified as 'rules: ' without a value, 
+# it will be set to null by default when created in the cluster
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
