@@ -25,12 +25,14 @@ results:
   resources:
   - goodclusterrole01
   - goodclusterrole02
+  - default-rules
   result: pass
   rule: escalate
 - kind: Role
   policy: restrict-escalation-verbs-roles
   resources:
   - goodrole01
+  - default-rules
   result: pass
   rule: escalate
 

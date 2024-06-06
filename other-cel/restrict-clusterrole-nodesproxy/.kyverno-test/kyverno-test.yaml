@@ -5,8 +5,7 @@ metadata:
 policies:
 - ../restrict-clusterrole-nodesproxy.yaml
 resources:
-- ../.chainsaw-test/cr-bad.yaml
-- ../.chainsaw-test/cr-good.yaml
+- resource.yaml
 results:
 - policy: restrict-clusterrole-nodesproxy
   rule: clusterrole-nodesproxy
@@ -21,5 +20,6 @@ results:
   resources:
   - goodcr01
   - goodcr02
+  - default-rules
   result: pass
 

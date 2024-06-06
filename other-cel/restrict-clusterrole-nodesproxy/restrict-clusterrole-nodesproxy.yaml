@@ -31,6 +31,7 @@ spec:
         cel:
           expressions:
             - expression: >-
+                object.rules == null || 
                 !object.rules.exists(rule, 
                 rule.resources.exists(resource, resource == 'nodes/proxy') && 
                 rule.apiGroups.exists(apiGroup, apiGroup == ''))
