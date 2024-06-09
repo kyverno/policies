@@ -1,0 +1,45 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-secret-role-verbs
+policies:
+- ../restrict-secret-role-verbs.yaml
+resources:
+- ../.chainsaw-test/cr-bad.yaml
+- ../.chainsaw-test/cr-good.yaml
+- ../.chainsaw-test/role-bad.yaml
+- ../.chainsaw-test/role-good.yaml
+results:
+- kind: ClusterRole
+  policy: restrict-secret-role-verbs
+  resources:
+  - badcr01
+  - badcr02
+  - badcr03
+  result: fail
+  rule: secret-verbs
+- kind: ClusterRole
+  policy: restrict-secret-role-verbs
+  resources:
+  - goodcr01
+  - goodcr02
+  - goodcr03
+  result: pass
+  rule: secret-verbs
+- kind: Role
+  policy: restrict-secret-role-verbs
+  resources:
+  - badcr01
+  - badcr02
+  - badcr03
+  result: fail
+  rule: secret-verbs
+- kind: Role
+  policy: restrict-secret-role-verbs
+  resources:
+  - goodcr01
+  - goodcr02
+  - goodcr03
+  result: pass
+  rule: secret-verbs
+
