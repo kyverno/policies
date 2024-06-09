@@ -35,6 +35,7 @@ jobs:
           - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
+          - ^cleanup$
           - ^consul$
           - ^external-secret-operator$
           - ^flux$
