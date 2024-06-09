@@ -32,6 +32,7 @@ jobs:
           - ^argo$
           - ^aws$
           - ^best-practices$
+          - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
           - ^cleanup$
@@ -58,7 +59,9 @@ jobs:
           - ^other$/^re[c-q]
           - ^other-cel$/^re[c-q]
           - ^other$/^res
+          - ^other-cel$/^res
           - ^other$/^[s-z]
+          - ^other-cel$/^res
           - ^pod-security$
           - ^pod-security-cel$
           - ^psa$
