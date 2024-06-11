@@ -1,0 +1,7 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-qos-burstable
+status:
+  ready: true
+
