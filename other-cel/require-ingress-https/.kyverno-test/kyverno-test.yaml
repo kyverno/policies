@@ -1,0 +1,38 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-ingress-https
+policies:
+- ../require-ingress-https.yaml
+resources:
+- resource.yaml
+results:
+- kind: Ingress
+  policy: require-ingress-https
+  resources:
+  - goodingress01
+  - goodingress02
+  result: pass
+  rule: has-annotation
+- kind: Ingress
+  policy: require-ingress-https
+  resources:
+  - goodingress01
+  - goodingress02
+  result: pass
+  rule: has-tls
+- kind: Ingress
+  policy: require-ingress-https
+  resources:
+  - badingress01
+  - badingress02
+  - badingress03
+  result: fail
+  rule: has-annotation
+- kind: Ingress
+  policy: require-ingress-https
+  resources:
+  - badingress04
+  result: fail
+  rule: has-tls
+
