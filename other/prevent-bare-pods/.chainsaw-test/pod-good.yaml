@@ -6,7 +6,7 @@ metadata:
     kind: Deployment
     name: gooddeployment01
     uid: "foo-bar"
-  name: godpod01
+  name: goodpod01
 spec:
   containers:
   - name: busybox
