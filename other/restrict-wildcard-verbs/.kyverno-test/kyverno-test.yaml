@@ -1,0 +1,49 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-verbs
+policies:
+  -  ../restrict-wildcard-verbs.yaml
+resources:
+  - resource.yaml
+results:
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: empty-rules
+    kind: ClusterRole
+    result: pass
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: empty-rules
+    kind: Role
+    result: pass
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: omitted-rules
+    kind: ClusterRole
+    result: pass
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: omitted-rules
+    kind: Role
+    result: pass
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: wildcard-once
+    kind: ClusterRole
+    result: fail
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: wildcard-once
+    kind: Role
+    result: fail
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: wildcard-with-another-verb
+    kind: ClusterRole
+    result: fail
+  - policy: restrict-wildcard-verbs
+    rule: wildcard-verbs
+    resource: wildcard-with-another-verb
+    kind: Role
+    result: fail
