@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: prevent-naked-pods
+spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: ../prevent-bare-pods.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: prevent-bare-pods
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pod-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-bad.yaml
+    - apply:
+        file: deployment.yaml
+  - name: step-03
+    try:
+    - sleep:
+        duration: 5s
+    - script:
+        content: |
+          if [ $(kubectl get pods -n prevent-naked-pods-ns | grep gooddeployment01 | wc -l) -gt 0 ]; then exit 0; else exit 1; fi
+  - name: step-99
+    try:
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n prevent-naked-pods-ns
+

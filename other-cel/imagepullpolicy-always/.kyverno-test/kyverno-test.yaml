@@ -1,0 +1,34 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: imagepullpolicy-always
+policies:
+- ../imagepullpolicy-always.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  policy: imagepullpolicy-always
+  resources:
+  - mydeploy1
+  result: fail
+  rule: imagepullpolicy-always
+- kind: Pod
+  policy: imagepullpolicy-always
+  resources:
+  - myapp-pod-2
+  result: fail
+  rule: imagepullpolicy-always
+- kind: Deployment
+  policy: imagepullpolicy-always
+  resources:
+  - mydeploy2
+  result: pass
+  rule: imagepullpolicy-always
+- kind: Pod
+  policy: imagepullpolicy-always
+  resources:
+  - myapp-pod-1
+  result: pass
+  rule: imagepullpolicy-always
+

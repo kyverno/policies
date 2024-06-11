@@ -1,0 +1,7 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-secret-role-verbs
+status:
+  ready: true
+
