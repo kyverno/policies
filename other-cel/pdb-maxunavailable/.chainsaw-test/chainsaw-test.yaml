@@ -1,0 +1,34 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: pdb-maxunavailable
+spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../pdb-maxunavailable.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: pdb-maxunavailable
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pdb-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pdb-bad.yaml
+
