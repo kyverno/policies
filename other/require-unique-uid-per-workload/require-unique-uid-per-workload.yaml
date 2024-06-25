@@ -46,6 +46,6 @@ spec:
         conditions:
         # this checks uids for ALL containers in any pod of the workload
           all:
-          - key: "{{ request.object.spec.containers[].securityContext.to_string(runAsUser) }}"
+          - key: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].securityContext.to_string(runAsUser) }}"
             operator: AnyIn
             value: "{{ uidsAllPodsExceptSameOwnerAsRequestObject }}"

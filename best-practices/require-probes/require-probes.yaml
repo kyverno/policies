@@ -36,7 +36,7 @@ spec:
     validate:
       message: "Liveness, readiness, or startup probes are required for all containers."
       foreach:
-      - list: request.object.spec.containers[]
+      - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
         deny:
           conditions:
             all:

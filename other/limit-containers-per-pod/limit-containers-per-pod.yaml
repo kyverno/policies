@@ -35,6 +35,6 @@ spec:
       deny:
         conditions:
           any:
-          - key: "{{request.object.spec.containers[] | length(@)}}"
+          - key: "{{request.object.spec.[ephemeralContainers, initContainers, containers][] | length(@)}}"
             operator: GreaterThan
             value: "4"

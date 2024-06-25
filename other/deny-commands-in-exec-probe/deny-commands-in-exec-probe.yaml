@@ -26,7 +26,7 @@ spec:
               - Pod
       preconditions:
         all:
-        - key: "{{ length(request.object.spec.containers[].livenessProbe.exec.command[] || `[]`) }}"
+        - key: "{{ length(request.object.spec.[ephemeralContainers, initContainers, containers][].livenessProbe.exec.command[] || `[]`) }}"
           operator: GreaterThan
           value: 0
         - key: "{{ request.operation }}"
@@ -40,12 +40,12 @@ spec:
             - key:
               - true
               operator: AnyIn
-              value: "{{ request.object.spec.containers[].livenessProbe.exec.command[].regex_match('\\bjcmd\\b',@) }}"
+              value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].livenessProbe.exec.command[].regex_match('\\bjcmd\\b',@) }}"
             - key:
               - true
               operator: AnyIn
-              value: "{{ request.object.spec.containers[].livenessProbe.exec.command[].regex_match('\\bps\\b',@) }}"
+              value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].livenessProbe.exec.command[].regex_match('\\bps\\b',@) }}"
             - key:
               - true
               operator: AnyIn
-              value: "{{ request.object.spec.containers[].livenessProbe.exec.command[].regex_match('\\bls\\b',@) }}"
+              value: "{{ request.object.spec.[ephemeralContainers, initContainers, containers][].livenessProbe.exec.command[].regex_match('\\bls\\b',@) }}"
