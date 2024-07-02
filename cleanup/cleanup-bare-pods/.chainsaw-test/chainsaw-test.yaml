@@ -17,9 +17,9 @@ spec:
     - name: apply cleanup policy
       try:
         - apply:
-            file: ../cleanup-bare-pods.yaml
+            file: cleanup-bare-pods-test.yaml
         - assert:
-            file: ../cleanup-bare-pods.yaml
+            file: cleanup-bare-pods-test.yaml
     - name: wait for scheduled deletion
       try:
         - sleep:
