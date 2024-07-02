@@ -23,7 +23,7 @@ spec:
     - name: wait for scheduled deletion
       try:
         - sleep:
-            duration: 5m30s
+            duration: 1m30s
     - name: check for bare pod
       try:
         - error:

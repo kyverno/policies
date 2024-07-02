@@ -28,4 +28,4 @@ spec:
     - key: "{{ target.metadata.ownerReferences[] || `[]` }}"
       operator: Equals
       value: []
-  schedule: "*/5 * * * *"
+  schedule: "*/1 * * * *"
