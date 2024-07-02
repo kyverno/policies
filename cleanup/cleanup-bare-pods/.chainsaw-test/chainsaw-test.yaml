@@ -7,7 +7,7 @@ spec:
     - name: apply clusterrole
       try:
         - apply:
-            file: ../clusterrole.yaml
+            file: clusterrole.yaml
     - name: create a bare pod
       try:
         - apply:
@@ -17,9 +17,17 @@ spec:
     - name: apply cleanup policy
       try:
         - apply:
-            file: cleanup-bare-pods-test.yaml
+            file: ../cleanup-bare-pods.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v2beta1
+              kind: ClusterCleanupPolicy
+              metadata:
+                name: clean-bare-pods
+              spec:
+                schedule: "*/1 * * * *"
         - assert:
-            file: cleanup-bare-pods-test.yaml
+            file: chainsaw-step-02-assert-1.yaml
     - name: wait for scheduled deletion
       try:
         - sleep:
