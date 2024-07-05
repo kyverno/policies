@@ -25,5 +25,3 @@ spec:
       - name: windows-container
         image: mcr.microsoft.com/windows/servercore:ltsc2019
         command: ["cmd", "/c", "echo", "Hello from Windows Container && timeout", "/t", "300"]
-
-

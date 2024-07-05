@@ -1,6 +1,6 @@
 name: require-run-as-containeruser
 version: 1.0.0
-displayName: Require runAsContainerUser
+displayName: Require runAsContainerUser (Windows)
 createdAt: "2024-05-21T09:05:16.000Z"
 description: >-
   Containers must be required to run as ContainerUser. This policy ensures that the fields spec.securityContext.windowsOptions.runAsUserName, spec.containers[*].securityContext.windowsOptions.runAsUserName, spec.initContainers[*].securityContext.windowsOptions.runAsUserName is either unset or set to ContainerUser. 
@@ -19,5 +19,4 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.22-1.28"
   kyverno/subject: "Pod"
-digest: 3a9c73bbcc830557613daec2810ddd85f935697634163e839adcd66678fe4c9b
-
+digest: 139e5523556a1fb46b3d0287d6493d45aa8c302dda075b05476560a7f035b19d
