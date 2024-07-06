@@ -39,6 +39,9 @@ spec:
       - resources:
           kinds:
           - StatefulSet
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:
