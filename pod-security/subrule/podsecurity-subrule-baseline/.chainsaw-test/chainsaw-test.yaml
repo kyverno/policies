@@ -1,0 +1,29 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: podsecurity-subrule-baseline
+spec:
+  steps:
+  - name: step-01
+    try:
+      - apply:
+          file: ../podsecurity-subrule-baseline.yaml
+      - patch:
+          resource:
+            apiVersion: kyverno.io/v1
+            kind: ClusterPolicy
+            metadata:
+              name: podsecurity-subrule-baseline
+            spec:
+              validationFailureAction: Enforce
+      - assert:
+          file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: pod-non-privileged.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-privileged.yaml
