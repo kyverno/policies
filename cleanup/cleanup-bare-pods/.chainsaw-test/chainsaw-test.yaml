@@ -4,10 +4,10 @@ metadata:
   name: cleanup-bare-pods
 spec:
   steps:
-    - name: apply clusterrole
+    - name: apply cluster role
       try:
         - apply:
-            file: clusterrole.yaml
+            file: cluster-role.yaml
     - name: create a bare pod
       try:
         - apply:
