@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: valid-pod
+spec:
+  containers:
+    - name: valid-container
+      image: nginx:1.14.1
+      securityContext:
+        procMount: Default
+  initContainers:
+    - name: valid-init-container
+      image: busybox:1.35
+      securityContext:
+        procMount: Default
