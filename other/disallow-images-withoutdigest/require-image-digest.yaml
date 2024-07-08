@@ -1,0 +1,37 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-digest
+  annotations:
+    policies.kyverno.io/title: Disallow Images Without Digest
+    policies.kyverno.io/category: Other 
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/description: >-
+      Using digests can help in avoiding the pitfalls associated with mutable tags, 
+      such as tags being overwritten with different images or potential malicious changes. 
+      It effectively prevents pulling unintended or potentially harmful updates to the images.
+      This policy ensures that images without a digest are not allowed. 
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: check-image-digest
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Using images without a digest is not allowed."
+      pattern:
+        spec:
+          containers:
+          - (name): "*"
+            image: "*@sha256:*"
+          =(ephemeralContainers):
+            - =(name): "*"
+              image: "*@sha256:*"
+          =(initContainers):
+            - =(name): "*"
+              image: "*@sha256:*"
