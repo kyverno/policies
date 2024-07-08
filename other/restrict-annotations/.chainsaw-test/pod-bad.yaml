@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   annotations:
     fluxcd.io/foo: bar
-  name: goodpod01
+  name: badpod01
 spec:
   containers:
     - name: busybox
@@ -16,7 +16,7 @@ metadata:
     bar: foo
     fluxcd.io/foo: bar
     foo: bar
-  name: goodpod02
+  name: badpod02
 spec:
   containers:
     - name: busybox
@@ -27,9 +27,9 @@ kind: Pod
 metadata:
   annotations:
     bar: foo
-    fluxcd.io/: bar
+    fluxcd.io/hello: bar
     foo: bar
-  name: goodpod02
+  name: badpod03
 spec:
   containers:
     - name: busybox

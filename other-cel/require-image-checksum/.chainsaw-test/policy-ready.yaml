@@ -1,0 +1,7 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-image-checksum
+status:
+  ready: true
+
