@@ -1,0 +1,24 @@
+name: application-prevent-default-project-cel
+version: 1.0.0
+displayName: Prevent Use of Default Project in CEL expressions
+description: >-
+  This policy prevents the use of the default project in an Application.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-cel/application-prevent-default-project/application-prevent-default-project.yaml
+  ```
+keywords:
+  - kyverno
+  - Argo
+  - CEL Expressions
+readme: |
+  This policy prevents the use of the default project in an Application.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Application"
+digest: aeb2bc00375b7c44bb36ca7a3cd2f5f80ed17548abf98529d4617803be71196d
+createdAt: "2024-04-30T16:03:57Z"
+

@@ -1,0 +1,24 @@
+name: disallow-empty-ingress-host-cel
+version: 1.0.0
+displayName: Disallow empty Ingress host in CEL expressions
+description: >-
+  An ingress resource needs to define an actual host name in order to be valid. This policy ensures that there is a hostname for each rule defined.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-cel/disallow-empty-ingress-host/disallow-empty-ingress-host.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - CEL Expressions
+readme: |
+  An ingress resource needs to define an actual host name in order to be valid. This policy ensures that there is a hostname for each rule defined.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Ingress"
+digest: 0ffe2735a10b721569cf7139d0d7d51dbc9327beae68e50e4f54f560804548e9
+createdAt: "2024-03-09T14:19:51Z"
+
