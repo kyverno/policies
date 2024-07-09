@@ -29,6 +29,9 @@ spec:
           - DaemonSet
           - StatefulSet
           - Job
+          operations:
+          - CREATE
+          - UPDATE
     celPreconditions:
       - name: "filter-namespaces"
         expression: "!(request.namespace in params.data['exclude'].split(', '))"
@@ -53,6 +56,9 @@ spec:
       - resources:
           kinds:
           - Pod
+          operations:
+          - CREATE
+          - UPDATE
     celPreconditions:
       - name: "filter-namespaces"
         expression: "!(request.namespace in params.data['exclude'].split(', '))"
@@ -77,6 +83,9 @@ spec:
       - resources:
           kinds:
           - CronJob
+          operations:
+          - CREATE
+          - UPDATE
     celPreconditions:
       - name: "filter-namespaces"
         expression: "!(request.namespace in params.data['exclude'].split(', '))"

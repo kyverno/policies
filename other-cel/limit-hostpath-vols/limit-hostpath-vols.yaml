@@ -27,6 +27,9 @@ spec:
       - resources:
           kinds:
           - Pod
+          operations:
+          - CREATE
+          - UPDATE
     celPreconditions:
       - name: "has-host-path-volume"
         expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.hostPath))"

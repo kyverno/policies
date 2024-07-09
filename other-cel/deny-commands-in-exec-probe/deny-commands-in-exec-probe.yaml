@@ -24,6 +24,9 @@ spec:
         - resources:
             kinds:
               - Pod
+            operations:
+            - CREATE
+            - UPDATE
       celPreconditions:
         - name: "check-liveness-probes-commands-exist"
           expression: >-

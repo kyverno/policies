@@ -28,6 +28,9 @@ spec:
               kinds:
                 - Deployment
                 - StatefulSet
+              operations:
+              - CREATE
+              - UPDATE
       celPreconditions:
         - name: "replicas-must-be-3-or-more"
           expression: "object.spec.replicas >= 3"

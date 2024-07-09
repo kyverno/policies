@@ -25,6 +25,9 @@ spec:
           - resources:
               kinds:
                 - Pod
+              operations:
+              - CREATE
+              - UPDATE
       celPreconditions:
         - name: "has-emptydir-volume"
           expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.emptyDir))"
