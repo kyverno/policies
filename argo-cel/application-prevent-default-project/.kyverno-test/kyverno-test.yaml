@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: application-prevent-default-project
+policies:
+- ../application-prevent-default-project.yaml
+resources:
+- ../.chainsaw-test/bad-application.yaml
+- ../.chainsaw-test/good-application.yaml
+results:
+- policy: application-prevent-default-project
+  rule: default-project
+  kind: Application
+  resources:
+  - badapp
+  result: fail
+- policy: application-prevent-default-project
+  rule: default-project
+  kind: Application
+  resources:
+  - goodapp
+  result: pass
+

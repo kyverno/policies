@@ -1,0 +1,24 @@
+name: application-prevent-updates-project-cel
+version: 1.0.0
+displayName: Prevent Updates to Project in CEL expressions
+description: >-
+  This policy prevents updates to the project field after an Application is created.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-cel/application-prevent-updates-project/application-prevent-updates-project.yaml
+  ```
+keywords:
+  - kyverno
+  - Argo
+  - CEL Expressions
+readme: |
+  This policy prevents updates to the project field after an Application is created.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Application"
+digest: a9aebf68a690cd9b5683fd24dc26dc0949d0ee1c122a153bd417f9e6d4a2b47a
+createdAt: "2024-05-01T17:10:46Z"
+
