@@ -21,6 +21,9 @@ spec:
       - resources:
           kinds:
           - velero.io/v1/Schedule
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:

@@ -24,6 +24,9 @@ spec:
       - resources:
           kinds:
           - velero.io/v1/Restore
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         variables:
