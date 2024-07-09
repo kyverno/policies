@@ -23,6 +23,9 @@ spec:
         - resources:
             kinds:
               - GitRepository
+            operations:
+            - CREATE
+            - UPDATE
       exclude:
         any:
         - resources:

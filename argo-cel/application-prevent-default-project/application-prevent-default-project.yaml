@@ -22,6 +22,9 @@ spec:
         - resources:
             kinds:
               - Application
+            operations:
+            - CREATE
+            - UPDATE
       validate:
         cel:
           expressions:

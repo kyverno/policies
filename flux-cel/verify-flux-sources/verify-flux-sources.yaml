@@ -26,6 +26,9 @@ spec:
         - resources:
             kinds:
               - GitRepository
+            operations:
+            - CREATE
+            - UPDATE
       exclude:
         any:
         - resources:
@@ -42,6 +45,9 @@ spec:
         - resources:
             kinds:
               - Bucket
+            operations:
+            - CREATE
+            - UPDATE
       exclude:
         any:
         - resources:
@@ -58,6 +64,9 @@ spec:
         - resources:
             kinds:
               - HelmRepository
+            operations:
+            - CREATE
+            - UPDATE
       exclude:
         any:
         - resources:
@@ -74,6 +83,9 @@ spec:
         - resources:
             kinds:
               - ImageRepository
+            operations:
+            - CREATE
+            - UPDATE
       exclude:
         any:
         - resources:

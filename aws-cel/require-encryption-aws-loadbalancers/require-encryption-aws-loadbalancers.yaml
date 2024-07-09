@@ -24,6 +24,9 @@ spec:
       - resources:
           kinds:
           - Service
+          operations:
+          - CREATE
+          - UPDATE
     celPreconditions: 
       - name: "type-should-be-load-balancer"
         expression: "object.spec.type == 'LoadBalancer'"

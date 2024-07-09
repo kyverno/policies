@@ -24,6 +24,9 @@ spec:
         - resources:
             kinds:
             - Application
+            operations:
+            - CREATE
+            - UPDATE
       validate:
         cel:
           expressions:
@@ -41,6 +44,9 @@ spec:
         - resources:
             kinds:
             - Application
+            operations:
+            - CREATE
+            - UPDATE
       validate:
         cel:
           expressions:

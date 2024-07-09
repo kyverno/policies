@@ -26,6 +26,9 @@ spec:
         - resources:
             kinds:
               - AppProject
+            operations:
+            - CREATE
+            - UPDATE
       validate:
         cel:
           expressions:
