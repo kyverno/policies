@@ -18,9 +18,7 @@ metadata:
     kyverno.io/kubernetes-version: "1.24-1.30"
     policies.kyverno.io/subject: Policy
     policies.kyverno.io/description: >-
-      Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist.
-
-      Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
+      Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist. Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
 spec:
   rules:
   - name: kasten-generate-example-backup-policy
