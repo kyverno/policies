@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: block-pod-exec-ns
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: pci
