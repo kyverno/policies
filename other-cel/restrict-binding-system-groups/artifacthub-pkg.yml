@@ -1,0 +1,25 @@
+name: restrict-binding-system-groups-cel
+version: 1.0.0
+displayName: Restrict Binding System Groups in CEL expressions
+description: >-
+  Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-binding-system-groups/restrict-binding-system-groups.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - EKS Best Practices
+  - CEL Expressions
+readme: |
+  Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, EKS Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
+digest: 8a5fb4bfe55c063b3b14eaed7a81512548ce89cc7057aa5549723fefed670f1f
+createdAt: "2024-04-12T16:28:28Z"
+

@@ -10,7 +10,7 @@ spec:
   template:
     metadata:
       labels:
-        foo: bar
+        app: app
     spec:
       initContainers:
       - name: k8s-nginx-init
@@ -35,7 +35,7 @@ spec:
   template:
     metadata:
       labels:
-        foo: bar
+        app: app
     spec:
       initContainers:
       - name: k8s-nginx-init
@@ -60,7 +60,7 @@ spec:
   template:
     metadata:
       labels:
-        foo: bar
+        app: app
     spec:
       initContainers:
       - name: k8s-nginx-init

@@ -30,13 +30,19 @@ jobs:
             version: v1.29.2
         tests:
           - ^argo$
+          - ^argo-cel$
           - ^aws$
+          - ^aws-cel$
           - ^best-practices$
+          - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
+          - ^cleanup$
           - ^consul$
+          - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
+          - ^flux-cel$
           - ^istio$
           - ^istio-cel$
           - ^karpenter$
@@ -50,12 +56,19 @@ jobs:
           - ^nginx-ingress$
           - ^openshift$
           - ^other$/^a
+          - ^other-cel$/^a
           - ^other$/^[b-d]
+          - ^other-cel$/^[b-d]
           - ^other$/^[e-l]
+          - ^other-cel$/^[e-l]
           - ^other$/^[m-q]
+          - ^other-cel$/^[m-q]
           - ^other$/^re[c-q]
+          - ^other-cel$/^re[c-q]
           - ^other$/^res
+          - ^other-cel$/^res
           - ^other$/^[s-z]
+          - ^other-cel$/^res
           - ^pod-security$
           - ^pod-security-cel$
           - ^psa$
@@ -67,9 +80,9 @@ jobs:
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
       - name: Setup Go
-        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
+        uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
           go-version: ~1.21.1
       - name: Install Tools
@@ -87,8 +100,6 @@ jobs:
           [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
           chmod +x ./kind
           sudo mv ./kind /usr/local/bin/kind
-      - name: Install oras CLI
-        uses: oras-project/setup-oras@ee7dbe1144cb00080a89497f937dae78f85fce29 # v1.1.0
       - name: Install latest Kyverno CLI
         uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
       - name: Create kind cluster
@@ -108,7 +119,7 @@ jobs:
           set -e
           kubectl apply -f ./.chainsaw/crds
       - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@995cddaee7702e849270b84fa44cdcebe7462da8 # v0.1.9
+        uses: kyverno/action-install-chainsaw@dd64b5d7b2b7d36fdf701d48ac8b216aa94414db # v0.2.4
       - name: Test with Chainsaw
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

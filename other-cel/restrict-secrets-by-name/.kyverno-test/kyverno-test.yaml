@@ -1,0 +1,64 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-secrets-policy
+policies:
+- ../restrict-secrets-by-name.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-env
+  result: fail
+  rule: safe-secrets-from-env
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-env
+  result: fail
+  rule: safe-secrets-from-env
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-env
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-envfrom
+  result: fail
+  rule: safe-secrets-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-envfrom
+  result: fail
+  rule: safe-secrets-from-envfrom
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-envfrom
+- kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-vol
+  result: fail
+  rule: safe-secrets-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-vol
+  result: fail
+  rule: safe-secrets-from-volumes
+- kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+  rule: safe-secrets-from-volumes
+

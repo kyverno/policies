@@ -1,0 +1,24 @@
+name: restrict-binding-clusteradmin-cel
+version: 1.0.0
+displayName: Restrict Binding to Cluster-Admin in CEL expressions
+description: >-
+  The cluster-admin ClusterRole allows any action to be performed on any resource in the cluster and its granting should be heavily restricted. This policy prevents binding to the cluster-admin ClusterRole in RoleBinding or ClusterRoleBinding resources.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-binding-clusteradmin/restrict-binding-clusteradmin.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - CEL Expressions
+readme: |
+  The cluster-admin ClusterRole allows any action to be performed on any resource in the cluster and its granting should be heavily restricted. This policy prevents binding to the cluster-admin ClusterRole in RoleBinding or ClusterRoleBinding resources.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
+digest: 7affbe90144f7d95e86ec9be12e95542296020026dd561cf79cd508b7dbb663d
+createdAt: "2024-04-12T16:00:17Z"
+

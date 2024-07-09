@@ -1,0 +1,23 @@
+name: application-field-validation-cel
+version: 1.0.0
+displayName: Application Field Validation in CEL expressions
+description: >-
+  This policy performs some best practices validation on Application fields. Path or chart must be specified but never both. And destination.name or destination.server must be specified but never both.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-cel/application-field-validation/application-field-validation.yaml
+  ```
+keywords:
+  - kyverno
+  - Argo
+  - CEL Expressions
+readme: |
+  This policy performs some best practices validation on Application fields. Path or chart must be specified but never both. And destination.name or destination.server must be specified but never both.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Application"
+digest: e3256994e09731ea081230c85e0d6384a187d53377562b1c82ea9385cec0c4a4
+createdAt: "2024-04-30T15:34:03Z"

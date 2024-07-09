@@ -1,0 +1,50 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-annotations
+policies:
+- ../require-annotations.yaml
+resources:
+- ../.chainsaw-test/pod-bad.yaml
+- ../.chainsaw-test/pod-good.yaml
+- ../.chainsaw-test/podcontroller-bad.yaml
+- ../.chainsaw-test/podcontroller-good.yaml
+results:
+- kind: Pod
+  policy: require-annotations
+  resources:
+  - badpod01
+  - badpod02
+  result: fail
+  rule: check-for-annotation
+- kind: Pod
+  policy: require-annotations
+  resources:
+  - goodpod01
+  result: pass
+  rule: check-for-annotation
+- kind: Deployment
+  policy: require-annotations
+  resources:
+  - baddeployment01
+  result: fail
+  rule: check-for-annotation
+- kind: CronJob
+  policy: require-annotations
+  resources:
+  - badcronjob01
+  result: fail
+  rule: check-for-annotation
+- kind: Deployment
+  policy: require-annotations
+  resources:
+  - gooddeployment01
+  result: pass
+  rule: check-for-annotation
+- kind: CronJob
+  policy: require-annotations
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: check-for-annotation
+
