@@ -11,7 +11,7 @@ metadata:
     policies.kyverno.io/description: >-
       Use of a SHA checksum when pulling an image is often preferable because tags
       are mutable and can be overwritten. This policy checks to ensure that all images
-      use SHA checksums rather than tags.
+       use SHA checksums rather than tags.
 spec:
   validationFailureAction: audit
   background: true
@@ -27,4 +27,11 @@ spec:
       pattern:
         spec:
           containers:
-          - image: "*@*"
+          - (name): "*"
+            image: "*@sha256:*"
+          =(ephemeralContainers):
+            - =(name): "*"
+              image: "*@sha256:*"
+          =(initContainers):
+            - =(name): "*"
+              image: "*@sha256:*"        
