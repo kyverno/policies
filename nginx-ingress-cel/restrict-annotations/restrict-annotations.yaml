@@ -25,6 +25,9 @@ spec:
         - resources:
             kinds:
             - networking.k8s.io/v1/Ingress
+            operations:
+            - CREATE
+            - UPDATE
       validate:
         cel:
           expressions:

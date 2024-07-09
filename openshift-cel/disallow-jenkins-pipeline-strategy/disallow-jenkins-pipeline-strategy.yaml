@@ -23,6 +23,9 @@ spec:
           kinds:
           - v1/BuildConfig
           - build.openshift.io/v1/BuildConfig
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:

@@ -29,6 +29,9 @@ spec:
           - authorization.openshift.io/v1/ClusterRoleBinding
           - authorization.openshift.io/v1/Role
           - authorization.openshift.io/v1/RoleBinding
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:

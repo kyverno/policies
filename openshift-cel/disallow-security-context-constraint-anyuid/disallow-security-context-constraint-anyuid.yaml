@@ -23,6 +23,9 @@ spec:
           kinds:
           - ClusterRole
           - Role
+          operations:
+          - CREATE
+          - UPDATE
     validate: 
       cel:
         expressions:
@@ -36,6 +39,9 @@ spec:
           kinds:
           - ClusterRoleBinding
           - RoleBinding
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:

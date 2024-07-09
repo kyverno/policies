@@ -23,7 +23,10 @@ spec:
         any:
         - resources:
             kinds:
-            - ConfigMap      
+            - ConfigMap
+            operations:
+            - CREATE
+            - UPDATE      
       validate:
         cel:
           expressions:
@@ -34,7 +37,10 @@ spec:
         any:
         - resources:
             kinds:
-            - networking.k8s.io/v1/Ingress            
+            - networking.k8s.io/v1/Ingress   
+            operations:
+            - CREATE
+            - UPDATE         
       validate:
         cel:
           expressions:

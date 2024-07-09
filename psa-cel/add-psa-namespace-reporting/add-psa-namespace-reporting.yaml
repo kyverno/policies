@@ -31,6 +31,9 @@ spec:
       - resources:
           kinds:
             - Namespace
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:
