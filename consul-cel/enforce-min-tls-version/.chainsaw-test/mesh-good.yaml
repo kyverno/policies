@@ -1,0 +1,8 @@
+apiVersion: consul.hashicorp.com/v1alpha1
+kind: Mesh
+metadata:
+  name: goodmesh01
+spec:
+  tls:
+    incoming:
+      tlsMinVersion: TLSv1_2
