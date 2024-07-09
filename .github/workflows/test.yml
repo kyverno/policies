@@ -30,15 +30,19 @@ jobs:
             version: v1.29.2
         tests:
           - ^argo$
+          - ^argo-cel$
           - ^aws$
+          - ^aws-cel$
           - ^best-practices$
           - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
           - ^cleanup$
           - ^consul$
+          - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
+          - ^flux-cel$
           - ^istio$
           - ^karpenter$
           - ^kasten$
