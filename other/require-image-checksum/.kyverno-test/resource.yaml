@@ -5,9 +5,17 @@ metadata:
   labels:
     app: myapp-1
 spec:
+  initContainers:
+  - name: init-myservice
+    image: busybox
+    command: ['sh', '-c', 'echo Initializing...']
   containers:
   - name: nginx
     image: nginx@sha256:353c20f74d9b6aee359f30e8e4f69c3d7eaea2f610681c4a95849a2fd7c497f9
+  ephemeralContainers:
+  - name: debug-container
+    image: busybox
+    command: ['sh', '-c', 'sleep 1000']
 
 ---
 apiVersion: v1
@@ -17,9 +25,17 @@ metadata:
   labels:
     app: myapp-2
 spec:
+  initContainers:
+  - name: init-myservice
+    image: busybox@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+    command: ['sh', '-c', 'echo Initializing...']
   containers:
   - name: nginx
-    image: nginx
+    image: nginx@sha256:353c20f74d9b6aee359f30e8e4f69c3d7eaea2f610681c4a95849a2fd7c497f9
+  ephemeralContainers:
+  - name: debug-container
+    image: busybox@sha256:9ae97d36d26566ff84e8893c64a6dc4fe8ca6d1144bf5b87b2b85a32def253c7
+    command: ['sh', '-c', 'sleep 1000']
 
 ---
 apiVersion: apps/v1
@@ -36,11 +52,19 @@ spec:
       labels:
         app: myapp
     spec:
+      initContainers:
+      - name: init-myservice
+        image: busybox
+        command: ['sh', '-c', 'echo Initializing...']
       containers:
       - name: nginx
         image: nginx@sha256:353c20f74d9b6aee359f30e8e4f69c3d7eaea2f610681c4a95849a2fd7c497f9
         ports:
         - containerPort: 80
+      ephemeralContainers:
+      - name: debug-container
+        image: busybox
+        command: ['sh', '-c', 'sleep 1000']
 
 ---
 apiVersion: batch/v1
@@ -53,6 +77,10 @@ spec:
     spec:
       template:
         spec:
+          initContainers:
+          - name: init-myservice
+            image: busybox
+            command: ['sh', '-c', 'echo Initializing...']
           containers:
           - name: hello
             image: busybox
@@ -61,4 +89,9 @@ spec:
             - /bin/sh
             - -c
             - date; echo Hello from the Kubernetes cluster
+          ephemeralContainers:
+          - name: debug-container
+            image: busybox
+            command: ['sh', '-c', 'sleep 1000']
           restartPolicy: OnFailure
+
