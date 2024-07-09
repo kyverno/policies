@@ -22,6 +22,9 @@ spec:
           kinds:
           - Deployment
           - StatefulSet
+          operations:
+          - CREATE
+          - UPDATE
           selector:
             matchLabels:
               purpose: production

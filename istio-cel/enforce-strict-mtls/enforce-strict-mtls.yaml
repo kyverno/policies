@@ -27,6 +27,9 @@ spec:
       - resources:
           kinds:
           - PeerAuthentication
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:
