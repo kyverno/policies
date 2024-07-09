@@ -1,0 +1,25 @@
+name: prevent-bare-pods-cel
+version: 1.0.0
+displayName: Prevent bare Pods in CEL expressions
+description: >-
+  Pods not created by workload controllers such as Deployments have no self-healing or scaling abilities and are unsuitable for production. This policy prevents such "bare" Pods from being created unless they originate from a higher-level workload controller of some sort.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/prevent-bare-pods/prevent-bare-pods.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - EKS Best Practices
+  - CEL Expressions
+readme: |
+  Pods not created by workload controllers such as Deployments have no self-healing or scaling abilities and are unsuitable for production. This policy prevents such "bare" Pods from being created unless they originate from a higher-level workload controller of some sort.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other, EKS Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: ff8f3288a8e8ea57d91d27785866d0c17b8112b8697d0689e9f324874deb1f3b
+createdAt: "2024-04-07T10:47:32Z"
+

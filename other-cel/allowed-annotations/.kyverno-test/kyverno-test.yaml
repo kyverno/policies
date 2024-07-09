@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: allowed-annotations
+policies:
+- ../allowed-annotations.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: allowed-annotations
+  resources:
+  - badpod01
+  result: fail
+  rule: allowed-fluxcd-annotations
+- kind: Pod
+  policy: allowed-annotations
+  resources:
+  - goodpod01
+  result: pass
+  rule: allowed-fluxcd-annotations
+

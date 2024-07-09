@@ -1,0 +1,34 @@
+name: enforce-readwriteonce-pod-cel
+version: 1.0.0
+displayName: Enforce readwriteoncepod in CEL expressions
+description: >-
+      Some stateful workloads with multiple replicas only allow a single Pod to write
+      to a given volume at a time. Beginning in Kubernetes 1.22 and enabled by default
+      in 1.27, a new setting called ReadWriteOncePod, available
+      for CSI volumes only, allows volumes to be writable from only a single Pod. For more
+      information see the blog https://kubernetes.io/blog/2023/04/20/read-write-once-pod-access-mode-beta/.
+      This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/enforce-readwriteonce-pod/enforce-readwriteonce-pod.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - CEL Expressions
+readme: |
+      Some stateful workloads with multiple replicas only allow a single Pod to write
+      to a given volume at a time. Beginning in Kubernetes 1.22 and enabled by default
+      in 1.27, a new setting called ReadWriteOncePod, available
+      for CSI volumes only, allows volumes to be writable from only a single Pod. For more
+      information see the blog https://kubernetes.io/blog/2023/04/20/read-write-once-pod-access-mode-beta/.
+      This policy enforces that the accessModes for a PersistentVolumeClaim be set to ReadWriteOncePod.
+
+      Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "PersistentVolumeClaims"
+digest: c3595da6ec53e127aca4f08c38095764d652aa268ebfde21d3445545c75e1615
+createdAt: "2024-03-31T10:53:27Z"
+

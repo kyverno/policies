@@ -1,0 +1,96 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-binding-system-groups
+policies:
+- ../restrict-binding-system-groups.yaml
+resources:
+- ../.chainsaw-test/crb-bad.yaml
+- ../.chainsaw-test/crb-good.yaml
+- ../.chainsaw-test/rb-bad.yaml
+- ../.chainsaw-test/rb-good.yaml
+results:
+- policy: restrict-binding-system-groups
+  rule: restrict-anonymous
+  kind: ClusterRoleBinding
+  resources:
+  - badcrb01
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-unauthenticated
+  kind: ClusterRoleBinding
+  resources:
+  - badcrb02
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-masters
+  kind: ClusterRoleBinding
+  resources:
+  - badcrb03
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-anonymous
+  kind: RoleBinding
+  resources:
+  - badrb01
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-unauthenticated
+  kind: RoleBinding
+  resources:
+  - badrb02
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-masters
+  kind: RoleBinding
+  resources:
+  - badrb03
+  result: fail
+- policy: restrict-binding-system-groups
+  rule: restrict-anonymous
+  kind: ClusterRoleBinding
+  resources:
+  - goodcrb01
+  - goodcrb02
+  - goodcrb03
+  result: pass
+- policy: restrict-binding-system-groups
+  rule: restrict-unauthenticated
+  kind: ClusterRoleBinding
+  resources:
+  - goodcrb01
+  - goodcrb02
+  - goodcrb03
+  result: pass
+- policy: restrict-binding-system-groups
+  rule: restrict-masters
+  kind: ClusterRoleBinding
+  resources:
+  - goodcrb01
+  - goodcrb02
+  - goodcrb03
+  result: pass
+- policy: restrict-binding-system-groups
+  rule: restrict-anonymous
+  kind: RoleBinding
+  resources:
+  - goodrb01
+  - goodrb02
+  - goodrb03
+  result: pass
+- policy: restrict-binding-system-groups
+  rule: restrict-unauthenticated
+  kind: RoleBinding
+  resources:
+  - goodrb01
+  - goodrb02
+  - goodrb03
+  result: pass
+- policy: restrict-binding-system-groups
+  rule: restrict-masters
+  kind: RoleBinding
+  resources:
+  - goodrb01
+  - goodrb02
+  - goodrb03
+  result: pass
