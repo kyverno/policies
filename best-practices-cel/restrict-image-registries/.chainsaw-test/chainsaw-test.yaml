@@ -1,0 +1,64 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-image-registries
+spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../restrict-image-registries.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: restrict-image-registries
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: good-pods.yaml
+    - apply:
+        file: good-podcontrollers.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-noregistry.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-notall.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-false.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-podcontrollers.yaml
+  - name: step-03
+    try:
+    - script:
+        content: if kubectl debug -it goodpod02-registry --image=busybox:1.35 --target=k8s-nginx
+          -n ir-pods-namespace; then exit 1; else exit 0; fi;
+  - name: step-98
+    try:
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n ir-pods-namespace
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+    - script:
+        content: kubectl delete cronjobs --all --force --grace-period=0 -n ir-pods-namespace
+
