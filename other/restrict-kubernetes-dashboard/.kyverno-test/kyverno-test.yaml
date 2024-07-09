@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-kubernetes-dashboard
+policies:
+- ../restrict-kubernetes-dashboard.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  policy: restrict-kubernetes-dashboard
+  resources:
+  - baddeployment-kubernetes-dashboard
+  result: fail
+  rule: restrict-kubernetes-dashboard
+- kind: Pod
+  policy: restrict-kubernetes-dashboard
+  resources:
+  - badpod-kubernetes-dashboard
+  result: fail
+  rule: restrict-kubernetes-dashboard
+- kind: Deployment
+  policy: restrict-kubernetes-dashboard
+  resources:
+  - gooddeployment
+  result: pass
+  rule: restrict-kubernetes-dashboard
+- kind: Pod
+  policy: restrict-kubernetes-dashboard
+  resources:
+  - goodpod
+  result: pass
+  rule: restrict-kubernetes-dashboard

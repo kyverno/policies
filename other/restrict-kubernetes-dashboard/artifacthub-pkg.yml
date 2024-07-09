@@ -1,0 +1,30 @@
+name: restrict-kubernetes-dashboard
+version: 1.0.0
+displayName: Restrict Kubernetes Dashboard Deployment
+createdAt: "2024-07-08T00:00:00.000Z"
+description: >-
+  This Kyverno policy restricts the deployment of resources with names containing 'kubernetes-dashboard'.
+  It ensures that resources with such names are not allowed to be deployed in the cluster to maintain security
+  and prevent unauthorized access to the Kubernetes Dashboard.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/restrict/restrict-kubernetes-dashboard/restrict-kubernetes-dashboard.yaml
+  ```
+keywords:
+  - kyverno
+  - restrict
+  - kubernetes-dashboard
+readme: |
+  This Kyverno policy restricts the deployment of resources with names containing 'kubernetes-dashboard'.
+  It ensures that resources with such names are not allowed to be deployed in the cluster to maintain security
+  and prevent unauthorized access to the Kubernetes Dashboard.
+
+  The policy checks the name of each resource and denies the request if it contains the string 'kubernetes-dashboard'.
+  This helps in enforcing security policies and avoiding potential vulnerabilities.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Deployment"
+digest: 1d2f71608ae0d13c4299f8f7e2186e3e487696d28df277244c766b81ad183498

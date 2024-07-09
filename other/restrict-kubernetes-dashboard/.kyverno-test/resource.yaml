@@ -1,0 +1,62 @@
+###### Pods - Bad
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-kubernetes-dashboard
+spec:
+  containers:
+  - name: dashboard-container
+    image: kubernetesui/dashboard:v2.0.0
+    ports:
+    - containerPort: 9090
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod
+spec:
+  containers:
+  - name: my-app-container
+    image: nginx
+---
+###### Deployment - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment-kubernetes-dashboard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubernetes-dashboard
+  template:
+    metadata:
+      labels:
+        app: kubernetes-dashboard
+    spec:
+      containers:
+      - name: dashboard-container
+        image: kubernetesui/dashboard:v2.0.0
+        ports:
+        - containerPort: 9090
+---
+###### Deployment - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-application
+  template:
+    metadata:
+      labels:
+        app: my-application
+    spec:
+      containers:
+      - name: my-app-container
+        image: nginx
+

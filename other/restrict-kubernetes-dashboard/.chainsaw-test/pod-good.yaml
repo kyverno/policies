@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod
+spec:
+  containers:
+  - name: my-app-container
+    image: nginx

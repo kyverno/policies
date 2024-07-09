@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-kubernetes-dashboard
+spec:
+  containers:
+  - name: dashboard-container
+    image: kubernetesui/dashboard:v2.0.0
+    ports:
+    - containerPort: 9090

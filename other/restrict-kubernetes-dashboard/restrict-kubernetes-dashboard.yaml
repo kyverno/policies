@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-kubernetes-dashboard
+spec:
+  validationFailureAction: audit
+  background: false
+  rules: 
+  - name: restrict-kubernetes-dashboard
+    match:
+      resources:
+        kinds:
+        - "*"
+    validate:
+      message: >-
+        Resources with names containing 'kubernetes-dashboard' are not allowed to be deployed.
+      deny:
+        conditions:
+          all:
+          - key: "{{ regex_match('kubernetes-dashboard', '{{request.object.metadata.name || 'empty'}}') }}"
+            operator: Equals
+            value: true
