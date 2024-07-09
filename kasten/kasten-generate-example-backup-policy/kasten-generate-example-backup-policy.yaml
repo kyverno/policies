@@ -1,11 +1,26 @@
-# This is an example rule intended to be cloned & modified to meet
-# organizational requirements. The `dataprotetion` label value
-# can be changed to correspond with specific policy templates.
+# This is an example rule intended to be cloned & modified to meet organizational requirements.
+# The `dataprotetion` label value can be changed to correspond with specific policy templates.
 # 
-# The Kyverno background controller requires
-# additional permissions to create Kasten Policy resources.
-# Apply the create-kasten-policies-clusterrole.yaml manifest
-# first to grant the required permissions.
+# NOTE: Use of this policy will require granting the Kyverno background-controller additional privileges required to generate Kasten resources. An example ClusterRole to provide required privileges is provided within the comments of the policy manifest.
+#
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   labels:
+#     app.kubernetes.io/component: background-controller
+#     app.kubernetes.io/instance: kyverno
+#     app.kubernetes.io/part-of: kyverno
+#   name: kyverno:create-kasten-policies
+# rules:
+# - apiGroups:
+#   - config.kio.kasten.io
+#   resources:
+#   - policies
+#   verbs:
+#   - create
+#   - update
+#   - delete
+#
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
@@ -18,7 +33,7 @@ metadata:
     kyverno.io/kubernetes-version: "1.24-1.30"
     policies.kyverno.io/subject: Policy
     policies.kyverno.io/description: >-
-      Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist. Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
+      Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist. This Kyverno policy can be used in combination with the "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
 spec:
   rules:
   - name: kasten-generate-example-backup-policy

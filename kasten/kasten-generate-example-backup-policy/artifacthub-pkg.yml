@@ -3,9 +3,7 @@ version: 1.0.1
 displayName: Generate Kasten Backup Policy Based on Resource Label
 createdAt: "2023-05-07T00:00:00.000Z"
 description: >-
-  Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist.
-
-  Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
+  Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist. This Kyverno policy can be used in combination with the "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads. NOTE: Use of this policy will require granting the Kyverno background-controller additional privileges required to generate Kasten resources. An example ClusterRole to provide required privileges is provided within the comments of the policy manifest.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kasten/kasten-generate-example-backup-policy/kasten-generate-example-backup-policy.yaml
@@ -14,11 +12,9 @@ keywords:
   - kyverno
   - Veeam Kasten
 readme: |
-  Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist.
-
-  Use with "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads.
+  Generates a Kasten policy for a namespace that includes any Deployment or StatefulSet with a "dataprotection=kasten-example" label, if the policy does not already exist. This Kyverno policy can be used in combination with the "kasten-data-protection-by-label" policy to require "dataprotection" labeling on workloads. NOTE: Use of this policy will require granting the Kyverno background-controller additional privileges required to generate Kasten resources. An example ClusterRole to provide required privileges is provided within the comments of the policy manifest.
 annotations:
   kyverno/category: "Veeam Kasten"
   kyverno/kubernetesVersion: "1.24-1.30"
   kyverno/subject: "Policy"
-digest: 2ebf8572773b94db51942f6a1e1790e0603dd6cc47b98b5d3a31f0099a90168c
+digest: 74edc3942670ec20e8b9ab00db894e503071bcc4c2da12dca2a6e03a2b2f562a
