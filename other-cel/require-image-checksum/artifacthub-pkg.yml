@@ -1,0 +1,24 @@
+name: require-image-checksum-cel
+version: 1.0.0
+displayName: Require Images Use Checksums in CEL expressions
+description: >-
+  Use of a SHA checksum when pulling an image is often preferable because tags are mutable and can be overwritten. This policy checks to ensure that all images use SHA checksums rather than tags.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/require-image-checksum/require-image-checksum.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - CEL Expressions
+readme: |
+  Use of a SHA checksum when pulling an image is often preferable because tags are mutable and can be overwritten. This policy checks to ensure that all images use SHA checksums rather than tags.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: 6a775c3ab5b2c24f6fbe10de35ecca20e967d3d70242403718b55f5a04c07c08
+createdAt: "2024-04-10T18:21:59Z"
+
