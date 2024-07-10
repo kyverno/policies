@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  nodeSelector:
+    node.kubernetes.io/worker-abc: ""
+  containers:
+  - name: bb
+    image: busybox:1.35
