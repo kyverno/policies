@@ -1,0 +1,24 @@
+name: pdb-maxunavailable-cel
+version: 1.0.0
+displayName: PodDisruptionBudget maxUnavailable Non-Zero in CEL expressions
+description: >-
+  A PodDisruptionBudget which sets its maxUnavailable value to zero prevents all voluntary evictions including Node drains which may impact maintenance tasks. This policy enforces that if a PodDisruptionBudget specifies the maxUnavailable field it must be greater than zero.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/pdb-maxunavailable/pdb-maxunavailable.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - CEL Expressions
+readme: |
+  A PodDisruptionBudget which sets its maxUnavailable value to zero prevents all voluntary evictions including Node drains which may impact maintenance tasks. This policy enforces that if a PodDisruptionBudget specifies the maxUnavailable field it must be greater than zero.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "PodDisruptionBudget"
+digest: 4b452f78ab0ff9715f1454fd3ca827b7aa7a892fa2b2f23aa5c21a12851c526d
+createdAt: "2024-04-07T10:22:03Z"
+

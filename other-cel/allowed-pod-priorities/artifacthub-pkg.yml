@@ -1,0 +1,24 @@
+name: allowed-pod-priorities-cel
+version: 1.0.0
+displayName: Allowed Pod Priorities in CEL expressions
+description: >-
+  A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. In certain cases where not all users in a cluster are trusted, a malicious user could create Pods at the highest possible priorities, causing other Pods to be evicted/not get scheduled. This policy checks the defined `priorityClassName` in a Pod spec to a dictionary of allowable PriorityClasses for the given Namespace stored in a ConfigMap. If the `priorityClassName` is not among them, the Pod is blocked.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/allowed-pod-priorities/allowed-pod-priorities.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - CEL Expressions
+readme: |
+  A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. In certain cases where not all users in a cluster are trusted, a malicious user could create Pods at the highest possible priorities, causing other Pods to be evicted/not get scheduled. This policy checks the defined `priorityClassName` in a Pod spec to a dictionary of allowable PriorityClasses for the given Namespace stored in a ConfigMap. If the `priorityClassName` is not among them, the Pod is blocked.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: fc3abdb001c9cd666cc784d67eb584800a1a5ab357fbf3616dee2c5752e0f805
+createdAt: "2024-03-19T17:20:47Z"
+

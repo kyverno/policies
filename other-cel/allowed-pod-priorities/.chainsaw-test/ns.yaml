@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: pod-priority-ns
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: no-priority-ns
+

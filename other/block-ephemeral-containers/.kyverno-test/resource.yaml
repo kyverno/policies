@@ -1,0 +1,65 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename

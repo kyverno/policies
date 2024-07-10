@@ -1,0 +1,24 @@
+name: ensure-probes-different-cel
+version: 1.0.0
+displayName: Validate Probes in CEL expressions
+description: >-
+  Liveness and readiness probes accomplish different goals, and setting both to the same is an anti-pattern and often results in app problems in the future. This policy checks that liveness and readiness probes are not equal.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/ensure-probes-different/ensure-probes-different.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - CEL Expressions
+readme: |
+  Liveness and readiness probes accomplish different goals, and setting both to the same is an anti-pattern and often results in app problems in the future. This policy checks that liveness and readiness probes are not equal.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: 95447cdc8a2287d3d0d9f300dd82bd62709d1bbe91c60ba2b11c8ce0a318bbcb
+createdAt: "2024-03-31T11:12:02Z"
+

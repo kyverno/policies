@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: imagerepo-bad
+spec:
+  image: nothing.io/notmyorg/
+  interval: 1h
+  provider: generic

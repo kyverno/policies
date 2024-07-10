@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: service-mesh-require-run-as-nonroot
+status:
+  ready: true
