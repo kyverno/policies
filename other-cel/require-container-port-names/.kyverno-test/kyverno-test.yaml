@@ -1,0 +1,52 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-container-port-names
+policies:
+- ../require-container-port-names.yaml
+resources:
+- ../.chainsaw-test/pod-bad.yaml
+- ../.chainsaw-test/pod-good.yaml
+- ../.chainsaw-test/podcontroller-bad.yaml
+- ../.chainsaw-test/podcontroller-good.yaml
+results:
+- kind: Pod
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  result: fail
+- kind: Pod
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - goodpod01
+  - goodpod02
+  result: pass
+- kind: Deployment
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - baddeployment01
+  result: fail
+- kind: CronJob
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - badcronjob01
+  result: fail
+- kind: Deployment
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - gooddeployment01
+  result: pass
+- kind: CronJob
+  policy: require-container-port-names
+  rule: port-name
+  resources:
+  - goodcronjob01
+  result: pass
+
