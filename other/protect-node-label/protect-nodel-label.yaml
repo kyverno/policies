@@ -1,0 +1,51 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/description: 'Node labels are critical pieces of metadata
+      upon which many other applications and logic may depend and should not be
+      altered or removed by regular users. This policy prevents changes or deletions
+      to a label called `foo` on cluster Nodes.
+    policies.kyverno.io/subject: Node, Label
+    policies.kyverno.io/title: Restrict node label changes
+  generation: 1
+  name: protect-node-label-foo
+spec:
+  background: false
+  rules:
+  - match:
+      resources:
+        kinds:
+        - Node
+    name: prevent-label-value-changes
+    validate:
+      deny:
+        conditions:
+          all:
+          - key: '{{ request.object.metadata.labels.foo || '''' }}'
+            operator: NotEquals
+            value: ""
+          - key: '{{ request.object.metadata.labels.foo || '''' }}'
+            operator: NotEquals
+            value: '{{ request.oldObject.metadata.labels.foo || '''' }}'
+      message: Modifying the `foo` label on a Node is not allowed.
+  - match:
+      resources:
+        kinds:
+        - Node
+    name: prevent-label-key-removal
+    preconditions:
+      all:
+      - key: '{{ request.operation }}'
+        operator: Equals
+        value: UPDATE
+      - key: '{{ request.oldObject.metadata.labels.foo || '''' }}'
+        operator: Equals
+        value: ?*
+    validate:
+      message: Removing the `foo` label on a Node is not allowed.
+      pattern:
+        metadata:
+          labels:
+            foo: '*'
+  validationFailureAction: audit
