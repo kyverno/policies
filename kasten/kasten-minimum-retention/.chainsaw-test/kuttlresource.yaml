@@ -1,9 +1,8 @@
-# An example compliant K10 Policy
 apiVersion: config.kio.kasten.io/v1alpha1
 kind: Policy
 metadata:
   name: hourly-policy
-  namespace: kasten-io
+  namespace: kasten-minimum-retention
   labels:
     appPriority: Mission-Critical
 spec:

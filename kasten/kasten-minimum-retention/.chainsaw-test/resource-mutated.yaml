@@ -5,7 +5,7 @@ metadata:
   labels:
     appPriority: Mission-Critical
   name: hourly-policy
-  namespace: k10-minimum-retention
+  namespace: kasten-minimum-retention
 spec:
   actions:
   - action: backup
