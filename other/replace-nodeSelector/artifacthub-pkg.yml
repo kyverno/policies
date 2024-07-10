@@ -1,6 +1,7 @@
 name: replace-nodeselector
 version: 1.0.0
 displayName: Replace nodeSelector
+createdAt: "2024-07-10T07:30:13.000Z"
 description: >-
   The nodeSelector field, which uses labels to select the node for Pod scheduling based on specific needs, is updated by this policy to replace the label node-role.kubernetes.io/worker-abc with node.kubernetes.io/worker-abc in the Pod spec.
 install: |-
