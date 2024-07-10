@@ -4,9 +4,9 @@ metadata:
   labels:
     foo: bar
   annotations:
-    app.k8s.io/name: badpod01
-    sidecar.istio.io/inject: "false"
-  name: badpod01
+    app.k8s.io/name: goodpod01
+    sidecar.istio.io/inject: "true"
+  name: goodpod01
 spec:
   containers:
     - name: busybox
@@ -18,9 +18,8 @@ metadata:
   labels:
     foo: bar
   annotations:
-    sidecar.istio.io/inject: "false"
-    app.k8s.io/name: badpod02
-  name: badpod02
+    app.k8s.io/name: goodpod02
+  name: goodpod02
 spec:
   containers:
     - name: busybox

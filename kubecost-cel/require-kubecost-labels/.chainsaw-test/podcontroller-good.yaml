@@ -3,16 +3,20 @@ kind: Deployment
 metadata:
   labels:
     app: busybox
-  name: baddeploy01
+  name: gooddeploy01
 spec:
   replicas: 1
   selector:
     matchLabels:
-      foo: bar
+      app: busybox
   template:
     metadata:
       labels:
-        foo: bar
+        app: busybox
+        owner: "foo"
+        team: "foo"
+        department: "foo"
+        env: "foo"
     spec:
       containers:
       - name: busybox
@@ -23,16 +27,21 @@ kind: Deployment
 metadata:
   labels:
     app: busybox
-  name: baddeploy02
+  name: gooddeploy02
 spec:
   replicas: 1
   selector:
     matchLabels:
-      owner: "foo"
+      app: busybox
   template:
     metadata:
       labels:
+        app: busybox
         owner: "foo"
+        team: "foo"
+        department: "foo"
+        env: "foo"
+        foo: bar
     spec:
       containers:
       - name: busybox
@@ -41,7 +50,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: badcronjob01
+  name: goodcronjob01
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -49,7 +58,11 @@ spec:
       template:
         metadata:
           labels:
-            foo: bar
+            owner: "foo"
+            team: "foo"
+            department: "foo"
+            app: "foo"
+            env: "foo"
         spec:
           containers:
           - name: hello
@@ -62,7 +75,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: badcronjob02
+  name: goodcronjob02
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -72,6 +85,10 @@ spec:
           labels:
             owner: "foo"
             team: "foo"
+            department: "foo"
+            app: "foo"
+            env: "foo"
+            foo: bar
         spec:
           containers:
           - name: hello

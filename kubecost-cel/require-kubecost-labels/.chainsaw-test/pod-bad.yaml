@@ -3,9 +3,6 @@ kind: Pod
 metadata:
   labels:
     foo: bar
-  annotations:
-    app.k8s.io/name: badpod01
-    sidecar.istio.io/inject: "false"
   name: badpod01
 spec:
   containers:
@@ -17,10 +14,23 @@ kind: Pod
 metadata:
   labels:
     foo: bar
-  annotations:
-    sidecar.istio.io/inject: "false"
-    app.k8s.io/name: badpod02
+    env: foo
   name: badpod02
+spec:
+  containers:
+    - name: busybox
+      image: busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+    owner: foo
+    team: bar
+    department: foo
+    app: bar
+  name: badpod03
 spec:
   containers:
     - name: busybox

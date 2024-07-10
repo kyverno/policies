@@ -44,9 +44,12 @@ jobs:
           - ^flux$
           - ^flux-cel$
           - ^istio$
+          - ^istio-cel$
           - ^karpenter$
           - ^kasten$
+          - ^kasten-cel$
           - ^kubecost$
+          - ^kubecost-cel$
           - ^kubeops$
           - ^kubevirt$
           - ^linkerd$
