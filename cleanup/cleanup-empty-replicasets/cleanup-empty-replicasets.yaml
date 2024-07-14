@@ -1,3 +1,4 @@
+#The described logic currently deletes the ReplicaSets created 30 seconds ago. You can adjust this timeframe according to your specific requirements.
 apiVersion: kyverno.io/v2beta1
 kind: ClusterCleanupPolicy
 metadata:
@@ -11,21 +12,24 @@ metadata:
     policies.kyverno.io/minversion: 1.9.0
     kyverno.io/kubernetes-version: "1.27"
     policies.kyverno.io/description: >-
-      ReplicaSets are an intermediary controller to several Pod controllers such as Deployments.
-      When a new version of a Deployment is created, it spawns a new ReplicaSet with the desired
-      number of replicas and scale the current one to zero. This can have the effect of leaving
-      many empty ReplicaSets in the cluster which can create clutter and false positives if policy
-      reports are enabled. This cleanup policy removes all empty ReplicaSets across the cluster.
-      Note that removing empty ReplicaSets may prevent rollbacks.
+      ReplicaSets serve as an intermediate controller for various Pod controllers like Deployments. When a new version of a Deployment is initiated, it generates a new ReplicaSet with the specified number of replicas and scales down the current one to zero. Consequently, numerous empty ReplicaSets may accumulate in the cluster, leading to clutter and potential false positives in policy reports if enabled. This cleanup policy is designed to remove empty ReplicaSets across the cluster within a specified timeframe, for instance, ReplicaSets created one day ago, ensuring the ability to rollback to previous ReplicaSets in case of deployment issues
 spec:
   match:
     any:
     - resources:
         kinds:
           - ReplicaSet
+  exclude:
+    any:
+    - resources:
+        namespaces:
+          - kube-system
   conditions:
     all:
     - key: "{{ target.spec.replicas }}"
       operator: Equals
       value: 0
-  schedule: "*/5 * * * *"
+    - key: "{{ time_diff('{{target.metadata.creationTimestamp}}','{{ time_now_utc() }}') }}"
+      operator: GreaterThan
+      value: "0h0m30s"
+  schedule: "*/1 * * * *"

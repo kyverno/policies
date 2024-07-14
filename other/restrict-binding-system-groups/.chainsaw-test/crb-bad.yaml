@@ -16,7 +16,7 @@ kind: ClusterRoleBinding
 metadata:
   name: badcrb02
 subjects:
-- kind: ServiceAccount
+- kind: Group
   namespace: foo
   name: "system:unauthenticated"
   apiGroup: rbac.authorization.k8s.io

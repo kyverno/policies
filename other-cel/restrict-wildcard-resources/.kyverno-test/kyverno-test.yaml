@@ -1,0 +1,48 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-wildcard-resources
+policies:
+- ../restrict-wildcard-resources.yaml
+resources:
+- resource.yaml
+results:
+- policy: restrict-wildcard-resources
+  rule: wildcard-resources
+  kind: ClusterRole
+  resources:
+  - badcr01
+  - badcr02
+  - badcr03
+  result: fail
+- policy: restrict-wildcard-resources
+  rule: wildcard-resources
+  kind: ClusterRole
+  resources:
+  - goodcr01
+  - goodcr02
+  - goodcr03
+  - goodcr04
+  - goodcr05
+  - default-rules
+  result: pass
+- policy: restrict-wildcard-resources
+  rule: wildcard-resources
+  kind: Role
+  resources:
+  - badrole01
+  - badrole02
+  - badrole03
+  result: fail
+- policy: restrict-wildcard-resources
+  rule: wildcard-resources
+  kind: Role
+  resources:
+  - goodrole01
+  - goodrole02
+  - goodrole03
+  - goodrole04
+  - goodrole05
+  - default-rules
+  result: pass
+

@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: applicationset-name-matches-project
+policies:
+- ../applicationset-name-matches-project.yaml
+resources:
+- ../.chainsaw-test/bad-appset.yaml
+- ../.chainsaw-test/good-appset.yaml
+results:
+- policy: applicationset-name-matches-project
+  rule: match-name
+  kind: ApplicationSet
+  resources:
+  - bad-guestbook
+  result: fail
+- policy: applicationset-name-matches-project
+  rule: match-name
+  kind: ApplicationSet
+  resources:
+  - guestbook
+  result: pass
+
