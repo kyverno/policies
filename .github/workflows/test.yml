@@ -30,19 +30,26 @@ jobs:
             version: v1.29.2
         tests:
           - ^argo$
+          - ^argo-cel$
           - ^aws$
+          - ^aws-cel$
           - ^best-practices$
           - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
           - ^cleanup$
           - ^consul$
+          - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
+          - ^flux-cel$
           - ^istio$
+          - ^istio-cel$
           - ^karpenter$
           - ^kasten$
+          - ^kasten-cel$
           - ^kubecost$
+          - ^kubecost-cel$
           - ^kubeops$
           - ^kubevirt$
           - ^linkerd$
@@ -61,7 +68,7 @@ jobs:
           - ^other$/^res
           - ^other-cel$/^res
           - ^other$/^[s-z]
-          - ^other-cel$/^res
+          - ^other-cel$/^[s-z]
           - ^pod-security$
           - ^pod-security-cel$
           - ^psa$
@@ -73,7 +80,7 @@ jobs:
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
-        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Setup Go
         uses: actions/setup-go@cdcb36043654635271a94b9a6d1392de5bb323a7 # v5.0.1
         with:
