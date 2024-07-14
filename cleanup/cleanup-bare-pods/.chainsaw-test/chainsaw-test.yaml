@@ -1,0 +1,38 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-bare-pods
+spec:
+  steps:
+    - name: apply cluster role
+      try:
+        - apply:
+            file: cluster-role.yaml
+    - name: create a bare pod
+      try:
+        - apply:
+            file: pod.yaml
+        - assert:
+            file: pod.yaml
+    - name: apply cleanup policy
+      try:
+        - apply:
+            file: ../cleanup-bare-pods.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v2beta1
+              kind: ClusterCleanupPolicy
+              metadata:
+                name: clean-bare-pods
+              spec:
+                schedule: "*/1 * * * *"
+        - assert:
+            file: chainsaw-step-02-assert-1.yaml
+    - name: wait for scheduled deletion
+      try:
+        - sleep:
+            duration: 1m30s
+    - name: check for bare pod
+      try:
+        - error:
+            file: pod.yaml
