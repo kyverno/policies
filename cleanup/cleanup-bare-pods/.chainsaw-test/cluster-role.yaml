@@ -1,17 +1,20 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  namespace: kyverno
   labels:
-    app.kubernetes.io/component: background-controller
+    app.kubernetes.io/component: cleanup-controller
     app.kubernetes.io/instance: kyverno
     app.kubernetes.io/part-of: kyverno
-  name: kyverno:background-controller:k10-goldbackuppolicy
+  name: kyverno:cleanup-controller:barepods
 rules:
 - apiGroups:
-  - config.kio.kasten.io
+  - ""
   resources:
-  - policies
+  - pods
   verbs:
-  - create
-  - update
+  - get
+  - watch
+  - list
   - delete
+
