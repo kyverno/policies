@@ -35,25 +35,14 @@ spec:
               value:
               - mutatingwebhookconfigurations
               - validatingwebhookconfigurations
+            any:
             - key: "{{ element.verbs }}"
               operator: AnyIn
               value:
               - create
               - update
               - patch
-      - list: "request.object.rules[]"
-        deny:
-          conditions:
-            all:
-            - key: "{{ element.apiGroups || '' }}"
-              operator: AnyIn
-              value:
-              - admissionregistration.k8s.io
-            - key: "{{ element.resources || '' }}"
-              operator: AnyIn
-              value:
-              - mutatingwebhookconfigurations
-              - validatingwebhookconfigurations
             - key: "{{ contains(element.verbs[], '*') }}"
               operator: Equals
-              value: true                 
+              value: true  
+
