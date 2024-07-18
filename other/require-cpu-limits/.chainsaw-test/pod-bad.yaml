@@ -15,8 +15,6 @@ spec:
   containers:
   - name: container01
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: true
 ---
 apiVersion: v1
 kind: Pod
@@ -28,8 +26,6 @@ spec:
     image: busybox:1.35
   - name: container02
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -39,12 +35,8 @@ spec:
   containers:
   - name: container01
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: true
   - name: container02
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -57,8 +49,6 @@ spec:
   containers:
   - name: container01
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -70,11 +60,25 @@ spec:
     image: busybox:1.35
   - name: initcontainer02
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: true
   containers:
   - name: container01
     image: busybox:1.35
-    securityContext:
-      allowPrivilegeEscalation: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: busybox:1.35
+  - name: initcontainer02
+    image: busybox:1.35
+  containers:
+  - name: container01
+    image: busybox:1.35
+    resources:
+      limits:
+        cpu: "50m"
+  - name: container02
+    image: busybox:1.35

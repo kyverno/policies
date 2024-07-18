@@ -9,16 +9,17 @@ metadata:
     policies.kyverno.io/subject: Pod
     kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
-      Setting CPU limits on pods ensures fair distribution of resources, preventing any single pod from monopolizing CPU and impacting the performance of other pods. This practice enhances stability, predictability, and cost control, while also mitigating the noisy neighbor problem and facilitating efficient scaling in Kubernetes clusters. This policy ensures that cpu limits are set on every container.
+      Setting CPU limits on containers ensures fair distribution of resources, preventing any single container from monopolizing CPU and impacting the performance of other containers. This practice enhances stability, predictability, and cost control, while also mitigating the noisy neighbor problem and facilitating efficient scaling in Kubernetes clusters. This policy ensures that cpu limits are set on every container.
 spec:
   validationFailureAction: Audit
   background: true
   rules:
   - name: check-cpu-limits
     match:
-      resources:
-        kinds:
-        - Pod
+      any:
+      - resources:
+          kinds:
+          - Pod
     validate:
       message: "CPU limits are required for all containers."
       pattern:

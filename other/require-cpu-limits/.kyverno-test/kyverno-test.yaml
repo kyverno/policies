@@ -38,6 +38,7 @@ results:
   - badpod04
   - badpod05
   - badpod06
+  - badpod07
   result: fail
   rule: check-cpu-limits
 - kind: CronJob
