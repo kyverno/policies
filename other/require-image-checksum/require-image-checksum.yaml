@@ -27,11 +27,8 @@ spec:
       pattern:
         spec:
           containers:
-          - (name): "*"
-            image: "*@sha256:*"
+          - image: "*@*"
           =(ephemeralContainers):
-            - =(name): "*"
-              image: "*@sha256:*"
+            - image: "*@*"
           =(initContainers):
-            - =(name): "*"
-              image: "*@sha256:*"        
+            - image: "*@*"        
