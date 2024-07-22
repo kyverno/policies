@@ -3,7 +3,7 @@ version: 1.0.0
 displayName: Ensure HPA for Deployments
 createdAt: "2024-07-19T13:02:58Z"
 description: >-
-  This policy ensures that Deployments are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the Deployment and denies the creation or update of the Deployment if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
+  This policy ensures that Deployments, ReplicaSets, StatefulSets, and DaemonSets are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the resource and denies the creation or update of the resource if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/check-hpa-exists/check-hpa-exists.yaml
@@ -12,11 +12,10 @@ keywords:
   - kyverno
   - Other
 readme: |
-  This policy ensures that Deployments are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the Deployment and denies the creation or update of the Deployment if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
-  
+  This policy ensures that Deployments, ReplicaSets, StatefulSets, and DaemonSets are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the resource and denies the creation or update of the resource if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.28"
   kyverno/subject: "Deployment"
-digest: e70332ef27c8bb6ac9679df55f690a72de54fe030011f7f08eebcd48c0bb298b
+digest: 2827afa34284ab3e998e8181dd82dae9d02bd73447e62f87bb4d2d303b983f10
