@@ -68,4 +68,3 @@ spec:
           - key: "{{ request.object.spec.scaleTargetRef.name }}"
             operator: AnyIn
             value: "{{ targets }}"
-
