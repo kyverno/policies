@@ -1,0 +1,23 @@
+name: restrict-jobs-cel
+version: 1.0.0
+displayName: Restrict Jobs in CEL expressions
+description: >-
+  Jobs can be created directly and indirectly via a CronJob controller. In some cases, users may want to only allow Jobs if they are created via a CronJob. This policy restricts Jobs so they may only be created by a CronJob.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/restrict-jobs/restrict-jobs.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - CEL Expressions
+readme: |
+  Jobs can be created directly and indirectly via a CronJob controller. In some cases, users may want to only allow Jobs if they are created via a CronJob. This policy restricts Jobs so they may only be created by a CronJob.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Job"
+digest: d8806389e8dd3e8ed5a2fe1a38fe4e4dec080af79d2cca7e684ddb46f244c6be
+createdAt: "2024-05-19T16:05:23Z"

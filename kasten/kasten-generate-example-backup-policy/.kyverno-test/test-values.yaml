@@ -1,0 +1,13 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+policies:
+- name: kasten-generate-example-backup-policy
+  resources:
+  - name: test-variables
+    values:
+      request.namespace: test-namespace
+      dataprotectionLabelValue: kasten-example
+  rules:
+  - name: kasten-generate-example-backup-policy
+    values:
+      existingPolicy: 0
