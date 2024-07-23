@@ -1,0 +1,9 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-psa-namespace-reporting
+status:
+  ready: true
+
+
+
