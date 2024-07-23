@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-tls-hosts-host-subnets
+policies:
+- ../enforce-tls-hosts-host-subnets.yaml
+resources:
+- ../.chainsaw-test/dr-bad.yaml
+- ../.chainsaw-test/dr-good.yaml
+results:
+- policy: enforce-tls-hosts-host-subnets
+  rule: destrule
+  kind: DestinationRule
+  resources:
+  - bad-dr01
+  - bad-dr02
+  result: fail
+- policy: enforce-tls-hosts-host-subnets
+  rule: destrule
+  kind: DestinationRule
+  resources:
+  - good-dr01
+  - good-dr02
+  - good-dr03
+  - good-dr04
+  - good-dr05
+  result: pass
+

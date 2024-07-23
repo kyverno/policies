@@ -1,0 +1,78 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: goodappproj01
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: goodappproj02
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+  - group: '*'
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj01
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+  - group: ''
+    kind: '*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj02
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+  - group: '*'
+    kind: 'Secret'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj03
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist:
+  - group: ''
+    kind: 'Pod'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj04
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  # clusterResourceBlacklist:
+  # - group: ''
+  #   kind: 'Pod'
