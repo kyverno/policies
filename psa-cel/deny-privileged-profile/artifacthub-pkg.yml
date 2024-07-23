@@ -1,0 +1,23 @@
+name: deny-privileged-profile-cel
+version: 1.0.0
+displayName: Deny Privileged Profile in CEL expressions
+description: >-
+  When Pod Security Admission (PSA) is enforced at the cluster level via an AdmissionConfiguration file which defines a default level at baseline or restricted, setting of a label at the `privileged` profile will effectively cause unrestricted workloads in that Namespace, overriding the cluster default. This may effectively represent a circumvention attempt and should be closely controlled. This policy ensures that only those holding the cluster-admin ClusterRole may create Namespaces which assign the label `pod-security.kubernetes.io/enforce=privileged`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/psa-cel/deny-privileged-profile/deny-privileged-profile.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Admission
+  - CEL Expressions
+readme: |
+  When Pod Security Admission (PSA) is enforced at the cluster level via an AdmissionConfiguration file which defines a default level at baseline or restricted, setting of a label at the `privileged` profile will effectively cause unrestricted workloads in that Namespace, overriding the cluster default. This may effectively represent a circumvention attempt and should be closely controlled. This policy ensures that only those holding the cluster-admin ClusterRole may create Namespaces which assign the label `pod-security.kubernetes.io/enforce=privileged`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Admission in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Namespace"
+digest: a8eb6c291f91e8ebd2535712413432e0659f2839c0929334e5f69a883506d85a
+createdAt: "2024-05-22T08:35:47Z"

@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: prevent-linkerd-pod-injection-override
+policies:
+- ../prevent-linkerd-pod-injection-override.yaml
+resources:
+- ../.chainsaw-test/bad-pod.yaml
+- ../.chainsaw-test/bad-podcontrollers.yaml
+- ../.chainsaw-test/good-pod.yaml
+- ../.chainsaw-test/good-podcontrollers.yaml
+results:
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: Pod
+  resources:
+  - badpod01
+  result: fail
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: Deployment
+  resources:
+  - baddeploy01
+  result: fail
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: CronJob
+  resources:
+  - badcronjob01
+  result: fail
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: Pod
+  resources:
+  - goodpod01
+  - goodpod02
+  result: pass
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: Deployment
+  resources:
+  - gooddeploy01
+  - gooddeploy02
+  result: pass
+- policy: prevent-linkerd-pod-injection-override
+  rule: pod-injection-override
+  kind: CronJob
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  result: pass

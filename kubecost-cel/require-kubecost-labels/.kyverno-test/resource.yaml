@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod
+  labels:
+    owner: John Doe
+    team: falcon
+    department: eng
+    app: redis
+    env: prod2
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  labels:
+    owner: John Doe
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+  labels:
+    owner: John Doe
+    team: falcon
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+  labels:
+    owner: John Doe
+    team: falcon
+    department: eng
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+  labels:
+    owner: John Doe
+    team: falcon
+    department: eng
+    app: redis
+spec:
+  containers:
+  - image: busybox:1.35
+    name: busybox
