@@ -1,0 +1,23 @@
+name: prevent-linkerd-port-skipping-cel
+version: 1.0.0
+displayName: Prevent Linkerd Port Skipping in CEL expressions
+description: >-
+  Linkerd has the ability to skip inbound and outbound ports assigned to Pods, exempting them from mTLS. This can be important in some narrow use cases but generally should be avoided. This policy prevents Pods from setting the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-cel/prevent-linkerd-port-skipping/prevent-linkerd-port-skipping.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  Linkerd has the ability to skip inbound and outbound ports assigned to Pods, exempting them from mTLS. This can be important in some narrow use cases but generally should be avoided. This policy prevents Pods from setting the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: bb047cee4e04c6939ccbdafe386dc0a84ea7e7242fe476a67ab6daf93dbec98f
+createdAt: "2024-05-21T15:57:57Z"

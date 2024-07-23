@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: restrict-voltypes-ns
+  name: test-fail
