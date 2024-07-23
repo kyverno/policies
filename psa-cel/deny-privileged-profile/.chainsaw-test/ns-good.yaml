@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+  name: deny-privileged-good-ns01
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    foo: bar
+  name: deny-privileged-good-ns02
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: deny-privileged-good-ns03
