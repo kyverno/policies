@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+    owner: foo
+    team: bar
+    department: foo
+    app: bar
+    env: foo
+  name: goodpod01
+spec:
+  containers:
+    - name: busybox
+      image: busybox:1.35
