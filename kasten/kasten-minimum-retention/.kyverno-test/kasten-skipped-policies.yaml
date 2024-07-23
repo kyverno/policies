@@ -1,0 +1,33 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: preset-policy
+  namespace: kasten-io
+  labels:
+    appPriority: Mission-Critical
+spec:
+  comment: My sample custom backup policy
+  presetRef:
+    name: mypreset
+    namespace: kasten-io
+  actions:
+  - action: backup
+  selector:
+    matchLabels:
+      k10.kasten.io/appNamespace: sampleApp
+---
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Policy
+metadata:
+  name: ondemand-policy
+  namespace: kasten-io
+  labels:
+    appPriority: Mission-Critical
+spec:
+  comment: My sample custom backup policy
+  frequency: '@onDemand'
+  actions:
+  - action: backup
+  selector:
+    matchLabels:
+      k10.kasten.io/appNamespace: sampleApp

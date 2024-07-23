@@ -1,7 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment01
 spec:
   replicas: 1
@@ -20,7 +19,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment02
 spec:
   replicas: 1
@@ -45,7 +43,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment05
 spec:
   replicas: 1
@@ -75,7 +72,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment06
 spec:
   replicas: 1
@@ -110,7 +106,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment07
 spec:
   replicas: 1
@@ -137,7 +132,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: restrict-voltypes-ns
   name: gooddeployment08
 spec:
   replicas: 1
@@ -167,7 +161,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob01
 spec:
   schedule: "*/1 * * * *"
@@ -183,7 +176,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob02
 spec:
   schedule: "*/1 * * * *"
@@ -205,7 +197,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob03
 spec:
   schedule: "*/1 * * * *"
@@ -228,7 +219,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob04
 spec:
   schedule: "*/1 * * * *"
@@ -253,7 +243,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob05
 spec:
   schedule: "*/1 * * * *"
@@ -282,7 +271,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob06
 spec:
   schedule: "*/1 * * * *"
@@ -314,7 +302,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob07
 spec:
   schedule: "*/1 * * * *"
@@ -338,7 +325,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob08
 spec:
   schedule: "*/1 * * * *"
@@ -365,7 +351,6 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  namespace: restrict-voltypes-ns
   name: goodcronjob09
 spec:
   schedule: "*/1 * * * *"
