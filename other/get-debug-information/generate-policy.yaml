@@ -1,0 +1,73 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: get-debug-data-policy
+spec:
+  rules:
+  - name: get-debug-data-policy-rule
+    match:
+      any:
+      - resources:
+          kinds:
+          - v1/Pod.status
+    context:
+    - name: pdcount
+      apiCall:
+        urlPath: "/api/v1/namespaces/{{request.namespace}}/pods?labelSelector=requestpdname=pod-{{request.object.metadata.name}}"
+        jmesPath: "items | length(@)"
+    preconditions:
+      all:
+      - key: "{{ sum(request.object.status.containerStatuses[*].restartCount || [`0`]) }}"
+        operator: Equals
+        value: 3
+      - key: "{{ request.object.metadata.labels.deleteme || '' | length(@) }}"
+        operator: Equals
+        value: 0
+      - key: "{{ pdcount }}"
+        operator: Equals
+        value: 0
+    generate:
+      apiVersion: batch/v1
+      kind: Job
+      name: get-debug-data-{{request.object.metadata.name}}-{{ random('[0-9a-z]{8}') }}
+      namespace: "{{request.namespace}}"
+      synchronize: false
+      data:
+        metadata:
+          labels:
+            deleteme: allow
+        spec:
+          template:
+            metadata:
+              labels:
+                app: my-app
+                deleteme: allow
+                requestpdname: "pod-{{request.object.metadata.name}}"
+            spec:
+              restartPolicy: OnFailure
+              containers:
+              - name: my-container
+                image: sagarkundral/my-python-app:v52
+                ports:
+                - containerPort: 8080
+                volumeMounts:
+                - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+                  name: token
+                  readOnly: true
+                args:
+                - "/app/get-debug-jira-v2.sh"
+                - "{{request.namespace}}"
+                - "{{request.object.metadata.name}}"
+              volumes:
+              - name: token
+                projected:
+                  defaultMode: 420
+                  sources:
+                  - serviceAccountToken:
+                      expirationSeconds: 3607
+                      path: token
+                  - configMap:
+                      items:
+                      - key: ca.crt
+                        path: ca.crt
+                      name: kube-root-ca.crt
