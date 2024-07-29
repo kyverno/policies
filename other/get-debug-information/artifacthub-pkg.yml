@@ -1,21 +1,20 @@
-name: get-debug-information 
+name: get-debug-information
 version: 1.0.0
 displayName: Collect debug information for pods in crashloopback
 createdAt: "2024-07-25T20:30:05.000Z"
-description: >-
-  This policy automatically triggers a job that collects debug information when pods are in crashloopback and has 3 restarts. 
+description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy. "
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/get-debug-information/generate-policy.yaml
   ```
 keywords:
-  - kyverno
-  - Sample
+- kyverno
+- Sample
 readme: |
-  This policy automatically triggers a job that collects debug information when pods are in crashloopback and has 3 restarts.
-  
+  This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: f9d48734807c114531a69c36879dd450d79252869ed998f9c6cea4fa6c2dba0c
+digest: 34a5b505897eb9cc2dc6024f5f4d7d3696c69898350b349fd200776d23f48a76

@@ -2,6 +2,14 @@ apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
   name: get-debug-data-policy
+  annotations:
+    policies.kyverno.io/title: Collect debug information for pods in crashloopback
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment
+    kyverno.io/kyverno-version: 1.11.5
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy."
 spec:
   rules:
   - name: get-debug-data-policy-rule
