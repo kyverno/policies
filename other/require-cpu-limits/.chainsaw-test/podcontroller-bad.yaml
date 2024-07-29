@@ -19,45 +19,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: baddeployment02
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: busybox:1.35
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
   name: baddeployment03
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: app
-  template:
-    metadata:
-      labels:
-        app: app
-    spec:
-      containers:
-      - name: container01
-        image: busybox:1.35
-      - name: container02
-        image: busybox:1.35
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: baddeployment04
 spec:
   replicas: 1
   selector:
@@ -114,6 +76,9 @@ spec:
         image: busybox:1.35
       - name: initcontainer02
         image: busybox:1.35
+        resources:
+          limits:
+            cpu: "50m"
       containers:
       - name: container01
         image: busybox:1.35
@@ -136,39 +101,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: badcronjob02
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: busybox:1.35
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
   name: badcronjob03
-spec:
-  schedule: "*/1 * * * *"
-  jobTemplate:
-    spec:
-      template:
-        spec:
-          restartPolicy: OnFailure
-          containers:
-          - name: container01
-            image: busybox:1.35
-          - name: container02
-            image: busybox:1.35
----
-apiVersion: batch/v1
-kind: CronJob
-metadata:
-  name: badcronjob04
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -216,6 +149,9 @@ spec:
             image: busybox:1.35
           - name: initcontainer02
             image: busybox:1.35
+            resources:
+              limits:
+                cpu: "50m"
           containers:
           - name: container01
             image: busybox:1.35
