@@ -2,7 +2,7 @@ name: get-debug-information
 version: 1.0.0
 displayName: Collect debug information for pods in crashloopback
 createdAt: "2024-07-25T20:30:05.000Z"
-description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy. "
+description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy. For more information on how the image used in this policy was built, see https://github.com/nirmata/SRE-Operational-Usecases/tree/main/get-troubleshooting-data/get-debug-data."
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/get-debug-information/generate-policy.yaml
@@ -11,10 +11,10 @@ keywords:
 - kyverno
 - Sample
 readme: |
-  This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy.
+  This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy. For more information on how the image used in this policy was built, see https://github.com/nirmata/SRE-Operational-Usecases/tree/main/get-troubleshooting-data/get-debug-data.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 34a5b505897eb9cc2dc6024f5f4d7d3696c69898350b349fd200776d23f48a76
+digest: 7221575c5c014615bf055fd864035215bcc161adf61d20e6580916b0f2115984

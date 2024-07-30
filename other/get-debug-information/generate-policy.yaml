@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/subject: Deployment
     kyverno.io/kyverno-version: 1.11.5
     kyverno.io/kubernetes-version: "1.27"
-    policies.kyverno.io/description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy."
+    policies.kyverno.io/description: "This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in crashloopback and have 3 restarts. This data can further be used to automatically create a jira issue using some kind of automation or another Kyverno policy. For more information on how the image used in this policy was built, see https://github.com/nirmata/SRE-Operational-Usecases/tree/main/get-troubleshooting-data/get-debug-data. "
 spec:
   rules:
   - name: get-debug-data-policy-rule
