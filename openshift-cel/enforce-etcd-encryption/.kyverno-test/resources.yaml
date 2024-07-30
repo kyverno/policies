@@ -1,0 +1,16 @@
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  annotations:
+    release.openshift.io/create-only: "true"
+  name: cluster-no-encryption
+spec: {}
+---
+apiVersion: config.openshift.io/v1
+kind: APIServer
+metadata:
+  annotations:
+    release.openshift.io/create-only: "true"
+  name: cluster-with-encryption
+spec: 
+  encryption: {}
