@@ -1,0 +1,75 @@
+name: E2E Tests
+
+permissions: {}
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+      - 'main'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  chainsaw:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version:
+          - name: v1.25
+            version: v1.25.16
+          - name: v1.26
+            version: v1.26.14
+          - name: v1.27
+            version: v1.27.11
+          - name: v1.28
+            version: v1.28.7
+          - name: v1.29
+            version: v1.29.2
+        tests:
+          - ^argo$
+          - ^aws$
+          - ^best-practices$
+          - ^castai$
+          - ^cert-manager$
+          - ^cleanup$
+          - ^consul$
+          - ^external-secret-operator$
+          - ^flux$
+          - ^istio$
+          - ^karpenter$
+          - ^kasten$
+          - ^kubecost$
+          - ^kubeops$
+          - ^kubevirt$
+          - ^linkerd$
+          - ^nginx-ingress$
+          - ^openshift$
+          - ^other$/^a
+          - ^other$/^[b-d]
+          - ^other$/^[e-l]
+          - ^other$/^[m-q]
+          - ^other$/^re[c-q]
+          - ^other$/^res
+          - ^other$/^[s-z]
+          - ^pod-security$
+          - ^psa$
+          - ^psp-migration$
+          - ^tekton$
+          - ^traefik$
+          - ^velero$
+    runs-on: ubuntu-latest
+    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version.version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ${{ matrix.tests }}
