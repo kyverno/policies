@@ -1,4 +1,4 @@
-name: E2E Tests
+name: E2E Tests - CEL
 
 permissions: {}
 
@@ -29,37 +29,27 @@ jobs:
           - name: v1.29
             version: v1.29.2
         tests:
-          - ^argo$
-          - ^aws$
-          - ^best-practices$
-          - ^castai$
-          - ^cert-manager$
-          - ^cleanup$
-          - ^consul$
-          - ^external-secret-operator$
-          - ^flux$
-          - ^istio$
-          - ^karpenter$
-          - ^kasten$
-          - ^kubecost$
-          - ^kubeops$
-          - ^kubevirt$
-          - ^linkerd$
-          - ^nginx-ingress$
-          - ^openshift$
-          - ^other$/^a
-          - ^other$/^[b-d]
-          - ^other$/^[e-l]
-          - ^other$/^[m-q]
-          - ^other$/^re[c-q]
-          - ^other$/^res
-          - ^other$/^[s-z]
-          - ^pod-security$
-          - ^psa$
-          - ^psp-migration$
-          - ^tekton$
-          - ^traefik$
-          - ^velero$
+          - ^argo-cel$
+          - ^aws-cel$
+          - ^best-practices-cel$
+          - ^consul-cel$
+          - ^flux-cel$
+          - ^istio-cel$
+          - ^kasten-cel$
+          - ^kubecost-cel$
+          - ^linkerd-cel$
+          - ^nginx-ingress-cel$
+          - ^openshift-cel$
+          - ^other-cel$/^a
+          - ^other-cel$/^[b-d]
+          - ^other-cel$/^[e-l]
+          - ^other-cel$/^[m-q]
+          - ^other-cel$/^re[c-q]
+          - ^other-cel$/^res
+          - ^other-cel$/^[s-z]
+          - ^pod-security-cel$
+          - ^psa-cel$
+          - ^traefik-cel$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
@@ -69,7 +59,7 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           k8s-version: ${{ matrix.k8s-version.version }}
-      - name: Run Tests
+      - name: Run CEL Tests
         uses: ./.github/actions/run-tests
         with:
           tests: ${{ matrix.tests }}
