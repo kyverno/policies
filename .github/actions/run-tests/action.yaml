@@ -1,0 +1,16 @@
+name: "Runs E2E Tests"
+description: "Runs E2E tests using chainsaw"
+inputs:
+  tests:
+    description: "Test regex"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install Chainsaw
+      uses: kyverno/action-install-chainsaw@5d00c353f61f44f3b492c673420202d1b1374c3f # v0.2.6
+    - name: Test with Chainsaw
+      shell: bash
+      run: |
+        set -e
+        chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ inputs.tests }}' --no-color=false
