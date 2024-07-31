@@ -5,9 +5,9 @@ createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
   The cluster-admin ClusterRole allows any action to be performed on any resource in the cluster and its granting should be heavily restricted. This policy prevents binding to the cluster-admin ClusterRole in RoleBinding or ClusterRoleBinding resources to the system:authenticated, system:unauthenticated, and system:anonymous subjects.
 install: |-
-  \```shell
+  ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-clusteradmin-rolebindings-gcp-2024-003/restrict-clusteradmin-rolebindings-gcp-2024-003.yaml
-  \```
+  ```
 keywords:
   - kyverno
   - Security
@@ -15,4 +15,5 @@ readme: |
   The cluster-admin ClusterRole allows any action to be performed on any resource in the cluster and its granting should be heavily restricted. This policy prevents binding to the cluster-admin ClusterRole in RoleBinding or ClusterRoleBinding resources to the system:authenticated, system:unauthenticated, and system:anonymous subjects.
 annotations:
   kyverno/category: "Security"
-  kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
+  kyverno/subject: "RoleBinding, ClusterRoleBinding"
+digest:
