@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-ambient-mode-namespace
+policies:
+- ../enforce-ambient-mode-namespace.yaml
+resources:
+- ../.chainsaw-test/ns-bad-disabled.yaml
+- ../.chainsaw-test/ns-bad-nolabel.yaml
+- ../.chainsaw-test/ns-bad-somelabel.yaml
+- ../.chainsaw-test/ns-good.yaml
+results:
+- policy: enforce-ambient-mode-namespace
+  rule: check-ambient-mode-enabled
+  kind: Namespace
+  resources:
+  - bad-istio-amb01
+  - bad-istio-amb02
+  - bad-istio-amb03
+  result: fail
+- policy: enforce-ambient-mode-namespace
+  rule: check-ambient-mode-enabled
+  kind: Namespace
+  resources:
+  - good-istio-amb01
+  - good-istio-amb02
+  result: pass
+
