@@ -19,7 +19,7 @@ spec:
   validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-container-resources
+  - name: validate-resources
     match:
       any:
       - resources:
