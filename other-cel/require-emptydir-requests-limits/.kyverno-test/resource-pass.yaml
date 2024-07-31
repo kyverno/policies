@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pass-pod-01
+spec:
+  containers:
+    - image: gcr.io/hello-world:1.0
+      name: test
+      resources:
+        requests:
+          ephemeral-storage: "2Gi"
+        limits:
+          ephemeral-storage: "2Gi"
+      volumeMounts:
+        - mountPath: /cache/data
+          name: vol
+  volumes:
+    - name: vol
+      emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pass-pod-02
+spec:
+  containers:
+    - image: gcr.io/hello-world:1.0
+      name: test
+      volumeMounts:
+        - mountPath: /cache/data
+          name: vol
+        - mountPath: /cache/data2
+          name: vo2
+  volumes:
+    - name: vol
+      emptyDir:
+        sizeLimit: 1Gi
+

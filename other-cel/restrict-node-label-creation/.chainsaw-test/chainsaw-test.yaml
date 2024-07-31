@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-node-label-creation
+spec:
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: |
+          kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
+    - sleep:
+        duration: 5s
+  - name: step-02
+    try:
+    - apply:
+        file: ../restrict-node-label-creation.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - script:
+        content: |
+          node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          if kubectl label --overwrite nodes $node foo=bar; then echo "Failure: successfully set label foo"; exit 1; else echo "Success: failed to set label foo"; fi
+          if kubectl label --overwrite nodes $node bar=bar; then echo "Success: set label bar"; else echo "Failed to set label bar"; exit 1; fi
+          if kubectl label --overwrite nodes $node bar=foo; then echo "Success: modified label bar"; else echo "Failed to modify label bar"; exit 1; fi
+          if kubectl label nodes $node bar-; then echo "Success: removed label bar"; else echo "Failed to remove label bar"; exit 1; fi
+  - name: step-04
+    try:
+    - script:
+        content: |
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' - | kubectl apply -f -

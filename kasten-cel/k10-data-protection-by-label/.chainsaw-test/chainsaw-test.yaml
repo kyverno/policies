@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: k10-data-protection-by-label
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../k10-data-protection-by-label.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: k10-data-protection-by-label
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+    - assert:
+        file: crd-assert.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: deployment-good.yaml
+    - apply:
+        file: ss-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: deployment-bad-badlabel.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: deployment-bad-nolabel.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ss-bad-badlabel.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ss-bad-nolabel.yaml
+  - name: step-98
+    try:
+    - script:
+        content: kubectl delete deployments --all --force --grace-period=0 -n k10-dplabel-ns
+    - script:
+        content: kubectl delete statefulsets --all --force --grace-period=0 -n k10-dplabel-ns
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n k10-dplabel-ns

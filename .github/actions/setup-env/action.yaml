@@ -1,0 +1,51 @@
+name: "Setup Environment for E2E Tests"
+description: "Sets up the environment for the E2E workflows"
+inputs:
+  k8s-version:
+    description: "Kubernetes version"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Go
+      uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+      with:
+        go-version: ~1.21.1
+    - name: Install Tools
+      shell: bash
+      run: |
+        set -e
+        curl -LO "https://dl.k8s.io/release/${{ inputs.k8s-version }}/bin/linux/amd64/kubectl"
+        sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    - name: Install kind
+      shell: bash
+      run: |
+        set -e
+        # For AMD64 / x86_64
+        [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+        # For ARM64
+        [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
+        chmod +x ./kind
+        sudo mv ./kind /usr/local/bin/kind
+    - name: Install latest Kyverno CLI
+      uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+    - name: Create kind cluster
+      shell: bash
+      run: |
+        set -e
+        kind create cluster --image kindest/node:${{ inputs.k8s-version }} --config ./.github/kind.yml
+    - name: Install latest kyverno
+      shell: bash
+      run: |
+        set -e
+        kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+    - name: Wait for kyverno ready
+      shell: bash
+      run: |
+        set -e
+        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+    - name: Install CRDs
+      shell: bash
+      run: |
+        set -e
+        kubectl apply -f ./.chainsaw/crds

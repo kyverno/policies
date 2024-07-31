@@ -1,0 +1,23 @@
+name: enforce-etcd-encryption-cel
+version: 1.0.0
+displayName: Enforce etcd encryption in OpenShift in CEL expressions
+description: >-
+  Encryption at rest is a security best practice. This policy ensures encryption is enabled for etcd in OpenShift clusters.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift-cel/enforce-etcd-encryption/enforce-etcd-encryption.yaml
+  ```
+keywords:
+  - kyverno
+  - OpenShift
+  - CEL Expressions
+readme: |
+  Encryption at rest is a security best practice. This policy ensures encryption is enabled for etcd in OpenShift clusters.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "OpenShift in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "APIServer"
+digest: 293113b4abad7fea2e4d805bc63dc23c8fad9658424353644e501ac5b0abd592
+createdAt: "2024-05-22T10:15:24Z"
