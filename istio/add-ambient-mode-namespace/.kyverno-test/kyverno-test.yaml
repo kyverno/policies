@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-ambient-mode-namespace
+policies:
+- ../add-ambient-mode-namespace.yaml
+resources:
+- ../.chainsaw-test/patched-ns-disabled.yaml
+- ../.chainsaw-test/patched-ns-enabled.yaml
+- ../.chainsaw-test/patched-ns-alt.yaml
+- ../.chainsaw-test/patched-ns-none.yaml
+results:
+- policy: add-ambient-mode-namespace
+  rule: check-ambient-mode-enabled
+  kind: Namespace
+  resources:
+  - istio-test-none-ns
+  - istio-test-dis-ns
+  - istio-test-en-ns
+  - istio-test-alt-ns
+  result: pass
