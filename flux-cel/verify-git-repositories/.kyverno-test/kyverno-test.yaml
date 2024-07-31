@@ -5,8 +5,8 @@ metadata:
 policies:
 - ../verify-git-repositories.yaml
 resources:
-- ../.chainsaw-test/good-gitrepositories.yaml
-- ../.chainsaw-test/bad-gitrepositories.yaml
+- ../.chainsaw-test-rename-after-issue-10313-fix/good-gitrepositories.yaml
+- ../.chainsaw-test-rename-after-issue-10313-fix/bad-gitrepositories.yaml
 results:
 - policy: verify-git-repositories
   rule: github-repositories-only
