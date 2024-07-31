@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow_nginx_custom_snippets
+policies:
+- ../disallow-ingress-nginx-custom-snippets.yaml
+resources:
+- resources.yaml
+results:
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-true
+  result: fail
+  rule: check-config-map
+- kind: ConfigMap
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - config-map-false
+  - config-map-other
+  - config-map-empty
+  result: pass
+  rule: check-config-map
+- kind: Ingress
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - cafe-ingress-with-snippets
+  result: fail
+  rule: check-ingress-annotations
+- kind: Ingress
+  policy: disallow-ingress-nginx-custom-snippets
+  resources:
+  - cafe-ingress
+  result: pass
+  rule: check-ingress-annotations

@@ -1,0 +1,30 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-emptydir-requests-and-limits
+policies:
+- ../require-emptydir-requests-limits.yaml
+resources:
+- resource-fail.yaml
+- resource-pass.yaml
+- resource-skip.yaml
+results:
+- kind: Pod
+  policy: require-emptydir-requests-and-limits
+  resources:
+  - fail-pod
+  result: fail
+  rule: check-emptydir-requests-limits
+- kind: Pod
+  policy: require-emptydir-requests-and-limits
+  resources:
+  - pass-pod-01
+  - pass-pod-02
+  result: pass
+  rule: check-emptydir-requests-limits
+- kind: Pod
+  policy: require-emptydir-requests-and-limits
+  resources:
+  - skip-pod
+  result: skip
+  rule: check-emptydir-requests-limits
