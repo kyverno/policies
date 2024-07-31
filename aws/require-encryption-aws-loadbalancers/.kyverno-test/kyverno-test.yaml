@@ -1,0 +1,30 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-encryption-aws-loadbalancers
+policies:
+- ../require-encryption-aws-loadbalancers.yaml
+resources:
+- ../.chainsaw-test/service-fail.yaml
+- ../.chainsaw-test/service-pass.yaml
+- ../.chainsaw-test/service-skip.yaml
+results:
+- policy: require-encryption-aws-loadbalancers
+  rule: aws-loadbalancer-has-ssl-cert
+  kind: Service
+  resources:
+  - nginx-service
+  result: fail
+- policy: require-encryption-aws-loadbalancers
+  rule: aws-loadbalancer-has-ssl-cert
+  kind: Service
+  resources:
+  - example-service
+  result: pass
+- policy: require-encryption-aws-loadbalancers
+  rule: aws-loadbalancer-has-ssl-cert
+  kind: Service
+  resources:
+  - nginx
+  result: skip
+

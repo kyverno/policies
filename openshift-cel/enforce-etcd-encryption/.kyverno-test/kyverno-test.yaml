@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-policy
+policies:
+- ../enforce-etcd-encryption.yaml
+resources:
+- resources.yaml
+results:
+- kind: APIServer
+  policy: enforce-etcd-encryption
+  resources:
+  - cluster-no-encryption
+  result: fail
+  rule: check-etcd-encryption
+- kind: APIServer
+  policy: enforce-etcd-encryption
+  resources:
+  - cluster-with-encryption
+  result: pass
+  rule: check-etcd-encryption

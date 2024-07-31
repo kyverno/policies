@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-sidecar-injection-namespace
+policies:
+- ../enforce-sidecar-injection-namespace.yaml
+resources:
+- ../.chainsaw-test/ns-bad-disabled.yaml
+- ../.chainsaw-test/ns-bad-nolabel.yaml
+- ../.chainsaw-test/ns-bad-somelabel.yaml
+- ../.chainsaw-test/ns-good.yaml
+results:
+- policy: enforce-sidecar-injection-namespace
+  rule: check-istio-injection-enabled
+  kind: Namespace
+  resources:
+  - bad-istio-sinj01
+  - bad-istio-sinj02
+  - bad-istio-sinj03
+  result: fail
+- policy: enforce-sidecar-injection-namespace
+  rule: check-istio-injection-enabled
+  kind: Namespace
+  resources:
+  - good-istio-sinj01
+  - good-istio-sinj02
+  result: pass
+

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    foo: bar
+    linkerd.io/inject: disabled
+  name: ld-meshinj-badns01
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    foo: bar
+  name: ld-meshinj-badns02
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ld-meshinj-badns03
