@@ -30,106 +30,46 @@ jobs:
             version: v1.29.2
         tests:
           - ^argo$
-          - ^argo-cel$
           - ^aws$
-          - ^aws-cel$
           - ^best-practices$
-          - ^best-practices-cel$
           - ^castai$
           - ^cert-manager$
           - ^cleanup$
           - ^consul$
-          - ^consul-cel$
           - ^external-secret-operator$
           - ^flux$
-          - ^flux-cel$
           - ^istio$
-          - ^istio-cel$
           - ^karpenter$
           - ^kasten$
-          - ^kasten-cel$
           - ^kubecost$
-          - ^kubecost-cel$
           - ^kubeops$
           - ^kubevirt$
           - ^linkerd$
-          - ^linkerd-cel$
           - ^nginx-ingress$
-          - ^nginx-ingress-cel$
           - ^openshift$
-          - ^openshift-cel$
           - ^other$/^a
-          - ^other-cel$/^a
           - ^other$/^[b-d]
-          - ^other-cel$/^[b-d]
           - ^other$/^[e-l]
-          - ^other-cel$/^[e-l]
           - ^other$/^[m-q]
-          - ^other-cel$/^[m-q]
           - ^other$/^re[c-q]
-          - ^other-cel$/^re[c-q]
           - ^other$/^res
-          - ^other-cel$/^res
           - ^other$/^[s-z]
-          - ^other-cel$/^[s-z]
           - ^pod-security$
-          - ^pod-security-cel$
           - ^psa$
-          - ^psa-cel$
           - ^psp-migration$
           - ^tekton$
           - ^traefik$
-          - ^traefik-cel$
           - ^velero$
-          - ^windows-security$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - name: Setup Go
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
         with:
-          go-version: ~1.21.1
-      - name: Install Tools
-        run: |
-          set -e
-          curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
-          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-      - name: Install kind
-        shell: bash
-        run: |
-          set -e
-          # For AMD64 / x86_64
-          [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-          # For ARM64
-          [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
-          chmod +x ./kind
-          sudo mv ./kind /usr/local/bin/kind
-      - name: Install latest Kyverno CLI
-        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
-      - name: Create kind cluster
-        run: |
-          set -e
-          kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
-      - name: Install latest kyverno
-        run: |
-          set -e
-          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
-      - name: Wait for kyverno ready
-        run: |
-          set -e
-          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
-      - name: Install CRDs
-        run: |
-          set -e
-          kubectl apply -f ./.chainsaw/crds
-      - name: Install Chainsaw
-        uses: kyverno/action-install-chainsaw@5d00c353f61f44f3b492c673420202d1b1374c3f # v0.2.6
-      - name: Test with Chainsaw
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -e
-          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false
-
+          k8s-version: ${{ matrix.k8s-version.version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ${{ matrix.tests }}
