@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -24,10 +23,20 @@ spec:
         file: pod.yaml
   - name: step-03
     try:
-    - sleep:
-        duration: 5s
-    - script:
-        content: kubectl exec -n exec-event-ns execevent-pod -- ls /
+    - command:
+        args:
+        - "5"
+        entrypoint: sleep
+    - command:
+        args:
+        - exec
+        - -n
+        - exec-event-ns
+        - execevent-pod
+        - --
+        - ls
+        - /
+        entrypoint: kubectl
   - name: step-04
     try:
     - assert:

@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: myapp-pod1
-  namespace: default
-spec:
-  containers:
-  - image: harbor.example.com/k8s/library/nginx:latest
-    name: docker-with-registry

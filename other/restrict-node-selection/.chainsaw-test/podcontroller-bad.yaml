@@ -16,7 +16,8 @@ spec:
         app: busybox
     spec:
       nodeSelector:
-        foo: bar
+        matchLabels:
+          foo: bar
       containers:
       - name: busybox
         image: busybox:1.35

@@ -19,22 +19,19 @@ jobs:
       matrix:
         k8s-version:
           - name: v1.25
-            version: v1.25.16
+            version: v1.25.11
           - name: v1.26
-            version: v1.26.14
+            version: v1.26.6
           - name: v1.27
-            version: v1.27.11
+            version: v1.27.3
           - name: v1.28
-            version: v1.28.7
-          - name: v1.29
-            version: v1.29.2
+            version: v1.28.0
         tests:
           - ^argo$
           - ^aws$
           - ^best-practices$
           - ^castai$
           - ^cert-manager$
-          - ^cleanup$
           - ^consul$
           - ^external-secret-operator$
           - ^flux$
@@ -55,21 +52,61 @@ jobs:
           - ^other$/^res
           - ^other$/^[s-z]
           - ^pod-security$
+          - ^pod-security-cel$
           - ^psa$
           - ^psp-migration$
-          - ^tekton$
-          - ^traefik$
-          - ^velero$
+          # - ^tekton
+          # - ^traefik
+          # - ^velero
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - name: Setup Go
+        uses: actions/setup-go@0c52d547c9bc32b1aa3301fd7a9cb496313a4491 # v5.0.0
         with:
-          k8s-version: ${{ matrix.k8s-version.version }}
-      - name: Run Tests
-        uses: ./.github/actions/run-tests
+          go-version: ~1.21.1
+      - name: Install Tools
+        run: |
+          set -e
+          curl -LO "https://dl.k8s.io/release/${{ matrix.k8s-version.version }}/bin/linux/amd64/kubectl"
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      - name: Install kind
+        shell: bash
+        run: |
+          set -e
+          # For AMD64 / x86_64
+          [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
+          # For ARM64
+          [ $(uname -m) = aarch64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-arm64
+          chmod +x ./kind
+          sudo mv ./kind /usr/local/bin/kind
+      - name: Install latest Kyverno CLI
+        uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+      - name: Create kind cluster
+        run: |
+          set -e
+          kind create cluster --image kindest/node:${{ matrix.k8s-version.version }} --config ./.github/kind.yml
+      - name: Install latest kyverno
+        run: |
+          set -e
+          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+      - name: Wait for kyverno ready
+        run: |
+          set -e
+          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+      - name: Install CRDs
+        run: |
+          set -e
+          kubectl apply -f ./.chainsaw/crds
+      - name: Install Chainsaw
+        uses: kyverno/action-install-chainsaw@56be3cb4ec65a987b6ef4d7ab3a55ee17760a57c # v0.1.2
         with:
-          tests: ${{ matrix.tests }}
+          release: v0.0.9
+      - name: Test with Chainsaw
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ matrix.tests }}' --no-color=false

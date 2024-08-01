@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-bad-1
+  name: add-capabilities-bad
 spec:
   initContainers:
   - name: init
@@ -25,7 +25,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-bad-2
+  name: add-capabilities-bad
 spec:
   initContainers:
   - name: init

@@ -8,7 +8,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      foo: bar
+      app: busybox
   template:
     metadata:
       labels:
@@ -28,7 +28,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      owner: "foo"
+      app: busybox
   template:
     metadata:
       labels:

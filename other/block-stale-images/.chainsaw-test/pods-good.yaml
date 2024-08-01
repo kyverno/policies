@@ -5,10 +5,10 @@ metadata:
   namespace: block-staleimg-ns
 spec:
   containers:
-  - name: kyverno 
-    image: kyverno:latest
-  - name: kyverno02
-    image: ghcr.io/kyverno/kyverno:latest
+  - name: busybox 
+    image: busybox:latest
+  - name: busybox02
+    image: busybox:latest
 ---
 apiVersion: v1
 kind: Pod
@@ -17,5 +17,5 @@ metadata:
   namespace: block-staleimg-ns
 spec:
   containers:
-  - name: kyverno
-    image: ghcr.io/kyverno/kyverno:latest
+  - name: busybox
+    image: busybox:latest

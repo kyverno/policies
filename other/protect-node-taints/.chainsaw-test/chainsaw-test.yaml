@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -13,8 +12,10 @@ spec:
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
           node=$(kubectl get nodes --no-headers | awk '{print $1}' | head -n 1)
           kubectl taint nodes "$node" foo=bar:NoSchedule
-    - sleep:
-        duration: 5s
+    - command:
+        args:
+        - "5"
+        entrypoint: sleep
   - name: step-02
     try:
     - apply:

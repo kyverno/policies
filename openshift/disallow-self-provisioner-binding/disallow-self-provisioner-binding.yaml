@@ -32,8 +32,9 @@ spec:
         value: UPDATE
     validate:
       message: >-
-        Modifying the self-provisioners ClusterRoleBinding is not allowed.
-      deny: {}
+        Binding to the self-provisioners cluster role is not allowed.
+      pattern:
+        =(subjects): {}
   - name: check-self-provisioner-binding-with-subject
     match:
       any:

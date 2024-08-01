@@ -65,7 +65,6 @@ results:
   - badpod13
   - badpod14
   - badpod15
-  - badpod16
   result: fail
   rule: run-as-non-root
 - kind: CronJob

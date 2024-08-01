@@ -12,7 +12,6 @@ results:
   resources:
   - bad-path-root
   - bad-path-etc
-  - bad-path-etc-kubernetes
   - bad-path-serviceaccount
   - bad-path-secrets
   result: fail

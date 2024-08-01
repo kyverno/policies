@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kyverno_data_protection_tests
+policies:
+- ../k10-minimum-retention.yaml
+resources:
+- backup-export-policy.yaml
+results:
+- kind: Policy
+  patchedResource: patched.yaml
+  policy: k10-minimum-retention
+  resources:
+  - hourly-policy
+  result: pass
+  rule: k10-minimum-retention

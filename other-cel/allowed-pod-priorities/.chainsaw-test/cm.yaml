@@ -1,9 +1,0 @@
-apiVersion: v1
-data:
-  pod-priority-ns: "high, medium, low"
-  no-priority-ns: foo
-kind: ConfigMap
-metadata:
-  name: allowed-pod-priorities
-  namespace: default
-

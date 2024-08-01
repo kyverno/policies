@@ -5,7 +5,7 @@ metadata:
 policies:
 - ../disallow-privileged-containers.yaml
 resources:
-- resource.yaml
+- ../../../../pod-security/baseline/disallow-privileged-containers/.kyverno-test/resource.yaml
 results:
 - kind: CronJob
   policy: disallow-privileged-containers

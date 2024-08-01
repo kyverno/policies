@@ -1,6 +1,0 @@
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: appproject-clusterresourceblacklist
-status:
-  ready: true

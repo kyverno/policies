@@ -17,7 +17,7 @@ readme: |
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline)"
-  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/kubernetesVersion: "1.22-1.23"
   kyverno/subject: "Pod,Volume"
-digest: 7a78c73a64e61e91876d3ee30c99e1b39774ec885e881f4ffa0be11713710031
+digest: 8f309db940eca3692840c78e2662ff0c25fa718cf0f468b58cdfd4c3d1011274
 createdAt: "2023-12-03T00:22:34Z"

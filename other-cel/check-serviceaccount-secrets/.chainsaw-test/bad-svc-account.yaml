@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: bad-svc-account-02
-  namespace: default
-secrets:
-  - name: example-automated-thing-token-zyxwv
-

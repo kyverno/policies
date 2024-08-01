@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: badss03
+  name: fail3
   namespace: monitoring
   labels:
     app: thanos-memcached

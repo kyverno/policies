@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-ghcr-image-reflector-controller
-spec:
-  containers:
-  - name: pod-ghcr-image-reflector-controller
-    image: ghcr.io/fluxcd/image-reflector-controller:replacethistag

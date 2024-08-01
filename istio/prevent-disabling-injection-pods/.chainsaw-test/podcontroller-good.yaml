@@ -52,10 +52,9 @@ spec:
   jobTemplate:
     spec:
       template:
-        metadata:
+        spec:
           annotations:
             app.k8s.io/name: busybox
-        spec:
           containers:
           - name: hello
             image: busybox:1.35
@@ -73,11 +72,10 @@ spec:
   jobTemplate:
     spec:
       template:
-        metadata:
+        spec:
           annotations:
             app.k8s.io/name: busybox
             sidecar.istio.io/inject: "true"
-        spec:
           containers:
           - name: hello
             image: busybox:1.35

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -8,16 +7,9 @@ spec:
   steps:
   - name: step-01
     try:
-    - apply:
-        file: ../verify-flux-sources.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: verify-flux-sources
-          spec:
-            validationFailureAction: Enforce
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../verify-flux-sources.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
     - assert:
@@ -62,3 +54,10 @@ spec:
         file: repo-good-helm.yaml
     - apply:
         file: repo-good-image.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: verify-flux-sources

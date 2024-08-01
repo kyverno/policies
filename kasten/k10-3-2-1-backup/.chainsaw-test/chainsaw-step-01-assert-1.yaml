@@ -1,0 +1,6 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: k10-3-2-1-backup-policy
+status:
+  ready: true

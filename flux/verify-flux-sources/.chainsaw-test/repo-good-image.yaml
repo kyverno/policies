@@ -1,7 +1,7 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
-  name: good-imagerepo-01
+  name: imagerepo-01
 spec:
   image: ghcr.io/myorg/
   interval: 1h
@@ -10,7 +10,7 @@ spec:
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
-  name: good-imagerepo-02
+  name: imagerepo-02
   namespace: flux-system
 spec:
   image: nothing.io/notmyorg/
