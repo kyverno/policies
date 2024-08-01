@@ -16,3 +16,4 @@ spec:
   fullName: true
   forceTerminationGracePeriod: 5s
   delayBeforeCleanup: 3s
+  template: false
