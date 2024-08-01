@@ -63,3 +63,35 @@ jobs:
         uses: ./.github/actions/run-tests
         with:
           tests: ${{ matrix.tests }}
+
+  validatingadmissionpolicies-v1alpha1:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version:
+          - name: v1.27
+            version: v1.27.13
+        tests:
+          - ^pod-security-cel$
+    name: ${{ matrix.k8s-version.name }} - validating-admission-policies - ${{ matrix.tests }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Create kind cluster
+        uses: helm/kind-action@0025e74a8c7512023d06dc019c617aa3cf561fde # v1.10.0
+        with:
+          node_image: kindest/node:${{ matrix.k8s-version.version }}
+          cluster_name: kind
+          config: ./.github/scripts/config/kind/vap-v1alpha1.yaml
+      - name: Install latest kyverno with VAP generation enabled
+        run: ./.github/scripts/config/generate-validating-admission-policy/install-kyverno.sh
+      - name: Wait for kyverno ready
+        uses: ./.github/actions/wait-for-kyverno-ready
+      - name: Install CRDs
+        uses: ./.github/actions/install-crds
+      - name: Run VAP tests
+        uses: ./.github/actions/run-tests
+        with: 
+          tests: ${{ matrix.tests }}
+          test-file: chainsaw-test-vap
