@@ -1,0 +1,43 @@
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "sample-jenkins-pipeline"
+spec:
+  source:
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: some/repo/dir/filename
+---
+kind: "BuildConfig"
+apiVersion: "v1"
+metadata:
+  name: "sample-pipeline-no-jenkins"
+spec:
+  source:
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+  strategy: {}
+---
+kind: "BuildConfig"
+apiVersion: "build.openshift.io/v1"
+metadata:
+  name: "sample-jenkins-pipeline-new"
+spec:
+  source:
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfilePath: some/repo/dir/filename
+---
+kind: "BuildConfig"
+apiVersion: "build.openshift.io/v1"
+metadata:
+  name: "sample-pipeline-no-jenkins-new"
+spec:
+  source:
+    git:
+      uri: "https://github.com/openshift/ruby-hello-world"
+  strategy: {}

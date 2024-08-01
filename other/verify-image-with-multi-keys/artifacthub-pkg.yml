@@ -12,11 +12,11 @@ keywords:
   - kyverno
   - Software Supply Chain Security
 readme: |
-  There may be multiple keys used to sign images based on the parties involved in the creation process. This image verification policy requires the named image be signed by two separate keys. It will search for a global "production" key in a ConfigMap called `key` in the `default` Namespace and also a Namespace key in the same ConfigMap.
+  There may be multiple keys used to sign images based on the parties involved in the creation process. This image verification policy requires the named image be signed by two separate keys. It will search for a global "production" key in a ConfigMap called `keys` in the `default` Namespace and also a Namespace key in the same ConfigMap.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Software Supply Chain Security"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 14cc8946fcc7d3141270826f036b28226c88c5d8e93ba475b1523e90512a281b
+digest: 512b32c2d9e2bcf48907258ca01ff675efb4ed0d1967351ad161e50b20512d56

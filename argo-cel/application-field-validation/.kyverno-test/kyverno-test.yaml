@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: application-field-validation
+policies:
+- ../application-field-validation.yaml
+resources:
+- ../.chainsaw-test/bad-application.yaml
+- ../.chainsaw-test/good-application.yaml
+results:
+- policy: application-field-validation
+  rule: source-path-chart
+  kind: Application
+  resources:
+  - badapp01
+  result: fail
+- policy: application-field-validation
+  rule: destination-server-name
+  kind: Application
+  resources:
+  - badapp02
+  result: fail
+- policy: application-field-validation
+  rule: source-path-chart
+  kind: Application
+  resources:
+  - goodapp01
+  result: pass
+- policy: application-field-validation
+  rule: destination-server-name
+  kind: Application
+  resources:
+  - goodapp01
+  result: pass
+
