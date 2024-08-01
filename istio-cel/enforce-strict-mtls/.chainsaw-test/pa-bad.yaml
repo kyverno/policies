@@ -1,0 +1,26 @@
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: pa-bad01
+spec:
+  mtls:
+    mode: PERMISSIVE
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: pa-bad02
+spec:
+  mtls:
+    mode: DISABLE
+---
+apiVersion: security.istio.io/v1beta1
+kind: PeerAuthentication
+metadata:
+  name: pa-bad03
+spec:
+  selector:
+    matchLabels:
+      app: finance
+  mtls:
+    mode: DISABLE

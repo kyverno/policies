@@ -1,0 +1,23 @@
+name: disallow-default-tlsoptions-cel
+version: 1.0.0
+displayName: Disallow Default TLSOptions in CEL expressions
+description: >-
+  The TLSOption CustomResource sets cluster-wide TLS configuration options for Traefik when  none are specified in a TLS router. Since this can take effect for all Ingress resources, creating the `default` TLSOption is a restricted operation. This policy ensures that only a cluster-admin can create the `default` TLSOption resource.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/traefik-cel/disallow-default-tlsoptions/disallow-default-tlsoptions.yaml
+  ```
+keywords:
+  - kyverno
+  - Traefik
+  - CEL Expressions
+readme: |
+  The TLSOption CustomResource sets cluster-wide TLS configuration options for Traefik when  none are specified in a TLS router. Since this can take effect for all Ingress resources, creating the `default` TLSOption is a restricted operation. This policy ensures that only a cluster-admin can create the `default` TLSOption resource.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Traefik in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "TLSOption"
+digest: ddb6b4d4f7a09720499c6ad306b4ee73999003d0fde7d2feb35cb6b19d0c73df
+createdAt: "2024-05-22T07:43:46Z"

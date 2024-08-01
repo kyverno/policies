@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    foo: bar
+    istio.io/dataplane-mode: ambient
+  name: istio-test-alt-ns
