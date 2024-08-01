@@ -92,11 +92,11 @@ jobs:
       - name: Install latest kyverno
         run: |
           set -e
-          kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+          kubectl create -f https://github.com/kyverno/kyverno/raw/release-1.12/config/install-latest-testing.yaml
       - name: Wait for kyverno ready
         run: |
           set -e
-          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+          kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=2m
       - name: Install CRDs
         run: |
           set -e
