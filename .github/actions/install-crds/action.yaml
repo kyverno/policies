@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: Install CRDs
+      shell: bash
       run: |
         set -e
         kubectl apply -f ./.chainsaw/crds

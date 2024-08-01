@@ -4,6 +4,7 @@ runs:
   using: "composite"
   steps:
     - name: Wait for kyverno ready
+      shell: bash
       run: |
         set -e
         kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s --no-color=false
