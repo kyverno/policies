@@ -1,0 +1,70 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: prevent-duplicate-hpa
+  annotations:
+    policies.kyverno.io/title: Prevent Duplicate HorizontalPodAutoscalers
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.11.4
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/subject: HorizontalPodAutoscaler
+    policies.kyverno.io/description: >-
+      HorizontalPodAutoscaler (HPA) is useful to automatically adjust the number of pods in a deployment
+      or replication controller. It requires defining a specific target resource by kind and name.
+      There are no built-in validation checks by the HPA controller to prevent the creation of multiple HPAs
+      which target the same resource. This policy has two rules, the first of which ensures that the only targetRef
+      kinds accepted are one of either Deployment, StatefulSet, ReplicaSet, or DaemonSet. The second
+      prevents the creation of duplicate HPAs by validating that any new HPA targets a unique resource.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: verify-kind-name-duplicates
+    match:
+      any:
+      - resources:
+          kinds:
+          - HorizontalPodAutoscaler
+          operations:
+          - CREATE
+    validate:
+      message: >-
+        The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.        
+      pattern:
+        spec:
+          scaleTargetRef:
+            kind: Deployment | StatefulSet | ReplicaSet | DaemonSet
+  - name: check-targetref-duplicates
+    match:
+      any:
+      - resources:
+          kinds:
+          - HorizontalPodAutoscaler
+          operations:
+          - CREATE
+    preconditions:
+      all:
+      - key:
+        - Deployment
+        - StatefulSet
+        - ReplicaSet
+        - DaemonSet
+        operator: AnyIn
+        value: "{{ request.object.spec.scaleTargetRef.kind }}"
+    context:
+    - name: targets
+      apiCall:
+        urlPath: "/apis/autoscaling/v1/namespaces/{{ request.namespace }}/horizontalpodautoscalers"
+        jmesPath: "items[?spec.scaleTargetRef.kind=='{{ request.object.spec.scaleTargetRef.kind }}'].spec.scaleTargetRef.name"
+    validate:
+      message: >-
+        The target {{ request.object.spec.scaleTargetRef.kind }} named
+        {{ request.object.spec.scaleTargetRef.name }} already has an existing
+        HPA configured for it. Duplicate HPAs are not allowed.        
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.object.spec.scaleTargetRef.name }}"
+            operator: AnyIn
+            value: "{{ targets }}"
