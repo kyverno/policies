@@ -1,0 +1,22 @@
+name: add-ambient-mode-namespace
+version: 1.0.0
+displayName: Add Istio Ambient Mode
+createdAt: "2024-07-25T20:07:52.000Z"
+description: >-
+  In order for Istio to include namespaces in ambient mode, the label `istio.io/dataplane-mode` must be set to `ambient`. As an alternative to rejecting Namespace definitions which don't already contain this label, it can be added automatically. This policy adds the label `istio.io/dataplane-mode` set to `ambient` for all new Namespaces.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio/add-ambient-mode-namespace/add-ambient-mode-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - Istio
+readme: |
+  In order for Istio to include namespaces in ambient mode, the label `istio.io/dataplane-mode` must be set to `ambient`. As an alternative to rejecting Namespace definitions which don't already contain this label, it can be added automatically. This policy adds the label `istio.io/dataplane-mode` set to `ambient` for all new Namespaces.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Istio"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "Namespace"
+digest: f81b9ba15c410e62589f0bf79b22a694b41a2294557c91d3c87683772922a8c0
