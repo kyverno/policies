@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: enforce-ambient-mode-namespace
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../enforce-ambient-mode-namespace.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: enforce-ambient-mode-namespace
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ns-bad-disabled.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ns-bad-nolabel.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ns-bad-somelabel.yaml
