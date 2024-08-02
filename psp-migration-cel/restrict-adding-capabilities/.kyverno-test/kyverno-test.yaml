@@ -1,0 +1,39 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: psp-restrict-adding-capabilities
+policies:
+- ../restrict-adding-capabilities.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: psp-restrict-adding-capabilities
+  resources:
+  - addcap-badpod01
+  - addcap-badpod02
+  - addcap-badpod03
+  - addcap-badpod04
+  - addcap-badpod05
+  - addcap-badpod06
+  - addcap-badpod07
+  - addcap-badpod08
+  - addcap-badpod09
+  - addcap-badpod10
+  result: fail
+  rule: allowed-capabilities
+- kind: Pod
+  policy: psp-restrict-adding-capabilities
+  resources:
+  - addcap-goodpod01
+  - addcap-goodpod02
+  - addcap-goodpod03
+  - addcap-goodpod04
+  - addcap-goodpod05
+  - addcap-goodpod06
+  - addcap-goodpod07
+  - addcap-goodpod08
+  - addcap-goodpod09
+  - addcap-goodpod10
+  result: pass
+  rule: allowed-capabilities
