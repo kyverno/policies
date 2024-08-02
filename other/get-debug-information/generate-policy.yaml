@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: get-debug-data-policy
   annotations:
-    policies.kyverno.io/title: Collect debug information for pods in crashloopback
+    policies.kyverno.io/title: Collect Debug Information for Pods in CrashLoopBackOff
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
