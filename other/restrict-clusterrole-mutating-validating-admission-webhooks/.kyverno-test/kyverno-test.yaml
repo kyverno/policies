@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-mutating-validating-admission-webhooks
+policies:
+- ../restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+resources:
+- resource.yaml
+results:
+- kind: ClusterRole
+  policy: restrict-clusterrole-mutating-validating-admission-webhooks
+  resources:
+  - non-violating-clusterrole
+  result: pass
+  rule: restrict-clusterrole
+- kind: ClusterRole
+  policy: restrict-clusterrole-mutating-validating-admission-webhooks
+  resources:
+  - violating-clusterrole
+  result: fail
+  rule: restrict-clusterrole

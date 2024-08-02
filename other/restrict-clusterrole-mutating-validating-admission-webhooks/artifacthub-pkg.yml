@@ -1,0 +1,21 @@
+name: restrict-clusterrole-mutating-validating-admission-webhooks
+version: 1.0.0
+displayName: Restrict Clusterrole for Mutating and Validating Admission Webhooks
+createdAt: "2024-05-19T20:30:05.000Z"
+description: >-
+  ClusterRoles that grant write permissions over admission webhook should be minimized to reduce powerful identities in the cluster. This policy checks to ensure write permissions are not provided to admission webhooks.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-clusterrole-mutating-validating-admission-webhooks/restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+  ```
+keywords:
+- kyverno
+- Other
+readme: |
+  ClusterRoles that grant write permissions over admission webhook should be minimized to reduce powerful identities in the cluster. This policy checks to ensure write permissions are not provided to admission webhooks.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/subject: "ClusterRole"
+digest: 3ebafd2ea6b0db34271461525d00cb97805c3ba8a97e928db056bb6e65dbf01b
