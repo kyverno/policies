@@ -26,12 +26,12 @@ spec:
         jmesPath: "items | length(@)"
     preconditions:
       all:
-      - key: "{{ sum(request.object.status.containerStatuses[*].restartCount || [`0`]) }}"
+      - key: "{{ sum(request.object.status.containerStatuses[*].restartCount || `0`) }}"
         operator: Equals
         value: 3
-      - key: "{{ request.object.metadata.labels.deleteme || '' | length(@) }}"
+      - key: "{{ request.object.metadata.labels.deleteme || 'empty' }}"
         operator: Equals
-        value: 0
+        value: "empty"
       - key: "{{ pdcount }}"
         operator: Equals
         value: 0
