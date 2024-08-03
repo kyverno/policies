@@ -24,7 +24,7 @@ spec:
   - name: step-02
     try: 
     - apply:
-        file: ../generate-policy.yaml    
+        file: ../collect-debug-information.yaml
     - assert:
         file: policy-ready.yaml
   - name: step-03
