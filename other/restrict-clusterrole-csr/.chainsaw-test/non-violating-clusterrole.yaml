@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: non-violating-clusterrole
+rules:
+- apiGroups: [""]
+  resources: ["certificatesigningrequests/approval"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["signers"]
+  verbs: ["get", "list"]
