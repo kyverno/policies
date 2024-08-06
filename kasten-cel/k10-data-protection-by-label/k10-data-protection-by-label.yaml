@@ -31,6 +31,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "has(object.metadata.labels) && has(object.metadata.labels.dataprotection) && object.metadata.labels.dataprotection.startsWith('k10-')"
+          - expression: "object.metadata.?labels.?dataprotection.orValue('').startsWith('k10-')"
             message: "Deployments and StatefulSets that specify 'dataprotection' label must have a valid k10-?* name (use labels: dataprotection: k10-<policyname>)"
 

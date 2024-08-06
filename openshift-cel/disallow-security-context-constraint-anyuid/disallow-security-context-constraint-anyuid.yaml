@@ -29,7 +29,7 @@ spec:
     validate: 
       cel:
         expressions:
-          - expression: "!has(object.rules) || !object.rules.exists(rule, 'anyuid' in rule.resourceNames && ('use' in rule.verbs || '*' in rule.verbs))"
+          - expression: "!object.?rules.orValue([]).exists(rule, 'anyuid' in rule.resourceNames && ('use' in rule.verbs || '*' in rule.verbs))"
             message: >-
               Use of the SecurityContextConstraint (SCC) anyuid is not allowed
   - name: check-security-context-roleref

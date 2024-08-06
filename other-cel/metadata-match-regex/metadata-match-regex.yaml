@@ -31,8 +31,7 @@ spec:
       cel:
         expressions:
           - expression: >-
-              has(object.metadata.labels) && 'corp.org/version' in object.metadata.labels && 
-              object.metadata.labels['corp.org/version'].matches('^v[0-9].[0-9].[0-9]$')
+              object.metadata.?labels[?'corp.org/version'].orValue('default').matches('^v[0-9].[0-9].[0-9]$')
             message: >-
               The label `corp.org/version` is required and must match the specified regex: ^v[0-9].[0-9].[0-9]$
 

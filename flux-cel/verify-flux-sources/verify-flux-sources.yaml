@@ -56,7 +56,7 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "has(object.spec.endpoint) && object.spec.endpoint.endsWith('.myorg.com')"
+            - expression: "object.spec.?endpoint.orValue('').endsWith('.myorg.com')"
               message: ".spec.endpoint must reference an address within the myorg organization."
     - name: flux-helm-repositories
       match:
@@ -94,6 +94,6 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "has(object.spec.image) && object.spec.image.startsWith('ghcr.io/myorg/')"
+            - expression: "object.spec.?image.orValue('').startsWith('ghcr.io/myorg/')"
               message: ".spec.image must be from an image repository within the myorg organization."
 

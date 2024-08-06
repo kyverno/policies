@@ -32,7 +32,7 @@ spec:
       cel:
         variables:
           - name: allContainers
-            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
         expressions:
           - expression: "variables.allContainers.all(container, !container.image.startsWith('k8s.gcr.io/'))"
             message: "The \"k8s.gcr.io\" image registry is deprecated. \"registry.k8s.io\" should now be used."
