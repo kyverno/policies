@@ -27,7 +27,7 @@ spec:
       validate:
         message: "Helm Tiller is not allowed"
         foreach:
-        - list: "request.object.spec.initContainers"
+        - list: "request.object.spec.containers"
           pattern:
             image: "!*tiller*"
         - list: "request.object.spec.initContainers"
