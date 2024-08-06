@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-csr
+policies:
+- ../restrict-clusterrole-csr.yaml
+resources:
+- resource.yaml
+results:
+- kind: ClusterRole
+  policy: restrict-clusterrole-csr
+  resources:
+  - violating-clusterrole 
+  result: fail
+  rule: certificatesigningrequests-update-prevention
+- kind: ClusterRole
+  policy: restrict-clusterrole-csr
+  resources:
+  - violating-clusterrole
+  result: fail
+  rule: signers-approve-prevention
+- kind: ClusterRole
+  policy: restrict-clusterrole-csr
+  resources:
+  - non-violating-clusterrole
+  result: pass
+  rule: certificatesigningrequests-update-prevention
+- kind: ClusterRole
+  policy: restrict-clusterrole-csr
+  resources:
+  - non-violating-clusterrole
+  result: pass
+  rule: signers-approve-prevention
