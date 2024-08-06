@@ -17,5 +17,5 @@ readme: |
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.28"
-  kyverno/subject: "Deployment"
+  kyverno/subject: "Deployment,ReplicaSet,StatefulSet,DaemonSet"
 digest: 4b4c29dcaa05ad8967b2d1707c882aca05e622be135dff2e5c0c2decce3047c8
