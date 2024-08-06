@@ -25,10 +25,16 @@ spec:
           - Pod
     validate:
       message: "An image tag is required."
-      pattern:
-        spec:
-          containers:
-          - image: "*:*"
+      foreach:
+        - list: "request.object.spec.initContainers"
+          pattern:
+            image: "*:*"
+        - list: "request.object.spec.initContainers"
+          pattern:
+            image: "*:*"
+        - list: "request.object.spec.ephemeralContainers"
+          pattern:
+            image: "*:*"
   - name: validate-image-tag
     match:
       any:
@@ -37,7 +43,13 @@ spec:
           - Pod
     validate:
       message: "Using a mutable image tag e.g. 'latest' is not allowed."
-      pattern:
-        spec:
-          containers:
-          - image: "!*:latest"
+      foreach:
+        - list: "request.object.spec.initContainers"
+          pattern:
+            image: "!*:latest"
+        - list: "request.object.spec.initContainers"
+          pattern:
+            image: "!*:latest"
+        - list: "request.object.spec.ephemeralContainers"
+          pattern:
+            image: "!*:latest"
