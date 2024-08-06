@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: goodtaskrun01
+spec:
+  taskRef:
+    name: echo-task
+    bundle: docker.io/foo/bar
