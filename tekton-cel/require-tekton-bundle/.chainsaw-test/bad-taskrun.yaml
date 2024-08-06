@@ -1,0 +1,7 @@
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: badtaskrun01
+spec:
+  taskRef:
+    name: read-task

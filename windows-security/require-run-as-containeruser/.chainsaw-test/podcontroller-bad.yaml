@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-windows-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: windows-app
+  template:
+    metadata:
+      labels:
+        app: windows-app
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        kubernetes.io/os: windows 
+      securityContext:
+        windowsOptions:
+          hostProcess: true
+          runAsUserName: "NT AUTHORITY\\Local service"
+      hostNetwork: true
+      containers:
+      - name: windows-container
+        image: mcr.microsoft.com/windows/servercore:ltsc2019
+        command: ["cmd", "/c", "echo", "Hello from Windows Container && timeout", "/t", "300"]
