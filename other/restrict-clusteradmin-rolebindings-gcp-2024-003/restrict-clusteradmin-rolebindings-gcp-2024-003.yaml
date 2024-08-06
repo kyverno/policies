@@ -18,10 +18,11 @@ spec:
   rules:
   - name: validate-restricted-cluster-admin-bindings
     match:
-      resources:
-        kinds:
-        - ClusterRoleBinding
-        - RoleBinding
+      any:
+        - resources:
+          kinds:
+            - ClusterRoleBinding
+            - RoleBinding
     validate:
       message: "Binding ClusterRole 'cluster-admin' is restricted, system:authenticated, system:unauthenticated and system:anonymous are not allowed. GCP-2024-003"
       deny:
