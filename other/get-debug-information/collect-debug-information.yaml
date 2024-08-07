@@ -67,6 +67,7 @@ spec:
                 - "/app/get-debug-jira-v2.sh"
                 - "{{request.namespace}}"
                 - "{{request.object.metadata.name}}"
+              serviceAccount: default # This serviceaccount needs the necessary RBAC in order for the policy to operate. 
               volumes:
               - name: token
                 projected:
