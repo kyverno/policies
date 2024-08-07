@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  serviceAccountName: custom-service-account
+  containers:
+  - name: goodpod01
+    image: dummyimage
