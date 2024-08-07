@@ -50,6 +50,8 @@ spec:
           # Delete CSR
           kubectl delete csr $USERNAME
     - apply:
+        file: permissions.yaml
+    - apply:
         file: ../inspect-csr.yaml
     - apply:
         file: crolb-user.yaml

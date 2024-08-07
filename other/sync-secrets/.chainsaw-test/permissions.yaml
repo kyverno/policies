@@ -1,32 +1,33 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kyverno:nodes:view
+  name: kyverno:secrets:view
   labels:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
     rbac.kyverno.io/aggregate-to-admission-controller: "true"
-    rbac.kyverno.io/aggregate-to-reports-controller: "true"    
 rules:
 - apiGroups:
-  - ""
+  - ''
   resources:
-  - nodes
+  - secrets
   verbs:
   - get
   - list
   - watch
-  - update
 --- 
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kyverno:nodes:update
+  name: kyverno:secrets:manage
   labels:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
 rules:
 - apiGroups:
-  - ""
+  - ''
   resources:
-  - nodes
+  - secrets
   verbs:
+  - create
   - update
+  - delete
