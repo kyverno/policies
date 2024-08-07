@@ -1,0 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: UserInfo
+metadata:
+  name: user-info
+clusterRoles:
+- developer
+userInfo:
+  username: someone@somecorp.com

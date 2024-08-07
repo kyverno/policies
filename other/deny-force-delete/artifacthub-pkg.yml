@@ -1,0 +1,22 @@
+name: deny-force-delete
+version: 1.0.0
+displayName: Deny Force Deletion of Resources
+createdAt: "2024-07-19T10:30:02.000Z"
+description: >-
+  When deleting any resources (Pods/ Deployments/ Services/ Cronjobs etc.), the default timer is 30 seconds which allows a graceful shutdown of the resource. The flag '--grace-period=0 --force' removes this timer and shutsdown the resource immediately. Using this flag may result in data loss as resources as the state may not be saved or lead to potential service disruption. This policy prevents any non-admins to forcefully delete any resources immediately.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/deny-force-delete/deny-force-delete.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Force deletion of resources with '--grace-period=0 --force' is not allowed for non-admin users.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.28"
+  kyverno/subject: "Pod"
+digest: a5bf40f1814b078b737d2ff69240b9f9540e1dec76b6866fbf0f06ce55828832
