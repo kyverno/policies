@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kyverno-test.yaml
+policies:
+- ../deny-default-service-accounts.yaml
+resources:
+- resources.yaml
+results:
+- kind: Pod
+  policy: deny-default-service-accounts
+  resources:
+  - goodpod01
+  result: pass
+  rule: deny-default-service-accounts
+- kind: Pod
+  policy: deny-default-service-accounts
+  resources:
+  - goodpod02
+  result: pass
+  rule: deny-default-service-accounts
+- kind: Pod
+  policy: deny-default-service-accounts
+  resources:
+  - badpod01
+  result: fail
+  rule: deny-default-service-accounts
+- kind: Pod
+  policy: deny-default-service-accounts
+  resources:
+  - badpod02
+  result: fail
+  rule: deny-default-service-accounts
