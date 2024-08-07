@@ -1,0 +1,135 @@
+###### Pods - Bad
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+options:
+  gracePeriodSeconds: 0
+###### Pods - Good
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      allowPrivilegeEscalation: false
+options:
+  gracePeriodSeconds: 30
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
+    options:
+      gracePeriodSeconds: 0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          allowPrivilegeEscalation: false
+    options:
+      gracePeriodSeconds: 30
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+        options:
+          gracePeriodSeconds: 0
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              allowPrivilegeEscalation: false
+        options:
+          gracePeriodSeconds: 30
+

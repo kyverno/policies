@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: test1-bad
+  name: test1-bad
+spec:
+  containers:
+  - image: nginx
+    name: test1-bad
+options:
+  gracePeriodSeconds: 0
+---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   labels:
+#     run: test2-bad
+#   name: test2-bad
+# spec:
+#   containers:
+#   - image: nginx
+#     name: test2-bad
+# options:
+#   gracePeriodSeconds: 1
+
