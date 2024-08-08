@@ -1,0 +1,48 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+globalValues:
+  request.operation: DELETE
+policies:
+- name: deny-zero-grace-delete
+  resources:
+  - name: badpod01
+    values:
+      request.options.gracePeriodSeconds: 0
+  rules:
+  - name: deny-zero-grace-delete
+- name: deny-zero-grace-delete
+  resources:
+  - name: baddeployment01
+    values:
+      request.options.gracePeriodSeconds: 0
+  rules:
+  - name: deny-zero-grace-delete
+- name: deny-zero-grace-delete
+  resources:
+  - name: badcronjob01
+    values:
+      request.options.gracePeriodSeconds: 0
+  rules:
+  - name: deny-zero-grace-delete
+- name: deny-zero-grace-delete
+  ## good resources  
+  resources:
+  - name: goodpod01
+    values:
+      request.options.gracePeriodSeconds: 30
+  rules:
+  - name: deny-zero-grace-delete
+- name: deny-zero-grace-delete
+  resources:
+  - name: gooddeployment01
+    values:
+      request.options.gracePeriodSeconds: 30
+  rules:
+  - name: deny-zero-grace-delete
+- name: deny-zero-grace-delete
+  resources:
+  - name: goodcronjob01
+    values:
+      request.options.gracePeriodSeconds: 30
+  rules:
+  - name: deny-zero-grace-delete

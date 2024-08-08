@@ -1,0 +1,46 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-zero-grace-delete
+  annotations:
+    policies.kyverno.io/title: Deny force deletion of resources with zero grace period
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.1.0
+    policies.kyverno.io/minversion: 1.9.0
+    kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/description: >-
+      When deleting any resources (Pods/ Deployments/ Services/ Cronjobs etc.), the default
+      timer is 30 seconds which allows a graceful shutdown of the resource. The flag 
+      '--grace-period=0 --force' removes this timer and shutsdown the resource immediately.
+      Using this flag may result in data loss as resources as the state may not be saved or
+      lead to potential service disruption. This policy prevents any non-admins to forcefully
+      delete any resources immediately.  
+spec:
+  validationFailureAction: enforce
+  background: false
+  rules:
+  - name: deny-zero-grace-delete
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          - Deployment
+          - Service
+          - PersistentVolumeClaim
+          - CronJob
+          operations:
+          - DELETE
+    exclude:
+      any:
+      - clusterRoles:
+        - cluster-admin
+    validate:
+      message: "Force deletion of resources with '--grace-period=0 --force' is not allowed for non-admin users."
+      deny:
+        conditions:
+          all:
+          - key: "{{ request.options.gracePeriodSeconds }}"
+            operator: LessThan
+            value: 1
