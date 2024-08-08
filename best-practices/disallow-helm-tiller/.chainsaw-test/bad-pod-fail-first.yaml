@@ -8,3 +8,8 @@ spec:
     image: docker.io/tiller:latest
   - name: somebox
     image: busybox:1.35
+  initContainers:
+  - name: helm-tiller
+    image: docker.io/tiller:latest
+  - name: somebox
+    image: busybox:1.35

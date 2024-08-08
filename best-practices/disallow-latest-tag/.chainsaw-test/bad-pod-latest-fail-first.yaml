@@ -8,3 +8,8 @@ spec:
     image: busybox:latest
   - name: nginx
     image: nginx:1.35
+  initContainers:
+  - name: busybox
+    image: busybox:latest
+  - name: nginx
+    image: nginx:1.35
