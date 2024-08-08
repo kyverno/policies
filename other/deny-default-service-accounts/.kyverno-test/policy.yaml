@@ -1,0 +1,30 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: deny-default-service-accounts
+  annotations:
+    policies.kyverno.io/title: Deny using default service accounts
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/description: >-
+      For an enhnaced security posture, it is recommended to use specific service accounts
+      and not the default service accounts. These service accounts provide an identity for
+      processes that run in individual Pods and map them to a ServiceAccount object. 
+      This policy flags the Pods that use any default service accounts.
+spec:
+  validationFailureAction: audit
+  background: false
+  rules:
+  - name: deny-default-service-accounts
+    match:
+      resources:
+        kinds:
+        - Pod
+    validate:
+      message: "Default service accounts are not allowed to be used."
+      pattern:
+        spec:
+          serviceAccountName: "!default"
