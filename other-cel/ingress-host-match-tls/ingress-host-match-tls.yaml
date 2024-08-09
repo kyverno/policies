@@ -33,11 +33,11 @@ spec:
       cel:
         variables:
           - name: tls
-            expression: "has(object.spec.tls) ? object.spec.tls : []"
+            expression: "object.spec.?tls.orValue([])"
         expressions:
           - expression: >-
               object.spec.rules.all(rule, 
               !has(rule.host) || 
-              variables.tls.exists(tls, has(tls.hosts) && tls.hosts.exists(tlsHost, tlsHost == rule.host)))
+              variables.tls.exists(tls, tls.?hosts.orValue([]).exists(tlsHost, tlsHost == rule.host)))
             message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
 

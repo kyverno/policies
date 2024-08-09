@@ -1,0 +1,24 @@
+name: disallow-ingress-nginx-custom-snippets-cel
+version: 1.0.0
+displayName: Disallow Custom Snippets in CEL expressions
+description: >-
+  Users that can create or update ingress objects can use the custom snippets  feature to obtain all secrets in the cluster (CVE-2021-25742). This policy  disables allow-snippet-annotations in the ingress-nginx configuration and  blocks *-snippet annotations on an Ingress. See: https://github.com/kubernetes/ingress-nginx/issues/7837
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress-cel/disallow-ingress-nginx-custom-snippets/disallow-ingress-nginx-custom-snippets.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - NGINX Ingress
+  - CEL Expressions
+readme: |
+  Users that can create or update ingress objects can use the custom snippets  feature to obtain all secrets in the cluster (CVE-2021-25742). This policy  disables allow-snippet-annotations in the ingress-nginx configuration and  blocks *-snippet annotations on an Ingress. See: https://github.com/kubernetes/ingress-nginx/issues/7837
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, NGINX Ingress in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "ConfigMap, Ingress"
+digest: 461b5ea917b380efcf272d0ac6ab2d8f4ceaa6d8c3b0b71efad5a7b23d10ae99
+createdAt: "2024-05-21T16:14:12Z"

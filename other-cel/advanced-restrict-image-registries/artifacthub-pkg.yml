@@ -1,0 +1,24 @@
+name: advanced-restrict-image-registries-cel
+version: 1.0.0
+displayName: Advanced Restrict Image Registries in CEL expressions
+description: >-
+  In instances where a ClusterPolicy defines all the approved image registries is insufficient, more granular control may be needed to set permitted registries, especially in multi-tenant use cases where some registries may be based on the Namespace. This policy shows an advanced version of the Restrict Image Registries policy which gets a global approved registry from a ConfigMap and, based upon an annotation at the Namespace level, gets the registry approved for that Namespace.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/advanced-restrict-image-registries/advanced-restrict-image-registries.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - CEL Expressions
+readme: |
+  In instances where a ClusterPolicy defines all the approved image registries is insufficient, more granular control may be needed to set permitted registries, especially in multi-tenant use cases where some registries may be based on the Namespace. This policy shows an advanced version of the Restrict Image Registries policy which gets a global approved registry from a ConfigMap and, based upon an annotation at the Namespace level, gets the registry approved for that Namespace.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: affd33e654245f8e62ad872c2ce58b60776ab9b472123c19c6524c1790be414b
+createdAt: "2024-04-21T11:03:06Z"
+

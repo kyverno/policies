@@ -1,0 +1,25 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-git-repositories
+policies:
+- ../verify-git-repositories.yaml
+resources:
+- ../.chainsaw-test/good-gitrepositories.yaml
+- ../.chainsaw-test/bad-gitrepositories.yaml
+results:
+- policy: verify-git-repositories
+  rule: github-repositories-only
+  kind: GitRepository
+  resources:
+  - bad-gitrepo-01
+  - bad-gitrepo-02
+  result: fail
+- policy: verify-git-repositories
+  rule: github-repositories-only
+  kind: GitRepository
+  resources:
+  - good-gitrepo-01
+  - good-gitrepo-02
+  result: pass
+

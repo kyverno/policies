@@ -8,6 +8,8 @@ spec:
   - name: 01 - Create policy and Enforce
     try:
     - apply:
+        file: permissions.yaml
+    - apply:
         file: ../prevent-duplicate-vpa.yaml
     - patch:
         resource:

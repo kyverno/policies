@@ -1,0 +1,23 @@
+name: disallow-security-context-constraint-anyuid-cel
+version: 1.0.0
+displayName: Disallow use of the SecurityContextConstraint (SCC) anyuid in CEL expressions
+description: >-
+  Disallow the use of the SecurityContextConstraint (SCC) anyuid which allows a pod to run with the UID as declared in the image instead of a random UID
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/openshift-cel/disallow-security-context-constraint-anyuid/disallow-security-context-constraint-anyuid.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - CEL Expressions
+readme: |
+  Disallow the use of the SecurityContextConstraint (SCC) anyuid which allows a pod to run with the UID as declared in the image instead of a random UID
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Role,ClusterRole,RBAC"
+digest: 13d430a48c1a18ee97f2e86ad48f5e97f9a188ea3551c6884ff9ee8f1f81e2a6
+createdAt: "2024-05-22T09:53:47Z"

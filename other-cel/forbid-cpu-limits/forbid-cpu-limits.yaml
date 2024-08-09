@@ -30,6 +30,6 @@ spec:
         expressions:
           - expression: >-
               !object.spec.containers.exists(container, 
-              has(container.resources) && has(container.resources.limits) && has(container.resources.limits.cpu))
+              container.?resources.?limits.?cpu.hasValue())
             message: Containers may not define CPU limits.
 

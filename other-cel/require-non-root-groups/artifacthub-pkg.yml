@@ -1,0 +1,24 @@
+name: require-non-root-groups-cel
+version: 1.0.0
+displayName: Require Non-Root Groups in CEL expressions
+description: >-
+  Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-cel/require-non-root-groups/require-non-root-groups.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - EKS Best Practices
+  - CEL Expressions
+readme: |
+  Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample, EKS Best Practices in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: 5b8983536f5922194a9ea86212f5ac316f396eefc1de09d4043947510b96ea16
+createdAt: "2024-05-19T10:49:49Z"

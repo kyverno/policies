@@ -1,0 +1,26 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-linkerd-mesh-injection
+policies:
+- ../require-linkerd-mesh-injection.yaml
+resources:
+- ../.chainsaw-test/bad-ns.yaml
+- ../.chainsaw-test/good-ns.yaml
+results:
+- policy: require-linkerd-mesh-injection
+  rule: require-mesh-annotation
+  kind: Namespace
+  resources:
+  - ld-meshinj-badns01
+  - ld-meshinj-badns02
+  - ld-meshinj-badns03
+  result: fail
+- policy: require-linkerd-mesh-injection
+  rule: require-mesh-annotation
+  kind: Namespace
+  resources:
+  - ld-meshinj-goodns01
+  - ld-meshinj-goodns02
+  result: pass
+

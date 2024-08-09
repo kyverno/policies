@@ -1,0 +1,24 @@
+name: enforce-sidecar-injection-namespace-cel
+version: 1.0.0
+displayName: Enforce Istio Sidecar Injection in CEL expressions
+description: >-
+  In order for Istio to inject sidecars to workloads deployed into Namespaces, the label `istio-injection` must be set to `enabled`. This policy ensures that all new Namespaces set `istio-inject` to `enabled`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio-cel/enforce-sidecar-injection-namespace/enforce-sidecar-injection-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - Istio
+  - CEL Expressions
+readme: |
+  In order for Istio to inject sidecars to workloads deployed into Namespaces, the label `istio-injection` must be set to `enabled`. This policy ensures that all new Namespaces set `istio-inject` to `enabled`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Istio in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Namespace"
+digest: 9738fe6b1278148191239c380c074c197841a4926c7ffc1e23cd9a2b22f1175f
+createdAt: "2024-05-12T04:38:32Z"
+

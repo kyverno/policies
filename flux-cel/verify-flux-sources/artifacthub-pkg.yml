@@ -1,0 +1,24 @@
+name: verify-flux-sources-cel
+version: 1.0.0
+displayName: Verify Flux Sources in CEL expressions
+description: >-
+  Flux source APIs include a number of different sources such as GitRepository, Bucket, HelmRepository, and ImageRepository resources. Each of these by default can be pointed to any location. In a production environment, it may be desired to restrict these to only known sources to prevent accessing outside sources. This policy verifies that each of the Flux sources comes from a trusted location.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux-cel/verify-flux-sources/verify-flux-sources.yaml
+  ```
+keywords:
+  - kyverno
+  - Flux
+  - CEL Expressions
+readme: |
+  Flux source APIs include a number of different sources such as GitRepository, Bucket, HelmRepository, and ImageRepository resources. Each of these by default can be pointed to any location. In a production environment, it may be desired to restrict these to only known sources to prevent accessing outside sources. This policy verifies that each of the Flux sources comes from a trusted location.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Flux in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "GitRepository, Bucket, HelmRepository, ImageRepository"
+digest: 0199445c867ee1e79d766a18fcd11b14b5107e7c2c541645f6ceea8df4e34dac
+createdAt: "2024-05-11T15:02:04Z"
+

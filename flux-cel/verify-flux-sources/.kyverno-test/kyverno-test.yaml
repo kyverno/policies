@@ -1,0 +1,66 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-sources
+policies:
+- ../verify-flux-sources.yaml
+resources:
+- ../.chainsaw-test/repo-bad-bucket.yaml
+- ../.chainsaw-test/repo-bad-git.yaml
+- ../.chainsaw-test/repo-bad-helm.yaml
+- ../.chainsaw-test/repo-bad-image.yaml
+- ../.chainsaw-test/repo-good-bucket.yaml
+- ../.chainsaw-test/repo-good-git.yaml
+- ../.chainsaw-test/repo-good-helm.yaml
+- ../.chainsaw-test/repo-good-image.yaml
+results:
+- policy: verify-flux-sources
+  rule: flux-github-repositories
+  kind: GitRepository
+  resources:
+  - bad-gitrepo-01
+  result: fail
+- policy: verify-flux-sources
+  rule: flux-github-repositories
+  kind: GitRepository
+  resources:
+  - good-gitrepo-01
+  - good-gitrepo-02
+  result: pass
+- policy: verify-flux-sources
+  rule: flux-buckets
+  kind: Bucket
+  resources:
+  - bucket-bad
+  result: fail
+- policy: verify-flux-sources
+  rule: flux-buckets
+  kind: Bucket
+  resources:
+  - good-bucket-01
+  result: pass
+- policy: verify-flux-sources
+  rule: flux-helm-repositories
+  kind: HelmRepository
+  resources:
+  - bad-helmrepo-01
+  result: fail
+- policy: verify-flux-sources
+  rule: flux-helm-repositories
+  kind: HelmRepository
+  resources:
+  - good-helmrepo-01
+  result: pass
+- policy: verify-flux-sources
+  rule: flux-image-repositories
+  kind: ImageRepository
+  resources:
+  - imagerepo-bad
+  result: fail
+- policy: verify-flux-sources
+  rule: flux-image-repositories
+  kind: ImageRepository
+  resources:
+  - good-imagerepo-01
+  result: pass
+
