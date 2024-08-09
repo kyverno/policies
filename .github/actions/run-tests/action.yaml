@@ -4,6 +4,9 @@ inputs:
   tests:
     description: "Test regex"
     required: true
+  test-file:
+    description: "Name of the chainsaw test file"
+    default: chainsaw-test
 runs:
   using: "composite"
   steps:
@@ -13,4 +16,4 @@ runs:
       shell: bash
       run: |
         set -e
-        chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ inputs.tests }}' --no-color=false
+        chainsaw test --config .chainsaw.yaml  --include-test-regex '^chainsaw$/${{ matrix.tests }}' --test-file='${{ inputs.test-file }}' --no-color=false

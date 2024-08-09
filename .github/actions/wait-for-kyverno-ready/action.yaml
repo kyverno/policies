@@ -1,0 +1,10 @@
+name: "Wait for Kyverno To Become Ready"
+description: "Waits for Kyverno to become ready before running chainsaw tests"
+runs:
+  using: "composite"
+  steps:
+    - name: Wait for kyverno ready
+      shell: bash
+      run: |
+        set -e
+        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
