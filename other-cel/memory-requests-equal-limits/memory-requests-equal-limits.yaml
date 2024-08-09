@@ -28,14 +28,10 @@ spec:
           - UPDATE
     validate:
       cel:
-        variables:
-          - name: containersWithResources
-            expression: object.spec.containers.filter(container, has(container.resources))
         expressions:
         - expression: >-
-            variables.containersWithResources.all(container, 
-            !has(container.resources.requests) ||
-            !has(container.resources.requests.memory) ||
+            object.spec.containers.all(container, 
+            !container.?resources.?requests.?memory.hasValue() ||
             container.resources.requests.memory == container.resources.?limits.?memory.orValue('-1'))
           message: "resources.requests.memory must be equal to resources.limits.memory"
 

@@ -29,7 +29,7 @@ spec:
       cel:
         variables:
           - name: hasLifetimeAnnotation
-            expression: "has(object.metadata.annotations) && 'pod.kubernetes.io/lifetime' in object.metadata.annotations"
+            expression: "object.metadata.?annotations[?'pod.kubernetes.io/lifetime'].hasValue()"
           - name: lifetimeAnnotationValue
             expression: "variables.hasLifetimeAnnotation ? object.metadata.annotations['pod.kubernetes.io/lifetime'] : '0s'"
         expressions:
