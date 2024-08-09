@@ -26,7 +26,7 @@ spec:
           - Pod
     mutate:
       foreach:
-      - list: request.object.spec.containers[]
+      - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
         patchesJson6902: |-
           - op: add
             path: /spec/containers/{{elementIndex}}/env/-

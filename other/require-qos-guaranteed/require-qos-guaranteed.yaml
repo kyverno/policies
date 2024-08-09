@@ -29,7 +29,7 @@ spec:
     validate:
       message: "All containers must define memory and CPU requests and limits where they are equal."
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         pattern:
           resources:
             requests:

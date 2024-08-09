@@ -26,7 +26,7 @@ spec:
       validate:
         message: "Images built more than 6 months ago are prohibited."
         foreach:
-        - list: "request.object.spec.containers"
+        - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
           context:
           - name: imageData
             imageRegistry:

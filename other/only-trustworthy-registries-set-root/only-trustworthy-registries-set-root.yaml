@@ -32,7 +32,7 @@ spec:
     validate:
       message: "Images with root user are not allowed to be pulled from any registry other than ghcr.io."  
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context: 
         - name: imageData
           imageRegistry: 

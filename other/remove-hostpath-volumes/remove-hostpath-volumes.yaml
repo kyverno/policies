@@ -46,7 +46,7 @@ spec:
             patchesJson6902: |-
               - path: /spec/volumes/{{elementIndex}}
                 op: remove
-          - list: request.object.spec.containers[]
+          - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
             foreach:
             - list: " element.volumeMounts || `[]` "
               order: Descending
