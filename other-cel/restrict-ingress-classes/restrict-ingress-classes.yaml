@@ -33,8 +33,6 @@ spec:
       cel:
         expressions: 
           - expression: >-
-              has(object.metadata.annotations) && 
-              'kubernetes.io/ingress.class' in object.metadata.annotations && 
-              object.metadata.annotations['kubernetes.io/ingress.class'] in ['HAProxy', 'nginx']      
+              object.metadata.?annotations[?'kubernetes.io/ingress.class'].orValue('') in ['HAProxy', 'nginx']      
             message: "Unknown ingress class."
 

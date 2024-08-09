@@ -30,7 +30,7 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "!has(object.data) || !('allow-snippet-annotations' in object.data) || object.data['allow-snippet-annotations'] == 'false'"
+            - expression: "object.?data[?'allow-snippet-annotations'].orValue('false') == 'false'"
               message: "ingress-nginx allow-snippet-annotations must be set to false"
     - name: check-ingress-annotations
       match:
@@ -44,6 +44,6 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "!has(object.metadata.annotations) || !object.metadata.annotations.exists(annotation, annotation.endsWith('-snippet'))"
+            - expression: "!object.metadata.?annotations.orValue([]).exists(annotation, annotation.endsWith('-snippet'))"
               message: "ingress-nginx custom snippets are not allowed"
 

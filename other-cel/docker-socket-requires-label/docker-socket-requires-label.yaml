@@ -31,9 +31,9 @@ spec:
       cel: 
         variables:
           - name: hasDockerSocket
-            expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.hostPath) && volume.hostPath.path == '/var/run/docker.sock')"
+            expression: "object.spec.?volumes.orValue([]).exists(volume, volume.?hostPath.?path.orValue('') == '/var/run/docker.sock')"
           - name: isAllowDockerLabelTrue
-            expression: "has(object.metadata.labels) && 'allow-docker' in object.metadata.labels && object.metadata.labels['allow-docker'] == 'true'"
+            expression: "object.metadata.?labels[?'allow-docker'].orValue('false') == 'true'"
         expressions:
           - expression: "!variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
             message: "If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`."

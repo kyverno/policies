@@ -38,7 +38,6 @@ spec:
         cel:
           expressions:
             - expression: >-
-                has(object.spec.template.spec.topologySpreadConstraints) && 
-                size(object.spec.template.spec.topologySpreadConstraints.filter(t, t.topologyKey == 'kubernetes.io/hostname' || t.topologyKey == 'topology.kubernetes.io/zone')) == 2
+                size(object.spec.template.spec.?topologySpreadConstraints.orValue([]).filter(t, t.topologyKey == 'kubernetes.io/hostname' || t.topologyKey == 'topology.kubernetes.io/zone')) == 2
               message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
 
