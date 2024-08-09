@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: prevent-linkerd-pod-injection-override
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../prevent-linkerd-pod-injection-override.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: prevent-linkerd-pod-injection-override
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: good-pod.yaml
+    - apply:
+        file: good-podcontrollers.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-podcontrollers.yaml

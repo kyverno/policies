@@ -13,6 +13,8 @@ spec:
   - name: step-02
     try:
     - apply:
+        file: permissions.yaml
+    - apply:
         file: chainsaw-step-02-apply-1.yaml
   - name: step-04
     try:

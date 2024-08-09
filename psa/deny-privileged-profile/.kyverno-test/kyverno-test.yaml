@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deny-privileged-profile
+policies:
+- ../deny-privileged-profile.yaml
+resources:
+- ../.chainsaw-test/ns-bad.yaml
+results:
+- policy: deny-privileged-profile
+  rule: check-privileged
+  kind: Namespace
+  resources: 
+  - deny-privileged-bad-ns01
+  - deny-privileged-bad-ns02
+  result: fail
