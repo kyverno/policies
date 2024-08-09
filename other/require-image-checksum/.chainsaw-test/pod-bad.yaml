@@ -19,3 +19,22 @@ spec:
       image: busybox
     - name: bb
       image: busybox:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  initContainers:
+  - name: init-busybox
+    image: busybox:1.35
+    command: ['sh', '-c', 'echo Init container 1 completed']
+  - name: init-alpine
+    image: alpine:3.16
+    command: ['sh', '-c', 'echo Init container 2 completed']
+  containers:
+  - name: busybox
+    image: busybox:1.35
+  - name: busybox02
+    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+---
