@@ -6,18 +6,20 @@ metadata:
     policies.kyverno.io/title: Deny force deletion of resources with zero grace period
     policies.kyverno.io/category: Other
     policies.kyverno.io/subject: Pod
-    kyverno.io/kyverno-version: 1.1.0
-    policies.kyverno.io/minversion: 1.9.0
+    kyverno.io/kyverno-version: 1.12.5
+    policies.kyverno.io/minversion: 1.10.0
     kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
-      When deleting any resources (Pods/ Deployments/ Services/ Cronjobs etc.), the default
-      timer is 30 seconds which allows a graceful shutdown of the resource. The flag 
-      '--grace-period=0 --force' removes this timer and shutsdown the resource immediately.
-      Using this flag may result in data loss as resources as the state may not be saved or
-      lead to potential service disruption. This policy prevents any non-admins to forcefully
-      delete any resources immediately.  
+      When deleting any resources, the default timer is 30 seconds which allows a graceful 
+      shutdown of the resource. The flags '--grace-period=0 --force' removes this timer and 
+      deletes the resource immediately.
+      Force deleting Kubernetes pods can result in lingering processes which  can cause issues 
+      like data corruption if these processes access shared resources or external APIs using 
+      the pod’s identity. Use force deletion only when certain the pod is terminated or if the 
+      application tolerates duplicates. Force deletion may cause resource allocation conflicts, 
+      leading to newly assigned pods being immediately evicted.      
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Audit
   background: false
   rules:
   - name: deny-zero-grace-delete
@@ -26,10 +28,6 @@ spec:
       - resources:
           kinds:
           - Pod
-          - Deployment
-          - Service
-          - PersistentVolumeClaim
-          - CronJob
           operations:
           - DELETE
     exclude:
@@ -41,6 +39,6 @@ spec:
       deny:
         conditions:
           all:
-          - key: "{{ request.options.gracePeriodSeconds }}"
-            operator: LessThan
-            value: 1
+          - key: "{{ request.options.gracePeriodSeconds || `1` }}"
+            operator: Equals 
+            value: 0
