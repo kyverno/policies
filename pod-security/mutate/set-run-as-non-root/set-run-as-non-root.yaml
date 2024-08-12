@@ -1,0 +1,87 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: set-run-as-non-root
+  annotations:
+    policies.kyverno.io/title: Set runAsNonRoot
+    policies.kyverno.io/category: Pod Security Standards (Mutate)
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: "1.22-1.30"
+    policies.kyverno.io/description: >-
+      Containers must be required to run as non-root users. This policy ensures
+      `runAsNonRoot` is set to `true`.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: set-containers-run-as-non-root-to-true
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.containers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.containers"
+            preconditions:
+              all:
+                - key: "{{ to_string(element.securityContext.runAsNonRoot) }}"
+                  operator: Equals
+                  value: "false"
+            patchesJson6902: |-
+              - path: /spec/containers/{{elementIndex}}/securityContext/runAsNonRoot
+                op: replace
+                value: true
+    - name: set-initContainers-run-as-non-root-to-true
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.initContainers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.initContainers"
+            preconditions:
+              all:
+                - key: "{{ to_string(element.securityContext.runAsNonRoot) }}"
+                  operator: Equals
+                  value: "false"
+            patchesJson6902: |-
+              - path: /spec/initContainers/{{elementIndex}}/securityContext/runAsNonRoot
+                op: replace
+                value: true
+    - name: set-ephemeralContainers-run-as-non-root-to-true
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.ephemeralContainers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers"
+            preconditions:
+              all:
+                - key: "{{ to_string(element.securityContext.runAsNonRoot) }}"
+                  operator: Equals
+                  value: "false"
+            patchesJson6902: |-
+              - path: /spec/ephemeralContainers/{{elementIndex}}/securityContext/runAsNonRoot
+                op: replace
+                value: true

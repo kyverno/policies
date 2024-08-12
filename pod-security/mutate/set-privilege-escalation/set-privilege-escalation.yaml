@@ -1,0 +1,87 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: set-privilege-escalation
+  annotations:
+    policies.kyverno.io/title: Set Privilege Escalation
+    policies.kyverno.io/category: Pod Security Standards (Mutate)
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: "1.22-1.30"
+    policies.kyverno.io/description: >-
+      Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed.
+      This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: set-containers-privilege-escalation-to-false
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.containers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.containers"
+            preconditions:
+              all:
+                - key: "{{ element.securityContext.allowPrivilegeEscalation || '' }}"
+                  operator: Equals
+                  value: true
+            patchesJson6902: |-
+              - path: /spec/containers/{{elementIndex}}/securityContext/allowPrivilegeEscalation
+                op: replace
+                value: false
+    - name: set-initContainers-privilege-escalation-to-false
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.initContainers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.initContainers"
+            preconditions:
+              all:
+                - key: "{{ element.securityContext.allowPrivilegeEscalation || '' }}"
+                  operator: Equals
+                  value: true
+            patchesJson6902: |-
+              - path: /spec/initContainers/{{elementIndex}}/securityContext/allowPrivilegeEscalation
+                op: replace
+                value: false
+    - name: set-ephemeralContainers-privilege-escalation-to-false
+      match:
+        all:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{ type(request.object.spec.ephemeralContainers) }}"
+            operator: Equals
+            value: "array"
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers"
+            preconditions:
+              all:
+                - key: "{{ element.securityContext.allowPrivilegeEscalation || '' }}"
+                  operator: Equals
+                  value: true
+            patchesJson6902: |-
+              - path: /spec/ephemeralContainers/{{elementIndex}}/securityContext/allowPrivilegeEscalation
+                op: replace
+                value: false
