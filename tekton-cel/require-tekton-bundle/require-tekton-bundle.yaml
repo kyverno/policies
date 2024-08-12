@@ -28,7 +28,7 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "has(object.spec.pipelineRef) && has(object.spec.pipelineRef.bundle) && object.spec.pipelineRef.bundle != ''"
+          - expression: "object.spec.?pipelineRef.?bundle.orValue('') != ''"
             message: "A bundle is required."
   - name: check-bundle-taskrun
     match:
@@ -39,6 +39,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "has(object.spec.taskRef) && has(object.spec.taskRef.bundle) && object.spec.taskRef.bundle != ''"
+          - expression: "object.spec.?taskRef.?bundle.orValue('') != ''"
             message: "A bundle is required."
 

@@ -34,16 +34,13 @@ spec:
         cel:
           variables:
           - name: allContainers
-            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
           - name: allowedCapabilities
             expression: "['NET_BIND_SERVICE', 'CAP_CHOWN']"
           expressions:
             - expression: >-
                 variables.allContainers.all(container, 
-                !has(container.securityContext) ||
-                !has(container.securityContext.capabilities) ||
-                !has(container.securityContext.capabilities.add) ||
-                container.securityContext.capabilities.add.all(capability, capability in variables.allowedCapabilities))
+                container.?securityContext.?capabilities.?add.orValue([]).all(capability, capability in variables.allowedCapabilities))
               message: >-
                 Any capabilities added other than NET_BIND_SERVICE or CAP_CHOWN are disallowed.
 

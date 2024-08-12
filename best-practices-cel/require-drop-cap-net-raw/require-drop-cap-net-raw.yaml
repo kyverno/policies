@@ -33,14 +33,11 @@ spec:
         cel:
           variables:
             - name: allContainers
-              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+              expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
           expressions:
             - expression: >-
                 variables.allContainers.all(container, 
-                has(container.securityContext) &&
-                has(container.securityContext.capabilities) &&
-                has(container.securityContext.capabilities.drop) &&
-                container.securityContext.capabilities.drop.exists(capability, capability.upperAscii() == 'CAP_NET_RAW'))
+                container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability.upperAscii() == 'CAP_NET_RAW'))
               message: >-
                 Containers must drop the `CAP_NET_RAW` capability.
         

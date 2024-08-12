@@ -32,15 +32,15 @@ spec:
         cel:
           variables:
             - name: allContainers
-              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+              expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
           expressions:
             - expression: >-
                 (
-                  has(object.spec.securityContext) && has(object.spec.securityContext.runAsGroup) && (object.spec.securityContext.runAsGroup > 0) &&
-                  variables.allContainers.all(container, !has(container.securityContext) || !has(container.securityContext.runAsGroup) || container.securityContext.runAsGroup > 0)
+                  object.spec.?securityContext.?runAsGroup.orValue(-1) > 0 &&
+                  variables.allContainers.all(container, container.?securityContext.?runAsGroup.orValue(1) > 0)
                 ) ||
                 (
-                  variables.allContainers.all(container, has(container.securityContext) && has(container.securityContext.runAsGroup) && container.securityContext.runAsGroup > 0) 
+                  variables.allContainers.all(container, container.?securityContext.?runAsGroup.orValue(-1) > 0) 
                 )
               message: >-
                 Running with root group IDs is disallowed. The fields
@@ -61,8 +61,7 @@ spec:
         cel:
           expressions:
             - expression: >-
-                !has(object.spec.securityContext) || !has(object.spec.securityContext.supplementalGroups) || 
-                object.spec.securityContext.supplementalGroups.all(group, group > 0)
+                object.spec.?securityContext.?supplementalGroups.orValue([]).all(group, group > 0)
               message: >-
                 Containers cannot run with a root primary or supplementary GID. The field
                 spec.securityContext.supplementalGroups must be unset or
@@ -80,8 +79,7 @@ spec:
         cel:
           expressions:
             - expression: >-
-                !has(object.spec.securityContext) || !has(object.spec.securityContext.fsGroup) || 
-                object.spec.securityContext.fsGroup > 0
+                object.spec.?securityContext.?fsGroup.orValue(1) > 0
               message: >-
                 Containers cannot run with a root primary or supplementary GID. The field
                 spec.securityContext.fsGroup must be unset or set to a value greater than zero.

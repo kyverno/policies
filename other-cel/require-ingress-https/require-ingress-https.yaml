@@ -31,9 +31,7 @@ spec:
       cel:
         expressions:
           - expression: >-
-              has(object.metadata.annotations) && 
-              'kubernetes.io/ingress.allow-http' in object.metadata.annotations && 
-              object.metadata.annotations['kubernetes.io/ingress.allow-http'] == 'false'
+              object.metadata.?annotations[?'kubernetes.io/ingress.allow-http'].orValue('default') == 'false'
             message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
   - name: has-tls
     match:

@@ -32,7 +32,7 @@ spec:
           - UPDATE
     celPreconditions:
       - name: "has-host-path-volume"
-        expression: "has(object.spec.volumes) && object.spec.volumes.exists(volume, has(volume.hostPath))"
+        expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.hostPath))"
     validate:
       cel:
         expressions:
