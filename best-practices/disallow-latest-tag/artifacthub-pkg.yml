@@ -1,6 +1,6 @@
 name: disallow-latest-tag
 version: 1.0.0
-displayName: Disallow Latest Tag
+displayName: Disallow Latest Tags
 createdAt: "2023-04-10T19:47:15.000Z"
 description: >-
   The ':latest' tag is mutable and can lead to unexpected errors if the image changes. A best practice is to use an immutable tag that maps to a specific version of an application Pod. This policy validates that the image specifies a tag and that it is not called `latest`.
