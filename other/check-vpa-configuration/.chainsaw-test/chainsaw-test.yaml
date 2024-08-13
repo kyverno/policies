@@ -7,6 +7,8 @@ spec:
   - name: 01 - Create policy and Enforce
     try:
     - apply:
+        file: permissions.yaml
+    - apply:
         file: ../check-vpa-configuration.yaml
     - patch:
         resource:
