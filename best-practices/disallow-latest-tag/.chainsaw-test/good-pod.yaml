@@ -7,5 +7,5 @@ spec:
   - name: busybox
     image: busybox:v1.35
   initContainers:
-  - name: busybox
+  - name: busyboxinit
     image: busybox:v1.35
