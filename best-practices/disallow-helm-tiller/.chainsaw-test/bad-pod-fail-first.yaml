@@ -9,7 +9,7 @@ spec:
   - name: somebox
     image: busybox:1.35
   initContainers:
-  - name: helm-tiller
+  - name: helm-tillerinit
     image: docker.io/tiller:latest
-  - name: somebox
+  - name: someboxinit
     image: busybox:1.35
