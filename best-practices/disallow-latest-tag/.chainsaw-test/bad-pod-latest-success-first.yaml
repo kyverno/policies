@@ -9,7 +9,7 @@ spec:
   - name: busybox
     image: busybox:latest
   initContainers:
-  - name: nginx
+  - name: nginxinit
     image: nginx:1.35
-  - name: busybox
+  - name: busyboxinit
     image: busybox:latest
