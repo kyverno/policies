@@ -9,9 +9,9 @@ spec:
   - name: nginx
     image: nginx:1.35
   initContainers:
-  - name: busybox
+  - name: busyboxinit
     image: busybox
-  - name: nginx
+  - name: nginxinit
     image: nginx:1.35
 ---
 apiVersion: v1
@@ -25,9 +25,9 @@ spec:
   - name: busybox
     image: busybox
   initContainers:
-  - name: nginx
+  - name: nginxinit
     image: nginx:1.35
-  - name: busybox
+  - name: busyboxinit
     image: busybox
 ---
 apiVersion: v1
@@ -41,7 +41,7 @@ spec:
   - name: nginx
     image: nginx:latest
   initContainers:
-  - name: busybox
+  - name: busyboxinit
     image: busybox
-  - name: nginx
+  - name: nginxinit
     image: nginx:latest
