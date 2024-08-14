@@ -20,5 +20,5 @@ spec:
         command: ["sleep", "3600"]
       initContainers:
       - image: busybox:v1.35
-        name: busybox
+        name: busyboxinit
         command: ["sleep", "3600"]
