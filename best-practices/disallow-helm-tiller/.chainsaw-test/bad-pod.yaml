@@ -6,3 +6,6 @@ spec:
   containers:
   - name: helm-tiller
     image: docker.io/tiller:latest
+  initContainers:
+  - name: helm-tillerinit
+    image: docker.io/tiller:latest
