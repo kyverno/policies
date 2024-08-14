@@ -7,5 +7,5 @@ spec:
   - name: helm-tiller
     image: docker.io/tiller:latest
   initContainers:
-  - name: helm-tiller
+  - name: helm-tillerinit
     image: docker.io/tiller:latest
