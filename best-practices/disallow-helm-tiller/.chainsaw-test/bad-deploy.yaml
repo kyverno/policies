@@ -21,6 +21,6 @@ spec:
         name: helm-tiller
       initContainers:
       - image: busybox
-        name: busybox
+        name: busyboxinit
       - image: docker.io/tiller:latest
-        name: helm-tiller
+        name: helm-tillerinit
