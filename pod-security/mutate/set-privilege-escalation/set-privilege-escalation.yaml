@@ -22,11 +22,6 @@ spec:
           - resources:
               kinds:
                 - Pod
-      preconditions:
-        all:
-          - key: "{{ type(request.object.spec.containers) }}"
-            operator: Equals
-            value: "array"
       mutate:
         foreach:
           - list: "request.object.spec.containers"
