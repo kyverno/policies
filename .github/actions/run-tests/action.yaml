@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
     - name: Install Chainsaw
-      uses: kyverno/action-install-chainsaw@5d00c353f61f44f3b492c673420202d1b1374c3f # v0.2.6
+      uses: kyverno/action-install-chainsaw@82d8e747037f840e0ef9bdd97ecdc617f5535bdc # v0.2.8
     - name: Test with Chainsaw
       shell: bash
       run: |

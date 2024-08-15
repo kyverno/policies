@@ -8,3 +8,8 @@ spec:
     image: busybox:v1.35
   - name: nothelmbox
     image: busybox:v1.35
+  initContainers:
+  - name: busyboxinit
+    image: busybox:v1.35
+  - name: nothelmboxinit
+    image: busybox:v1.35

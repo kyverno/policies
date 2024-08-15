@@ -1,0 +1,22 @@
+name: require-cpu-limits
+version: 1.0.0
+displayName: Require CPU Limits
+createdAt: "2024-05-19T20:30:06.000Z"
+description: >-
+  Setting CPU limits on pods ensures fair distribution of resources, preventing any single pod from monopolizing CPU and impacting the performance of other pods. This practice enhances stability, predictability, and cost control, while also mitigating the noisy neighbor problem and facilitating efficient scaling in Kubernetes clusters. This policy ensures that cpu limits are set on every container.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-cpu-limits/require-cpu-limits.yaml
+  ```
+keywords:
+- kyverno
+- Other
+readme: |
+  Setting CPU limits on pods ensures fair distribution of resources, preventing any single pod from monopolizing CPU and impacting the performance of other pods. This practice enhances stability, predictability, and cost control, while also mitigating the noisy neighbor problem and facilitating efficient scaling in Kubernetes clusters. This policy ensures that cpu limits are set on every container.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.26"
+  kyverno/subject: "Pod"
+digest: 1d9998010342080ae64f309befdf52065de557cdcc10ddf68d8476b5af93d505

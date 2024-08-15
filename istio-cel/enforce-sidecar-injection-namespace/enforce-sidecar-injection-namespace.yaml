@@ -29,6 +29,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "has(object.metadata.labels) && 'istio-injection' in object.metadata.labels && object.metadata.labels['istio-injection'] == 'enabled'"
+          - expression: "object.metadata.?labels[?'istio-injection'].orValue('') == 'enabled'"
             message: "All new Namespaces must have Istio sidecar injection enabled."
 

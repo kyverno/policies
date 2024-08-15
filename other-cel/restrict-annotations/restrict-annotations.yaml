@@ -35,6 +35,6 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "!has(object.metadata.annotations) || !object.metadata.annotations.exists(annotation, annotation.startsWith('fluxcd.io/'))"
+          - expression: "!object.metadata.?annotations.orValue([]).exists(annotation, annotation.startsWith('fluxcd.io/'))"
             message: Cannot use Flux v1 annotation.
 

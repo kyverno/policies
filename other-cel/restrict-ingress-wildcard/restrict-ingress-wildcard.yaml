@@ -32,6 +32,6 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "!has(object.spec.rules) || !object.spec.rules.exists(rule, has(rule.host) && rule.host.contains('*'))"
+            - expression: "!object.spec.?rules.orValue([]).exists(rule, has(rule.host) && rule.host.contains('*'))"
               message: "Wildcards are not permitted as hosts."
 

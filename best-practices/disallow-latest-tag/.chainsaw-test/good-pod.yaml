@@ -6,3 +6,6 @@ spec:
   containers:
   - name: busybox
     image: busybox:v1.35
+  initContainers:
+  - name: busyboxinit
+    image: busybox:v1.35

@@ -1,0 +1,23 @@
+name: restrict-adding-capabilities-cel
+version: 1.0.0
+displayName: Restrict Adding Capabilities in CEL expressions
+description: >-
+  Adding capabilities is a way for containers in a Pod to request higher levels of ability than those with which they may be provisioned. Many capabilities allow system-level control and should be prevented. Pod Security Policies (PSP) allowed a list of "good" capabilities to be added. This policy checks ephemeralContainers, initContainers, and containers to ensure the only capabilities that can be added are either NET_BIND_SERVICE or CAP_CHOWN.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/psp-migration-cel/restrict-adding-capabilities/restrict-adding-capabilities.yaml
+  ```
+keywords:
+  - kyverno
+  - PSP Migration
+  - CEL Expressions
+readme: |
+  Adding capabilities is a way for containers in a Pod to request higher levels of ability than those with which they may be provisioned. Many capabilities allow system-level control and should be prevented. Pod Security Policies (PSP) allowed a list of "good" capabilities to be added. This policy checks ephemeralContainers, initContainers, and containers to ensure the only capabilities that can be added are either NET_BIND_SERVICE or CAP_CHOWN.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "PSP Migration in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Pod"
+digest: ff4483e54ede27fe5d6ef217725ee7d2b40bc0fe7fb16398919783f6bdce6a3e
+createdAt: "2024-05-23T14:18:49Z"

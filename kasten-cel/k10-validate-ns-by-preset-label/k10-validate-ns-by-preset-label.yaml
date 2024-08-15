@@ -32,7 +32,7 @@ spec:
     validate:
       cel:
         expressions:
-          - expression: "has(object.metadata.labels) && has(object.metadata.labels.dataprotection) && object.metadata.labels.dataprotection in ['gold', 'silver', 'bronze', 'none']"
+          - expression: "object.metadata.?labels.?dataprotection.orValue('') in ['gold', 'silver', 'bronze', 'none']"
             message: >-
               Namespaces must specify a "dataprotection" label with a value corresponding to a Kasten K10 SLA:
 

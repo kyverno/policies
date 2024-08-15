@@ -33,11 +33,10 @@ spec:
       cel:  
         expressions:
           - expression: >-
-              has(object.metadata.labels) && 
-              has(object.metadata.labels.owner) && object.metadata.labels.owner != '' && 
-              has(object.metadata.labels.team) && object.metadata.labels.team != '' &&
-              has(object.metadata.labels.department) && object.metadata.labels.department != '' &&
-              has(object.metadata.labels.app) && object.metadata.labels.app != '' &&
-              has(object.metadata.labels.env) && object.metadata.labels.env != ''
+              object.metadata.?labels.?owner.orValue('') != '' && 
+              object.metadata.?labels.?team.orValue('') != '' &&
+              object.metadata.?labels.?department.orValue('') != '' &&
+              object.metadata.?labels.?app.orValue('') != '' &&
+              object.metadata.?labels.?env.orValue('') != ''
             message: "The Kubecost labels `owner`, `team`, `department`, `app`, and `env` are all required for Pods."
 
