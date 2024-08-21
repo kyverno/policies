@@ -6,10 +6,6 @@ spec:
   containers:
   - name: helm-tiller
     image: docker.io/tiller:latest
-  initContainers:
-  - name: helm-tillerinit
-    image: docker.io/tiller:latest
-    
 ---
 apiVersion: v1
 kind: Pod
@@ -21,11 +17,6 @@ spec:
     image: busybox:1.28
   - name: helm-tiller
     image: docker.io/tiller:latest
-  initContainers:
-  - name: busyboxinit
-    image: busybox:1.28
-  - name: helm-tillerinit
-    image: docker.io/tiller:latest
 ---
 apiVersion: v1
 kind: Pod
@@ -34,9 +25,6 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox
-  initContainers:
-  - name: busyboxinit
     image: busybox
 ---
 apiVersion: v1
@@ -48,11 +36,6 @@ spec:
   - name: busybox
     image: busybox
   - name: nginx
-    image: nginx
-  initContainers:
-  - name: busyboxinit
-    image: busybox
-  - name: nginxinit
     image: nginx
 ---
 apiVersion: apps/v1
@@ -76,10 +59,6 @@ spec:
       - image: busybox:1.28
         name: busybox
         command: ["sleep", "9999"]
-      initContainers:
-      - image: busybox:1.28
-        name: busyboxinit
-        command: ["sleep", "9999"]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -101,6 +80,3 @@ spec:
       containers:
       - image: docker.io/tiller:latest
         name: helm-tiller
-      initContainers:
-      - image: docker.io/tiller:latest
-        name: helm-tillerinit
