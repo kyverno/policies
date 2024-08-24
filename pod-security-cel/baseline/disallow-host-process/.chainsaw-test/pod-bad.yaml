@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: badpod01-new
 spec:
+  hostNetwork: true
   initContainers:
   - name: busybox01-init
     image: busybox:1.35
@@ -14,15 +15,19 @@ spec:
     image: busybox:1.35
     securityContext:
       windowsOptions:
-        hostProcess: false
+        hostProcess: true
   - name: busybox02
     image: busybox:1.35
+    securityContext:
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod02-new
 spec:
+  hostNetwork: true
   containers:
   - name: busybox01
     image: busybox:1.35
@@ -35,6 +40,7 @@ kind: Pod
 metadata:
   name: badpod03-new
 spec:
+  hostNetwork: true
   containers:
   - name: busybox01
     image: busybox:1.35
@@ -43,6 +49,9 @@ spec:
         hostProcess: true
   - name: busybox02
     image: busybox:1.35
+    securityContext:
+      windowsOptions:
+        hostProcess: true
 ---
 apiVersion: v1
 kind: Pod
