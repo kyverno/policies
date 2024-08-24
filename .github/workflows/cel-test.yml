@@ -119,7 +119,7 @@ jobs:
         with:
           node_image: kindest/node:${{ matrix.k8s-version.version }}
           cluster_name: kind
-          config: ./.github/scripts/config/kind/vap-v1alpha1.yaml
+          config: ./.github/scripts/config/kind/vap-v1beta1.yaml
       - name: Install latest kyverno with VAP generation enabled
         run: ./.github/scripts/config/generate-validating-admission-policy/install-kyverno.sh
       - name: Wait for kyverno ready
