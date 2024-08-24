@@ -4,6 +4,8 @@ kind: Test
 metadata:
   creationTimestamp: null
   name: disallow-host-process
+  labels:
+    skipForVapAlpha: ""
 spec:
   # disable templating because it can cause issues with CEL expressions
   template: false
