@@ -29,6 +29,6 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "!has(object.spec.maxUnavailable) || int(object.spec.maxUnavailable) > 0"
+            - expression: "int(object.spec.?maxUnavailable.orValue(1)) > 0"
               message: "The value of maxUnavailable must be greater than zero."
 

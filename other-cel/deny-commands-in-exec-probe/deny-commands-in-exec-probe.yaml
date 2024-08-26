@@ -30,16 +30,13 @@ spec:
       celPreconditions:
         - name: "check-liveness-probes-commands-exist"
           expression: >-
-            object.spec.containers.exists(container, 
-            has(container.livenessProbe) && has(container.livenessProbe.exec) && 
-            size(container.livenessProbe.exec.command) > 0)
+            object.spec.containers.exists(container, size(container.?livenessProbe.?exec.?command.orValue([])) > 0)
       validate:
         cel:
           expressions:
             - expression: >-
                 object.spec.containers.all(container, 
-                !has(container.livenessProbe) || !has(container.livenessProbe.exec) || 
-                !container.livenessProbe.exec.command.exists(command, 
+                !container.?livenessProbe.?exec.?command.orValue([]).exists(command, 
                 command.matches('\\bjcmd\\b') || command.matches('\\bps\\b') || command.matches('\\bls\\b')))
               message: Cannot use commands `jcmd`, `ps`, or `ls` in liveness probes.
 

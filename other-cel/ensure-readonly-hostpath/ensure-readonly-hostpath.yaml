@@ -34,13 +34,12 @@ spec:
       cel:
         variables:
           - name: allContainers
-            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
           - name: hostPathVolumes
-            expression: "has(object.spec.volumes) ? object.spec.volumes.filter(volume, has(volume.hostPath)) : []"
+            expression: "object.spec.?volumes.orValue([]).filter(volume, has(volume.hostPath))"
         expressions:
           - expression: >-
               variables.hostPathVolumes.all(hostPath, variables.allContainers.all(container, 
-              !has(container.volumeMounts) || 
-              container.volumeMounts.all(volume, (hostPath.name != volume.name) || has(volume.readOnly) && volume.readOnly == true)))
+              container.volumeMounts.orValue([]).all(volume, (hostPath.name != volume.name) || volume.?readOnly.orValue(false) == true)))
             message: All hostPath volumes must be mounted as readOnly.
       

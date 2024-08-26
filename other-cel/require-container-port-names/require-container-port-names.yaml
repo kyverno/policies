@@ -31,6 +31,6 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "object.spec.containers.all(container, !has(container.ports) || container.ports.all(port, has(port.name)))"
+            - expression: "object.spec.containers.all(container, container.?ports.orValue([]).all(port, has(port.name)))"
               message: Name is required for every containerPort.
 

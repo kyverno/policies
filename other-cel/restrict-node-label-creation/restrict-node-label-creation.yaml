@@ -31,7 +31,7 @@ spec:
       - name: "operation-should-be-update"
         expression: "request.operation == 'UPDATE'"
       - name: "has-foo-label"
-        expression: "has(object.metadata.labels) && 'foo' in object.metadata.labels"
+        expression: "object.metadata.?labels.?foo.hasValue()"
     validate:
       cel:
         expressions:
