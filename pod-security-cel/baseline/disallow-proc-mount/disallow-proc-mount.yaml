@@ -30,29 +30,9 @@ spec:
             - UPDATE
       validate:
         cel:
+          variables:
+            - name: allContainers
+              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
           expressions:
-            - expression: >- 
-                object.spec.containers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.procMount) ||
-                container.securityContext.procMount == 'Default')
-              message: >-
-                Changing the proc mount from the default is not allowed. The field
-                spec.containers[*].securityContext.procMount must be unset or set to `Default`.
-      
-            - expression: >-
-                !has(object.spec.initContainers) ||
-                object.spec.initContainers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.procMount) ||
-                container.securityContext.procMount == 'Default')
-              message: >-
-                Changing the proc mount from the default is not allowed. The field
-                spec.initContainers[*].securityContext.procMount must be unset or set to `Default`.
-              
-            - expression: >- 
-                !has(object.spec.ephemeralContainers) ||
-                object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.procMount) ||
-                container.securityContext.procMount == 'Default')
-              message: >-
-                Changing the proc mount from the default is not allowed. The field
-                spec.ephemeralContainers[*].securityContext.procMount must be unset or set to `Default`.
+            - expression: "variables.allContainers.all(container, container.?securityContext.?procMount.orValue('Default') == 'Default')"
+              message: "Changing the proc mount from the default is not allowed."

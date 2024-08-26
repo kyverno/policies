@@ -29,5 +29,5 @@ spec:
       validate:
         cel:
           expressions:
-            - expression: "!has(object.spec.volumes) || object.spec.volumes.all(volume, !has(volume.hostPath))"
+            - expression: "object.spec.?volumes.orValue([]).all(volume, size(volume) == 0 || !has(volume.hostPath))"
               message: "HostPath volumes are forbidden. The field spec.volumes[*].hostPath must be unset"

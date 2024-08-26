@@ -28,29 +28,9 @@ spec:
             - UPDATE
       validate:
         cel:
+          variables:
+            - name: allContainers
+              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
           expressions:
-            - expression: >-
-                object.spec.containers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.privileged) ||
-                container.securityContext.privileged == false)
-              message: >-
-                Privileged mode is disallowed. The fields spec.containers[*].securityContext.privileged
-                must be unset or set to `false`.
-
-            - expression: >-
-                !has(object.spec.initContainers) ||
-                object.spec.initContainers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.privileged) ||
-                container.securityContext.privileged == false)
-              message: >-
-                Privileged mode is disallowed. The fields spec.initContainers[*].securityContext.privileged
-                must be unset or set to `false`.
-
-            - expression: >-
-                !has(object.spec.ephemeralContainers) ||
-                object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
-                !has(container.securityContext.privileged) ||
-                container.securityContext.privileged == false)
-              message: >-
-                Privileged mode is disallowed. The fields spec.ephemeralContainers[*].securityContext.privileged
-                must be unset or set to `false`.
+            - expression: "variables.allContainers.all(container, container.?securityContext.?privileged.orValue(false) == false)"
+              message: "Privileged mode is disallowed. All containers must set the securityContext.privileged field to `false` or unset the field."
