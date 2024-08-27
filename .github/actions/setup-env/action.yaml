@@ -40,12 +40,6 @@ runs:
         set -e
         kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
     - name: Wait for kyverno ready
-      shell: bash
-      run: |
-        set -e
-        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+      uses: ./.github/actions/wait-for-kyverno-ready
     - name: Install CRDs
-      shell: bash
-      run: |
-        set -e
-        kubectl apply -f ./.chainsaw/crds
+      uses: ./.github/actions/install-crds
