@@ -5,6 +5,6 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       readOnlyRootFilesystem: false

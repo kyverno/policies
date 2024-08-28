@@ -24,10 +24,15 @@ spec:
     try:
     - apply:
         file: deployment.yaml
-  - name: step-03
-    try:
-    - sleep:
-        duration: 5s
+    - wait:
+        apiVersion: v1
+        kind: Pod
+        namespace: refresh-env-var-ns
+        timeout: 1m
+        for:
+          condition:
+            name: Ready
+            value: 'true'
     - script:
         content: |
           kubectl get pod -n refresh-env-var-ns --no-headers | awk '{print $1}' > deploy-names.txt

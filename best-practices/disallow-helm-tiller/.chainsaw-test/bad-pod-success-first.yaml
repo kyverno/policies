@@ -5,11 +5,11 @@ metadata:
 spec:
   containers:
   - name: somebox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: helm-tiller
     image: docker.io/tiller:latest
   initContainers:
   - name: someboxinit
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: helm-tillerinit
     image: docker.io/tiller:latest

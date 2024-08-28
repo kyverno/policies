@@ -17,9 +17,9 @@ spec:
       hostNetwork: false
       containers:
       - name: busybox01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -36,9 +36,9 @@ spec:
           hostIPC: false
           containers:
           - name: busybox01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: busybox02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,7 +75,7 @@ spec:
       hostPID: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,7 +94,7 @@ spec:
       hostIPC: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -113,7 +113,7 @@ spec:
       hostNetwork: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -134,7 +134,7 @@ spec:
       hostNetwork: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -149,7 +149,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -165,7 +165,7 @@ spec:
           hostPID: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -181,7 +181,7 @@ spec:
           hostIPC: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -197,7 +197,7 @@ spec:
           hostNetwork: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -215,4 +215,4 @@ spec:
           hostNetwork: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35

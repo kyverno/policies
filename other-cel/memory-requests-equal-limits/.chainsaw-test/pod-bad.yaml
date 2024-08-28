@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
@@ -19,14 +19,14 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "10Mi"
       limits:
         memory: "140Mi"
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
@@ -40,14 +40,14 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "120Mi"
       limits:
         memory: "120Mi"
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
@@ -61,14 +61,14 @@ metadata:
 spec:
   containers:
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
       limits:
         memory: "200Mi"
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"

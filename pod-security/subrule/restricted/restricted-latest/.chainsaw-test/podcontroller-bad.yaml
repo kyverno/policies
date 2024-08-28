@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: ghcr.io/kyverno/test-nginx:1.1.9
         securityContext:
           allowPrivilegeEscalation: true
           runAsNonRoot: true
@@ -40,7 +40,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: ghcr.io/kyverno/test-nginx:1.1.9
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: false
@@ -66,7 +66,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: ghcr.io/kyverno/test-nginx:1.1.9
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: ghcr.io/kyverno/test-nginx:1.1.9
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -115,7 +115,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: nginx:1.1.9
+        image: ghcr.io/kyverno/test-nginx:1.1.9
         securityContext:
           allowPrivilegeEscalation: false
           runAsUser: 0
@@ -146,7 +146,7 @@ spec:
           type: RuntimeDefault
       initContainers:
       - name: init-container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -158,7 +158,7 @@ spec:
             add:
             - SYS_NET_ADMIN
       - name: init-container02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -169,7 +169,7 @@ spec:
             - ALL
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -205,7 +205,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -236,7 +236,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
@@ -271,7 +271,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           windowsOptions:
             hostProcess: true
@@ -304,7 +304,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           privileged: true
           allowPrivilegeEscalation: false
@@ -335,7 +335,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           seLinuxOptions:
             type: container_engine_t
@@ -369,7 +369,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -401,7 +401,7 @@ spec:
           value: "4"
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -427,7 +427,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -459,7 +459,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
           runAsNonRoot: true
@@ -494,7 +494,7 @@ spec:
           type: RuntimeDefault
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           seLinuxOptions:
             user: sysadm_u
@@ -523,7 +523,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: ghcr.io/kyverno/test-nginx:1.1.9
             securityContext:
               allowPrivilegeEscalation: true
               runAsNonRoot: true
@@ -549,7 +549,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: ghcr.io/kyverno/test-nginx:1.1.9
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: false
@@ -575,7 +575,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: ghcr.io/kyverno/test-nginx:1.1.9
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -601,7 +601,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: ghcr.io/kyverno/test-nginx:1.1.9
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -624,7 +624,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: nginx:1.1.9
+            image: ghcr.io/kyverno/test-nginx:1.1.9
             securityContext:
               allowPrivilegeEscalation: false
               runAsUser: 0
@@ -655,7 +655,7 @@ spec:
               type: RuntimeDefault
           initContainers:
           - name: init-container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -667,7 +667,7 @@ spec:
                 add:
                 - SYS_NET_ADMIN
           - name: init-container02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -678,7 +678,7 @@ spec:
                 - ALL
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -714,7 +714,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -745,7 +745,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
@@ -780,7 +780,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               windowsOptions:
                 hostProcess: true
@@ -813,7 +813,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               privileged: true
               allowPrivilegeEscalation: false
@@ -844,7 +844,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               seLinuxOptions:
                 type: container_engine_t
@@ -876,7 +876,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -908,7 +908,7 @@ spec:
               value: "4"
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -934,7 +934,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -966,7 +966,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
               runAsNonRoot: true
@@ -1001,7 +1001,7 @@ spec:
               type: RuntimeDefault
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               seLinuxOptions:
                 user: sysadm_u

@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               memory: "500Mi"
               cpu: "500m"
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -44,9 +44,9 @@ spec:
     spec:
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               cpu: "500m"
@@ -63,13 +63,13 @@ spec:
         spec:
           containers:
           - name: bb-01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             resources:
               requests:
                 memory: "500Mi"
                 cpu: "500m"
           - name: bb-02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           restartPolicy: OnFailure
 ---
 apiVersion: batch/v1
@@ -84,9 +84,9 @@ spec:
         spec:
           containers:
           - name: bb-01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: bb-02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             resources:
               requests:
                 cpu: "500m"

@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
 ---
@@ -16,7 +16,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
 ---
@@ -27,7 +27,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   securityContext:
@@ -40,9 +40,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
 ---
@@ -53,9 +53,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   securityContext:
@@ -68,10 +68,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
 ---
@@ -82,12 +82,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
 ---
@@ -98,12 +98,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
 ---
@@ -114,14 +114,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
 ---
@@ -132,16 +132,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       runAsGroup: 1
 ---
@@ -152,7 +152,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
     supplementalGroups: [32]
@@ -164,7 +164,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
     supplementalGroups: [32,94]
@@ -176,7 +176,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     runAsGroup: 1
     fsGroup: 32
