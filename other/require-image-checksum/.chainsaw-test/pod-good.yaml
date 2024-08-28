@@ -5,9 +5,9 @@ metadata:
 spec:
   containers:
     - name: busybox
-      image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+      image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
     - name: busybox02
-      image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+      image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
 ---
 apiVersion: v1
 kind: Pod
@@ -16,9 +16,9 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+    image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
   - name: nginx
-    image: nginx@sha256:1bb5c4b86cb7c1e9f0209611dc2135d8a2c1c3a6436163970c99193787d067ea
+    image: ghcr.io/kyverno/test-nginx@sha256:eca6768a39363decf0a4606a282e222552576fec380f555b65560983f7305cf7
 ---
 apiVersion: v1
 kind: Pod
@@ -27,14 +27,14 @@ metadata:
 spec:
   initContainers:
   - name: init-busybox
-    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+    image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
     command: ['sh', '-c', 'echo Init container 1 completed']
   - name: init-nginx
-    image: nginx@sha256:1bb5c4b86cb7c1e9f0209611dc2135d8a2c1c3a6436163970c99193787d067ea
+    image: ghcr.io/kyverno/test-nginx@sha256:eca6768a39363decf0a4606a282e222552576fec380f555b65560983f7305cf7
     command: ['sh', '-c', 'echo Init container 2 completed']
   containers:
   - name: busybox
-    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+    image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
   - name: nginx
-    image: nginx@sha256:1bb5c4b86cb7c1e9f0209611dc2135d8a2c1c3a6436163970c99193787d067ea
+    image: ghcr.io/kyverno/test-nginx@sha256:eca6768a39363decf0a4606a282e222552576fec380f555b65560983f7305cf7
 ---

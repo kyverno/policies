@@ -21,9 +21,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -48,9 +48,9 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -75,6 +75,6 @@ spec:
       automountServiceAccountToken: false
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35

@@ -8,7 +8,7 @@ spec:
   hostNetwork: false
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -18,9 +18,9 @@ spec:
   hostIPC: true
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -30,9 +30,9 @@ spec:
   hostNetwork: true
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -44,9 +44,9 @@ spec:
   hostNetwork: true
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -56,7 +56,7 @@ spec:
   hostPID: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -66,7 +66,7 @@ spec:
   hostIPC: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -76,7 +76,7 @@ spec:
   hostNetwork: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -88,5 +88,5 @@ spec:
   hostNetwork: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---

@@ -20,12 +20,12 @@ spec:
     spec:
       containers:
       - name: bb-01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs
       - name: bb-02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs
@@ -57,12 +57,12 @@ spec:
       automountServiceAccountToken: false
       containers:
       - name: bb-01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs
       - name: bb-02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs

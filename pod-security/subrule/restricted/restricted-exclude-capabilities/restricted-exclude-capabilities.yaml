@@ -35,5 +35,5 @@ spec:
         exclude:
         - controlName: Capabilities
           images:
-          - nginx*
+          - ghcr.io/kyverno/test-nginx*
           - redis*

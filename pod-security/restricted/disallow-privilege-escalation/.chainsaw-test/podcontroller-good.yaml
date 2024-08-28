@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
 ---
@@ -34,11 +34,11 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       - name: container02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
 ---
@@ -58,12 +58,12 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
 ---
@@ -83,16 +83,16 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       - name: initcontainer02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
 ---
@@ -112,20 +112,20 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       - name: initcontainer02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
       - name: container02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           allowPrivilegeEscalation: false
 ---
@@ -142,7 +142,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
 ---
@@ -159,11 +159,11 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           - name: container02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
 ---
@@ -180,12 +180,12 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
 ---
@@ -202,16 +202,16 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           - name: initcontainer02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
 ---
@@ -228,19 +228,19 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           - name: initcontainer02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
           - name: container02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false

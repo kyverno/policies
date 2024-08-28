@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   securityContext:
     seccompProfile:
       type: Unconfined
@@ -17,7 +17,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
@@ -29,9 +29,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
@@ -43,12 +43,12 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
@@ -60,13 +60,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -75,15 +75,15 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -92,16 +92,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seccompProfile:
         type: Unconfined
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
