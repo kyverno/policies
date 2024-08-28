@@ -8,10 +8,10 @@ spec:
   - command:
     - sleep
     - "300"
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     name: busybox
   - command:
     - sleep
     - "300"
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     name: busybox02

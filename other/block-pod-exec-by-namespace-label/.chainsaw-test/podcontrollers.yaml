@@ -18,10 +18,10 @@ spec:
     spec:
       containers:
       - name: bb
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         command: ["sleep", "300"]
       - name: bb2
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         command: ["sleep", "300"]
 ---
 apiVersion: apps/v1
