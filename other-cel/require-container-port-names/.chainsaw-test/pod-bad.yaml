@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     ports:
     - containerPort: 80
 ---
@@ -16,12 +16,12 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     ports:
     - name: http-port
       containerPort: 80
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     ports:
     - containerPort: 80
     - containerPort: 443
@@ -34,11 +34,11 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     ports:
     - containerPort: 80
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     ports:
     - containerPort: 80
       name: http-port

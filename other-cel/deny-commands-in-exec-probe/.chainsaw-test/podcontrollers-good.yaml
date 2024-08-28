@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
         livenessProbe:
           exec:
@@ -24,7 +24,7 @@ spec:
             - echo
             - meow
           periodSeconds: 10
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
         livenessProbe:
           exec:
@@ -43,7 +43,7 @@ spec:
       template:
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
             livenessProbe:
               exec:
@@ -51,7 +51,7 @@ spec:
                 - echo
                 - meow
               periodSeconds: 10
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02
             livenessProbe:
               exec:

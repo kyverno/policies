@@ -14,14 +14,14 @@ spec:
     spec:
       initContainers:
       - name: init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           capabilities:
             add: ["SYS_TIME"]
             drop:
               - CAP_NET_RAW
       - name: init2
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           capabilities:
             add: ["SYS_TIME"]
@@ -29,14 +29,14 @@ spec:
               - CAP_NET_RAW
       containers:
       - name: add-capabilities
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           capabilities:
             add: ["SYS_TIME"]
             drop:
               - CAP_NET_RAW
       - name: add-capabilities-again
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           capabilities:
             add: ["SYS_TIME"]
@@ -56,14 +56,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               capabilities:
                 add: ["SYS_TIME"]
                 drop:
                   - CAP_NET_RAW
           - name: init2
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               capabilities:
                 add: ["SYS_TIME"]
@@ -71,14 +71,14 @@ spec:
                   - CAP_NET_RAW
           containers:
           - name: add-capabilities
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               capabilities:
                 add: ["SYS_TIME"]
                 drop:
                   - CAP_NET_RAW
           - name: add-capabilities-again
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               capabilities:
                 add: ["SYS_TIME"]

@@ -15,6 +15,6 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.36
+      - image: ghcr.io/kyverno/test-busybox:1.36
         name: busybox
         command: ["sleep", "infinity"]

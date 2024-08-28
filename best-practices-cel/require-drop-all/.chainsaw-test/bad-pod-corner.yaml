@@ -5,14 +5,14 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
         drop:
           - ALL
   - name: add-capabilities-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
@@ -26,12 +26,12 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
   - name: add-capabilities-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
@@ -45,11 +45,11 @@ metadata:
 spec:
   containers:
   - name: init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         drop:
           - ALL
   - name: init-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 

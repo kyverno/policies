@@ -5,6 +5,6 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox@sha256:67a8ef886e2ca4055f00e7cd13aedb9b24148c1451a6832d16fcc997a157eedc
+    image: ghcr.io/kyverno/test-busybox@sha256:c81e98c8ff8ebe2ef81b784e9fcab9d1013d75064d00d0be4941ffb6973c948d
     command: ["sleep", "1d"]
 
