@@ -4,14 +4,14 @@ metadata:
   name: badpod01
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       livenessProbe:
         exec:
           command:
           - ls
         periodSeconds: 10
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       livenessProbe:
         exec:
@@ -25,7 +25,7 @@ metadata:
   name: badpod02
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       livenessProbe:
         exec:
@@ -40,9 +40,9 @@ metadata:
   name: badpod03
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       livenessProbe:
         exec:
@@ -56,9 +56,9 @@ metadata:
   name: badpod04
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       livenessProbe:
         exec:
@@ -75,9 +75,9 @@ metadata:
   name: badpod05
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       livenessProbe:
         exec:
@@ -93,9 +93,9 @@ metadata:
   name: badpod06
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       livenessProbe:
         exec:

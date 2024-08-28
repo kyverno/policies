@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: pod01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
   priorityClassName: foo
 ---
 apiVersion: v1
@@ -17,5 +17,5 @@ metadata:
 spec:
   containers:
     - name: pod01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
   priorityClassName: low

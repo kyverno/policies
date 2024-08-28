@@ -19,7 +19,7 @@ spec:
     image: foo.gcr.io/busybox:1.35
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: busybox02
     image: docker.io/busybox:1.35
 ---
@@ -30,7 +30,7 @@ metadata:
 spec:
   initContainers:
   - name: busybox-init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: busybox-init-again
     image: foo.gcr.io/busybox:1.35
   containers:
@@ -48,7 +48,7 @@ spec:
   - name: busybox-init
     image: docker.io/busybox:1.35
   - name: busybox-init-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   containers:
   - name: busybox
     image: registry.k8s.io/busybox:1.35

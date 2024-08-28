@@ -5,13 +5,13 @@ metadata:
 spec:
   containers:
   - name: pod01-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
         cpu: "100m"
   - name: pod01-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "500Mi"
@@ -24,13 +24,13 @@ metadata:
 spec:
   containers:
   - name: pod02-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
         cpu: "100m"
   - name: pod02-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         memory: "100Mi"
