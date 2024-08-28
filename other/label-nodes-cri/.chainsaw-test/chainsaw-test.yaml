@@ -16,7 +16,7 @@ spec:
         content: |
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
     - sleep:
-        duration: 10s
+        duration: 5s
   - name: step-02
     try:
     - apply:
@@ -26,7 +26,7 @@ spec:
   - name: step-03
     try:
     - sleep:
-        duration: 10s
+        duration: 5s
     - script:
         content: ./label-check.sh
   - name: step-04

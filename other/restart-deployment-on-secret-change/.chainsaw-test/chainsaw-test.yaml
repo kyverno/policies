@@ -30,7 +30,7 @@ spec:
   - name: step-04
     try:
     - sleep:
-        duration: 10s
+        duration: 5s
     - script:
         content: |
           annotation=$(kubectl get deployment -n default busybox -o json | kyverno jp query "spec.template.metadata.annotations.\"ops.corp.com\/triggerrestart\" || 'annotation-404' " | tail -n 1 | cut -d '"' -f 2)

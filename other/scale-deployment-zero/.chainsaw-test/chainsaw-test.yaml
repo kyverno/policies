@@ -16,7 +16,7 @@ spec:
         content: |
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:nodes/system\:thisisjunk/g' | kubectl apply -f -
     - sleep:
-        duration: 10s
+        duration: 5s
   - name: step-02
     try:
     - apply:
@@ -41,4 +41,4 @@ spec:
         content: |
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:thisisjunk/system\:nodes/g' | kubectl apply -f -
     - sleep:
-        duration: 10s
+        duration: 5s
