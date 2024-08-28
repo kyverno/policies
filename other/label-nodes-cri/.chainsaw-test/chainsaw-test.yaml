@@ -14,7 +14,7 @@ spec:
     try:
     - script:
         content: |
-          kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
+          kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' | sed 's/\[Node,\*,\*\]//g' | kubectl apply -f -
     - sleep:
         duration: 5s
   - name: step-02
@@ -33,7 +33,7 @@ spec:
     try:
     - script:
         content: |
-          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' - | kubectl apply -f -
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' | kubectl apply -f -
     - script:
         content: |
           node=$(kubectl get nodes --no-headers | awk '{print $1}' | head -n 1);
