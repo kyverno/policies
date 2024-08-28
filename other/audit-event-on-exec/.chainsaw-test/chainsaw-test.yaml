@@ -25,7 +25,7 @@ spec:
   - name: step-03
     try:
     - sleep:
-        duration: 5s
+        duration: 10s
     - script:
         content: kubectl exec -n exec-event-ns execevent-pod -- ls /
   - name: step-04

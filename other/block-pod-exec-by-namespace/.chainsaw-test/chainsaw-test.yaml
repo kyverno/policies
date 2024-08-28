@@ -23,7 +23,7 @@ spec:
   - name: step-03
     try:
     - sleep:
-        duration: 5s
+        duration: 10s
   - name: step-04
     try:
     - script:
