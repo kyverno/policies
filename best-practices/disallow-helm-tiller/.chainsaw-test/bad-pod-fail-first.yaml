@@ -7,9 +7,9 @@ spec:
   - name: helm-tiller
     image: docker.io/tiller:latest
   - name: somebox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   initContainers:
   - name: helm-tillerinit
     image: docker.io/tiller:latest
   - name: someboxinit
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35

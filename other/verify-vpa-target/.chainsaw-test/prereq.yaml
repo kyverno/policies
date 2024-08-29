@@ -15,7 +15,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:latest
+      - image: ghcr.io/kyverno/test-busybox:latest
         name: busybox
         command:
         - "sleep"
@@ -35,7 +35,7 @@ spec:
         name: good-daemonset
     spec:
       containers:
-      - image: busybox:latest
+      - image: ghcr.io/kyverno/test-busybox:latest
         name: busybox
         command:
         - "sleep"
@@ -58,7 +58,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:latest
+      - image: ghcr.io/kyverno/test-busybox:latest
         name: busybox
         command:
         - "sleep"

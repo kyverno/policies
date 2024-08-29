@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
 ---
@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
 ---
@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       securityContext:
@@ -76,9 +76,9 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: container02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
 ---
@@ -98,9 +98,9 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: container02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       securityContext:
@@ -122,10 +122,10 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
 ---
@@ -145,12 +145,12 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
 ---
@@ -170,12 +170,12 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
 ---
@@ -195,14 +195,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       - name: initcontainer02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
 ---
@@ -222,16 +222,16 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       - name: initcontainer02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           runAsGroup: 1
 ---
@@ -249,7 +249,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
 ---
@@ -266,7 +266,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
 ---
@@ -283,7 +283,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           securityContext:
@@ -302,9 +302,9 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: container02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
 ---
@@ -321,9 +321,9 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: container02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           securityContext:
@@ -342,10 +342,10 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
 ---
@@ -362,12 +362,12 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
 ---
@@ -384,12 +384,12 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
 ---
@@ -406,14 +406,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           - name: initcontainer02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
 ---
@@ -430,16 +430,16 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           - name: initcontainer02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               runAsGroup: 1
 ---
@@ -459,7 +459,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
         supplementalGroups: [32]
@@ -480,7 +480,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
         supplementalGroups: [32,94]
@@ -498,7 +498,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
             supplementalGroups: [32]
@@ -516,7 +516,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
             supplementalGroups: [32,94]
@@ -537,7 +537,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsGroup: 1
         fsGroup: 32
@@ -555,7 +555,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             runAsGroup: 1
             fsGroup: 32

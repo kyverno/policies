@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: busybox
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: foo.bar/test
@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
         - name: busybox
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: foo.bar/test
@@ -88,4 +88,4 @@ spec:
     spec:
       containers:
         - name: busybox
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35

@@ -17,17 +17,17 @@ spec:
     spec:
       initContainers:
       - name: busybox-init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         envFrom:
         - secretRef:
             name: safe-secret
       - name: busybox02-init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         env:
         - name: ENV_FOO
           value: "bar"
@@ -56,9 +56,9 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       volumes:
       - name: secret-volume
         secret:
@@ -76,17 +76,17 @@ spec:
         spec:
           initContainers:
           - name: busybox-init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             envFrom:
             - secretRef:
                 name: safe-secret
           - name: busybox02-init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           containers:
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: busybox02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             env:
             - name: ENV_FOO
               value: "bar"
@@ -109,9 +109,9 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: busybox02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           volumes:
           - name: empty-volume
             emptyDir: {}

@@ -16,9 +16,9 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
         resources:
           requests:
@@ -44,14 +44,14 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
         resources:
           requests:
             memory: "100Mi"
           limits:
             memory: "250Mi"
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
 ---
 apiVersion: batch/v1
@@ -68,9 +68,9 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02
             resources:
               requests:
@@ -93,13 +93,13 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
             resources:
               requests:
                 memory: "100Mi"
               limits:
                 memory: "250Mi"
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02
           restartPolicy: OnFailure

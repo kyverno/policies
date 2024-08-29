@@ -5,14 +5,14 @@ metadata:
 spec:
   initContainers:
   - name: pod05-01-init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: pod05-02-init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   containers:
   - name: pod05-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: pod05-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   imagePullSecrets:
   - name: my-secret
 ---
@@ -23,8 +23,8 @@ metadata:
 spec:
   containers:
   - name: pod06-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: pod06-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   imagePullSecrets:
   - name: my-secret
