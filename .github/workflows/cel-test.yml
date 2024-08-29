@@ -47,7 +47,10 @@ jobs:
           - ^other-cel$/^[s-z]
           - ^pod-security-cel$
           - ^psa-cel$
+          - ^psp-migration-cel$
           - ^traefik-cel$
+          - ^tekton-cel$
+          - ^velero-cel$
     runs-on: ubuntu-latest
     name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:

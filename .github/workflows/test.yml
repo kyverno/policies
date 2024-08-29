@@ -1,3 +1,8 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+# to update the workflow jobs, run the script below from the repository root:
+# `(cd .hack/chainsaw-matrix && go run . > ../../.github/workflows/test.yml)`
+
 name: E2E Tests
 
 permissions: {}
@@ -13,64 +18,834 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  chainsaw:
+  argo:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version:
-          - name: v1.28
-            version: v1.28.13
-          - name: v1.29
-            version: v1.29.8
-          - name: v1.30
-            version: v1.30.4
-          - name: v1.31
-            version: v1.31.0
-        tests:
-          - ^argo$
-          - ^aws$
-          - ^best-practices$
-          - ^castai$
-          - ^cert-manager$
-          - ^cleanup$
-          - ^consul$
-          - ^external-secret-operator$
-          - ^flux$
-          - ^istio$
-          - ^karpenter$
-          - ^kasten$
-          - ^kubecost$
-          - ^kubeops$
-          - ^kubevirt$
-          - ^linkerd$
-          - ^nginx-ingress$
-          - ^openshift$
-          - ^other$/^a
-          - ^other$/^[b-d]
-          - ^other$/^[e-l]
-          - ^other$/^[m-q]
-          - ^other$/^re[c-q]
-          - ^other$/^res
-          - ^other$/^[s-z]
-          - ^pod-security$
-          - ^psa$
-          - ^psp-migration$
-          - ^psp-migration-cel$
-          - ^tekton$
-          - ^tekton-cel$
-          - ^traefik$
-          - ^velero$
-          - ^velero-cel$
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
       - name: Checkout
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
       - name: Setup Environment
         uses: ./.github/actions/setup-env
         with:
-          k8s-version: ${{ matrix.k8s-version.version }}
+          k8s-version: ${{ matrix.k8s-version }}
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ${{ matrix.tests }}
+          tests: ^argo$/^(application-field-validation|application-prevent-default-project|application-prevent-updates-project|applicationset-name-matches-project|appproject-clusterresourceblacklist|argo-cluster-generation-from-rancher-capi)$
+  aws:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^aws$/^(require-encryption-aws-loadbalancers)$
+  best-practices:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^best-practices$/^(add-network-policy|add-networkpolicy-dns|add-ns-quota|add-rolebinding|add-safe-to-evict|disallow-cri-sock-mount|disallow-default-namespace|disallow-empty-ingress-host|disallow-helm-tiller|disallow-latest-tag|require-drop-all|require-drop-cap-net-raw)$
+  best-practices-12:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^best-practices$/^(require-labels|require-pod-requests-limits|require-probes|require-ro-rootfs|restrict-image-registries|restrict-node-port|restrict-service-external-ips)$
+  castai:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^castai$/^(add-castai-removal-disabled)$
+  cert-manager:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^cert-manager$/^(limit-dnsnames|limit-duration|restrict-issuer)$
+  cleanup:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^cleanup$/^(cleanup-bare-pods|cleanup-empty-replicasets)$
+  consul:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^consul$/^(enforce-min-tls-version)$
+  external-secret-operator:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^external-secret-operator$/^(add-external-secret-prefix)$
+  flux:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^flux$/^(generate-flux-multi-tenant-resources|verify-flux-images|verify-flux-sources|verify-git-repositories)$
+  istio:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^istio$/^(add-ambient-mode-namespace|add-sidecar-injection-namespace|create-authorizationpolicy|enforce-ambient-mode-namespace|enforce-sidecar-injection-namespace|enforce-strict-mtls|enforce-tls-hosts-host-subnets|prevent-disabling-injection-pods|require-authorizationpolicy|restrict-virtual-service-wildcard|service-mesh-disallow-capabilities|service-mesh-require-run-as-nonroot)$
+  karpenter:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^karpenter$/^(add-karpenter-daemonset-priority-class|add-karpenter-donot-evict|add-karpenter-nodeselector|set-karpenter-non-cpu-limits)$
+  kasten:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^kasten$/^(kasten-3-2-1-backup|kasten-data-protection-by-label|kasten-generate-policy-by-preset-label|kasten-hourly-rpo|kasten-minimum-retention|kasten-validate-ns-by-preset-label)$
+  kubecost:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^kubecost$/^(enable-kubecost-continuous-rightsizing|require-kubecost-labels)$
+  kubeops:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^kubeops$/^(config-syncer-secret-generation-from-rancher-capi)$
+  kubevirt:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^kubevirt$/^(add-services|enforce-instancetype)$
+  linkerd:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^linkerd$/^(add-linkerd-mesh-injection|add-linkerd-policy-annotation|check-linkerd-authorizationpolicy|prevent-linkerd-pod-injection-override|prevent-linkerd-port-skipping|require-linkerd-mesh-injection|require-linkerd-server)$
+  nginx-ingress:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^nginx-ingress$/^(disallow-ingress-nginx-custom-snippets|restrict-annotations|restrict-ingress-paths)$
+  openshift:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^openshift$/^(check-routes|disallow-security-context-constraint-anyuid|disallow-self-provisioner-binding)$
+  other:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(add-certificates-volume|add-default-resources|add-default-securitycontext|add-emptydir-sizelimit|add-env-vars-from-cm|add-image-as-env-var|add-imagepullsecrets|add-imagepullsecrets-for-containers-and-initcontainers|add-labels|add-ndots|add-node-affinity|add-node-labels-pod)$
+  other-12:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(add-nodeSelector|add-pod-priorityclassname|add-pod-proxies|add-tolerations|add-ttl-jobs|add-volume-deployment|advanced-restrict-image-registries|allowed-annotations|allowed-base-images|allowed-image-repos|allowed-label-changes|allowed-pod-priorities)$
+  other-24:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(always-pull-images|annotate-base-images|apply-pss-restricted-profile|audit-event-on-delete|audit-event-on-exec|block-cluster-admin-from-ns|block-ephemeral-containers|block-images-with-volumes|block-large-images|block-pod-exec-by-namespace|block-pod-exec-by-namespace-label|block-pod-exec-by-pod-and-container)$
+  other-36:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(block-pod-exec-by-pod-label|block-pod-exec-by-pod-name|block-stale-images|block-updates-deletes|check-env-vars|check-hpa-exists|check-nvidia-gpu|check-serviceaccount|check-serviceaccount-secrets|check-subjectaccessreview|check-vpa-configuration|concatenate-configmaps)$
+  other-48:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(copy-namespace-labels|create-default-pdb|create-pod-antiaffinity|deny-commands-in-exec-probe|deny-secret-service-account-token-type|deployment-replicas-higher-than-pdb|disable-automountserviceaccounttoken|disable-service-discovery|disallow-all-secrets|disallow-localhost-services|disallow-secrets-from-env-vars|dns-policy-and-dns-config)$
+  other-60:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(docker-socket-requires-label|enforce-pod-duration|enforce-resources-as-ratio|ensure-probes-different|ensure-production-matches-staging|ensure-readonly-hostpath|exclude-namespaces-dynamically|forbid-cpu-limits|generate-networkpolicy-existing|get-debug-information|imagepullpolicy-always|ingress-host-match-tls)$
+  other-72:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(inject-env-var-from-image-label|inject-sidecar-deployment|inspect-csr|kubernetes-version-check|label-existing-namespaces|label-nodes-cri|limit-configmap-for-sa|limit-containers-per-pod|limit-hostpath-type-pv|limit-hostpath-vols|memory-requests-equal-limits|metadata-match-regex)$
+  other-84:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(mitigate-log4shell|mutate-large-termination-gps|mutate-pod-binding|namespace-inventory-check|nfs-subdir-external-provisioner-storage-path|only-trustworthy-registries-set-root|pdb-maxunavailable|pdb-maxunavailable-with-deployments|pdb-minavailable|policy-for-exceptions|prepend-image-registry|prevent-bare-pods)$
+  other-96:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(prevent-cr8escape|prevent-duplicate-hpa|prevent-duplicate-vpa|protect-node-taints|record-creation-details|refresh-env-var-in-pod|refresh-volumes-in-pods|remove-hostpath-volumes|remove-serviceaccount-token|replace-image-registry|replace-image-registry-with-harbor|replace-ingress-hosts)$
+  other-108:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(require-annotations|require-base-image|require-container-port-names|require-cpu-limits|require-deployments-have-multiple-replicas|require-emptydir-requests-limits|require-image-checksum|require-image-source|require-imagepullsecrets|require-ingress-https|require-netpol|require-non-root-groups)$
+  other-120:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(require-pdb|require-pod-priorityclassname|require-qos-burstable|require-qos-guaranteed|require-reasonable-pdbs|require-replicas-allow-disruption|require-storageclass|require-unique-external-dns|require-unique-service-selector|require-unique-uid-per-workload|resolve-image-to-digest|resource-creation-updating-denied)$
+  other-132:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(restart-deployment-on-secret-change|restrict-annotations|restrict-automount-sa-token|restrict-binding-clusteradmin|restrict-binding-system-groups|restrict-clusterrole-csr|restrict-clusterrole-mutating-validating-admission-webhooks|restrict-clusterrole-nodesproxy|restrict-controlplane-scheduling|restrict-deprecated-registry|restrict-escalation-verbs-roles|restrict-ingress-classes)$
+  other-144:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(restrict-ingress-defaultbackend|restrict-ingress-host|restrict-ingress-wildcard|restrict-jobs|restrict-loadbalancer|restrict-networkpolicy-empty-podselector|restrict-node-affinity|restrict-node-label-changes|restrict-node-label-creation|restrict-node-selection|restrict-pod-controller-serviceaccount-updates|restrict-sa-automount-sa-token)$
+  other-156:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(restrict-secret-role-verbs|restrict-secrets-by-label|restrict-secrets-by-name|restrict-service-port-range|restrict-storageclass|restrict-usergroup-fsgroup-id|restrict-wildcard-resources|restrict-wildcard-verbs|scale-deployment-zero|spread-pods-across-topology|sync-secrets|topologyspreadconstraints-policy)$
+  other-168:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^other$/^(unique-ingress-host-and-path|unique-ingress-paths|update-image-tag|verify-vpa-target)$
+  pod-security_baseline:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^pod-security$/^baseline$/^(disallow-capabilities|disallow-host-namespaces|disallow-host-path|disallow-host-ports|disallow-host-ports-range|disallow-host-process|disallow-privileged-containers|disallow-proc-mount|disallow-selinux|restrict-apparmor-profiles|restrict-seccomp|restrict-sysctls)$
+  pod-security_restricted:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^pod-security$/^restricted$/^(disallow-capabilities-strict|disallow-privilege-escalation|require-run-as-non-root-user|require-run-as-nonroot|restrict-seccomp-strict|restrict-volume-types)$
+  pod-security_subrule_restricted:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^pod-security$/^subrule$/^restricted$/^(restricted-exclude-capabilities|restricted-exclude-seccomp|restricted-latest)$
+  psa:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^psa$/^(add-privileged-existing-namespaces|add-psa-labels|add-psa-namespace-reporting|deny-privileged-profile)$
+  psp-migration:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^psp-migration$/^(add-apparmor|add-capabilities|add-runtimeClassName|check-supplemental-groups|restrict-adding-capabilities|restrict-runtimeClassName)$
+  tekton:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^tekton$/^(block-tekton-task-runs|require-tekton-bundle|require-tekton-namespace-pipelinerun)$
+  traefik:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^traefik$/^(disallow-default-tlsoptions)$
+  velero:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^velero$/^(backup-all-volumes|block-velero-restore|validate-cron-schedule)$
+  windows-security:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [ v1.28.13, v1.29.8, v1.30.4, v1.31.0 ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          tests: ^windows-security$/^(require-run-as-containeruser)$
+  e2e-required-success:
+    name: e2e-required
+    needs:
+      - argo
+      - aws
+      - best-practices
+      - best-practices-12
+      - castai
+      - cert-manager
+      - cleanup
+      - consul
+      - external-secret-operator
+      - flux
+      - istio
+      - karpenter
+      - kasten
+      - kubecost
+      - kubeops
+      - kubevirt
+      - linkerd
+      - nginx-ingress
+      - openshift
+      - other
+      - other-12
+      - other-24
+      - other-36
+      - other-48
+      - other-60
+      - other-72
+      - other-84
+      - other-96
+      - other-108
+      - other-120
+      - other-132
+      - other-144
+      - other-156
+      - other-168
+      - pod-security_baseline
+      - pod-security_restricted
+      - pod-security_subrule_restricted
+      - psa
+      - psp-migration
+      - tekton
+      - traefik
+      - velero
+      - windows-security
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+      - run: ${{ true }}
+  e2e-required-failure:
+    name: e2e-required
+    needs:
+      - argo
+      - aws
+      - best-practices
+      - best-practices-12
+      - castai
+      - cert-manager
+      - cleanup
+      - consul
+      - external-secret-operator
+      - flux
+      - istio
+      - karpenter
+      - kasten
+      - kubecost
+      - kubeops
+      - kubevirt
+      - linkerd
+      - nginx-ingress
+      - openshift
+      - other
+      - other-12
+      - other-24
+      - other-36
+      - other-48
+      - other-60
+      - other-72
+      - other-84
+      - other-96
+      - other-108
+      - other-120
+      - other-132
+      - other-144
+      - other-156
+      - other-168
+      - pod-security_baseline
+      - pod-security_restricted
+      - pod-security_subrule_restricted
+      - psa
+      - psp-migration
+      - tekton
+      - traefik
+      - velero
+      - windows-security
+    runs-on: ubuntu-latest
+    if: ${{ failure() || cancelled() }}
+    steps:
+      - run: ${{ false }}
