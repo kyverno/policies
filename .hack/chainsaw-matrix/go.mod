@@ -1,6 +1,6 @@
 module github.com/kyverno/policies/hack/chainsaw-matrix
 
-go 1.22.2
+go 1.23.0
 
 require github.com/kyverno/chainsaw v0.2.8
 
