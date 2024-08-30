@@ -16,4 +16,4 @@ spec:
       terminationGracePeriodSeconds: 10
       containers:
       - name: busbyox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35

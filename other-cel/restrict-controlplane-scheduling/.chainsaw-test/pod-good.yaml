@@ -11,7 +11,7 @@ spec:
     effect: "NoSchedule"
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -30,5 +30,5 @@ spec:
     effect: "NoExecute"
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 

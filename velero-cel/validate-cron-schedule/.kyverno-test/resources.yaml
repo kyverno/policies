@@ -1,0 +1,20 @@
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: goodschedule01
+spec:
+  schedule: 0 7 * * *
+  template:
+    includedNamespaces:
+    - 'default'
+---
+apiVersion: velero.io/v1
+kind: Schedule
+metadata:
+  name: badschedule01
+spec:
+  schedule: 0 7 * * * *
+  template:
+    includedNamespaces:
+    - 'default'

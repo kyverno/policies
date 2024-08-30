@@ -16,10 +16,10 @@ spec:
       - name: k8s-nginx-init
         image: bar.io/nginx
       - name: busybox-init
-        image: busybox
+        image: ghcr.io/kyverno/test-busybox
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: k8s-nginx
         image: bar.io/nginx
 ---
@@ -46,7 +46,7 @@ spec:
       - name: k8s-nginx
         image: bar.io/nginx
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -66,7 +66,7 @@ spec:
       - name: k8s-nginx-init
         image: bar.io/nginx
       - name: busybox-init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       containers:
       - name: k8s-nginx
         image: bar.io/nginx
@@ -88,10 +88,10 @@ spec:
           - name: k8s-nginx-init
             image: bar.io/nginx
           - name: busybox-init
-            image: busybox
+            image: ghcr.io/kyverno/test-busybox
           containers:
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: k8s-nginx
             image: bar.io/nginx
 ---
@@ -115,7 +115,7 @@ spec:
           - name: k8s-nginx
             image: bar.io/nginx
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -132,7 +132,7 @@ spec:
           - name: k8s-nginx-init
             image: bar.io/nginx
           - name: busybox-init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           containers:
           - name: k8s-nginx
             image: bar.io/nginx

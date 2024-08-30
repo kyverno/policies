@@ -1,0 +1,21 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: default
+spec:
+  minVersion: VersionTLS12                      
+  maxVersion: VersionTLS13                      
+  curvePreferences:
+    - CurveP521
+    - CurveP384
+  cipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+    - TLS_RSA_WITH_AES_256_GCM_SHA384
+  clientAuth:      
+    secretNames:   
+      - secret-ca1
+      - secret-ca2
+    clientAuthType: VerifyClientCertIfGiven
+  sniStrict: true
+  alpnProtocols:
+    - foobar

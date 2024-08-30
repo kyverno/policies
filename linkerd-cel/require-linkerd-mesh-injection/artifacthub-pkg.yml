@@ -1,0 +1,23 @@
+name: require-linkerd-mesh-injection-cel
+version: 1.0.0
+displayName: Require Linkerd Mesh Injection in CEL expressions
+description: >-
+  Sidecar proxy injection in Linkerd may be handled at the Namespace level by setting the annotation `linkerd.io/inject` to `enabled`. This policy enforces that all Namespaces contain the annotation `linkerd.io/inject` set to `enabled`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-cel/require-linkerd-mesh-injection/require-linkerd-mesh-injection.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  Sidecar proxy injection in Linkerd may be handled at the Namespace level by setting the annotation `linkerd.io/inject` to `enabled`. This policy enforces that all Namespaces contain the annotation `linkerd.io/inject` set to `enabled`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.26-1.27"
+  kyverno/subject: "Namespace, Annotation"
+digest: 35eeae221b613fe7c3ddff2006d6f38e43c2ec6300ec89e7c44ac53ed93e0b62
+createdAt: "2024-05-21T16:06:15Z"

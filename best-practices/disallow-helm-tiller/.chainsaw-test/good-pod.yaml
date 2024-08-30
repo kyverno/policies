@@ -5,6 +5,11 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:v1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: nothelmbox
-    image: busybox:v1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
+  initContainers:
+  - name: busyboxinit
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: nothelmboxinit
+    image: ghcr.io/kyverno/test-busybox:1.35
