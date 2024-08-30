@@ -10,6 +10,13 @@ spec:
     image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       readOnlyRootFilesystem: true
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox-again-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      readOnlyRootFilesystem: true
 ---
 apiVersion: v1
 kind: Pod
@@ -22,4 +29,11 @@ spec:
     securityContext:
       readOnlyRootFilesystem: true
   - name: busybox-again
+    image: ghcr.io/kyverno/test-busybox:1.35
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      readOnlyRootFilesystem: true
+  - name: busybox-again-init
     image: ghcr.io/kyverno/test-busybox:1.35
