@@ -32,7 +32,7 @@ spec:
         value: DELETE
     mutate:
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context: 
         - name: maintainer
           imageRegistry: 

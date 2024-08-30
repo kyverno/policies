@@ -61,3 +61,18 @@ spec:
                 containers:
                   - name: "{{ element.name }}"
                     image: harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}
+          - list: request.object.spec.ephemeralContainers[]
+            context:
+              - name: imageData
+                imageRegistry:
+                  reference: "{{ element.image }}"
+            preconditions:
+              any:
+                - key: "{{imageData.registry}}"
+                  operator: Equals
+                  value: index.docker.io
+            patchStrategicMerge:
+              spec:
+                containers:
+                  - name: "{{ element.name }}"
+                    image: harbor.example.com/k8s/{{imageData.repository}}:{{imageData.identifier}}

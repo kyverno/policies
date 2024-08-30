@@ -32,7 +32,7 @@ spec:
     validate:
       message: "Images containing built-in volumes are prohibited."
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context: 
         - name: imageData
           imageRegistry: 

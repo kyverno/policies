@@ -32,7 +32,7 @@ spec:
     validate:
       message: "images with size greater than 2Gi not allowed"  
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context: 
         - name: imageSize
           imageRegistry: 

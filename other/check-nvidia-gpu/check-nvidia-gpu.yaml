@@ -33,7 +33,7 @@ spec:
     validate:
       message: "Images which reserve NVIDIA GPUs must be built to use them."
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         context: 
         - name: imageData
           imageRegistry: 

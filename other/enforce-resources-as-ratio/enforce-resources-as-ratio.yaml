@@ -34,7 +34,7 @@ spec:
     validate:
       message: Limits may not exceed 2.5x the requests.
       foreach:
-      - list: "request.object.spec.containers"
+      - list: "request.object.spec.[ephemeralContainers, initContainers, containers][]"
         deny:
           conditions:
             any:
