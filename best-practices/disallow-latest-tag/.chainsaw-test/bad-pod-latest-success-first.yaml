@@ -5,11 +5,11 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: nginx:1.35
+    image: ghcr.io/kyverno/test-nginx:1.35
   - name: busybox
-    image: busybox:latest
+    image: ghcr.io/kyverno/test-busybox:latest
   initContainers:
   - name: nginxinit
-    image: nginx:1.35
+    image: ghcr.io/kyverno/test-nginx:1.35
   - name: busyboxinit
-    image: busybox:latest
+    image: ghcr.io/kyverno/test-busybox:latest

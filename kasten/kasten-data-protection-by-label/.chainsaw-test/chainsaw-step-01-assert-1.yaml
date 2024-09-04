@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: kasten-data-protection-by-label
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

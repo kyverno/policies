@@ -3,4 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: require-imagepullsecrets
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+

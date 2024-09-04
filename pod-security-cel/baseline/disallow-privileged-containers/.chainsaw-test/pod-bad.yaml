@@ -5,16 +5,16 @@ metadata:
 spec:
   initContainers:
   - name: busybox01-init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: false
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -23,7 +23,7 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
 ---
@@ -34,11 +34,11 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: false
 ---
@@ -49,11 +49,11 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: false
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
 ---
@@ -64,7 +64,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
 ---
@@ -75,9 +75,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
 ---
@@ -88,12 +88,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -102,14 +102,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -118,14 +118,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       privileged: true
 ---

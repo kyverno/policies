@@ -15,12 +15,12 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox
+      - image: ghcr.io/kyverno/test-busybox
         name: busybox
       - image: docker.io/tiller:latest
         name: helm-tiller
       initContainers:
-      - image: busybox
+      - image: ghcr.io/kyverno/test-busybox
         name: busyboxinit
       - image: docker.io/tiller:latest
         name: helm-tillerinit

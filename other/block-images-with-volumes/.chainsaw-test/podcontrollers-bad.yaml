@@ -35,5 +35,5 @@ spec:
           - name: busybox
             image: clover/volume:passbolt
           - name: busybox02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           restartPolicy: OnFailure
