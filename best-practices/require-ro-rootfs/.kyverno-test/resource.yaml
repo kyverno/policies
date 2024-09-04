@@ -8,6 +8,11 @@ spec:
     image: ghost
     securityContext:
       readOnlyRootFilesystem: false
+  initContainers:
+  - name: ghost-init
+    image: ghost
+    securityContext:
+      readOnlyRootFilesystem: false
 ---
 apiVersion: v1
 kind: Pod
@@ -16,6 +21,9 @@ metadata:
 spec:
   containers:
   - name: ghost
+    image: ghost
+  initContainers:
+  - name: ghost-init
     image: ghost
 ---
 apiVersion: v1
@@ -30,6 +38,13 @@ spec:
     image: busybox
     securityContext:
       readOnlyRootFilesystem: true
+  initContainers:
+  - name: ghost-init
+    image: ghost
+  - name: busybox-init
+    image: busybox
+    securityContext:
+      readOnlyRootFilesystem: true
 ---
 apiVersion: v1
 kind: Pod
@@ -38,6 +53,11 @@ metadata:
 spec:
   containers:
   - name: ghost
+    image: ghost
+    securityContext:
+      readOnlyRootFilesystem: true
+  initContainers:
+  - name: ghost-init
     image: ghost
     securityContext:
       readOnlyRootFilesystem: true
@@ -53,6 +73,11 @@ spec:
     securityContext:
       readOnlyRootFilesystem: true
   - name: nginx
+    image: nginx
+    securityContext:
+      readOnlyRootFilesystem: true
+  initContainers:
+  - name: nginx-init
     image: nginx
     securityContext:
       readOnlyRootFilesystem: true
