@@ -25,9 +25,8 @@ spec:
       - resources:
           kinds:
           - Node
-          operations:
-          - UPDATE
     validate:
+      allowExistingViolations: false
       message: "Modifying the `foo` label on a Node is not allowed."
       deny:
         conditions:
@@ -44,14 +43,16 @@ spec:
       - resources:
           kinds:
           - Node
-          operations:
-          - UPDATE
     preconditions:
       all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: Equals
+        value: UPDATE
       - key: "{{ request.oldObject.metadata.labels.foo || '' }}"
         operator: Equals
         value: "?*"
     validate:
+      allowExistingViolations: false
       message: "Removing the `foo` label on a Node is not allowed."
       pattern:
         metadata:
