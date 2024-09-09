@@ -18,11 +18,11 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
-  securityContext:
-    allowPrivilegeEscalation: false
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      allowPrivilegeEscalation: false
 ---
 apiVersion: v1
 kind: Pod
@@ -32,4 +32,3 @@ spec:
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
-
