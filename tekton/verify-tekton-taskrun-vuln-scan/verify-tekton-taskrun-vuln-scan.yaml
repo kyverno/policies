@@ -14,7 +14,7 @@ metadata:
       A signed bundle is required and a vulnerability scan made by Grype must
       return no vulnerabilities greater than 8.0.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   webhookTimeoutSeconds: 30
   rules:
   - name: check-signature

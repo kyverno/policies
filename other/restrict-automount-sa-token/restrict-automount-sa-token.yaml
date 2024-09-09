@@ -15,7 +15,7 @@ metadata:
       be followed if Pods do not need to speak to the API server to function.
       This policy ensures that mounting of these ServiceAccount tokens is blocked.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-automountServiceAccountToken

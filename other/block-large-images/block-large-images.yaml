@@ -16,7 +16,7 @@ metadata:
       name an image which is unusually large to disrupt operations. This policy
       checks the size of every container image and blocks if it is over 2 Gibibytes.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: block-over-twogi
     match:

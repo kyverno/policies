@@ -18,7 +18,7 @@ metadata:
       except one with the key `breakglass`. Changing, adding, or deleting
       any other labels is denied.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: safe-label

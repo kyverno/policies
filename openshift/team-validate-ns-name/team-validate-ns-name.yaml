@@ -17,7 +17,7 @@ metadata:
       This policy denies the creation of a Namespace if the name of the Namespace does
       not follow a specific naming defined by the cluster admins.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: team-validate-ns-name
