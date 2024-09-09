@@ -17,14 +17,16 @@ spec:
     spec:
       affinity:
         podAffinity:
-          prefferedDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: bar
-                operator: In
-                values:
-                - bar
-            topologyKey: topology.kubernetes.io/zone
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: bar
+                  operator: In
+                  values:
+                  - bar
+              topologyKey: topology.kubernetes.io/zone
       containers:
       - name: busybox
         image: ghcr.io/kyverno/test-busybox:1.35
