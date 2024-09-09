@@ -17,7 +17,7 @@ metadata:
       where the ConfigMap stores an array of strings. This policy validates that any Pods created
       outside of the list of Namespaces have the label `foo` applied.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: exclude-namespaces-dynamically
