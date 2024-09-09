@@ -26,6 +26,7 @@ spec:
           kinds:
           - Node
     validate:
+      allowExistingViolations: false
       message: "Modifying the `foo` label on a Node is not allowed."
       deny:
         conditions:
@@ -51,6 +52,7 @@ spec:
         operator: Equals
         value: "?*"
     validate:
+      allowExistingViolations: false
       message: "Removing the `foo` label on a Node is not allowed."
       pattern:
         metadata:
