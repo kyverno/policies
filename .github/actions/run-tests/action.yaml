@@ -9,6 +9,8 @@ runs:
   steps:
     - name: Install Chainsaw
       uses: kyverno/action-install-chainsaw@b2f61a8d0459a65c476ac802514d88e1612b3396 # v0.2.9
+      with:
+        verify: true
     - name: Test with Chainsaw
       shell: bash
       run: |
