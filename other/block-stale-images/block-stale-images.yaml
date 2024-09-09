@@ -15,7 +15,7 @@ metadata:
       This policy checks the contents of every container image and inspects them for the create time.
       If it finds any image which was built more than 6 months ago this policy blocks the deployment.
 spec:
-  validationFailureAction: audit 
+  validationFailureAction: Audit 
   rules:
     - name: block-stale-images
       match:
