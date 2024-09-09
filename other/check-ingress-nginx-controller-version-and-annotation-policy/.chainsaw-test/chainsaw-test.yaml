@@ -9,6 +9,8 @@ spec:
     try:
     - apply:
         file: ../check-ingress-nginx-controller-version-and-annotation-policy.yaml
+  - name: step-02
+    try:
     - patch:
         resource:
           apiVersion: kyverno.io/v1
@@ -19,7 +21,7 @@ spec:
             validationFailureAction: Enforce
     - assert:
         file: chainsaw-step-01-assert-1.yaml
-  - name: step-02
+  - name: step-03
     try:
     - apply:
         file: good-resource.yaml
