@@ -20,7 +20,7 @@ spec:
       terminationGracePeriodSeconds: 0
       volumes:
       - containerDisk:
-          image: ghcr.io/kyverno/test-busybox:1.35
+          image: busybox:1.35
         name: containerdisk
       - cloudInitNoCloud:
           userData: |

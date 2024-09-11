@@ -14,7 +14,7 @@ metadata:
       This policy enforces that if a PodDisruptionBudget specifies the maxUnavailable field
       it must be greater than zero.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: pdb-maxunavailable

@@ -8,7 +8,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      foo: bar
+      app: busybox
   template:
     metadata:
       labels:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -28,7 +28,7 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      owner: "foo"
+      app: busybox
   template:
     metadata:
       labels:
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -53,7 +53,7 @@ spec:
         spec:
           containers:
           - name: hello
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             command:
             - "sleep"
             - "3600"
@@ -75,7 +75,7 @@ spec:
         spec:
           containers:
           - name: hello
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             command:
             - "sleep"
             - "3600"

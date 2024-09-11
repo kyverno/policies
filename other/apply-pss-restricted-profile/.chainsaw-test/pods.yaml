@@ -4,7 +4,7 @@ metadata:
   name: pod01
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -13,9 +13,9 @@ metadata:
   name: pod02
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox2
 ---
 apiVersion: v1
@@ -29,9 +29,9 @@ spec:
     runAsGroup: 1000
     fsGroup: 3000
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox2
       securityContext:
         privileged: true

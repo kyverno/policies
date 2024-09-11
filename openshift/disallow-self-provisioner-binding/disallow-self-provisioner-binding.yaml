@@ -13,7 +13,7 @@ metadata:
     policies.kyverno.io/description: >-
       This policy prevents binding to the self-provisioners role for strict control of OpenShift project creation.
 spec:
-  validationFailureAction: Enforce
+  validationFailureAction: enforce
   background: true
   rules:
   - name: check-self-provisioner-binding-no-subject
@@ -32,8 +32,9 @@ spec:
         value: UPDATE
     validate:
       message: >-
-        Modifying the self-provisioners ClusterRoleBinding is not allowed.
-      deny: {}
+        Binding to the self-provisioners cluster role is not allowed.
+      pattern:
+        =(subjects): {}
   - name: check-self-provisioner-binding-with-subject
     match:
       any:

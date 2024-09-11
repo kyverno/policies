@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -59,13 +59,13 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -87,14 +87,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -116,7 +116,7 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -124,7 +124,7 @@ spec:
             - ALL
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -146,20 +146,20 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -178,7 +178,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -197,7 +197,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -217,13 +217,13 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -242,14 +242,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -268,7 +268,7 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -276,7 +276,7 @@ spec:
                 - ALL
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -295,20 +295,20 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -330,7 +330,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -354,13 +354,13 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -384,7 +384,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -392,7 +392,7 @@ spec:
             add:
             - NET_BIND_SERVICE
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -416,14 +416,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -445,7 +445,7 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -454,7 +454,7 @@ spec:
             - NET_BIND_SERVICE
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -476,20 +476,20 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -511,13 +511,13 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
             - ALL
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -526,7 +526,7 @@ spec:
             - NET_BIND_SERVICE
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -548,7 +548,7 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -556,7 +556,7 @@ spec:
             add:
             - NET_BIND_SERVICE
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -565,7 +565,7 @@ spec:
             - NET_BIND_SERVICE
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             drop:
@@ -584,7 +584,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -603,7 +603,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -624,13 +624,13 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -651,7 +651,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -659,7 +659,7 @@ spec:
                 add:
                 - NET_BIND_SERVICE
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -680,7 +680,7 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -689,7 +689,7 @@ spec:
                 - NET_BIND_SERVICE
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -708,20 +708,20 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -740,13 +740,13 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
                 - ALL
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -755,7 +755,7 @@ spec:
                 - NET_BIND_SERVICE
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -774,7 +774,7 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -782,7 +782,7 @@ spec:
                 add:
                 - NET_BIND_SERVICE
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:
@@ -791,7 +791,7 @@ spec:
                 - NET_BIND_SERVICE
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 drop:

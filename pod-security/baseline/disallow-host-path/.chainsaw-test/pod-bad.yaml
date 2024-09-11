@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   volumes:
   - name: empty
     emptyDir:
@@ -22,7 +22,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   volumes:
   - name: foo
     hostPath:
@@ -39,7 +39,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   volumes:
   - name: foo
     hostPath:
@@ -52,7 +52,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
       - name: udev
         mountPath: /data
@@ -68,7 +68,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
       - name: udev
         mountPath: /data

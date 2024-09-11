@@ -17,7 +17,7 @@ metadata:
       This policy blocks any Role or ClusterRole that contains a wildcard entry in
       the resources list found in any rule.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: wildcard-resources

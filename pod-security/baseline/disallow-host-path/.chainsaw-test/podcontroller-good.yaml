@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       volumes:
       - name: empty
         emptyDir:
@@ -42,7 +42,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           volumes:
           - name: empty
             emptyDir:
@@ -72,7 +72,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -90,7 +90,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
           - name: temp
             mountPath: /scratch
@@ -111,7 +111,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -126,7 +126,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
               - name: temp
                 mountPath: /scratch

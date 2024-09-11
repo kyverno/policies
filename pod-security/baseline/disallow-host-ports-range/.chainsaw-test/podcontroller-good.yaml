@@ -14,14 +14,14 @@ spec:
     spec:
       initContainers:
       - name: init
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - containerPort: 8090
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: busybox-again
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - containerPort: 8088
           hostPort: 5432
@@ -39,15 +39,15 @@ spec:
           restartPolicy: Never
           initContainers:
           - name: init
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - containerPort: 9808
               hostPort: 6000
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: busybox-again
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - containerPort: 8080
 ---
@@ -67,7 +67,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -85,7 +85,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: admin
           containerPort: 8000
@@ -108,7 +108,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: admin
           containerPort: 8000
@@ -133,9 +133,9 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -153,9 +153,9 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: admin
           containerPort: 8000
@@ -178,13 +178,13 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
           hostPort: 5555
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: admin
           containerPort: 8000
@@ -206,10 +206,10 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -227,14 +227,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
           hostPort: 5555
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -252,14 +252,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
           hostPort: 5555
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
@@ -280,16 +280,16 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
           hostPort: 5555
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: web-insecure
           containerPort: 8080
@@ -310,7 +310,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         ports:
         - name: admin
           containerPort: 8000
@@ -330,7 +330,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -345,7 +345,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: admin
               containerPort: 8000
@@ -365,7 +365,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: admin
               containerPort: 8000
@@ -387,9 +387,9 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -404,9 +404,9 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: admin
               containerPort: 8000
@@ -426,13 +426,13 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
               hostPort: 5555
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: admin
               containerPort: 8000
@@ -451,10 +451,10 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -469,14 +469,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
               hostPort: 5555
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -491,14 +491,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
               hostPort: 5555
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
@@ -516,16 +516,16 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080
               hostPort: 5555
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             ports:
             - name: web-insecure
               containerPort: 8080

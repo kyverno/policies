@@ -6,8 +6,8 @@ metadata:
 spec:
   containers:
   - name: pod04-01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: pod04-02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: my-secret

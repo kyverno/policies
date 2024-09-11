@@ -5,18 +5,18 @@ metadata:
 spec:
   initContainers:
   - name: busybox01-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_init_t
@@ -28,12 +28,12 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_init_t
@@ -48,7 +48,7 @@ spec:
       type: container_init_t
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -57,7 +57,7 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -66,7 +66,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -75,7 +75,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seLinuxOptions:
       type: container_t
@@ -87,7 +87,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seLinuxOptions:
       type: container_init_t
@@ -99,7 +99,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seLinuxOptions:
       type: container_kvm_t
@@ -111,7 +111,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
@@ -123,7 +123,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_init_t
@@ -135,7 +135,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
@@ -147,9 +147,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
@@ -161,12 +161,12 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
@@ -178,13 +178,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -193,13 +193,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_init_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -208,13 +208,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_kvm_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -223,15 +223,15 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -240,18 +240,18 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_init_t
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -260,7 +260,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -269,7 +269,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seLinuxOptions:
       level: "s0:c123,c456"
@@ -281,7 +281,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
@@ -293,7 +293,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
@@ -306,9 +306,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
@@ -320,12 +320,12 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
@@ -337,10 +337,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -349,13 +349,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -364,14 +364,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
         type: container_t
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -380,15 +380,15 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -397,16 +397,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         type: container_t
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seLinuxOptions:
         level: "s0:c123,c456"
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---

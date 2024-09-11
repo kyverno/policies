@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: audit-event-on-delete
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

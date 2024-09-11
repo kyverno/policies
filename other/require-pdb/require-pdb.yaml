@@ -15,7 +15,7 @@ metadata:
       to ensure they have a matching, preexisting PodDisruptionBudget.
       Note: This policy must be run in `enforce` mode to ensure accuracy.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: require-pdb

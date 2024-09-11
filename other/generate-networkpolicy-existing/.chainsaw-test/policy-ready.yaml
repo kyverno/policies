@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: generate-networkpolicy-existing
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: busybox02
         image: nvidia/cuda:12.2.0-devel-ubi8
 ---
@@ -35,5 +35,5 @@ spec:
           - name: busybox
             image: nvidia/cuda:12.2.0-devel-ubi8
           - name: busybox02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           restartPolicy: OnFailure

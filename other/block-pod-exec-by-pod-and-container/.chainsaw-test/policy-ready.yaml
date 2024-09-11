@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: deny-exec-by-pod-and-container
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

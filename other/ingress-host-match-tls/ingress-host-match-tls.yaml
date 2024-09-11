@@ -18,7 +18,7 @@ metadata:
       in the list of TLS hosts.
 spec:
   background: false
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: host-match-tls
     match:

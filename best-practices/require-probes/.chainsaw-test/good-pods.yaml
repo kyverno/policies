@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     livenessProbe:
       tcpSocket:
         port: 7070
@@ -22,13 +22,13 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     livenessProbe:
       tcpSocket:
         port: 7070
       periodSeconds: 20
   - name: busybox-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     readinessProbe:
       tcpSocket:
         port: 8080
@@ -43,7 +43,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     startupProbe:
       grpc:
         port: 8888

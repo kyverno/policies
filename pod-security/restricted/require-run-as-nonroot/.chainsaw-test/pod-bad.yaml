@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
 ---
@@ -25,7 +25,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     runAsNonRoot: false
 ---
@@ -36,7 +36,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   securityContext:
@@ -49,9 +49,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -60,9 +60,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
 ---
@@ -73,9 +73,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     runAsNonRoot: false
 ---
@@ -86,9 +86,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   securityContext:
@@ -101,11 +101,11 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   securityContext:
@@ -118,12 +118,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
 ---
@@ -134,10 +134,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
   securityContext:
@@ -150,12 +150,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
   securityContext:
@@ -168,12 +168,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
 ---
@@ -184,14 +184,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: false
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       runAsNonRoot: true
 ---
@@ -202,23 +202,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     runAsNonRoot: false
----
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod16
-spec:
-  containers:
-  - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
-  securityContext:
-    allowPrivilegeEscalation: false
 ---

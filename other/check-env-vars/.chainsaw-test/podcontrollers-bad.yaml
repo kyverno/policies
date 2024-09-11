@@ -17,14 +17,14 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         env:
         - name: DISABLE_OPA
           value: "true"
         - name: foo
           value: bar
       - name: busybox02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         env:
         - name: foo
           value: bar
@@ -43,14 +43,14 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             env:
             - name: DISABLE_OPA
               value: "true"
             - name: foo
               value: bar
           - name: busybox02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             env:
             - name: foo
               value: bar

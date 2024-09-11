@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: check-env-vars
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

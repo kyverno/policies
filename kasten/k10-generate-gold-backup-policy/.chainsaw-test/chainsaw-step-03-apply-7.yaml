@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    dataprotection: k10-simplepolicy
+    purpose: production
+  name: ss02
+  namespace: k10-gp-ns03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  serviceName: busybox-ss
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox

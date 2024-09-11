@@ -27,7 +27,7 @@ spec:
                 - bar
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -51,5 +51,5 @@ spec:
                     - bar
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           restartPolicy: OnFailure

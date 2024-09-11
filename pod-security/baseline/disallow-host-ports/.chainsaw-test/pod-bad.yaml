@@ -5,14 +5,14 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - hostPort: 8090
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: busybox-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - containerPort: 8099
     - hostPort: 8090
@@ -25,16 +25,16 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - containerPort: 8090
   - name: init-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - containerPort: 8090
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - containerPort: 8090
       hostPort: 8090
@@ -48,7 +48,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - containerPort: 8090
       hostPort: 8090
@@ -60,7 +60,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -73,7 +73,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
@@ -90,9 +90,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
@@ -109,13 +109,13 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
       protocol: TCP
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -129,13 +129,13 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: web-secure
       containerPort: 4443
       hostPort: 443
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -149,10 +149,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -165,14 +165,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
       protocol: TCP
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -185,16 +185,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
       protocol: TCP
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -207,20 +207,20 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: web
       containerPort: 4443
       hostPort: 443
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: admin
       containerPort: 8000
       protocol: TCP
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
@@ -233,12 +233,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     ports:
     - name: dns
       containerPort: 5553
       hostPort: 53
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---

@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: inspect-csr
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

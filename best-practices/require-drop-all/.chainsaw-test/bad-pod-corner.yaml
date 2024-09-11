@@ -5,19 +5,19 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
         drop:
           - ALL
-  - name: add-capabilities-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: add-capabilities
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
         drop:
-          - CAP_NET_RAW
+          - ["CAP_NET_RAW"]
 ---
 apiVersion: v1
 kind: Pod
@@ -26,12 +26,12 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
-  - name: add-capabilities-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: add-capabilities
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_TIME"]
@@ -41,14 +41,14 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: add-capabilities-bad
+  name: add-capabilities-good
 spec:
   containers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         drop:
           - ALL
   - name: init-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35

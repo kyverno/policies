@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: myregistrykey
 ---
@@ -27,7 +27,7 @@ spec:
   - name: nginx
     image: ghcr.io/kyverno/test-verify-image:unsigned
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: myregistrykey
 ---
@@ -38,7 +38,7 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: ghcr.io/kyverno/test-nginx:1.12
+    image: nginx:1.12
   - name: busybox
     image: quay.io/quay/busybox
   imagePullSecrets:

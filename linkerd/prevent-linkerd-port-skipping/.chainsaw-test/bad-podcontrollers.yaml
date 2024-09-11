@@ -15,11 +15,11 @@ spec:
         app: busybox
       annotations:
         foo: bar
-        config.linkerd.io/skip-inbound-ports: "true"
+        config.linkerd.io/skip-inbound-ports: true
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -37,12 +37,12 @@ spec:
       labels:
         app: busybox
       annotations:
-        config.linkerd.io/skip-outbound-ports: "true"
+        config.linkerd.io/skip-outbound-ports: true
         foo: bar
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -61,12 +61,12 @@ spec:
         app: busybox
       annotations:
         foo: bar
-        config.linkerd.io/skip-inbound-ports: "true"
-        config.linkerd.io/skip-outbound-ports: "true"
+        config.linkerd.io/skip-inbound-ports: true
+        config.linkerd.io/skip-outbound-ports: true
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -79,12 +79,12 @@ spec:
       template:
         metadata:
           annotations:
-            config.linkerd.io/skip-outbound-ports: "true"
+            config.linkerd.io/skip-outbound-ports: true
             foo: bar
         spec:
           containers:
           - name: hello
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             command:
             - "sleep"
             - "3600"
@@ -102,11 +102,11 @@ spec:
         metadata:
           annotations:
             foo: bar
-            config.linkerd.io/skip-inbound-ports: "true"
+            config.linkerd.io/skip-inbound-ports: true
         spec:
           containers:
           - name: hello
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             command:
             - "sleep"
             - "3600"
@@ -124,12 +124,12 @@ spec:
         metadata:
           annotations:
             foo: bar
-            config.linkerd.io/skip-outbound-ports: "true"
-            config.linkerd.io/skip-inbound-ports: "true"
+            config.linkerd.io/skip-outbound-ports: true
+            config.linkerd.io/skip-inbound-ports: true
         spec:
           containers:
           - name: hello
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             command:
             - "sleep"
             - "3600"

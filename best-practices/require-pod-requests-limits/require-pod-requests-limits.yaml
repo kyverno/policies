@@ -16,7 +16,7 @@ metadata:
       This policy validates that all containers have something specified for memory and CPU
       requests and memory limits.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: validate-resources
@@ -26,24 +26,10 @@ spec:
           kinds:
           - Pod
     validate:
-      message: "CPU and memory resource requests and memory limits are required for containers."
+      message: "CPU and memory resource requests and limits are required."
       pattern:
         spec:
           containers:
-          - resources:
-              requests:
-                memory: "?*"
-                cpu: "?*"
-              limits:
-                memory: "?*"
-          =(initContainers):
-          - resources:
-              requests:
-                memory: "?*"
-                cpu: "?*"
-              limits:
-                memory: "?*"
-          =(ephemeralContainers):
           - resources:
               requests:
                 memory: "?*"

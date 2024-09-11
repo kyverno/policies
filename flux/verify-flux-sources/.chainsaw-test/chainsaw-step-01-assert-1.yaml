@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: verify-flux-sources
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

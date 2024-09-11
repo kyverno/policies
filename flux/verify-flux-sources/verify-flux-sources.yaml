@@ -18,7 +18,7 @@ metadata:
       accessing outside sources. This policy verifies that each of the Flux
       sources comes from a trusted location.
 spec:  
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
     - name: flux-github-repositories
       match:

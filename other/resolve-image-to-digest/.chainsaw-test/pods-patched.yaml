@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
 ---
 apiVersion: v1
 kind: Pod
@@ -14,6 +14,6 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3
+    image: index.docker.io/library/busybox@sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47

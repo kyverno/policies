@@ -16,7 +16,7 @@ metadata:
       policy prevents binding to the cluster-admin ClusterRole in
       RoleBinding or ClusterRoleBinding resources.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: clusteradmin-bindings

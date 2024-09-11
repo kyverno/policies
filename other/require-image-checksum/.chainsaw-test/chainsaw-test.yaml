@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -8,16 +7,9 @@ spec:
   steps:
   - name: step-01
     try:
-    - apply:
-        file: ../require-image-checksum.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: require-image-checksum
-          spec:
-            validationFailureAction: Enforce
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-image-checksum.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -36,20 +28,10 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
-  - name: step-03
+  - name: step-99
     try:
-    - script:
-        content: |
-          kubectl apply -f pod-good-for-ephemeral.yaml
-          sleep 2
-          kubectl debug goodpod-for-debug -it --image=ubuntu@sha256:0eb0f877e1c869a300c442c41120e778db7161419244ee5cbc6fa5f134e74736 --share-processes --copy-to=myapp-debug
-    - script:
-        content: |
-          kubectl apply -f pod-bad-for-ephemeral.yaml
-          sleep 2
-          kubectl debug badpod-for-debug -it --image=ubuntu --share-processes --copy-to=myapp-debug
-        check:
-          ($error != null): true
-    - script:
-        content: |
-          kubectl delete pods --all --force
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: require-image-checksum

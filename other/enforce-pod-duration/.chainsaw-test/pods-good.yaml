@@ -4,7 +4,7 @@ metadata:
   name: goodpod01
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -15,7 +15,7 @@ metadata:
   name: goodpod02
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -27,7 +27,7 @@ metadata:
   name: goodpod03
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -39,5 +39,5 @@ metadata:
   name: goodpod04
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox

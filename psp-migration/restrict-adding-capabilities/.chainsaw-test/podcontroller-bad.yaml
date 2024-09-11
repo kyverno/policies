@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -59,13 +59,13 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
             - NET_RAW
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -87,14 +87,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
             - NET_RAW
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -116,16 +116,16 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
             - NET_RAW
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -147,14 +147,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
             - NET_RAW
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           capabilities:
             add:
@@ -173,7 +173,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -192,7 +192,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -212,13 +212,13 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
                 - NET_RAW
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -237,14 +237,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
                 - NET_RAW
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -264,9 +264,9 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -274,7 +274,7 @@ spec:
                 - CAP_CHOWN
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
@@ -293,14 +293,14 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:
                 - NET_RAW
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               capabilities:
                 add:

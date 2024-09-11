@@ -12,7 +12,4 @@ rules:
   resources:
   - nodes
   verbs:
-  - get
-  - list 
-  - watch
   - update

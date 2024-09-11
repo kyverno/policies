@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: update-image-tag
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

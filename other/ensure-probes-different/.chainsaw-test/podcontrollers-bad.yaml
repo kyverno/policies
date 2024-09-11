@@ -17,7 +17,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
         livenessProbe:
           exec:
@@ -28,7 +28,7 @@ spec:
         readinessProbe:
           tcpSocket:
             port: 8080
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox02
         command: ["sleep","300"]
         livenessProbe:
@@ -59,7 +59,7 @@ spec:
         name: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
         command: ["sleep","300"]
         livenessProbe:
@@ -70,7 +70,7 @@ spec:
           tcpSocket:
             port: 8080
           periodSeconds: 10
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox02
         livenessProbe:
           exec:
@@ -100,7 +100,7 @@ spec:
     spec:
       terminationGracePeriodSeconds: 5
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox02
         command: ["sleep","300"]
         livenessProbe:

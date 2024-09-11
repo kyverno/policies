@@ -16,7 +16,7 @@ metadata:
       thereby reducing visibility. This policy ensures that Pods cannot set the annotation
       `sidecar.istio.io/inject` to a value of `false`.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: prohibit-inject-annotation

@@ -18,7 +18,7 @@ metadata:
       policy which gets a global approved registry from a ConfigMap and, based upon an
       annotation at the Namespace level, gets the registry approved for that Namespace.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: validate-corp-registries

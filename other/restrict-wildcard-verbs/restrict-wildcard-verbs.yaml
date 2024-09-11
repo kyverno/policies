@@ -17,7 +17,7 @@ metadata:
       This policy blocks any Role or ClusterRole that contains a wildcard entry in
       the verbs list found in any rule.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: wildcard-verbs
@@ -32,6 +32,6 @@ spec:
         deny:
           conditions:
             any:
-            - key: "{{ contains(to_array(request.object.rules[].verbs[]), '*') }}"
+            - key: "{{ contains(request.object.rules[].verbs[], '*') }}"
               operator: Equals
               value: true

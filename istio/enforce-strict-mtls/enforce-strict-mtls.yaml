@@ -18,7 +18,7 @@ metadata:
       This policy prevents disabling strict mTLS in a PeerAuthentication resource by requiring
       the `mode` be set to either `UNSET` or `STRICT`.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: validate-mtls

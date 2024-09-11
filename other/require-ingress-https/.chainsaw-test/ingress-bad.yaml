@@ -32,7 +32,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    http:
+    https:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -64,7 +64,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    http:
+    https:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -99,7 +99,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    http:
+    https:
       paths:
       - path: /testpath
         pathType: Prefix

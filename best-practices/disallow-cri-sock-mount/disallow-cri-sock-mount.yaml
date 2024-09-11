@@ -16,7 +16,7 @@ metadata:
       to or replacement of this policy, preventing users from mounting the parent directories
       (/var/run and /var) may be necessary to completely prevent socket bind mounts.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: validate-docker-sock-mount

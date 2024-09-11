@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: unique-ingress-host-and-path
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

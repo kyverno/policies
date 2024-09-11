@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -20,8 +19,6 @@ spec:
         content: |
           #!/bin/bash
           set -eu
-          cp $KUBECONFIG temp
-          export KUBECONFIG=./temp
           export USERNAME=testuser
           export CA=ca.crt
           #### Get CA certificate from kubeconfig assuming it's the first in the list.
@@ -57,43 +54,63 @@ spec:
           kubectl config set-context $USERNAME-context --user=$USERNAME --cluster=$CLUSTER
           # Delete CSR
           kubectl delete csr $USERNAME
+  - name: step-03
+    try:
     - apply:
         file: chainsaw-step-03-apply-1.yaml
+  - name: step-04
+    try:
+    - command:
+        args:
+        - create
+        - -f
+        - good-cm.yaml
+        entrypoint: kubectl
     - script:
-        content: |
-          set -eu
-          export KUBECONFIG=./temp
-          kubectl create -f good-cm.yaml
+        content: if kubectl --context=testuser-context apply -f bad-cm-update.yaml;
+          then exit 1; else exit 0; fi
     - script:
-        content: |
-          set -eu
-          export KUBECONFIG=./temp
-          if kubectl --context=testuser-context apply -f bad-cm-update.yaml; then exit 1; else exit 0; fi
+        content: if kubectl --context=testuser-context delete -f good-cm.yaml; then
+          exit 1; else exit 0; fi
+    - command:
+        args:
+        - --context=testuser-context
+        - create
+        - -f
+        - good-pod.yaml
+        entrypoint: kubectl
     - script:
-        content: |
-          set -eu
-          export KUBECONFIG=./temp
-          if kubectl --context=testuser-context delete -f good-cm.yaml; then exit 1; else exit 0; fi
-    - script:
-        content: |
-          set -eu
-          export KUBECONFIG=./temp
-          kubectl --context=testuser-context create -f good-pod.yaml
-    - script:
-        content: |
-          set -eu
-          export KUBECONFIG=./temp
-          if kubectl --context=testuser-context create -f bad-pod.yaml; then exit 1; else exit 0; fi
+        content: if kubectl --context=testuser-context create -f bad-pod.yaml; then
+          exit 1; else exit 0; fi
+  - name: step-05
+    try:
+    - command:
+        args:
+        - config
+        - unset
+        - users.testuser
+        entrypoint: kubectl
+    - command:
+        args:
+        - config
+        - unset
+        - contexts.testuser-context
+        entrypoint: kubectl
+  - name: step-06
+    try:
     - apply:
         file: good-pod-not-admin.yaml
-    finally:
-    - script:
-        content: kubectl delete -f good-pod.yaml --ignore-not-found
-    - script:
-        content: kubectl delete -f good-cm.yaml --ignore-not-found
-    - script:
-        content: kubectl delete -f bad-cm-update.yaml --ignore-not-found
-    - script:
-        content: |
-          set -e
-          rm ./temp
+  - name: step-07
+    try:
+    - command:
+        args:
+        - delete
+        - -f
+        - good-pod.yaml
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - -f
+        - good-cm.yaml
+        entrypoint: kubectl

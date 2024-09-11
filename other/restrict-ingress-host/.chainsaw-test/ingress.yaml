@@ -5,7 +5,7 @@ metadata:
 spec:
   rules:
   - host: foo
-    http:
+    https:
       paths:
       - backend:
           service:
@@ -22,7 +22,7 @@ metadata:
 spec:
   rules:
   - host: bar
-    http:
+    https:
       paths:
       - backend:
           service:

@@ -10,16 +10,16 @@ spec:
   template:
     metadata:
       labels:
-        app: app
+        foo: bar
     spec:
       initContainers:
       - name: k8s-nginx-init
         image: bar.io/nginx
       - name: busybox-init
-        image: ghcr.io/kyverno/test-busybox
+        image: busybox
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: k8s-nginx
         image: bar.io/nginx
 ---
@@ -35,7 +35,7 @@ spec:
   template:
     metadata:
       labels:
-        app: app
+        foo: bar
     spec:
       initContainers:
       - name: k8s-nginx-init
@@ -46,7 +46,7 @@ spec:
       - name: k8s-nginx
         image: bar.io/nginx
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -60,13 +60,13 @@ spec:
   template:
     metadata:
       labels:
-        app: app
+        foo: bar
     spec:
       initContainers:
       - name: k8s-nginx-init
         image: bar.io/nginx
       - name: busybox-init
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       containers:
       - name: k8s-nginx
         image: bar.io/nginx
@@ -88,10 +88,10 @@ spec:
           - name: k8s-nginx-init
             image: bar.io/nginx
           - name: busybox-init
-            image: ghcr.io/kyverno/test-busybox
+            image: busybox
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: k8s-nginx
             image: bar.io/nginx
 ---
@@ -115,7 +115,7 @@ spec:
           - name: k8s-nginx
             image: bar.io/nginx
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -132,7 +132,7 @@ spec:
           - name: k8s-nginx-init
             image: bar.io/nginx
           - name: busybox-init
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           containers:
           - name: k8s-nginx
             image: bar.io/nginx

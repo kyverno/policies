@@ -1,20 +1,22 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod01
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod02
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: udev
       mountPath: /data
@@ -25,11 +27,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod03
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: mysettings
       mountPath: /settings
@@ -41,11 +44,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod04
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: warehouse
       mountPath: /warehouse
@@ -59,13 +63,14 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod05
   labels:
     foo: bar
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: labels
       mountPath: /labels
@@ -80,11 +85,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod06
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: ephem
       mountPath: /ephem
@@ -105,11 +111,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod07
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - name: foo
       mountPath: /foo
@@ -122,11 +129,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod08
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /var/run/secrets/tokens
       name: vault-token
@@ -142,11 +150,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodpod09
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /mysecret
       name: mysecret

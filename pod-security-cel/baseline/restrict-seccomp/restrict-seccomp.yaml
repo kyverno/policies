@@ -24,23 +24,47 @@ spec:
         - resources:
             kinds:
               - Pod
-            operations:
-            - CREATE
-            - UPDATE
       validate:
         cel:
-          variables:
-            - name: allContainers
-              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
-            - name: allowedProfileTypes
-              expression: "['RuntimeDefault', 'Localhost']"
           expressions:
             - expression: >- 
-                (object.spec.?securityContext.?seccompProfile.?type.orValue('Localhost') 
-                in variables.allowedProfileTypes) && 
-                (variables.allContainers.all(container, 
-                container.?securityContext.?seccompProfile.?type.orValue('Localhost') 
-                in variables.allowedProfileTypes))
+                !has(object.spec.securityContext) ||
+                !has(object.spec.securityContext.seccompProfile) ||
+                !has(object.spec.securityContext.seccompProfile.type) ||
+                object.spec.securityContext.seccompProfile.type == 'RuntimeDefault' ||
+                object.spec.securityContext.seccompProfile.type == 'Localhost'
+              message: >-
+                Use of custom Seccomp profiles is disallowed. The field
+                spec.securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.
+
+            - expression: >- 
+                object.spec.containers.all(container, !has(container.securityContext) ||
+                !has(container.securityContext.seccompProfile) ||
+                !has(container.securityContext.seccompProfile.type) ||
+                container.securityContext.seccompProfile.type == 'RuntimeDefault' ||
+                container.securityContext.seccompProfile.type == 'Localhost')
               message: >-
                 Use of custom Seccomp profiles is disallowed. The field
                 spec.containers[*].securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.
+
+            - expression: >- 
+                !has(object.spec.initContainers) ||
+                object.spec.initContainers.all(container, !has(container.securityContext) ||
+                !has(container.securityContext.seccompProfile) ||
+                !has(container.securityContext.seccompProfile.type) ||
+                container.securityContext.seccompProfile.type == 'RuntimeDefault' ||
+                container.securityContext.seccompProfile.type == 'Localhost')
+              message: >-
+                Use of custom Seccomp profiles is disallowed. The field
+                spec.initContainers[*].securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.
+
+            - expression: >- 
+                !has(object.spec.ephemeralContainers) ||
+                object.spec.ephemeralContainers.all(container, !has(container.securityContext) ||
+                !has(container.securityContext.seccompProfile) ||
+                !has(container.securityContext.seccompProfile.type) ||
+                container.securityContext.seccompProfile.type == 'RuntimeDefault' ||
+                container.securityContext.seccompProfile.type == 'Localhost')
+              message: >-
+                Use of custom Seccomp profiles is disallowed. The field
+                spec.ephemeralContainers[*].securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.

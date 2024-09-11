@@ -18,7 +18,7 @@ metadata:
       when produced through GitHub Actions. It requires configuration based upon
       your own values.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   webhookTimeoutSeconds: 30
   rules:
     - name: check-slsa-keyless

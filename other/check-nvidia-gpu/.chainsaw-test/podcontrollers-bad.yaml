@@ -17,7 +17,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
         resources:
           limits:
@@ -50,7 +50,7 @@ spec:
               limits:
                 cpu: "0.5"
                 nvidia.com/gpu: 1
-          - image: ghcr.io/kyverno/test-busybox:1.35
+          - image: busybox:1.35
             name: busybox
             resources:
               limits:

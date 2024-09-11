@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -8,18 +7,11 @@ spec:
   steps:
   - name: step-01
     try:
-    - apply:
-        file: ../require-probes.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: require-pod-probes
-          spec:
-            validationFailureAction: Enforce
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../require-probes.yaml | kubectl create -f -
     - assert:
-        file: policy-ready.yaml
+        file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
     - apply:
@@ -41,4 +33,17 @@ spec:
         - check:
             ($error != null): true
         file: bad-podcontrollers.yaml
-
+  - name: step-03
+    try:
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-pod-update.yaml
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: require-pod-probes

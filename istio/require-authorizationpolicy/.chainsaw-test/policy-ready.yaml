@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: require-authorizationpolicies
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

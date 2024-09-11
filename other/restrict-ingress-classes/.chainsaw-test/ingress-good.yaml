@@ -8,7 +8,7 @@ metadata:
 spec:
   rules:
   - host: endpoint01
-    http:
+    https:
       paths:
       - backend:
           service:
@@ -28,7 +28,7 @@ metadata:
 spec:
   rules:
   - host: endpoint01
-    http:
+    https:
       paths:
       - path: /testpath
         pathType: Prefix

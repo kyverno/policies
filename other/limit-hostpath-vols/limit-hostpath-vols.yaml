@@ -19,7 +19,7 @@ metadata:
       access is enforced preventing directory escape.
 spec:
   background: false
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: limit-hostpath-to-slash-data
     match:

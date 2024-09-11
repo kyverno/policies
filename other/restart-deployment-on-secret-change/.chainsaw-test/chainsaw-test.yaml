@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -29,8 +28,10 @@ spec:
         file: chainsaw-step-03-apply-1.yaml
   - name: step-04
     try:
-    - sleep:
-        duration: 5s
+    - command:
+        args:
+        - "5"
+        entrypoint: sleep
     - script:
         content: |
           annotation=$(kubectl get deployment -n default busybox -o json | kyverno jp query "spec.template.metadata.annotations.\"ops.corp.com\/triggerrestart\" || 'annotation-404' " | tail -n 1 | cut -d '"' -f 2)

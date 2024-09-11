@@ -16,7 +16,7 @@ metadata:
       internal DNS, duplicates must be avoided. This policy requires every such Service have a cluster-unique
       hostname present in the value of the annotation.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: ensure-valid-externaldns-annotation
@@ -32,7 +32,7 @@ spec:
         - name: alldns
           apiCall:
             urlPath: "/api/v1/services"
-            jmesPath: "items[?[metadata.namespace, metadata.name] != ['{{request.object.metadata.namespace}}', '{{request.object.metadata.name}}']].metadata.annotations.\"external-dns.alpha.kubernetes.io/hostname\""
+            jmesPath: "items[].metadata.annotations.\"external-dns.alpha.kubernetes.io/hostname\""
       preconditions:
         all:
         - key: "{{ request.operation || 'BACKGROUND' }}"

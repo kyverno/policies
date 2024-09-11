@@ -17,6 +17,6 @@ readme: |
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
-  kyverno/kubernetesVersion: "1.27"
+  kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "ClusterRole, RBAC"
-digest: 18ba0b2ea2556ca0042bcb0c2f32061d95e81792e07ae86e81dd39bd810a920e
+digest: e1c5ea5cb9a1834459d8c5de5b52ea487e3a4b716c110f3a64f00d9c72a65c68

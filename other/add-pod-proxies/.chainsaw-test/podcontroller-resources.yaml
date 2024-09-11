@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: bb-01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         env:
         - name: HTTP_PROXY
           value: http://proxy.kyverno.domain:8080
@@ -26,14 +26,14 @@ spec:
         - name: NO_PROXY
           value: kyverno.org
       - name: bb-02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         env:
         - name: HTTP_PROXY
           value: http://proxy.kyverno.org:8080
         - name: FOO
           value: bar
       - name: bb-03
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -47,7 +47,7 @@ spec:
         spec:
           containers:
           - name: bb-01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             env:
             - name: HTTP_PROXY
               value: http://proxy.kyverno.domain:8080
@@ -56,12 +56,12 @@ spec:
             - name: NO_PROXY
               value: kyverno.org
           - name: bb-02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             env:
             - name: HTTP_PROXY
               value: http://proxy.kyverno.org:8080
             - name: FOO
               value: bar
           - name: bb-03
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           restartPolicy: OnFailure

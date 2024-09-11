@@ -13,7 +13,7 @@ metadata:
       all tools can understand. The recommended annotations describe applications in a way that can be
       queried. This policy validates that the annotation `corp.org/department` is specified with some value.      
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: check-for-annotation

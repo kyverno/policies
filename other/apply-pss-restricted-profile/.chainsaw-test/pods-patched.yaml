@@ -11,7 +11,7 @@ spec:
     runAsGroup: 3000
     fsGroup: 2000
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
       securityContext:
         privileged: false
@@ -33,7 +33,7 @@ spec:
     runAsGroup: 3000
     fsGroup: 2000
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
       securityContext:
         privileged: false
@@ -41,7 +41,7 @@ spec:
           drop: 
           - ALL
         allowPrivilegeEscalation: false
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox2
       securityContext:
         privileged: false
@@ -63,7 +63,7 @@ spec:
     runAsGroup: 3000
     fsGroup: 2000
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
       securityContext:
         privileged: false
@@ -71,7 +71,7 @@ spec:
           drop: 
           - ALL
         allowPrivilegeEscalation: false
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox2
       securityContext:
         privileged: false

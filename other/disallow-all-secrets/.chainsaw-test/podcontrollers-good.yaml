@@ -16,22 +16,22 @@ spec:
         app: busybox
     spec:
       initContainers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02-init
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox-init
           env:
           - name: foo
             value: bar
       containers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox
           env:
           - name: NODE_NAME
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02
 ---
 apiVersion: apps/v1
@@ -52,20 +52,20 @@ spec:
         app: busybox
     spec:
       initContainers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02-init
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox-init
           envFrom:
           - configMapRef:
               name: foo-bar
       containers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox
           envFrom:
           - configMapRef:
               name: foo-bar
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02
 ---
 apiVersion: apps/v1
@@ -86,9 +86,9 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox02
       volumes:
       - name: foo-vol
@@ -106,22 +106,22 @@ spec:
       template:
         spec:
           initContainers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02-init
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox-init
               env:
               - name: foo
                 value: bar
           containers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox
               env:
               - name: NODE_NAME
                 valueFrom:
                   fieldRef:
                     fieldPath: spec.nodeName
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02
           restartPolicy: OnFailure
 ---
@@ -136,20 +136,20 @@ spec:
       template:
         spec:
           initContainers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02-init
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox-init
               envFrom:
               - configMapRef:
                   name: foo-bar
           containers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox
               envFrom:
               - configMapRef:
                   name: foo-bar
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02
           restartPolicy: OnFailure
 ---
@@ -164,9 +164,9 @@ spec:
       template:
         spec:
           containers:
-          - image: ghcr.io/kyverno/test-busybox:1.35
+          - image: busybox:1.35
             name: busybox
-          - image: ghcr.io/kyverno/test-busybox:1.35
+          - image: busybox:1.35
             name: busybox02
           volumes:
           - name: foo-vol

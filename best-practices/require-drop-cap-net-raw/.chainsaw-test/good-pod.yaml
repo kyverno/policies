@@ -5,20 +5,20 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         drop:
           - CAP_NET_RAW
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         drop:
           - CAP_NET_RAW
   - name: add-capabilities-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         drop:

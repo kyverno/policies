@@ -14,16 +14,16 @@ spec:
     spec:
       initContainers:
       - name: busybox01-init
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
       containers:
       - name: busybox01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
       - name: busybox02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -38,14 +38,14 @@ spec:
           restartPolicy: Never
           initContainers:
           - name: busybox01-init
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
           containers:
           - name: busybox01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: busybox02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
 ---
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -83,7 +83,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
 ---
@@ -103,9 +103,9 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: container02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
 ---
@@ -125,10 +125,10 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -146,12 +146,12 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -169,14 +169,14 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
       - name: initcontainer02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: false
 ---
@@ -193,7 +193,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -208,7 +208,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
 ---
@@ -225,9 +225,9 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: container02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
 ---
@@ -244,10 +244,10 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -262,12 +262,12 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -282,13 +282,13 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: initcontainer02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: false

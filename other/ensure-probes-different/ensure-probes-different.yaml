@@ -15,7 +15,7 @@ metadata:
       checks that liveness and readiness probes are not equal. Keep in mind that if both the 
       probes are not set, they are considered to be equal and hence fails the check.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: validate-probes

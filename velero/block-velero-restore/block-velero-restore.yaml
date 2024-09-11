@@ -13,7 +13,7 @@ metadata:
       It checks the Restore CRD object and its namespaceMapping field. If destination match protected namespace
       then operation fails and warning message is throw.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
   - name: block-velero-restore-to-protected-namespace

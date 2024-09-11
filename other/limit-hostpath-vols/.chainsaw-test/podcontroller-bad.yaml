@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       volumes:
       - name: foo
         hostPath:
@@ -42,7 +42,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           volumes:
           - name: foo
             hostPath:

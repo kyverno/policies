@@ -16,7 +16,7 @@ metadata:
       This policy blocks any image that runs as root if it does not come from a trustworthy
       registry, `ghcr.io` in this case.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: only-allow-trusted-images
     match:

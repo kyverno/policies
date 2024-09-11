@@ -12,7 +12,7 @@ metadata:
       such as to ensure a Pod lifetime annotation does not exceed some site specific max threshold.
       Pod lifetime annotation can be no greater than 8 hours.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: pods-lifetime

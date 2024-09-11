@@ -21,7 +21,7 @@ metadata:
       to specify it using metadata or build directives of some sort (ex., Dockerfile FROM
       statements do not automatically expose this information).
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: require-base-image
     match:

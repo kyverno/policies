@@ -6,9 +6,9 @@ metadata:
 spec:
   containers:
   - name: busybox 
-    image: ghcr.io/kyverno/test-busybox:latest
+    image: busybox:latest
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.28
+    image: busybox:1.28
 ---
 apiVersion: v1
 kind: Pod
@@ -18,7 +18,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.28
+    image: busybox:1.28
 ---
 apiVersion: v1
 kind: Pod
@@ -28,6 +28,6 @@ metadata:
 spec:
   containers:
   - name: busybox 
-    image: ghcr.io/kyverno/test-busybox:1.28
+    image: busybox:1.28
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:latest
+    image: busybox:latest

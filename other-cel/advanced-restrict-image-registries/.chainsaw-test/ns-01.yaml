@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    corp.com/allowed-registries: img.corp.com/
-  name: imageregistries-ns01

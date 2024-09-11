@@ -4,9 +4,9 @@ metadata:
   name: badpod01
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox02
       resources:
         requests:
@@ -20,12 +20,12 @@ metadata:
   name: badpod02
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
       resources:
         requests:
           memory: "100Mi"
         limits:
           memory: "300Mi"
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox02

@@ -15,7 +15,7 @@ metadata:
       creating the `default` TLSOption is a restricted operation. This policy ensures that
       only a cluster-admin can create the `default` TLSOption resource.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
   - name: disallow-default-tlsoptions

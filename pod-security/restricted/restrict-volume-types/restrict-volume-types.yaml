@@ -15,7 +15,7 @@ metadata:
       limits usage of non-core volume types to those defined through PersistentVolumes.
       This policy blocks any other type of volume other than those in the allow list.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: restricted-volumes

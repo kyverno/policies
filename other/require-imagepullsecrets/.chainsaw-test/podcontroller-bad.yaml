@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: docker.io/library/busybox:latest
+        image: busybox:1.35
       - name: nginx
         image: ghcr.io/kyverno/test-verify-image:unsigned
 ---
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
           - name: nginx
-            image: docker.io/library/busybox:latest
+            image: ghcr.io/kyverno/test-verify-image:unsigned
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           restartPolicy: OnFailure

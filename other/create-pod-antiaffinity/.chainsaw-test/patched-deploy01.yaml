@@ -27,6 +27,6 @@ spec:
                   values:
                   - busybox
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
         resources: {}

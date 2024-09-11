@@ -18,7 +18,7 @@ metadata:
       to CVE-2021-25740 by ensuring the system:aggregate-to-edit ClusterRole does not have
       the edit permission of Endpoints.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: system-aggregate-to-edit-check

@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: insert-pod-antiaffinity
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

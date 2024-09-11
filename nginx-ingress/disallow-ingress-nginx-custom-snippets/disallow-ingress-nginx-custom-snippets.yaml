@@ -16,7 +16,7 @@ metadata:
       blocks *-snippet annotations on an Ingress.
       See: https://github.com/kubernetes/ingress-nginx/issues/7837
 spec:
-  validationFailureAction: Enforce
+  validationFailureAction: enforce
   rules:
     - name: check-config-map
       match:

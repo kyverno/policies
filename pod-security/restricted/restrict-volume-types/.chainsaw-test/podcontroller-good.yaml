@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment01
 spec:
   replicas: 1
@@ -14,11 +15,12 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment02
 spec:
   replicas: 1
@@ -32,7 +34,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
         - name: udev
           mountPath: /data
@@ -43,6 +45,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment05
 spec:
   replicas: 1
@@ -57,7 +60,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
         - name: labels
           mountPath: /labels
@@ -72,6 +75,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment06
 spec:
   replicas: 1
@@ -85,7 +89,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
         - name: ephem
           mountPath: /ephem
@@ -106,6 +110,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment07
 spec:
   replicas: 1
@@ -119,7 +124,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
         - name: foo
           mountPath: /foo
@@ -132,6 +137,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: restrict-voltypes-ns
   name: gooddeployment08
 spec:
   replicas: 1
@@ -145,7 +151,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         volumeMounts:
         - mountPath: /var/run/secrets/tokens
           name: vault-token
@@ -161,6 +167,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob01
 spec:
   schedule: "*/1 * * * *"
@@ -171,11 +178,12 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob02
 spec:
   schedule: "*/1 * * * *"
@@ -186,7 +194,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: udev
               mountPath: /data
@@ -197,6 +205,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob03
 spec:
   schedule: "*/1 * * * *"
@@ -207,7 +216,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: mysettings
               mountPath: /settings
@@ -219,6 +228,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob04
 spec:
   schedule: "*/1 * * * *"
@@ -229,7 +239,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: warehouse
               mountPath: /warehouse
@@ -243,6 +253,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob05
 spec:
   schedule: "*/1 * * * *"
@@ -256,7 +267,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: labels
               mountPath: /labels
@@ -271,6 +282,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob06
 spec:
   schedule: "*/1 * * * *"
@@ -281,7 +293,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: ephem
               mountPath: /ephem
@@ -302,6 +314,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob07
 spec:
   schedule: "*/1 * * * *"
@@ -312,7 +325,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - name: foo
               mountPath: /foo
@@ -325,6 +338,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob08
 spec:
   schedule: "*/1 * * * *"
@@ -335,7 +349,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - mountPath: /var/run/secrets/tokens
               name: vault-token
@@ -351,6 +365,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
+  namespace: restrict-voltypes-ns
   name: goodcronjob09
 spec:
   schedule: "*/1 * * * *"
@@ -361,7 +376,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             volumeMounts:
             - mountPath: /mysecret
               name: mysecret

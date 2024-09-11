@@ -6,4 +6,4 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: ghcr.io/kyverno/test-nginx@sha256:eca6768a39363decf0a4606a282e222552576fec380f555b65560983f7305cf7
+    image: docker.io/nginx@sha256:63b44e8ddb83d5dd8020327c1f40436e37a6fffd3ef2498a6204df23be6e7e94

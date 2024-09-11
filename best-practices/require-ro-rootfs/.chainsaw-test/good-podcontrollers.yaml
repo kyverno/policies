@@ -14,11 +14,11 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           readOnlyRootFilesystem: true
       - name: busybox-again
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           readOnlyRootFilesystem: true
 ---
@@ -35,10 +35,10 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               readOnlyRootFilesystem: true
           - name: busybox-again
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               readOnlyRootFilesystem: true

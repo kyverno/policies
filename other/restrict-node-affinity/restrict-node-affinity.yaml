@@ -17,7 +17,7 @@ metadata:
       is not used in a Pod spec.
 spec:
   background: true
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: check-nodeaffinity
     match:

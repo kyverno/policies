@@ -20,7 +20,7 @@ metadata:
 spec:
   background: true
   failurePolicy: Ignore
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
     - name: spread-pods
       match:

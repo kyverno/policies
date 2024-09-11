@@ -16,7 +16,7 @@ metadata:
       This policy is provided with the intention that users will need to control its scope by using
       exclusions, preconditions, and other policy language mechanisms.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: burstable

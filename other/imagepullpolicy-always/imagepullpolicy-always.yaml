@@ -14,7 +14,7 @@ metadata:
       pulls will get the updated image. This policy validates the imagePullPolicy is set to `Always`
       when the `latest` tag is specified explicitly or where a tag is not defined at all.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: imagepullpolicy-always

@@ -1,9 +1,0 @@
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: cert-manager-restrict-issuer
-status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready

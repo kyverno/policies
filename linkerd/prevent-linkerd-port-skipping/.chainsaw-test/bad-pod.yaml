@@ -3,23 +3,23 @@ kind: Pod
 metadata:
   annotations:
     foo: bar
-    config.linkerd.io/skip-inbound-ports: "true"
+    config.linkerd.io/skip-inbound-ports: true
   name: badpod01
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   annotations:
-    config.linkerd.io/skip-outbound-ports: "true"
+    config.linkerd.io/skip-outbound-ports: true
     foo: bar
   name: badpod02
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -27,10 +27,10 @@ kind: Pod
 metadata:
   annotations:
     foo: bar
-    config.linkerd.io/skip-outbound-ports: "true"
-    config.linkerd.io/skip-inbound-ports: "true"
+    config.linkerd.io/skip-outbound-ports: true
+    config.linkerd.io/skip-inbound-ports: true
   name: badpod03
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox

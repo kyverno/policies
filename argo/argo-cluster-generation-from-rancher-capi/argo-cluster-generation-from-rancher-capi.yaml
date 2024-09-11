@@ -19,7 +19,7 @@ metadata:
       "Cluster-API cluster auto-registration" and Rancher issue https://github.com/rancher/rancher/issues/38053
       "Fix type and labels Rancher v2 provisioner specifies when creating CAPI Cluster Secret".
 spec:
-  generateExisting: true
+  generateExistingOnPolicyUpdate: true
   rules:
   - name: source-rancher-non-local-cluster-and-capi-secret
     match:

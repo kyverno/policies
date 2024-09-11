@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
     - name: test5-01
-      image: ghcr.io/kyverno/test-busybox:1.35
+      image: busybox:1.35
       resources:
         limits:
           cpu: "1"
@@ -17,7 +17,7 @@ spec:
           memory: "500Mi"
           ephemeral-storage: "500Mi"
     - name: test5-02
-      image: ghcr.io/kyverno/test-busybox:1.35
+      image: busybox:1.35
       resources:
         limits:
           cpu: "1"

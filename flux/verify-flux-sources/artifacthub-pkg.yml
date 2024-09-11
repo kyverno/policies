@@ -19,4 +19,4 @@ annotations:
   kyverno/category: "Flux"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "GitRepository, Bucket, HelmRepository, ImageRepository"
-digest: 36729a3f5f13572a543a7326be1dbd83323b17b24c78777ea86e318065d58f7b
+digest: 7bd73534dccd558c7114c3c3cf09d03d9ca98a13096dca0a7f44b5b11b55ae84

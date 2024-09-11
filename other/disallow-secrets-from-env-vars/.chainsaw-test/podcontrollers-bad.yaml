@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       containers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox
           env:
           - name: SECRET_BAD
@@ -24,7 +24,7 @@ spec:
               secretKeyRef:
                 name: foo
                 key: pass
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02
           env:
           - name: foo
@@ -48,12 +48,12 @@ spec:
         app: busybox
     spec:
       containers:
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox
           envFrom:
           - secretRef:
               name: foo
-        - image: ghcr.io/kyverno/test-busybox:1.35
+        - image: busybox:1.35
           name: busybox02
 ---
 apiVersion: batch/v1
@@ -67,7 +67,7 @@ spec:
       template:
         spec:
           containers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox
               env:
               - name: SECRET_BAD
@@ -75,7 +75,7 @@ spec:
                   secretKeyRef:
                     name: foo
                     key: pass
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02
               env:
               - name: foo
@@ -93,11 +93,11 @@ spec:
       template:
         spec:
           containers:
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox
               envFrom:
               - secretRef:
                   name: foo
-            - image: ghcr.io/kyverno/test-busybox:1.35
+            - image: busybox:1.35
               name: busybox02
           restartPolicy: OnFailures

@@ -37,7 +37,7 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * Use dashes for folder name and policy name instead of underscores.
 
-* When updating a policy already in the library, calculate the new sha256 sum of the changed policy and update the `artifacthub-pkg.yml` file's `digest` field with this value. This is to ensure Artifact Hub picks up the changes once merged. Note that because of validation checks in Kyverno's CI processes, it expects the digest to have been generated on a Linux system. Due to the differences of control characters, a digest generated from a Windows system may be different from that generated in Linux.
+* When updating a policy already in the library, calculate the new sha256 sum of the changed policy and update the `artifacthub-pkg.yml` file's `digest` field with this value. This is to ensure Artifact Hub picks up the changes once merged.
 
 Once your policy is written within these guidelines and tested, please open a standard PR against the `main` branch of kyverno/policies. In order for a policy to make it to the website's [policies page](https://kyverno.io/policies/), it must first be committed to the `main` branch in this repo. Following that, an administrator will render these policies to produce Markdown files in a second PR. You do not need to worry about this process, however.
 
@@ -59,7 +59,7 @@ metadata:
     policies.kyverno.io/description: >-
       Adding capabilities beyond those listed in the policy must be disallowed.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: my-rule-name
@@ -124,3 +124,4 @@ If you're not yet comfortable with Kyverno and would like to see a policy that m
 * Be responsive to the GitHub issue if further follow-up is required by the contributors or maintainers.
 
 Having this information up front will assist others in crafting a policy to meet your needs.
+

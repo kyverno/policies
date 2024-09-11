@@ -5,7 +5,7 @@ metadata:
 policies:
 - ../disallow-capabilities-strict.yaml
 resources:
-- resource.yaml
+- ../../../../pod-security/restricted/disallow-capabilities-strict/.kyverno-test/resource.yaml
 results:
 - kind: CronJob
   policy: disallow-capabilities-strict

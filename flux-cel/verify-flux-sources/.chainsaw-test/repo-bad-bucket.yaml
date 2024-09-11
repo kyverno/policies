@@ -1,8 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: Bucket
-metadata:
-  name: bucket-bad
-spec:
-  interval: 5m0s
-  endpoint: minio.notmyorg.com
-  bucketName: example

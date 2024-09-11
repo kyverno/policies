@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: enforce-min-tls-version
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

@@ -7,17 +7,17 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: config-vol
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: foo
   - name: busybox03
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: empty

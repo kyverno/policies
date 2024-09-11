@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -8,18 +7,11 @@ spec:
   steps:
   - name: step-01
     try:
-    - apply:
-        file: ../restrict-image-registries.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: restrict-image-registries
-          spec:
-            validationFailureAction: Enforce
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../restrict-image-registries.yaml | kubectl create -f -
     - assert:
-        file: policy-ready.yaml
+        file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
     - apply:
@@ -53,9 +45,40 @@ spec:
           -n ir-pods-namespace; then exit 1; else exit 0; fi;
   - name: step-98
     try:
-    - script:
-        content: kubectl delete deployments --all --force --grace-period=0 -n ir-pods-namespace
-    - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
-    - script:
-        content: kubectl delete cronjobs --all --force --grace-period=0 -n ir-pods-namespace
+    - command:
+        args:
+        - delete
+        - deployments
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - ir-pods-namespace
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - pods
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - ir-pods-namespace
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - cronjobs
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - ir-pods-namespace
+        entrypoint: kubectl
+  - name: step-99
+    try:
+    - delete:
+        ref:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          name: restrict-image-registries

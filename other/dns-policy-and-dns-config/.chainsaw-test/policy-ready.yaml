@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: change-dns-config-policy
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

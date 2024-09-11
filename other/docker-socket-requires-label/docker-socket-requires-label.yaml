@@ -15,7 +15,7 @@ metadata:
       requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set
       to `true`.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: conditional-anchor-dockersock

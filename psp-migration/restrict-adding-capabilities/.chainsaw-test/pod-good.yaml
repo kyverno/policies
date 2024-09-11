@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -14,7 +14,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -27,9 +27,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -38,9 +38,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -53,13 +53,13 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_BIND_SERVICE
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -72,10 +72,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -84,14 +84,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_BIND_SERVICE
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -100,12 +100,12 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -114,16 +114,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_BIND_SERVICE
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -132,17 +132,17 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_BIND_SERVICE
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_BIND_SERVICE
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35

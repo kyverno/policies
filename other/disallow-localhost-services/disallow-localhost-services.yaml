@@ -13,7 +13,7 @@ metadata:
       vulnerabilities in some Ingress controllers. This policy audits Services of type ExternalName
       if the externalName field refers to localhost.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: no-localhost-service

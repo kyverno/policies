@@ -7,7 +7,7 @@ spec:
   - name: pod01-01
     image: corp.reg.com/busybox:1.35
   - name: pod01-02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: my-secret
 ---
@@ -20,12 +20,12 @@ spec:
   - name: pod02-01-init
     image: corp.reg.com/busybox:1.35
   - name: pod02-02-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: pod02-01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: pod02-02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: my-secret
 ---
@@ -36,14 +36,14 @@ metadata:
 spec:
   initContainers:
   - name: pod03-01-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: pod03-02-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: pod03-01
     image: corp.reg.com/busybox:1.35
   - name: pod03-02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: my-secret
   - name: foo-bar
@@ -55,13 +55,13 @@ metadata:
 spec:
   initContainers:
   - name: pod04-01-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: pod04-02-init
     image: corp.reg.com/busybox:1.35
   containers:
   - name: pod04-01
     image: corp.reg.com/busybox:1.35
   - name: pod04-02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   imagePullSecrets:
   - name: my-secret

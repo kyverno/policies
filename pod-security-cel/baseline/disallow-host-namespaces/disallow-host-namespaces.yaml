@@ -24,16 +24,13 @@ spec:
         - resources:
             kinds:
               - Pod
-            operations:
-            - CREATE
-            - UPDATE
       validate:
         cel:
           expressions:
             - expression: >-
-                ( object.spec.?hostNetwork.orValue(false) == false) &&
-                ( object.spec.?hostIPC.orValue(false) == false) &&
-                ( object.spec.?hostPID.orValue(false) == false)
+                (!has(object.spec.hostNetwork) || object.spec.hostNetwork == false) &&
+                (!has(object.spec.hostIPC) || object.spec.hostIPC == false) &&
+                (!has(object.spec.hostPID) || object.spec.hostPID == false)
               message: >-
                 Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
                 spec.hostIPC, and spec.hostPID must be unset or set to `false`.

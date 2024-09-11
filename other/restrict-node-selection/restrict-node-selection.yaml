@@ -16,7 +16,7 @@ metadata:
       this policy is only designed to work on initial creation and not in background
       mode.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
   - name: restrict-nodeselector

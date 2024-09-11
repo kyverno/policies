@@ -17,19 +17,17 @@ spec:
     spec:
       affinity:
         podAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              labelSelector:
-                matchExpressions:
-                - key: bar
-                  operator: In
-                  values:
-                  - bar
-              topologyKey: topology.kubernetes.io/zone
+          prefferedDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: bar
+                operator: In
+                values:
+                - bar
+            topologyKey: topology.kubernetes.io/zone
       containers:
       - name: busybox
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -43,5 +41,5 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           restartPolicy: OnFailure

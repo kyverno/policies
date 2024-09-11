@@ -13,7 +13,7 @@ metadata:
     policies.kyverno.io/description: >-
       A signed bundle is required.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   webhookTimeoutSeconds: 30
   rules:
   - name: check-signature

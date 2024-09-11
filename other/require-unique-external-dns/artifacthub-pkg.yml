@@ -1,5 +1,5 @@
 name: require-unique-external-dns
-version: 1.0.1
+version: 1.0.0
 displayName: Require Unique External DNS Services
 createdAt: "2023-04-10T20:30:05.000Z"
 description: >-
@@ -19,4 +19,4 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.21"
   kyverno/subject: "Service"
-digest: b3ce771e03d3b5519be378a040633219fea076f0987e7b9e6324e4dd6ff748bc
+digest: e3953f6fa18f210e5f5f2903c59bd606bd9c518fe94948326dcb739cc1146ba1

@@ -14,7 +14,7 @@ metadata:
       don't set reserved annotations or to force them to use a newer version of an annotation.
     pod-policies.kyverno.io/autogen-controllers: none
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: block-flux-v1

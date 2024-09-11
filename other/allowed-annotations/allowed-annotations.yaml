@@ -16,7 +16,7 @@ metadata:
       This policy demonstrates how to allow two annotations with a specific key
       name of fluxcd.io/ while denying others that do not meet the pattern.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: allowed-fluxcd-annotations

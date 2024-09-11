@@ -17,17 +17,17 @@ results:
   policy: require-image-checksum
   resources:
   - myapp-pod-2
-  result: pass
+  result: fail
   rule: require-image-checksum
 - kind: Deployment
   policy: require-image-checksum
   resources:
   - mydeploy
-  result: fail
+  result: pass
   rule: require-image-checksum
 - kind: Pod
   policy: require-image-checksum
   resources:
   - myapp-pod-1
-  result: fail
+  result: pass
   rule: require-image-checksum

@@ -17,12 +17,12 @@ spec:
     spec:
       containers:
       - name: bb01
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       - name: bb02
-        image: ghcr.io/kyverno/test-busybox:latest
+        image: busybox:latest
         imagePullPolicy: Never
       - name: bb03
-        image: ghcr.io/kyverno/test-busybox
+        image: busybox
         imagePullPolicy: IfNotPresent
 ---
 apiVersion: batch/v1
@@ -37,11 +37,11 @@ spec:
         spec:
           containers:
           - name: bb01
-            image: ghcr.io/kyverno/test-busybox:latest
+            image: busybox:latest
             imagePullPolicy: Never
           - name: bb02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: bb03
-            image: ghcr.io/kyverno/test-busybox
+            image: busybox
             imagePullPolicy: IfNotPresent
           restartPolicy: OnFailure

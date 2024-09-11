@@ -5,7 +5,7 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -14,12 +14,12 @@ spec:
           - MKNOD
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
   - name: add-capabilities-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
@@ -33,7 +33,7 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -41,7 +41,7 @@ spec:
           - CHOWN
           - MKNOD
   - name: init-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
@@ -49,7 +49,7 @@ spec:
         - "ALL"
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
@@ -61,7 +61,7 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
@@ -73,9 +73,9 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: add-capabilities-again
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -84,7 +84,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -93,7 +93,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -106,13 +106,13 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - DAC_OVERRIDE
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -125,10 +125,10 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -137,14 +137,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - DAC_OVERRIDE
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -153,14 +153,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:
         - DAC_OVERRIDE
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       capabilities:
         add:

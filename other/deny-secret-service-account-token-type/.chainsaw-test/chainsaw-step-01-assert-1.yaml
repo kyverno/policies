@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: deny-secret-service-account-token-type
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

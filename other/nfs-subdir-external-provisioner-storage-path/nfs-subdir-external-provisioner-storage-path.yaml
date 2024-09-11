@@ -18,7 +18,7 @@ metadata:
       annotation that it cannot be empty, which may otherwise result in it consuming the root of the designated path.
 spec:
   background: false
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: enforce-storage-path
     match:

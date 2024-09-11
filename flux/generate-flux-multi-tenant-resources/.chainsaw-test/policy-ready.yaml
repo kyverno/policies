@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: generate-flux-multi-tenant-resources
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

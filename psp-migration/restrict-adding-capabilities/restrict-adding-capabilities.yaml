@@ -18,7 +18,7 @@ metadata:
       ephemeralContainers, initContainers, and containers to ensure the only
       capabilities that can be added are either NET_BIND_SERVICE or CAP_CHOWN.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: allowed-capabilities

@@ -17,7 +17,7 @@ metadata:
       policy enforces that any Ingress host does not contain a wildcard
       character.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: block-ingress-wildcard

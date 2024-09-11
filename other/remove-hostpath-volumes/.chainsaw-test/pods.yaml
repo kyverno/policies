@@ -7,21 +7,21 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /test-pd
       name: foo
     - mountPath: /foo
       name: empty
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: empty
     - mountPath: /test-pd
       name: bar
   - name: busybox03
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: empty
@@ -46,12 +46,12 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: config-vol
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: empty
@@ -79,7 +79,7 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   volumes:
   - name: empty
     emptyDir:
@@ -101,17 +101,17 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: config-vol
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: foo
   - name: busybox03
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: empty
@@ -139,14 +139,14 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: busybox
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     volumeMounts:
     - mountPath: /foo
       name: foo
   - name: busybox03
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   volumes:
   - name: foo
     hostPath:

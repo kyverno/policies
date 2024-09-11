@@ -8,9 +8,6 @@ spec:
   containers:
   - name: nginx
     image: nginx:1.12
-  initContainers:
-  - name: nginxinit
-    image: nginx:1.12
 ---
 apiVersion: v1
 kind: Pod
@@ -21,9 +18,6 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: nginx
-  initContainers:
-  - name: nginxinit
     image: nginx
 ---
 apiVersion: v1
@@ -38,11 +32,6 @@ spec:
     image: busybox:1.28
   - name: nginx
     image: nginx
-  initContainers:
-  - name: busyboxinit
-    image: busybox:1.28
-  - name: nginxinit
-    image: nginx
 ---
 apiVersion: v1
 kind: Pod
@@ -53,9 +42,6 @@ metadata:
 spec:
   containers:
   - name: nginx
-    image: nginx:latest
-  initContainers:
-  - name: nginxinit
     image: nginx:latest
 ---
 apiVersion: v1
@@ -69,11 +55,6 @@ spec:
   - name: busybox
     image: busybox:1.28
   - name: nginx
-    image: nginx:latest
-  initContainers:
-  - name: busyboxinit
-    image: busybox:1.28
-  - name: nginxinit
     image: nginx:latest
 ---
 apiVersion: apps/v1
@@ -96,10 +77,6 @@ spec:
       - image: busybox:1.28
         name: busybox
         command: ["sleep", "9999"]
-      initContainers:
-      - image: busybox:1.28
-        name: busyboxinit
-        command: ["sleep", "9999"]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -121,10 +98,6 @@ spec:
       - image: busybox
         name: busybox
         command: ["sleep", "9999"]
-      initContainers:
-      - image: busybox
-        name: busyboxinit
-        command: ["sleep", "9999"]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -145,8 +118,4 @@ spec:
       containers:
       - image: busybox:latest
         name: busybox
-        command: ["sleep", "9999"]
-      initContainers:
-      - image: busybox:latest
-        name: busyboxinit
         command: ["sleep", "9999"]

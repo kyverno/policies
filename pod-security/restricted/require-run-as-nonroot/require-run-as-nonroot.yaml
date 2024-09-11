@@ -14,7 +14,7 @@ metadata:
       `runAsNonRoot` is set to `true`. A known issue prevents a policy such as this
       using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: run-as-non-root

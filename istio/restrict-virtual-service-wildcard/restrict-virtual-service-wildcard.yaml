@@ -18,7 +18,7 @@ metadata:
       character and allows for more governance when a single mesh deployment 
       model is used.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: block-virtual-service-wildcard

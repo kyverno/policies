@@ -13,7 +13,7 @@ metadata:
       able to create their own issuers and sign certificates for other domains. This policy
       ensures that a certificate request for a specific domain uses a designated ClusterIssuer.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: restrict-corp-cert-issuer

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -10,16 +9,9 @@ spec:
     try:
     - apply:
         file: ns.yaml
-    - apply:
-        file: ../block-stale-images.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: block-stale-images
-          spec:
-            validationFailureAction: Enforce
+    - script:
+        content: |
+          sed 's/validationFailureAction: audit/validationFailureAction: Enforce/' ../block-stale-images.yaml | kubectl create -f -
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -40,13 +32,37 @@ spec:
         file: podcontrollers-bad.yaml
   - name: step-99
     try:
-    - script:
-        content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
-    - script:
-        content: kubectl delete cpol block-stale-images
-    - sleep:
-        duration: 5s
-    - script:
-        content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
-    - sleep:
-        duration: 5s
+    - command:
+        args:
+        - delete
+        - all
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - block-staleimg-ns
+        entrypoint: kubectl
+    - command:
+        args:
+        - delete
+        - cpol
+        - block-stale-images
+        entrypoint: kubectl
+    - command:
+        args:
+        - "10"
+        entrypoint: sleep
+    - command:
+        args:
+        - delete
+        - all
+        - --all
+        - --force
+        - --grace-period=0
+        - -n
+        - block-staleimg-ns
+        entrypoint: kubectl
+    - command:
+        args:
+        - "10"
+        entrypoint: sleep

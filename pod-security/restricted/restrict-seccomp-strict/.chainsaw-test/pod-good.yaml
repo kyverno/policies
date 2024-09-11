@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       type: RuntimeDefault
@@ -17,7 +17,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       localhostProfile: operator/default/profile1.json
@@ -30,7 +30,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
@@ -42,7 +42,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: Localhost
@@ -55,9 +55,9 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
@@ -73,12 +73,12 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: Localhost
@@ -91,13 +91,13 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       type: RuntimeDefault
@@ -109,14 +109,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: Localhost
         localhostProfile: operator/default/profile1.json
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       type: RuntimeDefault
@@ -128,15 +128,15 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       type: RuntimeDefault
@@ -148,19 +148,19 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: Localhost
         localhostProfile: operator/default/profile1.json
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       seccompProfile:
         type: RuntimeDefault
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
   securityContext:
     seccompProfile:
       type: RuntimeDefault

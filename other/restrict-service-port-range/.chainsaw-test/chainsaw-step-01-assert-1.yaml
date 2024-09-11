@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: restrict-service-port-range
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

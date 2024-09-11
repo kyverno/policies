@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: block-ephemeral-containers
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

@@ -11,7 +11,7 @@ metadata:
     kyverno.io/kyverno-version: "1.8.0-rc2"
     kyverno.io/kubernetes-version: "1.24-1.25"
 spec:
-  validationFailureAction: Enforce
+  validationFailureAction: enforce
   rules:
   - name: k6t-ensure-instance-type-and-preference
     match:

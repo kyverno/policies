@@ -13,7 +13,7 @@ metadata:
       generally should be avoided. This policy prevents Pods from setting
       the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: pod-prevent-port-skipping

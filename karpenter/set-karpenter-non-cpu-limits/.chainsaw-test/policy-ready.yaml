@@ -3,7 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: set-karpenter-non-cpu-limits
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
+  ready: true

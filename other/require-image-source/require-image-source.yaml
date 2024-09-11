@@ -18,7 +18,7 @@ metadata:
       either a label `org.opencontainers.image.source` or a newer annotation in the
       manifest of the same name.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   rules:
   - name: check-source
     match:

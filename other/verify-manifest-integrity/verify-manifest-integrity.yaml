@@ -19,7 +19,7 @@ metadata:
       the expected key but ignores the `spec.replicas` field allowing other teams to change just
       this value.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: verify-deployment-allow-replicas

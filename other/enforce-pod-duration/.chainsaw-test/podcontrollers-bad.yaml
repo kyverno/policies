@@ -18,7 +18,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
 ---
 apiVersion: batch/v1
@@ -37,6 +37,6 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: ghcr.io/kyverno/test-busybox:1.35
+          - image: busybox:1.35
             name: busybox
           restartPolicy: OnFailure

@@ -19,7 +19,7 @@ spec:
     - svc.kind
     - dns-polconfig-ns.svc.kind
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -43,7 +43,7 @@ spec:
     - svc.kind
     - dns-polconfig-ns.svc.kind
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -67,7 +67,7 @@ spec:
     - svc.kind
     - dns-polconfig-ns.svc.kind
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -91,5 +91,5 @@ spec:
     - svc.kind
     - dns-polconfig-ns.svc.kind
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox

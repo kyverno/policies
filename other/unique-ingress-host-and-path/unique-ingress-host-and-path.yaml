@@ -16,7 +16,7 @@ metadata:
       This policy ensures that no Ingress can be created or updated unless it is
       globally unique with respect to host plus path combination.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: check-host-path-combo

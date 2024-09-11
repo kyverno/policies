@@ -20,7 +20,7 @@ spec:
       - name: cowrie
         image: docker.io/trithemius/cowrie:latest
       - name: bb
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -36,7 +36,7 @@ spec:
         spec:
           containers:
           - name: bb
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: kyverno
             image: ghcr.io/kyverno/kyverno:latest
           restartPolicy: OnFailure

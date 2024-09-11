@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: ingress-host-match-tls
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

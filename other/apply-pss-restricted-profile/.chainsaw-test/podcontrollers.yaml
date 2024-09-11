@@ -19,11 +19,11 @@ spec:
         fsGroup: 1000
       containers:
       - name: bb
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         securityContext:
           privileged: true
       - name: bb2
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -39,9 +39,9 @@ spec:
             runAsNonRoot: false
           containers:
           - name: bb
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           - name: bb2
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             securityContext:
               privileged: true
           restartPolicy: OnFailure

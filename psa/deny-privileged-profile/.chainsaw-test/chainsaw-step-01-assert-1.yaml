@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: deny-privileged-profile
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

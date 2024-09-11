@@ -4,9 +4,9 @@ metadata:
   name: pod03
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox01
       imagePullPolicy: Always
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox02
       imagePullPolicy: Always

@@ -21,7 +21,7 @@ metadata:
       so therefore the validate-v1-25-removals rule may not completely work on 1.25+.
       This policy requires Kyverno v1.7.4+ to function properly.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
   - name: validate-v1-25-removals

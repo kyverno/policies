@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: memory-requests-equal-limits
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

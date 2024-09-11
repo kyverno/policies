@@ -13,7 +13,7 @@ metadata:
       they also set CPU limits equal to requests. Guaranteed is the highest schedulable class. 
       This policy checks that all containers in a given Pod have memory requests equal to limits.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
   - name: memory-requests-equal-limits

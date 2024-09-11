@@ -5,18 +5,18 @@ metadata:
 spec:
   initContainers:
   - name: busybox01-init
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: false
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -25,7 +25,7 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -37,12 +37,12 @@ metadata:
 spec:
   containers:
   - name: busybox01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   - name: busybox02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
 ---
 apiVersion: v1
 kind: Pod
@@ -52,7 +52,7 @@ spec:
   hostNetwork: true
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -65,12 +65,12 @@ spec:
   hostNetwork: true
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   - name: container02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -83,13 +83,13 @@ spec:
   hostNetwork: true
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -102,18 +102,18 @@ spec:
   hostNetwork: true
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
@@ -126,18 +126,18 @@ spec:
   hostNetwork: true
   initContainers:
   - name: initcontainer01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   - name: initcontainer02
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true
   containers:
   - name: container01
-    image: ghcr.io/kyverno/test-busybox:1.35
+    image: busybox:1.35
     securityContext:
       windowsOptions:
         hostProcess: true

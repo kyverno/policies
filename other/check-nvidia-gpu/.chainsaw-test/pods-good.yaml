@@ -20,7 +20,7 @@ metadata:
   namespace: nvidia-gpu-ns
 spec:
   containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox
       resources:
         limits:
@@ -42,5 +42,5 @@ spec:
       resources:
         limits:
           nvidia.com/gpu: 0
-    - image: ghcr.io/kyverno/test-busybox:1.35
+    - image: busybox:1.35
       name: busybox02

@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: ghcr.io/kyverno/test-busybox:1.35
+      - image: busybox:1.35
         name: busybox
         resources:
           limits:
@@ -41,12 +41,12 @@ spec:
     spec:
       containers:
       - name: webserver1
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         resources:
           requests:
             cpu: 10m
       - name: webserver2
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
         resources:
           limits:
             cpu: 10m
@@ -65,7 +65,7 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: ghcr.io/kyverno/test-busybox:1.35
+          - image: busybox:1.35
             name: busybox
             resources:
               limits:
@@ -87,12 +87,12 @@ spec:
         spec:
           containers:
           - name: webserver1
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             resources:
               requests:
                 cpu: 10m
           - name: webserver2
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
             resources:
               limits:
                 cpu: 10m

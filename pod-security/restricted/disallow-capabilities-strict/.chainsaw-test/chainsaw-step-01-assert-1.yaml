@@ -3,8 +3,4 @@ kind: ClusterPolicy
 metadata:
   name: disallow-capabilities-strict
 status:
-  conditions:
-  - reason: Succeeded
-    status: "True"
-    type: Ready
-
+  ready: true

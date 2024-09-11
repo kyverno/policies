@@ -13,12 +13,11 @@ body:
       label: Kyverno Version
       description: What version of Kyverno are you running?
       options:
-        - "1.7"
-        - "1.8"
-        - "1.9"
-        - "1.10"
-        - "1.11"
-        - "1.12"
+        - 1.6.x
+        - 1.7.x
+        - 1.8.x
+        - 1.9.x
+        - 1.10.x
     validations:
       required: true
   - type: dropdown
@@ -27,16 +26,14 @@ body:
       label: Kubernetes Version
       description: What version of Kubernetes are you running?
       options:
-        - "1.20"
-        - "1.21"
-        - "1.22"
-        - "1.23"
-        - "1.24"
-        - "1.25"
-        - "1.26"
-        - "1.27"
-        - "1.28"
-        - "1.29"
+        - 1.20.x
+        - 1.21.x
+        - 1.22.x
+        - 1.23.x
+        - 1.24.x
+        - 1.25.x
+        - 1.26.x
+        - 1.27.x
     validations:
       required: true
   - type: dropdown

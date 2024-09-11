@@ -16,7 +16,7 @@ metadata:
       existing Ingress rule (ex., when blocking /foo/bar /foo must exist by itself and not part of
       /foo/baz).
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: false
   rules:
     - name: check-path

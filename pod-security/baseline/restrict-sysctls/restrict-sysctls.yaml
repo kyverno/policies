@@ -17,7 +17,7 @@ metadata:
       This policy ensures that only those "safe" subsets can be specified in
       a Pod.
 spec:
-  validationFailureAction: Audit
+  validationFailureAction: audit
   background: true
   rules:
     - name: check-sysctls

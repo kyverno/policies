@@ -19,7 +19,7 @@ spec:
       - name: pod01-01
         image: corp.reg.com/busybox:1.35
       - name: pod01-02
-        image: ghcr.io/kyverno/test-busybox:1.35
+        image: busybox:1.35
       imagePullSecrets:
       - name: my-secret
       - name: foo-bar
@@ -38,7 +38,7 @@ spec:
           - name: pod01-01
             image: corp.reg.com/busybox:1.35
           - name: pod01-02
-            image: ghcr.io/kyverno/test-busybox:1.35
+            image: busybox:1.35
           imagePullSecrets:
           - name: my-secret
           - name: foo-bar
