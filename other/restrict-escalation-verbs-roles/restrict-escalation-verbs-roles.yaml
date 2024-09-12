@@ -15,7 +15,7 @@ metadata:
       privilege escalation and should be tightly controlled. This policy prevents
       use of these verbs in Role or ClusterRole resources.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: escalate

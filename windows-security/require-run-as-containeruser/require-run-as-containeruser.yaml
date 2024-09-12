@@ -16,7 +16,7 @@ metadata:
       spec.initContainers[*].securityContext.windowsOptions.runAsUserName,
       and  is either unset or set to ContainerUser.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: require-run-as-containeruser

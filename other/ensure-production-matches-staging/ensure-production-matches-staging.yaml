@@ -19,7 +19,7 @@ metadata:
       that a production Deployment uses same image name as its staging counterpart. Third, that
       a production Deployment uses an older or equal image version as its staging counterpart.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: true
   rules:
 #######################

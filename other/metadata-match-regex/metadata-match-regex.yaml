@@ -13,7 +13,7 @@ metadata:
       policy illustrates how to ensure a label with key `corp.org/version` is both present and matches
       a given regex, in this case ensuring semver is met.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: check-for-regex

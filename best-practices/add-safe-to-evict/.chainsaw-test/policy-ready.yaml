@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: add-safe-to-evict
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

@@ -15,7 +15,7 @@ metadata:
       `istio-injection` must be set to `enabled`. This policy ensures that all new Namespaces
       set `istio-inject` to `enabled`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: check-istio-injection-enabled

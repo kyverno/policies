@@ -15,7 +15,7 @@ metadata:
       scheduling guarantees. This policy requires that a Pod defines the priorityClassName field
       with some value.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: true
   rules:
   - name: check-priorityclassname

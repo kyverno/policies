@@ -20,7 +20,7 @@ metadata:
       completely exempting Seccomp control check.
 spec:
   background: true
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   rules:
   - name: restricted-exempt-seccomp
     match:

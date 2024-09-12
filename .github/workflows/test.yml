@@ -8,10 +8,10 @@ name: E2E Tests
 permissions: {}
 
 on:
-  workflow_dispatch: {}
   pull_request:
     branches:
-      - 'main'
+      - main
+      - release-*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -408,7 +408,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(block-pod-exec-by-pod-label|block-pod-exec-by-pod-name|block-stale-images|block-updates-deletes|check-env-vars|check-hpa-exists|check-nvidia-gpu|check-serviceaccount|check-serviceaccount-secrets|check-subjectaccessreview|check-vpa-configuration|concatenate-configmaps)$
+          tests: ^other$/^(block-pod-exec-by-pod-label|block-pod-exec-by-pod-name|block-stale-images|block-updates-deletes|check-env-vars|check-hpa-exists|check-ingress-nginx-controller-version-and-annotation-policy|check-nvidia-gpu|check-serviceaccount|check-serviceaccount-secrets|check-subjectaccessreview|check-vpa-configuration)$
   other-48:
     strategy:
       fail-fast: false
@@ -425,7 +425,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(copy-namespace-labels|create-default-pdb|create-pod-antiaffinity|deny-commands-in-exec-probe|deny-secret-service-account-token-type|deployment-replicas-higher-than-pdb|disable-automountserviceaccounttoken|disable-service-discovery|disallow-all-secrets|disallow-localhost-services|disallow-secrets-from-env-vars|dns-policy-and-dns-config)$
+          tests: ^other$/^(concatenate-configmaps|copy-namespace-labels|create-default-pdb|create-pod-antiaffinity|deny-commands-in-exec-probe|deny-secret-service-account-token-type|deployment-replicas-higher-than-pdb|disable-automountserviceaccounttoken|disable-service-discovery|disallow-all-secrets|disallow-localhost-services|disallow-secrets-from-env-vars)$
   other-60:
     strategy:
       fail-fast: false
@@ -442,7 +442,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(docker-socket-requires-label|enforce-pod-duration|enforce-resources-as-ratio|ensure-probes-different|ensure-production-matches-staging|ensure-readonly-hostpath|exclude-namespaces-dynamically|forbid-cpu-limits|generate-networkpolicy-existing|get-debug-information|imagepullpolicy-always|ingress-host-match-tls)$
+          tests: ^other$/^(dns-policy-and-dns-config|docker-socket-requires-label|enforce-pod-duration|enforce-resources-as-ratio|ensure-probes-different|ensure-production-matches-staging|ensure-readonly-hostpath|exclude-namespaces-dynamically|forbid-cpu-limits|generate-networkpolicy-existing|get-debug-information|imagepullpolicy-always)$
   other-72:
     strategy:
       fail-fast: false
@@ -459,7 +459,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(inject-env-var-from-image-label|inject-sidecar-deployment|inspect-csr|kubernetes-version-check|label-existing-namespaces|label-nodes-cri|limit-configmap-for-sa|limit-containers-per-pod|limit-hostpath-type-pv|limit-hostpath-vols|memory-requests-equal-limits|metadata-match-regex)$
+          tests: ^other$/^(ingress-host-match-tls|inject-env-var-from-image-label|inject-sidecar-deployment|inspect-csr|kubernetes-version-check|label-existing-namespaces|label-nodes-cri|limit-configmap-for-sa|limit-containers-per-pod|limit-hostpath-type-pv|limit-hostpath-vols|memory-requests-equal-limits)$
   other-84:
     strategy:
       fail-fast: false
@@ -476,7 +476,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(mitigate-log4shell|mutate-large-termination-gps|mutate-pod-binding|namespace-inventory-check|nfs-subdir-external-provisioner-storage-path|only-trustworthy-registries-set-root|pdb-maxunavailable|pdb-maxunavailable-with-deployments|pdb-minavailable|policy-for-exceptions|prepend-image-registry|prevent-bare-pods)$
+          tests: ^other$/^(metadata-match-regex|mitigate-log4shell|mutate-large-termination-gps|mutate-pod-binding|namespace-inventory-check|nfs-subdir-external-provisioner-storage-path|only-trustworthy-registries-set-root|pdb-maxunavailable|pdb-maxunavailable-with-deployments|pdb-minavailable|policy-for-exceptions|prepend-image-registry)$
   other-96:
     strategy:
       fail-fast: false
@@ -493,7 +493,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(prevent-cr8escape|prevent-duplicate-hpa|prevent-duplicate-vpa|protect-node-taints|record-creation-details|refresh-env-var-in-pod|refresh-volumes-in-pods|remove-hostpath-volumes|remove-serviceaccount-token|replace-image-registry|replace-image-registry-with-harbor|replace-ingress-hosts)$
+          tests: ^other$/^(prevent-bare-pods|prevent-cr8escape|prevent-duplicate-hpa|prevent-duplicate-vpa|protect-node-taints|record-creation-details|refresh-env-var-in-pod|refresh-volumes-in-pods|remove-hostpath-volumes|remove-serviceaccount-token|replace-image-registry|replace-image-registry-with-harbor)$
   other-108:
     strategy:
       fail-fast: false
@@ -510,7 +510,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(require-annotations|require-base-image|require-container-port-names|require-cpu-limits|require-deployments-have-multiple-replicas|require-emptydir-requests-limits|require-image-checksum|require-image-source|require-imagepullsecrets|require-ingress-https|require-netpol|require-non-root-groups)$
+          tests: ^other$/^(replace-ingress-hosts|require-annotations|require-base-image|require-container-port-names|require-cpu-limits|require-deployments-have-multiple-replicas|require-emptydir-requests-limits|require-image-checksum|require-image-source|require-imagepullsecrets|require-ingress-https|require-netpol)$
   other-120:
     strategy:
       fail-fast: false
@@ -527,7 +527,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(require-pdb|require-pod-priorityclassname|require-qos-burstable|require-qos-guaranteed|require-reasonable-pdbs|require-replicas-allow-disruption|require-storageclass|require-unique-external-dns|require-unique-service-selector|require-unique-uid-per-workload|resolve-image-to-digest|resource-creation-updating-denied)$
+          tests: ^other$/^(require-non-root-groups|require-pdb|require-pod-priorityclassname|require-qos-burstable|require-qos-guaranteed|require-reasonable-pdbs|require-replicas-allow-disruption|require-storageclass|require-unique-external-dns|require-unique-service-selector|require-unique-uid-per-workload|resolve-image-to-digest)$
   other-132:
     strategy:
       fail-fast: false
@@ -544,7 +544,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(restart-deployment-on-secret-change|restrict-annotations|restrict-automount-sa-token|restrict-binding-clusteradmin|restrict-binding-system-groups|restrict-clusterrole-csr|restrict-clusterrole-mutating-validating-admission-webhooks|restrict-clusterrole-nodesproxy|restrict-controlplane-scheduling|restrict-deprecated-registry|restrict-escalation-verbs-roles|restrict-ingress-classes)$
+          tests: ^other$/^(resource-creation-updating-denied|restart-deployment-on-secret-change|restrict-annotations|restrict-automount-sa-token|restrict-binding-clusteradmin|restrict-binding-system-groups|restrict-clusterrole-csr|restrict-clusterrole-mutating-validating-admission-webhooks|restrict-clusterrole-nodesproxy|restrict-controlplane-scheduling|restrict-deprecated-registry|restrict-escalation-verbs-roles)$
   other-144:
     strategy:
       fail-fast: false
@@ -561,7 +561,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(restrict-ingress-defaultbackend|restrict-ingress-host|restrict-ingress-wildcard|restrict-jobs|restrict-loadbalancer|restrict-networkpolicy-empty-podselector|restrict-node-affinity|restrict-node-label-changes|restrict-node-label-creation|restrict-node-selection|restrict-pod-controller-serviceaccount-updates|restrict-sa-automount-sa-token)$
+          tests: ^other$/^(restrict-ingress-classes|restrict-ingress-defaultbackend|restrict-ingress-host|restrict-ingress-wildcard|restrict-jobs|restrict-loadbalancer|restrict-networkpolicy-empty-podselector|restrict-node-affinity|restrict-node-label-changes|restrict-node-label-creation|restrict-node-selection|restrict-pod-controller-serviceaccount-updates)$
   other-156:
     strategy:
       fail-fast: false
@@ -578,7 +578,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(restrict-secret-role-verbs|restrict-secrets-by-label|restrict-secrets-by-name|restrict-service-port-range|restrict-storageclass|restrict-usergroup-fsgroup-id|restrict-wildcard-resources|restrict-wildcard-verbs|scale-deployment-zero|spread-pods-across-topology|sync-secrets|topologyspreadconstraints-policy)$
+          tests: ^other$/^(restrict-sa-automount-sa-token|restrict-secret-role-verbs|restrict-secrets-by-label|restrict-secrets-by-name|restrict-service-port-range|restrict-storageclass|restrict-usergroup-fsgroup-id|restrict-wildcard-resources|restrict-wildcard-verbs|scale-deployment-zero|spread-pods-across-topology|sync-secrets)$
   other-168:
     strategy:
       fail-fast: false
@@ -595,7 +595,7 @@ jobs:
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
-          tests: ^other$/^(unique-ingress-host-and-path|unique-ingress-paths|update-image-tag|verify-vpa-target)$
+          tests: ^other$/^(topologyspreadconstraints-policy|unique-ingress-host-and-path|unique-ingress-paths|update-image-tag|verify-vpa-target)$
   pod-security_baseline:
     strategy:
       fail-fast: false
