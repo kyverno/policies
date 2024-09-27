@@ -3,10 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: drop-cap-net-raw
   annotations:
-    policies.kyverno.io/title: Drop CAP_NET_RAW in CEL expressions
-    policies.kyverno.io/category: Best Practices in CEL 
-    policies.kyverno.io/minversion: 1.11.0
-    kyverno.io/kubernetes-version: "1.26-1.27"
+    policies.kyverno.io/title: Drop CAP_NET_RAW
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
@@ -26,19 +25,22 @@ spec:
         - resources:
             kinds:
               - Pod
-            operations:
-            - CREATE
-            - UPDATE
+      preconditions:
+        all:
+        - key: "{{ request.operation || 'BACKGROUND' }}"
+          operator: NotEquals
+          value: DELETE
       validate:
-        cel:
-          variables:
-            - name: mustDropCapabilities
-              expression: "['CAP_NET_RAW','NET_RAW']"
-            - name: allContainers
-              expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
-          expressions:
-            - expression: >-
-                variables.allContainers.all(container, 
-                container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability.upperAscii() in variables.mustDropCapabilities))
-              message: >-
-                Containers must drop the `CAP_NET_RAW` capability.
+        message: >-
+          Containers must drop the `CAP_NET_RAW` capability.
+        foreach:
+          - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+            deny:
+              conditions:
+                all:
+                - key: CAP_NET_RAW
+                  operator: AnyNotIn
+                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+                - key: NET_RAW
+                  operator: AnyNotIn
+                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
