@@ -15,7 +15,7 @@ metadata:
       `istio.io/dataplane-mode` must be set to `ambient`. This policy ensures that all new Namespaces
       set `istio.io/dataplane-mode` to `ambient`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: check-amblient-mode-enabled

@@ -15,7 +15,7 @@ metadata:
       the only directory that can be mounted as a hostPath volume is /data.
 spec:
   background: false
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: limit-hostpath-type-pv-to-slash-data
     match:

@@ -38,8 +38,15 @@ spec:
         file: chainsaw-step-03-apply-2.yaml
   - name: step-04
     try:
-    - sleep:
-        duration: 5s
+    - wait:
+        apiVersion: v1
+        kind: Pod
+        namespace: refresh-vols-ns
+        timeout: 1m
+        for:
+          condition:
+            name: Ready
+            value: 'true'
     - script:
         content: |
           annotation=$(kubectl get pod pod01 -n refresh-vols-ns -o json | kyverno jp query "metadata.annotations.\"corp.org/random\" || '' " | tail -n 1 | cut -d '"' -f 2)

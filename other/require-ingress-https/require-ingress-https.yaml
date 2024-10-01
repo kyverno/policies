@@ -16,7 +16,7 @@ metadata:
       `"false"` and specify TLS in the spec.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: has-annotation
     match:

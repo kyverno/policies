@@ -1,0 +1,10 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: check-ingress-nginx-controller-version-and-annotation-policy
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+

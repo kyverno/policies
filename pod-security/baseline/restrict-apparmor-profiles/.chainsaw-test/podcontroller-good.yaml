@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: busybox01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -36,7 +36,7 @@ spec:
           restartPolicy: Never
           containers:
           - name: busybox01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -54,7 +54,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -74,7 +74,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -94,7 +94,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -109,7 +109,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -127,7 +127,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -145,4 +145,4 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35

@@ -17,23 +17,23 @@ spec:
     spec:
       initContainers:
       - name: pod01-01-init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         envFrom:
         - configMapRef:
             name: nsenvvars
       - name: pod01-02-init
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         envFrom:
         - configMapRef:
             name: nsenvvars
       containers:
       - name: pod01-01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         envFrom:
         - configMapRef:
             name: nsenvvars
       - name: pod01-02
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         envFrom:
         - configMapRef:
             name: nsenvvars
@@ -50,23 +50,23 @@ spec:
         spec:
           initContainers:
           - name: pod01-01-init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             envFrom:
             - configMapRef:
                 name: nsenvvars
           - name: pod01-02-init
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             envFrom:
             - configMapRef:
                 name: nsenvvars
           containers:
           - name: pod01-01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             envFrom:
             - configMapRef:
                 name: nsenvvars
           - name: pod01-02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             envFrom:
             - configMapRef:
                 name: nsenvvars

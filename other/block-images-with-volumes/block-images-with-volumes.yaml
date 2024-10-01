@@ -16,7 +16,7 @@ metadata:
       This may be unexpected and undesirable. This policy checks the contents of every
       container image and inspects them for such VOLUME statements, then blocks if found.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: block-images-with-vols
     match:

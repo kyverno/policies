@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox
+    image: ghcr.io/kyverno/test-busybox
     resources:
       requests:
         memory: "50Mi"
@@ -24,7 +24,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox
+    image: ghcr.io/kyverno/test-busybox
     resources:
       requests:
         memory: "50Mi"
@@ -32,7 +32,7 @@ spec:
       limits:
         memory: "100Mi"
   - name: busybox-again
-    image: busybox
+    image: ghcr.io/kyverno/test-busybox
     resources:
       requests:
         memory: "50Mi"

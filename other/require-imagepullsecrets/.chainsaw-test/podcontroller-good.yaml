@@ -19,7 +19,7 @@ spec:
       - name: nginx
         image: ghcr.io/kyverno/test-verify-image:unsigned
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       imagePullSecrets:
       - name: myregistrykey
 ---
@@ -37,7 +37,7 @@ spec:
           - name: nginx
             image: ghcr.io/kyverno/test-verify-image:unsigned
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           imagePullSecrets:
           - name: myregistrykey
           restartPolicy: OnFailure

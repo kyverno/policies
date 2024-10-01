@@ -45,8 +45,8 @@ spec:
     - script:
         content: kubectl delete cpol block-stale-images
     - sleep:
-        duration: 10s
+        duration: 5s
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns
     - sleep:
-        duration: 10s
+        duration: 5s

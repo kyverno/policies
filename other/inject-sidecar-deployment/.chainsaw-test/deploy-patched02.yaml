@@ -21,7 +21,7 @@ spec:
         volumeMounts:
         - mountPath: /vault/secrets
           name: vault-secret
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
       initContainers:
       - image: vault:1.5.4
@@ -30,7 +30,7 @@ spec:
         volumeMounts:
         - mountPath: /vault/secrets
           name: vault-secret
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox-init
       volumes:
       - emptyDir:

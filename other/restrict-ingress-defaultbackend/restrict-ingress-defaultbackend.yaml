@@ -18,7 +18,7 @@ metadata:
       want users to use explicit hosts, they should not be able to overwrite the global default backend
       service. This policy prohibits the use of the defaultBackend field.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: restrict-ingress-defaultbackend

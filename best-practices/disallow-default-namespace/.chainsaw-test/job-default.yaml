@@ -7,7 +7,7 @@ spec:
   template:
     spec:
       containers:
-      - image: busybox:v1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
         command:
         - "sleep"

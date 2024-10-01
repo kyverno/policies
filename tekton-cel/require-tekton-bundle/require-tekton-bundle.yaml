@@ -36,6 +36,9 @@ spec:
       - resources:
           kinds:
           - TaskRun
+          operations:
+          - CREATE
+          - UPDATE
     validate:
       cel:
         expressions:

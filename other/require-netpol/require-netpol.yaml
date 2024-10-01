@@ -15,7 +15,7 @@ metadata:
       traffic. This policy checks incoming Deployments to ensure
       they have a matching, preexisting NetworkPolicy.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
   - name: require-network-policy

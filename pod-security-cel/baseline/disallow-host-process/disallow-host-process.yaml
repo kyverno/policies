@@ -35,10 +35,7 @@ spec:
           expressions:
             - expression: >-
                 variables.allContainers.all(container,
-                !has(container.securityContext) ||
-                !has(container.securityContext.windowsOptions) ||
-                !has(container.securityContext.windowsOptions.hostProcess) ||
-                container.securityContext.windowsOptions.hostProcess == false)
+                container.?securityContext.?windowsOptions.?hostProcess.orValue(false) == false)
               message: >-
                 HostProcess containers are disallowed. The field spec.containers[*].securityContext.windowsOptions.hostProcess,
                 spec.initContainers[*].securityContext.windowsOptions.hostProcess, and

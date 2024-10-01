@@ -24,7 +24,7 @@ spec:
         fsGroup: 2000
       containers:
       - name: bb
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           privileged: false
           capabilities:
@@ -32,7 +32,7 @@ spec:
             - ALL
           allowPrivilegeEscalation: false
       - name: bb2
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           privileged: false
           capabilities:
@@ -59,7 +59,7 @@ spec:
             fsGroup: 2000
           containers:
           - name: bb
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               privileged: false
               capabilities:
@@ -67,7 +67,7 @@ spec:
                 - ALL
               allowPrivilegeEscalation: false
           - name: bb2
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               privileged: false
               capabilities:

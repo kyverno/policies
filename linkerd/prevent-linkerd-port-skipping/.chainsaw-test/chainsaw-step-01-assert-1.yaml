@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: prevent-linkerd-port-skipping
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

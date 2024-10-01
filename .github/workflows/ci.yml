@@ -3,13 +3,10 @@ name: Policy Test
 permissions: {}
 
 on:
-  push:
-    branches:
-      - '*'
   pull_request:
     branches:
       - main
-      - release*
+      - release-*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -29,6 +26,7 @@ jobs:
       - name: Run ah lint
         working-directory: .
         run: ah lint -k kyverno
+
   test:
     runs-on: ubuntu-latest
     steps:

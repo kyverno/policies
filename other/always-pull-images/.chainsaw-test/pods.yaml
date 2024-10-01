@@ -4,7 +4,7 @@ metadata:
   name: pod01
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -13,7 +13,7 @@ metadata:
   name: pod02
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       imagePullPolicy: IfNotPresent
 ---
@@ -23,8 +23,8 @@ metadata:
   name: pod03
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox01
       imagePullPolicy: IfNotPresent
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02

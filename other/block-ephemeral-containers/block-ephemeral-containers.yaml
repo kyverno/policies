@@ -16,7 +16,7 @@ metadata:
       This may potentially be used to gain access to unauthorized information executing inside
       one or more containers in that Pod. This policy blocks the use of ephemeral containers.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: block-ephemeral-containers

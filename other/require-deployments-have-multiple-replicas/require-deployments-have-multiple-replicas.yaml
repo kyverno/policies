@@ -13,7 +13,7 @@ metadata:
       may suffer downtime if that one replica goes down. This policy validates that Deployments
       have more than one replica.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: deployment-has-multiple-replicas

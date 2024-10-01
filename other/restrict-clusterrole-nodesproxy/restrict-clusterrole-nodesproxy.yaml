@@ -18,7 +18,7 @@ metadata:
       for more info. This policy prevents the creation
       of a ClusterRole if it contains the nodes/proxy resource. 
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: clusterrole-nodesproxy

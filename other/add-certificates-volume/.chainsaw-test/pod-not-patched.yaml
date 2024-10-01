@@ -8,12 +8,12 @@ metadata:
 spec:
   containers:
   - name: pod02-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     volumeMounts:
     - name: etc-ssl-certs
       mountPath: /etc/ssl/certs
   - name: pod02-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     volumeMounts:
     - name: etc-ssl-certs
       mountPath: /etc/ssl/certs
@@ -31,12 +31,12 @@ spec:
   automountServiceAccountToken: false
   containers:
     - name: pod03-01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
       - name: etc-ssl-certs
         mountPath: /etc/ssl/certs
     - name: pod03-02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
       - name: etc-ssl-certs
         mountPath: /etc/ssl/certs
@@ -56,12 +56,12 @@ spec:
   automountServiceAccountToken: false
   containers:
     - name: pod04-01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
       - name: etc-ssl-certs
         mountPath: /etc/ssl/certs
     - name: pod04-02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
       - name: etc-ssl-certs
         mountPath: /etc/ssl/certs

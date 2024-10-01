@@ -21,4 +21,4 @@ spec:
   - name: step-03
     try:
     - sleep:
-        duration: 10s
+        duration: 5s

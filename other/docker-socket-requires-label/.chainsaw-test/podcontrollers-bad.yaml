@@ -17,7 +17,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
       volumes:
       - name: docker-vol
@@ -42,7 +42,7 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
       volumes:
       - name: docker-vol
@@ -64,7 +64,7 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
           volumes:
           - name: docker-vol
@@ -86,7 +86,7 @@ spec:
             app: busybox
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
           volumes:
           - name: docker-vol

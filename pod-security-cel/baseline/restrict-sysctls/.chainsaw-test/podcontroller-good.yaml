@@ -22,7 +22,7 @@ spec:
           value: "60000"
       containers:
       - name: busybox01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -45,7 +45,7 @@ spec:
               value: "60000"
           containers:
           - name: busybox01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -81,7 +81,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: kernel.shm_rmid_forced
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: net.ipv4.ip_local_port_range
@@ -125,7 +125,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: net.ipv4.ip_unprivileged_port_start
@@ -147,7 +147,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: net.ipv4.tcp_syncookies
@@ -169,7 +169,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: net.ipv4.ping_group_range
@@ -191,7 +191,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         sysctls:
         - name: net.ipv4.ip_unprivileged_port_start
@@ -212,7 +212,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -227,7 +227,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: kernel.shm_rmid_forced
@@ -246,7 +246,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: net.ipv4.ip_local_port_range
@@ -265,7 +265,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: net.ipv4.ip_unprivileged_port_start
@@ -284,7 +284,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: net.ipv4.tcp_syncookies
@@ -303,7 +303,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: net.ipv4.ping_group_range
@@ -322,7 +322,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           securityContext:
             sysctls:
             - name: net.ipv4.ip_unprivileged_port_start

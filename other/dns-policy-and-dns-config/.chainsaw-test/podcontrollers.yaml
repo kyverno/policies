@@ -18,7 +18,7 @@ spec:
     spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
 ---
 apiVersion: batch/v1
@@ -34,6 +34,6 @@ spec:
         spec:
           dnsPolicy: ClusterFirst
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
           restartPolicy: OnFailure

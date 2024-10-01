@@ -16,7 +16,7 @@ metadata:
       internal DNS, duplicates must be avoided. This policy requires every such Service have a cluster-unique
       hostname present in the value of the annotation.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
     - name: ensure-valid-externaldns-annotation

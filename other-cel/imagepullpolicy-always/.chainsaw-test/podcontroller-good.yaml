@@ -17,11 +17,11 @@ spec:
     spec:
       containers:
       - name: bb01
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: bb02
-        image: busybox:latest
+        image: ghcr.io/kyverno/test-busybox:latest
       - name: bb03
-        image: busybox
+        image: ghcr.io/kyverno/test-busybox
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -35,10 +35,10 @@ spec:
         spec:
           containers:
           - name: bb01
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: bb02
-            image: busybox:latest
+            image: ghcr.io/kyverno/test-busybox:latest
           - name: bb03
-            image: busybox
+            image: ghcr.io/kyverno/test-busybox
           restartPolicy: OnFailure
 

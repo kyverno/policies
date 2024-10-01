@@ -3,5 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: check-serviceaccount-secrets
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+
 

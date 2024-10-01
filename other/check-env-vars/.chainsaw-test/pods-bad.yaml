@@ -6,7 +6,7 @@ metadata:
   name: badpod01
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       env:
       - name: DISABLE_OPA
@@ -20,14 +20,14 @@ metadata:
   name: badpod02
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       env:
       - name: foo
         value: bar
       - name: DISABLE_OPA
         value: "true"
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       env:
       - name: DISABLE_OPA
@@ -43,12 +43,12 @@ metadata:
   name: badpod03
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       env:
       - name: foo
         value: bar
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       env:
       - name: foo
@@ -64,9 +64,9 @@ metadata:
   name: badpod04
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       env:
       - name: DISABLE_OPA
@@ -80,12 +80,12 @@ metadata:
   name: badpod05
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       env:
       - name: DISABLE_OPA
         value: "false"
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       env:
       - name: DISABLE_OPA

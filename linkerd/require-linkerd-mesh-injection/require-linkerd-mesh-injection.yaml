@@ -12,7 +12,7 @@ metadata:
       setting the annotation `linkerd.io/inject` to `enabled`. This policy enforces that
       all Namespaces contain the annotation `linkerd.io/inject` set to `enabled`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: require-mesh-annotation

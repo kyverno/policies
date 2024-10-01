@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox-again
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
         resources:
           limits:
             memory: "100Mi"
@@ -34,10 +34,10 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             resources:
               requests:
                 cpu: "1"
           - name: busybox-again
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
 

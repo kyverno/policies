@@ -14,7 +14,7 @@ metadata:
       to make sure any file created in the volume will have the specified groupID.
       This policy validates that these fields are set to the defined values.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-userid

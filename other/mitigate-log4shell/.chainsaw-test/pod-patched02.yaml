@@ -5,12 +5,12 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
       value: "true"
   - name: busybox02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
       value: "true"

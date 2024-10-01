@@ -41,7 +41,7 @@ spec:
       runAsUser: 0
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     args:
     - sleep
     - infinity
@@ -89,7 +89,7 @@ spec:
     - args:
         - sleep
         - infinity
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       # securityContext:
       #   runAsNonRoot: true

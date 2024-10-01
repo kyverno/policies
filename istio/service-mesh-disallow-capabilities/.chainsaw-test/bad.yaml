@@ -41,7 +41,7 @@ spec:
       runAsUser: 0
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     args:
     - sleep
     - infinity
@@ -94,7 +94,7 @@ spec:
       runAsUser: 0
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     args:
     - sleep
     - infinity
@@ -188,7 +188,7 @@ spec:
       runAsUser: 0
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     args:
     - sleep
     - infinity

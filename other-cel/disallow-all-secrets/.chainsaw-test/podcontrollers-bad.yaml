@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       initContainers:
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox02-init
           env:
           - name: SECRET_BAD
@@ -24,13 +24,13 @@ spec:
               secretKeyRef:
                 name: foo
                 key: pass
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox-init
           env:
           - name: foo
             value: bar
       containers:
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox
           env:
           - name: SECRET_BAD
@@ -38,7 +38,7 @@ spec:
               secretKeyRef:
                 name: foo
                 key: pass
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox02
 ---
 apiVersion: apps/v1
@@ -59,20 +59,20 @@ spec:
         app: busybox
     spec:
       initContainers:
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox02-init
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox-init
           envFrom:
           - secretRef:
               name: foo
       containers:
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox
           envFrom:
           - secretRef:
               name: foo
-        - image: busybox:1.35
+        - image: ghcr.io/kyverno/test-busybox:1.35
           name: busybox02
 ---
 apiVersion: apps/v1
@@ -93,9 +93,9 @@ spec:
         app: busybox
     spec:
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
       volumes:
       - name: foo-vol
@@ -113,7 +113,7 @@ spec:
       template:
         spec:
           initContainers:
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox02-init
               env:
               - name: SECRET_BAD
@@ -121,13 +121,13 @@ spec:
                   secretKeyRef:
                     name: foo
                     key: pass
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox-init
               env:
               - name: foo
                 value: bar
           containers:
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox
               env:
               - name: SECRET_BAD
@@ -135,7 +135,7 @@ spec:
                   secretKeyRef:
                     name: foo
                     key: pass
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox02
           restartPolicy: OnFailure
 ---
@@ -150,20 +150,20 @@ spec:
       template:
         spec:
           initContainers:
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox02-init
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox-init
               envFrom:
               - secretRef:
                   name: foo
           containers:
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox
               envFrom:
               - secretRef:
                   name: foo
-            - image: busybox:1.35
+            - image: ghcr.io/kyverno/test-busybox:1.35
               name: busybox02
           restartPolicy: OnFailure
 ---
@@ -178,9 +178,9 @@ spec:
       template:
         spec:
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02
           volumes:
           - name: foo-vol

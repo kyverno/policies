@@ -13,7 +13,7 @@ metadata:
       Service resource that contains the label `protected=true` unless by
       a cluster-admin.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: block-updates-deletes

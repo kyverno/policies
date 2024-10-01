@@ -17,7 +17,7 @@ metadata:
       This policy prevents such "bare" Pods from being created unless they originate
       from a higher-level workload controller of some sort.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: bare-pods

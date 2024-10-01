@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: pod01-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: HTTP_PROXY
       value: http://proxy.corp.domain:8080
@@ -14,7 +14,7 @@ spec:
     - name: NO_PROXY
       value: localhost,*.example.com
   - name: pod01-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: HTTP_PROXY
       value: http://proxy.corp.domain:8080
@@ -30,7 +30,7 @@ metadata:
 spec:
   containers:
   - name: pod02-01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: HTTP_PROXY
       value: http://proxy.corp.domain:8080
@@ -39,7 +39,7 @@ spec:
     - name: NO_PROXY
       value: localhost,*.example.com
   - name: pod02-02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     env:
     - name: HTTP_PROXY
       value: http://proxy.corp.domain:8080

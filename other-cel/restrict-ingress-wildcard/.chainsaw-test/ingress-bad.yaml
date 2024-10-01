@@ -5,7 +5,7 @@ metadata:
 spec:
   rules:
   - host: "*.foo.bar"
-    https:
+    http:
       paths:
       - backend:
           service:
@@ -22,7 +22,7 @@ metadata:
 spec:
   rules:
   - host: foo-bar
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -32,7 +32,7 @@ spec:
             port:
               number: 80
   - host: "*.example.com"
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -49,7 +49,7 @@ metadata:
 spec:
   rules:
   - host: "*.bar"
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -59,7 +59,7 @@ spec:
             port:
               number: 80
   - host: foo-bar
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix

@@ -16,7 +16,7 @@ metadata:
       these hosts should be unique across the cluster to ensure no routing conflicts occur.
       This policy checks an incoming Route resource to ensure its hosts are unique to the cluster.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
     - name: require-unique-routes

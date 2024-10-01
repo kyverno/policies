@@ -29,7 +29,6 @@ spec:
             - UPDATE
       validate:
         cel:
-        cel:
           variables:
             - name: allContainers
               expression: >-

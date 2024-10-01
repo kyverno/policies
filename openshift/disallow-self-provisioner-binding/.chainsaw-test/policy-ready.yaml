@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: disallow-self-provisioner-binding
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

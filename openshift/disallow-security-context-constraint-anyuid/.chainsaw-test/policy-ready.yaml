@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: disallow-security-context-constraint-anyuid
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

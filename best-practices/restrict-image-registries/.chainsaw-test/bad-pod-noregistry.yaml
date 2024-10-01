@@ -5,4 +5,4 @@ metadata:
 spec:
   containers:
   - name: k8s-nginx
-    image: nginx
+    image: ghcr.io/kyverno/test-nginx

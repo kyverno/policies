@@ -8,5 +8,5 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:v1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
 

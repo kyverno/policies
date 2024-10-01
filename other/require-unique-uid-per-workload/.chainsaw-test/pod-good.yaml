@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsUser: 2234
 ---
@@ -16,8 +16,8 @@ metadata:
 spec:
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       securityContext:
         runAsUser: 3232
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35

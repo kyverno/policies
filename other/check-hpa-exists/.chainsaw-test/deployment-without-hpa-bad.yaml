@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: nginx-container
-        image: nginx:latest
+        image: ghcr.io/kyverno/test-nginx:latest
         ports:
         - containerPort: 80
         resources:

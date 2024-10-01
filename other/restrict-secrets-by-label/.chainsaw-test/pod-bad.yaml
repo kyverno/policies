@@ -5,9 +5,9 @@ metadata:
 spec:
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       env:
       - name: ENV_SECRET
         valueFrom:
@@ -22,9 +22,9 @@ metadata:
 spec:
   initContainers:
     - name: busybox-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
     - name: busybox02-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       env:
       - name: ENV_FOO
         value: "bar"
@@ -35,9 +35,9 @@ spec:
             key: foo
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       env:
       - name: ENV_SECRET
         valueFrom:
@@ -52,20 +52,20 @@ metadata:
 spec:
   initContainers:
     - name: busybox-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       envFrom:
       - secretRef:
           name: bottom-secret
     - name: busybox02-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       envFrom:
       - secretRef:
           name: top-secret
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       env:
       - name: ENV_SECRET
         valueFrom:
@@ -80,20 +80,20 @@ metadata:
 spec:
   initContainers:
     - name: busybox-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       envFrom:
       - secretRef:
           name: not-secret
     - name: busybox02-init
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       envFrom:
       - secretRef:
           name: top-secret
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       env:
       - name: ENV_SECRET
         valueFrom:
@@ -108,9 +108,9 @@ metadata:
 spec:
   containers:
     - name: busybox
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
     - name: busybox02
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
   volumes:
     - name: not-secret-volume
       secret:

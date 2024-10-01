@@ -18,7 +18,7 @@ spec:
     spec:
       serviceAccountName: safe
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
         args:
         - sleep
@@ -37,7 +37,7 @@ spec:
         spec:
           serviceAccountName: safe
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
             args:
             - sleep

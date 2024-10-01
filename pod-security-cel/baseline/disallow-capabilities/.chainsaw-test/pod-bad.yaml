@@ -5,7 +5,7 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -14,12 +14,12 @@ spec:
           - MKNOD
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
   - name: add-capabilities-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
@@ -33,7 +33,7 @@ metadata:
 spec:
   initContainers:
   - name: init
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -41,7 +41,7 @@ spec:
           - CHOWN
           - MKNOD
   - name: init-again
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
@@ -49,7 +49,7 @@ spec:
         - "ALL"
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "SETPCAP", "CAP_NET_RAW", "FOWNER"]
@@ -61,7 +61,7 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["NET_BIND_SERVICE", "CAP_SETPCAP", "SETFCAP", "FOWNER"]
@@ -73,7 +73,7 @@ metadata:
 spec:
   containers:
   - name: add-capabilities
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add: ["CAP_NET_RAW", "CAP_SYS_ADMIN", "NET_ADMIN"]
@@ -85,7 +85,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -98,7 +98,7 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -112,13 +112,13 @@ metadata:
 spec:
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_RAW
   - name: container02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -131,14 +131,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_RAW
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -151,16 +151,16 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
   - name: initcontainer02
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_RAW
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
@@ -173,14 +173,14 @@ metadata:
 spec:
   initContainers:
   - name: initcontainer01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:
         - NET_RAW
   containers:
   - name: container01
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       capabilities:
         add:

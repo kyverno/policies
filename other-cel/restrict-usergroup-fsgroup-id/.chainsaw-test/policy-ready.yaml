@@ -3,5 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: validate-userid-groupid-fsgroup
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+
 

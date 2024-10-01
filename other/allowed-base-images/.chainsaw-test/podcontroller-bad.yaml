@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: kv-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
         - name: kv-02
           image: ghcr.io/dlorenc/hello-ko:latest
 ---
@@ -39,6 +39,6 @@ spec:
             image: ghcr.io/dlorenc/hello-ko:latest
             imagePullPolicy: IfNotPresent
           - name: hello02
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
             imagePullPolicy: IfNotPresent
           restartPolicy: OnFailure

@@ -22,7 +22,7 @@ metadata:
       all kinds ("*") it is highly recommend to more narrowly scope it to only
       the resources which should be labeled.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: add-userinfo

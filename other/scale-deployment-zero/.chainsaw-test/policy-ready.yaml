@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: scale-deployment-zero
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

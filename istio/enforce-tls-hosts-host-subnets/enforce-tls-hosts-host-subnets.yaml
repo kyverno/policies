@@ -16,7 +16,7 @@ metadata:
       to the destination host. This policy enforces that the TLS mode cannot be set to a value
       of `DISABLE`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: destrule

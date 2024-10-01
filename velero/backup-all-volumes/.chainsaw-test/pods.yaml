@@ -13,7 +13,7 @@ spec:
         claimName: mypvc
   containers:
     - name: container01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage
@@ -31,7 +31,7 @@ spec:
         claimName: mypvc
   containers:
     - name: container01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage
@@ -54,7 +54,7 @@ spec:
         claimName: external
   containers:
     - name: container01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage
@@ -79,7 +79,7 @@ spec:
       emptyDir: {}
   containers:
     - name: container01
-      image: busybox:1.35
+      image: ghcr.io/kyverno/test-busybox:1.35
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: task-pv-storage

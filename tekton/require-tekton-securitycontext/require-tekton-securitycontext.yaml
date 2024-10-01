@@ -13,7 +13,7 @@ metadata:
     policies.kyverno.io/description: >- 
       A securityContext is required for each TaskRun step.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: check-step-securitycontext

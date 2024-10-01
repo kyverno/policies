@@ -16,7 +16,7 @@ metadata:
       or limits may not work and a ratio may be better suited instead. This policy checks every
       container in a Pod and ensures that memory limits are no more than 2.5x its requests.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: check-memory-requests-limits
     match:

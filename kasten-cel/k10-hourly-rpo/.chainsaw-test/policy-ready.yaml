@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: k10-policy-hourly-rpo
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

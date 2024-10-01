@@ -12,7 +12,7 @@ metadata:
       be useful for troubleshooting purposes, it could represent an attack vector and is discouraged.
       This policy blocks Pod exec commands to Pods having the label `exec=false`.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: deny-exec-by-label
