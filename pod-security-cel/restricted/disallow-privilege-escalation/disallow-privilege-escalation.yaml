@@ -37,6 +37,8 @@ spec:
           expressions:
             - expression: >- 
                 variables.allContainers.all(container, 
+                has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
                 container.securityContext.allowPrivilegeEscalation == false)
               message: >-
                 Privilege escalation is disallowed. 
