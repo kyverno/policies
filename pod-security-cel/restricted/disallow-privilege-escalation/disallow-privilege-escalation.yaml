@@ -28,16 +28,30 @@ spec:
             - UPDATE
       validate:
         cel:
-          variables:
-            - name: allContainers
-              expression: >-
-               object.spec.containers + 
-               object.spec.?initContainers.orValue([]) + 
-               object.spec.?ephemeralContainers.orValue([])
           expressions:
             - expression: >- 
-                variables.allContainers.all(container, 
-                container.?securityContext.?allowPrivilegeEscalation.orValue(false) == false)
+                object.spec.containers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
               message: >-
-                Privilege escalation is disallowed. 
-                All containers must set the securityContext.allowPrivilegeEscalation field to `false`.
+                Privilege escalation is disallowed. The field
+                spec.containers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+
+            - expression: >- 
+                !has(object.spec.initContainers) ||
+                object.spec.initContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
+              message: >-
+                Privilege escalation is disallowed. The field
+                spec.initContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+
+            - expression: >- 
+                !has(object.spec.ephemeralContainers) ||
+                object.spec.ephemeralContainers.all(container, has(container.securityContext) &&
+                has(container.securityContext.allowPrivilegeEscalation) &&
+                container.securityContext.allowPrivilegeEscalation == false)
+              message: >-
+                Privilege escalation is disallowed. The field
+                spec.ephemeralContainers[*].securityContext.allowPrivilegeEscalation must be set to `false`.
+                   

@@ -15,9 +15,6 @@ spec:
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
-        securityContext:
-          runAsNonRoot: true
-          allowPrivilegeEscalation: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,8 +53,6 @@ spec:
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
-        securityContext:
-          allowPrivilegeEscalation: true
       - name: container02
         image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
@@ -85,7 +80,7 @@ spec:
       - name: container02
         image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
-          allowPrivilegeEscalation: true
+          allowPrivilegeEscalation: false
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -104,8 +99,6 @@ spec:
       initContainers:
       - name: initcontainer01
         image: ghcr.io/kyverno/test-busybox:1.35
-        securityContext:
-          allowPrivilegeEscalation: true
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -136,6 +129,8 @@ spec:
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -151,9 +146,6 @@ spec:
           containers:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
-            securityContext:
-              runAsNonRoot: true
-              allowPrivilegeEscalation: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -186,12 +178,10 @@ spec:
           containers:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
-            securityContext:
-              allowPrivilegeEscalation: true
           - name: container02
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -232,7 +222,7 @@ spec:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -256,5 +246,5 @@ spec:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
-              allowPrivilegeEscalation: true
+              allowPrivilegeEscalation: false
 ---
