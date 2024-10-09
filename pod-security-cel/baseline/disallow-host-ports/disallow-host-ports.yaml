@@ -28,26 +28,19 @@ spec:
             - UPDATE
       validate:
         cel:
-          expressions:
-            - expression: >- 
-                object.spec.containers.all(container, !has(container.ports) || 
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.containers[*].ports[*].hostPort
-                must either be unset or set to `0`.
+          variables:
+            - name: allContainers
+              expression: >-
+               object.spec.containers + 
+               object.spec.?initContainers.orValue([]) + 
+               object.spec.?ephemeralContainers.orValue([])
+      expressions:
+          - expression: >-
+               variables.allContainers.all(container, 
+               container.?ports.orValue([]).all(port, port.?hostPort.orValue(0) == 0))
+            message: |-
+               Use of host ports is disallowed. The field spec.containers[*].ports[*].hostPort,
+               spec.initContainers[*].ports[*].hostPort, and spec.ephemeralContainers[*].ports[*].hostPort
+               must either be unset or set to `0`.
 
-            - expression: >- 
-                !has(object.spec.initContainers) || 
-                object.spec.initContainers.all(container, !has(container.ports) || 
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.initContainers[*].ports[*].hostPort
-                must either be unset or set to `0`.
-
-            - expression: >- 
-                !has(object.spec.ephemeralContainers) ||
-                object.spec.ephemeralContainers.all(container, !has(container.ports) ||
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.ephemeralContainers[*].ports[*].hostPort
-                must either be unset or set to `0`.
+          
