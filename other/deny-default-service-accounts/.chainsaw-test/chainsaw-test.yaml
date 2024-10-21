@@ -1,0 +1,36 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: deny-default-service-accounts
+spec:
+  steps:
+  - name: step-01
+    try:
+    - create:
+        resource:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: custom-service-account 
+    - apply:
+        file: ../deny-default-service-accounts.yaml
+    - patch:
+        resource:
+          apiVersion: kyverno.io/v1
+          kind: ClusterPolicy
+          metadata:
+            name: deny-default-service-accounts
+          spec:
+            validationFailureAction: Enforce
+    - assert:
+        file: chainsaw-step-01-assert-1.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: goodpod.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: badpod.yaml

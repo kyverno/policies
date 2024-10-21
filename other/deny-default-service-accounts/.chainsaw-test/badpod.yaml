@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  serviceAccountName: default
+  containers:
+  - name: badpod01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  serviceAccountName: default
+  containers:
+  - image: dummyimagename
+    name: badpod02
+
