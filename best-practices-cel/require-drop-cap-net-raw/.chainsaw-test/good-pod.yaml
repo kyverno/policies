@@ -23,4 +23,19 @@ spec:
       capabilities:
         drop:
           - CAP_NET_RAW
-
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-netraw-good
+spec:
+  containers:
+    - args:
+        - sleep
+        - infinity
+      image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      securityContext:
+         capabilities:
+           drop:
+             - NET_RAW
