@@ -15,9 +15,6 @@ spec:
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
-        securityContext:
-          runAsNonRoot: true
-          allowPrivilegeEscalation: true
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -56,8 +53,6 @@ spec:
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
-        securityContext:
-          allowPrivilegeEscalation: true
       - name: container02
         image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
@@ -151,9 +146,6 @@ spec:
           containers:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
-            securityContext:
-              runAsNonRoot: true
-              allowPrivilegeEscalation: true
 ---
 apiVersion: batch/v1
 kind: CronJob
