@@ -16,7 +16,7 @@ metadata:
       policy validates that container images only originate from the registry `eu.foo.io` or
       `bar.io`. Use of this policy requires customization to define your allowable registries.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-registries

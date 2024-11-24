@@ -25,6 +25,8 @@ spec:
         file: ../restrict-node-label-changes.yaml
     - assert:
         file: policy-ready.yaml
+    - sleep:
+        duration: 5s
   - name: step-03
     try:
     - script:

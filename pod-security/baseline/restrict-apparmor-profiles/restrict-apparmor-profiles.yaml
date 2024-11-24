@@ -16,7 +16,7 @@ metadata:
       overrides to an allowed set of profiles. This policy ensures Pods do not
       specify any other AppArmor profiles than `runtime/default` or `localhost/*`.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: app-armor

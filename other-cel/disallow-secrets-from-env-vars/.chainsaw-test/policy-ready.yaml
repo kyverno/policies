@@ -3,5 +3,9 @@ kind: ClusterPolicy
 metadata:
   name: secrets-not-from-env-vars
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+
 

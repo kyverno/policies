@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: add-default-resources
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

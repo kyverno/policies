@@ -32,7 +32,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -64,7 +64,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -99,7 +99,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -130,7 +130,7 @@ spec:
   ingressClassName: someingress
   rules:
   - host: endpoint01
-    https:
+    http:
       paths:
       - backend:
           service:
@@ -154,7 +154,7 @@ spec:
   ingressClassName: nginx-int
   rules:
   - host: endpoint01
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix
@@ -164,7 +164,7 @@ spec:
             port:
               number: 80
   - host: endpoint02
-    https:
+    http:
       paths:
       - path: /testpath
         pathType: Prefix

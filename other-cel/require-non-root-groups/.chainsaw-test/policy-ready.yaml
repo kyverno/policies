@@ -3,4 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: require-non-root-groups
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+
