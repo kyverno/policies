@@ -19,17 +19,16 @@ spec:
   rules:
     - name: add-donot-disrupt-label
       match:
-        any:
-          - resources:
-              kinds:
-                - Pod
+        resources:
+          kinds:
+            - Pod
       preconditions:
         all:
-          - key: '{{request.object.metadata.labels."karpenter.sh/do-not-evict"}}'
-            operator: Equals
-            value: "true"
+          - key: '{{ request.object.metadata.labels."karpenter.sh/do-not-evict" || '''' }}'
+            operator: NotEquals
+            value: ""
       mutate:
         patchStrategicMerge:
           metadata:
             labels:
-              "karpenter.sh/do-not-disrupt": "true"
+              karpenter.sh/do-not-disrupt: "true"
