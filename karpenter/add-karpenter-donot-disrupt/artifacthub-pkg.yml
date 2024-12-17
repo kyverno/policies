@@ -1,0 +1,33 @@
+name: add-karpenter-donot-disrupt
+version: 1.0.0
+displayName: Add Karpenter Do Not Disrupt Label
+createdAt: "2024-12-17T00:00:00Z"
+description: |
+  This policy assists in migrating from Karpenter 0.x to 1.x by adding the
+  karpenter.sh/do-not-disrupt label to pods that have the deprecated
+  karpenter.sh/do-not-evict label. This ensures smooth upgrades and
+  maintains the intended protection against pod disruption during Karpenter
+  node termination.
+install: |
+  ```sh
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/karpenter/add-karpenter-donot-disrupt/add-karpenter-donot-disrupt.yaml
+  ```
+keywords:
+  - kyverno
+  - karpenter
+readme: |
+  # Add Karpenter Do Not Disrupt Label
+
+  This policy facilitates the migration from Karpenter 0.x to 1.x by automatically
+  adding the new karpenter.sh/do-not-disrupt label to pods that use the deprecated
+  karpenter.sh/do-not-evict label.
+
+  When a pod is created with the old karpenter.sh/do-not-evict label, this policy
+  automatically adds the new karpenter.sh/do-not-disrupt label to ensure the pod
+  remains protected during node termination operations in Karpenter 1.x.
+
+  Reference for this change: https://karpenter.sh/v1.0/upgrading/v1beta1-migration/
+annotations:
+  kyverno.io/category: Pod
+  kyverno.io/kubernetes-version: "1.23"
+  kyverno.io/subject: "Pod, Migration"
