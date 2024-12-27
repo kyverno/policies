@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-ns
+  namespace: ns-w-inject-true
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+    env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://opentelemetry-collector.opentelemetry-collector:4317
