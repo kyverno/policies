@@ -1,0 +1,105 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: inject-otel-environment-variable
+  annotations:
+    policies.kyverno.io/title: Injects OpenTelemetry environment variable
+    policies.kyverno.io/minversion: 1.13.0
+    kyverno.io/kyverno-version: 1.13.0
+    policies.kyverno.io/subject: Namespace, Pod
+    policies.kyverno.io/category: OpenTelemetry
+    policies.kyverno.io/description: >-
+      Injects OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers`.
+      Injection can be controlled by `otel.corp.org/inject-env-var: "false"` annotation on the Pod or at the Namespace level.
+      Value of the injected env var can also be overridden per Pod or Namespace via `otel.corp.org/otlp-endpoint: "http://xxxx:4317"` annotation.
+      The env var will be injected first, meaning that if one is already declared, the later will takes precedence over the injected one.
+      To avoid stress on the control plane API, a GlobalContextEntry containing Namespaces has to be declared (group: '', version: v1, resource: namespaces)
+      and `cache.kyverno.io/enabled: "true"` should be set on the `namespacefilters` ConfigMap (see rule comments ConfigMap-NS-Filtering).
+
+spec:
+  rules:
+  - name: inject-otel-environment-variable
+    context:
+    - name: namespaces
+      globalReference:
+        # This is the name of the GlobalContextEntry
+        #
+        # apiVersion: kyverno.io/v2alpha1
+        # kind: GlobalContextEntry
+        # metadata:
+        #   name: namespaces
+        # spec:
+        #   kubernetesResource:
+        #     group: ''
+        #     version: v1
+        #     resource: namespaces
+        name: namespaces
+    - name: nsannontations
+      variable:
+        jmesPath: namespaces[?metadata.name == '{{ request.object.metadata.namespace }}'] | [0].metadata.annotations
+        default: {}
+    - name: otlp_endpoint
+      variable:
+        jmesPath: request.object.metadata.annotations."otel.corp.org/otlp-endpoint" || nsannontations."otel.corp.org/otlp-endpoint"
+        default: 'http://opentelemetry-collector.opentelemetry-collector:4317'
+
+      # ConfigMap-NS-Filtering
+      # See https://kyverno.io/docs/writing-policies/external-data-sources/#handling-configmap-array-values
+      # Don't forget to enable kyverno's cache on the ConfigMap to avoid stress on the control plane
+      # Enable only if the proper config map has been enabled
+      #
+      # apiVersion: v1
+      # kind: ConfigMap
+      # metadata:
+      #   namespace: opentelemetry-collector
+      #   name: namespacefilters
+      #   labels:
+      #     cache.kyverno.io/enabled: "true"
+      # data:
+      #   exclude: '["ns-excluded-by-configmap"]'
+
+    ## Uncomment the following for configmap namespace filtering, make sure the proper ConfigMap exists!
+    ## Also uncomment bellow in the preconditions section
+    # - name: namespacefilters
+    #   configMap:
+    #     name: namespacefilters
+    #     namespace: opentelemetry-collector
+
+    preconditions:
+      all:
+      # By default inject, expect if namespace or pod annotations says otherwise
+      - key: "{{ request.object.metadata.annotations.\"otel.corp.org/inject-env-var\" || nsannontations.\"otel.corp.org/inject-env-var\" || 'true' }}"
+        operator: NotEquals
+        value: 'false'
+
+      # ConfigMap-NS-Filtering
+      # Env variable injection can be disabled on per NS basis using ConfigMap (no per pod override possible)
+      ## Uncomment the following for ConfigMap-based namespace filtering
+      ## Ensure the corresponding context above is uncommented and the appropriate ConfigMap is configured.
+      # - key: "{{ request.object.metadata.namespace }}"
+      #   operator: AnyNotIn
+      #   value: "{{ namespacefilters.data.exclude || '[]' }}"
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          operations:
+          - CREATE
+          - UPDATE
+    mutate:
+      foreach:
+      - list: request.object.spec.containers[]
+        patchesJson6902: |-
+          - op: add
+            path: /spec/containers/{{elementIndex}}/env/0
+            value:
+              name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "{{ otlp_endpoint }}"
+      - list: request.object.spec.initContainers[]
+        patchesJson6902: |-
+          - op: add
+            path: /spec/initContainers/{{elementIndex}}/env/0
+            value:
+              name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "{{ otlp_endpoint }}"
