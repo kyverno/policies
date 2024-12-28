@@ -17,6 +17,7 @@ metadata:
       and `cache.kyverno.io/enabled: "true"` should be set on the `namespacefilters` ConfigMap (see rule comments ConfigMap-NS-Filtering).
 
 spec:
+  background: false
   rules:
   - name: inject-otel-environment-variable
     context:
