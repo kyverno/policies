@@ -87,7 +87,6 @@ spec:
           - Pod
           operations:
           - CREATE
-          - UPDATE
     mutate:
       foreach:
       - list: request.object.spec.containers[]
