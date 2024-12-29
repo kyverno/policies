@@ -25,6 +25,7 @@ spec:
                             kinds:
                               - Pod
                     validate:
+                      failureAction: Enforce
                       message: "Container images must have a tag specified"
                       pattern:
                         spec:
@@ -37,6 +38,7 @@ spec:
                             kinds:
                               - Pod
                     validate:
+                      failureAction: Enforce
                       message: "Images must have a specific tag"
                       pattern:
                         spec:
