@@ -6,36 +6,60 @@ metadata:
   name: disallow-latest-tag
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-latest-tag.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-latest-tag
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-latest-fail-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-latest-success-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-no-tag.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-latest-tag.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-latest-tag
+              spec:
+                rules:
+                  - name: require-image-tag
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      message: "Container images must have a tag specified"
+                      pattern:
+                        spec:
+                          containers:
+                            - image: "!*:latest"
+                  - name: validate-image-tag
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      message: "Images must have a specific tag"
+                      pattern:
+                        spec:
+                          containers:
+                            - image: "!*:latest"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-latest-fail-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-latest-success-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-no-tag.yaml
