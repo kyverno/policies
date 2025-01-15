@@ -1,0 +1,31 @@
+apiVersion: kyverno.io/v1
+kind: ClusterCleanupPolicy
+metadata:
+  name: cleanup-empty-replicasets-test
+  namespace: kyverno
+  labels: 
+    app: kyverno
+spec: 
+  tests:
+    - name: cleanup-empty-replicasets
+      namespace: default
+      resources: 
+        - name: old-empty-replicaset
+          kind: ReplicaSet
+          creationTimestamp: "2023-01-01T12:00:00Z"
+          replicas: 0
+        - name: new-empty-replicaset
+          kind: ReplicaSet
+          creationTimestamp: "{{ time_now_utc() }}" 
+          replicas: 0
+        - name: non-empty-replicaset
+          kind: ReplicaSet
+          creationTimestamp: "{{ time_now_utc() }}" 
+          replicas: 3
+      assert: 
+        - resource: old-empty-replicaset
+          action: delete
+        - resource: new-empty-replicaset
+          action: skip
+        - resource: non-empty-replicaset
+          action: skip
