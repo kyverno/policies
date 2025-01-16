@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: bkc-podlabel-ns
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    command: ["/bin/sh", "-c"]
+    args:
+      - touch /test1.txt
+      - sleep 300
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+  name: pod02
+  namespace: bkc-podlabel-ns
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    command: [ "/bin/sh", "-c" ]
+    args:
+      - touch /test2.txt
+      - sleep 300
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    foo: bar
+    cp: "false"
+  name: pod03
+  namespace: bkc-podlabel-ns
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    command: [ "/bin/sh", "-c" ]
+    args:
+      - touch /test3.txt
+      - sleep 300
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    cp: "true"
+    foo: bar
+  name: pod04
+  namespace: bkc-podlabel-ns
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.35
+    command: [ "/bin/sh", "-c" ]
+    args:
+      - touch /test4.txt
+      - sleep 300
