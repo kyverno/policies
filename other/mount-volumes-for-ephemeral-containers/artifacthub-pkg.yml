@@ -1,0 +1,19 @@
+name: mount-volumes-for-ephemeral-containers
+version: 1.0.0
+displayName: Mount volumes for ephemeral containers
+createdAt: "2025-01-22T00:00:00.000Z"
+description: >-
+  Mount volumes and set default security context for ephemeral containers
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/mount-volumes-for-ephemeral-containers/mount-volumes-for-ephemeral-containers.yaml
+keywords:
+  - kyverno
+  - other
+readme: |
+  This Kyverno policy adds a temporary volume to debug Pods, enforces read-only filesystems for ephemeral containers, and mounts the volume at /tmp.
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: ff08e4dc69d074870c5cdb4d052967c7c0ef5668
