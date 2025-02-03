@@ -6,56 +6,74 @@ metadata:
   name: restrict-image-registries
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../restrict-image-registries.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: restrict-image-registries
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pods.yaml
-    - apply:
-        file: good-podcontrollers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-noregistry.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-notall.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-false.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-podcontrollers.yaml
-  - name: step-03
-    try:
-    - script:
-        content: if kubectl debug -it goodpod02-registry --image=busybox:1.35 --target=k8s-nginx
-          -n ir-pods-namespace; then exit 1; else exit 0; fi;
-  - name: step-98
-    try:
-    - script:
-        content: kubectl delete deployments --all --force --grace-period=0 -n ir-pods-namespace
-    - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
-    - script:
-        content: kubectl delete cronjobs --all --force --grace-period=0 -n ir-pods-namespace
+    - name: step-01
+      try:
+        - apply:
+            file: ../restrict-image-registries.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: restrict-image-registries
+              spec:
+                rules:
+                  - name: validate-registries
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Unknown image registry."
+                      pattern:
+                        spec:
+                          =(ephemeralContainers):
+                            - image: "eu.foo.io/* | bar.io/*"
+                          =(initContainers):
+                            - image: "eu.foo.io/* | bar.io/*"
+                          containers:
+                            - image: "eu.foo.io/* | bar.io/*"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pods.yaml
+        - apply:
+            file: good-podcontrollers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-noregistry.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-notall.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-false.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-podcontrollers.yaml
+    - name: step-03
+      try:
+        - script:
+            content:
+              if kubectl debug -it goodpod02-registry --image=busybox:1.35 --target=k8s-nginx
+              -n ir-pods-namespace; then exit 1; else exit 0; fi;
+    - name: step-98
+      try:
+        - script:
+            content: kubectl delete deployments --all --force --grace-period=0 -n ir-pods-namespace
+        - script:
+            content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+        - script:
+            content: kubectl delete cronjobs --all --force --grace-period=0 -n ir-pods-namespace
