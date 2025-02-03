@@ -16,22 +16,22 @@ metadata:
       policy validates that container images only originate from the registry `eu.foo.io` or
       `bar.io`. Use of this policy requires customization to define your allowable registries.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-registries
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    validate:
-      message: "Unknown image registry."
-      pattern:
-        spec:
-          =(ephemeralContainers):
-          - image: "eu.foo.io/* | bar.io/*"
-          =(initContainers):
-          - image: "eu.foo.io/* | bar.io/*"
-          containers:
-          - image: "eu.foo.io/* | bar.io/*"
+    - name: validate-registries
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        failureAction: Audit
+        message: "Unknown image registry."
+        pattern:
+          spec:
+            =(ephemeralContainers):
+              - image: "eu.foo.io/* | bar.io/*"
+            =(initContainers):
+              - image: "eu.foo.io/* | bar.io/*"
+            containers:
+              - image: "eu.foo.io/* | bar.io/*"
