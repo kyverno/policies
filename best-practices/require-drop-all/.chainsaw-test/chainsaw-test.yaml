@@ -6,43 +6,61 @@ metadata:
   name: require-drop-all
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../require-drop-all.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: drop-all-capabilities
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        file: good-podcontrollers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-containers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-initcontainers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-corner.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-podcontrollers.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../require-drop-all.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: drop-all-capabilities
+              spec:
+                rules:
+                  - name: require-drop-all
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: >-
+                        Containers must drop `ALL` capabillities.
+                      foreach:
+                        - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+                          deny:
+                            conditions:
+                              all:
+                                - key: ALL
+                                  operator: AnyNotIn
+                                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            file: good-podcontrollers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-containers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-initcontainers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-corner.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-podcontrollers.yaml
