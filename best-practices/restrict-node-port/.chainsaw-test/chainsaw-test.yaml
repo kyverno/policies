@@ -6,26 +6,40 @@ metadata:
   name: restrict-node-port
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../restrict-node-port.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: restrict-nodeport
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-services.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-service-nodeport.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../restrict-node-port.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: restrict-nodeport
+              spec:
+                rules:
+                  - name: validate-nodeport
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Service
+
+                    validate:
+                      failureAction: Enforce
+                      message: "Service of type NodePort are not allowed"
+                      pattern:
+                        spec:
+                          =(type): "!NodePort"
+
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-services.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-service-nodeport.yaml
