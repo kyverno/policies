@@ -6,43 +6,59 @@ metadata:
   name: disallow-helm-tiller
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-helm-tiller.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-helm-tiller
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        file: good-deploy.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-deploy.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-fail-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-success-first.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-helm-tiller.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-helm-tiller
+              spec:
+                rules:
+                  - name: validate-helm-tiller
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Helm Tiller is not allowed"
+                      foreach:
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "!*tiller*"
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "!*tiller*"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            file: good-deploy.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-deploy.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-fail-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-success-first.yaml
