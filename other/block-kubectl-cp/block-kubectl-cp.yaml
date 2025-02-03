@@ -18,24 +18,19 @@ spec:
   validationFailureAction: Enforce
   background: false
   rules:
-    - name: block-kubectl-cp-by-pod-label
+    - name: block-kubectl-cp
       match:
         any:
           - resources:
               kinds:
                 - Pod/exec
-      context:
-        - name: podcplabel
-          apiCall:
-            urlPath: "/api/v1/namespaces/{{request.namespace}}/pods/{{request.name}}"
-            jmesPath: "metadata.labels.cp || ''"
       preconditions:
         all:
           - key: "{{ request.operation || 'BACKGROUND' }}"
             operator: Equals
             value: CONNECT
       validate:
-        message: "Cannot use `kubectl cp` on pods with label `cp: false`"
+        message: "Cannot use `kubectl cp` on pods"
         deny:
           conditions:
             all:
@@ -45,6 +40,3 @@ spec:
               - key: "{{ request.object.command[1] }}"
                 operator: Equals
                 value: "cf"
-              - key: "{{ podcplabel }}"
-                operator: Equals
-                value: "false"
