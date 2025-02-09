@@ -1,0 +1,5 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: secrets-not-from-env-vars-cve-2024-3177
+  ready: true
