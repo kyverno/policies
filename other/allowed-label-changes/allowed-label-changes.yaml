@@ -42,6 +42,6 @@ spec:
       deny:
         conditions:
           any:
-            - key: "{{ request.object.metadata.labels || `{}` |  merge(@, {breakglass:null}) }}"
-              operator: NotEquals
-              value: "{{ request.oldObject.metadata.labels || `{}` |  merge(@, {breakglass:null}) }}"
+            - key: "{{ request.object.metadata.labels | keys(@) }}"
+              operator: NotIn
+              value: ["breakglass"]
