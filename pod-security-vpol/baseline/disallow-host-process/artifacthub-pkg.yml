@@ -1,0 +1,23 @@
+name: disallow-host-process-vpol
+version: 1.0.0
+displayName: Disallow hostProcess in ValidatingPolicy
+description: >-
+  Windows pods offer the ability to run HostProcess containers which enables privileged access to the Windows node. Privileged access to the host is disallowed in the baseline policy. HostProcess pods are an alpha feature as of Kubernetes v1.22. This policy ensures the `hostProcess` field, if present, is set to `false`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-host-process/disallow-host-process.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - ValidatingPolicy
+readme: |
+  Windows pods offer the ability to run HostProcess containers which enables privileged access to the Windows node. Privileged access to the host is disallowed in the baseline policy. HostProcess pods are an alpha feature as of Kubernetes v1.22. This policy ensures the `hostProcess` field, if present, is set to `false`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod"
+digest: 264c6ee6ee208a50bde17c1922b77bdbaac15aa7ac1c491a008c15fcf3ab15eb
+createdAt: "2025-03-13T23:26:58Z"

@@ -1,0 +1,57 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-path
+policies:
+- ../disallow-host-path.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-path
+  resources:
+  - badcronjob01
+  - badcronjob02
+  result: fail
+  rule: host-path
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-path
+  resources:
+  - baddeployment01
+  - baddeployment02
+  result: fail
+  rule: host-path
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-host-path
+  resources:
+  - badpod01
+  - badpod02
+  result: fail
+  rule: host-path
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-path
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  result: pass
+  rule: host-path
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-path
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  result: pass
+  rule: host-path
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-host-path
+  resources:
+  - goodpod01
+  - goodpod02
+  result: pass
+  rule: host-path
