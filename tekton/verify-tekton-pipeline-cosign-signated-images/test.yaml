@@ -3,7 +3,7 @@ kind: Test
 metadata:
   name: require-signed-images-registry
 policies:
-  - ../cosign-policy.yaml
+  - ./verify-tekton-pipelines-cosign-signed-images.yml
 resources:
   - resource.yaml
 results:
