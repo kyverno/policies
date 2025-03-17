@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-signed-images-registry
+policies:
+  - ../cosign-policy.yaml
+resources:
+  - resource.yaml
+results:
+  - kind: Pod
+    policy: require-signed-images-registry
+    resources:
+      - unsigned-pod
+    result: fail
+    rule: check-signature
+  - kind: Pod
+    policy: require-signed-images-registry
+    resources:
+      - signed-pod
+    result: pass
+    rule: check-signature
