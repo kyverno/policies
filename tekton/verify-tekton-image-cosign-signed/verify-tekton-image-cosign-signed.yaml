@@ -11,7 +11,7 @@ metadata:
     policies.kyverno.io/minversion: 1.7.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
-      A signed image is required to maintain supply chain security
+      A cosign signed image is required to maintain supply chain security
 spec:
   validationFailureAction: Enforce
   background: true
