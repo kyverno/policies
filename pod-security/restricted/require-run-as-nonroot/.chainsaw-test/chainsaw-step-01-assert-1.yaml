@@ -3,7 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: require-run-as-nonroot
 status:
-  conditions:
+  conditionStatus:
+    conditions:
   - reason: Succeeded
     status: "True"
     type: Ready

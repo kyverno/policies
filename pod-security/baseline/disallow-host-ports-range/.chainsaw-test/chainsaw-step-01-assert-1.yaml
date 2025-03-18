@@ -3,7 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: disallow-host-ports-range
 status:
-  conditions:
+  conditionStatus:
+    conditions:
   - reason: Succeeded
     status: "True"
     type: Ready

@@ -3,7 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: disallow-selinux
 status:
-  conditions:
+  conditionStatus:
+    conditions:
   - reason: Succeeded
     status: "True"
     type: Ready
