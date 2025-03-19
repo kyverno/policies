@@ -3,8 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: restrict-apparmor-profiles
 status:
-  conditionStatus:
-    conditions:
+  conditions:
   - reason: Succeeded
     status: "True"
     type: Ready
