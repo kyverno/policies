@@ -4,12 +4,13 @@ metadata:
   name: disallow-capabilities-strict
 policies:
 - ../disallow-capabilities-strict.yaml
+- ./adding-capabilities-strict.yaml
 resources:
 - resource.yaml
 results:
 - isValidatingPolicy: true
   kind: CronJob
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-badcronjob01
   - addcap-badcronjob02
@@ -22,10 +23,9 @@ results:
   - addcap-badcronjob09
   - addcap-badcronjob10
   result: fail
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: Deployment
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-baddeployment01
   - addcap-baddeployment02
@@ -38,10 +38,9 @@ results:
   - addcap-baddeployment09
   - addcap-baddeployment10
   result: fail
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: Pod
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-badpod01
   - addcap-badpod02
@@ -54,10 +53,9 @@ results:
   - addcap-badpod09
   - addcap-badpod10
   result: fail
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: CronJob
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-goodcronjob01
   - addcap-goodcronjob02
@@ -70,10 +68,9 @@ results:
   - addcap-goodcronjob09
   - addcap-goodcronjob10
   result: pass 
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: Deployment
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-gooddeployment01
   - addcap-gooddeployment02
@@ -86,10 +83,9 @@ results:
   - addcap-gooddeployment09
   - addcap-gooddeployment10
   result: pass 
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: Pod
-  policy: disallow-capabilities-strict
+  policy: adding-capabilities-strict
   resources:
   - addcap-goodpod01
   - addcap-goodpod02
@@ -102,7 +98,6 @@ results:
   - addcap-goodpod09
   - addcap-goodpod10
   result: pass 
-  rule: adding-capabilities-strict
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-capabilities-strict
@@ -118,7 +113,6 @@ results:
   - badcronjob09
   - badcronjob10
   result: fail
-  rule: require-drop-all
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-capabilities-strict
@@ -134,7 +128,6 @@ results:
   - baddeployment09
   - baddeployment10
   result: fail
-  rule: require-drop-all
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-capabilities-strict
@@ -150,7 +143,6 @@ results:
   - badpod09
   - badpod10
   result: fail
-  rule: require-drop-all
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-capabilities-strict
@@ -162,7 +154,6 @@ results:
   - goodcronjob05
   - goodcronjob06
   result: pass
-  rule: require-drop-all
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-capabilities-strict
@@ -174,7 +165,6 @@ results:
   - gooddeployment05
   - gooddeployment06
   result: pass
-  rule: require-drop-all
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-capabilities-strict
@@ -186,4 +176,4 @@ results:
   - goodpod05
   - goodpod06
   result: pass
-  rule: require-drop-all
+

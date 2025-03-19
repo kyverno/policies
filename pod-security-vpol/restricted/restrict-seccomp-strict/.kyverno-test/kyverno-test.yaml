@@ -19,7 +19,6 @@ results:
   - badcronjob06
   - badcronjob07
   result: fail
-  rule: check-seccomp-strict
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-seccomp-strict
@@ -32,7 +31,6 @@ results:
   - baddeployment06
   - baddeployment07
   result: fail
-  rule: check-seccomp-strict
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-seccomp-strict
@@ -45,7 +43,6 @@ results:
   - badpod06
   - badpod07
   result: fail
-  rule: check-seccomp-strict
 - isValidatingPolicy: true
   kind: CronJob
   policy: restrict-seccomp-strict
@@ -61,7 +58,6 @@ results:
   - goodcronjob09
   - goodcronjob10
   result: pass
-  rule: check-seccomp-strict
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-seccomp-strict
@@ -77,7 +73,6 @@ results:
   - gooddeployment09
   - gooddeployment10
   result: pass
-  rule: check-seccomp-strict
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-seccomp-strict
@@ -93,4 +88,3 @@ results:
   - goodpod09
   - goodpod10
   result: pass
-  rule: check-seccomp-strict

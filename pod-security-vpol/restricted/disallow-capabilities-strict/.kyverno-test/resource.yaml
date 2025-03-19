@@ -1,7 +1,4 @@
-############################
-## Rule: require-drop-all ##
-############################
-###### Pods - Bad
+
 ---
 apiVersion: v1
 kind: Pod

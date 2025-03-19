@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: restrict-volume-types
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: deployments,cronjobs 
     policies.kyverno.io/title: Restrict Volume Types in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
     policies.kyverno.io/severity: medium

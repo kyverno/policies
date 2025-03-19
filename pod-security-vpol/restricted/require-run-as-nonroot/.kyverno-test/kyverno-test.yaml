@@ -27,7 +27,6 @@ results:
   - badcronjob14
   - badcronjob15
   result: fail
-  rule: run-as-non-root
 - isValidatingPolicy: true
   kind: Deployment
   policy: require-run-as-nonroot
@@ -48,7 +47,6 @@ results:
   - baddeployment14
   - baddeployment15
   result: fail
-  rule: run-as-non-root
 - isValidatingPolicy: true
   kind: Pod
   policy: require-run-as-nonroot
@@ -70,7 +68,6 @@ results:
   - badpod15
   - badpod16
   result: fail
-  rule: run-as-non-root
 - isValidatingPolicy: true
   kind: CronJob
   policy: require-run-as-nonroot
@@ -86,7 +83,6 @@ results:
   - goodcronjob09
   - goodcronjob10
   result: pass
-  rule: run-as-non-root
 - isValidatingPolicy: true
   kind: Deployment
   policy: require-run-as-nonroot
@@ -102,7 +98,6 @@ results:
   - gooddeployment09
   - gooddeployment10
   result: pass
-  rule: run-as-non-root
 - isValidatingPolicy: true
   kind: Pod
   policy: require-run-as-nonroot
@@ -118,4 +113,3 @@ results:
   - goodpod09
   - goodpod10
   result: pass
-  rule: run-as-non-root

@@ -19,7 +19,6 @@ results:
   - badcronjob06
   - badcronjob07
   result: fail
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-selinux
@@ -32,7 +31,6 @@ results:
   - baddeployment06
   - baddeployment07
   result: fail
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-selinux
@@ -45,7 +43,6 @@ results:
   - badpod06
   - badpod07
   result: fail
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-selinux
@@ -65,7 +62,6 @@ results:
   - goodcronjob13
   - goodcronjob14
   result: pass
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-selinux
@@ -85,7 +81,6 @@ results:
   - gooddeployment13
   - gooddeployment14
   result: pass
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-selinux
@@ -105,7 +100,6 @@ results:
   - goodpod13
   - goodpod14
   result: pass
-  rule: selinux-type
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-selinux
@@ -128,7 +122,6 @@ results:
   - selur-badcronjob16
   - selur-badcronjob17
   result: fail
-  rule: selinux-user-role
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-selinux
@@ -151,7 +144,6 @@ results:
   - selur-baddeployment16
   - selur-baddeployment17
   result: fail
-  rule: selinux-user-role
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-selinux
@@ -174,7 +166,6 @@ results:
   - selur-badpod16
   - selur-badpod17
   result: fail
-  rule: selinux-user-role
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-selinux
@@ -191,7 +182,6 @@ results:
   - selur-goodcronjob10
   - selur-goodcronjob11
   result: pass
-  rule: selinux-user-role
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-selinux
@@ -208,7 +198,6 @@ results:
   - selur-gooddeployment10
   - selur-gooddeployment11
   result: pass
-  rule: selinux-user-role
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-selinux
@@ -225,4 +214,3 @@ results:
   - selur-goodpod10
   - selur-goodpod11
   result: pass
-  rule: selinux-user-role

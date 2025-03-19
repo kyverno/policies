@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: restrict-seccomp
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: deployments,cronjobs 
     policies.kyverno.io/title: Restrict Seccomp in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
     policies.kyverno.io/severity: medium
@@ -28,17 +27,27 @@ spec:
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
   variables:
-            - name: allContainers
-              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
-            - name: allowedProfileTypes
-              expression: "['RuntimeDefault', 'Localhost']"
+  - name: allContainers
+    expression: >-
+      object.spec.containers + 
+      (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
+      (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
+  - name: allowedProfileTypes
+    expression: "['RuntimeDefault', 'Localhost']"
+  - name: hasValidSeccompProfile
+    expression: >-
+      !has(object.spec.securityContext) || 
+      !has(object.spec.securityContext.seccompProfile) || 
+      object.spec.securityContext.seccompProfile.type.orValue('Localhost') in variables.allowedProfileTypes
+
   validations:
-            - expression: >- 
-                (object.spec.?securityContext.?seccompProfile.?type.orValue('Localhost') 
-                in variables.allowedProfileTypes) && 
-                (variables.allContainers.all(container, 
-                container.?securityContext.?seccompProfile.?type.orValue('Localhost') 
-                in variables.allowedProfileTypes))
-              message: >-
-                Use of custom Seccomp profiles is disallowed. The field
-                spec.containers[*].securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.
+  - expression: >-
+      variables.hasValidSeccompProfile && 
+      variables.allContainers.all(container, 
+        !has(container.securityContext) || 
+        !has(container.securityContext.seccompProfile) || 
+        container.securityContext.seccompProfile.type.orValue('Localhost') in variables.allowedProfileTypes)
+    message: >-
+      Use of custom Seccomp profiles is disallowed. The field 
+      spec.containers[*].securityContext.seccompProfile.type must be unset 
+      or set to `RuntimeDefault` or `Localhost`.

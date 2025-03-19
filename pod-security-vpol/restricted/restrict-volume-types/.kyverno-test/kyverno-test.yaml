@@ -32,7 +32,6 @@ results:
   - badcronjob19
   - badcronjob20
   result: fail
-  rule: restricted-volumes
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-volume-types
@@ -58,7 +57,6 @@ results:
   - baddeployment19
   - baddeployment20
   result: fail
-  rule: restricted-volumes
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-volume-types
@@ -84,7 +82,6 @@ results:
   - badpod19
   - badpod20
   result: fail
-  rule: restricted-volumes
 - isValidatingPolicy: true
   kind: CronJob
   policy: restrict-volume-types
@@ -99,7 +96,6 @@ results:
   - goodcronjob08
   - goodcronjob09
   result: pass
-  rule: restricted-volumes
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-volume-types
@@ -114,7 +110,6 @@ results:
   - gooddeployment08
   - gooddeployment09
   result: pass
-  rule: restricted-volumes
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-volume-types
@@ -129,4 +124,3 @@ results:
   - goodpod08
   - goodpod09
   result: pass
-  rule: restricted-volumes

@@ -1,7 +1,7 @@
 apiVersion: policies.kyverno.io/v1alpha1
 kind: ValidatingPolicy
 metadata:
-  name: disallow-capabilities-strict
+  name: adding-capabilities-strict
   annotations:
     policies.kyverno.io/title: Disallow Capabilities (Strict) in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
@@ -33,15 +33,6 @@ spec:
       (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))
 
   validations:
-  - expression: >-
-      variables.allContainers.all(container, 
-      has(container.securityContext) &&
-      has(container.securityContext.capabilities) &&
-      has(container.securityContext.capabilities.drop) &&
-      container.securityContext.capabilities.drop.exists_one(capability, capability == 'ALL'))
-    message: >-
-      Containers must drop `ALL` capabilities.
-
   - expression: >-
       variables.allContainers.all(container, 
       !has(container.securityContext) ||

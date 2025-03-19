@@ -1226,11 +1226,6 @@ spec:
           - name: container01
             image: dummyimagename
 ---
-#############################
-## Rule: selinux-user-role ##
-#############################
-###### Pods - Bad
----
 apiVersion: v1
 kind: Pod
 metadata:

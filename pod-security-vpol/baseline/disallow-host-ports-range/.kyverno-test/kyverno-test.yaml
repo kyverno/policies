@@ -22,7 +22,6 @@ results:
   - badcronjob09
   - badcronjob10
   result: fail
-  rule: host-port-range
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-ports-range
@@ -38,7 +37,6 @@ results:
   - baddeployment09
   - baddeployment10
   result: fail
-  rule: host-port-range
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-ports-range
@@ -54,7 +52,6 @@ results:
   - badpod09
   - badpod10
   result: fail
-  rule: host-port-range
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-host-ports-range
@@ -70,7 +67,6 @@ results:
   - goodcronjob09
   - goodcronjob10
   result: pass
-  rule: host-port-range
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-ports-range
@@ -86,7 +82,6 @@ results:
   - gooddeployment09
   - gooddeployment10
   result: pass
-  rule: host-port-range
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-ports-range
@@ -102,4 +97,3 @@ results:
   - goodpod09
   - goodpod10
   result: pass
-  rule: host-port-range

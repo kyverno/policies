@@ -18,7 +18,6 @@ results:
   - badcronjob05
   - badcronjob06
   result: fail
-  rule: privilege-escalation
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-privilege-escalation
@@ -30,7 +29,6 @@ results:
   - baddeployment05
   - baddeployment06
   result: fail
-  rule: privilege-escalation
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-privilege-escalation
@@ -42,7 +40,6 @@ results:
   - badpod05
   - badpod06
   result: fail
-  rule: privilege-escalation
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-privilege-escalation
@@ -53,7 +50,6 @@ results:
   - goodcronjob04
   - goodcronjob05
   result: pass
-  rule: privilege-escalation
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-privilege-escalation
@@ -64,7 +60,6 @@ results:
   - gooddeployment04
   - gooddeployment05
   result: pass
-  rule: privilege-escalation
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-privilege-escalation
@@ -75,4 +70,3 @@ results:
   - goodpod04
   - goodpod05
   result: pass
-  rule: privilege-escalation

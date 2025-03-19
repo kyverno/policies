@@ -14,7 +14,6 @@ results:
   - badcronjob01
   - badcronjob02
   result: fail
-  rule: host-path
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-path
@@ -22,7 +21,6 @@ results:
   - baddeployment01
   - baddeployment02
   result: fail
-  rule: host-path
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-path
@@ -30,7 +28,6 @@ results:
   - badpod01
   - badpod02
   result: fail
-  rule: host-path
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-host-path
@@ -38,7 +35,6 @@ results:
   - goodcronjob01
   - goodcronjob02
   result: pass
-  rule: host-path
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-path
@@ -46,7 +42,6 @@ results:
   - gooddeployment01
   - gooddeployment02
   result: pass
-  rule: host-path
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-path
@@ -54,4 +49,3 @@ results:
   - goodpod01
   - goodpod02
   result: pass
-  rule: host-path

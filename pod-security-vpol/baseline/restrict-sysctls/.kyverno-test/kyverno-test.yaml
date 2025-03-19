@@ -14,7 +14,6 @@ results:
   - badcronjob01
   - badcronjob02
   result: fail
-  rule: check-sysctls
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-sysctls
@@ -22,7 +21,6 @@ results:
   - baddeployment01
   - baddeployment02
   result: fail
-  rule: check-sysctls
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-sysctls
@@ -30,7 +28,6 @@ results:
   - badpod01
   - badpod02
   result: fail
-  rule: check-sysctls
 - isValidatingPolicy: true
   kind: CronJob
   policy: restrict-sysctls
@@ -43,7 +40,6 @@ results:
   - goodcronjob06
   - goodcronjob07
   result: pass
-  rule: check-sysctls
 - isValidatingPolicy: true
   kind: Deployment
   policy: restrict-sysctls
@@ -56,7 +52,6 @@ results:
   - gooddeployment06
   - gooddeployment07
   result: pass
-  rule: check-sysctls
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-sysctls
@@ -69,4 +64,3 @@ results:
   - goodpod06
   - goodpod07
   result: pass
-  rule: check-sysctls

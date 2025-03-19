@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: disallow-host-namespaces
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: deployments,cronjobs 
     policies.kyverno.io/title: Disallow Host Namespaces in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
     policies.kyverno.io/severity: medium
@@ -27,11 +26,16 @@ spec:
         apiVersions: ["v1"]
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
+  variables:
+    - name: hostNetwork
+      expression: "object.spec.?hostNetwork.orValue(false)"
+    - name: hostIPC
+      expression: "object.spec.?hostIPC.orValue(false)"
+    - name: hostPID
+      expression: "object.spec.?hostPID.orValue(false)"
   validations:
-     - expression: >-
-          ( object.spec.?hostNetwork.orValue(false) == false) &&
-          ( object.spec.?hostIPC.orValue(false) == false) &&
-          ( object.spec.?hostPID.orValue(false) == false)
-       message: >-
+    - expression: >-
+        !(variables.hostNetwork || variables.hostIPC || variables.hostPID)
+      message: >-
                 Sharing the host namespaces is disallowed. The fields spec.hostNetwork,
                 spec.hostIPC, and spec.hostPID must be unset or set to `false`.         

@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: disallow-host-ports
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: deployments,cronjobs 
     policies.kyverno.io/title: Disallow hostPorts in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
     policies.kyverno.io/severity: medium
@@ -26,26 +25,17 @@ spec:
         apiVersions: ["v1"]
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
+  variables:
+    - name: allContainers
+      expression: >-
+        object.spec.containers + 
+        (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
+        (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
   validations:
-            - expression: >- 
-                object.spec.containers.all(container, !has(container.ports) || 
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.containers[*].ports[*].hostPort
-                must either be unset or set to `0`.
-
-            - expression: >- 
-                !has(object.spec.initContainers) || 
-                object.spec.initContainers.all(container, !has(container.ports) || 
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.initContainers[*].ports[*].hostPort
-                must either be unset or set to `0`.
-
-            - expression: >- 
-                !has(object.spec.ephemeralContainers) ||
-                object.spec.ephemeralContainers.all(container, !has(container.ports) ||
-                container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
-              message: >-
-                Use of host ports is disallowed. The field spec.ephemeralContainers[*].ports[*].hostPort
-                must either be unset or set to `0`.
+    - expression: >- 
+        variables.allContainers.all(container, 
+          !has(container.ports) || 
+          container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
+      message: >-
+        Use of host ports is disallowed. The field spec.containers[*].ports[*].hostPort
+        must either be unset or set to `0`.

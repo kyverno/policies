@@ -16,7 +16,6 @@ results:
   - badcronjob03
   - badcronjob04
   result: fail
-  rule: host-namespaces
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-namespaces
@@ -26,7 +25,6 @@ results:
   - baddeployment03
   - baddeployment04
   result: fail
-  rule: host-namespaces
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-namespaces
@@ -36,7 +34,6 @@ results:
   - badpod03
   - badpod04
   result: fail
-  rule: host-namespaces
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-host-namespaces
@@ -47,7 +44,6 @@ results:
   - goodcronjob04
   - goodcronjob05
   result: pass
-  rule: host-namespaces
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-host-namespaces
@@ -58,7 +54,6 @@ results:
   - gooddeployment04
   - gooddeployment05
   result: pass
-  rule: host-namespaces
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-host-namespaces
@@ -69,4 +64,3 @@ results:
   - goodpod04
   - goodpod05
   result: pass
-  rule: host-namespaces

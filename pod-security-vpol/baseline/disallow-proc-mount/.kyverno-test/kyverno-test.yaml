@@ -17,7 +17,6 @@ results:
   - badcronjob04
   - badcronjob05
   result: fail
-  rule: check-proc-mount
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-proc-mount
@@ -28,7 +27,6 @@ results:
   - baddeployment04
   - baddeployment05
   result: fail
-  rule: check-proc-mount
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-proc-mount
@@ -39,7 +37,6 @@ results:
   - badpod04
   - badpod05
   result: fail
-  rule: check-proc-mount
 - isValidatingPolicy: true
   kind: CronJob
   policy: disallow-proc-mount
@@ -51,7 +48,6 @@ results:
   - goodcronjob05
   - goodcronjob06
   result: pass
-  rule: check-proc-mount
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-proc-mount
@@ -63,7 +59,6 @@ results:
   - gooddeployment05
   - gooddeployment06
   result: pass
-  rule: check-proc-mount
 - isValidatingPolicy: true
   kind: Pod
   policy: disallow-proc-mount
@@ -75,4 +70,3 @@ results:
   - goodpod05
   - goodpod06
   result: pass
-  rule: check-proc-mount
