@@ -3,7 +3,8 @@ kind: ValidatingPolicy
 metadata:
   name: restrict-seccomp-strict
 status:
-  conditions:
+  conditionStatus:
+    conditions:
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"

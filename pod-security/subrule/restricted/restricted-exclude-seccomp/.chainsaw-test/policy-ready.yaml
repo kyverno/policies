@@ -3,8 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: podsecurity-subrule-restricted-seccomp
 status:
-  conditionStatus:
-    conditions:
+  conditions:
   - reason: Succeeded
     status: "True"
     type: Ready

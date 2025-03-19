@@ -3,7 +3,8 @@ kind: ValidatingPolicy
 metadata:
   name: disallow-capabilities
 status:
-  conditions:
+  conditionStatus:
+    conditions:
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"

@@ -3,7 +3,8 @@ kind: ValidatingPolicy
 metadata:
   name: disallow-host-path
 status:
-  conditions:
+  conditionStatus:
+    conditions:
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"
