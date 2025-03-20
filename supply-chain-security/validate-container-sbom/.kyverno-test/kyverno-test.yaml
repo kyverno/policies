@@ -1,0 +1,57 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-container-sbom
+policies:
+- ../validate-container-sbom.yaml
+resources:
+- resources.yaml
+results:
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-without-sbom
+  result: fail
+  rule: validate-sbom-exists
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-invalid-sbom
+  result: fail
+  rule: validate-sbom-format
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-invalid-sbom
+  result: fail
+  rule: validate-sbom-signature
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-invalid-sbom
+  result: fail
+  rule: validate-sbom-completeness
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-valid-sbom
+  result: pass
+  rule: validate-sbom-exists
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-valid-sbom
+  result: pass
+  rule: validate-sbom-format
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-valid-sbom
+  result: pass
+  rule: validate-sbom-signature
+- kind: Pod
+  policy: validate-container-sbom
+  resources:
+  - pod-with-valid-sbom
+  result: pass
+  rule: validate-sbom-completeness 

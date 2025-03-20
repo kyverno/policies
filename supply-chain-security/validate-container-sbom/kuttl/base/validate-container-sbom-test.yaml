@@ -1,0 +1,17 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+metadata:
+  name: validate-container-sbom-test
+commands:
+  - command: kubectl apply -f ../../validate-container-sbom.yaml
+  - command: kubectl apply -f ../../resources/pod-with-valid-sbom.yaml
+  - command: kubectl apply -f ../../resources/pod-with-invalid-sbom.yaml
+  - command: kubectl apply -f ../../resources/pod-without-sbom.yaml
+  - command: sleep 10
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-container-sbom
+status:
+  ready: true 
