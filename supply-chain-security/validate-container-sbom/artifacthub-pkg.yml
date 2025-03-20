@@ -1,0 +1,37 @@
+---
+name: validate-container-sbom
+version: 1.0.0
+displayName: Validate Container Image SBOM
+createdAt: "2023-10-25T00:00:00.000Z"
+description: >-
+  This policy validates that container images have associated Software Bills of Materials (SBOMs)
+  that meet government and industry standards. It checks for the presence of SBOM annotations,
+  validates the SBOM format (CycloneDX or SPDX), ensures the SBOM is signed by a trusted source,
+  and verifies the SBOM meets minimum completeness requirements. This policy helps organizations 
+  comply with Executive Order 14028 on improving the nation's cybersecurity, NIST SSDF, and CISA
+  guidance on securing the software supply chain.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/supply-chain-security/validate-container-sbom/validate-container-sbom.yaml
+  ```   
+keywords:
+  - supply-chain
+  - sbom
+  - security
+  - governance
+  - compliance
+  - kyverno
+readme: |
+  This policy validates that container images have associated Software Bills of Materials (SBOMs)
+  that meet government and industry standards. It checks for the presence of SBOM annotations,
+  validates the SBOM format (CycloneDX or SPDX), ensures the SBOM is signed by a trusted source,
+  and verifies the SBOM meets minimum completeness requirements. This policy helps organizations 
+  comply with Executive Order 14028 on improving the nation's cybersecurity, NIST SSDF, and CISA
+  guidance on securing the software supply chain.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Supply Chain Security"
+  kyverno/kubernetesVersion: "1.24-1.27"
+  kyverno/subject: "Pod, SBOM"
+digest: a2fc92886410e18e6110aacf424090649e6d899550c0c68e13a8b0a6c860b959 

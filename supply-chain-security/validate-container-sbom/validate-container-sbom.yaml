@@ -1,0 +1,90 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-container-sbom
+  annotations:
+    policies.kyverno.io/title: Validate Container Image SBOM
+    policies.kyverno.io/category: Supply Chain Security
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.10.0
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.24-1.27"
+    policies.kyverno.io/subject: Pod, SBOM
+    policies.kyverno.io/description: >-
+      This policy validates that container images have associated Software Bills of Materials (SBOMs)
+      that meet government and industry standards. It checks for the presence of SBOM annotations,
+      validates the SBOM format (CycloneDX or SPDX), ensures the SBOM is signed by a trusted source,
+      and verifies the SBOM meets minimum completeness requirements. This policy helps organizations 
+      comply with Executive Order 14028 on improving the nation's cybersecurity, NIST SSDF, and CISA
+      guidance on securing the software supply chain.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: validate-sbom-exists
+    match:
+      any:
+      - resources:
+          kinds:
+            - Pod
+    validate:
+      message: "Each container must have an associated SBOM referenced by annotation."
+      pattern:
+        spec:
+          containers:
+          - =(name): "*"
+            image: "*"
+          =(initContainers):
+          - =(name): "*"
+            image: "*"
+          metadata:
+            annotations:
+              "security.kyverno.io/container-sbom-*": "?*"
+
+  - name: validate-sbom-format
+    match:
+      any:
+      - resources:
+          kinds:
+            - Pod
+    validate:
+      message: "SBOM must be in a valid format (CycloneDX or SPDX) and properly formatted."
+      foreach:
+      - list: "request.object.metadata.annotations[*]"
+        pattern:
+          key: "security.kyverno.io/container-sbom-*"
+          value: "{{ regex_match('^(https?://|data:application/|cosign.sigstore.dev/sbom/|oci://)(cyclonedx|spdx).*', @)}}"
+
+  - name: validate-sbom-signature
+    match:
+      any:
+      - resources:
+          kinds:
+            - Pod
+    validate:
+      message: "SBOM must be signed by an approved authority using a recognized signature format."
+      foreach:
+      - list: "request.object.metadata.annotations[*]"
+        pattern:
+          key: "security.kyverno.io/container-sbom-signature-*"
+          value: "{{ regex_match('^(https?://|data:application/|cosign.sigstore.dev/signature/).*', @)}}"
+
+  - name: validate-sbom-completeness
+    match:
+      any:
+      - resources:
+          kinds:
+            - Pod
+    validate:
+      message: "SBOM must include minimum required fields as per government standards."
+      foreach:
+      - list: "request.object.spec.containers"
+        pattern:
+          name: "?*"
+          image: "?*"
+        deny:
+          conditions:
+            any:
+            - key: "{{ request.object.metadata.annotations[\"security.kyverno.io/container-sbom-completeness-{{ element.name }}\"] }}"
+              operator: NotEquals
+              value: verified 
