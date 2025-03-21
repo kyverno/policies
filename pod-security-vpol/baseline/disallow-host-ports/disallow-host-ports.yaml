@@ -28,14 +28,13 @@ spec:
   variables:
     - name: allContainers
       expression: >-
-        object.spec.containers + 
-        (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
-        (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
+         object.spec.containers + 
+          object.spec.?initContainers.orValue([]) + 
+          object.spec.?ephemeralContainers.orValue([])
   validations:
     - expression: >- 
         variables.allContainers.all(container, 
-          !has(container.ports) || 
-          container.ports.all(port, !has(port.hostPort) || port.hostPort == 0))
+          container.?ports.orValue([]).all(port, port.?hostPort.orValue(0) == 0))
       message: >-
         Use of host ports is disallowed. The field spec.containers[*].ports[*].hostPort
         must either be unset or set to `0`.

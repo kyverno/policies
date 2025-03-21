@@ -26,41 +26,39 @@ spec:
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
   variables:
-    - name: allContainerTypes
-      expression: >-
-        object.spec.containers + 
-        (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
-        (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-    - name: seLinuxTypes
-      expression: "['container_t', 'container_init_t', 'container_kvm_t']"
-    - name: hasValidSELinuxType
-      expression: >-
-        !has(object.spec.securityContext) || 
-        !has(object.spec.securityContext.seLinuxOptions) || 
-        !has(object.spec.securityContext.seLinuxOptions.type) || 
-        variables.seLinuxTypes.exists(type, type == object.spec.securityContext.seLinuxOptions.type)
-    - name: hasValidSELinuxUserRole
-      expression: >-
-        !has(object.spec.securityContext) || 
-        !has(object.spec.securityContext.seLinuxOptions) || 
-        (!has(object.spec.securityContext.seLinuxOptions.user) && !has(object.spec.securityContext.seLinuxOptions.role))
+  - name: allContainerTypes
+    expression: >-
+      object.spec.containers + 
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
+
+  - name: seLinuxTypes
+    expression: "['container_t', 'container_init_t', 'container_kvm_t']"
+
+  - name: hasValidSELinuxType
+    expression: >-
+      object.spec.?securityContext.?seLinuxOptions.?type.orValue('') == '' || 
+      variables.seLinuxTypes.exists(type, type == object.spec.securityContext.seLinuxOptions.type)
+
+  - name: hasValidSELinuxUserRole
+    expression: >-
+      object.spec.?securityContext.?seLinuxOptions.?user.orValue('') == '' &&
+      object.spec.?securityContext.?seLinuxOptions.?role.orValue('') == ''
+
   validations:
-    - expression: >-
-        variables.hasValidSELinuxType &&
-        variables.allContainerTypes.all(container, 
-          !has(container.securityContext) || 
-          !has(container.securityContext.seLinuxOptions) || 
-          !has(container.securityContext.seLinuxOptions.type) || 
-          variables.seLinuxTypes.exists(type, type == container.securityContext.seLinuxOptions.type))
-      message: >-
-        Setting the SELinux type is restricted. The field securityContext.seLinuxOptions.type 
-        must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t).
-    - expression: >-
-        variables.hasValidSELinuxUserRole &&
-        variables.allContainerTypes.all(container,
-          !has(container.securityContext) ||
-          !has(container.securityContext.seLinuxOptions) ||
-          (!has(container.securityContext.seLinuxOptions.user) && !has(container.securityContext.seLinuxOptions.role)))
-      message: >-
-                Setting the SELinux user or role is forbidden. The fields seLinuxOptions.user and seLinuxOptions.role must be unset.
-          
+  - expression: >-
+      variables.hasValidSELinuxType &&
+      variables.allContainerTypes.all(container, 
+        container.?securityContext.?seLinuxOptions.?type.orValue('') == '' || 
+        variables.seLinuxTypes.exists(type, type == container.securityContext.seLinuxOptions.type))
+    message: >-
+      Setting the SELinux type is restricted. The field securityContext.seLinuxOptions.type 
+      must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t).
+
+  - expression: >-
+      variables.hasValidSELinuxUserRole &&
+      variables.allContainerTypes.all(container,
+        container.?securityContext.?seLinuxOptions.?user.orValue('') == '' &&
+        container.?securityContext.?seLinuxOptions.?role.orValue('') == '')
+    message: >-
+      Setting the SELinux user or role is forbidden. The fields seLinuxOptions.user and seLinuxOptions.role must be unset.

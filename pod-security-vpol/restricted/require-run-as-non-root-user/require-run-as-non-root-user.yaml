@@ -29,23 +29,18 @@ spec:
   - name: allContainers
     expression: >-
       object.spec.containers + 
-      (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
-      (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
-      !has(object.spec.securityContext) || 
-      !has(object.spec.securityContext.runAsUser) || 
-      object.spec.securityContext.runAsUser > 0
+      object.spec.?securityContext.?runAsUser.orValue(1) > 0
     message: >-
       Running as root is not allowed. The field spec.securityContext.runAsUser 
       must be unset or set to a number greater than zero.
 
   - expression: >-
       variables.allContainers.all(container, 
-        !has(container.securityContext) || 
-        !has(container.securityContext.runAsUser) || 
-        container.securityContext.runAsUser > 0)
+        container.?securityContext.?runAsUser.orValue(1) > 0)
     message: >-
       Running as root is not allowed. The field spec.containers[*].securityContext.runAsUser, 
       spec.initContainers[*].securityContext.runAsUser, and 

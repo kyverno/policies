@@ -26,28 +26,18 @@ spec:
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
   variables:
-  - name: allContainers
-    expression: >-
+   - name: ctnrs
+     expression: >-
       object.spec.containers + 
-      (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
-      (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
 
   validations:
-  - expression: >-
-      (
-        (has(object.spec.securityContext) &&
-         has(object.spec.securityContext.runAsNonRoot) &&
-         object.spec.securityContext.runAsNonRoot == true) &&
-        variables.allContainers.all(container, 
-          !has(container.securityContext) || 
-          !has(container.securityContext.runAsNonRoot) || 
-          container.securityContext.runAsNonRoot == true)
-      ) || 
-      variables.allContainers.all(container, 
-        has(container.securityContext) && 
-        has(container.securityContext.runAsNonRoot) && 
-        container.securityContext.runAsNonRoot == true)
-    message: >-
-      Running as root is not allowed. Either spec.securityContext.runAsNonRoot 
-      must be set to true, or all containers (spec.containers[*], spec.initContainers[*], 
-      spec.ephemeralContainers[*]) must have securityContext.runAsNonRoot set to true.
+       - expression: >-
+            (object.spec.?securityContext.?runAsNonRoot.orValue(false) == true
+             && variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(true) == true))
+             || variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(false) == true)
+         message: >-
+            Running as root is not allowed. Either spec.securityContext.runAsNonRoot 
+            must be set to true, or all containers (spec.containers[*], spec.initContainers[*], 
+            spec.ephemeralContainers[*]) must have securityContext.runAsNonRoot set to true.
