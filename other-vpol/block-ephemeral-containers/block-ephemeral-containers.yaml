@@ -4,21 +4,17 @@ metadata:
   name: block-ephemeral-containers
 spec:
   validationActions: 
-    - Deny
-  webhookConfiguration:
-    timeoutSeconds: 30
-  # evaluation:
-  #   background:
-  #     enabled: true
+    - Audit
+  evaluation:
+    background:
+      enabled: true
   matchConstraints:
     resourceRules:
     - apiGroups:   [""]
       apiVersions: ["v1"]
       operations:  ["CREATE", "UPDATE"]
-      resources:   ["pods"]
+      resources: ["pods", "pods/ephemeralcontainers"]  # ✅ Include subresource
   validations:
-  # even if use this fails 
-  #  - expression: "!has(object.spec.ephemeralContainers)"
    - expression: >-
       object.spec.?ephemeralContainers.orValue([]).size() == 0
      message: "Ephemeral (debug) containers are not permitted."
