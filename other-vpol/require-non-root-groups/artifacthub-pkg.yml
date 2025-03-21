@@ -1,0 +1,24 @@
+name: require-non-root-groups-vpol
+version: 1.0.0
+displayName: Require Non-Root Groups in ValidatingPolicy
+description: >-
+  Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/require-non-root-groups/require-non-root-groups.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - EKS Best Practices
+  - ValidatingPolicy
+readme: |
+  Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample, EKS Best Practices in vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: a8f6e588b5298fd7ffcc9c4d07a7e0d0c58a97abc43420ae2507401f2a4dc45a
+createdAt: "2025-03-18T02:15:56Z"

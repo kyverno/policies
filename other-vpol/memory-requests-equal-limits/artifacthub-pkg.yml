@@ -1,0 +1,24 @@
+name: memory-requests-equal-limits-vpol
+version: 1.0.0
+displayName: Memory Requests Equal Limits in ValidatingPolicy
+description: >-
+  Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/memory-requests-equal-limits/memory-requests-equal-limits.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 54c8e428efea694aba9b49cd54e8882a7609ec1fcc3f4db7c2fa5b297c6bd6b7
+
+createdAt: "2025-03-18T02:15:57Z"
