@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    corp.com/allowed-registries: img.corp.com/
+  name: imageregistries-ns01
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: imageregistries-ns01
+  name: clusterregistries
+data:
+  registries: ghcr.io/
+
