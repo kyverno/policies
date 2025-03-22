@@ -4,3 +4,4 @@ data:
 kind: ConfigMap
 metadata:
   name: namespace-filters
+  namespace: default

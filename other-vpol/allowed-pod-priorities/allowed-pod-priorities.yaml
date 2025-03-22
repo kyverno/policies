@@ -30,7 +30,7 @@ spec:
   variables:
           - name: prior
             expression: >-
-               resource.Get("v1", "configmaps", object.metadata.namespace, "allowed-pod-priorities")
+               resource.Get("v1", "configmaps", "default", "allowed-pod-priorities")
           - name: namespaceName
             expression: "namespaceObject.metadata.name"
           - name: priorities

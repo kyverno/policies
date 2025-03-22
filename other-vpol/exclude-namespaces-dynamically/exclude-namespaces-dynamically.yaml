@@ -42,7 +42,7 @@ spec:
   variables: 
      - name: cm
        expression: >- 
-         resource.Get("v1", "configmaps", object.metadata.namespace, "namespace-filters")
+         resource.Get("v1", "configmaps", "default", "namespace-filters")
      - name: filter
        expression: "request.namespace in variables.cm.data['exclude'].split(', ')"
 

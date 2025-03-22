@@ -32,7 +32,7 @@ spec:
   variables:
             - name: cm
               expression: >-
-               resource.Get("v1", "configmaps", object.metadata.namespace, "clusterregistries")
+               resource.Get("v1", "configmaps", "default", "clusterregistries")
             - name: allContainers
               expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
             - name: nsregistries
