@@ -8,8 +8,7 @@ status:
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"
-    - reason: Succeeded
+    - reason: Failed
+      status: "False"
       type: RBACPermissionsGranted
-      status: "True"
-
 
