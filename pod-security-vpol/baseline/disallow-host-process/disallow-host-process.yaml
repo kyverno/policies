@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: disallow-host-process
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: deployments,cronjobs   
     policies.kyverno.io/title: Disallow hostProcess in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
     policies.kyverno.io/severity: medium
