@@ -13,10 +13,12 @@ metadata:
       normally set by some class of users. This policy prevents the use of an annotation beginning
       with `fluxcd.io/`. This can be useful to ensure users either
       don't set reserved annotations or to force them to use a newer version of an annotation.
-    pod-policies.kyverno.io/autogen-controllers: none
 spec:
   validationActions: 
     - Audit
+  generation:
+   podControllers:
+     enabled: false
   evaluation:
     background:
       enabled: true

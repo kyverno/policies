@@ -3,7 +3,6 @@ kind: ValidatingPolicy
 metadata:
   name: validate-probes
   annotations:
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/title: Validate Probes in ValidatingPolicy
     policies.kyverno.io/category: Sample in Vpol 
     policies.kyverno.io/severity: medium
@@ -18,6 +17,9 @@ metadata:
 spec:
   validationActions: 
     - Audit
+  generation:
+   podControllers:
+     enabled: false
   evaluation:
     background:
       enabled: false

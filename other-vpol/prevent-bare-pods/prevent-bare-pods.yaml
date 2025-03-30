@@ -4,7 +4,6 @@ metadata:
   name: prevent-bare-pods
   annotations:
     policies.kyverno.io/title: Prevent Bare Pods in ValidatingPolicy
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/category: Other, EKS Best Practices in vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
@@ -22,6 +21,9 @@ spec:
   evaluation:
     background:
       enabled: true
+  generation:
+   podControllers:
+     enabled: false
 
   matchConstraints:
     resourceRules:
