@@ -1,6 +1,38 @@
-# Ephemeral Credentials Validator
+# Ephemeral Credentials TTL Validator
 
-This Kyverno policy enforces the use of ephemeral credentials with defined time-to-live (TTL) periods in Kubernetes. It helps organizations implement credential lifecycle management and reduce the security risks associated with long-lived credentials.
+This policy ensures that all Kubernetes Secrets have a TTL (Time To Live) annotation, enforcing proper lifecycle management for ephemeral credentials.
+
+## Policy Details
+
+The `simple-ttl-validator` implements the following checks:
+
+- Validates that all Secrets have the `secrets.kubernetes.io/ttl` annotation
+- Excludes system namespaces (kube-system, kube-public)
+- Runs in Audit mode to report violations without blocking resource creation
+
+## Testing the Policy
+
+1. Create a secret without TTL annotation (will fail validation):
+   ```
+   kubectl create secret generic test-secret-no-ttl --from-literal=key1=value1
+   ```
+
+2. Create a secret with TTL annotation (will pass validation):
+   ```
+   kubectl create secret generic test-secret-with-ttl --from-literal=key1=value1
+   kubectl patch secret test-secret-with-ttl -p '{"metadata":{"annotations":{"secrets.kubernetes.io/ttl":"24h"}}}'
+   ```
+
+3. Check policy events and violations:
+   ```
+   kubectl describe clusterpolicy simple-ttl-validator
+   ```
+
+## Implementation Notes
+
+- The policy is configured in Audit mode, so it will report violations but not block resource creation
+- For production environments, consider changing `validationFailureAction` to `Enforce`
+- TTL annotation values are expected to follow Kubernetes duration format (e.g., "24h", "7d")
 
 ## Why Ephemeral Credentials Matter
 
