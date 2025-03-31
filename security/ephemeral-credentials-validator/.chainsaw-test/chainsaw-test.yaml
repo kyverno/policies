@@ -1,0 +1,65 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: ephemeral-credentials-validator
+spec:
+  template: kyverno
+
+  steps:
+  - name: step-01-apply-policy
+    try:
+    - apply:
+        file: ../ephemeral-credentials-validator.yaml
+    - assert:
+        file: policy-ready.yaml
+
+  - name: step-02-create-compliant-secret
+    try:
+    - apply:
+        file: ../test-compliant-secret.yaml
+    - sleep:
+        duration: 2s
+    - assert:
+        kind: Event
+        name: compliant-secret
+        timeout: 10s
+        check:
+          apiVersion: v1
+          kind: Event
+          metadata:
+            name: compliant-secret
+          filter.not: '{{ has(object.message, "validate failed") }}'
+
+  - name: step-03-create-non-compliant-secret
+    try:
+    - apply:
+        file: ../test-non-compliant-secret.yaml
+    - sleep:
+        duration: 2s
+    - assert:
+        kind: Event
+        name: non-compliant-secret
+        timeout: 10s
+        check:
+          apiVersion: v1
+          kind: Event
+          metadata:
+            name: non-compliant-secret
+          message: '{{ contains(message, "Secret must have a") }}'
+
+  - name: step-04-create-partial-compliance-secret
+    try:
+    - apply:
+        file: ../test-partial-compliance-secret.yaml
+    - sleep:
+        duration: 2s
+    - assert:
+        kind: Event
+        name: partial-compliance-secret
+        timeout: 10s
+        check:
+          apiVersion: v1
+          kind: Event
+          metadata:
+            name: partial-compliance-secret
+          message: '{{ contains(message, "rotation mechanism") }}' 

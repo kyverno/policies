@@ -1,0 +1,12 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: PolicyReport
+metadata:
+  name: polr-ns-default
+spec:
+  results:
+    - policy: ephemeral-credentials-validator
+      rule: generate-expiry-report
+      message: Secret will expire within 7 days
+      category: Security
+      severity: medium
+      status: fail 

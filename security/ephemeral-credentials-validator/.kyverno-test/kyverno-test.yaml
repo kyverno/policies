@@ -1,0 +1,42 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+metadata:
+  name: ephemeral-credentials-validator
+spec:
+  policies:
+  - ../ephemeral-credentials-validator.yaml
+  resources:
+  - test-compliant-secret.yaml
+  - test-non-compliant-secret.yaml
+  - test-partial-compliance-secret.yaml
+  results:
+  - policy: ephemeral-credentials-validator
+    rule: require-ttl-annotation
+    resources:
+      - name: non-compliant-secret
+        kind: Secret
+        result: fail
+      - name: compliant-secret
+        kind: Secret
+        result: pass
+      - name: partial-compliance-secret
+        kind: Secret
+        result: pass
+  - policy: ephemeral-credentials-validator
+    rule: require-rotation-mechanism
+    resources:
+      - name: non-compliant-secret
+        kind: Secret
+        result: fail
+      - name: compliant-secret
+        kind: Secret
+        result: pass
+      - name: partial-compliance-secret
+        kind: Secret
+        result: fail
+  - policy: ephemeral-credentials-validator
+    rule: enforce-maximum-ttl
+    resources:
+      - name: partial-compliance-secret
+        kind: Secret
+        result: fail 
