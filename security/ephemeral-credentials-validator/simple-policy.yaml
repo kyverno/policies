@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: simple-ttl-validator
+  annotations:
+    policies.kyverno.io/title: Simple TTL Validator
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Secret
+    policies.kyverno.io/terms: ephemeral credentials ttl secret-rotation
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: require-ttl-annotation
+      match:
+        any:
+        - resources:
+            kinds:
+              - Secret
+      exclude:
+        any:
+        - resources:
+            namespaces:
+              - kube-system
+              - kube-public
+      validate:
+        message: "Secret must have a TTL annotation."
+        pattern:
+          metadata:
+            annotations:
+              "secrets.kubernetes.io/ttl": "?*"
