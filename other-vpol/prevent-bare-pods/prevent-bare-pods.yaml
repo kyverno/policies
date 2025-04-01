@@ -23,8 +23,7 @@ spec:
       enabled: true
   generation:
    podControllers:
-     enabled: false
-
+     controllers: []
   matchConstraints:
     resourceRules:
     - apiGroups:   [""]

@@ -19,7 +19,7 @@ spec:
     - Audit
   generation:
    podControllers:
-     enabled: false
+     controllers: []
   evaluation:
     background:
       enabled: false
