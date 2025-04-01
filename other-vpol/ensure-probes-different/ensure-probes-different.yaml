@@ -17,7 +17,7 @@ metadata:
 spec:
   validationActions: 
     - Audit
-  generation:
+  autogen:
    podControllers:
      controllers: []
   evaluation:

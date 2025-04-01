@@ -21,7 +21,7 @@ spec:
   evaluation:
     background:
       enabled: true
-  generation:
+  autogen:
    podControllers:
      controllers: []
   matchConstraints:
