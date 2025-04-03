@@ -15,7 +15,6 @@ metadata:
       that Services of type LoadBalancer contain the annotation
       service.beta.kubernetes.io/aws-load-balancer-ssl-cert with some value.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: aws-loadbalancer-has-ssl-cert
@@ -31,6 +30,7 @@ spec:
       - name: "type-should-be-load-balancer"
         expression: "object.spec.type == 'LoadBalancer'"
     validate:
+      failureAction: Audit
       cel:
         expressions:
           - expression: >-

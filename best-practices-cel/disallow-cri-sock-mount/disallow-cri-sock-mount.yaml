@@ -17,7 +17,6 @@ metadata:
       to or replacement of this policy, preventing users from mounting the parent directories
       (/var/run and /var) may be necessary to completely prevent socket bind mounts.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-socket-mounts
@@ -30,6 +29,7 @@ spec:
           - CREATE
           - UPDATE
     validate:
+      failureAction: Audit
       cel:
         variables:
           - name: hasVolumes
