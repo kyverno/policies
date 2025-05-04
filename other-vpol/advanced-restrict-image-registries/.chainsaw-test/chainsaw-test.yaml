@@ -30,8 +30,6 @@ spec:
     - apply:
         file: ns-01.yaml
     - apply:
-        file: ns-02.yaml
-    - apply:
         file: cm.yaml
   - name: step-03
     try:

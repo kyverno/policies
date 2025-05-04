@@ -30,7 +30,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: badcronjob01
-  namespace: imageregistries-ns02
+  namespace: imageregistries-ns01
 spec:
   schedule: "* * * * *"
   jobTemplate:

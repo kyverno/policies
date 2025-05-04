@@ -11,12 +11,9 @@ metadata:
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      In instances where a ValidatingPolicy defines all the approved image registries
-      is insufficient, more granular control may be needed to set permitted registries,
-      especially in multi-tenant use cases where some registries may be based on
-      the Namespace. This policy shows an advanced version of the Restrict Image Registries
-      policy which gets a global approved registry from a ConfigMap and, based upon an
-      annotation at the Namespace level, gets the registry approved for that Namespace.
+      This policy restricts Pod images to approved registries defined globally in a ConfigMap
+      as a single string, newline-separated list, or YAML list with hyphens, and optionally
+      at the Namespace level via annotations. Uses contains() for compatibility with Kyverno 1.14.0.
 spec:
   validationActions: 
     - Audit
@@ -30,17 +27,21 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-            - name: cm
-              expression: >-
-               resource.Get("v1", "configmaps", "default", "clusterregistries")
-            - name: allContainers
-              expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
-            - name: nsregistries
-              expression: >-
-                namespaceObject.metadata.?annotations[?'corp.com/allowed-registries'].orValue(' ')
-            - name: registriesData
-              expression: "variables.cm.data[?'registries'].orValue(' ')"
+    - name: cm
+      expression: >-
+        resource.Get("v1", "configmaps", "default", "clusterregistries")
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
+    - name: nsregistries
+      expression: >-
+        namespaceObject.metadata.?annotations[?'corp.com/allowed-registries'].orValue('')
+    - name: registriesData
+      expression: >-
+        variables.cm.data[?'registries'].orValue('')
   validations:
-            - expression: "variables.allContainers.all(container, container.image.startsWith(variables.nsregistries) || container.image.startsWith(variables.registriesData))"
-              message: This Pod names an image that is not from an approved registry.
-
+    - expression: >-
+        variables.allContainers.all(container, 
+         variables.nsregistries.contains(container.image.split('/')[0] + '/') || 
+          variables.registriesData.contains(container.image.split('/')[0] + '/')
+        )
+      message: This Pod names an image that is not from an approved registry.
