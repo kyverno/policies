@@ -17,10 +17,12 @@ spec:
        file: policy-ready.yaml
   - name: step-02
     try:
-    - apply:
+    - create:
         file: good.yaml
-    - apply:
-        expect:
+        timeout: 60s
+    - create:
+       timeout: 60s
+       expect:
         - check:
             ($error != null): true
-        file: bad.yaml
+       file: bad.yaml

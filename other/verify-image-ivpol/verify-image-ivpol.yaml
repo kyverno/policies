@@ -28,9 +28,8 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
-  imageRules:
+  matchImageReferences:
         - glob : "docker.io/mohdcode/kyverno*"
-  mutateDigest: true
   attestors:
   - name: cosign
     cosign:
