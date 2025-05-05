@@ -8,9 +8,11 @@ metadata:
   name: kyverno:cleanup-controller:temp
 rules:
 - apiGroups:
-  - "apps"
+  - apps
   resources:
   - replicasets
+  versions:
+  - v1
   verbs:
   - get
   - watch
