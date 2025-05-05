@@ -29,6 +29,8 @@ runs:
         sudo mv ./kind /usr/local/bin/kind
     - name: Install latest Kyverno CLI
       uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+    - name: Install ORAS
+      uses: oras-project/setup-oras@8d34698a59f5ffe24821f0b48ab62a3de8b64b20 # v1.2.3
     - name: Create kind cluster
       shell: bash
       run: |
