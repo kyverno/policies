@@ -35,14 +35,14 @@ spec:
     try:
     - apply:
         file: pod-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
         file: pod-bad.yaml
     - apply:
         file: podcontroller-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true

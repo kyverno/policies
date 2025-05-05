@@ -4,6 +4,4 @@ metadata:
   name: clusterregistries
   namespace: default
 data:
-  registries: |
-   - ghcr.io/
-   - myregistry/
+  registries:  "ghcr.io, myregistry"
