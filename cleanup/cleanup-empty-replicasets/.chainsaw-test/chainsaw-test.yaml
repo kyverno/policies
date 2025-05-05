@@ -20,7 +20,7 @@ spec:
     - script:
         content: |
           set -eu
-          kubectl apply -f backup.yaml
+          kubectl apply -f backup.yaml --force
           rm -f backup.yaml
   - name: Create replica set
     try:
