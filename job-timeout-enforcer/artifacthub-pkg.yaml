@@ -1,0 +1,28 @@
+---
+name: job-timeout-enforcer
+version: 1.0.0
+displayName: Enforce Job Timeouts
+createdAt: "2024-03-20T00:00:00.000Z"
+description: >-
+  Jobs without timeouts can run indefinitely, consuming cluster resources and potentially
+  indicating stuck workloads. This policy ensures all Jobs have an activeDeadlineSeconds
+  set with a reasonable timeout value between 1 hour and 24 hours.
+install: |-
+  ```sh
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/job-timeout-enforcer/job-timeout-enforcer.yaml
+  ```
+keywords:
+  - job
+  - timeout
+  - resource management
+readme: |
+  # Enforce Job Timeouts
+  
+  Jobs without timeouts can run indefinitely, consuming cluster resources and potentially
+  indicating stuck workloads. This policy ensures all Jobs have an activeDeadlineSeconds
+  set with a reasonable timeout value between 1 hour and 24 hours.
+annotations:
+  kyverno/category: Resource Management
+  kyverno/severity: medium
+  kyverno/subject: Job
+  kyverno/kubernetesVersion: "1.23-1.28"
