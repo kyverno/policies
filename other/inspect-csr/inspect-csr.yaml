@@ -28,7 +28,7 @@ spec:
           - CertificateSigningRequest
     validate:
       message: >-
-        A CSR was created by {{ request.userInfo | to_string(@) }}
+        A CSR was created by {{ request.userInfo.{groups: groups, username: username} | to_string(@) }}
         holding ClusterRoles {{ request.clusterRoles | to_string(@) }}
         and Roles {{ request.roles | to_string(@) }}.
         The subjects and groups requested in the CSR were "{{ x509_decode(base64_decode('{{ request.object.spec.request }}')).Subject | to_string(@) }}"
