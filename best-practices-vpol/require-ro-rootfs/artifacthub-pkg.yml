@@ -1,0 +1,26 @@
+name: require-ro-rootfs-VPOL
+version: 1.0.0
+displayName: Require Read-Only Root Filesystem in VPOL
+description: >-
+  A read-only root file system helps to [Deny] an immutable infrastructure strategy; the container only needs to write on the mounted volume that persists the state. An immutable root filesystem can also prevent malicious binaries from writing to the host system. This policy validates that containers define a securityContext with `readOnlyRootFilesystem: true`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/require-ro-rootfs/require-ro-rootfs.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - EKS Best Practices
+  - VPOL
+readme: |
+  A read-only root file system helps to [Deny] an immutable infrastructure strategy; the container only needs to write on the mounted volume that persists the state. An immutable root filesystem can also prevent malicious binaries from writing to the host system. This policy validates that containers define a securityContext with `readOnlyRootFilesystem: true`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices, EKS Best Practices in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 9d592b91e0d108183b93d23ef29b8724c3a44f582b25fefb53d65bb1b589c346
+
+
+createdAt: "2025-05-05T13:19:12Z"

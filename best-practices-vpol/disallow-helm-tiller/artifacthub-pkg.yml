@@ -1,0 +1,25 @@
+name: disallow-helm-tiller-VPOL
+version: 1.0.0
+displayName: Disallow Helm Tiller in VPOL
+description: >-
+  Tiller, found in Helm v2, has known security challenges. It requires administrative privileges and acts as a shared resource accessible to any authenticated user. Tiller can lead to privilege escalation as restricted users can impact other users. It is recommend to use Helm v3+ which does not contain Tiller for these reasons. This policy validates that there is not an image containing the name `tiller`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-helm-tiller/disallow-helm-tiller.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - VPOL
+readme: |
+  Tiller, found in Helm v2, has known security challenges. It requires administrative privileges and acts as a shared resource accessible to any authenticated user. Tiller can lead to privilege escalation as restricted users can impact other users. It is recommend to use Helm v3+ which does not contain Tiller for these reasons. This policy validates that there is not an image containing the name `tiller`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 15a6af580924a19e39f2ba17957cc488ccc71b8a5d9e1b9b6ac72c9cb7994f90
+
+
+createdAt: "2025-05-05T13:19:13Z"
