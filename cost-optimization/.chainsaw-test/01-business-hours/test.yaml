@@ -1,0 +1,40 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: business-hours
+spec:
+  steps:
+  - name: setup
+    try:
+    - apiVersion: kyverno.io/v1
+      kind: ClusterPolicy
+      file: ../../schedule-based-quotas.yaml
+    - apiVersion: v1
+      kind: ConfigMap
+      metadata:
+        name: time-mock
+        namespace: default
+      data:
+        time: "2024-03-20T14:00:00Z" # Wednesday 2 PM
+
+  - name: test-quota-business-hours
+    try:
+    - apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: test-quota
+        namespace: default
+      spec:
+        hard:
+          cpu: "15"
+          memory: "30Gi"
+    assert:
+    - apiVersion: v1
+      kind: ResourceQuota
+      metadata:
+        name: test-quota
+        namespace: default
+      spec:
+        hard:
+          cpu: "20"
+          memory: "40Gi"
