@@ -21,7 +21,6 @@ metadata:
       so therefore the validate-v1-25-removals rule may not completely work on 1.25+.
       This policy requires Kyverno v1.7.4+ to function properly.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-v1-25-removals
@@ -50,6 +49,7 @@ spec:
         - policy/v1beta1
         - node.k8s.io/v1beta1
     validate:
+      failureAction: Audit
       message: >-
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.25.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
@@ -73,6 +73,7 @@ spec:
         - flowcontrol.apiserver.k8s.io/v1beta1
         - autoscaling/v2beta2
     validate:
+      failureAction: Audit
       message: >-
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.26.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
@@ -93,6 +94,7 @@ spec:
         value:
         - storage.k8s.io/v1beta1
     validate:
+      failureAction: Audit
       message: >-
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.27.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
@@ -114,6 +116,7 @@ spec:
         value:
         - flowcontrol.apiserver.k8s.io/v1beta2
     validate:
+      failureAction: Audit
       message: >-
         {{ request.object.apiVersion }}/{{ request.object.kind }} is deprecated and will be removed in v1.29.
         See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/
