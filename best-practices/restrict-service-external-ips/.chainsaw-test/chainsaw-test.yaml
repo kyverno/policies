@@ -6,31 +6,42 @@ metadata:
   name: restrict-service-external-ips
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../restrict-service-external-ips.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: restrict-external-ips
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-services.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-service-oneip.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-service-twoeip.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../restrict-service-external-ips.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: restrict-external-ips
+              spec:
+                rules:
+                  - name: check-ips
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Service
+                    validate:
+                      failureAction: Enforce
+                      message: "externalIPs are not allowed."
+                      pattern:
+                        =(externalIPs): null
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-services.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-service-oneip.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-service-twoeip.yaml
