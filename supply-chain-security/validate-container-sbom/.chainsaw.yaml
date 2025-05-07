@@ -1,0 +1,42 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-container-sbom
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: validate-container-sbom.yaml
+    - apply:
+        file: resources/pod-with-valid-sbom.yaml
+    - apply:
+        file: resources/pod-with-invalid-sbom.yaml
+    - apply:
+        file: resources/pod-without-sbom.yaml
+    - sleep:
+        duration: 5s
+    - assert:
+        file: resources/pod-with-valid-sbom.yaml
+        match:
+          kind: Pod
+          name: pod-with-valid-sbom
+        expected:
+          status:
+            phase: Running
+    - events:
+        match:
+          resource:
+            kind: Pod 
+            name: pod-with-invalid-sbom
+          type: Warning
+          reason: PolicyViolation
+          message: ".*SBOM must be in a valid format.*"
+    - events:
+        match:
+          resource:
+            kind: Pod
+            name: pod-without-sbom
+          type: Warning
+          reason: PolicyViolation
+          message: ".*Each container must have an associated SBOM referenced by annotation.*" 
