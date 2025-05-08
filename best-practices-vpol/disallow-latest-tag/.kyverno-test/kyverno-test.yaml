@@ -7,7 +7,8 @@ policies:
 resources:
 - resource.yaml
 results:
-- kind: Deployment
+- isValidatingPolicy: true
+  kind: Deployment
   policy: disallow-latest-tag
   resources:
   - baddeployment01
