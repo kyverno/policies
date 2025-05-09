@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-pod
+spec:
+  containers:
+    - name: signed-container
+      image: index.docker.io/arunvel1988/signedimage:latest  # Assumes this is a signed image
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-pod
+spec:
+  containers:
+    - name: unsigned-container
+      image: index.docker.io/arunvel1988/unsignedimage:latest  # This is an unsigned image
