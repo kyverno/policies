@@ -1,0 +1,24 @@
+name: enforce-pod-duration-vpol
+version: 1.0.0
+displayName: Enforce pod duration in ValidatingPolicy
+description: >-
+  This validation is valuable when annotations are used to define durations, such as to ensure a Pod lifetime annotation does not exceed some site specific max threshold. Pod lifetime annotation can be no greater than 8 hours.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/enforce-pod-duration/enforce-pod-duration.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  This validation is valuable when annotations are used to define durations, such as to ensure a Pod lifetime annotation does not exceed some site specific max threshold. Pod lifetime annotation can be no greater than 8 hours.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 2669067533aafe931e16c169106c547b91b1fa86b21bd5d5f951b8498dd185c8
+
+createdAt: "2025-03-18T02:15:56Z"

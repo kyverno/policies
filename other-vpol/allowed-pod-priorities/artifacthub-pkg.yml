@@ -1,0 +1,24 @@
+name: allowed-pod-priorities-vpol
+version: 1.0.0
+displayName: Allowed Pod Priorities in ValidatingPolicy
+description: >-
+  A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. In certain cases where not all users in a cluster are trusted, a malicious user could create Pods at the highest possible priorities, causing other Pods to be evicted/not get scheduled. This policy checks the defined `priorityClassName` in a Pod spec to a dictionary of allowable PriorityClasses for the given Namespace stored in a ConfigMap. If the `priorityClassName` is not among them, the Pod is blocked.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/allowed-pod-priorities/allowed-pod-priorities.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. In certain cases where not all users in a cluster are trusted, a malicious user could create Pods at the highest possible priorities, causing other Pods to be evicted/not get scheduled. This policy checks the defined `priorityClassName` in a Pod spec to a dictionary of allowable PriorityClasses for the given Namespace stored in a ConfigMap. If the `priorityClassName` is not among them, the Pod is blocked.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: c6dfb00ace245fa45d133ab8fad78374e0700be3fb9981b6d7fe276ebf121d93
+
+createdAt: "2025-03-18T02:15:57Z"

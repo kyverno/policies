@@ -1,0 +1,24 @@
+name: restrict-service-port-range-vpol
+version: 1.0.0
+displayName: Restrict Service Port Range in ValidatingPolicy
+description: >-
+  Services which are allowed to expose any port number may be able to impact other applications running on the Node which require them, or may make specifying security policy externally more challenging. This policy enforces that only the port range 32000 to 33000 may be used for Service resources.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-service-port-range/restrict-service-port-range.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Services which are allowed to expose any port number may be able to impact other applications running on the Node which require them, or may make specifying security policy externally more challenging. This policy enforces that only the port range 32000 to 33000 may be used for Service resources.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Service"
+digest: 1c25dc184e5f7da16654034c3eb4eb851b13f840fd752a8f34d28cf43d4b3d23
+
+createdAt: "2025-03-18T02:15:57Z"

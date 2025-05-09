@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-ingress-classes
+policies:
+- ../restrict-ingress-classes.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources:
+  - default/minimal-ingress-2
+  result: fail
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources:
+  - default/minimal-ingress-1
+  result: pass
+

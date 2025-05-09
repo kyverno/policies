@@ -1,0 +1,24 @@
+name: restrict-secrets-by-name-vpol
+version: 1.0.0
+displayName: Restrict Secrets by Name in ValidatingPolicy
+description: >-
+  Secrets often contain sensitive information and their access should be carefully controlled. Although Kubernetes RBAC can be effective at restricting them in several ways, it lacks the ability to use wildcards in resource names. This policy ensures that only Secrets beginning with the name `safe-` can be consumed by Pods. In order to work effectively, this policy needs to be paired with a separate policy or rule to require `automountServiceAccountToken=false` since this would otherwise result in a Secret being mounted.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-secrets-by-name/restrict-secrets-by-name.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Secrets often contain sensitive information and their access should be carefully controlled. Although Kubernetes RBAC can be effective at restricting them in several ways, it lacks the ability to use wildcards in resource names. This policy ensures that only Secrets beginning with the name `safe-` can be consumed by Pods. In order to work effectively, this policy needs to be paired with a separate policy or rule to require `automountServiceAccountToken=false` since this would otherwise result in a Secret being mounted.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod, Secret"
+digest: a2f50938247a5d8f6ef8741d36fbdcb0a0a3e46806977a8d57bec96b6c11a632
+
+createdAt: "2025-03-18T02:15:56Z"

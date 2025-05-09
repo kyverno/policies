@@ -1,0 +1,24 @@
+name: limit-hostpath-vols-vpol
+version: 1.0.0
+displayName: Limit hostPath Volumes to Specific Directories in ValidatingPolicy
+description: >-
+  hostPath volumes consume the underlying node's file system. If hostPath volumes are not to be universally disabled, they should be restricted to only certain host paths so as not to allow access to sensitive information. This policy ensures the only directory that can be mounted as a hostPath volume is /data. It is strongly recommended to pair this policy with a second to ensure readOnly access is enforced preventing directory escape.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/limit-hostpath-vols/limit-hostpath-vols.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  hostPath volumes consume the underlying node's file system. If hostPath volumes are not to be universally disabled, they should be restricted to only certain host paths so as not to allow access to sensitive information. This policy ensures the only directory that can be mounted as a hostPath volume is /data. It is strongly recommended to pair this policy with a second to ensure readOnly access is enforced preventing directory escape.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: ae05edfdd0421276a6c7653c3eb794e00662e448d5a024b7bf50078c54e17b49
+
+createdAt: "2025-03-18T02:15:57Z"

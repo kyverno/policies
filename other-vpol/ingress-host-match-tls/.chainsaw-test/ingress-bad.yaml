@@ -1,0 +1,83 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress01
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint99
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress02
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  - host: endpoint02
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint03
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress03
+spec:
+  ingressClassName: someingress
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  - host: endpoint02
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - endpoint01
+

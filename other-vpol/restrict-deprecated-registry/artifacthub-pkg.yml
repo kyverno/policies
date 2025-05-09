@@ -1,0 +1,25 @@
+name: restrict-deprecated-registry-vpol
+version: 1.0.0
+displayName: Restrict Deprecated Registry in ValidatingPolicy
+description: >-
+  Legacy k8s.gcr.io container image registry will be frozen in early April 2023 k8s.gcr.io image registry will be frozen from the 3rd of April 2023.   Images for Kubernetes 1.27 will not be available in the k8s.gcr.io image registry. Please read our announcement for more details. https://kubernetes.io/blog/2023/02/06/k8s-gcr-io-freeze-announcement/     
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-deprecated-registry/restrict-deprecated-registry.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - EKS Best Practices
+  - ValidatingPolicy
+readme: |
+  Legacy k8s.gcr.io container image registry will be frozen in early April 2023 k8s.gcr.io image registry will be frozen from the 3rd of April 2023.   Images for Kubernetes 1.27 will not be available in the k8s.gcr.io image registry. Please read our announcement for more details. https://kubernetes.io/blog/2023/02/06/k8s-gcr-io-freeze-announcement/     
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices, EKS Best Practices in vpol"
+  kyverno/kubernetesVersion: "1.27-1.28"
+  kyverno/subject: "Pod"
+digest: 56b52d619c1c8460e2dea426a5912c930ae0bed4f44988f487718914bd0b560a
+
+createdAt: "2025-03-18T02:15:57Z"

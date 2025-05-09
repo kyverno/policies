@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: svc-name
+policies:
+- ../check-serviceaccount-secrets.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: check-serviceaccount-secrets
+  resources:
+  - bad-svc-account
+  result: fail
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: check-serviceaccount-secrets
+  resources:
+  - good-svc-account
+  result: pass
+
