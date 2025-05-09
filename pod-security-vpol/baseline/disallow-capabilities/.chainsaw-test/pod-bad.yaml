@@ -1,0 +1,187 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01-new
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+          - AUDIT_WRITE
+          - CAP_NET_RAW
+          - MKNOD
+  containers:
+  - name: add-capabilities
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+  - name: add-capabilities-again
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "SETPCAP", "SETFCAP", "FOWNER"]
+        drop:
+        - "ALL"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02-new
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+          - AUDIT_WRITE
+          - CHOWN
+          - MKNOD
+  - name: init-again
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["SYS_CHROOT", "SETUID", "KILL", "SETGID"]
+        drop:
+        - "ALL"
+  containers:
+  - name: add-capabilities
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "SETPCAP", "CAP_NET_RAW", "FOWNER"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03-new
+spec:
+  containers:
+  - name: add-capabilities
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["NET_BIND_SERVICE", "CAP_SETPCAP", "SETFCAP", "FOWNER"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04-new
+spec:
+  containers:
+  - name: add-capabilities
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add: ["CAP_NET_RAW", "CAP_SYS_ADMIN", "NET_ADMIN"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  - name: container02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: initcontainer02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SETGID
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - NET_RAW
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        add:
+        - SYS_ADMIN

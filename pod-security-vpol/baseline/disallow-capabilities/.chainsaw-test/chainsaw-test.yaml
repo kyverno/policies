@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: disallow-capabilities
+spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../disallow-capabilities.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1alpha1
+          kind: ValidatingPolicy
+          metadata:
+            name: disallow-capabilities
+          spec:
+            validationActions: 
+             - Deny
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02
+    try:
+    - apply:
+        file: pod-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-bad.yaml
+    - apply:
+        file: podcontroller-good.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: podcontroller-bad.yaml

@@ -1,0 +1,110 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01-new
+spec:
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02-new
+spec:
+  hostPID: false
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03-new
+spec:
+  hostIPC: false
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04-new
+spec:
+  hostNetwork: false
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05-new
+spec:
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  hostPID: false
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  hostIPC: false
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  hostNetwork: false
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  hostPID: false
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
