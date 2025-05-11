@@ -6,50 +6,77 @@ metadata:
   name: disallow-default-namespace
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-default-namespace.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-default-namespace
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: ns.yaml
-  - name: step-03
-    try:
-    - apply:
-        file: good-resources.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: pod-default.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: ds-default.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: job-default.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: ss-default.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: deploy-default.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-default-namespace.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-default-namespace
+              spec:
+                rules:
+                  - name: validate-namespace
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Using 'default' namespace is not allowed."
+                      pattern:
+                        metadata:
+                          namespace: "!default"
+                  - name: validate-podcontroller-namespace
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - DaemonSet
+                              - Deployment
+                              - Job
+                              - StatefulSet
+                    validate:
+                      failureAction: Enforce
+                      message: "Using 'default' namespace is not allowed for pod controllers."
+                      pattern:
+                        metadata:
+                          namespace: "!default"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: ns.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-resources.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: pod-default.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: ds-default.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: job-default.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: ss-default.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: deploy-default.yaml
