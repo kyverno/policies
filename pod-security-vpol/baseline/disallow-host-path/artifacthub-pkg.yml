@@ -5,7 +5,7 @@ description: >-
   HostPath volumes let Pods use host directories and volumes in containers. Using host resources can be used to access shared data or escalate privileges and should not be allowed. This policy ensures no hostPath volumes are in use.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-host-path/disallow-host-path.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-host-path/disallow-host-path.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod,Volume"
-digest: 1cea0050ca9c4df308affc69685da15cbc25f550fe4e6e7de4eaa5e6e7ad93e9
+digest: 51aa8913082c181e26de266d64baa8c585dc948467427b3e5df5f8cb1f98f956
 createdAt: "2025-03-13T23:26:58Z"

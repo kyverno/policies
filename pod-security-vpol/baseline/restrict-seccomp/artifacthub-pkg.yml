@@ -5,7 +5,7 @@ description: >-
   The seccomp profile must not be explicitly set to Unconfined. This policy, requiring Kubernetes v1.30 or later, ensures that seccomp is unset or  set to `RuntimeDefault` or `Localhost`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/restrict-seccomp/restrict-seccomp.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/restrict-seccomp/restrict-seccomp.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 1cce0aad88be1156c35df6348e615ba8a37c00cd6a0e065c69c13057f8b1bfe4
+digest: 22438d27997556789ba51bae1434c95e61636002fc482912273554fc276ba378
 createdAt: "2025-03-13T23:50:13Z"

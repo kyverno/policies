@@ -5,7 +5,7 @@ description: >-
   Adding capabilities beyond those listed in the policy must be disallowed.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-capabilities/disallow-capabilities.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-capabilities/disallow-capabilities.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: b47c8e1d84a84173e01db5b777e204102f589ea7eaa34f70691189da958b3b84
+digest: 3c672624a9315b880962fed8e0ab77521d518b4de0b3b7aed1875700c85e28b8
 createdAt: "2025-03-13T23:26:58Z"

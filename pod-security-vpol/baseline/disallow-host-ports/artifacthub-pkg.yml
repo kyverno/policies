@@ -5,7 +5,7 @@ description: >-
   Access to host ports allows potential snooping of network traffic and should not be allowed, or at minimum restricted to a known list. This policy ensures the `hostPort` field is unset or set to `0`. 
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-host-ports/disallow-host-ports.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-host-ports/disallow-host-ports.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 7b8adfd6987a0a4e41caeff8e9efa88872c41784bbdc6625e8f0e3eaaef6f39f
+digest: 5464984bb6a2ba254e765800c57a2826723ee1b58f71170339d1ba5b2e4ebd5c
 createdAt: "2025-03-13T23:26:58Z"

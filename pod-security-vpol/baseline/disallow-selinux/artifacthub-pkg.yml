@@ -5,7 +5,7 @@ description: >-
   SELinux options can be used to escalate privileges and should not be allowed. This policy ensures that the `seLinuxOptions` field is undefined.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-selinux/disallow-selinux.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-selinux/disallow-selinux.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 032339dd2b7eae7dcafee02c931fb40f996797a218da378559b25aed120a024e
+digest: 91d8b334b6fcedcb41af3bef04ab4c326557de04da7e7b3676862276a8295d62
 createdAt: "2025-03-13T23:26:58Z"

@@ -5,7 +5,7 @@ description: >-
   Privileged mode disables most security mechanisms and must not be allowed. This policy ensures Pods do not call for privileged mode.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/disallow-privileged-containers/disallow-privileged-containers.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-privileged-containers/disallow-privileged-containers.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 60124f4586a3b21d883149cd6b5502034db58a959e665f1e3ae145923848810d
+digest: 88696b0307cf153db6ea8e27d9c888f1e09d7b00d980e399d1578a0b241d3a49
 createdAt: "2025-03-13T23:26:58Z"

@@ -5,7 +5,7 @@ description: >-
   In addition to restricting HostPath volumes, the restricted pod security profile limits usage of non-core volume types to those defined through PersistentVolumes. This policy blocks any other type of volume other than those in the allow list.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/restricted/restrict-volume-types/restrict-volume-types.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/restrict-volume-types/restrict-volume-types.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod,Volume"
-digest: a9be14b42c90fd5712fd9d8f692cc3c462770f0bac79afa3c489aa3e90c45db6
+digest: db5e65f953013f37ea6b121a2fcd9773835492101d0f1b3fdd192adb88f2a6b9
 createdAt: "2025-03-13T23:26:58Z"

@@ -5,7 +5,7 @@ description: >-
   Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed. This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/restricted/disallow-privilege-escalation/disallow-privilege-escalation.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/disallow-privilege-escalation/disallow-privilege-escalation.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: f38e49822fe00bd422edb63c760d9a6bdb9d91c1a67cb01214e67b0d9be71260
+digest: c3d39aceb0dd68760f1666b07be03ff9e3f4bc50958caefffe77f200172ca750
 createdAt: "2025-03-13T23:26:58Z"

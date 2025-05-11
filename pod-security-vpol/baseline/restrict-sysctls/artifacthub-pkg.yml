@@ -5,7 +5,7 @@ description: >-
   Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed "safe" subset. A sysctl is considered safe if it is namespaced in the container or the Pod, and it is isolated from other Pods or processes on the same Node. This policy ensures that only those "safe" subsets can be specified in a Pod.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/baseline/restrict-sysctls/restrict-sysctls.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/restrict-sysctls/restrict-sysctls.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 0222e747cb1d3c8eea38b560f99d16759ccd11a707f51c6531a61b16e32fb895
+digest: 9d9c55f27afab5d6871a622ce79e820db15bb4dca177c0f85c1d69b071949b2d
 createdAt: "2025-03-13T23:26:58Z"

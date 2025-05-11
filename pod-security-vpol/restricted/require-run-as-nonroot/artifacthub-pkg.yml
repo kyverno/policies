@@ -5,7 +5,7 @@ description: >-
   Containers must be required to run as non-root users. This policy ensures `runAsNonRoot` is set to `true`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/restricted/require-run-as-nonroot/require-run-as-nonroot.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/require-run-as-nonroot/require-run-as-nonroot.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 1463c2188f4a8594d1a8508bbf82b807ade401f466bd7dc45d22b7ad1fcce08f
+digest: d3ccbc642f70109c5f32e5562694cd86acc4f83a8f38370ac63e411f85790127
 createdAt: "2025-03-13T23:26:58Z"

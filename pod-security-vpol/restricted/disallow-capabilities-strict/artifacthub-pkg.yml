@@ -5,7 +5,7 @@ description: >-
   Adding capabilities other than `NET_BIND_SERVICE` is disallowed. In addition, all containers must explicitly drop `ALL` capabilities.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/restricted/disallow-capabilities-strict/disallow-capabilities-strict.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/disallow-capabilities-strict/disallow-capabilities-strict.yaml
   ```
 keywords:
   - kyverno
@@ -19,5 +19,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: ee41ef99377bb605880a75969aa26d835e5e3800012c3dbaa4dadb1c43a5b443
+digest: 46af1ce06136b56233ee3316cfa77801679d8762e5ff2e5d6928ff245a271636
 createdAt: "2025-03-13T23:26:58Z"
