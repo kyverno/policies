@@ -1,0 +1,1929 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    gcePersistentDisk:
+      pdName: gke-pv
+      fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    awsElasticBlockStore:
+      volumeID: vol-f37a03aa
+      fsType: ext4
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    gitRepo:
+      repository: https://github.com/kyverno/kyverno
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    nfs:
+      path: /data
+      server: 10.105.68.50
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    iscsi:
+      lun: 0
+      iqn: iqn.1998-01.com.vmware:w1-hs3-n2503.eng.vmware.com:452738760:67
+      targetPortal: 10.105.68.50:3260
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    glusterfs:
+      endpoints: test
+      path: /data
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    rbd:
+      image: foo
+      monitors:
+      - foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    flexVolume:
+      driver: foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    cinder:
+      volumeID: my-vol
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod10
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    cephfs:
+      monitors:
+      - foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod11
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    flocker:
+      datasetName: fooset
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod12
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    fc:
+      wwids:
+      - fooid.corp
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod13
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    azureFile:
+      secretName: foosecret
+      shareName: fooshare
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod14
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    vsphereVolume:
+      volumePath: /foo/disk.vmdk
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod15
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    quobyte:
+      registry: 10.80.90.100:1111
+      volume: foovol
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod16
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    azureDisk:
+      kind: Managed
+      diskName: foodisk
+      diskURI: /subscriptions/123456/resourceGroups/MC_myAKSCluster_myAKSCluster_eastus/providers/Microsoft.Compute/disks/myAKSDisk
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod17
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    portworxVolume:
+      volumeID: myportvol
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod18
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    scaleIO:
+      gateway: https://localhost:443/api
+      system: scaleio
+      volumeName: vol-0
+      secretRef:
+        name: sio-secret
+      fsType: xfs
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod19
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    storageos:
+      volumeName: foovol
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod20
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    photonPersistentDisk:
+      pdID: fooid.corp
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: mysettings
+      mountPath: /settings
+  volumes:
+  - name: mysettings
+    configMap:
+      name: settings
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: warehouse
+      mountPath: /warehouse
+  volumes:
+  - name: warehouse
+    csi:
+      driver: disk.csi.azure.com
+      readOnly: true
+      fsType: xfs
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+  labels:
+    foo: bar
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: labels
+      mountPath: /labels
+  volumes:
+  - name: labels
+    downwardAPI:
+      items:
+      - path: labels
+        fieldRef:
+          fieldPath: metadata.labels
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: ephem
+      mountPath: /ephem
+  volumes:
+  - name: ephem
+    ephemeral:
+      volumeClaimTemplate:
+        metadata:
+          labels:
+            type: my-frontend-volume
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "scratch-storage-class"
+          resources:
+            requests:
+              storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - name: foo
+      mountPath: /foo
+  volumes:
+  - name: foo
+    persistentVolumeClaim:
+      claimName: fooclaim
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: vault-token
+  volumes:
+  - name: vault-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: vault-token
+          expirationSeconds: 7200
+          audience: vault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - mountPath: /mysecret
+      name: mysecret
+  volumes:
+  - name: mysecret
+    secret:
+      secretName: mysecret
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        gcePersistentDisk:
+          pdName: gke-pv
+          fsType: ext4
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        awsElasticBlockStore:
+          volumeID: vol-f37a03aa
+          fsType: ext4
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        gitRepo:
+          repository: https://github.com/kyverno/kyverno
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        nfs:
+          path: /data
+          server: 10.105.68.50
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        iscsi:
+          lun: 0
+          iqn: iqn.1998-01.com.vmware:w1-hs3-n2503.eng.vmware.com:452738760:67
+          targetPortal: 10.105.68.50:3260
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        glusterfs:
+          endpoints: test
+          path: /data
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        rbd:
+          image: foo
+          monitors:
+          - foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        flexVolume:
+          driver: foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        cinder:
+          volumeID: my-vol
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        cephfs:
+          monitors:
+          - foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        flocker:
+          datasetName: fooset
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        fc:
+          wwids:
+          - fooid.corp
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment13
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        azureFile:
+          secretName: foosecret
+          shareName: fooshare
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment14
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        vsphereVolume:
+          volumePath: /foo/disk.vmdk
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment15
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        quobyte:
+          registry: 10.80.90.100:1111
+          volume: foovol
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        azureDisk:
+          kind: Managed
+          diskName: foodisk
+          diskURI: /subscriptions/123456/resourceGroups/MC_myAKSCluster_myAKSCluster_eastus/providers/Microsoft.Compute/disks/myAKSDisk
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment17
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        portworxVolume:
+          volumeID: myportvol
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment18
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        scaleIO:
+          gateway: https://localhost:443/api
+          system: scaleio
+          volumeName: vol-0
+          secretRef:
+            name: sio-secret
+          fsType: xfs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment19
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        storageos:
+          volumeName: foovol
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment20
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        photonPersistentDisk:
+          pdID: fooid.corp
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: mysettings
+          mountPath: /settings
+      volumes:
+      - name: mysettings
+        configMap:
+          name: settings
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: warehouse
+          mountPath: /warehouse
+      volumes:
+      - name: warehouse
+        csi:
+          driver: disk.csi.azure.com
+          readOnly: true
+          fsType: xfs
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+        foo: bar
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: labels
+          mountPath: /labels
+      volumes:
+      - name: labels
+        downwardAPI:
+          items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: ephem
+          mountPath: /ephem
+      volumes:
+      - name: ephem
+        ephemeral:
+          volumeClaimTemplate:
+            metadata:
+              labels:
+                type: my-frontend-volume
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: "scratch-storage-class"
+              resources:
+                requests:
+                  storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - name: foo
+          mountPath: /foo
+      volumes:
+      - name: foo
+        persistentVolumeClaim:
+          claimName: fooclaim
+          readOnly: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - mountPath: /var/run/secrets/tokens
+          name: vault-token
+      volumes:
+      - name: vault-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: vault-token
+              expirationSeconds: 7200
+              audience: vault
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+        - mountPath: /mysecret
+          name: mysecret
+      volumes:
+      - name: mysecret
+        secret:
+          secretName: mysecret
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            gcePersistentDisk:
+              pdName: gke-pv
+              fsType: ext4
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            awsElasticBlockStore:
+              volumeID: vol-f37a03aa
+              fsType: ext4
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            gitRepo:
+              repository: https://github.com/kyverno/kyverno
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            nfs:
+              path: /data
+              server: 10.105.68.50
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            iscsi:
+              lun: 0
+              iqn: iqn.1998-01.com.vmware:w1-hs3-n2503.eng.vmware.com:452738760:67
+              targetPortal: 10.105.68.50:3260
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            glusterfs:
+              endpoints: test
+              path: /data
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            rbd:
+              image: foo
+              monitors:
+              - foo
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            flexVolume:
+              driver: foo
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            cinder:
+              volumeID: my-vol
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            cephfs:
+              monitors:
+              - foo
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            flocker:
+              datasetName: fooset
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob12
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            fc:
+              wwids:
+              - fooid.corp
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob13
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            azureFile:
+              secretName: foosecret
+              shareName: fooshare
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob14
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            vsphereVolume:
+              volumePath: /foo/disk.vmdk
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob15
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            quobyte:
+              registry: 10.80.90.100:1111
+              volume: foovol
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob16
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            azureDisk:
+              kind: Managed
+              diskName: foodisk
+              diskURI: /subscriptions/123456/resourceGroups/MC_myAKSCluster_myAKSCluster_eastus/providers/Microsoft.Compute/disks/myAKSDisk
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob17
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            portworxVolume:
+              volumeID: myportvol
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob18
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            scaleIO:
+              gateway: https://localhost:443/api
+              system: scaleio
+              volumeName: vol-0
+              secretRef:
+                name: sio-secret
+              fsType: xfs
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob19
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            storageos:
+              volumeName: foovol
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob20
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            photonPersistentDisk:
+              pdID: fooid.corp
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            emptyDir: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: mysettings
+              mountPath: /settings
+          volumes:
+          - name: mysettings
+            configMap:
+              name: settings
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: warehouse
+              mountPath: /warehouse
+          volumes:
+          - name: warehouse
+            csi:
+              driver: disk.csi.azure.com
+              readOnly: true
+              fsType: xfs
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            foo: bar
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: labels
+              mountPath: /labels
+          volumes:
+          - name: labels
+            downwardAPI:
+              items:
+              - path: labels
+                fieldRef:
+                  fieldPath: metadata.labels
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: ephem
+              mountPath: /ephem
+          volumes:
+          - name: ephem
+            ephemeral:
+              volumeClaimTemplate:
+                metadata:
+                  labels:
+                    type: my-frontend-volume
+                spec:
+                  accessModes: [ "ReadWriteOnce" ]
+                  storageClassName: "scratch-storage-class"
+                  resources:
+                    requests:
+                      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - name: foo
+              mountPath: /foo
+          volumes:
+          - name: foo
+            persistentVolumeClaim:
+              claimName: fooclaim
+              readOnly: true
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - mountPath: /var/run/secrets/tokens
+              name: vault-token
+          volumes:
+          - name: vault-token
+            projected:
+              sources:
+              - serviceAccountToken:
+                  path: vault-token
+                  expirationSeconds: 7200
+                  audience: vault
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+            - mountPath: /mysecret
+              name: mysecret
+          volumes:
+          - name: mysecret
+            secret:
+              secretName: mysecret

@@ -1,0 +1,23 @@
+name: disallow-host-namespaces-vpol
+version: 1.0.0
+displayName: Disallow Host Namespaces in ValidatingPolicy
+description: >-
+  Host namespaces (Process ID namespace, Inter-Process Communication namespace, and network namespace) allow access to shared information and can be used to elevate privileges. Pods should not be allowed access to host namespaces. This policy ensures fields which make use of these host namespaces are unset or set to `false`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-host-namespaces/disallow-host-namespaces.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - ValidatingPolicy
+readme: |
+  Host namespaces (Process ID namespace, Inter-Process Communication namespace, and network namespace) allow access to shared information and can be used to elevate privileges. Pods should not be allowed access to host namespaces. This policy ensures fields which make use of these host namespaces are unset or set to `false`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod"
+digest: 50b4ae9161f3e681852cbf72d43d51d09ac14361eb61d12e5feb695c961229df
+createdAt: "2025-03-13T23:26:58Z"

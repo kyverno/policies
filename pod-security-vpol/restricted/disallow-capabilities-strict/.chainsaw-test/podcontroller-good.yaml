@@ -1,0 +1,799 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: container02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - NET_RAW
+            - ALL
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: initcontainer02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: container02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - NET_RAW
+                - ALL
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: initcontainer02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: container02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      - name: container02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: initcontainer02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+      - name: initcontainer02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: addcap-gooddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      - name: initcontainer02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: container02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+          - name: container02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: initcontainer02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+          - name: initcontainer02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcap-goodcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+          - name: initcontainer02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+                add:
+                - NET_BIND_SERVICE
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              capabilities:
+                drop:
+                - ALL
+---

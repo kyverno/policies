@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01-new
+spec:
+  hostPID: true
+  hostIPC: false
+  hostNetwork: false
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02-new
+spec:
+  hostIPC: true
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03-new
+spec:
+  hostNetwork: true
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04-new
+spec:
+  hostPID: false
+  hostIPC: true
+  hostNetwork: true
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  hostPID: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  hostIPC: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  hostPID: true
+  hostIPC: true
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
