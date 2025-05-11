@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-deprecated-registry
+policies:
+- ../restrict-deprecated-registry.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-deprecated-registry
+  resources:
+  - policy-test/test-pod-bad
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-deprecated-registry
+  resources:
+  - policy-test/test-pod-good
+  result: pass
+

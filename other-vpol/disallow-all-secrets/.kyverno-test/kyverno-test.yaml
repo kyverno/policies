@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: no-secrets
+policies:
+- ../disallow-all-secrets.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: no-secrets
+  resources:
+  - default/secret-env-pod
+  - default/secret-ref-pod
+  - default/secret-vol-pod
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: no-secrets
+  resources:
+  - default/good-pod
+  result: pass
+

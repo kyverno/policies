@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-ingress-wildcard
+policies:
+- ../restrict-ingress-wildcard.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - bading01
+  - bading02
+  result: fail
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-wildcard
+  resources:
+  - gooding01
+  - gooding02
+  result: pass
+

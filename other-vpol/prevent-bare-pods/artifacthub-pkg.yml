@@ -1,0 +1,26 @@
+name: prevent-bare-pods-vpol
+version: 1.0.0
+displayName: Prevent bare Pods in ValidatingPolicy
+description: >-
+  Pods not created by workload controllers such as Deployments have no self-healing or scaling abilities and are unsuitable for production. This policy prevents such "bare" Pods from being created unless they originate from a higher-level workload controller of some sort.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/prevent-bare-pods/prevent-bare-pods.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - EKS Best Practices
+  - ValidatingPolicy
+readme: |
+  Pods not created by workload controllers such as Deployments have no self-healing or scaling abilities and are unsuitable for production. This policy prevents such "bare" Pods from being created unless they originate from a higher-level workload controller of some sort.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other, EKS Best Practices in vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 6c70f1c1bcb495cf4bd0de7c276da3e7184a99ca5a9f3ee7729619cbd49341e1
+
+
+createdAt: "2025-05-11T17:46:11Z"
