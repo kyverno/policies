@@ -1,0 +1,77 @@
+apiVersion: kyverno.io/v1
+kind: PolicyReport
+metadata:
+  name: validate-container-sbom-results
+results:
+  - policy: validate-container-sbom
+    rule: validate-sbom-exists
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-without-sbom
+    status: fail
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-format
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-invalid-sbom
+    status: fail
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-signature
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-invalid-sbom
+    status: fail
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-completeness
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-invalid-sbom
+    status: fail
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-exists
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-valid-sbom
+    status: pass
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-format
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-valid-sbom
+    status: pass
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-signature
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-valid-sbom
+    status: pass
+    scored: true
+  - policy: validate-container-sbom
+    rule: validate-sbom-completeness
+    resource:
+      kind: Pod
+      apiVersion: v1
+      namespace: default
+      name: pod-with-valid-sbom
+    status: pass
+    scored: true 
