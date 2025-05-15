@@ -239,7 +239,7 @@ spec:
     image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seLinuxOptions:
-        type: container_engine_t
+        type: invalid
       allowPrivilegeEscalation: false
       runAsNonRoot: true
       seccompProfile:

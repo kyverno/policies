@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-pod
+spec:
+  containers:
+    - name: test-container
+      image: 'docker.io/mohdcode/kyverno@sha256:b178bb94b508183cddda73829e007c7ae2c6996324b2fc1f1746f2281e635f7a'
+      imagePullPolicy: Always
