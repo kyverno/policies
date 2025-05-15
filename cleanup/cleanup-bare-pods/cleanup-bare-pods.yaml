@@ -1,5 +1,5 @@
 apiVersion: kyverno.io/v2beta1
-kind: ClusterCleanupPolicy
+kind: ClusterPolicy
 metadata:
   name: clean-bare-pods
   annotations:
