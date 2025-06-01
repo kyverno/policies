@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-configmap
+  namespace: default
+  ownerReferences:
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    name: test-replicaset
+    controller: false
+    blockOwnerDeletion: false 

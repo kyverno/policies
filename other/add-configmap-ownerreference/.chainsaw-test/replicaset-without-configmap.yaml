@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test-replicaset-no-cm
+  namespace: default
+  labels:
+    app: test-app-no-cm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-app-no-cm
+  template:
+    metadata:
+      labels:
+        app: test-app-no-cm
+    spec:
+      containers:
+      - name: test-container
+        image: nginx:1.21 
