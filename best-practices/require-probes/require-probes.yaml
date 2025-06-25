@@ -17,35 +17,35 @@ metadata:
       This policy validates that all containers have one of livenessProbe, readinessProbe,
       or startupProbe defined.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-probes
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: AnyIn
-        value:
-        - CREATE
-        - UPDATE
-    validate:
-      message: "Liveness, readiness, or startup probes are required for all containers."
-      foreach:
-      - list: request.object.spec.containers[]
-        deny:
-          conditions:
-            all:
-            - key: livenessProbe
-              operator: AllNotIn
-              value: "{{ element.keys(@)[] }}"
-            - key: startupProbe
-              operator: AllNotIn
-              value: "{{ element.keys(@)[] }}"
-            - key: readinessProbe
-              operator: AllNotIn
-              value: "{{ element.keys(@)[] }}"
+    - name: validate-probes
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: AnyIn
+            value:
+              - CREATE
+              - UPDATE
+      validate:
+        failureAction: Audit
+        message: "Liveness, readiness, or startup probes are required for all containers."
+        foreach:
+          - list: request.object.spec.containers[]
+            deny:
+              conditions:
+                all:
+                  - key: livenessProbe
+                    operator: AllNotIn
+                    value: "{{ element.keys(@)[] }}"
+                  - key: startupProbe
+                    operator: AllNotIn
+                    value: "{{ element.keys(@)[] }}"
+                  - key: readinessProbe
+                    operator: AllNotIn
+                    value: "{{ element.keys(@)[] }}"
