@@ -1,0 +1,26 @@
+name: restrict-networkpolicy-empty-podselector-vpol
+version: 1.0.0
+displayName: Restrict NetworkPolicy with Empty podSelector in ValidatingPolicy
+description: >-
+  By default, all pods in a Kubernetes cluster are allowed to communicate with each other, and all network traffic is unencrypted. It is recommended to not use an empty podSelector in order to more closely control the necessary traffic flows. This policy requires that all NetworkPolicies other than that of `default-deny` not use an empty podSelector.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-networkpolicy-empty-podselector/restrict-networkpolicy-empty-podselector.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Multi-Tenancy
+  - ValidatingPolicy
+readme: |
+  By default, all pods in a Kubernetes cluster are allowed to communicate with each other, and all network traffic is unencrypted. It is recommended to not use an empty podSelector in order to more closely control the necessary traffic flows. This policy requires that all NetworkPolicies other than that of `default-deny` not use an empty podSelector.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other, Multi-Tenancy in vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "NetworkPolicy"
+digest: 5c4d0e220a4a8e4759dde9bdabb355232005a531fd10842ff0a1f158b93f73c1
+
+
+createdAt: "2025-05-11T17:46:11Z"

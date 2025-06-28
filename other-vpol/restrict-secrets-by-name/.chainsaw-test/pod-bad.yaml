@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35
+    - name: busybox02
+      image: ghcr.io/kyverno/test-busybox:1.35
+      env:
+      - name: ENV_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: top-secret
+            key: foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  initContainers:
+    - name: busybox-init
+      image: ghcr.io/kyverno/test-busybox:1.35
+    - name: busybox02-init
+      image: ghcr.io/kyverno/test-busybox:1.35
+      env:
+      - name: ENV_FOO
+        value: "bar"
+      - name: ENV_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: top-secret
+            key: foo
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35
+    - name: busybox02
+      image: ghcr.io/kyverno/test-busybox:1.35
+      env:
+      - name: ENV_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: safe-secret
+            key: foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  initContainers:
+    - name: busybox-init
+      image: ghcr.io/kyverno/test-busybox:1.35
+      envFrom:
+      - secretRef:
+          name: safe-secret
+    - name: busybox02-init
+      image: ghcr.io/kyverno/test-busybox:1.35
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35
+      envFrom:
+      - secretRef:
+          name: top-secret
+    - name: busybox02
+      image: ghcr.io/kyverno/test-busybox:1.35
+      env:
+      - name: ENV_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: safe-secret
+            key: foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35
+    - name: busybox02
+      image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+    - name: not-secret-volume
+      secret:
+        secretName: safe-secret
+    - name: secret-volume
+      secret:
+        secretName: top-secret
+
