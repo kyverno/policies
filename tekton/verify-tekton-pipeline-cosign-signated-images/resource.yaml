@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
     - name: signed-container
-      image: index.docker.io/arunvel1988/signedimage:latest  # Assumes this is a signed image
+      image: ghcr.io/kyverno/test-verify-image:signed   # Assumes this is a signed image
 
 ---
 
@@ -16,4 +16,4 @@ metadata:
 spec:
   containers:
     - name: unsigned-container
-      image: index.docker.io/arunvel1988/unsignedimage:latest  # This is an unsigned image
+      image: ghcr.io/kyverno/test-verify-image:unsigned   # This is an unsigned image
