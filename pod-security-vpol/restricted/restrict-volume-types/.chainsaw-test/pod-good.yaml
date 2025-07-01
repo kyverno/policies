@@ -1,0 +1,157 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: udev
+      mountPath: /data
+  volumes:
+  - name: udev
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: mysettings
+      mountPath: /settings
+  volumes:
+  - name: mysettings
+    configMap:
+      name: settings
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: warehouse
+      mountPath: /warehouse
+  volumes:
+  - name: warehouse
+    csi:
+      driver: disk.csi.azure.com
+      readOnly: true
+      fsType: xfs
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+  labels:
+    foo: bar
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: labels
+      mountPath: /labels
+  volumes:
+  - name: labels
+    downwardAPI:
+      items:
+      - path: labels
+        fieldRef:
+          fieldPath: metadata.labels
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: ephem
+      mountPath: /ephem
+  volumes:
+  - name: ephem
+    ephemeral:
+      volumeClaimTemplate:
+        metadata:
+          labels:
+            type: my-frontend-volume
+        spec:
+          accessModes: [ "ReadWriteOnce" ]
+          storageClassName: "scratch-storage-class"
+          resources:
+            requests:
+              storage: 1Gi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - name: foo
+      mountPath: /foo
+  volumes:
+  - name: foo
+    persistentVolumeClaim:
+      claimName: fooclaim
+      readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: vault-token
+  volumes:
+  - name: vault-token
+    projected:
+      sources:
+      - serviceAccountToken:
+          path: vault-token
+          expirationSeconds: 7200
+          audience: vault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /mysecret
+      name: mysecret
+  volumes:
+  - name: mysecret
+    secret:
+      secretName: mysecret
+---
