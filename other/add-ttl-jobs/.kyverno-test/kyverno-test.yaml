@@ -8,8 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Job
-  patchedResources:
-  - patched01.yaml
+  patchedResources: patched01.yaml
   policy: add-ttl-jobs
   resources:
   - addjob01

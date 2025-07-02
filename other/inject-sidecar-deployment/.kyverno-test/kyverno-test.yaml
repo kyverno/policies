@@ -8,16 +8,14 @@ resources:
 - resource.yaml
 results:
 - kind: Deployment
-  patchedResources:
-  - patchedResource1.yaml
+  patchedResources: patchedResource1.yaml
   policy: inject-sidecar
   resources:
   - mydeploy-1
   result: pass
   rule: inject-sidecar
 - kind: Deployment
-  patchedResources:
-  - patchedResource2.yaml
+  patchedResources: patchedResource2.yaml
   policy: inject-sidecar
   resources:
   - mydeploy-2

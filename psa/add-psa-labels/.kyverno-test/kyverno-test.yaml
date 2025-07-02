@@ -9,16 +9,14 @@ resources:
 - resourcefail.yaml
 results:
 - kind: Namespace
-  patchedResources:
-  - patchedResourcefail.yaml
+  patchedResources: patchedResourcefail.yaml
   policy: add-psa-labels
   resources:
   - test-fail
   result: fail
   rule: add-baseline-enforce-restricted-warn
 - kind: Namespace
-  patchedResources:
-  - patchedResource.yaml
+  patchedResources: patchedResource.yaml
   policy: add-psa-labels
   resources:
   - test
