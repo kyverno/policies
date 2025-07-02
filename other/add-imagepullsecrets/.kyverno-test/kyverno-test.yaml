@@ -8,21 +8,24 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource1.yaml
+  patchedResources:
+  - patchedResource1.yaml
   policy: add-imagepullsecrets
   resources:
   - myapp-pod-1
   result: pass
   rule: add-imagepullsecret
 - kind: Pod
-  patchedResource: patchedResource2.yaml
+  patchedResources:
+  - patchedResource2.yaml
   policy: add-imagepullsecrets
   resources:
   - myapp-pod-2
   result: skip
   rule: add-imagepullsecret
 - kind: Pod
-  patchedResource: patchedResource3.yaml
+  patchedResources:
+  - patchedResource3.yaml
   policy: add-imagepullsecrets
   resources:
   - myapp-pod-3

@@ -8,7 +8,8 @@ resources:
 - pod.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
+  patchedResources:
+  - patchedResource.yaml
   policy: resolve-image-to-digest
   resources:
   - busybox

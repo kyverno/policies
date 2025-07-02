@@ -8,14 +8,16 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
+  patchedResources:
+  - patchedResource.yaml
   policy: add-labels
   resources:
   - default/myapp-pod
   result: pass
   rule: add-labels
 - kind: Service
-  patchedResource: patchedResource1.yaml
+  patchedResources:
+  - patchedResource1.yaml
   policy: add-labels
   resources:
   - default/my-service

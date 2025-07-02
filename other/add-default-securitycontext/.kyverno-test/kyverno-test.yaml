@@ -8,7 +8,8 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
+  patchedResources:
+  - patchedResource.yaml
   policy: add-default-securitycontext
   resources:
   - myapp-pod

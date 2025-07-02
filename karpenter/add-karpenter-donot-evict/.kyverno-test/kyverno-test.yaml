@@ -8,14 +8,16 @@ resources:
 - resource.yaml
 results:
 - kind: CronJob
-  patchedResource: patched02.yaml
+  patchedResources:
+  - patched02.yaml
   policy: add-karpenter-donot-evict
   resources:
   - addcronjob01
   result: pass
   rule: do-not-evict-cronjobs
 - kind: Job
-  patchedResource: patched01.yaml
+  patchedResources:
+  - patched01.yaml
   policy: add-karpenter-donot-evict
   resources:
   - addjob01

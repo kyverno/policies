@@ -8,7 +8,8 @@ resources:
 - daemonset.yaml
 results:
 - kind: DaemonSet
-  patchedResource: daemonset-patched.yaml
+  patchedResources:
+  - daemonset-patched.yaml
   policy: add-karpenter-daemonset-priority-class
   resources:
   - test/test

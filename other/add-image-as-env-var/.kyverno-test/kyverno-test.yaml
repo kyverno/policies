@@ -8,21 +8,24 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patched-pod01.yaml
+  patchedResources:
+  - patched-pod01.yaml
   policy: add-image-as-env-var
   resources:
   - pod01
   result: pass
   rule: pod-containers-inject-image
 - kind: Pod
-  patchedResource: patched-pod02.yaml
+  patchedResources:
+  - patched-pod02.yaml
   policy: add-image-as-env-var
   resources:
   - pod02
   result: pass
   rule: pod-containers-inject-image
 - kind: Pod
-  patchedResource: patched-pod03.yaml
+  patchedResources:
+  - patched-pod03.yaml
   policy: add-image-as-env-var
   resources:
   - pod03
