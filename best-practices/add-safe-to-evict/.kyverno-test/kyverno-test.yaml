@@ -8,8 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResources:
-  - myapp-pod03-patched.yaml
+  patchedResources: myapp-pod03-patched.yaml
   policy: add-safe-to-evict
   resources:
   - myapp-pod03
@@ -22,8 +21,7 @@ results:
   result: skip
   rule: annotate-empty-dir
 - kind: Pod
-  patchedResources:
-  - myapp-pod04-patched.yaml
+  patchedResources: myapp-pod04-patched.yaml
   policy: add-safe-to-evict
   resources:
   - myapp-pod04

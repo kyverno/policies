@@ -8,8 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: ExternalSecret
-  patchedResources:
-  - patched.yaml
+  patchedResources: patched.yaml
   policy: add-external-secret-prefix
   resources:
   - example
