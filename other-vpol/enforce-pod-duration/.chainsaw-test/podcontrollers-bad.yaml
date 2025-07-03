@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        pod.kubernetes.io/lifetime: "8h5m"
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            pod.kubernetes.io/lifetime: "8h5m"
+          labels:
+            app: busybox
+        spec:
+          containers:
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+          restartPolicy: OnFailure
+

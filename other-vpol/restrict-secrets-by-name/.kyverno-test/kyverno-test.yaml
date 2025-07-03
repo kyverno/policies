@@ -1,0 +1,64 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-secrets-policy
+policies:
+- ../restrict-secrets-by-name.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-env
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-env
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-envfrom
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-envfrom
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-deploy-vol
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - bad-pod-vol
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-all
+  result: pass
+

@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      livenessProbe:
+        exec:
+          command:
+          - echo
+          - meow
+        periodSeconds: 10
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+      livenessProbe:
+        exec:
+          command:
+          - uptime
+        periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      livenessProbe:
+        exec:
+          command:
+          - uptime
+        periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      livenessProbe:
+        grpc:
+          port: 8888
+        periodSeconds: 10

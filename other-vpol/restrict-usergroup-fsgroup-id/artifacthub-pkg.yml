@@ -1,0 +1,25 @@
+name: restrict-usergroup-fsgroup-id-vpol
+version: 1.0.0
+displayName: Validate User ID, Group ID, and FS Group in ValidatingPolicy
+description: >-
+  All processes inside a Pod can be made to run with specific user and groupID by setting `runAsUser` and `runAsGroup` respectively. `fsGroup` can be specified to make sure any file created in the volume will have the specified groupID. This policy validates that these fields are set to the defined values.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-usergroup-fsgroup-id/restrict-usergroup-fsgroup-id.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  All processes inside a Pod can be made to run with specific user and groupID by setting `runAsUser` and `runAsGroup` respectively. `fsGroup` can be specified to make sure any file created in the volume will have the specified groupID. This policy validates that these fields are set to the defined values.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: bd32fa82326b4dc1ba8c9107eb37591f33da2638b184084e13cd1a3646af4f35
+
+
+createdAt: "2025-05-11T17:46:11Z"
