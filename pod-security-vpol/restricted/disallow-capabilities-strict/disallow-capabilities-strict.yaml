@@ -4,7 +4,7 @@ metadata:
   name: disallow-capabilities-strict
   annotations:
     policies.kyverno.io/title: Disallow Capabilities (Strict) in ValidatingPolicy
-    policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
     policies.kyverno.io/severity: medium
     policies.kyverno.io/minversion: 1.14.0
     kyverno.io/kyverno-version: 1.14.0
@@ -15,9 +15,9 @@ metadata:
       all containers must explicitly drop `ALL` capabilities.
 spec:
   validationActions:
-     - Audit
+     - Deny
   evaluation:
-    background:
+    admission:
       enabled: true
   matchConstraints:
     resourceRules:
