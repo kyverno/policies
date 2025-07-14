@@ -49,4 +49,12 @@ spec:
   matchingPrecedence: 1000
   priorityLevelConfiguration:
     name: exempt
-  
+---
+apiVersion: flowcontrol.apiserver.k8s.io/v1beta3
+kind: FlowSchema
+metadata:
+  name: bad-flowschema-v1beta3
+spec:
+  matchingPrecedence: 1000
+  priorityLevelConfiguration:
+    name: exempt
