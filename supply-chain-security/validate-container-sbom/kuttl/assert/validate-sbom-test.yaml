@@ -1,0 +1,43 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestAssert
+metadata:
+  name: validate-sbom-test
+---
+# Valid pod should be created
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-valid-sbom
+status:
+  phase: Running
+---
+# Invalid pods should be created but marked with policy reports
+apiVersion: kyverno.io/v1
+kind: PolicyReport
+metadata:
+  name: validate-container-sbom-results
+results:
+  - policy: validate-container-sbom
+    rule: validate-sbom-exists
+    resource:
+      kind: Pod
+      name: pod-without-sbom
+    status: fail
+  - policy: validate-container-sbom
+    rule: validate-sbom-format
+    resource:
+      kind: Pod
+      name: pod-with-invalid-sbom
+    status: fail
+  - policy: validate-container-sbom
+    rule: validate-sbom-signature
+    resource:
+      kind: Pod
+      name: pod-with-invalid-sbom
+    status: fail
+  - policy: validate-container-sbom
+    rule: validate-sbom-completeness
+    resource:
+      kind: Pod
+      name: pod-with-invalid-sbom
+    status: fail 
