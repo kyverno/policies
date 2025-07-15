@@ -1,0 +1,32 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-update-xvdb-snapshot-id
+policies:
+- ../update-xvdb-snapshot-id.yaml
+resources:
+- ec2nodeclass-no-mappings.yaml
+- ec2nodeclass-existing-other-mappings.yaml
+- ec2nodeclass-existing-xvdb-mapping.yaml
+results:
+- kind: EC2NodeClass
+  patchedResources: ec2nodeclass-no-mappings-patched.yaml
+  policy: update-xvdb-snapshot-id
+  resources:
+  - test/test-no-mappings
+  result: pass
+  rule: add-xvdb-snapshot-new-mapping
+- kind: EC2NodeClass
+  patchedResources: ec2nodeclass-existing-other-mappings-patched.yaml
+  policy: update-xvdb-snapshot-id
+  resources:
+  - test/test-existing-other-mappings
+  result: pass
+  rule: add-xvdb-snapshot-new-mapping
+- kind: EC2NodeClass
+  patchedResources: ec2nodeclass-existing-xvdb-mapping-patched.yaml
+  policy: update-xvdb-snapshot-id
+  resources:
+  - test/test-existing-xvdb-mapping
+  result: pass
+  rule: update-xvdb-snapshot-existing-mapping 

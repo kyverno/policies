@@ -1,0 +1,60 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: update-xvdb-snapshot-id
+  annotations:
+    policies.kyverno.io/title: Update /dev/xvdb snapshot ID in Karpenter EC2NodeClass
+    policies.kyverno.io/subject: EC2NodeClass
+    policies.kyverno.io/category: Karpenter
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.9.3
+    kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      This policy automatically updates the snapshot ID for the /dev/xvdb device
+      in Karpenter EC2NodeClass resources. It ensures that the block device mapping
+      for /dev/xvdb uses a specified snapshot ID, which is useful for standardizing
+      EBS volumes across EC2 instances provisioned by Karpenter.
+spec:
+  variables:
+  - name: snapshotId
+    value: "snap-0123456789abcdef0"  # Replace with your desired snapshot ID
+  rules:
+  - name: update-xvdb-snapshot-existing-mapping
+    match:
+      any:
+      - resources:
+          kinds:
+          - EC2NodeClass
+          apiVersions:
+          - karpenter.k8s.aws/v1beta1
+    mutate:
+      foreach:
+      - list: "request.object.spec.blockDeviceMappings[?deviceName == '/dev/xvdb']"
+        patchesJson6902: |-
+          - path: "/spec/blockDeviceMappings/{{elementIndex}}/ebs/snapshotID"
+            op: replace
+            value: "{{snapshotId}}"
+  - name: add-xvdb-snapshot-new-mapping
+    match:
+      any:
+      - resources:
+          kinds:
+          - EC2NodeClass
+          apiVersions:
+          - karpenter.k8s.aws/v1beta1
+    preconditions:
+      all:
+      - key: "{{ request.object.spec.blockDeviceMappings[?deviceName == '/dev/xvdb'] | length(@) }}"
+        operator: Equals
+        value: 0
+    mutate:
+      patchStrategicMerge:
+        spec:
+          +(blockDeviceMappings):
+          - deviceName: "/dev/xvdb"
+            ebs:
+              snapshotID: "{{snapshotId}}"
+              volumeSize: 20Gi
+              volumeType: gp3
+              deleteOnTermination: true 
