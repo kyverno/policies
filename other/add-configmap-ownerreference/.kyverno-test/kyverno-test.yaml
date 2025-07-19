@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-configmap-ownerreference
+policies:
+- ../add-configmap-ownerreference.yaml
+resources:
+- ../.chainsaw-test/configmap-good.yaml
+- ../.chainsaw-test/replicaset-with-configmap.yaml
+- ../.chainsaw-test/replicaset-without-configmap.yaml
+results:
+- kind: ReplicaSet
+  policy: add-configmap-ownerreference
+  resources:
+  - test-replicaset
+  result: pass
+  rule: add-configmap-ownerref-from-replicaset
+- kind: ReplicaSet
+  policy: add-configmap-ownerreference
+  resources:
+  - test-replicaset-no-cm
+  result: skip
+  rule: add-configmap-ownerref-from-replicaset 
