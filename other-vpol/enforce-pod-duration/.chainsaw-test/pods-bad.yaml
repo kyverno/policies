@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    foo: bar
+    pod.kubernetes.io/lifetime: "8h1m"
+  name: badpod01
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    pod.kubernetes.io/lifetime: "24h"
+    foo: bar
+  name: badpod02
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+

@@ -1,0 +1,114 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+  namespace: ensure-probes-different-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        command: ["sleep","300"]
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          periodSeconds: 10
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox02
+        command: ["sleep","300"]
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          periodSeconds: 10
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: goodds01
+  namespace: ensure-probes-different-ns
+spec:
+  selector:
+    matchLabels:
+      name: busybox
+  template:
+    metadata:
+      labels:
+        name: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        command: ["sleep","300"]
+        readinessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          periodSeconds: 10
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox02
+        command: ["sleep","300"]
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          periodSeconds: 10
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: goodss01
+  namespace: ensure-probes-different-ns
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  serviceName: "busybox"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      terminationGracePeriodSeconds: 5
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          periodSeconds: 10
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox02
+        command: ["sleep","300"]
+        livenessProbe:
+          exec:
+            command:
+            - cat
+            - /tmp/healthy
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+          periodSeconds: 10
+

@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod
+  labels:
+    app: myapp
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+  - name: busy
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+  labels:
+    app: myapp
+spec:
+  securityContext:
+    runAsUser: 2000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+  - name: busy
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  labels:
+    app: myapp
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 1000
+  containers:
+  - name: busy
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+  labels:
+    app: myapp
+spec:
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 4000
+    fsGroup: 1000
+  containers:
+  - name: busy
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+  labels:
+    app: myapp
+spec:
+  securityContext: {}
+  containers:
+  - name: busy
+    image: busybox
+

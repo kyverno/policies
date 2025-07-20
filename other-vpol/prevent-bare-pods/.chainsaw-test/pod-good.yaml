@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  ownerReferences:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: gooddeployment01
+    uid: "foo-bar"
+  name: goodpod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    corp.com/allowed-registries: "img.corp.com, docker.io"
+  name: imageregistries-ns01
+
+

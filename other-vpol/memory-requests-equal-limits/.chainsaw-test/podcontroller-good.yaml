@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          requests:
+            memory: "100Mi"
+          limits:
+            memory: "100Mi"
+      - name: busybox02
+        image: ghcr.io/kyverno/test-busybox:1.35
+      - name: busybox03
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          requests:
+            memory: "50Mi"
+          limits:
+            memory: "50Mi"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+            resources:
+              requests:
+                memory: "100Mi"
+              limits:
+                memory: "100Mi"
+          - name: busybox02
+            image: ghcr.io/kyverno/test-busybox:1.35
+          - name: busybox03
+            image: ghcr.io/kyverno/test-busybox:1.35
+            resources:
+              requests:
+                memory: "50Mi"
+              limits:
+                memory: "50Mi"
+          restartPolicy: OnFailure
+

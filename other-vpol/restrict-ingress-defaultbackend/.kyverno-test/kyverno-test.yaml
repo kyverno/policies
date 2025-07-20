@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-node-defaultbackend
+policies:
+- ../restrict-ingress-defaultbackend.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-defaultbackend
+  resources:
+  - default/sample-app-1
+  result: fail
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-defaultbackend
+  resources:
+  - default/sample-app-2
+  result: pass
+

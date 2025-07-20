@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-05
+spec:
+  containers:
+  - name: test-webserver
+    image: asdfeasdfasada:latest
+    volumeMounts:
+    - mountPath: /some/dir
+      name: foo
+      readOnly: true
+    - mountPath: /etc
+      name: bar
+  - name: test-webserver02
+    image: sjbonmqopcta:latest
+    volumeMounts:
+    - mountPath: /some/dir
+      name: foo
+      readOnly: true
+  volumes:
+  - name: foo
+    hostPath:
+      path: /var/log
+  - name: bar
+    hostPath:
+      path: /etc
+
