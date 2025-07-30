@@ -8,7 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
+  patchedResources: patchedResource.yaml
   policy: remove-hostpath-volumes
   resources:
   - busybox
