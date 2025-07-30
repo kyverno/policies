@@ -23,6 +23,9 @@ spec:
   evaluation:
     admission:
       enabled: true
+  autogen:
+    validatingAdmissionPolicy:
+      enabled: true
   matchConstraints:
     resourceRules:
       - apiGroups:   [""]
