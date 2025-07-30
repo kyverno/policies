@@ -23,6 +23,8 @@ spec:
   autogen:
     validatingAdmissionPolicy:
       enabled: true
+    podControllers:
+      controllers: []
   matchConstraints:
     resourceRules:
       - apiGroups:   [""]
