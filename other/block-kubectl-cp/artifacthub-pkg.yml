@@ -1,9 +1,24 @@
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
-metadata:
-  name: block-kubectl-cp-by-pod-label
-status:
-  conditions:
-    - reason: Succeeded
-      status: "True"
-      type: Ready
+
+name: block-kubectl-cp
+version: 1.0.0
+displayName: Block kubectl cp
+createdAt: "2025-01-11T00:00:00.000Z"
+description: >-
+  The `kubectl cp` command allows copying files between a local machine and a Pod's container, which may introduce security risks such as unauthorized data exfiltration or modification. This policy blocks the use of the `kubectl cp` command on all Pods, preventing any file transfers to or from containers while allowing other Pod operations.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/block-kubectl-cp/block-kubectl-cp.yaml
+  ```
+keywords:
+  - kyverno
+  - kubectl
+  - security
+  - pod
+readme: |-
+  The `kubectl cp` command enables file transfers between a local machine and a Pod's container, which can pose security risks if misused. This policy enforces a blanket restriction on `kubectl cp` operations for all Pods in the cluster, ensuring no files can be copied to or from containers.
+annotations:
+  kyverno/category: Security
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: Pod
+  kyverno/minVersion: "1.6.0"
+digest: 86b8055d717a7395da4a5b52b848fbf51637c3e2dceb74525d5a8d7a2820c9dc
