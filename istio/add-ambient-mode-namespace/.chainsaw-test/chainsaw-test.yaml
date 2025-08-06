@@ -32,3 +32,15 @@ spec:
         file: patched-ns-enabled.yaml
     - assert:
         file: patched-ns-none.yaml
+  - name: step-04
+    try:
+    - apply:
+        file: namespace-kube-system.yaml
+    - apply:
+        file: namespace-istio-system.yaml
+  - name: step-05
+    try:
+    - assert:
+        file: namespace-kube-system.yaml
+    - assert:
+        file: namespace-istio-system.yaml
