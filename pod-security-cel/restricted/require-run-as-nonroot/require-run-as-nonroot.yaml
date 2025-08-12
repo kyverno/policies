@@ -20,43 +20,37 @@ spec:
     - name: run-as-non-root
       match:
         any:
-        - resources:
-            kinds:
-              - Pod
-            operations:
-            - CREATE
-            - UPDATE
+          - resources:
+              kinds:
+                - Pod
+              operations:
+                - CREATE
+                - UPDATE
       validate:
         cel:
+          variables:
+            - name: allContainers
+              expression: >-
+                object.spec.containers +
+                object.spec.?initContainers.orValue([]) +
+                object.spec.?ephemeralContainers.orValue([])
           expressions:
             - expression: >-
                 (
-                    (
-                      has(object.spec.securityContext) &&
-                      has(object.spec.securityContext.runAsNonRoot) &&
-                      object.spec.securityContext.runAsNonRoot == true
-                    ) && (
-                      (
-                          object.spec.containers +
-                          (has(object.spec.initContainers) ? object.spec.initContainers : []) +
-                          (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-                      ).all(container,
-                          !has(container.securityContext) ||
-                          !has(container.securityContext.runAsNonRoot) ||
-                          container.securityContext.runAsNonRoot == true)
+                  (
+                    object.spec.?securityContext.?runAsNonRoot.orValue(false) == true
+                  ) && (
+                    allContainers.all(container,
+                      !container.?securityContext.?runAsNonRoot.hasValue() ||
+                      container.?securityContext.?runAsNonRoot.orValue(false) == true
                     )
+                  )
                 ) || (
-                    (
-                        object.spec.containers +
-                        (has(object.spec.initContainers) ? object.spec.initContainers : []) +
-                        (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-                    ).all(container,
-                        has(container.securityContext) &&
-                        has(container.securityContext.runAsNonRoot) &&
-                        container.securityContext.runAsNonRoot == true)
+                  allContainers.all(container,
+                    container.?securityContext.?runAsNonRoot.orValue(false) == true
+                  )
                 )
               message: >-
                 Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot or all of
                 spec.containers[*].securityContext.runAsNonRoot, spec.initContainers[*].securityContext.runAsNonRoot and
                 spec.ephemeralContainers[*].securityContext.runAsNonRoot, must be set to true.
-                
