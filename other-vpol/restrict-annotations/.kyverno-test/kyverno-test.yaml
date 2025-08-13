@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-annotations
+policies:
+- ../restrict-annotations.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-annotations
+  resources:
+  - mydeploy
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-annotations
+  resources:
+  - myapp-pod
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-annotations
+  resources:
+  - hello
+  result: pass
+

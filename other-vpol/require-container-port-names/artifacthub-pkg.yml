@@ -1,0 +1,25 @@
+name: require-container-port-names-vpol
+version: 1.0.0
+displayName: Require Container Port Names in ValidatingPolicy
+description: >-
+  Containers may define ports on which they listen. In addition to a port number, a name field may optionally be used. Including a name makes it easier when defining Service resource definitions and others since the name may be referenced allowing the port number to change. This policy requires that for every containerPort defined there is also a name specified.      
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/require-container-port-names/require-container-port-names.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Containers may define ports on which they listen. In addition to a port number, a name field may optionally be used. Including a name makes it easier when defining Service resource definitions and others since the name may be referenced allowing the port number to change. This policy requires that for every containerPort defined there is also a name specified.      
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 89ddb711716beb52d9d9e208ab8d7ecf1adecea9b2ba70e07cb4e75cd508deb1
+
+
+createdAt: "2025-05-11T17:46:12Z"

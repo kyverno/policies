@@ -1,0 +1,28 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: memory-requests-equal-limits
+policies:
+- ../memory-requests-equal-limits.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: memory-requests-equal-limits
+  resources:
+  - hello
+  result: pass
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: memory-requests-equal-limits
+  resources:
+  - fluentd-elasticsearch
+  result: pass
+- isValidatingPolicy: true 
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - myapp-pod
+  result: fail
+

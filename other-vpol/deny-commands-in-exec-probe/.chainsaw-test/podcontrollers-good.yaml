@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        livenessProbe:
+          exec:
+            command:
+            - echo
+            - meow
+          periodSeconds: 10
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox02
+        livenessProbe:
+          exec:
+            command:
+            - uptime
+          periodSeconds: 10
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+            livenessProbe:
+              exec:
+                command:
+                - echo
+                - meow
+              periodSeconds: 10
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox02
+            livenessProbe:
+              exec:
+                command:
+                - uptime
+              periodSeconds: 10
+          restartPolicy: OnFailure

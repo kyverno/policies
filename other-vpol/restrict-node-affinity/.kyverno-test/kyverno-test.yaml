@@ -1,0 +1,34 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-node-affinity
+policies:
+- ../restrict-node-affinity.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - baddeploy01
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - badpod01
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-node-affinity
+  resources:
+  - gooddeploy01
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - goodpod01
+  result: pass
+
