@@ -8,14 +8,14 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource1.yaml
+  patchedResources: patchedResource1.yaml
   policy: add-capabilities
   resources:
   - pod01
   result: pass
   rule: add-setfcap-setuid
 - kind: Pod
-  patchedResource: patchedResource2.yaml
+  patchedResources: patchedResource2.yaml
   policy: add-capabilities
   resources:
   - pod02
