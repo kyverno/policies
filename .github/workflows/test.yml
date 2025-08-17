@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -56,7 +56,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -92,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1]
     runs-on: ubuntu-latest
     steps:
@@ -113,7 +113,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1]
     runs-on: ubuntu-latest
     steps:
@@ -134,7 +134,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -152,7 +152,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -170,7 +170,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -188,7 +188,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -206,7 +206,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -224,7 +224,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -242,7 +242,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -260,7 +260,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -278,7 +278,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -296,7 +296,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -314,7 +314,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -332,7 +332,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -350,7 +350,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -368,7 +368,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -386,7 +386,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -404,7 +404,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -422,7 +422,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -440,7 +440,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -458,7 +458,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -476,7 +476,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -494,7 +494,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -512,7 +512,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -530,7 +530,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -548,7 +548,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
     steps:
@@ -569,7 +569,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
     steps:
@@ -590,7 +590,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1,2]
     runs-on: ubuntu-latest
     steps:
@@ -611,7 +611,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
         shard-index: [0,1,2]
     runs-on: ubuntu-latest
     steps:
@@ -632,7 +632,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -650,7 +650,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -668,7 +668,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -686,7 +686,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -704,7 +704,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -722,7 +722,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -740,7 +740,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -758,7 +758,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -776,7 +776,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -794,7 +794,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -812,7 +812,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.28.13,v1.29.8,v1.30.4,v1.31.0]
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
     steps:
     - name: Checkout

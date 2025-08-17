@@ -8,14 +8,14 @@ resources:
 - resources.yaml
 results:
 - kind: CronJob
-  patchedResource: patched02.yaml
+  patchedResources: patched02.yaml
   policy: add-castai-removal-disabled
   resources:
   - addcronjob01
   result: pass
   rule: do-not-evict-cronjobs
 - kind: Job
-  patchedResource: patched01.yaml
+  patchedResources: patched01.yaml
   policy: add-castai-removal-disabled
   resources:
   - addjob01
