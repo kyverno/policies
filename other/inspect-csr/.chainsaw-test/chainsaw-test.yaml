@@ -49,11 +49,11 @@ spec:
           kubectl config set-context $USERNAME-context --user=$USERNAME --cluster=$CLUSTER
           # Delete CSR
           kubectl delete csr $USERNAME
-    - apply:
+    - create:
         file: permissions.yaml
-    - apply:
+    - create:
         file: ../inspect-csr.yaml
-    - apply:
+    - create:
         file: crolb-user.yaml
     - assert:
         file: policy-ready.yaml
