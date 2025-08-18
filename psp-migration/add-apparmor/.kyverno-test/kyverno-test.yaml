@@ -8,14 +8,14 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource1.yaml
+  patchedResources: patchedResource1.yaml
   policy: add-apparmor-annotations
   resources:
   - pod01
   result: pass
   rule: apparmor-runtime-default
 - kind: Pod
-  patchedResource: patchedResource2.yaml
+  patchedResources: patchedResource2.yaml
   policy: add-apparmor-annotations
   resources:
   - pod02
