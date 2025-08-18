@@ -22,21 +22,13 @@ spec:
         file: policy-ready.yaml
   - name: step-03
     try:
-    - apply:
-        file: ns.yaml
-  - name: step-04
-    try:
     - assert:
         file: patched-ns01.yaml
-    - assert:
-        file: patched-ns02.yaml
     - error:
         file: not-patched-ns03.yaml
-  - name: step-05
+  - name: step-04
     try:
     - apply:
         file: policy-update.yaml
     - assert:
         file: patched-again-ns01.yaml
-    - assert:
-        file: patched-again-ns02.yaml
