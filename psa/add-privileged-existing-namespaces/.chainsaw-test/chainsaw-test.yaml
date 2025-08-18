@@ -28,6 +28,8 @@ spec:
         file: not-patched-ns03.yaml
   - name: step-04
     try:
+    - sleep:
+        duration: 3s
     - apply:
         file: policy-update.yaml
     - assert:
