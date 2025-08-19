@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob01
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+          restartPolicy: OnFailure
+          serviceAccountName: serviceaccount01
+  schedule: '* * * * *'

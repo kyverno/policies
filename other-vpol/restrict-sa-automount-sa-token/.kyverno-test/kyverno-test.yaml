@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-sa-automount-sa-token
+policies:
+- ../restrict-sa-automount-sa-token.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: restrict-sa-automount-sa-token
+  resources:
+  - bad-svc
+  result: fail
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: restrict-sa-automount-sa-token
+  resources:
+  - good-svc
+  result: pass
+

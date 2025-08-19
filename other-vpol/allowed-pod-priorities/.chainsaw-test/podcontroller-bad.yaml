@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+  namespace: pod-priority-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      priorityClassName: foo
+      containers:
+      - name: bb-01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment02
+  namespace: pod-priority-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      priorityClassName: foo
+      containers:
+      - name: bb-01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+  namespace: pod-priority-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          priorityClassName: med
+          containers:
+            - name: bb-01
+              image: kyverno
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+  namespace: pod-priority-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          priorityClassName: foo
+          containers:
+            - name: bb-01
+              image: kyverno
+          restartPolicy: OnFailure
+

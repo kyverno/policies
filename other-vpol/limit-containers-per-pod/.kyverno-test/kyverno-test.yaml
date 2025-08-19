@@ -1,0 +1,34 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-containers-per-pod
+policies:
+- ../limit-containers-per-pod.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: limit-containers-per-pod
+  resources:
+  - mycronjob
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: limit-containers-per-pod
+  resources:
+  - mydeploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-2
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: limit-containers-per-pod
+  resources:
+  - myapp-pod-1
+  result: pass
+

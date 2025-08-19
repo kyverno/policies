@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kyverno.io/foo: bar
+  name: badingress01
+spec:
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: "foo"
+    kyverno.io/foo: bar
+  name: badingress02
+spec:
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - path: /testpath
+        pathType: Prefix
+        backend:
+          service:
+            name: test
+            port:
+              number: 80
+
