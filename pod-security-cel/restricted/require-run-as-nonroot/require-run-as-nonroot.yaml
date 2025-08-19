@@ -20,43 +20,38 @@ spec:
     - name: run-as-non-root
       match:
         any:
-        - resources:
-            kinds:
-              - Pod
-            operations:
-            - CREATE
-            - UPDATE
+          - resources:
+              kinds:
+                - Pod
+              operations:
+                - CREATE
+                - UPDATE
       validate:
         cel:
-          expressions:
-            - expression: >-
-                (
-                    (
-                      has(object.spec.securityContext) &&
-                      has(object.spec.securityContext.runAsNonRoot) &&
-                      object.spec.securityContext.runAsNonRoot == true
-                    ) && (
-                      (
-                          object.spec.containers +
-                          (has(object.spec.initContainers) ? object.spec.initContainers : []) +
-                          (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-                      ).all(container,
-                          !has(container.securityContext) ||
-                          !has(container.securityContext.runAsNonRoot) ||
-                          container.securityContext.runAsNonRoot == true)
-                    )
-                ) || (
-                    (
-                        object.spec.containers +
-                        (has(object.spec.initContainers) ? object.spec.initContainers : []) +
-                        (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
-                    ).all(container,
-                        has(container.securityContext) &&
-                        has(container.securityContext.runAsNonRoot) &&
-                        container.securityContext.runAsNonRoot == true)
+          variables:
+            - name: "podSecurityContext"
+              expression: "object.spec.?securityContext.orValue({})"
+            - name: "allContainers"
+              expression: >-
+                object.spec.containers +
+                object.spec.?initContainers.orValue([]) +
+                object.spec.?ephemeralContainers.orValue([])
+            - name: "podRunAsNonRoot"
+              expression: "variables.podSecurityContext.?runAsNonRoot.orValue(false)"
+            - name: "podLevelEnforced"
+              expression: >-
+                variables.podRunAsNonRoot &&
+                variables.allContainers.all(container,
+                  container.?securityContext.?runAsNonRoot.orValue(true) == true
                 )
+            - name: "containerLevelEnforced"
+              expression: >-
+                variables.allContainers.all(container,
+                  container.?securityContext.?runAsNonRoot.orValue(false) == true
+                )
+          expressions:
+            - expression: "variables.podLevelEnforced || variables.containerLevelEnforced"
               message: >-
                 Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot or all of
                 spec.containers[*].securityContext.runAsNonRoot, spec.initContainers[*].securityContext.runAsNonRoot and
                 spec.ephemeralContainers[*].securityContext.runAsNonRoot, must be set to true.
-                
