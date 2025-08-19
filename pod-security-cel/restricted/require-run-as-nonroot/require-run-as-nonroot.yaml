@@ -29,27 +29,28 @@ spec:
       validate:
         cel:
           variables:
-            - name: allContainers
+            - name: "podSecurityContext"
+              expression: "object.spec.?securityContext.orValue({})"
+            - name: "allContainers"
               expression: >-
                 object.spec.containers +
                 object.spec.?initContainers.orValue([]) +
                 object.spec.?ephemeralContainers.orValue([])
-          expressions:
-            - expression: >-
-                (
-                  (
-                    object.spec.?securityContext.?runAsNonRoot.orValue(false) == true
-                  ) && (
-                    allContainers.all(container,
-                      !container.?securityContext.?runAsNonRoot.hasValue() ||
-                      container.?securityContext.?runAsNonRoot.orValue(false) == true
-                    )
-                  )
-                ) || (
-                  allContainers.all(container,
-                    container.?securityContext.?runAsNonRoot.orValue(false) == true
-                  )
+            - name: "podRunAsNonRoot"
+              expression: "variables.podSecurityContext.?runAsNonRoot.orValue(false)"
+            - name: "podLevelEnforced"
+              expression: >-
+                variables.podRunAsNonRoot &&
+                variables.allContainers.all(container,
+                  container.?securityContext.?runAsNonRoot.orValue(true) == true
                 )
+            - name: "containerLevelEnforced"
+              expression: >-
+                variables.allContainers.all(container,
+                  container.?securityContext.?runAsNonRoot.orValue(false) == true
+                )
+          expressions:
+            - expression: "variables.podLevelEnforced || variables.containerLevelEnforced"
               message: >-
                 Running as root is not allowed. Either the field spec.securityContext.runAsNonRoot or all of
                 spec.containers[*].securityContext.runAsNonRoot, spec.initContainers[*].securityContext.runAsNonRoot and
