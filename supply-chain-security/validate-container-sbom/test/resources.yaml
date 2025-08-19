@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-valid-sbom
+  annotations:
+    security.kyverno.io/container-sbom-nginx: "https://example.com/sboms/cyclonedx-nginx.json"
+    security.kyverno.io/container-sbom-signature-nginx: "https://example.com/sboms/cyclonedx-nginx.json.sig"
+    security.kyverno.io/container-sbom-completeness-nginx: "verified"
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21.6
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-invalid-sbom
+  annotations:
+    security.kyverno.io/container-sbom-nginx: "invalid-format-not-a-url"
+    # Missing signature annotation
+    security.kyverno.io/container-sbom-completeness-nginx: "unverified"
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21.6
+    ports:
+    - containerPort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-without-sbom
+  # No SBOM annotations
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.21.6
+    ports:
+    - containerPort: 80 
