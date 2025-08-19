@@ -1,0 +1,42 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-kubectl-cp
+  annotations:
+    policies.kyverno.io/title: Block "kubectl cp"
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The kubectl cp command is used to copy files between a local machine and a Pod's container.
+      This policy blocks the use of the kubectl cp command on all Pods by denying exec requests
+      that attempt to run tar commands associated with file copying.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: block-kubectl-cp
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: Equals
+        value: CONNECT
+      - key: "{{ request.subResource }}"
+        operator: Equals
+        value: exec
+    validate:
+      message: "Cannot use `kubectl cp` on pods"
+      deny:
+        conditions:
+          any:
+          - key: "{{ request.requestObject.command[0] }} {{ request.requestObject.command[1] }}"
+            operator: Equals
+            value: "tar cf"
+          - key: "{{ request.requestObject.command[0] }} {{ request.requestObject.command[1] }}"
+            operator: Equals
+            value: "tar xf"

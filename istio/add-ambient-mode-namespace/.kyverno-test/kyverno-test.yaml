@@ -9,6 +9,8 @@ resources:
 - ../.chainsaw-test/patched-ns-enabled.yaml
 - ../.chainsaw-test/patched-ns-alt.yaml
 - ../.chainsaw-test/patched-ns-none.yaml
+- ../chainsaw-test/namespace-kube-system.yaml
+- ../chainsaw-test/namespace-istio-system.yaml
 results:
 - policy: add-ambient-mode-namespace
   rule: check-ambient-mode-enabled
@@ -19,3 +21,17 @@ results:
   - istio-test-en-ns
   - istio-test-alt-ns
   result: pass
+
+- policy: add-ambient-mode-namespace
+  rule: check-ambient-mode-disabled
+  kind: Namespace
+  resources:
+  - kube-system
+  result: skip
+
+- policy: add-ambient-mode-namespace
+  rule: check-ambient-mode-disabled
+  kind: Namespace
+  resources:
+  - istio-system
+  result: skip  
