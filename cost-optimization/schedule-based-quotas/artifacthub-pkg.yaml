@@ -1,0 +1,39 @@
+---
+name: schedule-based-quotas
+version: 1.0.0
+displayName: Schedule-based Resource Quotas
+createdAt: "2024-03-20T00:00:00.000Z"
+description: >-
+  Automatically adjusts resource quotas based on time schedules to optimize cloud costs.
+  During non-business hours, the policy reduces resource quotas to prevent overprovisioning
+  while ensuring essential services remain operational.
+install: |-
+  ```sh
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cost-optimization/schedule-based-quotas/schedule-based-quotas.yaml
+  ```
+keywords:
+  - resource management
+  - cost optimization
+  - quota
+  - scheduling
+readme: |
+  # Schedule-based Resource Quotas
+  
+  This policy automatically adjusts resource quotas based on time schedules to optimize cloud costs.
+  During non-business hours, the policy reduces resource quotas to prevent overprovisioning
+  while ensuring essential services remain operational.
+
+  ## Business Hours
+  - Monday to Friday
+  - 9 AM to 5 PM (Pacific Time)
+  - Higher resource limits (CPU: 20, Memory: 40Gi)
+
+  ## Non-Business Hours
+  - Weekdays outside 9 AM - 5 PM
+  - All weekend hours
+  - Lower resource limits (CPU: 10, Memory: 20Gi)
+annotations:
+  kyverno/category: Resource Management
+  kyverno/severity: medium
+  kyverno/subject: ResourceQuota, Namespace
+  kyverno/kubernetesVersion: "1.23-1.28"
