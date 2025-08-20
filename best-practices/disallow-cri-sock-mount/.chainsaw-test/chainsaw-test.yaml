@@ -6,45 +6,101 @@ metadata:
   name: disallow-cri-sock-mount
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-cri-sock-mount.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-container-sock-mounts
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: pod-containerd-sock.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: pod-docker-sock.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: pod-crio-sock.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: pod-cri-dockerd-sock.yaml
-    - apply:
-        file: pod-emptydir-vol.yaml
-    - apply:
-        file: pod-no-volumes.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-cri-sock-mount.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-container-sock-mounts
+              spec:
+                rules:
+                  - name: validate-docker-sock-mount
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Use of the Docker Unix socket is not allowed."
+                      pattern:
+                        spec:
+                          =(volumes):
+                            - =(hostPath):
+                                path: "!/var/run/docker.sock"
+                  - name: validate-containerd-sock-mount
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Use of the Containerd Unix socket is not allowed."
+                      pattern:
+                        spec:
+                          =(volumes):
+                            - =(hostPath):
+                                path: "!/var/run/containerd/containerd.sock"
+                  - name: validate-crio-sock-mount
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Use of the CRI-O Unix socket is not allowed."
+                      pattern:
+                        spec:
+                          =(volumes):
+                            - =(hostPath):
+                                path: "!/var/run/crio/crio.sock"
+                  - name: validate-dockerd-sock-mount
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Use of the Docker CRI socket is not allowed."
+                      pattern:
+                        spec:
+                          =(volumes):
+                            - =(hostPath):
+                                path: "!/var/run/cri-dockerd.sock"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: pod-containerd-sock.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: pod-docker-sock.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: pod-crio-sock.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: pod-cri-dockerd-sock.yaml
+        - apply:
+            file: pod-emptydir-vol.yaml
+        - apply:
+            file: pod-no-volumes.yaml
