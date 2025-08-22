@@ -8,7 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource.yaml
+  patchedResources: patchedResource.yaml
   policy: add-nodeselector
   resources:
   - default/myapp-pod
