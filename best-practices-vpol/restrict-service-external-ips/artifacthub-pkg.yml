@@ -1,0 +1,23 @@
+name: restrict-service-external-ips-VPOL
+version: 1.0.0
+displayName: Restrict External IPs in VPOL
+description: >-
+  Service externalIPs can be used for a MITM attack (CVE-2020-8554). Restrict externalIPs or limit to a known set of addresses. See: https://github.com/kyverno/kyverno/issues/1367. This policy validates that the `externalIPs` field is not set on a Service.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/restrict-service-external-ips/restrict-service-external-ips.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - VPOL
+readme: |
+  Service externalIPs can be used for a MITM attack (CVE-2020-8554). Restrict externalIPs or limit to a known set of addresses. See: https://github.com/kyverno/kyverno/issues/1367. This policy validates that the `externalIPs` field is not set on a Service.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Service"
+digest: 08d6f53d74e00af40fa04e8df7c32ae0612c4cc0aa8220d0259420ce317467c9
+createdAt: "2025-05-05T13:19:13Z"
