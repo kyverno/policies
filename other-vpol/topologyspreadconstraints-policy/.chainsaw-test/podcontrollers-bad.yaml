@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeploy01
+  labels:
+    app: busybox
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+        - name: busybox
+          image: ghcr.io/kyverno/test-busybox:1.35
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: foo.bar/test
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: busybox
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+                app: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeploy02
+  labels:
+    app: busybox
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+        - name: busybox
+          image: ghcr.io/kyverno/test-busybox:1.35
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: foo.bar/test
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: busybox
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+                app: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeploy03
+  labels:
+    app: busybox
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+        - name: busybox
+          image: ghcr.io/kyverno/test-busybox:1.35
