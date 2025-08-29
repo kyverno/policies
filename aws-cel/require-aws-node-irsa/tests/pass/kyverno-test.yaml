@@ -1,0 +1,15 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-aws-node-irsa-pass
+policies:
+  - ../../policy.yaml
+resources:
+  - ds.yaml
+results:
+  - isValidatingPolicy: true
+    kind: DaemonSet
+    policy: require-aws-node-irsa
+    resources:
+      - aws-node
+    result: pass
