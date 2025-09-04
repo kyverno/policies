@@ -13,7 +13,6 @@ metadata:
     policies.kyverno.io/description: >-
       This policy prevents updates to the project field after an Application is created.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: project-updates
@@ -28,6 +27,7 @@ spec:
           operator: Equals
           value: UPDATE
       validate:
+        failureAction: Audit
         message: "The spec.project cannot be changed once the Application is created."
         deny:
           conditions:
