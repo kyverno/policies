@@ -1,0 +1,25 @@
+name: topologyspreadconstraints-policy-vpol
+version: 1.0.0
+displayName: Spread Pods Across Nodes & Zones in ValidatingPolicy
+description: >-
+  Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/topologyspreadconstraints-policy/topologyspreadconstraints-policy.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Deployment, StatefulSet"
+digest: f2d0ee77d660919dc4c9eb7819eab4067afd5b32105874932a509b0bf1833e90
+
+
+createdAt: "2025-05-11T17:46:11Z"
