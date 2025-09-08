@@ -1,0 +1,55 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: mount-volumes-for-ephemeral-containers
+spec:
+  timeouts:
+    cleanup: 60s
+  steps:
+    - name: step-01
+      try:
+        - apply:
+            file: ../mount-volumes-for-ephemeral-containers.yaml
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: pods.yaml
+        - assert:
+            resource:
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: pod1
+                namespace: default
+                labels:
+                  ephemeral-debug: "true"
+              spec:
+                (volumes[?name == 'ephemeralcontainer-tmp-tcpdump-volume']):
+                  - emptyDir:
+                      sizeLimit: 1G
+    - name: step-03
+      try:
+        - script:
+            content: kubectl debug -it pod1 --image=busybox:1.35 --target=busybox --attach=false -c pod1-dbg
+    - name: step-04
+      try:
+        - assert:
+            resource:
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: pod1
+                namespace: default
+                labels:
+                  ephemeral-debug: "true"
+              spec:
+                ephemeralContainers:
+                  - name: pod1-dbg
+                    securityContext:
+                      readOnlyRootFilesystem: true
+                    volumeMounts:
+                      - mountPath: /tmp
+                        name: ephemeralcontainer-tmp-tcpdump-volume
