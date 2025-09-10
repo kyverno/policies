@@ -4,4 +4,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - restricted
+  - ./limit-dnsnames/limit-dnsnames.yaml
+  - ./limit-duration/limit-duration.yaml
+  - ./restrict-issuer/restrict-issuer.yaml
