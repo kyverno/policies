@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  initContainers:
+  - name: pod01-01-init
+    image: nginx:latest
+  - name: pod01-02-init
+    image: nginx:latest
+  containers:
+  - name: pod01-01
+    image: nginx:latest
+  - name: pod01-02
+    image: nginx:latest
+# ---
+# apiVersion: v1
+# kind: Pod
+# metadata:
+#   name: pod02
+# spec:
+#   initContainers:
+#   - name: pod02-01-init
+#     image: nginx:latest
+#   - name: pod02-02-init
+#     image: nginx:latest
+#     envFrom:
+#     - configMapRef:
+#         name: somenvars
+#   containers:
+#   - name: pod02-01
+#     image: nginx:latest
+#     envFrom:
+#     - configMapRef:
+#         name: somenvars
+#   - name: pod02-02
+#     image: nginx:latest

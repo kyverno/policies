@@ -1,0 +1,54 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-env-vars-from-cm
+  annotations:
+    policies.kyverno.io/title: Add Environment Variables from ConfigMap
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/description: >-
+      Instead of defining a common set of environment variables multiple
+      times either in manifests or separate policies, Pods can reference
+      entire collections stored in a ConfigMap. This policy mutates all
+      initContainers (if present) and containers in a Pod with environment
+      variables defined in a ConfigMap named `nsenvvars` that must exist
+      in the destination Namespace.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |-
+          object.spec.containers.map(c, 
+            !has(c.envFrom) ? 
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/envFrom",
+              value: [{"configMapRef": {"name": "nsenvvars"}}]
+            } :
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/envFrom/-",
+              value: {"configMapRef": {"name": "nsenvvars"}}
+            }
+          ) + 
+          (has(object.spec.initContainers) ? object.spec.initContainers.map(ic, 
+            !has(ic.envFrom) ? 
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(ic)) + "/envFrom",
+              value: [{"configMapRef": {"name": "nsenvvars"}}]
+            } :
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(ic)) + "/envFrom/-",
+              value: {"configMapRef": {"name": "nsenvvars"}}
+            }
+          ) : [])
