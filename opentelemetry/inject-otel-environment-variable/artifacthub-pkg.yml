@@ -1,0 +1,34 @@
+name: inject-otel-environment-variable
+version: 1.0.0
+displayName: Inject OpenTelemetry environment variable
+createdAt: "2024-12-27T00:00:00.000Z"
+description: >-
+  Injects OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers`.
+  Injection can be controlled by `otel.corp.org/inject-env-var: "false"` annotation on the Pod or at the Namespace level.
+  Value of the injected env var can also be overridden per Pod or Namespace via `otel.corp.org/otlp-endpoint: "http://xxxx:4317"` annotation.
+  The env var will be injected first, meaning that if one is already declared, the later will takes precedence over the injected one.
+  To avoid stress on the control plane API, a GlobalContextEntry containing Namespaces has to be declared (group: '', version: v1, resource: namespaces)
+  and `cache.kyverno.io/enabled: "true"` should be set on the `namespacefilters` ConfigMap (see rule comments ConfigMap-NS-Filtering).
+install: |-
+  ```shell
+  kubectl apply \
+    -f https://raw.githubusercontent.com/kyverno/policies/main/opentelemetry/inject-otel-environment-variable/globalcontext.yaml
+    -f https://raw.githubusercontent.com/kyverno/policies/main/opentelemetry/inject-otel-environment-variable/inject-otel-environment-variable.yaml
+  ```
+keywords:
+  - kyverno
+  - OpenTelemetry
+readme: |
+  Injects OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers`.
+  Injection can be controlled by `otel.corp.org/inject-env-var: "false"` annotation on the Pod or at the Namespace level.
+  Value of the injected env var can also be overridden per Pod or Namespace via `otel.corp.org/otlp-endpoint: "http://xxxx:4317"` annotation.
+  The env var will be injected first, meaning that if one is already declared, the later will takes precedence over the injected one.
+  To avoid stress on the control plane API, a GlobalContextEntry containing Namespaces has to be declared (group: '', version: v1, resource: namespaces)
+  and `cache.kyverno.io/enabled: "true"` should be set on the `namespacefilters` ConfigMap (see rule comments ConfigMap-NS-Filtering).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/version: "1.13.0"
+  kyverno/category: "OpenTelemetry"
+  kyverno/subject: "Pod"
+digest: ffa101097cabaa69e4c3ddfa07d7d4526c5e9a4e32005d794ab37f6c118d6df9
