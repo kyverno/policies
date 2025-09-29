@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: busybox
+  name: mypod
+  namespace: default
+spec:
+  containers:
+  - args:
+    - sleep
+    - "9999"
+    image: busybox:1.28
+    name: busybox
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      privileged: false
+  securityContext:
+    fsGroup: 2000
+    runAsGroup: 3000
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
