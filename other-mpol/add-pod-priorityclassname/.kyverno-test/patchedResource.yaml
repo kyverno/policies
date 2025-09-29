@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blank
+  namespace: foo
+  labels:
+    app: blank
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blank
+  template:
+    metadata:
+      labels:
+        app: blank
+    spec:
+      containers:
+      - image: sfsdafasdfsadfsadf
+        name: busybox
+      priorityClassName: non-production

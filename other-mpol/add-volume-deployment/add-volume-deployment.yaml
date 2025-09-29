@@ -1,0 +1,56 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-volume
+  namespace: kyverno
+  annotations:
+    policies.kyverno.io/title: Add Volume to Deployment
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Deployment, Volume
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      Some Kubernetes applications like HashiCorp Vault must perform some modifications
+      to resources in order to invoke their specific functionality. Often times, that functionality
+      is controlled by the presence of a label or specific annotation. This policy, based on HashiCorp
+      Vault, adds a volume and volumeMount to a Deployment if there is an annotation called
+      "vault.k8s.corp.net/inject=enabled" present.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+  matchConditions:
+    - name: has-vault-inject-annotation
+      expression: |
+        has(object.spec.template.metadata.annotations) &&
+        'vault.k8s.corp.net/inject' in object.spec.template.metadata.annotations &&
+        object.spec.template.metadata.annotations['vault.k8s.corp.net/inject'] == 'enabled'
+    - name: does-not-have-vault-volume
+      expression: |
+        !has(object.spec.template.spec.volumes) ||
+        !object.spec.template.spec.volumes.exists(v, v.name == 'vault-secret')
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          Object{
+            spec: Object.spec{
+              template: Object.spec.template{
+                spec: Object.spec.template.spec{
+                  volumes: has(object.spec.template.spec.volumes) ?
+                    object.spec.template.spec.volumes + [Object.spec.template.spec.volumes{name: "vault-secret", emptyDir: Object.spec.template.spec.volumes.emptyDir{medium: "Memory"}}] :
+                    [Object.spec.template.spec.volumes{name: "vault-secret", emptyDir: Object.spec.template.spec.volumes.emptyDir{medium: "Memory"}}],
+                  containers: [
+                    Object.spec.template.spec.containers{
+                      name: object.spec.template.spec.containers[0].name,
+                      volumeMounts: has(object.spec.template.spec.containers[0].volumeMounts) ?
+                        object.spec.template.spec.containers[0].volumeMounts + [Object.spec.template.spec.containers.volumeMounts{mountPath: "/secret", name: "vault-secret"}] :
+                        [Object.spec.template.spec.containers.volumeMounts{mountPath: "/secret", name: "vault-secret"}]
+                    }
+                  ]
+                }
+              }
+            }
+          }
