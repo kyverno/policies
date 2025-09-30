@@ -1,0 +1,22 @@
+name: add-imagepullsecrets-for-containers-and-initcontainers
+version: 1.0.0
+displayName: Add imagePullSecrets for Containers and InitContainers
+createdAt: "2025-09-20T20:30:02.000Z"
+description: >-
+  Images coming from certain registries require authentication in order to pull them, and the kubelet uses this information in the form of an imagePullSecret to pull those images on behalf of your Pod. This policy searches for images coming from a registry called `corp.reg.com` referenced by either one of the containers or one  of the init containers and, if found, will mutate the Pod to add an imagePullSecret called `my-secret`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-mpol/add-imagepullsecrets-for-containers-and-initcontainers/add-imagepullsecrets-for-containers-and-initcontainers.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+readme: |
+  Images coming from certain registries require authentication in order to pull them, and the kubelet uses this information in the form of an imagePullSecret to pull those images on behalf of your Pod. This policy searches for images coming from a registry called `corp.reg.com` referenced by either one of the containers or one  of the init containers and, if found, will mutate the Pod to add an imagePullSecret called `my-secret`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: 02428611370561ecc727bd09d70535a6e9454d7aa3a28f260460b38b4a8b375f
