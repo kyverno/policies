@@ -1,0 +1,30 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-image-as-env-var
+policies:
+- ../add-image-as-env-var.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResources: patched-pod01.yaml
+  policy: add-image-as-env-var
+  resources:
+  - pod01
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patched-pod02.yaml
+  policy: add-image-as-env-var
+  resources:
+  - pod02
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patched-pod03.yaml
+  policy: add-image-as-env-var
+  resources:
+  - pod03
+  result: pass
+  isMutatingPolicy: true
