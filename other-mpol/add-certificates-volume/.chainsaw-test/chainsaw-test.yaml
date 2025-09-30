@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: add-certificates-volume
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../add-certificates-volume.yaml
+    - apply:
+        file: ns.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: podcontroller-resources.yaml
+    - apply:
+        file: pod-resources.yaml
+  - name: step-03
+    try:
+    - assert:
+        file: podcontroller-patched.yaml
+    - assert:
+        file: pod-resources-patched.yaml
+    - error:
+        file: podcontroller-not-patched.yaml
+    - error:
+        file: pod-not-patched.yaml
+  - name: step-99
+    try:
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n other-certvol-ns
+    - sleep:
+        duration: 20s
+    - script:
+        content: kubectl delete pods --all --force --grace-period=0 -n other-certvol-ns

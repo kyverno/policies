@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-1
+spec:
+  containers:
+  - name: busybox
+    image: corp.reg.com/busybox:1.28
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-2
+spec:
+  initContainers: 
+  - name: initbusybox
+    image: corp.reg.com/busybox:1.28
+    command: ["sleep", "9999"]
+  containers:
+  - name: nginx
+    image: nginx:latest
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-3
+spec:
+  containers:
+  - name: nginx
+    image: corp.reg.com/nginx:latest
+  imagePullSecrets:
+  - name: my-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod-4
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
