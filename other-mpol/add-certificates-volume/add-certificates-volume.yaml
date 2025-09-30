@@ -1,0 +1,57 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-certificates-volume
+  annotations:
+    policies.kyverno.io/title: Add Certificates as a Volume
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Pod,Volume
+    policies.kyverno.io/description: >-
+      In some cases you would need to trust custom CA certificates for all the containers of a Pod.
+      It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation.
+      This policy adds a volume to all containers in a Pod containing the certificate if the annotation
+      called `inject-certs` with value `enabled` is found.
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"] #, "UPDATE"]
+      resources: ["pods"]
+  matchConditions:
+  - name: "check-annotation"
+    expression: "has(object.metadata.annotations) && ('inject-certs' in object.metadata.annotations && object.metadata.annotations['inject-certs'] == 'enabled')"
+  autogen:
+    podControllers:
+      controllers:
+      - DaemonSet
+      - Deployment
+      - Job
+      - StatefulSet
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: |-
+        Object{
+          spec: Object.spec{
+            containers: object.spec.containers.map(c,
+              Object.spec.containers{
+                name: c.name,
+                volumeMounts: (has(c.volumeMounts) ? c.volumeMounts : []) + [
+                  Object.spec.containers.volumeMounts{
+                    name: "etc-ssl-certs",
+                    mountPath: "/etc/ssl/certs"
+                  }
+                ]
+              }
+            ),
+            volumes: (has(object.spec.volumes) ? object.spec.volumes : []) + [
+              Object.spec.volumes{
+                name: "etc-ssl-certs",
+                configMap: Object.spec.volumes.configMap{
+                  name: "ca-pemstore"
+                }
+              }
+            ]
+          }
+        }
