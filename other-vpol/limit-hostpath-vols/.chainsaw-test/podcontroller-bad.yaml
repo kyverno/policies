@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+      volumes:
+      - name: foo
+        hostPath:
+          path: /data
+      - name: bar
+        hostPath:
+          path: /etc/junk
+      - name: empty
+        emptyDir:
+          medium: memory
+          sizeLimit: 20Mi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          volumes:
+          - name: foo
+            hostPath:
+              path: /data
+          - name: bar
+            hostPath:
+              path: /etc/junk
+          - name: empty
+            emptyDir:
+              medium: memory
+              sizeLimit: 20Mi
+          restartPolicy: OnFailure
