@@ -1,0 +1,24 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: add-castai-removal-disabled
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../add-castai-removal-disabled.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../.kyverno-test/resources.yaml
+  - name: step-03
+    try:
+    - assert:
+        file: ../.kyverno-test/patched01.yaml
+    - assert:
+        file: ../.kyverno-test/patched02.yaml
