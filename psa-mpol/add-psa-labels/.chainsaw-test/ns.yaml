@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-ns01
+  labels:
+    foo: bar
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-ns02
+  labels:
+    pod-security.kubernetes.io/enforce: privileged
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-ns03
+  labels:
+    pod-security.kubernetes.io/warn: baseline
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-ns04
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted

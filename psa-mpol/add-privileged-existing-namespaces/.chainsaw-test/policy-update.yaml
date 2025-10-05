@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-privileged-existing-namespaces
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+  - name: label-privileged-namespaces
+    match:
+      any:
+      - resources:
+          kinds:
+          - Namespace
+    mutate:
+      targets:
+        - apiVersion: v1
+          kind: Namespace
+      patchStrategicMerge:
+        metadata:
+          <(name): "!kube-system"
+          labels:
+            pod-security.kubernetes.io/enforce: baseline
