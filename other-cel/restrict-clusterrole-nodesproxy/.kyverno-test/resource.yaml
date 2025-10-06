@@ -48,3 +48,11 @@ metadata:
   name: default-rules
 rules: null
 ---
+# Ensure rules without 'resources' keyword are handled properly
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: no-resources
+rules:
+- nonResourceURLs: ["/test"]
+  verbs: ["get"]
