@@ -1,0 +1,59 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-pod-proxies
+  annotations:
+    policies.kyverno.io/title: Add Pod Proxies
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      In restricted environments, Pods may not be allowed to egress directly to all destinations
+      and some overrides to specific addresses may need to go through a corporate proxy.
+      This policy adds proxy information to Pods in the form of environment variables.
+      It will add the `env` array if not present. If any Pods have any of these
+      env vars, they will be overwritten with the value(s) in this policy.
+    kyverno.io/kyverno-version: "1.15.0"
+    kyverno.io/kubernetes-version: "1.21"
+spec:
+  autogen:
+    podControllers:
+      controllers:
+        - deployments
+        - daemonsets
+        - statefulsets
+        - jobs
+        - cronjobs
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          Object{
+            spec: Object.spec{
+              containers: object.spec.containers.map(c,
+                Object.spec.containers{
+                  name: c.name,
+                  env: (has(c.env) ? c.env.filter(e, e.name != "HTTP_PROXY" && e.name != "HTTPS_PROXY" && e.name != "NO_PROXY") : []) + [
+                    Object.spec.containers.env{
+                      name: "HTTP_PROXY",
+                      value: "http://proxy.corp.domain:8080"
+                    },
+                    Object.spec.containers.env{
+                      name: "HTTPS_PROXY",
+                      value: "https://secureproxy.corp.domain:8080"
+                    },
+                    Object.spec.containers.env{
+                      name: "NO_PROXY",
+                      value: "localhost,*.example.com"
+                    }
+                  ]
+                }
+              )
+            }
+          }
