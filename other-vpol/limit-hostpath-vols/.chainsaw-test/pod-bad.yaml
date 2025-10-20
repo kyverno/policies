@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+  - name: foo
+    hostPath:
+      path: /data
+  - name: bar
+    hostPath:
+      path: /etc/junk
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: foo
+    hostPath:
+      path: /home/junk
