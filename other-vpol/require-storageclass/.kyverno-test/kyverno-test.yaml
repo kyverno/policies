@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-storageclass
+policies:
+- ../require-storageclass.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: PersistentVolumeClaim
+  policy: require-storageclass
+  resources:
+  - badpvc
+  result: fail
+- isValidatingPolicy: true
+  kind: PersistentVolumeClaim
+  policy: require-storageclass
+  resources:
+  - goodpvc
+  result: pass
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: require-storageclass
+  resources:
+  - badss
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: require-storageclass
+  resources:
+  - goodss
+  - goodss-novct
+  result: pass
+

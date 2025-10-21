@@ -1,0 +1,182 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-all
+  labels:
+    name: kyvernopod
+spec:
+  automountServiceAccountToken: false
+  initContainers: 
+  - name: initbusybox-harbor
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+    env:
+    - name: initsomething
+      valueFrom:
+        secretKeyRef:
+          name: safe-foo
+          key: bar
+    envFrom:
+    - secretRef:
+        name: safe-secured
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+    env:
+    - name: something
+      valueFrom:
+        secretKeyRef:
+          name: safe-foo
+          key: bar
+    - name: somethingelse
+      valueFrom:
+        secretKeyRef:
+          name: safe-umbru
+          key: bissel
+    envFrom:
+      - secretRef:
+          name: safe-secured
+  volumes:
+  - name: supersecret
+    secret:
+      secretName: safe-testing
+  - name: vol1
+    secret:
+      secretName: safe-secret
+  - name: vol2
+    secret:
+      secretName: safe-moresecret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-env
+  labels:
+    name: kyvernopod
+spec:
+  automountServiceAccountToken: false
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+    env:
+    - name: something
+      valueFrom:
+        secretKeyRef:
+          name: bad-foo
+          key: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-envfrom
+  labels:
+    name: kyvernopod
+spec:
+  automountServiceAccountToken: false
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+    envFrom:
+      - secretRef:
+          name: bad-secured
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-vol
+  labels:
+    name: kyvernopod
+spec:
+  automountServiceAccountToken: false
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+  volumes:
+  - name: mysecret
+    secret:
+      secretName: boo-secret
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deploy-env
+  labels:
+    blog: forward
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      blog: forward
+  template:
+    metadata:
+      labels:
+        blog: forward
+    spec:
+      automountServiceAccountToken: false
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+        env:
+        - name: something
+          valueFrom:
+            secretKeyRef:
+              name: bad-foo
+              key: bar
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deploy-envfrom
+  labels:
+    blog: forward
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      blog: forward
+  template:
+    metadata:
+      labels:
+        blog: forward
+    spec:
+      automountServiceAccountToken: false
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+        envFrom:
+          - secretRef:
+              name: bad-secured
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deploy-vol
+  labels:
+    blog: forward
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      blog: forward
+  template:
+    metadata:
+      labels:
+        blog: forward
+    spec:
+      automountServiceAccountToken: false
+      containers: 
+      - name: busybox
+        image: busybox:1.28
+        command: ["sleep", "9999"]
+      volumes:
+      - name: mysecret
+        secret:
+          secretName: boo-secret
+
