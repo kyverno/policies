@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: block-ephemeral-ns
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+  namespace: block-ephemeral-ns
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+  namespace: block-ephemeral-ns
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+  - name: busybox02-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sleep", "300"]
+
