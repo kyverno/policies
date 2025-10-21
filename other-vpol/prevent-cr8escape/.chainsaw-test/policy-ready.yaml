@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: prevent-cr8escape
+status:
+  conditionStatus:
+    conditions:
+    - reason: Succeeded
+      type: WebhookConfigured
+      status: "True"
+    - reason: Succeeded
+      type: RBACPermissionsGranted
+      status: "True"
+
