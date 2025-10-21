@@ -1,0 +1,122 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      initContainers:
+      - name: busybox-init
+        image: ghcr.io/kyverno/test-busybox:1.35
+        envFrom:
+        - secretRef:
+            name: safe-secret
+      - name: busybox02-init
+        image: ghcr.io/kyverno/test-busybox:1.35
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+      - name: busybox02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        env:
+        - name: ENV_FOO
+          value: "bar"
+        - name: ENV_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: top-secret
+              key: foo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+      - name: busybox02
+        image: ghcr.io/kyverno/test-busybox:1.35
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: top-secret
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: busybox-init
+            image: ghcr.io/kyverno/test-busybox:1.35
+            envFrom:
+            - secretRef:
+                name: top-secret
+          - name: busybox02-init
+            image: ghcr.io/kyverno/test-busybox:1.35
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          - name: busybox02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            env:
+            - name: ENV_FOO
+              value: "bar"
+            - name: ENV_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: safe-secret
+                  key: foo
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          - name: busybox02
+            image: ghcr.io/kyverno/test-busybox:1.35
+          volumes:
+          - name: empty-volume
+            emptyDir: {}
+          - name: secret-volume
+            secret:
+              secretName: top-secret
+          restartPolicy: OnFailure
+

@@ -1,0 +1,7 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: badpdb01
+spec:
+  maxUnavailable: 0
+

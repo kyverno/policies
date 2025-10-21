@@ -1,0 +1,100 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        resources:
+          limits:
+            cpu: 10m
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: webserver1
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          requests:
+            cpu: 10m
+      - name: webserver2
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          limits:
+            cpu: 10m
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: busybox
+        spec:
+          containers:
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+            resources:
+              limits:
+                cpu: 10m
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: busybox
+        spec:
+          containers:
+          - name: webserver1
+            image: ghcr.io/kyverno/test-busybox:1.35
+            resources:
+              requests:
+                cpu: 10m
+          - name: webserver2
+            image: ghcr.io/kyverno/test-busybox:1.35
+            resources:
+              limits:
+                cpu: 10m
+          restartPolicy: OnFailure
+

@@ -1,0 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+policies:
+- name: limit-hostpath-vols
+  resources:
+  - name: bad-pods-all
+    values:
+      request.operation: UPDATE

@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-readwriteonce-pod
+policies:
+- ../enforce-readwriteonce-pod.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: PersistentVolumeClaim
+  policy: readwriteonce-pod
+  resources:
+  - badpvc
+  result: fail
+- isValidatingPolicy: true
+  kind: PersistentVolumeClaim
+  policy: readwriteonce-pod
+  resources:
+  - goodpvc
+  result: pass
+
