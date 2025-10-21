@@ -1,0 +1,23 @@
+name: disallow-proc-mount-vpol
+version: 1.0.0
+displayName: Disallow procMount in ValidatingPolicy
+description: >-
+  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Note that in order for users to deviate from the `Default` procMount requires setting a feature gate at the API server.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-proc-mount/disallow-proc-mount.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - ValidatingPolicy
+readme: |
+  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Note that in order for users to deviate from the `Default` procMount requires setting a feature gate at the API server.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod"
+digest: d765f7018286d1a6867ea76469748d840fb592416d5a58055920d54a086a1ba3
+createdAt: "2025-03-13T23:26:58Z"

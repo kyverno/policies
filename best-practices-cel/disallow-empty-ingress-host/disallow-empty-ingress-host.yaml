@@ -30,7 +30,6 @@ spec:
         cel:
           expressions:
             - expression: >-
-                !has(object.spec.rules) || 
-                object.spec.rules.all(rule, has(rule.host) && has(rule.http))
+                object.spec.?rules.orValue([]).all(rule, has(rule.host) && has(rule.http))
               message: "The Ingress host name must be defined, not empty."
         

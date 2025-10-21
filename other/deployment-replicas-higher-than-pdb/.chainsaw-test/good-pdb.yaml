@@ -33,7 +33,7 @@ kind: PodDisruptionBudget
 metadata:
   name: good-pdb04
 spec:
-  maxUnAvailable: 3
+  maxUnavailable: 3
   selector:
     matchLabels:
       app: busybox

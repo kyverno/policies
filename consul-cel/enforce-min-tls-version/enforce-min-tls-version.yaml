@@ -29,7 +29,6 @@ spec:
       cel:
         expressions:
           - expression: >-
-              has(object.spec) && has(object.spec.tls) && has(object.spec.tls.incoming) && 
-              has(object.spec.tls.incoming.tlsMinVersion) && object.spec.tls.incoming.tlsMinVersion == 'TLSv1_2'
+              object.?spec.?tls.?incoming.?tlsMinVersion.orValue('') == 'TLSv1_2'
             message: The minimum version of TLS is TLS v1_2
 

@@ -3,4 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: enable-kubecost-continuous-rightsizing
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready

@@ -4,7 +4,7 @@ metadata:
   name: goodpod01
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       resources:
         requests:
@@ -24,7 +24,7 @@ metadata:
   name: goodpod02
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
 ---
 apiVersion: v1
@@ -33,7 +33,7 @@ metadata:
   name: goodpod03
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       volumeMounts:
         - mountPath: /cache/data
@@ -49,7 +49,7 @@ metadata:
   name: goodpod04
 spec:
   initContainers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox-init
       volumeMounts:
       - mountPath: /mnt/vol
@@ -59,18 +59,18 @@ spec:
           ephemeral-storage: "2Gi"
         limits:
           ephemeral-storage: "2Gi"
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02-init
       volumeMounts:
       - mountPath: /mnt/foo
         name: foo
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       volumeMounts:
       - mountPath: /mnt/foo
         name: foo
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       resources:
         requests:
@@ -93,20 +93,20 @@ metadata:
   name: goodpod05
 spec:
   initContainers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox-init
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02-init
       volumeMounts:
       - mountPath: /mnt/foo
         name: foo
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       volumeMounts:
       - mountPath: /mnt/foo
         name: foo
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
   volumes:
     - name: vol
@@ -121,7 +121,7 @@ metadata:
   name: goodpod06
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       volumeMounts:
       - mountPath: /mnt/foo
@@ -131,7 +131,7 @@ spec:
           ephemeral-storage: "2Gi"
         limits:
           ephemeral-storage: "2Gi"
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
   volumes:
     - name: foo
@@ -143,12 +143,12 @@ metadata:
   name: goodpod07
 spec:
   containers:
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
       volumeMounts:
       - mountPath: /mnt/foo
         name: foo
-    - image: busybox:1.35
+    - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
   volumes:
     - name: foo
@@ -162,7 +162,7 @@ metadata:
 spec:
   initContainers:
     - name: certificates
-      image: busybox
+      image: ghcr.io/kyverno/test-busybox
       volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs
@@ -172,7 +172,7 @@ spec:
         requests:
           ephemeral-storage: 256Mi
     - name: configure
-      image: busybox
+      image: ghcr.io/kyverno/test-busybox
       volumeMounts:
         - name: etc-ssl-certs
           mountPath: /etc/ssl/certs/
@@ -185,7 +185,7 @@ spec:
           ephemeral-storage: 256Mi
   containers:
     - name: my-app
-      image: busybox
+      image: ghcr.io/kyverno/test-busybox
       resources:
         limits:
           cpu: "2"

@@ -41,13 +41,12 @@ spec:
             parameterNotFoundAction: Deny
           variables:
             - name: allContainers
-              expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+              expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
             - name: nsregistries
               expression: >-
-                (has(namespaceObject.metadata.annotations) && 'corp.com/allowed-registries' in namespaceObject.metadata.annotations) ?
-                namespaceObject.metadata.annotations['corp.com/allowed-registries'] : ' '
+                namespaceObject.metadata.?annotations[?'corp.com/allowed-registries'].orValue(' ')
             - name: clusterregistries
-              expression: "'registries' in params.data ? params.data['registries'] : ' '"
+              expression: "params.data[?'registries'].orValue(' ')"
           expressions:
             - expression: "variables.allContainers.all(container, container.image.startsWith(variables.nsregistries) || container.image.startsWith(variables.clusterregistries))"
               message: This Pod names an image that is not from an approved registry.

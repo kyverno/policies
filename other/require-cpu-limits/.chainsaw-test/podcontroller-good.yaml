@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
@@ -35,12 +35,12 @@ spec:
     spec:
       containers:
       - name: container01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       - name: container02
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
@@ -61,13 +61,13 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       containers:
       - name: container01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
@@ -88,18 +88,18 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       - name: initcontainer02
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       containers:
       - name: container01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
@@ -120,23 +120,23 @@ spec:
     spec:
       initContainers:
       - name: initcontainer01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       - name: initcontainer02
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       containers:
       - name: container01
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
       - name: container02
-        image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+        image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
         resources:
           limits:
             cpu: "50m"
@@ -155,7 +155,7 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
@@ -173,12 +173,12 @@ spec:
           restartPolicy: OnFailure
           containers:
           - name: container01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           - name: container02
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
@@ -196,13 +196,13 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           containers:
           - name: container01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
@@ -220,18 +220,18 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           - name: initcontainer02
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           containers:
           - name: container01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
@@ -249,23 +249,23 @@ spec:
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           - name: initcontainer02
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           containers:
           - name: container01
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"
           - name: container02
-            image: busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
+            image: ghcr.io/kyverno/test-busybox:1.35@sha256:5b6e7aeda43f426b6423f60da863e2e6015c9983c957cf1b068120aea609261d
             resources:
               limits:
                 cpu: "50m"

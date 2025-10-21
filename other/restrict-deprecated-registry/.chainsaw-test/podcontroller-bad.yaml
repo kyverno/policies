@@ -43,6 +43,6 @@ spec:
             image: registry.k8s.io/busybox:1.35
           containers:
           - name: busybox
-            image: busybox:1.35
+            image: ghcr.io/kyverno/test-busybox:1.35
           - name: busybox02
             image: docker.io/busybox:1.35

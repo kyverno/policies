@@ -17,13 +17,13 @@ spec:
     spec:
       containers:
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               memory: "100Mi"
               cpu: "100m"
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               memory: "500Mi"
@@ -48,13 +48,13 @@ spec:
     spec:
       containers:
         - name: bb-01
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               memory: "100Mi"
               cpu: "100m"
         - name: bb-02
-          image: busybox:1.35
+          image: ghcr.io/kyverno/test-busybox:1.35
           resources:
             requests:
               memory: "100Mi"
@@ -72,13 +72,13 @@ spec:
         spec:
           containers:
             - name: bb-02
-              image: busybox:1.35
+              image: ghcr.io/kyverno/test-busybox:1.35
               resources:
                 requests:
                   memory: "100Mi"
                   cpu: "100m"
             - name: bb-01
-              image: busybox:1.35
+              image: ghcr.io/kyverno/test-busybox:1.35
               resources:
                 requests:
                   memory: "500Mi"
@@ -97,13 +97,13 @@ spec:
         spec:
           containers:
             - name: bb-01
-              image: busybox:1.35
+              image: ghcr.io/kyverno/test-busybox:1.35
               resources:
                 requests:
                   memory: "100Mi"
                   cpu: "100m"
             - name: bb-02
-              image: busybox:1.35
+              image: ghcr.io/kyverno/test-busybox:1.35
               resources:
                 requests:
                   memory: "100Mi"

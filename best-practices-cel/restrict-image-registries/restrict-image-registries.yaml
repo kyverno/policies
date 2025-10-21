@@ -32,7 +32,7 @@ spec:
       cel:
         variables:
           - name: allContainers
-            expression: "(object.spec.containers + (has(object.spec.initContainers) ? object.spec.initContainers : []) + (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : []))"
+            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
         expressions:
           - expression: "variables.allContainers.all(container, container.image.startsWith('eu.foo.io/') || container.image.startsWith('bar.io/'))"
             message: "Unknown image registry."

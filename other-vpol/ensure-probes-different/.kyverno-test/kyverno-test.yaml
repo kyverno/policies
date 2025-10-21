@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-probes
+policies:
+- ../ensure-probes-different.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: validate-probes
+  resources:
+  - mydeploy-2
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: validate-probes
+  resources:
+  - mydeploy-1
+  result: pass
+

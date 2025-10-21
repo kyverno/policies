@@ -31,7 +31,6 @@ spec:
       cel:
         expressions:
           - expression: >-
-              has(object.metadata.annotations) && 
-              'corp.org/department' in object.metadata.annotations && object.metadata.annotations['corp.org/department'] != ''
+              object.metadata.?annotations[?'corp.org/department'].orValue('') != ''
             message: "The annotation `corp.org/department` is required."
 

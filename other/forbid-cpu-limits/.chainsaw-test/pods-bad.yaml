@@ -5,7 +5,7 @@ metadata:
 spec:
   containers:
   - name: webserver1
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       limits:
         cpu: 10m
@@ -17,12 +17,12 @@ metadata:
 spec:
   containers:
   - name: webserver1
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       requests:
         cpu: 10m
   - name: webserver2
-    image: busybox:1.35
+    image: ghcr.io/kyverno/test-busybox:1.35
     resources:
       limits:
         cpu: 10m

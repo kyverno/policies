@@ -3,4 +3,8 @@ kind: ClusterPolicy
 metadata:
   name: restrict-ingress-classes
 status:
-  ready: true
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+

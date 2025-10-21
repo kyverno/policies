@@ -32,7 +32,7 @@ spec:
         cel:
           expressions:
             - expression: >-
-                !has(object.spec.securityContext) || !has(object.spec.securityContext.sysctls) || 
-                object.spec.securityContext.sysctls.all(sysctl, !has(sysctl.value) || (!sysctl.value.contains('+') && !sysctl.value.contains('='))) 
+                object.spec.?securityContext.?sysctls.orValue([]).all(sysctl, 
+                !has(sysctl.value) || (!sysctl.value.contains('+') && !sysctl.value.contains('='))) 
               message: "characters '+' or '=' are not allowed in sysctls values"      
 

@@ -16,7 +16,7 @@ metadata:
       image repositories present in a given Pod, across any container type, come from the
       designated list.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
     - name: good-repos
