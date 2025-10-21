@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: pdb-maxunavailable
+policies:
+- ../pdb-maxunavailable.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: PodDisruptionBudget
+  policy: pdb-maxunavailable
+  resources:
+  - kube-system/bad-pdb-zero
+  - kube-system/bad-pdb-negative-one
+  result: fail
+- isValidatingPolicy: true
+  kind: PodDisruptionBudget
+  policy: pdb-maxunavailable
+  resources:
+  - kube-system/good-pdb
+  - kube-system/good-pdb-none
+  result: pass
+

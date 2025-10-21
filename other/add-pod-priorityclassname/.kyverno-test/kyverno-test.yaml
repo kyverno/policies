@@ -8,7 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Deployment
-  patchedResource: patchedResource.yaml
+  patchedResources: patchedResource.yaml
   policy: add-pod-priorityclassname
   resources:
   - blank

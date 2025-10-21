@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    fluxcd.io/cat: meow
+  name: badpod01
+spec:
+  containers:
+    - name: pod01-01
+      image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    foo: bar
+    fluxcd.io/foo: bar
+  name: badpod02
+spec:
+  containers:
+    - name: pod02-01
+      image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    fluxcd.io/bar: foo
+    foo: bar
+  name: badpod03
+spec:
+  containers:
+    - name: pod-01
+      image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    fluxcd.io/bar: foo
+    fluxcd.io/cow: moo
+  name: badpod04
+spec:
+  containers:
+    - name: pod-01
+      image: ghcr.io/kyverno/test-busybox:1.35
+

@@ -1,0 +1,246 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+      - name: udev
+        mountPath: /data
+  volumes:
+  - name: udev
+    hostPath:
+      path: /etc/udev
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+      - name: udev
+        mountPath: /data
+      - name: temp
+        mountPath: /scratch
+  volumes:
+  - name: temp
+    emptyDir: {}
+  - name: udev
+    hostPath:
+      path: /etc/udev
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+      - name: temp
+        mountPath: /scratch
+  volumes:
+  - name: temp
+    emptyDir: {}
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+          - name: udev
+            mountPath: /data
+      volumes:
+      - name: udev
+        hostPath:
+          path: /etc/udev
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+          - name: udev
+            mountPath: /data
+          - name: temp
+            mountPath: /scratch
+      volumes:
+      - name: temp
+        emptyDir: {}
+      - name: udev
+        hostPath:
+          path: /etc/udev
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        volumeMounts:
+          - name: temp
+            mountPath: /scratch
+      volumes:
+      - name: temp
+        emptyDir: {}
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+              - name: udev
+                mountPath: /data
+          volumes:
+          - name: udev
+            hostPath:
+              path: /etc/udev
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+              - name: udev
+                mountPath: /data
+              - name: temp
+                mountPath: /scratch
+          volumes:
+          - name: temp
+            emptyDir: {}
+          - name: udev
+            hostPath:
+              path: /etc/udev
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            volumeMounts:
+              - name: temp
+                mountPath: /scratch
+          volumes:
+          - name: temp
+            emptyDir: {}
