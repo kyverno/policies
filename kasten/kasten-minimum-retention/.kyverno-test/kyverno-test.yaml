@@ -9,7 +9,7 @@ resources:
 - kasten-hourly-policy.yaml
 results:
 - kind: Policy
-  patchedResource: patched.yaml
+  patchedResources: patched.yaml
   policy: kasten-minimum-retention
   resources:
   - hourly-policy

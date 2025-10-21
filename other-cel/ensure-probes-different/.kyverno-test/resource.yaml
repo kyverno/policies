@@ -2,7 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
   name: mydeploy-1
 spec:
   replicas: 1
@@ -36,7 +35,6 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
   name: mydeploy-2
 spec:
   replicas: 1

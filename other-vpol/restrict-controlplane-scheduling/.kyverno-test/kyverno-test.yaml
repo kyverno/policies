@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-controlplane-scheduling
+policies:
+- ../restrict-controlplane-scheduling.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-controlplane-scheduling
+  resources:
+  - default/badpod01
+  - default/badpod02
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-controlplane-scheduling
+  resources:
+  - default/goodpod01
+  - default/goodpod02
+  result: pass
+

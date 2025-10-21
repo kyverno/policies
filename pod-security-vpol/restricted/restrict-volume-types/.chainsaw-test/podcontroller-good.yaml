@@ -1,0 +1,371 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - name: udev
+          mountPath: /data
+      volumes:
+      - name: udev
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+        foo: bar
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - name: labels
+          mountPath: /labels
+      volumes:
+      - name: labels
+        downwardAPI:
+          items:
+          - path: labels
+            fieldRef:
+              fieldPath: metadata.labels
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - name: ephem
+          mountPath: /ephem
+      volumes:
+      - name: ephem
+        ephemeral:
+          volumeClaimTemplate:
+            metadata:
+              labels:
+                type: my-frontend-volume
+            spec:
+              accessModes: [ "ReadWriteOnce" ]
+              storageClassName: "scratch-storage-class"
+              resources:
+                requests:
+                  storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - name: foo
+          mountPath: /foo
+      volumes:
+      - name: foo
+        persistentVolumeClaim:
+          claimName: fooclaim
+          readOnly: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - mountPath: /var/run/secrets/tokens
+          name: vault-token
+      volumes:
+      - name: vault-token
+        projected:
+          sources:
+          - serviceAccountToken:
+              path: vault-token
+              expirationSeconds: 7200
+              audience: vault
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: udev
+              mountPath: /data
+          volumes:
+          - name: udev
+            emptyDir: {}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: mysettings
+              mountPath: /settings
+          volumes:
+          - name: mysettings
+            configMap:
+              name: settings
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: warehouse
+              mountPath: /warehouse
+          volumes:
+          - name: warehouse
+            csi:
+              driver: disk.csi.azure.com
+              readOnly: true
+              fsType: xfs
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            foo: bar
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: labels
+              mountPath: /labels
+          volumes:
+          - name: labels
+            downwardAPI:
+              items:
+              - path: labels
+                fieldRef:
+                  fieldPath: metadata.labels
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: ephem
+              mountPath: /ephem
+          volumes:
+          - name: ephem
+            ephemeral:
+              volumeClaimTemplate:
+                metadata:
+                  labels:
+                    type: my-frontend-volume
+                spec:
+                  accessModes: [ "ReadWriteOnce" ]
+                  storageClassName: "scratch-storage-class"
+                  resources:
+                    requests:
+                      storage: 1Gi
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - name: foo
+              mountPath: /foo
+          volumes:
+          - name: foo
+            persistentVolumeClaim:
+              claimName: fooclaim
+              readOnly: true
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - mountPath: /var/run/secrets/tokens
+              name: vault-token
+          volumes:
+          - name: vault-token
+            projected:
+              sources:
+              - serviceAccountToken:
+                  path: vault-token
+                  expirationSeconds: 7200
+                  audience: vault
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - mountPath: /mysecret
+              name: mysecret
+          volumes:
+          - name: mysecret
+            secret:
+              secretName: mysecret

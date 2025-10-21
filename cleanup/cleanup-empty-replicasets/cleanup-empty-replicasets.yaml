@@ -1,5 +1,5 @@
 #The described logic currently deletes the ReplicaSets created 30 seconds ago. You can adjust this timeframe according to your specific requirements.
-apiVersion: kyverno.io/v2beta1
+apiVersion: kyverno.io/v2
 kind: ClusterCleanupPolicy
 metadata:
   name: cleanup-empty-replicasets
