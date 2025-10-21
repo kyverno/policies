@@ -1,0 +1,37 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: deny-secret-service-account-token-type
+spec:
+  # disable templating because it can cause issues with ValidatingPolicy
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../deny-secret-service-account-token-type.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1alpha1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-secret-service-account-token-type
+          spec:
+            validationActions:
+             - Deny
+    - assert:
+        file: policy-ready.yaml
+    - sleep: 
+       duration: 10s
+  - name: step-02
+    try:
+    - apply:
+        file: good-secret.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: bad-secret.yaml
+

@@ -8,7 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: Pod
-  patchedResource: patchedResource1.yaml
+  patchedResources: patchedResource1.yaml
   policy: add-runtimeclassname
   resources:
   - pod01

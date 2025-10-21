@@ -1,0 +1,147 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: container02
+    image: ghcr.io/kyverno/test-busybox:1.35
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: container02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod09
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  - name: initcontainer02
+    image: ghcr.io/kyverno/test-busybox:1.35
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  securityContext:
+    runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  - name: initcontainer02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+---

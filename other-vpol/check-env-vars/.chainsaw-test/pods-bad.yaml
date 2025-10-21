@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod01
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      env:
+      - name: DISABLE_OPA
+        value: "true"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod02
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      env:
+      - name: foo
+        value: bar
+      - name: DISABLE_OPA
+        value: "true"
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+      env:
+      - name: DISABLE_OPA
+        value: "true"
+      - name: foo
+        value: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod03
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      env:
+      - name: foo
+        value: bar
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+      env:
+      - name: foo
+        value: bar
+      - name: DISABLE_OPA
+        value: "true"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod04
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+      env:
+      - name: DISABLE_OPA
+        value: "true"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod05
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      env:
+      - name: DISABLE_OPA
+        value: "false"
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
+      env:
+      - name: DISABLE_OPA
+        value: "true"
+
