@@ -1,0 +1,26 @@
+name: restrict-storageclass-vpol
+version: 1.0.0
+displayName: Restrict StorageClass in ValidatingPolicy
+description: >-
+  StorageClasses allow description of custom "classes" of storage offered by the cluster, based on quality-of-service levels, backup policies, or custom policies determined by the cluster administrators. For shared StorageClasses in a multi-tenancy environment, a reclaimPolicy of `Delete` should be used to ensure a PersistentVolume cannot be reused across Namespaces. This policy requires StorageClasses set a reclaimPolicy of `Delete`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-storageclass/restrict-storageclass.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Multi-Tenancy
+  - ValidatingPolicy
+readme: |
+  StorageClasses allow description of custom "classes" of storage offered by the cluster, based on quality-of-service levels, backup policies, or custom policies determined by the cluster administrators. For shared StorageClasses in a multi-tenancy environment, a reclaimPolicy of `Delete` should be used to ensure a PersistentVolume cannot be reused across Namespaces. This policy requires StorageClasses set a reclaimPolicy of `Delete`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other, Multi-Tenancy in vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "StorageClass"
+digest: c95a18645ea4a788e40bcd9e9a8bb86762a3f42ecd0980b2bca81ab2fd01d32a
+
+
+createdAt: "2025-05-11T17:46:12Z"
