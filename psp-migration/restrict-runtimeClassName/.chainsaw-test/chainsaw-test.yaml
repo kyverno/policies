@@ -6,38 +6,51 @@ metadata:
   name: restrict-runtimeclassname
 spec:
   steps:
-  - name: step-00
-    try:
-    - apply:
-        file: ../restrict-runtimeClassName.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: restrict-runtimeclass
-          spec:
-            validationFailureAction: Enforce
-  - name: step-01
-    try:
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: chainsaw-step-02-apply-1.yaml
-    - apply:
-        file: chainsaw-step-02-apply-2.yaml
-    - apply:
-        file: chainsaw-step-02-apply-3.yaml
-    - apply:
-        file: chainsaw-step-02-apply-4.yaml
-  - name: step-03
-    try:
-    - apply:
-        file: good.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad.yaml
+    - name: step-00
+      try:
+        - apply:
+            file: ../restrict-runtimeClassName.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: restrict-runtimeclass
+              spec:
+                rules:
+                  - name: prodclass-or-expclass
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Only the runtime classes prodclass or expclass may be used. "
+                      pattern:
+                        =(spec):
+                          =(runtimeClassName): "prodclass | expclass"
+
+    - name: step-01
+      try:
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: chainsaw-step-02-apply-1.yaml
+        - apply:
+            file: chainsaw-step-02-apply-2.yaml
+        - apply:
+            file: chainsaw-step-02-apply-3.yaml
+        - apply:
+            file: chainsaw-step-02-apply-4.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad.yaml

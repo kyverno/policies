@@ -16,21 +16,21 @@ metadata:
       ability. Note that this policy also illustrates how to cover drop entries in any
       case although this may not strictly conform to the Pod Security Standards.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: require-drop-cap-net-raw
       match:
         any:
-        - resources:
-            kinds:
-              - Pod
+          - resources:
+              kinds:
+                - Pod
       preconditions:
         all:
-        - key: "{{ request.operation || 'BACKGROUND' }}"
-          operator: NotEquals
-          value: DELETE
+          - key: "{{ request.operation || 'BACKGROUND' }}"
+            operator: NotEquals
+            value: DELETE
       validate:
+        failureAction: Audit
         message: >-
           Containers must drop the `CAP_NET_RAW` capability.
         foreach:
@@ -38,9 +38,9 @@ spec:
             deny:
               conditions:
                 all:
-                - key: CAP_NET_RAW
-                  operator: AnyNotIn
-                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
-                - key: NET_RAW
-                  operator: AnyNotIn
-                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+                  - key: CAP_NET_RAW
+                    operator: AnyNotIn
+                    value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+                  - key: NET_RAW
+                    operator: AnyNotIn
+                    value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"

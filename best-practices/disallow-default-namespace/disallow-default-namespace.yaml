@@ -18,31 +18,32 @@ metadata:
       due to Pod controllers need to specify the `namespace` field under the top-level `metadata`
       object and not at the Pod template level.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-namespace
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    validate:
-      message: "Using 'default' namespace is not allowed."
-      pattern:
-        metadata:
-          namespace: "!default"
-  - name: validate-podcontroller-namespace
-    match:
-      any:
-      - resources:
-          kinds:
-          - DaemonSet
-          - Deployment
-          - Job
-          - StatefulSet
-    validate:
-      message: "Using 'default' namespace is not allowed for pod controllers."
-      pattern:
-        metadata:
-          namespace: "!default"
+    - name: validate-namespace
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        failureAction: Audit
+        message: "Using 'default' namespace is not allowed."
+        pattern:
+          metadata:
+            namespace: "!default"
+    - name: validate-podcontroller-namespace
+      match:
+        any:
+          - resources:
+              kinds:
+                - DaemonSet
+                - Deployment
+                - Job
+                - StatefulSet
+      validate:
+        failureAction: Audit
+        message: "Using 'default' namespace is not allowed for pod controllers."
+        pattern:
+          metadata:
+            namespace: "!default"
