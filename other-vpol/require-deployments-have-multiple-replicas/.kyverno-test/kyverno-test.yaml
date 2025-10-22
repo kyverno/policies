@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deployment-has-multiple-replicas
+policies:
+- ../require-deployments-have-multiple-replicas.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: deployment-has-multiple-replicas
+  resources:
+  - mydeploygood
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: deployment-has-multiple-replicas
+  resources:
+  - mydeploybad
+  result: fail
+
