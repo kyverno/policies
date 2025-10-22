@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    config.linkerd.io/default-inbound-policy: deny
+    foo: bar
+  name: lpa-ns01
