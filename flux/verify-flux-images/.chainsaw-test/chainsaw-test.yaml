@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
@@ -28,7 +29,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-source-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 03 - Verify fluxcd/source-controller
     try:
@@ -44,7 +45,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-kustomize-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 05 - Verify fluxcd/kustomize-controller
     try:
@@ -60,7 +61,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-helm-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 07 - Verify fluxcd/helm-controller
     try:
@@ -76,7 +77,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-notification-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 09 - Verify fluxcd/notification-controller
     try:
@@ -92,7 +93,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-image-reflector-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 11 - Verify fluxcd/image-reflector-controller
     try:
@@ -108,7 +109,7 @@ spec:
           LATESTTAG=$(oras repo tags $IMAGEREPO | egrep "^v[0-9]+.[0-9]+.[0-9]+$" | sort -V | tail -n1)
           MANIFEST=pod-ghcr-image-automation-controller.yaml
           echo "Latest version of $IMAGEREPO is $LATESTTAG"
-          sed -i "s/replacethistag/${LATESTTAG}/g" $MANIFEST
+          sed -i.bak "s/replacethistag/${LATESTTAG}/g" $MANIFEST && rm $MANIFEST.bak
           echo "Replaced image is now $(yq e .spec.containers[0].image $MANIFEST)"
   - name: 13 - Verify fluxcd/image-automation-controller
     try:

@@ -8,9 +8,9 @@ runs:
   using: "composite"
   steps:
     - name: Setup Go
-      uses: actions/setup-go@3041bf56c941b39c61721a86cd11f3bb1338122a # v5.2.0
+      uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
       with:
-        go-version: ~1.21.1
+        go-version: ~1.25.3
     - name: Install Tools
       shell: bash
       run: |
@@ -29,6 +29,8 @@ runs:
         sudo mv ./kind /usr/local/bin/kind
     - name: Install latest Kyverno CLI
       uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+    - name: Install ORAS
+      uses: oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6 # v1.2.4
     - name: Create kind cluster
       shell: bash
       run: |
@@ -43,7 +45,7 @@ runs:
       shell: bash
       run: |
         set -e
-        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=60s
+        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=90s
     - name: Install CRDs
       shell: bash
       run: |

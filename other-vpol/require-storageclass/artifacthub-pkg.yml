@@ -1,0 +1,26 @@
+name: require-storageclass-vpol
+version: 1.0.0
+displayName: Require StorageClass in ValidatingPolicy
+description: >-
+  PersistentVolumeClaims (PVCs) and StatefulSets may optionally define a StorageClass to dynamically provision storage. In a multi-tenancy environment where StorageClasses are far more common, it is often better to require storage only be provisioned from these StorageClasses. This policy requires that PVCs and StatefulSets define the storageClassName field with some value.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/require-storageclass/require-storageclass.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Multi-Tenancy
+  - ValidatingPolicy
+readme: |
+  PersistentVolumeClaims (PVCs) and StatefulSets may optionally define a StorageClass to dynamically provision storage. In a multi-tenancy environment where StorageClasses are far more common, it is often better to require storage only be provisioned from these StorageClasses. This policy requires that PVCs and StatefulSets define the storageClassName field with some value.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other, Multi-Tenancy in vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "PersistentVolumeClaim, StatefulSet"
+digest: 45dce22b4055bae63bacdd78dbcb7884620a215d39bbfc695150b4459627c010
+
+
+createdAt: "2025-05-11T17:46:11Z"
