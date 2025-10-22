@@ -17,7 +17,7 @@ metadata:
       using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
 spec:
   background: true
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
     - name: check-seccomp-strict
       match:

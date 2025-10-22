@@ -16,7 +16,7 @@ metadata:
       its signature against the provided public key. This policy serves as an illustration for
       how to configure a similar rule and will require replacing with your image(s) and keys.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: false
   rules:
     - name: verify-image

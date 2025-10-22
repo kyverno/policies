@@ -1,0 +1,90 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress01
+  namespace: unique-ingress-paths-ns
+spec:
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /foo/abc/def
+        pathType: Prefix
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8081
+        path: /bar/def/bca
+        pathType: Prefix
+  - host: endpoint02
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /bar/abc/bca
+        pathType: Prefix
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8081
+        path: /foo/fed/def
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress02
+spec:
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /abc/def
+        pathType: Prefix
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8081
+        path: /fed/cba
+        pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: goodingress03
+  namespace: unique-ingress-paths-ns
+spec:
+  rules:
+  - host: endpoint01
+    http:
+      paths:
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8080
+        path: /bbb/def
+        pathType: Prefix
+      - backend:
+          service:
+            name: demo-svc
+            port:
+              number: 8081
+        path: /def/bca
+        pathType: Prefix

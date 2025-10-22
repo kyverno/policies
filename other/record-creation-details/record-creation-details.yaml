@@ -22,7 +22,7 @@ metadata:
       all kinds ("*") it is highly recommend to more narrowly scope it to only
       the resources which should be labeled.
 spec:
-  validationFailureAction: enforce
+  validationFailureAction: Enforce
   background: false
   rules:
   - name: add-userinfo
@@ -40,7 +40,7 @@ spec:
       patchStrategicMerge:
         metadata:
           annotations:
-            kyverno.io/created-by: "{{ request.userInfo | to_string(@) }}"
+            kyverno.io/created-by: "{{ request.userInfo.{groups: groups, username: username} | to_string(@) }}"
   - name: prevent-updates-deletes-userinfo-annotations
     match:
       any:

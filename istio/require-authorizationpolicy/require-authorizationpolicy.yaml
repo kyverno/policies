@@ -16,7 +16,7 @@ metadata:
       at least one AuthorizationPolicy. This policy, designed to run in background mode for reporting
       purposes, ensures every Namespace has at least one AuthorizationPolicy.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: check-authz-pol

@@ -15,7 +15,7 @@ metadata:
       overrun established budgets and security practices set by the organization. This policy restricts
       use of the Service type LoadBalancer.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
   - name: no-LoadBalancer

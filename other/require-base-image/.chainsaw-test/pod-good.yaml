@@ -17,8 +17,6 @@ metadata:
   namespace: require-base-image-ns
 spec:
   containers:
-  - name: myapp
-    image: ghcr.io/samj1912/myapp:latest
   - name: kyverno
     image: ghcr.io/kyverno/kyverno:latest
 ---

@@ -16,7 +16,7 @@ metadata:
       for other users. This policy prevents creating bindings to some of these
       groups including system:anonymous, system:unauthenticated, and system:masters.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: restrict-anonymous

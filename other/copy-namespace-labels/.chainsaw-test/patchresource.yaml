@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: good-app-deploy
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -41,7 +41,7 @@ spec:
     spec:
       containers:
       - name: my-app03-deploy
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -63,4 +63,4 @@ spec:
     spec:
       containers:
       - name: my-app04-deploy
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35

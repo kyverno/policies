@@ -16,7 +16,7 @@ metadata:
       the port number to change. This policy requires that for every containerPort defined
       there is also a name specified.      
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   background: true
   rules:
     - name: port-name

@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-storageclass
+policies:
+- ../restrict-storageclass.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true 
+  kind: StorageClass
+  policy: restrict-storageclass
+  resources:
+  - badstorageclass
+  result: fail
+- isValidatingPolicy: true 
+  kind: StorageClass
+  policy: restrict-storageclass
+  resources:
+  - goodstorageclass
+  result: pass
+

@@ -18,7 +18,7 @@ metadata:
       and was signed by the expected subject and issuer when produced through GitHub Actions
       and using Cosign's keyless signing. It requires configuration based upon your own values.
 spec:
-  validationFailureAction: audit
+  validationFailureAction: Audit
   webhookTimeoutSeconds: 30
   rules:
     - name: check-sbom
