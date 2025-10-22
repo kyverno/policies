@@ -1,78 +1,931 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
 name: E2E Tests
 
 permissions: {}
 
 on:
-  workflow_dispatch: {}
   pull_request:
     branches:
-      - 'main'
+      - main
+      - release-*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  chainsaw:
+
+  argo:
     strategy:
       fail-fast: false
       matrix:
-        k8s-version:
-          - name: v1.25
-            version: v1.25.16
-          - name: v1.26
-            version: v1.26.14
-          - name: v1.27
-            version: v1.27.11
-          - name: v1.28
-            version: v1.28.7
-          - name: v1.29
-            version: v1.29.2
-        tests:
-          - ^argo$
-          - ^aws$
-          - ^best-practices$
-          - ^castai$
-          - ^cert-manager$
-          - ^cleanup$
-          - ^consul$
-          - ^external-secret-operator$
-          - ^flux$
-          - ^istio$
-          - ^karpenter$
-          - ^kasten$
-          - ^kubecost$
-          - ^kubeops$
-          - ^kubevirt$
-          - ^linkerd$
-          - ^nginx-ingress$
-          - ^openshift$
-          - ^other$/^a
-          - ^other$/^[b-d]
-          - ^other$/^[e-l]
-          - ^other$/^[m-q]
-          - ^other$/^re[c-q]
-          - ^other$/^res
-          - ^other$/^[s-z]
-          - ^pod-security$
-          - ^psa$
-          - ^psp-migration$
-          - ^psp-migration-cel$
-          - ^tekton$
-          - ^tekton-cel$
-          - ^traefik$
-          - ^velero$
-          - ^velero-cel$
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
     runs-on: ubuntu-latest
-    name: ${{ matrix.k8s-version.name }} - ${{ matrix.tests }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - name: Setup Environment
-        uses: ./.github/actions/setup-env
-        with:
-          k8s-version: ${{ matrix.k8s-version.version }}
-      - name: Run Tests
-        uses: ./.github/actions/run-tests
-        with:
-          tests: ${{ matrix.tests }}
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: argo
+
+  argo-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: argo-cel
+
+  aws:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: aws
+
+  aws-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: aws-cel
+
+  best-practices:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: best-practices
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 2
+
+  best-practices-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: best-practices-cel
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 2
+
+  castai:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: castai
+
+  cert-manager:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: cert-manager
+
+  cleanup:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: cleanup
+
+  consul:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: consul
+
+  consul-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: consul-cel
+
+  external-secret-operator:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: external-secret-operator
+
+  flux:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: flux
+
+  flux-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: flux-cel
+
+  istio:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: istio
+
+  istio-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: istio-cel
+
+  karpenter:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: karpenter
+
+  kasten:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kasten
+
+  kasten-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kasten-cel
+
+  kubecost:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kubecost
+
+  kubecost-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kubecost-cel
+
+  kubeops:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kubeops
+
+  kubevirt:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kubevirt
+
+  linkerd:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: linkerd
+
+  linkerd-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: linkerd-cel
+
+  nginx-ingress:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: nginx-ingress
+
+  nginx-ingress-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: nginx-ingress-cel
+
+  openshift:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: openshift
+
+  openshift-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: openshift-cel
+
+  other:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2,3,4,5,6,7,8]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: other
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 9
+
+  other-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2,3,4,5,6,7,8]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: other-cel
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 9
+
+  pod-security:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: pod-security
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 3
+
+  pod-security-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: pod-security-cel
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 3
+
+  psa:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psa
+
+  psa-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psa-cel
+
+  psp-migration:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psp-migration
+
+  psp-migration-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psp-migration-cel
+
+  tekton:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: tekton
+
+  tekton-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: tekton-cel
+
+  traefik:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: traefik
+
+  traefik-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: traefik-cel
+
+  velero:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: velero
+
+  velero-cel:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: velero-cel
+
+  windows-security:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: windows-security
+
+  e2e-required-success:
+    name: e2e-required
+    needs:
+    - argo
+    - argo-cel
+    - aws
+    - aws-cel
+    - best-practices
+    - best-practices-cel
+    - castai
+    - cert-manager
+    - cleanup
+    - consul
+    - consul-cel
+    - external-secret-operator
+    - flux
+    - flux-cel
+    - istio
+    - istio-cel
+    - karpenter
+    - kasten
+    - kasten-cel
+    - kubecost
+    - kubecost-cel
+    - kubeops
+    - kubevirt
+    - linkerd
+    - linkerd-cel
+    - nginx-ingress
+    - nginx-ingress-cel
+    - openshift
+    - openshift-cel
+    - other
+    - other-cel
+    - pod-security
+    - pod-security-cel
+    - psa
+    - psa-cel
+    - psp-migration
+    - psp-migration-cel
+    - tekton
+    - tekton-cel
+    - traefik
+    - traefik-cel
+    - velero
+    - velero-cel
+    - windows-security
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+    - run: ${{ true }}
+
+  e2e-required-failure:
+    name: e2e-required
+    needs:
+    - argo
+    - argo-cel
+    - aws
+    - aws-cel
+    - best-practices
+    - best-practices-cel
+    - castai
+    - cert-manager
+    - cleanup
+    - consul
+    - consul-cel
+    - external-secret-operator
+    - flux
+    - flux-cel
+    - istio
+    - istio-cel
+    - karpenter
+    - kasten
+    - kasten-cel
+    - kubecost
+    - kubecost-cel
+    - kubeops
+    - kubevirt
+    - linkerd
+    - linkerd-cel
+    - nginx-ingress
+    - nginx-ingress-cel
+    - openshift
+    - openshift-cel
+    - other
+    - other-cel
+    - pod-security
+    - pod-security-cel
+    - psa
+    - psa-cel
+    - psp-migration
+    - psp-migration-cel
+    - tekton
+    - tekton-cel
+    - traefik
+    - traefik-cel
+    - velero
+    - velero-cel
+    - windows-security
+    runs-on: ubuntu-latest
+    if: ${{ failure() || cancelled() }}
+    steps:
+    - run: ${{ false }}

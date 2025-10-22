@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-opa-disabled
+  namespace: myservice
+spec:
+  containers:
+    - env:
+        - name: DISABLE_OPA
+          value: "false"
+      image: quay.io/sdase/sdase-version-collector
+      name: myservice
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-opa-enabled
+  namespace: myservice
+spec:
+  containers:
+    - env:
+        - name: DISABLE_OPA
+          value: "true"
+      image: quay.io/sdase/sdase-version-collector
+      name: myservice
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-without-opa-env
+  namespace: myservice
+spec:
+  containers:
+    - image: quay.io/sdase/sdase-version-collector
+      name: myservice
+

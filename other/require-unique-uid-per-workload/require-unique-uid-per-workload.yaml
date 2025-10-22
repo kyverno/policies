@@ -18,7 +18,7 @@ metadata:
     kyverno.io/kubernetes-version: "1.20"
 spec:
   background: false
-  validationFailureAction: audit
+  validationFailureAction: Audit
   rules:
   - name: require-unique-uid
     match:

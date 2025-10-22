@@ -9,41 +9,49 @@ resources:
 results:
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: empty-rules
+    resources:
+    - empty-rules
     kind: ClusterRole
     result: pass
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: empty-rules
+    resources:
+    - empty-rules
     kind: Role
     result: pass
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: omitted-rules
+    resources:
+    - omitted-rules
     kind: ClusterRole
     result: pass
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: omitted-rules
+    resources:
+    - omitted-rules
     kind: Role
     result: pass
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: wildcard-once
+    resources:
+    - wildcard-once
     kind: ClusterRole
     result: fail
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: wildcard-once
+    resources:
+    - wildcard-once
     kind: Role
     result: fail
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: wildcard-with-another-verb
+    resources:
+    - wildcard-with-another-verb
     kind: ClusterRole
     result: fail
   - policy: restrict-wildcard-verbs
     rule: wildcard-verbs
-    resource: wildcard-with-another-verb
+    resources:
+    - wildcard-with-another-verb
     kind: Role
     result: fail

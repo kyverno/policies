@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: busybox
-    image: busybox:1.35
+    image: ghcr.io/busybox:1.35
   - name: busybox02
     image: docker.io/busybox:1.35
 ---

@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-binding-clusteradmin
+status:
+  conditionStatus:
+    conditions:
+    - reason: Succeeded
+      type: WebhookConfigured
+      status: "True"
+    - reason: Failed
+      status: "False"
+      type: RBACPermissionsGranted

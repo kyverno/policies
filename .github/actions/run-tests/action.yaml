@@ -1,16 +1,34 @@
 name: "Runs E2E Tests"
 description: "Runs E2E tests using chainsaw"
 inputs:
+  path:
+    description: Tests path
+    default: '.'
   tests:
     description: "Test regex"
-    required: true
+    default: ''
+  shard-index:
+    description: Shard index
+    default: '0'
+  shard-count:
+    description: Shard count
+    default: '0'
 runs:
   using: "composite"
   steps:
+    - name: Install Cosign
+      uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
     - name: Install Chainsaw
-      uses: kyverno/action-install-chainsaw@82d8e747037f840e0ef9bdd97ecdc617f5535bdc # v0.2.8
+      uses: kyverno/action-install-chainsaw@6354895e0f99ab23d3e38d85cf5c71b5dc21d727 # v0.2.13
+      with:
+        verify: true
     - name: Test with Chainsaw
       shell: bash
       run: |
         set -e
-        chainsaw test --config .chainsaw.yaml --include-test-regex '^chainsaw$/${{ inputs.tests }}' --no-color=false
+        chainsaw test ${{ inputs.path }} \
+          --config .chainsaw.yaml \
+          --include-test-regex '^chainsaw$/${{ inputs.tests }}' \
+          --shard-index ${{ inputs.shard-index }} \
+          --shard-count ${{ inputs.shard-count }} \
+          --no-color=false

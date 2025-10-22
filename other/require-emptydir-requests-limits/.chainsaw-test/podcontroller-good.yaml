@@ -16,7 +16,7 @@ spec:
         app: busybox
     spec:
       initContainers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox-init
         volumeMounts:
         - mountPath: /mnt/vol
@@ -26,18 +26,18 @@ spec:
             ephemeral-storage: "2Gi"
           limits:
             ephemeral-storage: "2Gi"
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02-init
         volumeMounts:
         - mountPath: /mnt/foo
           name: foo-host
       containers:
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox
         volumeMounts:
         - mountPath: /mnt/foo
           name: foo
-      - image: busybox:1.35
+      - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
         resources:
           requests:
@@ -68,7 +68,7 @@ spec:
       template:
         spec:
           initContainers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox-init
             volumeMounts:
             - mountPath: /mnt/vol
@@ -78,18 +78,18 @@ spec:
                 ephemeral-storage: "2Gi"
               limits:
                 ephemeral-storage: "2Gi"
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02-init
             volumeMounts:
             - mountPath: /mnt/foo
               name: foo
           containers:
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
             volumeMounts:
             - mountPath: /mnt/foo
               name: foo
-          - image: busybox:1.35
+          - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox02
             resources:
               requests:

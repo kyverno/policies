@@ -3,13 +3,10 @@ name: Policy Test
 permissions: {}
 
 on:
-  push:
-    branches:
-      - '*'
   pull_request:
     branches:
       - main
-      - release*
+      - release-*
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -23,33 +20,34 @@ jobs:
       options: --user root
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           path: policies
       - name: Run ah lint
         working-directory: .
         run: ah lint -k kyverno
+
   test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           path: policies
       - name: Validate all policies
         run: ./.hack/verify-files-structure.sh
         working-directory: policies
       - name: Clone Kyverno
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: kyverno/kyverno
           path: kyverno
           # The target branch of a pull request or the branch/tag of a push
           ref: ${{ github.base_ref || github.ref_name }}
       - name: Set up Go 
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ~1.21.1
+          go-version: ~1.25.3
       - name: Test Policy
         run: go run ./cmd/cli/kubectl-kyverno test ../policies
         working-directory: kyverno
@@ -58,20 +56,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           path: policies
       - name: Checkout Kyverno
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           repository: kyverno/kyverno
           path: kyverno
           # The target branch of a pull request or the branch/tag of a push
           ref: ${{ github.base_ref || github.ref_name }}
       - name: Set up Go 
-        uses: actions/setup-go@0a12ed9d6a96ab950c8f026ed9f722fe0da7ef32 # v5.0.2
+        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
         with:
-          go-version: ~1.21.1
+          go-version: ~1.25.3
       - name: Lint policies
         run: |
           set -e

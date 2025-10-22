@@ -8,7 +8,7 @@ spec:
   steps:
   - name: step-01
     try:
-    - apply:
+    - create:
         file: ../restricted-latest.yaml
     - patch:
         resource:
@@ -22,16 +22,16 @@ spec:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
     try:
-    - apply:
+    - create:
         file: pod-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
         file: pod-bad.yaml
-    - apply:
+    - create:
         file: podcontroller-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
