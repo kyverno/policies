@@ -1,0 +1,15 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: deny-secret-service-account-token-type
+status:
+  conditionStatus:
+    conditions:
+    - reason: Succeeded
+      type: WebhookConfigured
+      status: "True"
+    - reason: Succeeded
+      type: RBACPermissionsGranted
+      status: "True"
+
+

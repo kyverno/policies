@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - name: http-port
+          containerPort: 80
+      - name: busybox02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - name: http-port
+          containerPort: 80
+        - containerPort: 443
+          name: https-port
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+            ports:
+            - name: http-port
+              containerPort: 80
+          - name: busybox02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            ports:
+            - name: http-port
+              containerPort: 80
+            - containerPort: 443
+              name: https-port
+          restartPolicy: OnFailure
