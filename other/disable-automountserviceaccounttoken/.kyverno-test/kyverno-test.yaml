@@ -8,7 +8,7 @@ resources:
 - resource.yaml
 results:
 - kind: ServiceAccount
-  patchedResource: patchedResource.yaml
+  patchedResources: patchedResource.yaml
   policy: disable-automountserviceaccounttoken
   resources:
   - default

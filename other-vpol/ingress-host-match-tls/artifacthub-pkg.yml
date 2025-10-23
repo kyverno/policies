@@ -1,0 +1,25 @@
+name: ingress-host-match-tls-vpol
+version: 1.0.0
+displayName: Ingress Host Match TLS in ValidatingPolicy
+description: >-
+  Ingress resources which name a host name that is not present in the TLS section can produce ingress routing failures as a TLS certificate may not correspond to the destination host. This policy ensures that the host name in an Ingress rule is also found in the list of TLS hosts.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/ingress-host-match-tls/ingress-host-match-tls.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Ingress resources which name a host name that is not present in the TLS section can produce ingress routing failures as a TLS certificate may not correspond to the destination host. This policy ensures that the host name in an Ingress rule is also found in the list of TLS hosts.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Ingress"
+digest: f98eb41f40d898bff7030ed950908b1f2c1221bc99900e3a89f82c4fbef0a230
+
+
+createdAt: "2025-05-11T17:46:11Z"
