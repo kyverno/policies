@@ -25,3 +25,9 @@ results:
   - bad-flowschema
   result: fail
   rule: validate-v1-29-removals
+- kind: FlowSchema
+  policy: check-deprecated-apis
+  resources:
+  - bad-flowschema-v1beta3
+  result: fail
+  rule: validate-v1-32-removals
