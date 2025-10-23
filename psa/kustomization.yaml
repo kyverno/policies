@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./add-privileged-existing-namespaces/add-privileged-existing-namespaces.yaml
+  - ./add-psa-labels/add-psa-labels.yaml
+  - ./add-psa-namespace-reporting/add-psa-namespace-reporting.yaml
+  - ./deny-privileged-profile/deny-privileged-profile.yaml
