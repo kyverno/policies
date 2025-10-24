@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      imagePullPolicy: IfNotPresent
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox01
+      imagePullPolicy: IfNotPresent
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox02
