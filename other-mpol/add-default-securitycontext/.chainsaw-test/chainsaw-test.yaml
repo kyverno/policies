@@ -15,12 +15,13 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: podcontroller-resources.yaml
-    - apply:
         file: pod-resources.yaml
-  - name: step-03
-    try:
-    - assert:
-        file: podcontroller-patched.yaml
     - assert:
         file: pod-resources-patched.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: podcontroller-resources.yaml
+    - assert:
+        file: podcontroller-patched.yaml
+
