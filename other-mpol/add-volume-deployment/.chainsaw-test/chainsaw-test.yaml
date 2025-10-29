@@ -18,7 +18,3 @@ spec:
         file: kuttlresource.yaml
     - assert:
         file: resource-mutated.yaml
-  - name: step-03
-    try:
-    - sleep:
-        duration: 5s

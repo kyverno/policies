@@ -16,11 +16,11 @@ spec:
     try:
     - apply:
         file: pods.yaml
-    - apply:
-        file: podcontrollers.yaml
-  - name: step-03
-    try:
     - assert:
         file: pods-patched.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: podcontrollers.yaml
     - assert:
         file: podcontrollers-patched.yaml
