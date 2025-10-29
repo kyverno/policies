@@ -17,24 +17,18 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: podcontroller-resources.yaml
-    - apply:
         file: pod-resources.yaml
-  - name: step-03
-    try:
-    - assert:
-        file: podcontroller-patched.yaml
     - assert:
         file: pod-resources-patched.yaml
     - error:
-        file: podcontroller-not-patched.yaml
-    - error:
         file: pod-not-patched.yaml
-  - name: step-99
+  - name: step-03
     try:
-    - script:
-        content: kubectl delete all --all --force --grace-period=0 -n other-certvol-ns
+    - apply:
+        file: podcontroller-resources.yaml
     - sleep:
-        duration: 20s
-    - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n other-certvol-ns
+        duration: 3s
+    - assert:
+        file: podcontroller-patched.yaml
+    - error:
+        file: podcontroller-not-patched.yaml
