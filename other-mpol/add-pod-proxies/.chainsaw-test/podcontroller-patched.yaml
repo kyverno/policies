@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb-01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        env:
+        - name: HTTP_PROXY
+          value: http://proxy.corp.domain:8080
+        - name: HTTPS_PROXY
+          value: https://secureproxy.corp.domain:8080
+        - name: NO_PROXY
+          value: localhost,*.example.com
+      - name: bb-02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        env:
+        - name: HTTP_PROXY
+          value: http://proxy.corp.domain:8080
+        - name: HTTPS_PROXY
+          value: https://secureproxy.corp.domain:8080
+        - name: NO_PROXY
+          value: localhost,*.example.com
+        - name: FOO
+          value: bar
+      - name: bb-03
+        image: ghcr.io/kyverno/test-busybox:1.35
+        env:
+        - name: HTTP_PROXY
+          value: http://proxy.corp.domain:8080
+        - name: HTTPS_PROXY
+          value: https://secureproxy.corp.domain:8080
+        - name: NO_PROXY
+          value: localhost,*.example.com
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: bb-01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            env:
+            - name: HTTP_PROXY
+              value: http://proxy.corp.domain:8080
+            - name: HTTPS_PROXY
+              value: https://secureproxy.corp.domain:8080
+            - name: NO_PROXY
+              value: localhost,*.example.com
+          - name: bb-02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            env:
+            - name: HTTP_PROXY
+              value: http://proxy.corp.domain:8080
+            - name: HTTPS_PROXY
+              value: https://secureproxy.corp.domain:8080
+            - name: NO_PROXY
+              value: localhost,*.example.com
+            - name: FOO
+              value: bar
+          - name: bb-03
+            image: ghcr.io/kyverno/test-busybox:1.35
+            env:
+            - name: HTTP_PROXY
+              value: http://proxy.corp.domain:8080
+            - name: HTTPS_PROXY
+              value: https://secureproxy.corp.domain:8080
+            - name: NO_PROXY
+              value: localhost,*.example.com
+          restartPolicy: OnFailure
