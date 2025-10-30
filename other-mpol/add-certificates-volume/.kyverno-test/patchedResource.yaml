@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: myapp
+  annotations:
+    inject-certs: enabled
+  name: mypod
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+    volumeMounts:
+    - name: etc-ssl-certs
+      mountPath: /etc/ssl/certs
+  volumes:
+    - name: etc-ssl-certs
+      configMap:
+        name: ca-pemstore
