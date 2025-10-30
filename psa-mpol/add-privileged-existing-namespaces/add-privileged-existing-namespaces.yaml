@@ -35,8 +35,6 @@ spec:
         expression: |
           Object{
             metadata: Object.metadata{
-              labels: {
-                "pod-security.kubernetes.io/enforce": "privileged"
-              }
+              labels: {"pod-security.kubernetes.io/enforce": "privileged"}
             }
           }
