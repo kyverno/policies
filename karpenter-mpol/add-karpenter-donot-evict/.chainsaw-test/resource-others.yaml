@@ -1,0 +1,37 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: addjob02
+spec:
+  template:
+    metadata:
+      annotations:
+        karpenter.sh/do-not-evict: "false"
+        foo.bar.io/name: bar
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        command: ["sleep",  "3600"]
+      restartPolicy: Never
+  backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: addcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            foo.bar.io/name: bar
+            karpenter.sh/do-not-evict: "false"
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+            command: ["sleep",  "3600"]
+          restartPolicy: OnFailure

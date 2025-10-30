@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job01
+spec:
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        command: ["sleep", "3600"]
+      restartPolicy: Never
+  backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job02
+spec:
+  ttlSecondsAfterFinished: 300
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        command: ["sleep", "3600"]
+      restartPolicy: Never
+  backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job03
+  ownerReferences:
+  - apiVersion: v1
+    kind: Pod
+    name: foo-bar
+    uid: abcdef-gehijk-123123-312312
+spec:
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        command: ["sleep", "3600"]
+      restartPolicy: Never
+  backoffLimit: 4

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  dnsPolicy: Default
+  enableServiceLinks: false
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  dnsPolicy: Default
+  enableServiceLinks: false
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
