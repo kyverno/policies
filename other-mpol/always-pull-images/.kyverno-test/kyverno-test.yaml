@@ -19,5 +19,5 @@ results:
   policy: always-pull-images
   resources:
   - myapp-pod-2
-  result: skip
+  result: pass
   isMutatingPolicy: true
