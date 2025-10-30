@@ -148,6 +148,24 @@ jobs:
         shard-index: ${{ matrix.shard-index }}
         shard-count: 2
 
+  best-practices-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: best-practices-mpol
+
   castai:
     strategy:
       fail-fast: false
@@ -165,6 +183,24 @@ jobs:
       uses: ./.github/actions/run-tests
       with:
         path: castai
+
+  castai-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: castai-mpol
 
   cert-manager:
     strategy:
@@ -328,6 +364,24 @@ jobs:
       with:
         path: istio-cel
 
+  istio-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: istio-mpol
+
   karpenter:
     strategy:
       fail-fast: false
@@ -418,6 +472,24 @@ jobs:
       with:
         path: kubecost-cel
 
+  kubecost-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: kubecost-mpol
+
   kubeops:
     strategy:
       fail-fast: false
@@ -489,6 +561,24 @@ jobs:
       uses: ./.github/actions/run-tests
       with:
         path: linkerd-cel
+
+  linkerd-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: linkerd-mpol
 
   nginx-ingress:
     strategy:
@@ -703,6 +793,24 @@ jobs:
       with:
         path: psa-cel
 
+  psa-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psa-mpol
+
   psp-migration:
     strategy:
       fail-fast: false
@@ -738,6 +846,24 @@ jobs:
       uses: ./.github/actions/run-tests
       with:
         path: psp-migration-cel
+
+  psp-migration-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: psp-migration-mpol
 
   tekton:
     strategy:
@@ -874,7 +1000,9 @@ jobs:
     - aws-cel
     - best-practices
     - best-practices-cel
+    - best-practices-mpol
     - castai
+    - castai-mpol
     - cert-manager
     - cleanup
     - consul
@@ -884,15 +1012,18 @@ jobs:
     - flux-cel
     - istio
     - istio-cel
+    - istio-mpol
     - karpenter
     - kasten
     - kasten-cel
     - kubecost
     - kubecost-cel
+    - kubecost-mpol
     - kubeops
     - kubevirt
     - linkerd
     - linkerd-cel
+    - linkerd-mpol
     - nginx-ingress
     - nginx-ingress-cel
     - openshift
@@ -904,8 +1035,10 @@ jobs:
     - pod-security-cel
     - psa
     - psa-cel
+    - psa-mpol
     - psp-migration
     - psp-migration-cel
+    - psp-migration-mpol
     - tekton
     - tekton-cel
     - traefik
@@ -927,7 +1060,9 @@ jobs:
     - aws-cel
     - best-practices
     - best-practices-cel
+    - best-practices-mpol
     - castai
+    - castai-mpol
     - cert-manager
     - cleanup
     - consul
@@ -937,16 +1072,19 @@ jobs:
     - flux-cel
     - istio
     - istio-cel
+    - istio-mpol
     - karpenter
     - karpenter-mpol
     - kasten
     - kasten-cel
     - kubecost
     - kubecost-cel
+    - kubecost-mpol
     - kubeops
     - kubevirt
     - linkerd
     - linkerd-cel
+    - linkerd-mpol
     - nginx-ingress
     - nginx-ingress-cel
     - openshift
@@ -958,8 +1096,10 @@ jobs:
     - pod-security-cel
     - psa
     - psa-cel
+    - psa-mpol
     - psp-migration
     - psp-migration-cel
+    - psp-migration-mpol
     - tekton
     - tekton-cel
     - traefik
