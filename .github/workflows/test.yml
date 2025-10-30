@@ -655,6 +655,27 @@ jobs:
         shard-index: ${{ matrix.shard-index }}
         shard-count: 9
 
+  other-mpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2,3,4,5,6,7,8]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: other-mpol
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 9
+
   other-cel:
     strategy:
       fail-fast: false
@@ -990,6 +1011,7 @@ jobs:
     - openshift
     - openshift-cel
     - other
+    - other-mpol
     - other-cel
     - pod-security
     - pod-security-cel
@@ -1049,6 +1071,7 @@ jobs:
     - openshift
     - openshift-cel
     - other
+    - other-mpol
     - other-cel
     - pod-security
     - pod-security-cel
