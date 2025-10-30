@@ -22,6 +22,12 @@ spec:
         file: policy-ready.yaml
   - name: step-03
     try:
+    - sleep:
+        duration: 3s
+    - script:
+        content: kubectl label ns add-privileged-existing-ns01 color=green
+  - name: step-04
+    try:
     - assert:
         file: patched-ns01.yaml
     - error:
