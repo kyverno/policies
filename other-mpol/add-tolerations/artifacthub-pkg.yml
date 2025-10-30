@@ -1,0 +1,22 @@
+name: add-tolerations
+version: 1.0.0
+displayName: Add Tolerations
+createdAt: "2023-04-10T20:30:02.000Z"
+description: >-
+  Pod tolerations are used to schedule on Nodes which have a matching taint. This policy adds the toleration `org.com/role=service:NoSchedule` if existing tolerations do not contain the key `org.com/role`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-mpol/add-tolerations/add-tolerations.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Pod tolerations are used to schedule on Nodes which have a matching taint. This policy adds the toleration `org.com/role=service:NoSchedule` if existing tolerations do not contain the key `org.com/role`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: 3ffd8e60d3e7b42a5dba6b578275b1bf2e2797d0df6365ce0a8259ec96d82940

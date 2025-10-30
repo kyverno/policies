@@ -1,0 +1,9 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+namespaceSelector:
+- labels:
+    env: foo
+  name: foo
+- labels:
+    env: production
+  name: production
