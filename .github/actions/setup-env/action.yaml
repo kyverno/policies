@@ -45,7 +45,7 @@ runs:
       shell: bash
       run: |
         set -e
-        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=90s
+        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=120s
     - name: Install CRDs
       shell: bash
       run: |

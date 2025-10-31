@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy02
+  labels:
+    app: busybox
+    env: test
+  annotations:
+    request.autoscaling.kubecost.com/enabled: "true"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox
+        command: ["sleep", "9999"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 10Mi
+          limits:
+            cpu: 100m
+            memory: 10Mi
