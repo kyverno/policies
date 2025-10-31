@@ -15,14 +15,6 @@ metadata:
       a matching taint. This policy adds the toleration `org.com/role=service:NoSchedule`
       if existing tolerations do not contain the key `org.com/role`.
 spec:
-  autogen:
-    podControllers:
-      controllers:
-        - deployments
-        - daemonsets
-        - statefulsets
-        - jobs
-        - cronjobs
   matchConstraints:
     resourceRules:
       - apiGroups: [""]

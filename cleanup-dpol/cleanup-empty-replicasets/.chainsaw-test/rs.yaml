@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  labels:
+    app: example
+    pod-template-hash: 797bfc7b6f
+  name: example-797bfc7b6f
+  namespace: default
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: example
+      pod-template-hash: 797bfc7b6f
+  template:
+    metadata:
+      labels:
+        app: example
+        pod-template-hash: 797bfc7b6f
+    spec:
+      containers:
+      - image: httpd
+        imagePullPolicy: Always
+        name: httpd

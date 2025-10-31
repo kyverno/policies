@@ -1,0 +1,5 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: example-797bfc7b6f
+  namespace: default
