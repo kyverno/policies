@@ -1,0 +1,71 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: GeneratingPolicy
+metadata:
+  name: add-ns-quota
+  annotations:
+    policies.kyverno.io/title: Add Quota
+    policies.kyverno.io/category: Multi-Tenancy, EKS Best Practices
+    policies.kyverno.io/subject: ResourceQuota, LimitRange
+    policies.kyverno.io/minversion: 1.15.0
+    policies.kyverno.io/description: >-
+      To better control the number of resources that can be created in a given
+      Namespace and provide default resource consumption limits for Pods,
+      ResourceQuota and LimitRange resources are recommended.
+      This policy will generate ResourceQuota and LimitRange resources when
+      a new Namespace is created.
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["namespaces"]
+  variables:
+    - name: targetNs
+      expression: "object.metadata.name"
+    - name: downstream
+      expression: >-
+        [
+          {
+            "kind": dyn("ResourceQuota"),
+            "apiVersion": dyn("v1"),
+            "metadata": dyn({
+              "name": "default-resourcequota"
+            }),
+            "spec": dyn({
+              "hard": dyn({
+                "requests.cpu": "4",
+                "requests.memory": "16Gi",
+                "limits.cpu": "4",
+                "limits.memory": "16Gi"
+              })
+            })
+          },
+          {
+            "kind": dyn("LimitRange"),
+            "apiVersion": dyn("v1"),
+            "metadata": dyn({
+              "name": "default-limitrange"
+            }),
+            "spec": dyn({
+              "limits": dyn([
+                {
+                  "default": dyn({
+                    "cpu": "500m",
+                    "memory": "1Gi"
+                  }),
+                  "defaultRequest": dyn({
+                    "cpu": "200m",
+                    "memory": "256Mi"
+                  }),
+                  "type": dyn("Container")
+                }
+              ])
+            })
+          }
+        ]
+  generate:
+    - expression: generator.Apply(variables.targetNs, variables.downstream)

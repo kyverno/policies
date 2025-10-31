@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: busybox
+  name: mypod
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    args:
+    - sleep
+    - "9999"
