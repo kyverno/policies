@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-pod-priorityclassname
+policies:
+- ../add-pod-priorityclassname.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResources: patchedResource.yaml
+  policy: add-pod-priorityclassname
+  resources:
+  - blank
+  result: pass
+  isMutatingPolicy: true
+variables: values.yaml

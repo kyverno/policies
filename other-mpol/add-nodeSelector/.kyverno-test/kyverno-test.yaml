@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-nodeselector
+policies:
+- ../add-nodeSelector.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResources: patchedResource.yaml
+  policy: add-nodeselector
+  resources:
+  - default/myapp-pod
+  result: pass
+  isMutatingPolicy: true

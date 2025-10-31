@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  containers:
+  - name: busybox
+    image: quay.io/busybox:1.35
+    env:
+    - name: FOO
+      value: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  containers:
+  - name: busybox
+    image: docker.io/busybox:1.35
+    env:
+    - name: COLOR
+      value: red
+  - name: nginx
+    image: quay.io/nginxsomefoo:1.1.0
