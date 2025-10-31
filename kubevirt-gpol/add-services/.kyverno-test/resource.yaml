@@ -1,0 +1,9 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-name
+  namespace: default
+  uid: feb5a62b-8784-41d2-b104-bf6ebc4a0000
+  labels:
+    kubevirt.io/domain: vmi-name
+spec: {}

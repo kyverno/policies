@@ -1,0 +1,64 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: GeneratingPolicy
+metadata:
+  name: k6t-add-services
+  annotations:
+    policies.kyverno.io/title: Add Services
+    policies.kyverno.io/category: KubeVirt
+    policies.kyverno.io/subject: VirtualMachineInstance
+    policies.kyverno.io/description: >-
+      Add an SSH Service to every VirtualMachineInstance which is getting created.
+      This Service will use a ClusterIP, thus the admin has to ensure that the IP
+      space is large enough and ClusterIP type can be met.
+    kyverno.io/kyverno-version: "1.15.0"
+    kyverno.io/kubernetes-version: "1.24+"
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["kubevirt.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["virtualmachineinstances"]
+  variables:
+    - name: targetNs
+      expression: "object.metadata.namespace"
+    - name: vmiName
+      expression: "object.metadata.name"
+    - name: vmiUID
+      expression: "object.metadata.uid"
+  generate:
+    - expression: >-
+        generator.Apply(variables.targetNs, [
+          dyn({
+            "kind": dyn("Service"),
+            "apiVersion": dyn("v1"),
+            "metadata": dyn({
+              "name": dyn(string(variables.vmiName)),
+              "ownerReferences": dyn([
+                dyn({
+                  "apiVersion": dyn("kubevirt.io/v1"),
+                  "kind": dyn("VirtualMachineInstance"),
+                  "name": dyn(string(variables.vmiName)),
+                  "uid": dyn(string(variables.vmiUID))
+                })
+              ])
+            }),
+            "spec": dyn({
+              "ports": dyn([
+                dyn({
+                  "protocol": dyn("TCP"),
+                  "port": dyn(22)
+                })
+              ]),
+              "selector": dyn({
+                "kubevirt.io/domain": dyn(string(variables.vmiName))
+              }),
+              "type": dyn("ClusterIP")
+            })
+          })
+        ])

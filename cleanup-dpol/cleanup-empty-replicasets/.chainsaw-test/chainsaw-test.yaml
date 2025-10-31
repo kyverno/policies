@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-empty-replicasets
+spec:
+  steps:
+  - name: Install cluster role
+    try:
+    - apply:
+        file: cluster-role.yaml
+  - name: Backup config map
+    try:
+    - script:
+        content: |
+          set -eu
+          kubectl get cm -n kyverno kyverno -o yaml > backup.yaml
+    - apply:
+        file: config.yaml
+    cleanup:
+    - script:
+        content: |
+          set -eu
+          kubectl apply -f backup.yaml --force
+          rm -f backup.yaml
+  - name: Create replica set
+    try:
+    - apply:
+        file: rs.yaml
+    - assert:
+        file: chainsaw-assert-1.yaml
+  - name: Install policy
+    try:
+    - apply:
+        file: ../cleanup-empty-replicasets.yaml
+    - assert:
+        file: ../cleanup-empty-replicasets.yaml
+  - name: Wait
+    try:
+    - sleep:
+        duration: 1m5s
+  - name: Check replica set was deleted
+    try:
+    - error:
+        file: chainsaw-assert-1.yaml
