@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: deployment01-default-pdb
+  namespace: default-pdb-ns
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: busybox

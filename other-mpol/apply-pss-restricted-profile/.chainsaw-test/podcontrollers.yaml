@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - name: bb
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          privileged: true
+      - name: bb2
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            runAsNonRoot: false
+          containers:
+          - name: bb
+            image: ghcr.io/kyverno/test-busybox:1.35
+          - name: bb2
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              privileged: true
+          restartPolicy: OnFailure
