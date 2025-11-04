@@ -8,6 +8,8 @@ spec:
   steps:
   - name: step-00
     try:
+    - apply:
+        file: ../../../.chainsaw/crds/kubevirt-vm.yaml
     - assert:
         file: chainsaw-step-00-assert-1.yaml
   - name: step-01
