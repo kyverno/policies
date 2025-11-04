@@ -38,7 +38,7 @@ spec:
   - name: Wait
     try:
     - sleep:
-        duration: 1m5s
+        duration: 1m30s
   - name: Check replica set was deleted
     try:
     - error:
