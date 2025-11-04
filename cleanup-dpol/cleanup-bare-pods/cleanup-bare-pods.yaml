@@ -22,7 +22,6 @@ spec:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
   conditions:
     - name: is-bare-pod

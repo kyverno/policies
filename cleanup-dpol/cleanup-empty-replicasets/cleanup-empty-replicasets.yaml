@@ -17,7 +17,6 @@ spec:
     resourceRules:
       - apiGroups: ["apps"]
         apiVersions: ["v1"]
-        operations: ["CREATE", "UPDATE"]
         resources: ["replicasets"]
     namespaceSelector:
       matchExpressions:
