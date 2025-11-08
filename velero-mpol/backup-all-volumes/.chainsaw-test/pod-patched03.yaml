@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+  namespace: backup-velero-yes
+  annotations:
+    backup.velero.io/backup-volumes: task-pv-storage,external
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: empty-storage
+      emptyDir: {}
+    - name: external
+      persistentVolumeClaim:
+        claimName: external
+  containers:
+    - name: container01
+      image: ghcr.io/kyverno/test-busybox:1.35
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+        - mountPath: "/external"
+          name: external

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod01
+spec:
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+  terminationGracePeriodSeconds: 50

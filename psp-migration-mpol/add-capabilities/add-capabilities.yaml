@@ -1,0 +1,246 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-capabilities
+  annotations:
+    policies.kyverno.io/title: Add Capabilities
+    policies.kyverno.io/category: PSP Migration
+    policies.kyverno.io/subject: Pod
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/description: >-
+      In the earlier Pod Security Policy controller, it was possible to configure a policy
+      to add capabilities to containers within a Pod. This made it easier to assign some basic defaults
+      rather than blocking Pods or to simply provide capabilities for certain workloads if not specified.
+      This policy mutates Pods to add the capabilities SETFCAP and SETUID so long as they are not listed
+      as dropped capabilities first.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  mutations:
+  # Add SETFCAP to containers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        object.spec.containers.map(c, object.spec.containers.indexOf(c)).map(idx,
+          !(has(object.spec.containers[idx].securityContext) && 
+            has(object.spec.containers[idx].securityContext.capabilities) && 
+            has(object.spec.containers[idx].securityContext.capabilities.drop) && 
+            object.spec.containers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETFCAP")) ?
+          (
+            !has(object.spec.containers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETFCAP"]}}
+            } :
+            !has(object.spec.containers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETFCAP"]}
+            } :
+            !has(object.spec.containers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETFCAP"]
+            } :
+            !object.spec.containers[idx].securityContext.capabilities.add.exists(cap, cap == "SETFCAP") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETFCAP"
+            } : null
+          ) : null
+        ).filter(p, p != null)
+  # Add SETFCAP to initContainers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        has(object.spec.initContainers) ?
+        object.spec.initContainers.map(c, object.spec.initContainers.indexOf(c)).map(idx,
+          !(has(object.spec.initContainers[idx].securityContext) && 
+            has(object.spec.initContainers[idx].securityContext.capabilities) && 
+            has(object.spec.initContainers[idx].securityContext.capabilities.drop) && 
+            object.spec.initContainers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETFCAP")) ?
+          (
+            !has(object.spec.initContainers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETFCAP"]}}
+            } :
+            !has(object.spec.initContainers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETFCAP"]}
+            } :
+            !has(object.spec.initContainers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETFCAP"]
+            } :
+            !object.spec.initContainers[idx].securityContext.capabilities.add.exists(cap, cap == "SETFCAP") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETFCAP"
+            } : null
+          ) : null
+        ).filter(p, p != null) : []
+  # Add SETFCAP to ephemeralContainers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        has(object.spec.ephemeralContainers) ?
+        object.spec.ephemeralContainers.map(c, object.spec.ephemeralContainers.indexOf(c)).map(idx,
+          !(has(object.spec.ephemeralContainers[idx].securityContext) && 
+            has(object.spec.ephemeralContainers[idx].securityContext.capabilities) && 
+            has(object.spec.ephemeralContainers[idx].securityContext.capabilities.drop) && 
+            object.spec.ephemeralContainers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETFCAP")) ?
+          (
+            !has(object.spec.ephemeralContainers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETFCAP"]}}
+            } :
+            !has(object.spec.ephemeralContainers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETFCAP"]}
+            } :
+            !has(object.spec.ephemeralContainers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETFCAP"]
+            } :
+            !object.spec.ephemeralContainers[idx].securityContext.capabilities.add.exists(cap, cap == "SETFCAP") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETFCAP"
+            } : null
+          ) : null
+        ).filter(p, p != null) : []
+  # Add SETUID to containers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        object.spec.containers.map(c, object.spec.containers.indexOf(c)).map(idx,
+          !(has(object.spec.containers[idx].securityContext) && 
+            has(object.spec.containers[idx].securityContext.capabilities) && 
+            has(object.spec.containers[idx].securityContext.capabilities.drop) && 
+            object.spec.containers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETUID")) ?
+          (
+            !has(object.spec.containers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETUID"]}}
+            } :
+            !has(object.spec.containers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETUID"]}
+            } :
+            !has(object.spec.containers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETUID"]
+            } :
+            !object.spec.containers[idx].securityContext.capabilities.add.exists(cap, cap == "SETUID") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/containers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETUID"
+            } : null
+          ) : null
+        ).filter(p, p != null)
+  # Add SETUID to initContainers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        has(object.spec.initContainers) ?
+        object.spec.initContainers.map(c, object.spec.initContainers.indexOf(c)).map(idx,
+          !(has(object.spec.initContainers[idx].securityContext) && 
+            has(object.spec.initContainers[idx].securityContext.capabilities) && 
+            has(object.spec.initContainers[idx].securityContext.capabilities.drop) && 
+            object.spec.initContainers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETUID")) ?
+          (
+            !has(object.spec.initContainers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETUID"]}}
+            } :
+            !has(object.spec.initContainers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETUID"]}
+            } :
+            !has(object.spec.initContainers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETUID"]
+            } :
+            !object.spec.initContainers[idx].securityContext.capabilities.add.exists(cap, cap == "SETUID") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETUID"
+            } : null
+          ) : null
+        ).filter(p, p != null) : []
+  # Add SETUID to ephemeralContainers
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        has(object.spec.ephemeralContainers) ?
+        object.spec.ephemeralContainers.map(c, object.spec.ephemeralContainers.indexOf(c)).map(idx,
+          !(has(object.spec.ephemeralContainers[idx].securityContext) && 
+            has(object.spec.ephemeralContainers[idx].securityContext.capabilities) && 
+            has(object.spec.ephemeralContainers[idx].securityContext.capabilities.drop) && 
+            object.spec.ephemeralContainers[idx].securityContext.capabilities.drop.exists(cap, cap == "SETUID")) ?
+          (
+            !has(object.spec.ephemeralContainers[idx].securityContext) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext",
+              value: {"capabilities": {"add": ["SETUID"]}}
+            } :
+            !has(object.spec.ephemeralContainers[idx].securityContext.capabilities) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities",
+              value: {"add": ["SETUID"]}
+            } :
+            !has(object.spec.ephemeralContainers[idx].securityContext.capabilities.add) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities/add",
+              value: ["SETUID"]
+            } :
+            !object.spec.ephemeralContainers[idx].securityContext.capabilities.add.exists(cap, cap == "SETUID") ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/ephemeralContainers/" + string(idx) + "/securityContext/capabilities/add/-",
+              value: "SETUID"
+            } : null
+          ) : null
+        ).filter(p, p != null) : []

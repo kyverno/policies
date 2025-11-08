@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: foo
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/busybox: runtime/default
+spec:
+  containers:
+  - name: busybox
+    image: sfsdafasdfsadfsadf
