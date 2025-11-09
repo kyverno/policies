@@ -1,0 +1,68 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: resolve-image-to-digest
+  annotations:
+    policies.kyverno.io/title: Resolve Image to Digest
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      Image tags are mutable and the change of an image can result in the same tag.
+      This policy resolves the image digest of each image in a container and replaces
+      the image with the fully resolved reference which includes the digest rather than tag.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  autogen:
+    podControllers:
+      controllers:
+        - deployments
+        - daemonsets
+        - statefulsets
+        - jobs
+        - cronjobs
+    mutatingAdmissionPolicy:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+  matchConditions:
+    - name: not-delete-operation
+      expression: "request.operation != 'DELETE'"
+  variables:
+    - name: containers
+      expression: "object.spec.containers"
+    
+    - name: resolvedContainers
+      expression: >-
+        variables.containers.map(container, {
+          'name': container.name,
+          'imageRef': container.image.contains('@') ? 
+            container.image :
+            (image.GetMetadata(container.image).digest != '' ?
+              (container.image.contains(':') ?
+                container.image.split(':')[0] + '@' + image.GetMetadata(container.image).digest :
+                container.image + '@' + image.GetMetadata(container.image).digest
+              ) : container.image
+            )
+        })
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              containers: variables.resolvedContainers.map(resolved,
+                Object.spec.containers{
+                  name: resolved.name,
+                  image: resolved.imageRef
+                }
+              )
+            }
+          }

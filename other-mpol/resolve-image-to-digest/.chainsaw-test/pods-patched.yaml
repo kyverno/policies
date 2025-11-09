@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox@sha256:859d41e4316c182cb559f9ae3c5ffcac8602ee1179794a1707c06cd092a008d3

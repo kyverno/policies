@@ -1,0 +1,51 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: spread-pods
+  annotations:
+    policies.kyverno.io/title: Spread Pods Across Nodes
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Deployment, Pod
+    policies.kyverno.io/description: >-
+      Deployments to a Kubernetes cluster with multiple availability zones often need to
+      distribute those replicas to align with those zones to ensure site-level failures
+      do not impact availability. This policy matches Deployments with the label
+      `distributed=required` and mutates them to spread Pods across zones.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+    objectSelector:
+      matchLabels:
+        distributed: required
+  
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          !has(object.spec.template.spec.topologySpreadConstraints) ?
+          [JSONPatch{
+            op: "add",
+            path: "/spec/template/spec/topologySpreadConstraints",
+            value: dyn([
+              {
+                "maxSkew": dyn(1),
+                "topologyKey": dyn("zone"),
+                "whenUnsatisfiable": dyn("DoNotSchedule"),
+                "labelSelector": dyn({
+                  "matchLabels": dyn({
+                    "distributed": dyn("required")
+                  })
+                })
+              }
+            ])
+          }] : []
