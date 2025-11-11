@@ -2,9 +2,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   labels:
-    app.kubernetes.io/component: background-controller
-    app.kubernetes.io/instance: kyverno
-    app.kubernetes.io/part-of: kyverno
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
   name: kyverno:background-controller:label-nodes-cri
 rules:
 - apiGroups:
@@ -17,20 +16,3 @@ rules:
   - watch
   - update
   - patch
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  labels:
-    app.kubernetes.io/component: background-controller
-    app.kubernetes.io/instance: kyverno
-    app.kubernetes.io/part-of: kyverno
-  name: kyverno:background-controller:label-nodes-cri
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: kyverno:background-controller:label-nodes-cri
-subjects:
-- kind: ServiceAccount
-  name: kyverno-background-controller
-  namespace: kyverno

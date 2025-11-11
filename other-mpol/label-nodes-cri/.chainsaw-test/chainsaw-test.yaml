@@ -10,15 +10,13 @@ spec:
     try:
     - apply:
         file: chainsaw-step-00-apply-1.yaml
-    - sleep:
-        duration: 15s  # Wait for Kyverno to discover new RBAC permissions
   - name: step-01
     try:
     - script:
         content: |
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' | sed 's/\[Node,\*,\*\]//g' | kubectl apply -f -
     - sleep:
-        duration: 15s
+        duration: 3s
   - name: step-02
     try:
     - apply:
