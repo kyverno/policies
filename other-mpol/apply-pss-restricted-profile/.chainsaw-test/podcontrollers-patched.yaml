@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000
+      containers:
+      - name: bb
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          privileged: false
+          capabilities:
+            drop: 
+            - ALL
+          allowPrivilegeEscalation: false
+      - name: bb2
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          privileged: false
+          capabilities:
+            drop: 
+            - ALL
+          allowPrivilegeEscalation: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 3000
+            fsGroup: 2000
+          containers:
+          - name: bb
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              privileged: false
+              capabilities:
+                drop: 
+                - ALL
+              allowPrivilegeEscalation: false
+          - name: bb2
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              privileged: false
+              capabilities:
+                drop: 
+                - ALL
+              allowPrivilegeEscalation: false
+          restartPolicy: OnFailure
