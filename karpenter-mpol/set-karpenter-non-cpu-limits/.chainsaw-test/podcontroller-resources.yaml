@@ -1,0 +1,83 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: test-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb-01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+            ephemeral-storage: "1Gi"
+          requests:
+            cpu: "1"
+            memory: "500Mi"
+            ephemeral-storage: "500Mi"
+      - name: bb-02
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          limits:
+            cpu: "1"
+            memory: "500Mi"
+            ephemeral-storage: "500Mi"
+          requests:
+            cpu: "1"
+            memory: "250Mi"
+            ephemeral-storage: "250Mi"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-cronjob
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello-01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            imagePullPolicy: IfNotPresent
+            command:
+            - "sleep"
+            - "3600"
+            resources:
+              limits:
+                cpu: "1"
+                memory: "1Gi"
+                ephemeral-storage: "1Gi"
+              requests:
+                cpu: "1"
+                memory: "500Mi"
+                ephemeral-storage: "500Mi"
+          - name: hello-02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            imagePullPolicy: IfNotPresent
+            command:
+            - "sleep"
+            - "3600"
+            resources:
+              limits:
+                cpu: "1"
+                memory: "600Mi"
+                ephemeral-storage: "1Gi"
+              requests:
+                cpu: "1"
+                memory: "250Mi"
+                ephemeral-storage: "500Mi"
+          restartPolicy: OnFailure

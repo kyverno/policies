@@ -27,4 +27,4 @@ spec:
   conditions:
     - name: is-empty
       expression: "object.spec.replicas == 0"
-  schedule: "*/5 * * * *"
+  schedule: "* * * * *"
