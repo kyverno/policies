@@ -1,0 +1,9 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+namespaceSelector:
+- labels:
+    velero-backup-pvc: "true"
+  name: foo
+- labels:
+    env: production
+  name: bar

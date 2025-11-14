@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: inject-sidecar-deployment
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../inject-sidecar-deployment.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: deploy.yaml
+  - name: step-03
+    try:
+    - assert:
+        file: deploy-patched01.yaml
+    - assert:
+        file: deploy-patched02.yaml
+    - error:
+        file: not-deploy-patched02.yaml
+    - error:
+        file: not-deploy-patched03.yaml
