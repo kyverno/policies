@@ -16,29 +16,41 @@ spec:
       enabled: true
     mutateExisting:
       enabled: false
-  autogen:
-    podControllers:
-      controllers:
-        - deployments
-        - daemonsets
-        - statefulsets
-        - jobs
-        - cronjobs
-    mutatingAdmissionPolicy:
-      enabled: false
+
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
         resources: ["pods"]
         operations: ["CREATE", "UPDATE"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        resources: ["deployments", "daemonsets", "statefulsets"]
+        operations: ["CREATE", "UPDATE"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        resources: ["jobs", "cronjobs"]
+        operations: ["CREATE", "UPDATE"]
+
   matchConditions:
     - name: not-delete-operation
       expression: "request.operation != 'DELETE'"
+
   variables:
+    - name: isPod
+      expression: "has(object.spec.containers)"
+    - name: isController
+      expression: "has(object.spec.template)"
+    - name: isCronJob
+      expression: "has(object.spec.jobTemplate)"
+
     - name: containers
-      expression: "object.spec.containers"
-    
+      expression: >-
+        variables.isPod ? object.spec.containers :
+        variables.isController ? object.spec.template.spec.containers :
+        variables.isCronJob ? object.spec.jobTemplate.spec.template.spec.containers :
+        []
+
     - name: resolvedContainers
       expression: >-
         variables.containers.map(container, {
@@ -52,10 +64,12 @@ spec:
               ) : container.image
             )
         })
+
   mutations:
     - patchType: ApplyConfiguration
       applyConfiguration:
         expression: >-
+          variables.isPod ?
           Object{
             spec: Object.spec{
               containers: variables.resolvedContainers.map(resolved,
@@ -65,4 +79,46 @@ spec:
                 }
               )
             }
-          }
+          } : Object{}
+
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          variables.isController ?
+          Object{
+            spec: Object.spec{
+              template: Object.spec.template{
+                spec: Object.spec.template.spec{
+                  containers: variables.resolvedContainers.map(resolved,
+                    Object.spec.template.spec.containers{
+                      name: resolved.name,
+                      image: resolved.imageRef
+                    }
+                  )
+                }
+              }
+            }
+          } : Object{}
+
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          variables.isCronJob ?
+          Object{
+            spec: Object.spec{
+              jobTemplate: Object.spec.jobTemplate{
+                spec: Object.spec.jobTemplate.spec{
+                  template: Object.spec.jobTemplate.spec.template{
+                    spec: Object.spec.jobTemplate.spec.template.spec{
+                      containers: variables.resolvedContainers.map(resolved,
+                        Object.spec.jobTemplate.spec.template.spec.containers{
+                          name: resolved.name,
+                          image: resolved.imageRef
+                        }
+                      )
+                    }
+                  }
+                }
+              }
+            }
+          } : Object{}
