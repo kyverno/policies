@@ -33,8 +33,6 @@ spec:
     try:
     - apply:
         file: ../cleanup-empty-replicasets.yaml
-    # - assert:
-    #     file: ../cleanup-empty-replicasets.yaml
   - name: Wait
     try:
     - sleep:
