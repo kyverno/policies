@@ -1,0 +1,153 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /test-pd
+      name: foo
+    - mountPath: /foo
+      name: empty
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+    - mountPath: /test-pd
+      name: bar
+  - name: busybox03
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  volumes:
+  - name: foo
+    hostPath:
+      path: /data
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: bar
+    hostPath:
+      path: /data/junk
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: config-vol
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: foo
+    hostPath:
+      path: /data/junk
+  - name: config-vol
+    configMap:
+      name: foo
+      items:
+        - key: foo
+          path: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: config-vol
+    configMap:
+      name: foo
+      items:
+        - key: foo
+          path: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod04
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: config-vol
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: foo
+  - name: busybox03
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: empty
+  volumes:
+  - name: empty
+    emptyDir:
+      medium: memory
+      sizeLimit: 20Mi
+  - name: foo
+    hostPath:
+      path: /data/junk
+  - name: config-vol
+    configMap:
+      name: foo
+      items:
+        - key: foo
+          path: bar
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod05
+  namespace: remove-hostpathvols-ns
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /foo
+      name: foo
+  - name: busybox03
+    image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+  - name: foo
+    hostPath:
+      path: /data/junk

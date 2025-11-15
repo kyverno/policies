@@ -1,0 +1,53 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: label-nodes-cri
+  annotations:
+    policies.kyverno.io/title: Label Nodes with CRI Runtime
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Node, Label
+    policies.kyverno.io/description: >-
+      CRI engines log in different formats. Loggers deployed as DaemonSets don't know
+      which format to apply because they can't see this information. By Kyverno writing a label
+      to each node with its runtime, loggers can use node label selectors to know which parsing logic to use.
+      This policy detects the CRI engine in use and writes a label to the Node called `runtime` with it.
+      Users may need to grant the Kyverno ServiceAccount permission to update Nodes.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["nodes"]
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          has(object.status.nodeInfo.containerRuntimeVersion) && 
+          object.status.nodeInfo.containerRuntimeVersion.startsWith("containerd") ?
+          Object{
+            metadata: Object.metadata{
+              labels: {
+                "runtime": "containerd"
+              }
+            }
+          } : Object{}
+    
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          has(object.status.nodeInfo.containerRuntimeVersion) && 
+          object.status.nodeInfo.containerRuntimeVersion.startsWith("docker") ?
+          Object{
+            metadata: Object.metadata{
+              labels: {
+                "runtime": "docker"
+              }
+            }
+          } : Object{}

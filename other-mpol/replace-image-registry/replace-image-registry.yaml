@@ -1,0 +1,67 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: replace-image-registry
+  annotations:
+    policies.kyverno.io/title: Replace Image Registry
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Rather than blocking Pods which come from outside registries,
+      it is also possible to mutate them so the pulls are directed to
+      approved registries. In some cases, those registries may function as
+      pull-through proxies and can fetch the image if not cached.
+      This policy mutates all images either in the form 'image:tag' or
+      'registry.corp.com/image:tag' to be 'myregistry.corp.com/'. Any
+      path in the image name will be preserved.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  
+  variables:
+    - name: stripRegistry
+      expression: |
+        string(img) => 
+          img.contains('/') && img.split('/')[0].contains('.') ? 
+            img.split('/', 2)[1] : 
+            img
+  
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          Object{
+            spec: Object.spec{
+              containers: object.spec.containers.map(c,
+                Object.spec.containers{
+                  name: c.name,
+                  image: 'myregistry.corp.com/' + 
+                    (c.image.contains('/') && c.image.split('/')[0].contains('.') ? 
+                      c.image.substring(c.image.indexOf('/') + 1) : 
+                      c.image.replace('localhost/', ''))
+                }
+              ),
+              initContainers: has(object.spec.initContainers) ?
+                object.spec.initContainers.map(c,
+                  Object.spec.initContainers{
+                    name: c.name,
+                    image: 'myregistry.corp.com/' + 
+                      (c.image.contains('/') && c.image.split('/')[0].contains('.') ? 
+                        c.image.substring(c.image.indexOf('/') + 1) : 
+                        c.image.replace('localhost/', ''))
+                  }
+                ) : []
+            }
+          }
+  
+  evaluation:
+    admission:
+      enabled: true
+  
+  webhookConfiguration:
+    timeoutSeconds: 10
