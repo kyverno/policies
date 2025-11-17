@@ -16,6 +16,9 @@ spec:
       enabled: true
     mutateExisting:
       enabled: false
+  autogen:
+    podControllers:
+      controllers: []
 
   matchConstraints:
     resourceRules:
@@ -31,10 +34,6 @@ spec:
         apiVersions: ["v1"]
         resources: ["jobs", "cronjobs"]
         operations: ["CREATE", "UPDATE"]
-
-  matchConditions:
-    - name: not-delete-operation
-      expression: "request.operation != 'DELETE'"
 
   variables:
     - name: isPod
@@ -55,14 +54,7 @@ spec:
       expression: >-
         variables.containers.map(container, {
           'name': container.name,
-          'imageRef': container.image.contains('@') ? 
-            container.image :
-            (image.GetMetadata(container.image).digest != '' ?
-              (container.image.contains(':') ?
-                container.image.split(':')[0] + '@' + image.GetMetadata(container.image).digest :
-                container.image + '@' + image.GetMetadata(container.image).digest
-              ) : container.image
-            )
+          'image': image.GetMetadata(container.image).resolvedImage
         })
 
   mutations:
@@ -72,10 +64,10 @@ spec:
           variables.isPod ?
           Object{
             spec: Object.spec{
-              containers: variables.resolvedContainers.map(resolved,
+              containers: variables.resolvedContainers.map(rc,
                 Object.spec.containers{
-                  name: resolved.name,
-                  image: resolved.imageRef
+                  name: rc.name,
+                  image: rc.image
                 }
               )
             }
@@ -89,10 +81,10 @@ spec:
             spec: Object.spec{
               template: Object.spec.template{
                 spec: Object.spec.template.spec{
-                  containers: variables.resolvedContainers.map(resolved,
+                  containers: variables.resolvedContainers.map(rc,
                     Object.spec.template.spec.containers{
-                      name: resolved.name,
-                      image: resolved.imageRef
+                      name: rc.name,
+                      image: rc.image
                     }
                   )
                 }
@@ -110,10 +102,10 @@ spec:
                 spec: Object.spec.jobTemplate.spec{
                   template: Object.spec.jobTemplate.spec.template{
                     spec: Object.spec.jobTemplate.spec.template.spec{
-                      containers: variables.resolvedContainers.map(resolved,
+                      containers: variables.resolvedContainers.map(rc,
                         Object.spec.jobTemplate.spec.template.spec.containers{
-                          name: resolved.name,
-                          image: resolved.imageRef
+                          name: rc.name,
+                          image: rc.image
                         }
                       )
                     }

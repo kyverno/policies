@@ -16,9 +16,9 @@ spec:
     try:
     - apply:
         file: pods.yaml
-    - apply:
-        file: podcontroller.yaml
     - assert:
         file: pods-patched.yaml
+    - apply:
+        file: podcontroller.yaml
     - assert:
         file: podcontroller-patched.yaml
