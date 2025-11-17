@@ -1,0 +1,77 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: inject-sidecar
+  annotations:
+    policies.kyverno.io/title: Inject Sidecar Container
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Deployment,Volume
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/description: >-
+      The sidecar pattern is very common in Kubernetes whereby other applications can
+      insert components via tacit modification of a submitted resource. This is, for example,
+      often how service meshes and secrets applications are able to function transparently.
+      This policy injects a sidecar container, initContainer, and volume into Pods that match
+      an annotation called `vault.hashicorp.com/agent-inject: true`.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments"]
+  matchConditions:
+  - name: check-annotation
+    expression: >-
+      has(object.spec.template.metadata.annotations) && 
+      "vault.hashicorp.com/agent-inject" in object.spec.template.metadata.annotations &&
+      object.spec.template.metadata.annotations["vault.hashicorp.com/agent-inject"] == "true"
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: |
+        Object{
+          spec: Object.spec{
+            template: Object.spec.template{
+              spec: Object.spec.template.spec{
+                containers: [
+                  Object.spec.template.spec.containers{
+                    name: "vault-agent",
+                    image: "vault:1.5.4",
+                    imagePullPolicy: "IfNotPresent",
+                    volumeMounts: [
+                      Object.spec.template.spec.containers.volumeMounts{
+                        mountPath: "/vault/secrets",
+                        name: "vault-secret"
+                      }
+                    ]
+                  }
+                ],
+                initContainers: [
+                  Object.spec.template.spec.initContainers{
+                    name: "vault-agent-init",
+                    image: "vault:1.5.4",
+                    imagePullPolicy: "IfNotPresent",
+                    volumeMounts: [
+                      Object.spec.template.spec.initContainers.volumeMounts{
+                        mountPath: "/vault/secrets",
+                        name: "vault-secret"
+                      }
+                    ]
+                  }
+                ],
+                volumes: [
+                  Object.spec.template.spec.volumes{
+                    name: "vault-secret",
+                    emptyDir: Object.spec.template.spec.volumes.emptyDir{
+                      medium: "Memory"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }

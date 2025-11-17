@@ -1,0 +1,32 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: prepend-image-registry
+policies:
+- ../prepend-image-registry.yaml
+resources:
+- resource.yaml
+- resourceFailed.yaml
+- withoutinitcontainer.yaml
+results:
+- kind: Pod
+  patchedResources: patchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - myfailedpod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - withoutinitcontainer
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource.yaml
+  policy: prepend-registry
+  resources:
+  - mypod
+  result: pass
+  isMutatingPolicy: true

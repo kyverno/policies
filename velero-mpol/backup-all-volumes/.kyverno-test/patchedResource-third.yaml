@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: third
+  namespace: foo
+  annotations:
+    backup.velero.io/backup-volumes: task-pv-storage,external
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: external
+      persistentVolumeClaim:
+        claimName: external
+  containers:
+    - name: task-pv-container
+      image: nothinghere:123
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+        - mountPath: "/external"
+          name: external
