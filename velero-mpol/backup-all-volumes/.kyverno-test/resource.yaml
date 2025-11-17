@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: first
+  namespace: foo
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: mypvc
+  containers:
+    - name: task-pv-container
+      image: nothinghere:123
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: second
+  namespace: bar
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: mypvc
+  containers:
+    - name: task-pv-container
+      image: nothinghere:123
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: third
+  namespace: foo
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: mypvc
+    - name: external
+      persistentVolumeClaim:
+        claimName: external
+  containers:
+    - name: task-pv-container
+      image: nothinghere:123
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage
+        - mountPath: "/external"
+          name: external
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fourth
+  namespace: foo
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: mypvc
+      containers:
+        - name: task-pv-container
+          image: nothinghere:123
+          ports:
+            - containerPort: 80
+              name: "http-server"
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: task-pv-storage
