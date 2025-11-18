@@ -1,0 +1,116 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: resolve-image-to-digest
+  annotations:
+    policies.kyverno.io/title: Resolve Image to Digest
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      Image tags are mutable and the change of an image can result in the same tag.
+      This policy resolves the image digest of each image in a container and replaces
+      the image with the fully resolved reference which includes the digest rather than tag.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  autogen:
+    podControllers:
+      controllers: []
+
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        resources: ["deployments", "daemonsets", "statefulsets"]
+        operations: ["CREATE", "UPDATE"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        resources: ["jobs", "cronjobs"]
+        operations: ["CREATE", "UPDATE"]
+
+  variables:
+    - name: isPod
+      expression: "has(object.spec.containers)"
+    - name: isController
+      expression: "has(object.spec.template)"
+    - name: isCronJob
+      expression: "has(object.spec.jobTemplate)"
+
+    - name: containers
+      expression: >-
+        variables.isPod ? object.spec.containers :
+        variables.isController ? object.spec.template.spec.containers :
+        variables.isCronJob ? object.spec.jobTemplate.spec.template.spec.containers :
+        []
+
+    - name: resolvedContainers
+      expression: >-
+        variables.containers.map(container, {
+          'name': container.name,
+          'image': image.GetMetadata(container.image).resolvedImage
+        })
+
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          variables.isPod ?
+          Object{
+            spec: Object.spec{
+              containers: variables.resolvedContainers.map(rc,
+                Object.spec.containers{
+                  name: rc.name,
+                  image: rc.image
+                }
+              )
+            }
+          } : Object{}
+
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          variables.isController ?
+          Object{
+            spec: Object.spec{
+              template: Object.spec.template{
+                spec: Object.spec.template.spec{
+                  containers: variables.resolvedContainers.map(rc,
+                    Object.spec.template.spec.containers{
+                      name: rc.name,
+                      image: rc.image
+                    }
+                  )
+                }
+              }
+            }
+          } : Object{}
+
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          variables.isCronJob ?
+          Object{
+            spec: Object.spec{
+              jobTemplate: Object.spec.jobTemplate{
+                spec: Object.spec.jobTemplate.spec{
+                  template: Object.spec.jobTemplate.spec.template{
+                    spec: Object.spec.jobTemplate.spec.template.spec{
+                      containers: variables.resolvedContainers.map(rc,
+                        Object.spec.jobTemplate.spec.template.spec.containers{
+                          name: rc.name,
+                          image: rc.image
+                        }
+                      )
+                    }
+                  }
+                }
+              }
+            }
+          } : Object{}

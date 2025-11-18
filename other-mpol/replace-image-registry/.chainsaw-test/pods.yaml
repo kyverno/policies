@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: replace-registry-ns
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/busybox:1.35
+  - name: busybox02
+    image: docker.io/busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+  namespace: replace-registry-ns
+spec:
+  initContainers:
+  - name: kyverno
+    image: kyverno:1.10.1
+  - name: busybox-init
+    image: docker.io/busybox:1.35
+  containers:
+  - name: busybox
+    image: registry.corp.com/kyverno:1.10.1
+  - name: busybox02
+    image: docker.io/busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+  namespace: replace-registry-ns
+spec:
+  initContainers:
+  - name: kyverno
+    image: kyverno:1.10.1
+  - name: busybox-init
+    image: ghcr.io/foo/bar/baz/busybox:1.35
+  containers:
+  - name: busybox
+    image: registry.corp.com/kyverno:1.10.1
+  - name: busybox02
+    image: ghcr.io/foo/bar/baz/busybox:1.35

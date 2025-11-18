@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: spread-pods
+policies:
+- ../spread-pods-across-topology.yaml
+resources:
+- resource.yaml
+results:
+- kind: Deployment
+  patchedResources: patchedResource.yaml
+  policy: spread-pods
+  resources:
+  - mydeploy
+  result: pass
+  isMutatingPolicy: true

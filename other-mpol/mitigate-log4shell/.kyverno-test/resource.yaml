@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod01
+spec:
+  initContainers: 
+  - name: initbusybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod02
+spec:
+  containers: 
+  - name: busybox
+    image: busybox:1.28
+    command: ["sleep", "9999"]

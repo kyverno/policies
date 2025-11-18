@@ -1,0 +1,82 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: replace-ingress-hosts
+  annotations:
+    policies.kyverno.io/title: Replace Ingress Hosts
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/description: >-
+      An Ingress may specify host names at a variety of locations in the same resource.
+      This policy replaces host names that end with `old.com` with `new.com` in all
+      relevant fields including spec.rules[].host, spec.tls[].hosts[], and spec.tls[].secretName.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["networking.k8s.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["ingresses"]
+  
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          object.spec.?rules.orValue([]).map(rule, 
+            has(rule.host) && rule.host.endsWith('.old.com') ?
+            JSONPatch{
+              op: "replace",
+              path: "/spec/rules/" + string(object.spec.rules.indexOf(rule)) + "/host",
+              value: rule.host.replace('.old.com', '.new.com')
+            } : null
+          ).filter(patch, patch != null)
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          object.spec.?tls.orValue([]).size() > 0 && 
+          object.spec.tls[0].?hosts.orValue([]).size() > 0 &&
+          object.spec.tls[0].hosts[0].endsWith('.old.com') ?
+          [JSONPatch{
+            op: "replace",
+            path: "/spec/tls/0/hosts/0",
+            value: object.spec.tls[0].hosts[0].replace('.old.com', '.new.com')
+          }] : []
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          object.spec.?tls.orValue([]).size() > 0 && 
+          object.spec.tls[0].?hosts.orValue([]).size() > 1 &&
+          object.spec.tls[0].hosts[1].endsWith('.old.com') ?
+          [JSONPatch{
+            op: "replace",
+            path: "/spec/tls/0/hosts/1",
+            value: object.spec.tls[0].hosts[1].replace('.old.com', '.new.com')
+          }] : []
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          object.spec.?tls.orValue([]).size() > 1 && 
+          object.spec.tls[1].?hosts.orValue([]).size() > 0 &&
+          object.spec.tls[1].hosts[0].endsWith('.old.com') ?
+          [JSONPatch{
+            op: "replace",
+            path: "/spec/tls/1/hosts/0",
+            value: object.spec.tls[1].hosts[0].replace('.old.com', '.new.com')
+          }] : []
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          object.spec.?tls.orValue([]).map(tlsEntry,
+            has(tlsEntry.secretName) && tlsEntry.secretName.contains('.old.com') ?
+            JSONPatch{
+              op: "replace",
+              path: "/spec/tls/" + string(object.spec.tls.indexOf(tlsEntry)) + "/secretName",
+              value: tlsEntry.secretName.replace('.old.com', '.new.com')
+            } : null
+          ).filter(patch, patch != null)

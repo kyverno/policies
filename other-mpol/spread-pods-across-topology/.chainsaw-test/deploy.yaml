@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    distributed: required
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    distributed: required
+    app: busybox
+  name: deployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+      topologySpreadConstraints:
+      - maxSkew: 2
+        topologyKey: blah
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            foo: bar
