@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod1
+  namespace: default
+spec:
+  containers:
+  - image: myregistry.corp.com/nginx:latest
+    name: docker-with-registry
