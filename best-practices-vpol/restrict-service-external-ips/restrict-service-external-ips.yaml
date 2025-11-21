@@ -1,0 +1,32 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-external-ips
+  annotations:
+    policies.kyverno.io/title: Restrict External IPs in VPOL
+    policies.kyverno.io/category: Best Practices in VPOL
+    policies.kyverno.io/minversion: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Service
+    policies.kyverno.io/description: >-
+      Service externalIPs can be used for a MITM attack (CVE-2020-8554).
+      Restrict externalIPs or limit to a known set of addresses.
+      See: https://github.com/kyverno/kyverno/issues/1367. This policy validates
+      that the `externalIPs` field is not set on a Service.
+spec:
+  validationActions: [Audit]
+  evaluation: 
+     background: 
+           enabled: true
+  matchConstraints:
+      resourceRules:
+        - apiGroups:   [""]
+          apiVersions: ["v1"]
+          operations:  ["CREATE", "UPDATE"]
+          resources:   ["services"]
+
+  validations:
+          - expression: "!has(object.spec.externalIPs)"
+            message: "externalIPs are not allowed."
+
