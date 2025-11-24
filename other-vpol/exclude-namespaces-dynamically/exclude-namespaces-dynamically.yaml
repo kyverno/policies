@@ -47,7 +47,6 @@ spec:
          resource.Get("v1", "configmaps", "default", "namespace-filters")
      - name: filter
        expression: "request.namespace in variables.cm.data['exclude'].split(', ')"
-
   validations:
   - expression: >
       request.kind.kind == 'Pod' ? 

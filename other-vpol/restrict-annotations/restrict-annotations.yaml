@@ -37,6 +37,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["cronjobs", "jobs"]
   validations:
-          - expression: "!object.metadata.?annotations.orValue([]).exists(annotation, annotation.startsWith('fluxcd.io/'))"
-            message: Cannot use Flux v1 annotation.
+    - expression: "!object.metadata.?annotations.orValue([]).exists(annotation, annotation.startsWith('fluxcd.io/'))"
+      message: Cannot use Flux v1 annotation.
 
