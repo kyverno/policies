@@ -28,6 +28,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: "!object.spec.?affinity.?nodeAffinity.hasValue()"
-            message: "Node affinity cannot be used."
+    - expression: "!object.spec.?affinity.?nodeAffinity.hasValue()"
+      message: "Node affinity cannot be used."
 

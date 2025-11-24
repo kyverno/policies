@@ -28,6 +28,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-            - expression: "object.spec.containers.all(container, container.?ports.orValue([]).all(port, has(port.name)))"
-              message: Name is required for every containerPort.
+    - expression: "object.spec.containers.all(container, container.?ports.orValue([]).all(port, has(port.name)))"
+      message: Name is required for every containerPort.
 
