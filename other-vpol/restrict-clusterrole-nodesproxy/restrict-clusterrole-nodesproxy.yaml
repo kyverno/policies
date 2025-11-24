@@ -30,10 +30,10 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["clusterroles"]
   validations:
-            - expression: >-
-                object.rules == null || 
-                !object.rules.exists(rule, 
-                rule.resources.exists(resource, resource == 'nodes/proxy') && 
-                rule.apiGroups.exists(apiGroup, apiGroup == ''))
-              message: "A ClusterRole containing the nodes/proxy resource is not allowed."
+    - expression: >-
+        object.rules == null || 
+        !object.rules.exists(rule, 
+        rule.resources.exists(resource, resource == 'nodes/proxy') && 
+        rule.apiGroups.exists(apiGroup, apiGroup == ''))
+      message: "A ClusterRole containing the nodes/proxy resource is not allowed."
 
