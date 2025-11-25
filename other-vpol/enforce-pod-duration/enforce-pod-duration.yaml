@@ -25,11 +25,11 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-          - name: hasLifetimeAnnotation
-            expression: "object.metadata.?annotations[?'pod.kubernetes.io/lifetime'].hasValue()"
-          - name: lifetimeAnnotationValue
-            expression: "variables.hasLifetimeAnnotation ? object.metadata.annotations['pod.kubernetes.io/lifetime'] : '0s'"
+    - name: hasLifetimeAnnotation
+      expression: "object.metadata.?annotations[?'pod.kubernetes.io/lifetime'].hasValue()"
+    - name: lifetimeAnnotationValue
+      expression: "variables.hasLifetimeAnnotation ? object.metadata.annotations['pod.kubernetes.io/lifetime'] : '0s'"
   validations:
-          - expression: "!(duration(variables.lifetimeAnnotationValue) > duration('8h'))"
-            message: "Pod lifetime exceeds limit of 8h"
+    - expression: "!(duration(variables.lifetimeAnnotationValue) > duration('8h'))"
+      message: "Pod lifetime exceeds limit of 8h"
 

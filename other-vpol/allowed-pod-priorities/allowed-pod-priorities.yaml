@@ -28,17 +28,16 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-          - name: prior
-            expression: >-
-               resource.Get("v1", "configmaps", "default", "allowed-pod-priorities")
-          - name: namespaceName
-            expression: "namespaceObject.metadata.name"
-          - name: priorities
-            expression: "variables.namespaceName in variables.prior.data ? variables.prior.data[variables.namespaceName].split(', ') : []"
+    - name: prior
+      expression: >-
+        resource.Get("v1", "configmaps", "default", "allowed-pod-priorities")
+    - name: namespaceName
+      expression: "namespaceObject.metadata.name"
+    - name: priorities
+      expression: "variables.namespaceName in variables.prior.data ? variables.prior.data[variables.namespaceName].split(', ') : []"
   validations:
-          - expression: "variables.priorities == [] || object.spec.priorityClassName in variables.priorities"
-            message: >-
-              'The Pod PriorityClass ' + object.spec.priorityClassName +
-              ' is not in the list of the following PriorityClasses allowed in this Namespace: ' +
-              variables.prior.data[variables.namespaceName]
-
+    - expression: "variables.priorities == [] || object.spec.priorityClassName in variables.priorities"
+      message: >-
+        'The Pod PriorityClass ' + object.spec.priorityClassName +
+        ' is not in the list of the following PriorityClasses allowed in this Namespace: ' +
+        variables.prior.data[variables.namespaceName]
