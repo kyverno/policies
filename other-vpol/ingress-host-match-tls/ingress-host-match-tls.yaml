@@ -29,12 +29,12 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["ingresses"]
   variables:
-     - name: tls
-       expression: "object.spec.?tls.orValue([])"
+    - name: tls
+      expression: "object.spec.?tls.orValue([])"
   validations:
-     - expression: >-
+    - expression: >-
         object.spec.rules.all(rule, 
-         !has(rule.host) || 
-         variables.tls.exists(tls, tls.?hosts.orValue([]).exists(tlsHost, tlsHost == rule.host)))
-       message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
+        !has(rule.host) || 
+        variables.tls.exists(tls, tls.?hosts.orValue([]).exists(tlsHost, tlsHost == rule.host)))
+      message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
 
