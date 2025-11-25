@@ -1,0 +1,92 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: remove-hostpath-volumes
+  annotations:
+    policies.kyverno.io/title: Remove hostPath Volumes
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod,Volume
+    policies.kyverno.io/description: >-
+      Pods which mount hostPath volumes are provided access to the underlying filesystem
+      of the Node on which they run. In most scenarios, this should be forbidden. In others,
+      it may be useful to silently remove those hostPath volumes rather than blocking the Pod.
+      This policy removes all hostPath volumes and their volumeMount references from all containers
+      within a Pod.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  variables:
+    - name: hostpathVolumes
+      expression: |
+        has(object.spec.volumes) ? 
+          object.spec.volumes.filter(v, has(v.hostPath)).map(v, v.name) : 
+          []
+    - name: hasHostPath
+      expression: |
+        variables.hostpathVolumes.size() > 0
+  matchConditions:
+    - name: has-hostpath-volumes
+      expression: variables.hasHostPath
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          [
+            JSONPatch{
+              op: "replace",
+              path: "/spec/volumes",
+              value: object.spec.volumes.filter(v, !has(v.hostPath))
+            }
+          ] +
+          object.spec.containers.map(c,
+            has(c.volumeMounts) ?
+              (c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name)).size() > 0 ?
+                JSONPatch{
+                  op: "replace",
+                  path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/volumeMounts",
+                  value: c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name))
+                } :
+                JSONPatch{
+                  op: "remove",
+                  path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/volumeMounts"
+                })
+            : JSONPatch{op: "test", path: "/", value: null}
+          ).filter(p, p.op != "test") +
+          (has(object.spec.initContainers) ?
+            object.spec.initContainers.map(c,
+              has(c.volumeMounts) ?
+                (c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name)).size() > 0 ?
+                  JSONPatch{
+                    op: "replace",
+                    path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + "/volumeMounts",
+                    value: c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name))
+                  } :
+                  JSONPatch{
+                    op: "remove",
+                    path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + "/volumeMounts"
+                  })
+              : JSONPatch{op: "test", path: "/", value: null}
+            ).filter(p, p.op != "test") : []) +
+          (has(object.spec.ephemeralContainers) ?
+            object.spec.ephemeralContainers.map(c,
+              has(c.volumeMounts) ?
+                (c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name)).size() > 0 ?
+                  JSONPatch{
+                    op: "replace",
+                    path: "/spec/ephemeralContainers/" + string(object.spec.ephemeralContainers.indexOf(c)) + "/volumeMounts",
+                    value: c.volumeMounts.filter(vm, !variables.hostpathVolumes.exists(hpv, hpv == vm.name))
+                  } :
+                  JSONPatch{
+                    op: "remove",
+                    path: "/spec/ephemeralContainers/" + string(object.spec.ephemeralContainers.indexOf(c)) + "/volumeMounts"
+                  })
+              : JSONPatch{op: "test", path: "/", value: null}
+            ).filter(p, p.op != "test") : [])
