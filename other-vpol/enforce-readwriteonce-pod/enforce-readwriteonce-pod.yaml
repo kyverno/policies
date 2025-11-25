@@ -29,6 +29,6 @@ spec:
         resources: ["persistentvolumeclaims"]
         operations: ["CREATE", "UPDATE"]
   validations:
-          - expression: "'ReadWriteOncePod' in object.spec.accessModes"
-            message: "The accessMode must be set to ReadWriteOncePod."
+    - expression: "'ReadWriteOncePod' in object.spec.accessModes"
+      message: "The accessMode must be set to ReadWriteOncePod."
 

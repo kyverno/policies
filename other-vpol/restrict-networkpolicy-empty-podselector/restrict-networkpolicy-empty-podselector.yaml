@@ -20,7 +20,6 @@ spec:
   evaluation:
     background:
       enabled: true
-
   matchConstraints:
     resourceRules:
       - apiGroups: ["networking.k8s.io"]
@@ -34,6 +33,6 @@ spec:
         resources: ["networkpolicies"]
         resourceNames: ["default-deny"]
   validations:
-          - expression: "size(object.spec.podSelector) != 0"
-            message: "NetworkPolicies must not use an empty podSelector."
+    - expression: "size(object.spec.podSelector) != 0"
+      message: "NetworkPolicies must not use an empty podSelector."
 

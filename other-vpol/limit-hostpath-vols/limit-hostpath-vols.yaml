@@ -30,9 +30,9 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   matchConditions:
-      - name: "has-host-path-volume"
-        expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.hostPath))"
+    - name: "has-host-path-volume"
+      expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.hostPath))"
   validations:
-          - expression: "object.spec.volumes.all(volume, !has(volume.hostPath) || volume.hostPath.path.split('/')[1] == 'data')"
-            message: hostPath volumes are confined to /data.
+    - expression: "object.spec.volumes.all(volume, !has(volume.hostPath) || volume.hostPath.path.split('/')[1] == 'data')"
+      message: hostPath volumes are confined to /data.
 

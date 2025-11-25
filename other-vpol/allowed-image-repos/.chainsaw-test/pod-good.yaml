@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+    - name: pod-01
+      image: myknownimage
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+    - name: pod-01
+      image: ghcr.io/images/myknownimage:1.26
+    - name: pod-02
+      image: ghcr.io/kyverno/kyverno:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+  namespace: allowed-image-repos-ns
+spec:
+  initContainers:
+    - name: pod-01-init
+      image: kyverno:latest
+    - name: pod-02-init
+      image: myknownimage
+  containers:
+    - name: pod-01
+      image: myknownimage:1.14
+    - name: pod-02
+      image: kyverno

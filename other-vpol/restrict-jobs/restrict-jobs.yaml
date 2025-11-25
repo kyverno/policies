@@ -22,9 +22,9 @@ spec:
         operations:  ["CREATE", "UPDATE"]
         resources:   ["jobs"]
   matchConditions:
-        - name: "not-created-by-cronjob"
-          expression: "!has(object.metadata.ownerReferences) || object.metadata.ownerReferences[0].kind != 'CronJob'"
+    - name: "not-created-by-cronjob"
+      expression: "!has(object.metadata.ownerReferences) || object.metadata.ownerReferences[0].kind != 'CronJob'"
   validations:
-            - expression: "false"
-              message: Jobs are only allowed if spawned from CronJobs.
+    - expression: "false"
+      message: Jobs are only allowed if spawned from CronJobs.
 

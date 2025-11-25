@@ -28,6 +28,6 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["serviceaccounts"]
   validations:
-          - expression: "object.?automountServiceAccountToken.orValue(true) == false"
-            message: "ServiceAccounts must set automountServiceAccountToken to false."
+    - expression: "object.?automountServiceAccountToken.orValue(true) == false"
+      message: "ServiceAccounts must set automountServiceAccountToken to false."
 
