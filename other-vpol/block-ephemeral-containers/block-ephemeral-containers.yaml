@@ -13,7 +13,7 @@ spec:
     - apiGroups:   [""]
       apiVersions: ["v1"]
       operations:  ["CREATE", "UPDATE"]
-      resources: ["pods", "pods/ephemeralcontainers"] 
+      resources:   ["pods"] 
   validations:
    - expression: >-
       object.spec.?ephemeralContainers.orValue([]).size() == 0
