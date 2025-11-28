@@ -41,6 +41,6 @@ spec:
                 -----END PUBLIC KEY-----
   validations:
     - expression: >-
-       images.containers.map(image, verifyImageSignatures(image, [attestors.cosign])).all(e ,e > 0)
+       images.containers.map(image, verifyImageSignatures(image, [attestors["cosign"]])).all(e, e > 0)
       message: >-
        failed the verification
