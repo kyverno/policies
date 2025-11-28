@@ -4,11 +4,13 @@ metadata:
   name: require-emptydir-requests-and-limits
 status:
   conditionStatus:
-    conditions:
-    - reason: Succeeded
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
       type: WebhookConfigured
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - message: Policy is ready for reporting.
+      reason: Succeeded
       status: "True"
-    - reason: Succeeded
       type: RBACPermissionsGranted
-      status: "True"
-

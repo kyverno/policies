@@ -8,6 +8,8 @@ spec:
   steps:
   - name: step-01
     try:
+    - apply:
+        file: permissions.yaml
     - script:
         content: |
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
