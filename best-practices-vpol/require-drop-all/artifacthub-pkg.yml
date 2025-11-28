@@ -1,0 +1,23 @@
+name: require-drop-all-VPOL
+version: 1.0.0
+displayName: Drop All Capabilities in VPOL
+description: >-
+  Capabilities permit privileged actions without giving full root access. All capabilities should be dropped from a Pod, with only those required added back. This policy ensures that all containers explicitly specify the `drop: ["ALL"]` ability. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/require-drop-all/require-drop-all.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - VPOL
+readme: |
+  Capabilities permit privileged actions without giving full root access. All capabilities should be dropped from a Pod, with only those required added back. This policy ensures that all containers explicitly specify the `drop: ["ALL"]` ability. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 40e82041da104362717292270a5ca9ddf17bab0c60501c570b553659e2a93351
+createdAt: "2025-05-05T13:19:12Z"
