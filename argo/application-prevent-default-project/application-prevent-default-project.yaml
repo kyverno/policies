@@ -13,7 +13,6 @@ metadata:
     policies.kyverno.io/description: >-
       This policy prevents the use of the default project in an Application.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: default-project
@@ -28,6 +27,7 @@ spec:
           operator: NotEquals
           value: DELETE
       validate:
+        failureAction: Audit
         message: "The default project may not be used in an Application."
         pattern:
           spec:

@@ -17,7 +17,6 @@ metadata:
       enforce that all AppProjects specify clusterResourceBlacklist and that their group
       and kind have wildcards as values.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: has-wildcard
@@ -32,6 +31,7 @@ spec:
           operator: AnyIn
           value: ["CREATE", "UPDATE"]
       validate:
+        failureAction: Audit
         message: "Wildcards must be present in group and kind for clusterResourceBlacklist."
         foreach:
         - list: "request.object.spec.clusterResourceBlacklist"
@@ -56,6 +56,7 @@ spec:
           operator: AnyIn
           value: ["CREATE", "UPDATE"]
       validate:
+        failureAction: Audit
         message: "AppProject must specify clusterResourceBlacklist."
         deny:
           conditions:
