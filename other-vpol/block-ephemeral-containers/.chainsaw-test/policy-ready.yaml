@@ -5,9 +5,8 @@ metadata:
 status:
   conditionStatus:
             (conditions[?type == 'RBACPermissionsGranted']):
-            - message: Policy is ready for reporting.
-              reason: Succeeded
-              status: "True"
+            - reason: Failed
+              status: "False"
             (conditions[?type == 'WebhookConfigured']):
             - message: Webhook configured.
               reason: Succeeded
