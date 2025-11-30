@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: kp-lg-ns
+  name: pod-lg01
+spec:
+  nodeSelector:
+    kubernetes.io/arch: amd64
+    karpenter.sh/capacity-type: spot
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35

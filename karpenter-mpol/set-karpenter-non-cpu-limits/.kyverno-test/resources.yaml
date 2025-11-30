@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test1
+  namespace: test
+spec:
+  containers:
+    - name: test1
+      image: test/test:latest
+      resources:
+        requests:
+          cpu: "1"
+          memory: "1Gi"
+          ephemeral-storage: "1Gi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test2
+  namespace: test
+spec:
+  containers:
+    - name: test2
+      image: test/test:latest
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+          ephemeral-storage: "1Gi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test3
+  namespace: test
+spec:
+  containers:
+    - name: test3
+      image: test/test:latest
+      resources:
+        limits:
+          cpu: "1"
+          memory: "1Gi"
+          ephemeral-storage: "1Gi"
+        requests:
+          cpu: "1"
+          memory: "500Mi"
+          ephemeral-storage: "500Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test4
+  namespace: test
+spec:
+  containers:
+    - name: test4
+      image: test/test:latest
+      resources: {}

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: busybox
+  name: pod01
+  namespace: add-capabilities
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: busybox
+    image: somedummybusyboximage:1.1.0
+    securityContext:
+      capabilities:
+        add:
+        - SETFCAP
+        - SETUID
+  - name: nginx
+    image: somedummynginximage:1.1.0
+    securityContext:
+      capabilities:
+        add:
+        - SETFCAP
+        - SETUID

@@ -20,7 +20,6 @@ spec:
   evaluation:
     background:
       enabled: true
-
   matchConstraints:
     resourceRules:
     - apiGroups:   [""]
@@ -28,9 +27,9 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-          - name: allContainers
-            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   validations:
-          - expression: "variables.allContainers.all(container, !container.image.startsWith('k8s.gcr.io/'))"
-            message: "The \"k8s.gcr.io\" image registry is deprecated. \"registry.k8s.io\" should now be used."
+    - expression: "variables.allContainers.all(container, !container.image.startsWith('k8s.gcr.io/'))"
+      message: "The \"k8s.gcr.io\" image registry is deprecated. \"registry.k8s.io\" should now be used."
     

@@ -26,6 +26,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["services"]
   validations:
-          - expression: "object.spec.type != 'ExternalName' || object.spec.externalName != 'localhost'"
-            message: "Service of type ExternalName cannot point to localhost."
+    - expression: "object.spec.type != 'ExternalName' || object.spec.externalName != 'localhost'"
+      message: "Service of type ExternalName cannot point to localhost."
             

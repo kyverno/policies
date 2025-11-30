@@ -1,0 +1,92 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: log4shell-mitigation
+  annotations:
+    policies.kyverno.io/title: Log4Shell Mitigation
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/description: >-
+      In response to CVE-2021-44228 referred to as Log4Shell, this policy
+      automatically adds LOG4J_FORMAT_MSG_NO_LOOKUPS=true to all containers
+      and initContainers in Pods and pod controllers as a partial mitigation measure.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments", "daemonsets", "statefulsets"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs", "cronjobs"]
+  variables:
+    - name: isPod
+      expression: object.kind == "Pod"
+    - name: isCronJob
+      expression: object.kind == "CronJob"
+    - name: isPodController
+      expression: has(object.spec.template.spec)
+    - name: podSpec
+      expression: |
+        variables.isPod ? object.spec :
+        variables.isCronJob ? object.spec.jobTemplate.spec.template.spec :
+        variables.isPodController ? object.spec.template.spec :
+        {}
+    - name: specPath
+      expression: |
+        variables.isPod ? "/spec" :
+        variables.isCronJob ? "/spec/jobTemplate/spec/template/spec" :
+        "/spec/template/spec"
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          variables.podSpec.containers.map(c,
+            has(c.env) && c.env.exists(e, e.name == "LOG4J_FORMAT_MSG_NO_LOOKUPS") ?
+              JSONPatch{
+                op: "replace",
+                path: variables.specPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/env/" + string(c.env.map(e, e.name).indexOf("LOG4J_FORMAT_MSG_NO_LOOKUPS")),
+                value: {"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}
+              } :
+            has(c.env) ?
+              JSONPatch{
+                op: "add",
+                path: variables.specPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/env/-",
+                value: {"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}
+              } :
+              JSONPatch{
+                op: "add",
+                path: variables.specPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/env",
+                value: [{"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}]
+              }
+          ) +
+          (has(variables.podSpec.initContainers) ?
+            variables.podSpec.initContainers.map(c,
+              has(c.env) && c.env.exists(e, e.name == "LOG4J_FORMAT_MSG_NO_LOOKUPS") ?
+                JSONPatch{
+                  op: "replace",
+                  path: variables.specPath + "/initContainers/" + string(variables.podSpec.initContainers.indexOf(c)) + "/env/" + string(c.env.map(e, e.name).indexOf("LOG4J_FORMAT_MSG_NO_LOOKUPS")),
+                  value: {"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}
+                } :
+              has(c.env) ?
+                JSONPatch{
+                  op: "add",
+                  path: variables.specPath + "/initContainers/" + string(variables.podSpec.initContainers.indexOf(c)) + "/env/-",
+                  value: {"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}
+                } :
+                JSONPatch{
+                  op: "add",
+                  path: variables.specPath + "/initContainers/" + string(variables.podSpec.initContainers.indexOf(c)) + "/env",
+                  value: [{"name": "LOG4J_FORMAT_MSG_NO_LOOKUPS", "value": "true"}]
+                }
+            ) : []
+          )
