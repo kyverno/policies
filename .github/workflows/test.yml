@@ -747,6 +747,27 @@ jobs:
         path: other
         shard-index: ${{ matrix.shard-index }}
         shard-count: 9
+  
+  other-vpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1,2,3,4,5,6,7,8]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: other-vpol
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 9
 
   other-mpol:
     strategy:
@@ -852,6 +873,24 @@ jobs:
         path: pod-security-cel
         shard-index: ${{ matrix.shard-index }}
         shard-count: 3
+        
+  pod-security-vpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: pod-security-vpol
 
   psa:
     strategy:
@@ -1147,11 +1186,13 @@ jobs:
     - openshift
     - openshift-cel
     - other
+    - other-vpol
     - other-mpol
     - other-cel
     - other-gpol
     - pod-security
     - pod-security-cel
+    - pod-security-vpol
     - psa
     - psa-cel
     - psa-mpol
@@ -1214,11 +1255,13 @@ jobs:
     - openshift
     - openshift-cel
     - other
+    - other-vpol
     - other-mpol
     - other-cel
     - other-gpol
     - pod-security
     - pod-security-cel
+    - pod-security-vpol
     - psa
     - psa-cel
     - psa-mpol
