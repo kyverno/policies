@@ -22,10 +22,10 @@ spec:
            enabled: true
   matchConstraints:
         resourceRules:
-          - apiGroups: ['']
-            apiVersions: [v1]
-            operations: [CREATE, UPDATE]
-            resources: [pods]
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods", "pods/ephemeralcontainers"] 
   variables:
           - name: allContainers
             expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
