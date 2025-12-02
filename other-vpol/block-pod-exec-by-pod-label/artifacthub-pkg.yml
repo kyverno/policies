@@ -1,0 +1,22 @@
+name: block-pod-exec-by-pod-label
+version: 1.0.0
+displayName: Block Pod Exec by Pod Label in ValidatingPolicy
+description: >-
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods having the label `exec=false`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/block-pod-exec-by-pod-label/block-pod-exec-by-pod-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods having the label `exec=false`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: 6a600b7b9ddb201b36a4911443642fa0c4158499678c17d08bf285695a3c42b7
+createdAt: "2025-12-02T13:59:46Z"
