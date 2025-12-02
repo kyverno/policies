@@ -4,13 +4,12 @@ metadata:
   name: exclude-namespaces-example
 status:
   conditionStatus:
-            (conditions[?type == 'RBACPermissionsGranted']):
-            - message: Policy is ready for reporting.
-              reason: Succeeded
-              status: "True"
-            (conditions[?type == 'WebhookConfigured']):
-            - message: Webhook configured.
-              reason: Succeeded
-              status: "True"
-              type: WebhookConfigured
- 
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - message: Policy is ready for reporting.
+      reason: Succeeded
+      status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured
