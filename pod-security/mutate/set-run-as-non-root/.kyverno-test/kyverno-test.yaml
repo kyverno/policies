@@ -1,0 +1,45 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: set-run-as-non-root
+policies:
+- ../set-run-as-non-root.yaml
+resources:
+- resource.yaml
+results:
+- policy: set-run-as-non-root
+  rule: set-containers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod01
+  patchedResource: patched-resource-01.yaml
+  result: skip
+- policy: set-run-as-non-root
+  rule: set-containers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod02
+  patchedResource: patched-resource-02.yaml
+  result: pass
+- policy: set-run-as-non-root
+  rule: set-containers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod03
+  patchedResource: patched-resource-03.yaml
+  result: skip
+- policy: set-run-as-non-root
+  rule: set-containers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod04
+  patchedResource: patched-resource-04.yaml
+  result: pass
+- policy: set-run-as-non-root
+  rule: set-containers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod05
+  patchedResource: patched-resource-05.yaml
+  result: skip
+- policy: set-run-as-non-root
+  rule: set-initContainers-run-as-non-root-to-true
+  kind: Pod
+  resource: badpod06
+  patchedResource: patched-resource-06.yaml
+  result: pass
