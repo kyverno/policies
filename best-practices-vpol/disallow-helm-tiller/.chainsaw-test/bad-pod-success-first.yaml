@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03-ht
+spec:
+  containers:
+  - name: somebox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: helm-tiller
+    image: docker.io/tiller:latest
+

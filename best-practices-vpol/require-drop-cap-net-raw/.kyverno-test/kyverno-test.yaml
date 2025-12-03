@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-drop-cap-net-raw
+policies:
+- ../require-drop-cap-net-raw.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod01
+  - badpod02
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - drop-good
+  result: pass
+
