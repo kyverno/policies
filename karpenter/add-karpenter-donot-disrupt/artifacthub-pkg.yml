@@ -6,7 +6,7 @@ description: >-
   If a Pod exists with the annotation `karpenter.sh/do-not-disrupt: true` on a Node, and a request is made to delete the Node, Karpenter will not drain any Pods from that Node or otherwise try to delete the Node. This is useful for Pods that should run uninterrupted to completion. This policy mutates Jobs and CronJobs so that Pods spawned by them will contain the `karpenter.sh/do-not-disrupt: true` annotation.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/karpenter/add-karpenter-donot-disrupt/add-karpenter-do-not-disrupt.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/karpenter/add-karpenter-donot-disrupt/add-karpenter-donot-disrupt.yaml
   ```
 keywords:
   - kyverno
@@ -20,4 +20,4 @@ annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: cce9736174afeaba6059a9dc3b577f61a812637e199f0d0f5460caff78472402
+digest: 97c2cd7156ae13003509bd6322ba3cdefc87a0027098c63af4fdb65dce66c662
