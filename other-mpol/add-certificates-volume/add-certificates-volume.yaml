@@ -1,0 +1,65 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-certificates-volume
+  annotations:
+    policies.kyverno.io/title: Add Certificates as a Volume
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: Pod,Volume
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: "1.21"
+    policies.kyverno.io/minversion: 1.5.0
+    policies.kyverno.io/description: >-
+      In some cases you would need to trust custom CA certificates for all the containers of a Pod.
+      It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation.
+      This policy adds a volume to all containers in a Pod containing the certificate if the annotation
+      called `inject-certs` with value `enabled` is found.
+spec:
+  autogen:
+    podControllers:
+      controllers:
+      - daemonsets
+      - deployments
+      - jobs
+      - statefulsets
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  matchConditions:
+  - name: check-inject-certs-annotation
+    expression: 'has(object.metadata.annotations) && "inject-certs" in object.metadata.annotations && object.metadata.annotations["inject-certs"] == "enabled"'
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: |
+        Object{
+          spec: Object.spec{
+            containers: object.spec.containers.map(container, Object.spec.containers{
+              name: container.name,
+              volumeMounts: (has(container.volumeMounts) && container.volumeMounts.exists(vm, vm.name == "etc-ssl-certs")) 
+                ? container.volumeMounts 
+                : ((has(container.volumeMounts) ? container.volumeMounts : []) + [
+                    Object.spec.containers.volumeMounts{
+                      name: "etc-ssl-certs",
+                      mountPath: "/etc/ssl/certs"
+                    }
+                  ])
+            }),
+            volumes: (has(object.spec.volumes) && object.spec.volumes.exists(v, v.name == "etc-ssl-certs"))
+              ? object.spec.volumes
+              : ((has(object.spec.volumes) ? object.spec.volumes : []) + [
+                  Object.spec.volumes{
+                    name: "etc-ssl-certs",
+                    configMap: Object.spec.volumes.configMap{
+                      name: "ca-pemstore"
+                    }
+                  }
+                ])
+          }
+        }

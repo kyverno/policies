@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment
+  namespace: backup-velero-yes
+  labels:
+    app: busybox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      automountServiceAccountToken: false
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: mypvc
+      containers:
+        - name: container01
+          image: ghcr.io/kyverno/test-busybox:1.35
+          volumeMounts:
+            - mountPath: "/usr/share/nginx/html"
+              name: task-pv-storage
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob
+  namespace: backup-velero-yes
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: busybox
+        spec:
+          automountServiceAccountToken: false
+          restartPolicy: Never
+          volumes:
+            - name: task-pv-storage
+              persistentVolumeClaim:
+                claimName: mypvc
+          containers:
+            - name: container01
+              image: ghcr.io/kyverno/test-busybox:1.35
+              volumeMounts:
+                - mountPath: "/usr/share/nginx/html"
+                  name: task-pv-storage

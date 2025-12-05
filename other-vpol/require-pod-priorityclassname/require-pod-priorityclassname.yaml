@@ -29,6 +29,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: "object.spec.?priorityClassName.orValue('') != ''"
-            message: "Pods must define the priorityClassName field."
+    - expression: "object.spec.?priorityClassName.orValue('') != ''"
+      message: "Pods must define the priorityClassName field."
 

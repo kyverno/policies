@@ -27,10 +27,9 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["ingresses"]
   validations:
-          - expression: >-
-              object.metadata.?annotations[?'kubernetes.io/ingress.allow-http'].orValue('default') == 'false'
-            message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
-
-          - expression: "has(object.spec.tls)"
-            message: "TLS must be defined."
+    - expression: >-
+        object.metadata.?annotations[?'kubernetes.io/ingress.allow-http'].orValue('default') == 'false'
+      message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
+    - expression: "has(object.spec.tls)"
+      message: "TLS must be defined."
 

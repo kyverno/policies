@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      securityContext:
+        privileged: false
+        capabilities:
+          drop: 
+          - ALL
+        allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      securityContext:
+        privileged: false
+        capabilities:
+          drop: 
+          - ALL
+        allowPrivilegeEscalation: false
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox2
+      securityContext:
+        privileged: false
+        capabilities:
+          drop: 
+          - ALL
+        allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      securityContext:
+        privileged: false
+        capabilities:
+          drop: 
+          - ALL
+        allowPrivilegeEscalation: false
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox2
+      securityContext:
+        privileged: false
+        capabilities:
+          drop: 
+          - ALL
+        allowPrivilegeEscalation: false

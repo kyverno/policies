@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  containers:
+  - name: busybox
+    image: quay.io/busybox:1.35
+    env:
+    - name: FOO
+      value: bar
+    - name: K8S_IMAGE
+      value: quay.io/busybox:1.35

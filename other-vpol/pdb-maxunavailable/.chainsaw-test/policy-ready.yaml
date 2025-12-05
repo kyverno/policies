@@ -4,12 +4,13 @@ metadata:
   name: pdb-maxunavailable
 status:
   conditionStatus:
-    conditions:
-    - reason: Succeeded
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - message: Policy is ready for reporting.
+      reason: Succeeded
+      status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
       type: WebhookConfigured
-      status: "True"
-    - reason: Succeeded
-      type: RBACPermissionsGranted
-      status: "True"
-
 

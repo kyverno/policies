@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  terminationGracePeriodSeconds: 51
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+  terminationGracePeriodSeconds: 20
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35

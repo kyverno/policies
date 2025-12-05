@@ -1,0 +1,18 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: MutatingPolicy
+metadata:
+  name: add-psa-labels
+status:
+  conditionStatus:
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - message: Policy is ready for reporting.
+      reason: Succeeded
+      status: "True"
+      type: RBACPermissionsGranted
+    (length(conditions)): 2
+    ready: true
