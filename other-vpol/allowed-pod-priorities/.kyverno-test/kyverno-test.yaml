@@ -1,0 +1,55 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: allowed-pod-priorities
+policies:
+- ../allowed-pod-priorities.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/badpod01
+  - no-priority-ns/badpod02
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/goodpod01
+  - pod-priority-ns/goodpod02
+  - default/goodpod03
+  - no-priority-ns/goodpod04
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/baddeployment01
+  - pod-priority-ns/baddeployment02
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/gooddeployment01
+  - no-priority-ns/gooddeployment02
+  result: pass
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/badcronjob01
+  - pod-priority-ns/badcronjob02
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: allowed-podpriorities
+  resources:
+  - pod-priority-ns/goodcronjob01
+  - no-priority-ns/goodcronjob02
+  result: pass
+context: context.yaml
+variables: value.yaml

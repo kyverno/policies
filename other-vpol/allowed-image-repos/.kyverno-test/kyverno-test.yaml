@@ -1,0 +1,54 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: allowed-image-repos
+policies:
+- ../allowed-image-repos.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-image-repos
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-image-repos
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: allowed-image-repos
+  resources:
+  - baddeployment01
+  - baddeployment02
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: allowed-image-repos
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  result: pass
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: allowed-image-repos
+  resources:
+  - badcronjob01
+  - badcronjob02
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: allowed-image-repos
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  result: pass

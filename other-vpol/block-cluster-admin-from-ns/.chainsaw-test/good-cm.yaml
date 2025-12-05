@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: goodcm01
+  namespace: testnamespace
+data:
+  foo: bar
