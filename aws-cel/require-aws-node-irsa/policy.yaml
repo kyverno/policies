@@ -1,0 +1,29 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: require-aws-node-irsa
+  annotations:
+    policies.kyverno.io/title: Require aws-node DaemonSet use IRSA
+    policies.kyverno.io/category: AWS, EKS Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: DaemonSet
+    policies.kyverno.io/description: >-
+      Ensure the aws-node DaemonSet in kube-system does not use the "aws-node"
+      ServiceAccount (migrate to an IRSA-specific SA instead).
+spec:
+  validationActions:
+    - Audit
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   ["apps"]
+        apiVersions: ["v1"]
+        operations:  ["CREATE","UPDATE"]
+        resources:   ["daemonsets"]
+  matchConditions:
+    - name: in-kube-system
+      expression: object.metadata.namespace == "kube-system"
+    - name: is-aws-node
+      expression: object.metadata.name == "aws-node"
+  validations:
+    - message: Update the aws-node DaemonSet to use IRSA (do not use "aws-node" ServiceAccount).
+      expression: object.spec.template.spec.serviceAccountName != "aws-node"
