@@ -1,0 +1,19 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  images:
+  - image: clover/volume:passbolt
+    config:
+      Volumes:
+      - name: volume1
+  - image: ghcr.io/kyverno/test-busybox:1.35
+    config:
+      Volumes: []
+  - image: ghcr.io/kyverno/test-busybox:1.28
+    config:
+      Volumes: []
+  - image: busybox:1.35
+    config:
+      Volumes: []
