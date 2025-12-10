@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: block-pod-exec-by-pod-and-container
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../block-pod-exec-by-pod-and-container.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: chainsaw-step-02-apply-1.yaml
+    - apply:
+        file: chainsaw-step-02-apply-2.yaml
+    - apply:
+        file: chainsaw-step-02-apply-3.yaml
+    - apply:
+        file: chainsaw-step-02-apply-4.yaml
+  - name: step-03
+    try:
+    - sleep:
+        duration: 5s
+  - name: step-04
+    try:
+    - script:
+        content: if kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container
+          nginx -- ls; then exit 1;else exit 0; fi
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container busybox -- ls
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-02 --container busybox -- ls
+    - script:
+        content: kubectl exec -n bpe-podcontainer-ns not-myapp --container nginx -- ls
+  - name: step-99
+    try:
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n bpe-podcontainer-ns

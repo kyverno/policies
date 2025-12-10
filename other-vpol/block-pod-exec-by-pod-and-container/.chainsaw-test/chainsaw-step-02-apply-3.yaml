@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-maintenance-02
+  namespace: bpe-podcontainer-ns
+spec:
+  containers:
+  - command:
+    - sleep
+    - "300"
+    image: busybox:1.35
+    name: busybox
