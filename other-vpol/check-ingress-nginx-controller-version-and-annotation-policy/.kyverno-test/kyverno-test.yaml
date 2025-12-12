@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-ingress-nginx-controller-version-and-annotation-policy
+policies:
+- ../check-ingress-nginx-controller-version-and-annotation-policy.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  policy: check-ingress-nginx-controller-version-and-annotation-policy
+  resources: 
+  - bad-ingress
+  kind: Ingress
+  result: fail
+- isValidatingPolicy: true
+  policy: check-ingress-nginx-controller-version-and-annotation-policy
+  resources:
+  - good-ingress
+  kind: Ingress
+  result: pass
+- isValidatingPolicy: true
+  policy: check-ingress-nginx-controller-version-and-annotation-policy
+  resources:
+  - bad-pod
+  kind: Pod
+  result: fail
+- isValidatingPolicy: true
+  policy: check-ingress-nginx-controller-version-and-annotation-policy
+  resources:
+  - good-pod
+  kind: Pod
+  result: pass
