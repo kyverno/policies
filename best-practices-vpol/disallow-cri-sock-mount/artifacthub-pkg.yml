@@ -1,0 +1,24 @@
+name: disallow-cri-sock-mount-VPOL
+version: 1.0.0
+displayName: Disallow CRI socket mounts in VPOL
+description: >-
+  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition to or replacement of this policy, preventing users from mounting the parent directories (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-cri-sock-mount/disallow-cri-sock-mount.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - EKS Best Practices
+  - VPOL
+readme: |
+  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition to or replacement of this policy, preventing users from mounting the parent directories (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices, EKS Best Practices in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: a9c718db4fb0096d68117f1079d03bbbca949cb8b7dcc142340877bfab4947d8
+createdAt: "2025-05-05T13:19:12Z"
