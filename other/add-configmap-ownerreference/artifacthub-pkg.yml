@@ -1,0 +1,32 @@
+name: add-configmap-ownerreference
+version: 1.0.0
+displayName: Add ConfigMap Owner Reference from ReplicaSet
+createdAt: "2024-12-19T00:00:00.000Z"
+description: >-
+  When a new ReplicaSet is created (typically by updating a Deployment), 
+  this policy will automatically add an owner reference to any ConfigMaps 
+  that the ReplicaSet mounts as volumes. This ensures that ConfigMaps have 
+  proper ownership relationships with the ReplicaSets that use them, which 
+  can be useful for garbage collection, monitoring, and dependency tracking.
+  This policy requires additional RBAC permissions for Kyverno to update ConfigMaps.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-configmap-ownerreference/add-configmap-ownerreference.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  When a new ReplicaSet is created (typically by updating a Deployment), 
+  this policy will automatically add an owner reference to any ConfigMaps 
+  that the ReplicaSet mounts as volumes. This ensures that ConfigMaps have 
+  proper ownership relationships with the ReplicaSets that use them, which 
+  can be useful for garbage collection, monitoring, and dependency tracking.
+  This policy requires additional RBAC permissions for Kyverno to update ConfigMaps.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24"
+  kyverno/subject: "ReplicaSet, ConfigMap"
+digest: f3122f221e2423d9aec9839f051018fb250bb449315522169b783c8cd0106371 
