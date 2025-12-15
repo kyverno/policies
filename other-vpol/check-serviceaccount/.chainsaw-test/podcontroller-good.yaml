@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+  namespace: check-sa-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      serviceAccountName: safe
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        args:
+        - sleep
+        - "300"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+  namespace: check-sa-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: safe
+          containers:
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+            args:
+            - sleep
+            - "300"
+          restartPolicy: OnFailure
