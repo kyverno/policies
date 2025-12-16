@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+    - name: no-gpu
+      image: busybox:1.28
+      command: ["sleep","9999"]
+      resources:
+        limits:
+          nvidia.com/gpu: 1

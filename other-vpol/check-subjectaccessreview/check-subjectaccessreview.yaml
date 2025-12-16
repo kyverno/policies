@@ -1,0 +1,58 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: check-subjectaccessreview
+  annotations:
+    policies.kyverno.io/title: Check SubjectAccessReview
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: SubjectAccessReview
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.15.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      In some cases a validation check for one type of resource may need to
+      take into consideration the requesting user's permissions on a different type of resource.
+      Rather than parsing through all Roles and/or ClusterRoles to check if these permissions
+      are held, Kyverno can perform a SubjectAccessReview request to the Kubernetes API server
+      and have it figure out those permissions. This policy illustrates how to perform a POST
+      request to the API server to subject a SubjectAccessReview for a user creating/updating a
+      ConfigMap. It is intended to be used as a component in a more functional rule.
+spec:
+  evaluation:
+    background:
+      enabled: false
+  validationActions:
+    - Audit
+  variables:
+    - name: res
+      expression: >-
+        {
+          "kind": dyn("SubjectAccessReview"),
+          "apiVersion": dyn("authorization.k8s.io/v1"),
+          "spec": dyn({
+            "resourceAttributes": dyn({
+              "resource": "namespaces",
+              "namespace": string(object.metadata.namespace),
+              "verb": "delete",
+              "group": ""
+            }),
+            "user": dyn(request.userInfo.username)
+          })
+        }
+    - name: subjectaccessreview
+      expression: >-
+        resource.Post("authorization.k8s.io/v1", "subjectaccessreviews", variables.res)
+  matchConstraints:
+    resourceRules:
+      - resources:
+          - configmaps
+        operations:
+          - CREATE
+          - UPDATE
+        apiGroups:
+          - ""
+        apiVersions:
+          - v1
+  validations:
+    - message: User is not authorized.
+      expression: has(variables.subjectaccessreview.status) && variables.subjectaccessreview.status.allowed == true
