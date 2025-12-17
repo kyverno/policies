@@ -31,20 +31,16 @@ spec:
       object.spec.containers + 
       object.spec.?initContainers.orValue([]) + 
       object.spec.?ephemeralContainers.orValue([])
-
   - name: seLinuxTypes
     expression: "['container_t', 'container_init_t', 'container_kvm_t']"
-
   - name: hasValidSELinuxType
     expression: >-
       object.spec.?securityContext.?seLinuxOptions.?type.orValue('') == '' || 
       variables.seLinuxTypes.exists(type, type == object.spec.securityContext.seLinuxOptions.type)
-
   - name: hasValidSELinuxUserRole
     expression: >-
       object.spec.?securityContext.?seLinuxOptions.?user.orValue('') == '' &&
       object.spec.?securityContext.?seLinuxOptions.?role.orValue('') == ''
-
   validations:
   - expression: >-
       variables.hasValidSELinuxType &&
@@ -54,7 +50,6 @@ spec:
     message: >-
       Setting the SELinux type is restricted. The field securityContext.seLinuxOptions.type 
       must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t).
-
   - expression: >-
       variables.hasValidSELinuxUserRole &&
       variables.allContainerTypes.all(container,
