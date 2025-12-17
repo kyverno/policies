@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+context: context.yaml
+metadata:
+  name: check-hpa-exists
+policies:
+- ../check-hpa-exists.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  policy: check-hpa-exists
+  resources: 
+  - deployment-uses-hpa
+  kind: Deployment
+  result: pass
+- isValidatingPolicy: true
+  policy: check-hpa-exists
+  resources: 
+  - deployment-without-hpa
+  kind: Deployment
+  result: fail
