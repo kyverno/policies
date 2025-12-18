@@ -47,7 +47,7 @@ spec:
         emptyDir: {}
       - name: foo
         emptyDir:
-          sizeLimit: 200Mi
+          medium: Memory
       - name: foo-host
         hostPath:
           path: /var/foo
@@ -97,7 +97,7 @@ spec:
             emptyDir: {}
           - name: foo
             emptyDir:
-              sizeLimit: 200Mi
+              medium: Memory
           - name: foo-host
             hostPath:
               path: /var/foo

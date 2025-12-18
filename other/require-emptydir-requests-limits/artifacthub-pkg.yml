@@ -1,9 +1,9 @@
 name: require-emptydir-requests-limits
-version: 1.0.0
+version: 2.0.0
 displayName: Require Requests and Limits for emptyDir
 createdAt: "2023-04-10T20:30:05.000Z"
 description: >-
-  Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
+  Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume is memory-backed.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-emptydir-requests-limits/require-emptydir-requests-limits.yaml
@@ -12,11 +12,11 @@ keywords:
   - kyverno
   - Other
 readme: |
-  Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
+  Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume is memory-backed.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "Pod"
-digest: a8af8eb42f821df85d7f51626642056fc846281435926701184fe7d40f4fe497
+digest: 9794ed8e584a0b64b8db3fbf83f6f16bfc9235c367c08d69c6c33c12ab1fd3cb
