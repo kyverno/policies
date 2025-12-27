@@ -31,9 +31,9 @@ spec:
       - key: "{{request.operation || 'BACKGROUND'}}"
         operator: Equals
         value: UPDATE
-      - key: "{{request.object.metadata.labels.foo || '' }}"
-        operator: Equals
-        value: "?*"
+      - key: "{{ 'foo' in request.object.metadata.labels.keys(@) }}"
+        operator: NotEquals
+        value: "{{ 'foo' in request.oldObject.metadata.labels.keys(@) }}"
     validate:
       message: "Setting the `foo` label on a Node is not allowed."
       deny: {}
