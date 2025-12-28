@@ -19,7 +19,7 @@ spec:
           metadata:
             name: disallow-proc-mount
           spec:
-            validationActions: 
+            validationActions:
              - Deny
     - assert:
         file: policy-ready.yaml
@@ -27,9 +27,9 @@ spec:
         duration: 10s
   - name: step-02
     try:
-    - apply:
+    - create:
         file: pod-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
