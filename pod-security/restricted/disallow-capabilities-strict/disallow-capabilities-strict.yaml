@@ -36,9 +36,12 @@ spec:
             deny:
               conditions:
                 all:
-                - key: ALL
+                - key: "{{ element.securityContext.capabilities.drop[] || `[]` }}"
                   operator: AnyNotIn
-                  value: "{{ element.securityContext.capabilities.drop[] || `[]` }}"
+                  value: 
+                  - ALL
+                  - All
+                  - all
     - name: adding-capabilities-strict
       match:
         any:
