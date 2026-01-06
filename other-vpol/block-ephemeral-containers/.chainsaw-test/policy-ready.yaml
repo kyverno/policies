@@ -4,12 +4,12 @@ metadata:
   name: block-ephemeral-containers
 status:
   conditionStatus:
-            (conditions[?type == 'RBACPermissionsGranted']):
-            - reason: Failed
-              status: "False"
-            (conditions[?type == 'WebhookConfigured']):
-            - message: Webhook configured.
-              reason: Succeeded
-              status: "True"
-              type: WebhookConfigured
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Failed
+      status: "False"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured
  

@@ -26,7 +26,7 @@ spec:
       resources:   ["pods"]
   validations:
     - expression: >-
-              !object.spec.containers.exists(container, 
-              container.?resources.?limits.?cpu.hasValue())
+        !object.spec.containers.exists(container, 
+        container.?resources.?limits.?cpu.hasValue())
       message: Containers may not define CPU limits.
 

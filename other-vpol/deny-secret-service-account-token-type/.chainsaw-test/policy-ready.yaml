@@ -3,13 +3,13 @@ kind: ValidatingPolicy
 metadata:
   name: deny-secret-service-account-token-type
 status:
-    conditionStatus:
-      conditions:
-      - reason: Succeeded
-        status: "True"
-        type: WebhookConfigured
-      - reason: Failed
-        status: "False"
-        type: RBACPermissionsGranted
-      
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Failed
+      status: "False"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured   
     

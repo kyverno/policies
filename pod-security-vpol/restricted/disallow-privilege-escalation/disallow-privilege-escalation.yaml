@@ -26,15 +26,15 @@ spec:
         operations:  ["CREATE", "UPDATE"]
         resources:   ["pods"]
   variables:
-      - name: allContainers
-        expression: >-
-         object.spec.containers + 
-         object.spec.?initContainers.orValue([]) + 
-         object.spec.?ephemeralContainers.orValue([])
+    - name: allContainers
+      expression: >-
+        object.spec.containers + 
+        object.spec.?initContainers.orValue([]) + 
+        object.spec.?ephemeralContainers.orValue([])
   validations:
-     - expression: >- 
+    - expression: >- 
         variables.allContainers.all(container, 
         container.?securityContext.allowPrivilegeEscalation.orValue(true) == false)
-       message: >-
-         Privilege escalation is disallowed. 
-         All containers must set the securityContext.allowPrivilegeEscalation field to `false`.
+      message: >-
+        Privilege escalation is disallowed. 
+        All containers must set the securityContext.allowPrivilegeEscalation field to `false`.
