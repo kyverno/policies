@@ -1,0 +1,24 @@
+name: require-pod-requests-limits-VPOL
+version: 1.0.0
+displayName: Require Limits and Requests in VPOL
+description: >-
+  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that all containers have something specified for memory and CPU requests and memory limits.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/require-pod-requests-limits/require-pod-requests-limits.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - EKS Best Practices
+  - VPOL
+readme: |
+  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that all containers have something specified for memory and CPU requests and memory limits.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices, EKS Best Practices in VPOL"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: a0a783cd8b8b29fd2f574ff3b06cd689418e01a90728fb9c4c80a07ab17a122b
+createdAt: "2025-05-05T13:19:12Z"

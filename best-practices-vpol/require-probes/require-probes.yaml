@@ -1,0 +1,39 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: require-pod-probes
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
+    policies.kyverno.io/title: Require Pod Probes in VPOL
+    policies.kyverno.io/category: Best Practices, EKS Best Practices in VPOL
+    policies.kyverno.io/minversion: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Liveness and readiness probes need to be configured to correctly manage a Pod's
+      lifecycle during deployments, restarts, and upgrades. For each Pod, a periodic
+      `livenessProbe` is performed by the kubelet to determine if the Pod's containers
+      are running or need to be restarted. A `readinessProbe` is used by Services
+      and Deployments to determine if the Pod is ready to receive network traffic.
+      This policy validates that all containers have one of livenessProbe, readinessProbe,
+      or startupProbe defined.
+spec:
+  validationActions: [Audit]
+  evaluation: 
+     background: 
+           enabled: true
+  matchConstraints:
+        resourceRules:
+          - apiGroups: ['']
+            apiVersions: [v1]
+            operations: [CREATE, UPDATE]
+            resources: [pods]
+  validations:
+          - expression: >-
+              object.spec.containers.all(container,
+              has(container.livenessProbe) || 
+              has(container.startupProbe) || 
+              has(container.readinessProbe))
+            message: "Liveness, readiness, or startup probes are required for all containers."
+

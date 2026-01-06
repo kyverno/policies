@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-helm-tiller
+policies:
+- ../disallow-helm-tiller.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-helm-tiller
+  resources:
+  - baddeployment01
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
+  - badpod01
+  - badpod02
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-helm-tiller
+  resources:
+  - gooddeployment01
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
+  - goodpod01
+  - goodpod02
+  result: pass
+
