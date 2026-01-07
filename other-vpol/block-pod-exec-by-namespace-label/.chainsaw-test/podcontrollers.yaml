@@ -1,0 +1,103 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+  namespace: pod-exec-label-ns01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb
+        image: busybox:1.35
+        command: ["sleep", "300"]
+      - name: bb2
+        image: busybox:1.35
+        command: ["sleep", "300"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment02
+  namespace: pod-exec-label-ns02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb
+        image: busybox:1.35
+        command: ["sleep", "300"]
+      - name: bb2
+        image: busybox:1.35
+        command: ["sleep", "300"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment03
+  namespace: pod-exec-label-ns03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb
+        image: busybox:1.35
+        command: ["sleep", "300"]
+      - name: bb2
+        image: busybox:1.35
+        command: ["sleep", "300"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment04
+  namespace: pod-exec-label-ns04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: bb
+        image: busybox:1.35
+        command: ["sleep", "300"]
+      - name: bb2
+        image: busybox:1.35
+        command: ["sleep", "300"]

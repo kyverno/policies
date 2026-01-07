@@ -1,0 +1,33 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: block-updates-deletes
+  annotations:
+    policies.kyverno.io/title: Block Updates and Deletes
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/subject: RBAC
+    policies.kyverno.io/description: >-
+      Kubernetes RBAC allows for controls on kinds of resources or those
+      with specific names. But it does not have the type of granularity often
+      required in more complex environments. This policy restricts updates and deletes to any
+      Service resource that contains the label `protected=true` unless by
+      a cluster-admin.
+spec:
+  evaluation:
+    background:
+      enabled: false
+  validationActions: ["Deny"]
+  variables:
+  - name: isProtectedService
+    expression: "oldObject.metadata.?labels.?protected.orValue('') == 'true'"
+  - name: hasClusterAdminRole
+    expression: "request.userInfo.groups.exists(group, group == 'system:masters') || request.userInfo.groups.exists(group, group.contains('cluster-admin'))"
+  matchConstraints:
+    resourceRules:
+    - resources: ["services"]
+      operations: ["DELETE", "UPDATE"]
+      apiGroups: [""]
+      apiVersions: ["v1"]
+  validations:
+  - message: "This resource is protected and changes are not allowed. Please seek a cluster-admin."
+    expression: "!(variables.isProtectedService && !variables.hasClusterAdminRole)"

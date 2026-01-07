@@ -24,9 +24,9 @@ spec:
         file: policy-ready.yaml
   - name: step-02
     try:
-    - apply:
+    - create:
         file: pod-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
