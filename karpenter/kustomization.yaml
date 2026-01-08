@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./add-karpenter-daemonset-priority-class/add-karpenter-daemonset-priority-class.yaml
+  - ./add-karpenter-donot-evict/add-karpenter-donot-evict.yaml
+  - ./add-karpenter-nodeselector/add-karpenter-nodeselector.yaml
+  - ./set-karpenter-non-cpu-limits/set-karpenter-non-cpu-limits.yaml

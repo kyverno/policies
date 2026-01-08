@@ -1,0 +1,14 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./kasten-3-2-1-backup/kasten-3-2-1-backup.yaml
+  - ./kasten-data-protection-by-label/kasten-data-protection-by-label.yaml
+  - ./kasten-generate-example-backup-policy/kasten-generate-example-backup-policy.yaml
+  - ./kasten-generate-policy-by-preset-label/kasten-generate-policy-by-preset-label.yaml
+  - ./kasten-hourly-rpo/kasten-hourly-rpo.yaml
+  - ./kasten-immutable-location-profile/kasten-immutable-location-profile.yaml
+  - ./kasten-minimum-retention/kasten-minimum-retention.yaml
+  - ./kasten-validate-ns-by-preset-label/kasten-validate-ns-by-preset-label.yaml
