@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+    - name: busybox
+      image: busybox:1.28
+      command: ["sleep","9999"]

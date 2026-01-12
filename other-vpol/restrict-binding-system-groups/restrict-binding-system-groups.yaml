@@ -28,10 +28,10 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["rolebindings", "clusterrolebindings"]
   validations:
-            - expression: "object.subjects.all(subject, subject.name != 'system:anonymous')"
-              message: "Binding to system:anonymous is not allowed."
-            - expression: "object.subjects.all(subject, subject.name != 'system:unauthenticated')"
-              message: "Binding to system:unauthenticated is not allowed."
-            - expression: "object.subjects.all(subject, subject.name != 'system:masters')"
-              message: "Binding to system:masters is not allowed."
+    - expression: "object.subjects.all(subject, subject.name != 'system:anonymous')"
+      message: "Binding to system:anonymous is not allowed."
+    - expression: "object.subjects.all(subject, subject.name != 'system:unauthenticated')"
+      message: "Binding to system:unauthenticated is not allowed."
+    - expression: "object.subjects.all(subject, subject.name != 'system:masters')"
+      message: "Binding to system:masters is not allowed."
             

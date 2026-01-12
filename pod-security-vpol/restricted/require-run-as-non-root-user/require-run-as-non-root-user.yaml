@@ -37,7 +37,6 @@ spec:
     message: >-
       Running as root is not allowed. The field spec.securityContext.runAsUser 
       must be unset or set to a number greater than zero.
-
   - expression: >-
       variables.allContainers.all(container, 
         container.?securityContext.?runAsUser.orValue(1) > 0)

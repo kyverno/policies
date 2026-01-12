@@ -31,14 +31,14 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: >-
-              object.spec.containers.all(container,
-              has(container.resources) &&
-              container.resources.?requests.orValue({}).?cpu.hasValue() &&
-              container.resources.?requests.orValue({}).?memory.hasValue() &&
-              container.resources.?limits.orValue({}).?cpu.hasValue() &&
-              container.resources.?limits.orValue({}).?memory.hasValue() &&
-              container.resources.requests.orValue({}).cpu == container.resources.limits.orValue({}).cpu &&
-              container.resources.requests.orValue({}).memory == container.resources.limits.orValue({}).memory)
-            message: "All containers must define memory and CPU requests and limits where they are equal."
+    - expression: >-
+        object.spec.containers.all(container,
+        has(container.resources) &&
+        container.resources.?requests.orValue({}).?cpu.hasValue() &&
+        container.resources.?requests.orValue({}).?memory.hasValue() &&
+        container.resources.?limits.orValue({}).?cpu.hasValue() &&
+        container.resources.?limits.orValue({}).?memory.hasValue() &&
+        container.resources.requests.orValue({}).cpu == container.resources.limits.orValue({}).cpu &&
+        container.resources.requests.orValue({}).memory == container.resources.limits.orValue({}).memory)
+      message: "All containers must define memory and CPU requests and limits where they are equal."
 

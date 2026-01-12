@@ -27,11 +27,11 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-          - name: hasDockerSocket
-            expression: "object.spec.?volumes.orValue([]).exists(volume, volume.?hostPath.?path.orValue('') == '/var/run/docker.sock')"
-          - name: isAllowDockerLabelTrue
-            expression: "object.metadata.?labels[?'allow-docker'].orValue('false') == 'true'"
+    - name: hasDockerSocket
+      expression: "object.spec.?volumes.orValue([]).exists(volume, volume.?hostPath.?path.orValue('') == '/var/run/docker.sock')"
+    - name: isAllowDockerLabelTrue
+      expression: "object.metadata.?labels[?'allow-docker'].orValue('false') == 'true'"
   validations:
-          - expression: "!variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
-            message: "If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`."
+    - expression: "!variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
+      message: "If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`."
 

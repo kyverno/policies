@@ -30,6 +30,6 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["ingresses"]
   validations:
-       - expression: "!has(object.spec.defaultBackend)"
-         message: Setting the defaultBackend field is prohibited.
+    - expression: "!has(object.spec.defaultBackend)"
+      message: Setting the defaultBackend field is prohibited.
 

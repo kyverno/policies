@@ -27,37 +27,36 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["ingresses"]
   variables:
-        - name: allpaths
-          expression: >-
-            resource.List("networking.k8s.io/v1", "ingresses", "" ).items
-        - name: nspath
-          expression: >-
-            resource.List("networking.k8s.io/v1", "ingresses", object.metadata.namespace ).items    
+    - name: allpaths
+      expression: >-
+        resource.List("networking.k8s.io/v1", "ingresses", "" ).items
+    - name: nspath
+      expression: >-
+        resource.List("networking.k8s.io/v1", "ingresses", object.metadata.namespace ).items    
   validations:
     - expression: >-
-            !object.spec.rules.orValue([]).exists(rule, 
-                rule.http.paths.orValue([]).exists(path, 
-                  (
-                    variables.allpaths.orValue([]).exists(existing_ingress, 
-                      existing_ingress.spec.rules.orValue([]).exists(existing_rule, 
-                        existing_rule.http.paths.orValue([]).exists(existing_path, 
-                          existing_path.path == path.path 
-                        )
-                      )
+        !object.spec.rules.orValue([]).exists(rule, 
+            rule.http.paths.orValue([]).exists(path, 
+              (
+                variables.allpaths.orValue([]).exists(existing_ingress, 
+                  existing_ingress.spec.rules.orValue([]).exists(existing_rule, 
+                    existing_rule.http.paths.orValue([]).exists(existing_path, 
+                      existing_path.path == path.path 
                     )
-                    &&
-                   ! variables.nspath.orValue([]).exists(existing_ingress, 
-                            existing_ingress.metadata.namespace != object.metadata.namespace &&
+                  )
+                )
+                &&
+                ! variables.nspath.orValue([]).exists(existing_ingress, 
+                        existing_ingress.metadata.namespace != object.metadata.namespace &&
 
-                      existing_ingress.spec.rules.orValue([]).exists(existing_rule, 
-                        existing_rule.http.paths.orValue([]).exists(existing_path, 
-                       existing_path.path == path.path
-                        )
-                      )
+                  existing_ingress.spec.rules.orValue([]).exists(existing_rule, 
+                    existing_rule.http.paths.orValue([]).exists(existing_path, 
+                    existing_path.path == path.path
                     )
                   )
                 )
               )
-
+            )
+          )
       message: >-
         The root path already exists in the cluster but not in the namespace.

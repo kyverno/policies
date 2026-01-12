@@ -28,20 +28,20 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   matchConditions:
-        - name: has-emptydir-volume
-          expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.emptyDir))"
+    - name: has-emptydir-volume
+      expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.emptyDir))"
   variables:
-            - name: containers
-              expression: "object.spec.containers + object.spec.?initContainers.orValue([])"
-            - name: emptydirnames
-              expression: >-
-                object.spec.volumes.orValue([]).filter(volume, has(volume.emptyDir) && !has(volume.emptyDir.sizeLimit)).map(volume, volume.name)
+    - name: containers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([])"
+    - name: emptydirnames
+      expression: >-
+        object.spec.volumes.orValue([]).filter(volume, has(volume.emptyDir) && !has(volume.emptyDir.sizeLimit)).map(volume, volume.name)
   validations:
-            - expression: >-
-                variables.containers.all(container,
-                !container.?volumeMounts.orValue([]).exists(mount, mount.name in variables.emptydirnames) || 
-                container.resources.?requests[?'ephemeral-storage'].hasValue() &&
-                container.resources.?limits[?'ephemeral-storage'].hasValue())
-              message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
+    - expression: >-
+        variables.containers.all(container,
+        !container.?volumeMounts.orValue([]).exists(mount, mount.name in variables.emptydirnames) || 
+        container.resources.?requests[?'ephemeral-storage'].hasValue() &&
+        container.resources.?limits[?'ephemeral-storage'].hasValue())
+      message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
 
 

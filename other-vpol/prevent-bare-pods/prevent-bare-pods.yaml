@@ -31,6 +31,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: "'ownerReferences' in object.metadata"
-            message: "Bare Pods are not allowed. They must be created by Pod controllers."
+    - expression: "'ownerReferences' in object.metadata"
+      message: "Bare Pods are not allowed. They must be created by Pod controllers."
 

@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: allowed-base-images
+  annotations:
+    policies.kyverno.io/title: Allowed Base Images
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.15.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Building images which specify a base as their origin is a good start
+      to improving supply chain security, but over time organizations
+      may want to build an allow list of specific base images which
+      are allowed to be used when constructing containers. This policy ensures
+      that a container's base, found in an OCI annotation, is in a cluster-wide
+      allow list.
+spec:
+  evaluation:
+    background:
+      enabled: false
+  validationActions: ["Warn", "Audit"]
+  variables:
+    - name: baseImageConfigMap
+      expression: 'resource.Get("v1", "configmaps", "platform", "baseimages")'
+    - name: allowedBaseImages
+      expression: 'variables.baseImageConfigMap.data.?allowedbaseimages.orValue("").split(",").filter(img, img.trim() != "")'
+    - name: allContainers
+      expression: 'object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])'
+  matchConstraints:
+    resourceRules:
+      - resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+  validations:
+    - expression: |
+        variables.allContainers.all(container, 
+          has(image.GetMetadata(container.image).manifest.annotations) && 
+          image.GetMetadata(container.image).manifest.annotations != null && 
+          'org.opencontainers.image.base.name' in image.GetMetadata(container.image).manifest.annotations && 
+          image.GetMetadata(container.image).manifest.annotations['org.opencontainers.image.base.name'] in variables.allowedBaseImages
+        )

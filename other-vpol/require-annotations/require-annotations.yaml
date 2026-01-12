@@ -27,7 +27,7 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: >-
-              object.metadata.?annotations[?'corp.org/department'].orValue('') != ''
-            message: "The annotation `corp.org/department` is required."
+    - expression: >-
+        object.metadata.?annotations[?'corp.org/department'].orValue('') != ''
+      message: "The annotation `corp.org/department` is required."
 

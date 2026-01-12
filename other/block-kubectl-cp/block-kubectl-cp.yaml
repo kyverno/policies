@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: block-kubectl-cp-by-pod-label
   annotations:
-    policies.kyverno.io/title: Block "kubectl cp" by Pod Label
+    policies.kyverno.io/title: Block kubectl cp command by Pod Label
     policies.kyverno.io/category: Sample
     policies.kyverno.io/minversion: 1.6.0
     policies.kyverno.io/subject: Pod

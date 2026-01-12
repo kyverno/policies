@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kyverno
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kyverno
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: kyverno
+    spec:
+      containers:
+        - name: kv-01
+          image: ghcr.io/kyverno/test-busybox:1.35
+        - name: kv-02
+          image: ghcr.io/dlorenc/hello-ko:latest
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:  
+            foo: bar
+        spec:
+          containers:
+          - name: hello
+            image: ghcr.io/dlorenc/hello-ko:latest
+            imagePullPolicy: IfNotPresent
+          - name: hello02
+            image: ghcr.io/kyverno/test-busybox:1.35
+            imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure

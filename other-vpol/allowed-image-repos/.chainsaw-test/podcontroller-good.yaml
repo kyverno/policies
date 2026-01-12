@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment01
+  namespace: allowed-image-repos-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      initContainers:
+      - name: bb-01-init
+        image: myknownimage
+      containers:
+      - name: bb-01
+        image: kyverno
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: gooddeployment02
+  namespace: allowed-image-repos-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      initContainers:
+      - name: bb01-init
+        image: kyverno
+      containers:
+      - name: bb-01
+        image: myknownimage
+      - name: bb-02
+        image: kyverno
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+  namespace: allowed-image-repos-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: bb-01-init
+            image: myknownimage
+          containers:
+            - name: bb-01
+              image: kyverno
+          restartPolicy: OnFailure
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+  namespace: allowed-image-repos-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: bb01-init
+            image: kyverno
+          containers:
+          - name: bb-01
+            image: myknownimage
+          - name: bb-02
+            image: kyverno
+          restartPolicy: OnFailure

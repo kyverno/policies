@@ -26,6 +26,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: "object.spec.containers.all(container, container.image.contains('@'))"
-            message: "Images must use checksums rather than tags."
+    - expression: "object.spec.containers.all(container, container.image.contains('@'))"
+      message: "Images must use checksums rather than tags."
 

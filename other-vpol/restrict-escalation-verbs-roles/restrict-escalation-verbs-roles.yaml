@@ -27,18 +27,18 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["roles", "clusterroles"]
   variables:
-            - name: apiGroups
-              expression: "['*', 'rbac.authorization.k8s.io']"
-            - name: resources
-              expression: "['*', 'clusterroles', 'roles']"
-            - name: verbs
-              expression: "['*', 'bind', 'escalate', 'impersonate']"
+    - name: apiGroups
+      expression: "['*', 'rbac.authorization.k8s.io']"
+    - name: resources
+      expression: "['*', 'clusterroles', 'roles']"
+    - name: verbs
+      expression: "['*', 'bind', 'escalate', 'impersonate']"
   validations:
-            - expression: >-
-                object.rules == null || 
-                !object.rules.exists(rule,
-                rule.apiGroups.exists(apiGroup, apiGroup in variables.apiGroups) &&
-                rule.resources.exists(resource, resource in variables.resources) &&
-                rule.verbs.exists(verb, verb in variables.verbs))
-              message: "Use of verbs `escalate`, `bind`, and `impersonate` are forbidden."
+    - expression: >-
+        object.rules == null || 
+        !object.rules.exists(rule,
+        rule.apiGroups.exists(apiGroup, apiGroup in variables.apiGroups) &&
+        rule.resources.exists(resource, resource in variables.resources) &&
+        rule.verbs.exists(verb, verb in variables.verbs))
+      message: "Use of verbs `escalate`, `bind`, and `impersonate` are forbidden."
 

@@ -27,6 +27,6 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-          - expression: "size(object.spec.containers) <= 4"
-            message: "Pods can only have a maximum of 4 containers."
+    - expression: "size(object.spec.containers) <= 4"
+      message: "Pods can only have a maximum of 4 containers."
 

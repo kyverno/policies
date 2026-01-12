@@ -1,0 +1,39 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: allowed-image-repos
+  annotations:
+    policies.kyverno.io/title: Allowed Image Repositories
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.14.0
+    policies.kyverno.io/minversion: 1.14.0
+    kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      In addition to restricting the image registry from which images are pulled, in some cases
+      and environments it may be required to also restrict which image repositories are used, 
+      for example in some restricted Namespaces. This policy ensures that the only allowed
+      image repositories present in a given Pod, across any container type, come from the
+      designated list.
+spec:
+  evaluation:
+    background:
+      enabled: false
+  validationActions: ["Warn", "Audit"]
+  variables:
+    - name: allContainers
+      expression: 'object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])'
+    - name: allowedRepos
+      expression: '["myknownimage", "kyverno"]'
+  matchConstraints:
+    resourceRules:
+      - resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+  validations:
+    - messageExpression: |
+        'All images in this Pod must come from an authorized repository. Allowed repositories: ' + variables.allowedRepos.join(', ') + '. Found unauthorized images: ' + variables.allContainers.filter(container, !variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo)).map(container, container.image).join(', ')
+      expression: |
+        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo))

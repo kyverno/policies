@@ -29,10 +29,10 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["deployments", "statefulsets"]
   matchConditions:
-        - name: "replicas-must-be-3-or-more"
-          expression: "object.spec.replicas >= 3"
+    - name: "replicas-must-be-3-or-more"
+      expression: "object.spec.replicas >= 3"
   validations:
-            - expression: >-
-                size(object.spec.template.spec.?topologySpreadConstraints.orValue([]).filter(t, t.topologyKey == 'kubernetes.io/hostname' || t.topologyKey == 'topology.kubernetes.io/zone')) == 2
-              message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
+    - expression: >-
+        size(object.spec.template.spec.?topologySpreadConstraints.orValue([]).filter(t, t.topologyKey == 'kubernetes.io/hostname' || t.topologyKey == 'topology.kubernetes.io/zone')) == 2
+      message: "topologySpreadConstraint for kubernetes.io/hostname & topology.kubernetes.io/zone are required"
 

@@ -1,0 +1,34 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: block-kubectl-cp
+  annotations:
+    policies.kyverno.io/title: Block kubectl cp command by Pod Label
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/minversion: 1.15.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The kubectl cp command is used to copy files between a local machine and a Pod's container. 
+      While this functionality is useful for transferring data, it may introduce security risks, 
+      such as unauthorized data exfiltration or modification. This policy blocks the use of the 
+      kubectl cp command on all Pods with label `block-kubectl-cp=true`, ensuring that sensitive 
+      workloads are protected from unintended file transfers. Other kubectl operations are unaffected, 
+      allowing for normal Pod management while preventing potential misuse of file copy capabilities.
+spec:
+  evaluation:
+    background:
+      enabled: true
+  validationActions: ["Deny"]
+  matchConstraints:
+    resourceRules:
+      - resources: ["pods/exec"]
+        operations: ["CONNECT"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+  validations:
+    - message: >
+        Cannot use `kubectl cp` on pods
+      expression: >
+        object.command.size() >= 2
+        && object.command[0] != "tar"
+        && object.command[1] != "cf"
