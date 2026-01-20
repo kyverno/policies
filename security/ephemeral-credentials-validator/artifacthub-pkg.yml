@@ -1,0 +1,36 @@
+version: 0.1.0
+name: simple-ttl-validator
+title: Simple TTL Validator
+description: Ensures all Kubernetes Secrets have a TTL annotation for proper credential lifecycle management.
+keywords:
+  - secrets
+  - ttl
+  - ephemeral
+  - credentials
+  - rotation
+home: https://kyverno.io
+sources:
+  - https://github.com/kyverno/policies/tree/main/security/ephemeral-credentials-validator
+install: |
+  ```sh
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/security/ephemeral-credentials-validator/simple-policy.yaml
+  ```
+maintainers:
+  - name: Kyverno Community
+    email: kyverno@googlegroups.com
+provider:
+  name: Kyverno Community
+license: Apache-2.0
+dependencies:
+  - name: kyverno
+    version: ">1.8.0"
+annotations:
+  category: security
+  policy/severity: medium
+  policy/subject: Secret
+  policy/validationFailureAction: audit
+  policy/description: >-
+    This policy ensures that all Kubernetes Secrets have a Time-to-Live (TTL) 
+    annotation to enforce credential lifecycle management. This helps reduce 
+    security risks associated with long-lived credentials and ensures proper 
+    rotation practices. 
