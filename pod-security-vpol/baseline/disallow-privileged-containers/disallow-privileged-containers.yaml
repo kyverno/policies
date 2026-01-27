@@ -28,9 +28,9 @@ spec:
   variables:
   - name: allContainers
     expression: >-
-        object.spec.containers + 
-        object.spec.?initContainers.orValue([]) + 
-        object.spec.?ephemeralContainers.orValue([])
+      object.spec.containers + 
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
   validations:
     - expression: "variables.allContainers.all(container, container.?securityContext.?privileged.orValue(false) == false)"
       message: "Privileged mode is disallowed. All containers must set the securityContext.privileged field to `false` or unset the field."

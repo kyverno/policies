@@ -1,0 +1,22 @@
+name: check-hpa-exists
+version: 1.0.0
+displayName: Ensure HPA for Deployments in ValidatingPolicy
+description: >-
+  This policy ensures that Deployments, ReplicaSets, StatefulSets, and DaemonSets are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the resource and denies the creation or update of the resource if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/check-hpa-exists/check-hpa-exists.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  This policy ensures that Deployments, ReplicaSets, StatefulSets, and DaemonSets are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the resource and denies the creation or update of the resource if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Deployment,ReplicaSet,StatefulSet,DaemonSet"
+digest: 875f1e82e9add601e313d8c59e8d687eeffb6f5d58a8b49959dc2b61927bc792
+createdAt: "2025-12-12T14:35:08Z"

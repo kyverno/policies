@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo
+  annotations:
+    nginx.ingress.kubernetes.io/auth-tls-verify-client: "on"
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: test.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-service
+            port:
+              number: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ingress-nginx-controller-6bbf7f5879-bvh6l
+spec:
+  containers:
+  - name: controller
+    image: registry.k8s.io/ingress-nginx/controller:v1.11.2

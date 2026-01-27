@@ -31,14 +31,12 @@ spec:
       object.spec.containers + 
       (object.spec.?initContainers.orValue([])) + 
       (object.spec.?ephemeralContainers.orValue([]))
-
   validations:
   - expression: >-
       variables.allContainers.all(container, 
       container.?securityContext.?capabilities.?drop.orValue([]).exists_one(capability, capability == 'ALL'))
     message: >-
       Containers must drop `ALL` capabilities.
-
   - expression: >-
       variables.allContainers.all(container, 
         container.?securityContext.?capabilities.?add.orValue([]).size() == 0 || 

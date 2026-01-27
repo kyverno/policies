@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: baddeployment01
+  namespace: nvidia-gpu-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        resources:
+          limits:
+            cpu: "0.5"
+            nvidia.com/gpu: 1
+      - name: cuda
+        image: nvidia/cuda:12.2.0-devel-ubi8
+        command: ["nvidia-smi"]
+        resources:
+          limits:
+            cpu: "0.5"
+            nvidia.com/gpu: 1
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+  namespace: nvidia-gpu-ns
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: cuda
+            image: nvidia/cuda:12.2.0-devel-ubi8
+            command: ["nvidia-smi"]
+            resources:
+              limits:
+                cpu: "0.5"
+                nvidia.com/gpu: 1
+          - image: ghcr.io/kyverno/test-busybox:1.35
+            name: busybox
+            resources:
+              limits:
+                cpu: "0.5"
+                nvidia.com/gpu: 1
+          restartPolicy: OnFailure

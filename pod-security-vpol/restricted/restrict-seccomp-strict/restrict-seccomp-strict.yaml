@@ -31,14 +31,13 @@ spec:
   variables:
   - name: allContainers
     expression: >-
-        object.spec.containers + 
-        object.spec.?initContainers.orValue([]) + 
-        object.spec.?ephemeralContainers.orValue([])
-
+      object.spec.containers + 
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
   validations:
   - expression: >- 
       object.spec.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost']
       && variables.allContainers.all(container, 
-        container.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost'])
+      container.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost'])
     message: >-
       seccompProfile.type must be either 'RuntimeDefault' or 'Localhost'.

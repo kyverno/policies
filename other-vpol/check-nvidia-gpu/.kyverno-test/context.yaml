@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  images:
+  - image: busybox:1.28
+    config:
+      architecture: amd64
+      Env:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+  - image: nvidia/cuda:12.2.0-devel-ubi8
+    config:
+      architecture: amd64
+      Env:
+      - PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin
+      - NVIDIA_VISIBLE_DEVICES=all
