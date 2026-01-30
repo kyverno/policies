@@ -1,0 +1,3 @@
+securityContext:
+  appArmorProfile:
+    type: Unconfined
