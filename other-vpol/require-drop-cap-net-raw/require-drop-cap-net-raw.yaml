@@ -1,0 +1,47 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: drop-cap-net-raw
+  annotations:
+    policies.kyverno.io/title: Drop CAP_NET_RAW
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/minversion: "1.15.0"
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Capabilities permit privileged actions without giving full root access. The
+      CAP_NET_RAW capability, enabled by default, allows processes in a container to
+      forge packets and bind to any interface potentially leading to MitM attacks.
+      This policy ensures that all containers explicitly drop the CAP_NET_RAW
+      ability. Note that this policy also illustrates how to cover drop entries in any
+      case although this may not strictly conform to the Pod Security Standards.
+spec:
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["pods"]
+      operations: ["CREATE", "UPDATE"]
+  validationActions: ["Audit"]
+  validations:
+  - expression: "variables.containersWithoutNetRawDrop.size() == 0"
+    messageExpression: >-
+      size(variables.containersWithoutNetRawDrop) > 0 ?
+      'Containers must drop the `CAP_NET_RAW` capability. Missing in containers: ' + 
+      variables.containersWithoutNetRawDrop.map(c, c.name).join(', ') :
+      'Containers must drop the `CAP_NET_RAW` capability'
+  variables:
+  - name: allContainers
+    expression: >-
+      object.spec.containers + 
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
+  - name: containersWithoutNetRawDrop
+    expression: >-
+      variables.allContainers.filter(container, 
+        !container.?securityContext.?capabilities.?drop.orValue([])
+        .exists(cap, cap.upperAscii() == 'CAP_NET_RAW' || cap.upperAscii() == 'NET_RAW')
+      )

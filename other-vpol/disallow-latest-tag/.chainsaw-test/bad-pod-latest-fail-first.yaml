@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-latest
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:latest
+  - name: nginx
+    image: ghcr.io/kyverno/test-nginx:1.35
+  initContainers:
+  - name: busyboxinit
+    image: ghcr.io/kyverno/test-busybox:latest
+  - name: nginxinit
+    image: ghcr.io/kyverno/test-nginx:1.35

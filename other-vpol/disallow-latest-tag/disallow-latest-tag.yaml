@@ -1,0 +1,53 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-latest-tag
+  annotations:
+    policies.kyverno.io/title: Disallow Latest Tag
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/minversion: "1.15.0"
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      The ':latest' tag is mutable and can lead to unexpected errors if the
+      image changes. A best practice is to use an immutable tag that maps to
+      a specific version of an application Pod. This policy validates that the image
+      specifies a tag and that it is not called `latest`.
+spec:
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["pods"]
+      operations: ["CREATE", "UPDATE"]
+  validationActions: ["Audit"]
+  validations:
+  - expression: "variables.allContainers.all(container, container.image.contains(':'))"
+    messageExpression: >-
+      size(variables.untaggedImages) > 0 ? 
+      'An image tag is required. Found images without tags: ' + variables.untaggedImages.join(', ') :
+      'An image tag is required'
+  - expression: "variables.allContainers.all(container, !container.image.endsWith(':latest'))"
+    messageExpression: >-
+      size(variables.latestImages) > 0 ?
+      'Using a mutable image tag e.g. \"latest\" is not allowed. Found images with latest tag: ' + variables.latestImages.join(', ') :
+      'Using a mutable image tag e.g. \"latest\" is not allowed'
+  variables:
+  - name: allContainers
+    expression: >-
+      object.spec.containers + 
+      object.spec.?initContainers.orValue([]) + 
+      object.spec.?ephemeralContainers.orValue([])
+  - name: untaggedImages
+    expression: >-
+      variables.allContainers
+      .filter(container, !container.image.contains(':'))
+      .map(container, container.image)
+  - name: latestImages
+    expression: >-
+      variables.allContainers
+      .filter(container, container.image.endsWith(':latest'))
+      .map(container, container.image)
