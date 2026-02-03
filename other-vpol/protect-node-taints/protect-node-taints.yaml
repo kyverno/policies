@@ -1,0 +1,39 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/description: Block unauthorized modifications to Node taints to maintain multi-tenant scheduling controls and prevent workload interference. Only cluster-admin users can modify Node taints.
+    policies.kyverno.io/minversion: 1.15.0
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Node
+    policies.kyverno.io/title: Protect Node Taints
+  name: protect-node-taints
+spec:
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - UPDATE
+      resources:
+      - nodes
+  validationActions:
+  - Deny
+  validations:
+  - expression: '!variables.taintsModified || variables.isClusterAdmin'
+    messageExpression: '''Unauthorized modification of Node taints. Only cluster-admin users can modify taints on Node: '' + object.metadata.name'
+  variables:
+  - expression: request.userInfo.groups.exists(group, group == 'system:masters') || request.userInfo.groups.exists(group, group.contains('cluster-admin'))
+    name: isClusterAdmin
+  - expression: oldObject.spec.?taints.orValue([])
+    name: originalTaints
+  - expression: object.spec.?taints.orValue([])
+    name: newTaints
+  - expression: variables.originalTaints != variables.newTaints
+    name: taintsModified

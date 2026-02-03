@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    corp.org/version: v0.0.1
+  name: good-pod-v0-0-1
+  namespace: default
+spec:
+  containers:
+  - image: nginx:1.21.0
+    name: nginx

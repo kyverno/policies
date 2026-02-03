@@ -1,0 +1,27 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: Prevents creation of bare Pods that are not managed by workload controllers to ensure production workloads have self-healing and scaling capabilities.
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/title: Block Bare Pods
+  name: block-bare-pods
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+  validationActions:
+  - Deny
+  validations:
+  - expression: has(object.metadata.ownerReferences) && size(object.metadata.ownerReferences) > 0
+    messageExpression: '''Bare Pods are not allowed. Pods must be created by workload controllers (Deployment, ReplicaSet, Job, etc.). Pod name: '' + object.metadata.name'

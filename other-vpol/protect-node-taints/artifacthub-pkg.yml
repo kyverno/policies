@@ -1,0 +1,25 @@
+name: protect-node-taints
+version: 1.0.0
+displayName: Protect Node Taints in ValidatingPolicy
+description: >-
+  Block unauthorized modifications to Node taints to maintain multi-tenant scheduling
+  controls and prevent workload interference. Only cluster-admin users can modify
+  Node taints.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/protect-node-taints/protect-node-taints.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - ValidatingPolicy
+readme: |
+  Block unauthorized modifications to Node taints to maintain multi-tenant scheduling
+  controls and prevent workload interference. Only cluster-admin users can modify
+  Node taints.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Node"
