@@ -7,7 +7,7 @@ description: >-
   was removed. This policy prevents Pods from running images that contain Tiller.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/disallow-helm-tiller/disallow-helm-tiller.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-helm-tiller/disallow-helm-tiller.yaml
   ```
 keywords:
   - kyverno

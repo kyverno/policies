@@ -8,7 +8,7 @@ description: >-
   the sockets used for CRI engines Docker, Containerd, and CRI-O are not used.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/disallow-cri-sock-mount/disallow-cri-sock-mount.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-cri-sock-mount/disallow-cri-sock-mount.yaml
   ```
 keywords:
   - kyverno

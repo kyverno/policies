@@ -9,7 +9,7 @@ description: >-
   specify a Namespace name other than `default`.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/disallow-default-namespace/disallow-default-namespace.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-default-namespace/disallow-default-namespace.yaml
   ```
 keywords:
   - kyverno
