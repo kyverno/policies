@@ -7,7 +7,21 @@ spec:
   steps:
   - name: step-01
     try:
+    - script:
+        content: |
+          kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
+    - sleep:
+        duration: 5s
+  - name: step-02
+    try:
     - apply:
         file: ../protect-node-taints.yaml
     - assert:
         file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-03
+    try:
+    - script:
+        content: |
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' - | kubectl apply -f -
