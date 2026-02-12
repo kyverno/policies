@@ -1,0 +1,36 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+    annotations:
+        policies.kyverno.io/category: Security
+        policies.kyverno.io/description: 'This policy demonstrates how to restrict operations on specific ConfigMaps based on the requesting ServiceAccount and other request attributes, in order to protect sensitive ConfigMaps from unauthorized changes.'
+        policies.kyverno.io/severity: medium
+        policies.kyverno.io/title: Limit ConfigMap for ServiceAccount
+    name: limit-configmap-for-sa
+spec:
+  evaluation:
+      background:
+          enabled: false
+  matchConditions:
+  - expression: "request.namespace in ['any-namespace', 'another-namespace']"
+    name: namespace-filter
+  - expression: "request.name in ['any-configmap-name-good', 'another-configmap-name']"
+    name: configmap-name-filter
+  - expression: "parseServiceAccount(request.userInfo.username).Namespace == 'another-namespace' && parseServiceAccount(request.userInfo.username).Name == 'another-developer'"
+    name: serviceaccount-filter
+  matchConstraints:
+      resourceRules:
+      - apiGroups:
+        - ''
+        apiVersions:
+        - v1
+        operations:
+        - CREATE
+        - UPDATE
+        resources:
+        - configmaps
+  validationActions:
+  - Audit
+  validations:
+  - expression: 'false'
+    messageExpression: "request.namespace + '/' + request.kind.kind + '/' + request.name + ' resource is protected. Admin or allowed users can change the resource'"
