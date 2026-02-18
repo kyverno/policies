@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-aws-node-irsa
+policies:
+- ../require-aws-node-irsa.yaml
+resources:
+- ../.chainsaw-test/ds-bad.yaml
+- ../.chainsaw-test/ds-good.yaml
+- ../.chainsaw-test/ds-skip.yaml
+results:
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: require-aws-node-irsa
+  resources:
+  - aws-node
+  result: pass
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: require-aws-node-irsa
+  resources:
+  - aws-node
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: require-aws-node-irsa
+  resources:
+  - other-daemonset
+  result: skip
