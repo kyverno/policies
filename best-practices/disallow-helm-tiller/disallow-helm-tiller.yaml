@@ -15,7 +15,6 @@ metadata:
       Tiller for these reasons. This policy validates that there is not an image
       containing the name `tiller`.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: validate-helm-tiller
@@ -25,6 +24,7 @@ spec:
             kinds:
               - Pod
       validate:
+        failureAction: Audit
         message: "Helm Tiller is not allowed"
         foreach:
         - list: "request.object.spec.containers"

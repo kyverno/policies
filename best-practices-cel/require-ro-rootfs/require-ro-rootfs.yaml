@@ -16,7 +16,6 @@ metadata:
       host system. This policy validates that containers define a securityContext
       with `readOnlyRootFilesystem: true`.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-readOnlyRootFilesystem
@@ -29,6 +28,7 @@ spec:
           - CREATE
           - UPDATE
     validate:
+      failureAction: Audit
       cel:
         expressions:
           - expression: >-
