@@ -187,6 +187,27 @@ jobs:
         shard-index: ${{ matrix.shard-index }}
         shard-count: 2
 
+  best-practices-vpol:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        shard-index: [0,1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: best-practices-vpol
+        shard-index: ${{ matrix.shard-index }}
+        shard-count: 2
+
   castai:
     strategy:
       fail-fast: false
@@ -1137,6 +1158,7 @@ jobs:
     - best-practices-cel
     - best-practices-mpol
     - best-practices-gpol
+    - best-practices-vpol
     - castai
     - castai-mpol
     - cert-manager
@@ -1204,6 +1226,7 @@ jobs:
     - best-practices-cel
     - best-practices-mpol
     - best-practices-gpol
+    - best-practices-vpol
     - castai
     - castai-mpol
     - cert-manager
