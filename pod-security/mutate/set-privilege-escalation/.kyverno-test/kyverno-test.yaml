@@ -1,0 +1,45 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: set-privilege-escalation
+policies:
+- ../set-privilege-escalation.yaml
+resources:
+- resource.yaml
+results:
+- policy: set-privilege-escalation
+  rule: set-containers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod01
+  patchedResource: patched-resource-01.yaml
+  result: skip
+- policy: set-privilege-escalation
+  rule: set-containers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod02
+  patchedResource: patched-resource-02.yaml
+  result: pass
+- policy: set-privilege-escalation
+  rule: set-containers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod03
+  patchedResource: patched-resource-03.yaml
+  result: skip
+- policy: set-privilege-escalation
+  rule: set-containers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod04
+  patchedResource: patched-resource-04.yaml
+  result: pass
+- policy: set-privilege-escalation
+  rule: set-containers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod05
+  patchedResource: patched-resource-05.yaml
+  result: skip
+- policy: set-privilege-escalation
+  rule: set-initContainers-privilege-escalation-to-false
+  kind: Pod
+  resource: badpod06
+  patchedResource: patched-resource-06.yaml
+  result: pass
