@@ -1,0 +1,31 @@
+name: disallow-default-namespace
+version: 1.0.0
+displayName: Disallow Default Namespace in ValidatingPolicy
+description: >-
+  Kubernetes Namespaces are an optional feature that provide a way to segment and
+  isolate cluster resources across multiple applications and users. As a best
+  practice, workloads should be isolated with Namespaces. Namespaces should be required
+  and the default namespace should not be used. This policy validates that Pods
+  specify a Namespace name other than `default`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-default-namespace/disallow-default-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+  - ValidatingPolicy
+readme: |
+  Kubernetes Namespaces are an optional feature that provide a way to segment and
+  isolate cluster resources across multiple applications and users. As a best
+  practice, workloads should be isolated with Namespaces. Namespaces should be required
+  and the default namespace should not be used. This policy validates that Pods
+  specify a Namespace name other than `default`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 8ce440ae51cce773a1b5dbbbc0251c2503894cfc627488117ab67150c8a0c111
+createdAt: "2026-02-03T12:26:50Z"

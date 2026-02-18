@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: good-statefulset
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  serviceName: "busyservice"
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        command:
+        - "sleep"
+        - "3000"

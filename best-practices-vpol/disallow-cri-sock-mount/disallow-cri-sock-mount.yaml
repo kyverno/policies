@@ -1,0 +1,46 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-container-sock-mounts
+  annotations:
+    policies.kyverno.io/title: Disallow CRI socket mounts
+    policies.kyverno.io/category: Best Practices, EKS Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: "1.15.0"
+    policies.kyverno.io/description: >-
+      Container daemon socket bind mounts allows access to the container engine on the
+      node. This access can be used for privilege escalation and to manage containers
+      outside of Kubernetes, and hence should not be allowed. This policy validates that
+      the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition
+      to or replacement of this policy, preventing users from mounting the parent directories
+      (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+spec:
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["pods"]
+      operations: ["CREATE", "UPDATE"]
+  validationActions: ["Audit"]
+  validations:
+  - expression: "size(variables.violatingVolumes) == 0"
+    messageExpression: >-
+      size(variables.violatingVolumes) > 0 ? 
+      'Container socket mounts are not allowed. Found prohibited socket paths: ' + 
+      variables.violatingVolumes.map(v, v.hostPath.path).join(', ') : 
+      'No container socket mounts detected'
+  variables:
+  - name: prohibitedSockets
+    expression: >-
+      ['/var/run/docker.sock', '/var/run/containerd/containerd.sock', 
+       '/var/run/crio/crio.sock', '/var/run/cri-dockerd.sock']
+  - name: hostPathVolumes
+    expression: "object.spec.?volumes.orValue([]).filter(volume, has(volume.hostPath))"
+  - name: violatingVolumes
+    expression: >-
+      variables.hostPathVolumes.filter(volume, 
+        variables.prohibitedSockets.exists(socket, volume.hostPath.path == socket))
