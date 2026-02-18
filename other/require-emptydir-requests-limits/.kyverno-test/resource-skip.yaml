@@ -14,4 +14,4 @@ spec:
   volumes:
     - name: vol
       emptyDir:
-        sizeLimit: 1Gi
+        medium: Memory
