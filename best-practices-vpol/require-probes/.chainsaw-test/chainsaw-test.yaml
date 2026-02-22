@@ -10,19 +10,8 @@ spec:
     try:
     - apply:
         file: ../require-probes.yaml
-    - patch:
-        resource:
-          apiVersion: policies.kyverno.io/v1
-          kind: ValidatingPolicy
-          metadata:
-            name: require-pod-probes
-          spec:
-            validationActions:
-              - Deny
     - assert:
         file: policy-ready.yaml
-    - sleep:
-        duration: 3s
   - name: step-02
     try:
     - apply:
