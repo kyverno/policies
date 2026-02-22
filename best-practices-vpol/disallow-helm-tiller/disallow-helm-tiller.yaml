@@ -23,9 +23,9 @@ spec:
   matchConstraints:
         resourceRules:
           - apiGroups: ['']
-            apiVersions: [v1]
-            operations: [CREATE, UPDATE]
-            resources: [pods]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods"]
   validations:
             - expression: "object.spec.containers.all(container, !container.image.contains('tiller'))"
               message: "Helm Tiller is not allowed"
