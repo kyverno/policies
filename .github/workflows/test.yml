@@ -147,6 +147,7 @@ jobs:
         path: best-practices-cel
         shard-index: ${{ matrix.shard-index }}
         shard-count: 2
+        
 
   best-practices-mpol:
     strategy:
@@ -1155,10 +1156,10 @@ jobs:
     - aws
     - aws-cel
     - best-practices
+    - best-practices-vpol
     - best-practices-cel
     - best-practices-mpol
     - best-practices-gpol
-    - best-practices-vpol
     - castai
     - castai-mpol
     - cert-manager
@@ -1223,10 +1224,10 @@ jobs:
     - aws
     - aws-cel
     - best-practices
+    - best-practices-vpol
     - best-practices-cel
     - best-practices-mpol
     - best-practices-gpol
-    - best-practices-vpol
     - castai
     - castai-mpol
     - cert-manager
