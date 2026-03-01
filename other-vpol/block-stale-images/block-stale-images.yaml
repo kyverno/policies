@@ -1,0 +1,50 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: >-
+      This policy blocks pods that use container images built more than 6 months
+      ago to ensure deployments use recent, maintained images.
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Block Stale Images
+  name: block-stale-images
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - ''
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - pods
+  webhookConfiguration:
+    timeoutSeconds: 20
+  validationActions:
+    - Audit
+  validations:
+    - expression: >-
+        variables.allContainers.all(container,
+        !has(image.GetMetadata(container.image).config.created) ||
+        timestamp(image.GetMetadata(container.image).config.created) >=
+        variables.cutoffTime)
+      messageExpression: >-
+        'Images built more than 6 months ago are prohibited. Found stale images:
+        ' + variables.allContainers.filter(container,
+        has(image.GetMetadata(container.image).config.created) &&
+        timestamp(image.GetMetadata(container.image).config.created) <
+        variables.cutoffTime).map(container, container.image).join(', ')
+  variables:
+    - expression: >-
+        object.spec.containers + object.spec.?initContainers.orValue([]) +
+        object.spec.?ephemeralContainers.orValue([])
+      name: allContainers
+    - expression: '4380'
+      name: maxAgeHours
+    - expression: duration(string(variables.maxAgeHours) + 'h')
+      name: maxAgeDuration
+    - expression: time.now() - variables.maxAgeDuration
+      name: cutoffTime
