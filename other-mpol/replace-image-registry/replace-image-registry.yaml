@@ -21,16 +21,7 @@ spec:
       - apiGroups: [""]
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
-        resources: ["pods"]
-  
-  variables:
-    - name: stripRegistry
-      expression: |
-        string(img) => 
-          img.contains('/') && img.split('/')[0].contains('.') ? 
-            img.split('/', 2)[1] : 
-            img
-  
+        resources: ["pods"]  
   mutations:
     - patchType: ApplyConfiguration
       applyConfiguration:
