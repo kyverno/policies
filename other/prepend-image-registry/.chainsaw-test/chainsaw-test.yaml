@@ -26,7 +26,7 @@ spec:
         file: ../.kyverno-test/patchedResource.yaml
     - assert:
         file: pods-patched.yaml
-    - error:
+    - assert:
         file: ../.kyverno-test/patchedResourceWithoutInitContainer.yaml
-    - error:
+    - assert:
         file: ../.kyverno-test/failpatchedResource.yaml
