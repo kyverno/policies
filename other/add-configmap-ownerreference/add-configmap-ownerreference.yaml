@@ -1,0 +1,54 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: add-configmap-ownerreference
+  annotations:
+    policies.kyverno.io/title: Add ConfigMap Owner Reference from ReplicaSet
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ReplicaSet,ConfigMap
+    kyverno.io/kyverno-version: 1.9.0
+    policies.kyverno.io/minversion: 1.9.0
+    kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/description: >-
+      When a new ReplicaSet is created (typically by updating a Deployment), 
+      this policy will automatically add an owner reference to any ConfigMaps 
+      that the ReplicaSet mounts as volumes. This ensures that ConfigMaps have 
+      proper ownership relationships with the ReplicaSets that use them, which 
+      can be useful for garbage collection, monitoring, and dependency tracking.
+      This policy requires additional RBAC permissions for Kyverno to update ConfigMaps.
+spec:
+  mutateExistingOnPolicyUpdate: false
+  rules:
+  - name: add-configmap-ownerref-from-replicaset
+    match:
+      any:
+      - resources:
+          kinds:
+          - ReplicaSet
+    preconditions:
+      all:
+      - key: "{{ request.operation }}"
+        operator: Equals
+        value: CREATE
+      # Only process ReplicaSets that have volumes with configMap
+      - key: "{{ request.object.spec.template.spec.volumes[?configMap] | length(@) }}"
+        operator: GreaterThan
+        value: 0
+    mutate:
+      foreach:
+      - list: "request.object.spec.template.spec.volumes[?configMap].configMap.name"
+        targets:
+        - apiVersion: v1
+          kind: ConfigMap
+          name: "{{ element }}"
+          namespace: "{{ request.object.metadata.namespace }}"
+        patchStrategicMerge:
+          metadata:
+            ownerReferences:
+            - apiVersion: apps/v1
+              kind: ReplicaSet
+              name: "{{ request.object.metadata.name }}"
+              uid: "{{ request.object.metadata.uid }}"
+              controller: false
+              blockOwnerDeletion: false 
