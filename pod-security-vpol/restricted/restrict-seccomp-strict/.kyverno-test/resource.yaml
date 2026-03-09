@@ -107,6 +107,15 @@ spec:
   - name: container01
     image: dummyimagename
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod

@@ -42,6 +42,7 @@ results:
   - badpod05
   - badpod06
   - badpod07
+  - badpod08
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
