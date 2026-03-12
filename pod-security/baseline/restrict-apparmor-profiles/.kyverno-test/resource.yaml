@@ -11,6 +11,45 @@ spec:
   - name: container01
     image: dummyimagename
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  securityContext:
+    appArmorProfile:
+      type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: init01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -43,6 +82,46 @@ spec:
   - name: container01
     image: dummyimagename
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  securityContext:
+    appArmorProfile:
+      type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Localhost
+        localhostProfile: foo
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  initContainers:
+  - name: init01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+---
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
@@ -63,6 +142,48 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        appArmorProfile:
+          type: Unconfined
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          appArmorProfile:
+            type: Unconfined
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -123,6 +244,49 @@ spec:
       - name: container01
         image: dummyimagename
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        appArmorProfile:
+          type: RuntimeDefault
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: localhost/foo
+---
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
@@ -141,6 +305,42 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            appArmorProfile:
+              type: Unconfined
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              appArmorProfile:
+                type: Unconfined
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -193,3 +393,40 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob04
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            appArmorProfile:
+              type: RuntimeDefault
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob05
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              appArmorProfile:
+                type: Localhost
+                localhostProfile: foo
