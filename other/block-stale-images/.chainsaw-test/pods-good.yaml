@@ -6,7 +6,7 @@ metadata:
 spec:
   containers:
   - name: kyverno 
-    image: kyverno:latest
+    image: ghcr.io/kyverno/kyverno:latest
   - name: kyverno02
     image: ghcr.io/kyverno/kyverno:latest
 ---
