@@ -30,7 +30,7 @@ spec:
           context:
           - name: imageData
             imageRegistry:
-              reference: "{{ element.image }}"
+              reference: '{{ element.image }}'
           deny:
             conditions:
               all:
