@@ -1,0 +1,48 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-privilege-escalation
+spec:
+  steps:
+  - name: create-bad-pod-container
+    try:
+    - create:
+        file: bad-pod-container.yaml
+        expect:
+        - check:
+            ($error != null): true
+  - name: create-good-pod-container
+    try:
+    - create:
+        file: good-pod-container.yaml
+        expect:
+        - check:
+            ($error != null): false
+  - name: create-bad-pod-initcontainer
+    try:
+    - create:
+        file: bad-pod-initcontainer.yaml
+        expect:
+        - check:
+            ($error != null): true
+  - name: create-good-pod-initcontainer
+    try:
+    - create:
+        file: good-pod-initcontainer.yaml
+        expect:
+        - check:
+            ($error != null): false
+  - name: create-bad-pod-ephemeral
+    try:
+    - create:
+        file: bad-pod-ephemeral.yaml
+        expect:
+        - check:
+            ($error != null): true
+  - name: create-good-pod-ephemeral
+    try:
+    - create:
+        file: good-pod-ephemeral.yaml
+        expect:
+        - check:
+            ($error != null): false
