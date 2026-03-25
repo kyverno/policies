@@ -19,3 +19,9 @@ results:
   - good-secret
   result: pass
   rule: deny-secret-service-account-token-type
+- kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources:
+  - no-type-secret
+  result: pass
+  rule: deny-secret-service-account-token-type

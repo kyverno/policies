@@ -30,6 +30,8 @@ spec:
     - apply:
         file: good-secret.yaml
     - apply:
+        file: no-type-secret.yaml
+    - apply:
         expect:
         - check:
             ($error != null): true

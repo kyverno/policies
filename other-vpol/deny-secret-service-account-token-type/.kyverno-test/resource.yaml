@@ -12,6 +12,13 @@ metadata:
   name: good-secret
 type: kubernetes.io/basic-auth
 stringData:
-  username: admin 
-  password: t0p-Secret 
-
+  username: admin
+  password: t0p-Secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: no-type-secret
+stringData:
+  username: admin
+  password: t0p-Secret
