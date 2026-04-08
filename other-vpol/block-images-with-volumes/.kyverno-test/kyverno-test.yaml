@@ -1,0 +1,49 @@
+apiVersion: cli.kyverno.io/v1alpha1
+context: context.yaml
+kind: Test
+metadata:
+  name: block-images-with-volumes
+policies:
+- ../block-images-with-volumes.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: block-images-with-volumes
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: block-images-with-volumes
+  resources:
+  - goodpod01
+  - goodpod02
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: block-images-with-volumes
+  resources:
+  - baddeployment01
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: block-images-with-volumes
+  resources:
+  - gooddeployment01
+  result: pass
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: block-images-with-volumes
+  resources:
+  - badcronjob01
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: block-images-with-volumes
+  resources:
+  - goodcronjob01
+  result: pass

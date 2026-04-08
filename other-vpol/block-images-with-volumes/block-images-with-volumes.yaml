@@ -1,0 +1,32 @@
+apiVersion: policies.kyverno.io/v1alpha1
+kind: ValidatingPolicy
+metadata:
+  name: block-images-with-volumes
+  annotations:
+    policies.kyverno.io/title: Block Images with Volumes
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.15.0
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      OCI images may optionally be built with VOLUME statements which, if run
+      in read-only mode, would still result in write access to the specified location.
+      This may be unexpected and undesirable. This policy checks the contents of every
+      container image and inspects them for such VOLUME statements, then blocks if found.
+spec:
+  evaluation:
+    background:
+      enabled: true
+  validationActions: ["Audit"]
+  variables:
+    - name: allContainers
+      expression: 'object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])'
+  matchConstraints:
+    resourceRules:
+      - resources: ["pods"]
+        operations: ["CREATE", "UPDATE"]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+  validations:
+    - message: "Images containing built-in volumes are prohibited."
+      expression: 'variables.allContainers.all(container, !has(image.GetMetadata(container.image).config.Volumes) || size(image.GetMetadata(container.image).config.?Volumes.orValue({})) == 0)'

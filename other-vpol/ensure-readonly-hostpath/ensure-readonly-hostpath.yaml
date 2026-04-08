@@ -30,13 +30,13 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   variables:
-          - name: allContainers
-            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
-          - name: hostPathVolumes
-            expression: "object.spec.?volumes.orValue([]).filter(volume, has(volume.hostPath))"
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
+    - name: hostPathVolumes
+      expression: "object.spec.?volumes.orValue([]).filter(volume, has(volume.hostPath))"
   validations:
-          - expression: >-
-              variables.hostPathVolumes.all(hostPath, variables.allContainers.all(container, 
-              container.volumeMounts.orValue([]).all(volume, (hostPath.name != volume.name) || volume.?readOnly.orValue(false) == true)))
-            message: All hostPath volumes must be mounted as readOnly.
+    - expression: >-
+        variables.hostPathVolumes.all(hostPath, variables.allContainers.all(container, 
+        container.volumeMounts.orValue([]).all(volume, (hostPath.name != volume.name) || volume.?readOnly.orValue(false) == true)))
+      message: All hostPath volumes must be mounted as readOnly.
       

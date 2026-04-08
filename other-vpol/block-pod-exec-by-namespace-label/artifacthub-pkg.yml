@@ -1,0 +1,22 @@
+name: block-pod-exec-by-namespace-label
+version: 1.0.0
+displayName: Block Pod Exec by Namespace Label
+description: >-
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands based upon a Namespace label `exec=false`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/block-pod-exec-by-namespace-label/block-pod-exec-by-namespace-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands based upon a Namespace label `exec=false`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: d9803a950735297992c70a861003ec6dfd659dd0660e4a60b908734ed4f38eeb
+createdAt: "2025-12-10T14:21:28Z"

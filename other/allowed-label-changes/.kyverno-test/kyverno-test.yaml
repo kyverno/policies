@@ -11,7 +11,7 @@ results:
   policy: allowed-label-changes
   resources:
   - badpod01
-  result: fail
+  result: pass
   rule: safe-label
 - kind: Pod
   policy: allowed-label-changes

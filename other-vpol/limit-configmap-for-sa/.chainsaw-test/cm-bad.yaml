@@ -1,0 +1,15 @@
+apiVersion: v1
+data:
+  foo: bar
+kind: ConfigMap
+metadata:
+  namespace: another-namespace
+  name: another-configmap-name
+---
+apiVersion: v1
+data:
+  foo: bar
+kind: ConfigMap
+metadata:
+  namespace: another-namespace
+  name: any-configmap-name-good

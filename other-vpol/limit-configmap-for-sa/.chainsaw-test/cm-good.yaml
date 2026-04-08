@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  foo: bar
+kind: ConfigMap
+metadata:
+  namespace: limit-cm-sa-namespace
+  name: another-configmap-name
+---
+apiVersion: v1
+data:
+  foo: bar
+kind: ConfigMap
+metadata:
+  namespace: limit-cm-sa-namespace
+  name: any-configmap-name-good
+---
+apiVersion: v1
+data:
+  foo: bar
+kind: ConfigMap
+metadata:
+  name: goodcm01
+  namespace: another-namespace

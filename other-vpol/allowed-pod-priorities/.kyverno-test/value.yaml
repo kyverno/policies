@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Value
+metadata:
+  name: values
+namespaces:
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: pod-priority-ns
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: no-priority-ns
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: default

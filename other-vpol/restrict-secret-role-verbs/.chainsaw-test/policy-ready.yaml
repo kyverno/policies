@@ -4,11 +4,11 @@ metadata:
   name: restrict-secret-role-verbs
 status:
   conditionStatus:
-    conditions:
-    - reason: Succeeded
-      type: WebhookConfigured
-      status: "True"
+    (conditions[?type == 'RBACPermissionsGranted']):
     - reason: Failed
       status: "False"
-      type: RBACPermissionsGranted
-
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured

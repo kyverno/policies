@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod01
+  namespace: nvidia-gpu-ns
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      resources:
+        limits:
+          cpu: "0.5"
+          nvidia.com/gpu: 1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: busybox
+  name: badpod02
+  namespace: nvidia-gpu-ns
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+      resources:
+        limits:
+          cpu: "0.5"
+          nvidia.com/gpu: 1
+    - name: cuda
+      image: nvidia/cuda:12.2.0-devel-ubi8
+      command: ["nvidia-smi"]
+      resources:
+        limits:
+          cpu: "0.5"
+          nvidia.com/gpu: 1

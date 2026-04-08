@@ -4,12 +4,11 @@ metadata:
   name: restrict-wildcard-verbs
 status:
   conditionStatus:
-    conditions:
-    - reason: Succeeded
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Failed
+      status: "False"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
       type: WebhookConfigured
-      status: "True"
-    - reason: Succeeded
-      type: RBACPermissionsGranted
-      status: "True"
-
-

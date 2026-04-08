@@ -1,0 +1,22 @@
+name: block-pod-exec-by-namespace
+version: 1.0.0
+displayName: Block Pod Exec by Namespace Name in ValidatingPolicy
+description: >-
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods in a Namespace called `pci`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/block-pod-exec-by-namespace/block-pod-exec-by-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods in a Namespace called `pci`.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample"
+  kyverno/subject: "Pod"
+digest: 87239d5197cdad615045ecaa971112fce7b26f386474a7b766c084386f861488
+createdAt: "2025-12-02T13:59:47Z"

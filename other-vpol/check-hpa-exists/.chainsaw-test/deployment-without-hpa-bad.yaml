@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-without-hpa
+  labels:
+    app: app-without-hpa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-without-hpa
+  template:
+    metadata:
+      labels:
+        app: app-without-hpa
+    spec:
+      containers:
+      - name: nginx-container
+        image: ghcr.io/kyverno/test-nginx:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "10m"
+            memory: "12Mi"
+          limits:
+            cpu: "25m"
+            memory: "25Mi"
