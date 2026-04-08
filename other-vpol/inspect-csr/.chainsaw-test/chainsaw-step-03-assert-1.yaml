@@ -1,0 +1,30 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: ClusterPolicyReport
+metadata:
+  ownerReferences:
+  - apiVersion: certificates.k8s.io/v1
+    kind: CertificateSigningRequest
+    name: inspect-csr-user
+results:
+- category: Security
+  message: 'CSR Audit Report - User Identity: username=inspect-csr-user, groups=testorg,system:authenticated
+    | Permissions: ClusterRoles=[csr-manager,system:basic-user,system:discovery,system:public-info-viewer],
+    Roles=[] | CSR Content: signerName=kubernetes.io/kube-apiserver-client, usages=[client
+    auth]'
+  policy: inspect-csr
+  properties:
+    process: admission review
+  result: fail
+  scored: true
+  severity: medium
+  source: KyvernoValidatingPolicy
+scope:
+  apiVersion: certificates.k8s.io/v1
+  kind: CertificateSigningRequest
+  name: inspect-csr-user
+summary:
+  error: 0
+  fail: 1
+  pass: 0
+  skip: 0
+  warn: 0

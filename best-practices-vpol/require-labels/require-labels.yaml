@@ -1,0 +1,39 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: >-
+      Enforce the presence of required labels that identify semantic attributes
+      of applications or Deployments. Specifically, ensure that the standard
+      label `app.kubernetes.io/name` is present on Pods with a non-empty value
+      to enable consistent tooling and querying capabilities.
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Require Labels
+  name: require-labels
+spec:
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - ''
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - pods
+  validationActions:
+    - Audit
+  validations:
+    - expression: >-
+        has(object.metadata.labels) && 'app.kubernetes.io/name' in
+        object.metadata.labels &&
+        object.metadata.labels['app.kubernetes.io/name'] != ''
+      messageExpression: >-
+        'Pod ' + object.metadata.name + ' must have the label
+        app.kubernetes.io/name with a non-empty value. Found labels: ' +
+        (has(object.metadata.labels) ? string(object.metadata.labels) : 'none')

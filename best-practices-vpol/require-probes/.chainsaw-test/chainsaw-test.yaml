@@ -6,20 +6,12 @@ metadata:
   name: require-probes
 spec:
   steps:
-  - name: create policy
-    use:
-      template: ../../../_step-templates/create-policy.yaml
-      with:
-        bindings:
-        - name: file
-          value: ../require-probes.yaml
-  - name: wait-validating-policy-ready
-    use:
-      template: ../../../_step-templates/validating-policy-v1-ready.yaml
-      with:
-        bindings:
-        - name: name
-          value: require-pod-probes
+  - name: step-01
+    try:
+    - apply:
+        file: ../require-probes.yaml
+    - assert:
+        file: policy-ready.yaml
   - name: step-02
     try:
     - apply:
