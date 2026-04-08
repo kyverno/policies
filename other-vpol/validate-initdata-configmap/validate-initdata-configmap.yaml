@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Configuration Management
+    policies.kyverno.io/description: Validates that ConfigMaps with a label key "coco.io/type" and value "initdata" contain all required fields with proper values.
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Validate InitData ConfigMap Required Fields
+  name: validate-initdata-configmap
+spec:
+  evaluation:
+    background:
+      enabled: true
+  matchConditions:
+  - expression: has(object.metadata.labels) && 'coco.io/type' in object.metadata.labels && object.metadata.labels['coco.io/type'] == 'initdata'
+    name: has-initdata-label
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - configmaps
+  validationActions:
+  - Audit
+  validations:
+  - expression: "'version' in variables.configData && variables.configData['version'] != ''"
+    messageExpression: "'ConfigMap must contain a non-empty version field'"
+  - expression: "'algorithm' in variables.configData && variables.configData['algorithm'] in variables.allowedAlgorithms"
+    messageExpression: "'ConfigMap must contain an algorithm field with value sha256, sha384, or sha512, found: ' + ('algorithm' in variables.configData ? variables.configData['algorithm'] : 'missing')"
+  - expression: "'policy.rego' in variables.configData && variables.configData['policy.rego'] != ''"
+    messageExpression: "'ConfigMap must contain a non-empty policy.rego field'"
+  - expression: "'aa.toml' in variables.configData && variables.configData['aa.toml'] != ''"
+    messageExpression: "'ConfigMap must contain a non-empty aa.toml field'"
+  - expression: "'cdh.toml' in variables.configData && variables.configData['cdh.toml'] != ''"
+    messageExpression: "'ConfigMap must contain a non-empty cdh.toml field'"
+  variables:
+  - expression: object.data.orValue({})
+    name: configData
+  - expression: '["sha256", "sha384", "sha512"]'
+    name: allowedAlgorithms

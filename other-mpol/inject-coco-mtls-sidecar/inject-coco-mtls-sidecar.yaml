@@ -1,0 +1,92 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Confidential Containers
+    policies.kyverno.io/description: Injects a secure mTLS sidecar container into pods with CoCo configuration based on ConfigMap settings
+    policies.kyverno.io/title: Inject CoCo mTLS Sidecar
+  name: inject-coco-mtls-sidecar
+spec:
+  autogen:
+    podControllers:
+      controllers:
+      - deployments
+      - statefulsets
+      - daemonsets
+      - jobs
+  matchConditions:
+  - expression: "has(object.metadata.labels) && 'coco' in object.metadata.labels && object.metadata.labels['coco'] == 'enabled'"
+    name: has-coco-label
+  - expression: "has(object.metadata.annotations) && 'coco.io/sidecar-config' in object.metadata.annotations"
+    name: has-sidecar-config-annotation
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+  mutations:
+  - patchType: ApplyConfiguration
+    applyConfiguration:
+      expression: |
+        Object{
+          spec: Object.spec{
+            containers: [
+              Object.spec.containers{
+                name: "coco-sidecar",
+                image: variables.sidecarImage,
+                ports: [
+                  Object.spec.containers.ports{
+                    name: "https",
+                    containerPort: variables.httpsPort,
+                    protocol: "TCP"
+                  }
+                ],
+                env: [
+                  Object.spec.containers.env{
+                    name: "TLS_CERT_URI",
+                    value: variables.tlsCertUri
+                  },
+                  Object.spec.containers.env{
+                    name: "HTTPS_PORT",
+                    value: string(variables.httpsPort)
+                  },
+                  Object.spec.containers.env{
+                    name: "FORWARD_PORT",
+                    value: variables.forwardPort
+                  }
+                ],
+                resources: Object.spec.containers.resources{
+                  requests: Object.spec.containers.resources.requests{
+                    memory: "64Mi",
+                    cpu: "50m"
+                  },
+                  limits: Object.spec.containers.resources.limits{
+                    memory: "128Mi",
+                    cpu: "100m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+  variables:
+  - name: podNamespace
+    expression: "(object.metadata.namespace != '') ? object.metadata.namespace : 'default'"
+  - name: configMapName
+    expression: "object.metadata.annotations['coco.io/sidecar-config']"
+  - name: configMap
+    expression: "resource.Get('v1', 'configmaps', variables.podNamespace, variables.configMapName)"
+  - name: sidecarImage
+    expression: "has(variables.configMap.data) && 'sidecar_image' in variables.configMap.data ? variables.configMap.data['sidecar_image'] : 'ghcr.io/confidential-containers/secure-sidecar:latest'"
+  - name: httpsPort
+    expression: "has(variables.configMap.data) && 'https_port' in variables.configMap.data ? int(variables.configMap.data['https_port']) : 8443"
+  - name: tlsCertUri
+    expression: "has(variables.configMap.data) && 'tls_cert_uri' in variables.configMap.data ? variables.configMap.data['tls_cert_uri'] : ''"
+  - name: forwardPort
+    expression: "has(variables.configMap.data) && 'forward_port' in variables.configMap.data ? variables.configMap.data['forward_port'] : '8080'"

@@ -1,0 +1,86 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: CoCo Security
+    policies.kyverno.io/description: Injects attestation verification init container into Confidential Computing enabled pods based on labels and ConfigMap configuration
+    policies.kyverno.io/title: Inject CoCo Attestation Init Container
+  name: inject-coco-attestation-init
+spec:
+  autogen:
+    podControllers:
+      controllers:
+      - deployments
+      - statefulsets
+      - daemonsets
+      - jobs
+      - cronjobs
+  matchConditions:
+  - expression: "has(object.metadata.labels) && 'coco' in object.metadata.labels && object.metadata.labels['coco'] == 'enabled'"
+    name: has-coco-label
+  - expression: "has(object.metadata.annotations) && 'coco.io/init-config' in object.metadata.annotations && object.metadata.annotations['coco.io/init-config'] != ''"
+    name: has-init-config-annotation
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - v1
+      operations:
+      - CREATE
+      - UPDATE
+      resources:
+      - pods
+  mutations:
+  - applyConfiguration:
+      expression: |
+        Object{
+          spec: Object.spec{
+            initContainers: [
+              Object.spec.initContainers{
+                name: "coco-attestation-init",
+                image: variables.initImage,
+                imagePullPolicy: "IfNotPresent",
+                env: variables.kbsUrl != '' ? [
+                  Object.spec.initContainers.env{
+                    name: "KBS_URL",
+                    value: variables.kbsUrl
+                  },
+                  Object.spec.initContainers.env{
+                    name: "ATTESTATION_TIMEOUT",
+                    value: variables.timeout
+                  }
+                ] : [
+                  Object.spec.initContainers.env{
+                    name: "ATTESTATION_TIMEOUT",
+                    value: variables.timeout
+                  }
+                ],
+                resources: Object.spec.initContainers.resources{
+                  limits: {
+                    "memory": "64Mi",
+                    "cpu": "50m"
+                  },
+                  requests: {
+                    "memory": "32Mi",
+                    "cpu": "25m"
+                  }
+                }
+              }
+            ]
+          }
+        }
+    patchType: ApplyConfiguration
+  variables:
+  - expression: "object.metadata.annotations['coco.io/init-config']"
+    name: configMapName
+  - expression: "object.metadata.namespace"
+    name: namespace
+  - expression: "resource.Get('v1', 'configmaps', variables.namespace, variables.configMapName)"
+    name: configMap
+  - expression: "has(variables.configMap.data) && 'init_image' in variables.configMap.data ? variables.configMap.data['init_image'] : 'ghcr.io/confidential-containers/attestation-init:latest'"
+    name: initImage
+  - expression: "has(variables.configMap.data) && 'kbs_url' in variables.configMap.data ? variables.configMap.data['kbs_url'] : ''"
+    name: kbsUrl
+  - expression: "has(variables.configMap.data) && 'timeout' in variables.configMap.data ? variables.configMap.data['timeout'] : '60'"
+    name: timeout

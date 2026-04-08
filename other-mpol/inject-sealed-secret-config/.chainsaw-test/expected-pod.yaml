@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  namespace: default
+  labels:
+    coco: enabled
+  annotations:
+    coco.io/sealed-secret-config: sealed-secret-config
+spec:
+  containers:
+  - name: app
+    image: nginx:1.20
+    env:
+    - name: EXISTING_VAR
+      value: "existing-value"
+    - name: COCO_SECRET_RESOURCE
+      value: "kbs://default/my-secret"
+    - name: COCO_SECRET_TARGET_PATH
+      value: "/etc/secrets/my-secret"
+  - name: sidecar
+    image: busybox:1.35
+    env:
+    - name: COCO_SECRET_RESOURCE
+      value: "kbs://default/my-secret"
+    - name: COCO_SECRET_TARGET_PATH
+      value: "/etc/secrets/my-secret"
+  initContainers:
+  - name: init
+    image: busybox:1.35
+    command: ["sh", "-c", "echo init"]
+    env:
+    - name: COCO_SECRET_RESOURCE
+      value: "kbs://default/my-secret"
+    - name: COCO_SECRET_TARGET_PATH
+      value: "/etc/secrets/my-secret"

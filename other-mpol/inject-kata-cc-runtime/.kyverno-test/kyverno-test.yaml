@@ -1,0 +1,79 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-kata-cc-runtime-test
+policies:
+- ../inject-kata-cc-runtime.yaml
+resources:
+- resources.yaml
+results:
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/coco-enabled-pod
+  result: pass
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/coco-disabled-pod
+  result: skip
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/no-coco-label-pod
+  result: skip
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/no-labels-pod
+  result: skip
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/coco-enabled-existing-runtime
+  result: pass
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - test-namespace/coco-enabled-multiple-labels
+  result: pass
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/coco-case-sensitive
+  result: skip
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/empty-coco-label
+  result: skip
+  rule: ""
+- kind: Deployment
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/coco-deployment
+  result: pass
+  rule: ""
+- kind: Deployment
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - default/non-coco-deployment
+  result: skip
+  rule: ""

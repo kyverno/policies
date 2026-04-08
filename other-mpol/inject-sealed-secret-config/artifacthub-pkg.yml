@@ -1,0 +1,22 @@
+name: inject-sealed-secret-config
+version: 1.0.0
+displayName: Inject Sealed Secret Configuration
+createdAt: "2026-04-08T00:00:00Z"
+description: >-
+  Injects sealed secret configuration environment variables into pods with the coco=enabled label and coco.io/sealed-secret-config annotation. Retrieves configuration from a ConfigMap to enable containers to retrieve secrets from KBS for Confidential Containers.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-mpol/inject-sealed-secret-config/inject-sealed-secret-config.yaml
+  ```
+keywords:
+  - kyverno
+  - Confidential Containers
+  - MutatingPolicy
+readme: |
+  Injects sealed secret configuration environment variables into pods with the coco=enabled label and coco.io/sealed-secret-config annotation. Retrieves configuration from a ConfigMap to enable containers to retrieve secrets from KBS for Confidential Containers.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Confidential Containers"
+  kyverno/subject: "Pod"
+digest: 012241afb832d0234d62b13e820114ba41400274a030beb427272c21f716c465

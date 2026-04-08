@@ -1,0 +1,22 @@
+name: validate-initdata-configmap-vpol
+version: 1.0.0
+displayName: Validate InitData ConfigMap Required Fields
+createdAt: "2026-04-08T00:00:00Z"
+description: >-
+  Validates that ConfigMaps with a label key coco.io/type and value initdata contain all required fields with proper values.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/validate-initdata-configmap/validate-initdata-configmap.yaml
+  ```
+keywords:
+  - kyverno
+  - Configuration Management
+  - ValidatingPolicy
+readme: |
+  Validates that ConfigMaps with a label key coco.io/type and value initdata contain all required fields with proper values.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Configuration Management"
+  kyverno/subject: "ConfigMap"
+digest: c02ebc9d1bd281fb235bca5a729a9a8cecb4efb65d2651fdd749cb64e08fbccd
