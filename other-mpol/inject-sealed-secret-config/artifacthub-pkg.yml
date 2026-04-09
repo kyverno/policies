@@ -10,13 +10,13 @@ install: |-
   ```
 keywords:
   - kyverno
-  - Confidential Containers
+  - Confidential Computing
   - MutatingPolicy
 readme: |
   Injects sealed secret configuration environment variables into pods with the coco=enabled label and coco.io/sealed-secret-config annotation. Retrieves configuration from a ConfigMap to enable containers to retrieve secrets from KBS for Confidential Containers.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Confidential Containers"
+  kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: 012241afb832d0234d62b13e820114ba41400274a030beb427272c21f716c465
+digest: a186005c14a1aa19e6647c4faf0fc2da30d57c64c54be8785c4e04e29c9bc7c6

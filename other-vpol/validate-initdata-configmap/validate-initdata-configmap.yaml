@@ -2,9 +2,10 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   annotations:
-    policies.kyverno.io/category: Configuration Management
+    policies.kyverno.io/category: Confidential Computing
     policies.kyverno.io/description: Validates that ConfigMaps with a label key "coco.io/type" and value "initdata" contain all required fields with proper values.
     policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ConfigMap
     policies.kyverno.io/title: Validate InitData ConfigMap Required Fields
   name: validate-initdata-configmap
 spec:

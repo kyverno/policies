@@ -10,13 +10,13 @@ install: |-
   ```
 keywords:
   - kyverno
-  - CoCo Security
+  - Confidential Computing
   - MutatingPolicy
 readme: |
   Injects attestation verification init container into Confidential Computing enabled pods based on labels and ConfigMap configuration.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "CoCo Security"
+  kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: 952ad574bf57e3d8c5c72c2f8d4f28a9e46571b2774ca64b1dd04f764c985cdf
+digest: 5314d1a5259e16ec53ab63ef06fbed4d7b958a5523f7f09caff05116639a52dc

@@ -10,13 +10,13 @@ install: |-
   ```
 keywords:
   - kyverno
-  - Security
+  - Confidential Computing
   - MutatingPolicy
 readme: |
   Injects the CoCo initdata annotation into pods with the label coco=enabled and reference to an initdata ConfigMap. Retrieves initdata from the specified ConfigMap and injects it as the io.katacontainers.config.runtime.cc_init_data annotation.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Security"
+  kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: c866a6426b2cef3e75fdd67d2cde4b61dce9b0cbe5204c07b2b4d0f037ab12de
+digest: 76573273604fbd99348b0f8f2c9fed1b0175727db91ff4c6da6be55b5bc176a8

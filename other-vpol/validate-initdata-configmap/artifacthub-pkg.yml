@@ -10,13 +10,13 @@ install: |-
   ```
 keywords:
   - kyverno
-  - Configuration Management
+  - Confidential Computing
   - ValidatingPolicy
 readme: |
   Validates that ConfigMaps with a label key coco.io/type and value initdata contain all required fields with proper values.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Configuration Management"
+  kyverno/category: "Confidential Computing"
   kyverno/subject: "ConfigMap"
-digest: c02ebc9d1bd281fb235bca5a729a9a8cecb4efb65d2651fdd749cb64e08fbccd
+digest: 8c3e911c03c36861bccfb351f4fe442667022bd505efefeb6d485a4421d1862d

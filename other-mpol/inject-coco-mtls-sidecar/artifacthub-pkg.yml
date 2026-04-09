@@ -10,13 +10,13 @@ install: |-
   ```
 keywords:
   - kyverno
-  - Confidential Containers
+  - Confidential Computing
   - MutatingPolicy
 readme: |
   Injects a secure mTLS sidecar container into pods with CoCo configuration based on ConfigMap settings.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Confidential Containers"
+  kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: 46d0341fef29da9440debe30f1025f14de9afcc949fed388efe2b209c7cb1bbb
+digest: c2c1425d359128515d0ca27b70c86643d96c9887bb6d16f92d6d2b20a0e6fea6
