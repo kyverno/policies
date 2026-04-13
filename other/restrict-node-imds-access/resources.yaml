@@ -1,0 +1,40 @@
+## Test Resources for restrict-node-imds-access
+
+---
+# PASS: Normal pod with no hostNetwork or suspicious hostAliases
+apiVersion: v1
+kind: Pod
+metadata:
+  name: safe-pod
+  namespace: default
+spec:
+  containers:
+    - name: app
+      image: nginx:latest
+---
+# FAIL: Pod using hostNetwork=true
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostnetwork-pod
+  namespace: default
+spec:
+  hostNetwork: true
+  containers:
+    - name: app
+      image: nginx:latest
+---
+# FAIL: Pod with hostAlias pointing to IMDS endpoint
+apiVersion: v1
+kind: Pod
+metadata:
+  name: imds-alias-pod
+  namespace: default
+spec:
+  hostAliases:
+    - ip: "169.254.169.254"
+      hostnames:
+        - "metadata.aws"
+  containers:
+    - name: app
+      image: nginx:latest
