@@ -1,0 +1,30 @@
+name: restrict-node-imds-access
+policies:
+  - restrict-node-imds-access.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: restrict-node-imds-access
+    rule: block-imds-host-network
+    resource: safe-pod
+    namespace: default
+    kind: Pod
+    result: pass
+  - policy: restrict-node-imds-access
+    rule: block-imds-host-network
+    resource: hostnetwork-pod
+    namespace: default
+    kind: Pod
+    result: fail
+  - policy: restrict-node-imds-access
+    rule: block-imds-host-alias
+    resource: safe-pod
+    namespace: default
+    kind: Pod
+    result: pass
+  - policy: restrict-node-imds-access
+    rule: block-imds-host-alias
+    resource: imds-alias-pod
+    namespace: default
+    kind: Pod
+    result: fail
