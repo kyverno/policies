@@ -11,6 +11,8 @@ spec:
       try:
         - assert:
             file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
     - name: step-02
       try:
         - apply:
