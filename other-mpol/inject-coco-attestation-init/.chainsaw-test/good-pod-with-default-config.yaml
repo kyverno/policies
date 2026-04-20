@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    coco.io/init-config: coco-config-defaults
+  labels:
+    app: test-app
+    coco: enabled
+  name: good-pod-with-default-config
+  namespace: default
+spec:
+  containers:
+  - image: nginx:1.21.0
+    name: nginx

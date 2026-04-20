@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  init_image: custom-registry.io/attestation-init:v1.0.0
+  kbs_url: https://kbs.example.com
+  timeout: "120"
+kind: ConfigMap
+metadata:
+  name: coco-config
+  namespace: default
