@@ -70,6 +70,8 @@ spec:
     try:
     - apply:
         file: secret-with-label-in-origin.yaml
+    - sleep:
+        duration: 5s
     - assert:
         resource:
           apiVersion: v1
@@ -99,6 +101,8 @@ spec:
     try:
     - apply:
         file: secret-no-label-in-origin.yaml
+    - sleep:
+        duration: 5s
     - error:
         resource:
           apiVersion: v1
@@ -120,6 +124,8 @@ spec:
     try:
     - apply:
         file: secret-with-label-in-other-ns.yaml
+    - sleep:
+        duration: 5s
     - error:
         resource:
           apiVersion: v1
