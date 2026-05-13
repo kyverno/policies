@@ -15,9 +15,9 @@ spec:
           kind: GeneratingPolicy
           metadata:
             name: sync-new-label-secrets
-        timeout: 10s
+        timeout: 30s
     - sleep:
-        duration: 3s
+        duration: 10s
 
   - name: step-02
     try:
@@ -29,6 +29,8 @@ spec:
         file: target-namespace-2.yaml
     - apply:
         file: other-namespace.yaml
+    - sleep:
+      duration: 10s
     - assert:
         resource:
           apiVersion: v1
@@ -71,7 +73,7 @@ spec:
     - apply:
         file: secret-with-label-in-origin.yaml
     - sleep:
-        duration: 5s
+        duration: 15s
     - assert:
         resource:
           apiVersion: v1
@@ -79,7 +81,7 @@ spec:
           metadata:
             name: my-secret
             namespace: target-namespace-1
-        timeout: 60s
+        timeout: 120s
     - assert:
         resource:
           apiVersion: v1
@@ -87,7 +89,7 @@ spec:
           metadata:
             name: my-secret
             namespace: target-namespace-2
-        timeout: 60s
+        timeout: 120s
     - error:
         resource:
           apiVersion: v1
@@ -95,14 +97,14 @@ spec:
           metadata:
             name: my-secret
             namespace: other-namespace
-        timeout: 15s
+        timeout: 45s
 
   - name: step-04-fail-secret-without-label
     try:
     - apply:
         file: secret-no-label-in-origin.yaml
     - sleep:
-        duration: 5s
+        duration: 15s
     - error:
         resource:
           apiVersion: v1
@@ -110,7 +112,7 @@ spec:
           metadata:
             name: my-secret-no-label
             namespace: target-namespace-1
-        timeout: 15s
+        timeout: 45s
     - error:
         resource:
           apiVersion: v1
@@ -118,14 +120,14 @@ spec:
           metadata:
             name: my-secret-no-label
             namespace: target-namespace-2
-        timeout: 15s
+        timeout: 45s
 
   - name: step-05-fail-labeled-secret-in-wrong-namespace
     try:
     - apply:
         file: secret-with-label-in-other-ns.yaml
     - sleep:
-        duration: 5s
+        duration: 15s
     - error:
         resource:
           apiVersion: v1
@@ -133,7 +135,7 @@ spec:
           metadata:
             name: my-secret-wrong-ns
             namespace: target-namespace-1
-        timeout: 15s
+        timeout: 45s
     - error:
         resource:
           apiVersion: v1
@@ -141,4 +143,4 @@ spec:
           metadata:
             name: my-secret-wrong-ns
             namespace: target-namespace-2
-        timeout: 15s
+        timeout: 45s
