@@ -73,7 +73,7 @@ spec:
     - apply:
         file: secret-with-label-in-origin.yaml
     - sleep:
-        duration: 15s
+        duration: 30s
     - assert:
         resource:
           apiVersion: v1
