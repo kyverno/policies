@@ -30,7 +30,7 @@ spec:
     - apply:
         file: other-namespace.yaml
     - sleep:
-      duration: 10s
+        duration: 10s
     - assert:
         resource:
           apiVersion: v1
