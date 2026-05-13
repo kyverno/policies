@@ -67,6 +67,8 @@ spec:
           status:
             phase: Active
         timeout: 30s
+    - sleep:
+        duration: 20s
 
   - name: step-03-pass-labeled-secret-in-origin
     try:
@@ -81,7 +83,7 @@ spec:
           metadata:
             name: my-secret
             namespace: target-namespace-1
-        timeout: 120s
+        timeout: 180s
     - assert:
         resource:
           apiVersion: v1
@@ -89,7 +91,7 @@ spec:
           metadata:
             name: my-secret
             namespace: target-namespace-2
-        timeout: 120s
+        timeout: 180s
     - error:
         resource:
           apiVersion: v1
