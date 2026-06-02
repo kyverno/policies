@@ -1,4 +1,4 @@
-name: restrict-default-sa-vpol
+name: restrict-default-sa
 version: 1.0.0
 displayName: Restrict Use of Default Service Accounts
 description: >-
@@ -10,10 +10,12 @@ description: >-
   account in all namespaces.
 install: |-
   ```shell
-  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-default-sa/restrict-default-sa.yaml
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/restrict-default-sa/restrict-default-sa.yaml
   ```
 keywords:
   - kyverno
+  - best-practices
+  - vpol
   - Security
   - ValidatingPolicy
 readme: |
@@ -26,10 +28,10 @@ readme: |
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
-  kyverno/category: "Security in vpol"
+  kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod, ServiceAccount"
-digest: 306d9a69135018b6f529b57a08b1cacc1210bbb461f0cb0378eb040c56565780
+digest: e4eae5e386e992afac692a6e3d011b219056a0910bd461f328e787cf9b0af9a8
 
 
 createdAt: "2026-06-02T00:00:00Z"
