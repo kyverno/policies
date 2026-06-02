@@ -1,0 +1,35 @@
+name: restrict-default-sa-vpol
+version: 1.0.0
+displayName: Restrict Use of Default Service Accounts
+description: >-
+  Kubernetes provides a default service account in every namespace. When no
+  explicit service account is assigned to a pod, this default account is used
+  automatically. To improve auditability and enforce least-privilege access,
+  workloads should use dedicated service accounts with only the permissions
+  they require. This policy prevents pods from using the default service
+  account in all namespaces.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-default-sa/restrict-default-sa.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - ValidatingPolicy
+readme: |
+  Kubernetes provides a default service account in every namespace. When no
+  explicit service account is assigned to a pod, this default account is used
+  automatically. To improve auditability and enforce least-privilege access,
+  workloads should use dedicated service accounts with only the permissions
+  they require. This policy prevents pods from using the default service
+  account in all namespaces.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security in vpol"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod, ServiceAccount"
+digest: 306d9a69135018b6f529b57a08b1cacc1210bbb461f0cb0378eb040c56565780
+
+
+createdAt: "2026-06-02T00:00:00Z"
