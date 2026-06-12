@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-static-aws-credentials
+policies:
+  - ../disallow-static-aws-credentials.yaml
+resources:
+  - ../.chainsaw-test/secret-fail-data.yaml
+  - ../.chainsaw-test/secret-fail-stringdata.yaml
+  - ../.chainsaw-test/secret-pass.yaml
+results:
+  - policy: disallow-static-aws-credentials
+    rule: deny-static-aws-credentials
+    kind: Secret
+    resources:
+      - aws-creds-data
+    result: fail
+  - policy: disallow-static-aws-credentials
+    rule: deny-static-aws-credentials
+    kind: Secret
+    resources:
+      - aws-creds-stringdata
+    result: fail
+  - policy: disallow-static-aws-credentials
+    rule: deny-static-aws-credentials
+    kind: Secret
+    resources:
+      - app-config
+    result: pass
