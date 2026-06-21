@@ -1,0 +1,61 @@
+apiVersion: kyverno.io/v2beta1
+kind: ClusterPolicy
+metadata:
+  name: restrict-weak-crypto-keys
+  annotations:
+    policies.kyverno.io/title: Restrict Weak Crypto Keys
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/subject: Secret
+    policies.kyverno.io/description: >-
+      RSA keys smaller than 3072 bits are considered weak by NIST SP 800-131A
+      and provide insufficient security margins against both classical and
+      quantum computing attacks. CNSA 2.0 guidance recommends RSA-3072 as
+      the minimum for near-term use while transitioning to post-quantum
+      cryptography (PQC) algorithms. This policy blocks the creation of
+      TLS Secrets containing RSA keys with fewer than 3072 bits, enforcing
+      a minimum key strength for quantum-preparedness.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: block-weak-rsa-keys
+    match:
+      any:
+      - resources:
+          kinds:
+          - Secret
+    preconditions:
+      all:
+      - key: "{{ request.object.type || '' }}"
+        operator: Equals
+        value: kubernetes.io/tls
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    context:
+    - name: certData
+      variable:
+        jmesPath: "x509_decode(base64_decode('{{ request.object.data.\"tls.crt\" }}'))"
+    validate:
+      message: >-
+        TLS Secret "{{ request.object.metadata.name }}" contains an RSA key
+        with {{ certData.PublicKey.N | length(@) }} bits which is below the
+        minimum 3072-bit requirement. RSA keys smaller than 3072 bits do not
+        meet NIST SP 800-131A or CNSA 2.0 guidelines for quantum-preparedness.
+        Use RSA-3072 or larger, or migrate to post-quantum cryptography (PQC)
+        algorithms.
+      deny:
+        conditions:
+          all:
+          - key: "{{ certData.PublicKeyAlgorithm }}"
+            operator: Equals
+            value: RSA
+          - key: "{{ certData.PublicKey.N | length(@) }}"
+            operator: LessThan
+            value: 3072
