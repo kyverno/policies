@@ -1,0 +1,68 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-tls13-minimum
+  annotations:
+    policies.kyverno.io/title: Require TLS 1.3 Minimum
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/subject: Ingress
+    policies.kyverno.io/description: >-
+      TLS 1.3 is a prerequisite for post-quantum cryptography (PQC) key exchange
+      mechanisms such as ML-KEM (Kyber). Older TLS versions (1.0, 1.1, 1.2) do not
+      support the hybrid key exchange groups required for quantum-safe communication.
+      This policy audits Ingress resources to ensure they enforce TLS 1.3 as the
+      minimum protocol version via the nginx.ingress.kubernetes.io/ssl-min-protocol
+      annotation. Ingress resources missing this annotation or specifying a version
+      lower than TLS 1.3 will be reported in a PolicyReport.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: check-tls13-annotation
+    match:
+      any:
+      - resources:
+          kinds:
+          - Ingress
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: >-
+        Ingress must enforce TLS 1.3 minimum for post-quantum cryptography readiness.
+        Set the annotation nginx.ingress.kubernetes.io/ssl-min-protocol to TLSv1.3.
+      pattern:
+        metadata:
+          annotations:
+            nginx.ingress.kubernetes.io/ssl-min-protocol: TLSv1.3
+  - name: require-tls-section
+    match:
+      any:
+      - resources:
+          kinds:
+          - Ingress
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: >-
+        Ingress must define spec.tls to enable TLS termination.
+        A TLS section is required for post-quantum cryptography enforcement.
+      deny:
+        conditions:
+          all:
+          - key: tls
+            operator: AnyNotIn
+            value: "{{ request.object.spec.keys(@) }}"
