@@ -3,7 +3,7 @@ kind: ClusterPolicy
 metadata:
   name: restrict-weak-crypto-keys
   annotations:
-    policies.kyverno.io/title: Restrict Weak Crypto Keys
+    policies.kyverno.io/title: Restrict Weak Crypto Keys (Block Classical Algorithms)
     policies.kyverno.io/category: Security
     policies.kyverno.io/severity: high
     kyverno.io/kyverno-version: 1.11.0
@@ -11,18 +11,20 @@ metadata:
     kyverno.io/kubernetes-version: "1.27"
     policies.kyverno.io/subject: Secret
     policies.kyverno.io/description: >-
-      RSA keys smaller than 3072 bits are considered weak by NIST SP 800-131A
-      and provide insufficient security margins against both classical and
-      quantum computing attacks. CNSA 2.0 guidance recommends RSA-3072 as
-      the minimum for near-term use while transitioning to post-quantum
-      cryptography (PQC) algorithms. This policy blocks the creation of
-      TLS Secrets containing RSA keys with fewer than 3072 bits, enforcing
-      a minimum key strength for quantum-preparedness.
+      Classical key algorithms such as RSA, ECDSA, and DSA are vulnerable to
+      quantum computing attacks via Shor's algorithm. CNSA 2.0 and NIST PQC
+      guidance recommend migrating to post-quantum cryptography (PQC)
+      algorithms such as ML-DSA (Dilithium). Checking RSA key bit length
+      via x509_decode is unreliable because PublicKey.N is returned as a
+      decimal string whose character count does not equal the bit length.
+      Instead, this policy blocks TLS Secrets that use any classical
+      PublicKeyAlgorithm (RSA, ECDSA, DSA), enforcing a migration to
+      PQC-safe algorithms.
 spec:
   validationFailureAction: Enforce
   background: false
   rules:
-  - name: block-weak-rsa-keys
+  - name: block-classical-key-algorithms
     match:
       any:
       - resources:
@@ -33,7 +35,7 @@ spec:
       - key: "{{ request.object.type || '' }}"
         operator: Equals
         value: kubernetes.io/tls
-      - key: "{{request.operation || 'BACKGROUND'}}"
+      - key: "{{ request.operation || 'BACKGROUND' }}"
         operator: AnyIn
         value:
         - CREATE
@@ -44,18 +46,18 @@ spec:
         jmesPath: "x509_decode(base64_decode('{{ request.object.data.\"tls.crt\" }}'))"
     validate:
       message: >-
-        TLS Secret "{{ request.object.metadata.name }}" contains an RSA key
-        with {{ certData.PublicKey.N | length(@) }} bits which is below the
-        minimum 3072-bit requirement. RSA keys smaller than 3072 bits do not
-        meet NIST SP 800-131A or CNSA 2.0 guidelines for quantum-preparedness.
-        Use RSA-3072 or larger, or migrate to post-quantum cryptography (PQC)
-        algorithms.
+        TLS Secret "{{ request.object.metadata.name }}" uses the
+        {{ certData.PublicKeyAlgorithm }} public key algorithm which is
+        vulnerable to quantum computing attacks. Classical algorithms
+        (RSA, ECDSA, DSA) do not meet CNSA 2.0 guidelines for
+        quantum-preparedness. Migrate to post-quantum cryptography (PQC)
+        algorithms such as ML-DSA (Dilithium) or hybrid key schemes.
       deny:
         conditions:
-          all:
+          any:
           - key: "{{ certData.PublicKeyAlgorithm }}"
-            operator: Equals
-            value: RSA
-          - key: "{{ certData.PublicKey.N | length(@) }}"
-            operator: LessThan
-            value: 3072
+            operator: AnyIn
+            value:
+            - RSA
+            - ECDSA
+            - DSA
