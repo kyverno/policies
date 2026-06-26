@@ -1,0 +1,60 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-probe-timeout-period
+policies:
+- ../validate-probe-timeout-period.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - bad-liveness-timeout
+  result: fail
+  rule: validate-liveness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - bad-readiness-timeout
+  result: fail
+  rule: validate-readiness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - bad-startup-timeout
+  result: fail
+  rule: validate-startup-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - bad-liveness-equal
+  result: fail
+  rule: validate-liveness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - good-pod-defaults
+  - good-pod-explicit
+  - good-pod-startup
+  - good-pod-all-probes
+  result: pass
+  rule: validate-liveness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - good-pod-defaults
+  - good-pod-explicit
+  - good-pod-startup
+  - good-pod-all-probes
+  result: pass
+  rule: validate-readiness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - good-pod-defaults
+  - good-pod-explicit
+  - good-pod-startup
+  - good-pod-all-probes
+  result: pass
+  rule: validate-startup-probe-timeout
