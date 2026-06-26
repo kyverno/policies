@@ -1,0 +1,114 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: validate-probe-timeout-period
+  annotations:
+    pod-policies.kyverno.io/autogen-controllers: DaemonSet,Deployment,StatefulSet
+    policies.kyverno.io/title: Validate Probe Timeout Period
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.23+"
+    policies.kyverno.io/description: >-
+      Probe timeoutSeconds should be less than periodSeconds to prevent overlapping
+      probe executions. When timeoutSeconds is greater than or equal to periodSeconds,
+      multiple concurrent probes can run simultaneously for the same container, leading to
+      resource waste, unclear probe states, and unexpected behavior. This policy validates
+      that for all probe types (liveness, readiness, startup), the timeout value is less
+      than the period value, accounting for default values (timeoutSeconds defaults to 1,
+      periodSeconds defaults to 10).
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: validate-liveness-probe-timeout
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: >-
+        Liveness probe timeoutSeconds ({{element.livenessProbe.timeoutSeconds || `1`}})
+        must be less than periodSeconds ({{element.livenessProbe.periodSeconds || `10`}}).
+      foreach:
+      - list: request.object.spec.containers[]
+        preconditions:
+          all:
+          - key: livenessProbe
+            operator: AnyIn
+            value: "{{ element.keys(@)[] }}"
+        deny:
+          conditions:
+            any:
+            - key: "{{ element.livenessProbe.timeoutSeconds || `1` }}"
+              operator: GreaterThanOrEquals
+              value: "{{ element.livenessProbe.periodSeconds || `10` }}"
+  - name: validate-readiness-probe-timeout
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: >-
+        Readiness probe timeoutSeconds ({{element.readinessProbe.timeoutSeconds || `1`}})
+        must be less than periodSeconds ({{element.readinessProbe.periodSeconds || `10`}}).
+      foreach:
+      - list: request.object.spec.containers[]
+        preconditions:
+          all:
+          - key: readinessProbe
+            operator: AnyIn
+            value: "{{ element.keys(@)[] }}"
+        deny:
+          conditions:
+            any:
+            - key: "{{ element.readinessProbe.timeoutSeconds || `1` }}"
+              operator: GreaterThanOrEquals
+              value: "{{ element.readinessProbe.periodSeconds || `10` }}"
+  - name: validate-startup-probe-timeout
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    preconditions:
+      all:
+      - key: "{{request.operation || 'BACKGROUND'}}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    validate:
+      message: >-
+        Startup probe timeoutSeconds ({{element.startupProbe.timeoutSeconds || `1`}})
+        must be less than periodSeconds ({{element.startupProbe.periodSeconds || `10`}}).
+      foreach:
+      - list: request.object.spec.containers[]
+        preconditions:
+          all:
+          - key: startupProbe
+            operator: AnyIn
+            value: "{{ element.keys(@)[] }}"
+        deny:
+          conditions:
+            any:
+            - key: "{{ element.startupProbe.timeoutSeconds || `1` }}"
+              operator: GreaterThanOrEquals
+              value: "{{ element.startupProbe.periodSeconds || `10` }}"
