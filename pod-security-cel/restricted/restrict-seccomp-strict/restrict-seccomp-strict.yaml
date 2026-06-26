@@ -33,6 +33,14 @@ spec:
         cel:
           expressions:
             - expression: >-
+                !object.spec.?securityContext.?seccompProfile.?type.hasValue() ||
+                object.spec.securityContext.seccompProfile.type == 'RuntimeDefault' ||
+                object.spec.securityContext.seccompProfile.type == 'Localhost'
+              message: >-
+                Use of custom Seccomp profiles is disallowed. The field
+                spec.securityContext.seccompProfile.type must be set to `RuntimeDefault` or `Localhost`.
+
+            - expression: >-
                 object.spec.containers.all(container,
                   (container.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost']) ||
                   (!container.?securityContext.?seccompProfile.?type.hasValue() && object.spec.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost'])
@@ -41,7 +49,7 @@ spec:
                 Use of custom Seccomp profiles is disallowed. The field
                 spec.containers[*].securityContext.seccompProfile.type must be set to `RuntimeDefault` or `Localhost`,
                 or inherited from spec.securityContext.seccompProfile.type.
-              
+
             - expression: >-
                 object.spec.?initContainers.orValue([]).all(container,
                   (container.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost']) ||
