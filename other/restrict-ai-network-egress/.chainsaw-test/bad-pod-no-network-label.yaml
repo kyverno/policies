@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-ai-workload-no-network-label
+  labels:
+    ai.workload/type: model-serving
+    # Missing: networkpolicy.networking.k8s.io/policy-group label
+spec:
+  containers:
+  - name: inference-server
+    image: pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
