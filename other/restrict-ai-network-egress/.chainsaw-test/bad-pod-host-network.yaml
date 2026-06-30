@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-ai-workload-host-network
+  labels:
+    ai.workload/type: model-serving
+    networkpolicy.networking.k8s.io/policy-group: ai-inference
+spec:
+  hostNetwork: true  # violation: bypasses all NetworkPolicy egress rules
+  containers:
+  - name: inference-server
+    image: pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime

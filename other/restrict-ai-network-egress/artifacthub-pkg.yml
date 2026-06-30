@@ -1,0 +1,39 @@
+name: restrict-ai-network-egress
+version: 1.0.0
+displayName: Restrict AI Workload Network Egress
+createdAt: "2026-06-30T00:00:00.000Z"
+description: >-
+  Enforces network egress controls on AI model workload pods identified by the
+  label ai.workload/type. Blocks hostNetwork=true (which bypasses NetworkPolicy)
+  and requires a NetworkPolicy binding label to ensure egress restrictions are
+  enforced on outbound model API calls.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-ai-network-egress/restrict-ai-network-egress.yaml
+  ```
+keywords:
+  - kyverno
+  - ai
+  - network
+  - egress
+  - networkpolicy
+  - machine-learning
+readme: |
+  Enforces two network egress controls on pods labelled as AI workloads
+  (ai.workload/type label present):
+
+  1. Blocks `spec.hostNetwork: true`, which gives a pod direct access to the
+     node network and bypasses all NetworkPolicy egress rules.
+
+  2. Requires the label `networkpolicy.networking.k8s.io/policy-group` so that
+     a matching NetworkPolicy can enforce egress restrictions on outbound model
+     API calls. AI inference pods regularly reach external model APIs; without
+     this label, no NetworkPolicy selector can target the pod.
+
+  Refer to the documentation for more details on Kyverno annotations:
+  https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24+"
+  kyverno/subject: "Pod, NetworkPolicy"
+digest: 8e8f1984a815ea381d66cc4fb7ee661ce7a78a044bb0a8f4adeb331d99847a2f

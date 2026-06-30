@@ -1,0 +1,64 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-ai-network-egress
+  annotations:
+    policies.kyverno.io/title: Restrict AI Workload Network Egress
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod, NetworkPolicy
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: "1.24+"
+    policies.kyverno.io/description: >-
+      Enforces network egress controls on AI model workload pods identified by
+      the label `ai.workload/type`. Blocks `spec.hostNetwork: true`, which
+      gives a pod direct access to the node network and bypasses all
+      NetworkPolicy egress rules, and requires every AI workload pod to carry
+      a `networkpolicy.networking.k8s.io/policy-group` label so that a
+      matching NetworkPolicy selector can enforce egress restrictions. AI
+      inference pods regularly reach external model APIs; without these
+      controls, a compromised pod can exfiltrate data or make arbitrary
+      outbound calls.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: block-host-network
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchExpressions:
+            - key: ai.workload/type
+              operator: Exists
+    validate:
+      message: >-
+        AI workload pods must not use hostNetwork. Setting hostNetwork=true
+        gives the pod direct node network access and bypasses all
+        NetworkPolicy egress controls.
+      pattern:
+        spec:
+          =(hostNetwork): "false"
+
+  - name: require-network-policy-label
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchExpressions:
+            - key: ai.workload/type
+              operator: Exists
+    validate:
+      message: >-
+        AI workload pods must carry the label
+        'networkpolicy.networking.k8s.io/policy-group' so that a matching
+        NetworkPolicy can enforce egress restrictions on outbound model API calls.
+      pattern:
+        metadata:
+          labels:
+            networkpolicy.networking.k8s.io/policy-group: "?*"
