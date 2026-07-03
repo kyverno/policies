@@ -35,6 +35,10 @@ spec:
             - key: nodes/proxy
               operator: AnyIn
               value: "{{ request.object.rules[].resources[] }}"
+            any:
             - key: ""
+              operator: AnyIn
+              value: "{{ request.object.rules[].apiGroups[] }}"
+            - key: "*"
               operator: AnyIn
               value: "{{ request.object.rules[].apiGroups[] }}"
