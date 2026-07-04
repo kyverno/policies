@@ -1189,74 +1189,7 @@ jobs:
     needs:
     - argo
     - argo-cel
-    - aws
-    - aws-cel
-    - best-practices
-    - best-practices-vpol
-    - best-practices-cel
-    - best-practices-mpol
-    - best-practices-gpol
-    - castai
-    - castai-mpol
-    - cert-manager
-    - cleanup
-    - cleanup-dpol
-    - consul
-    - consul-cel
-    - external-secret-operator
-    - flux
-    - flux-cel
-    - istio
-    - istio-cel
-    - istio-mpol
-    - karpenter
-    - kasten
-    - kasten-cel
-    - kubecost
-    - kubecost-cel
-    - kubecost-mpol
-    - kubeops
-    - kubevirt
-    - kubevirt-gpol
-    - linkerd
-    - linkerd-cel
-    - linkerd-mpol
-    - nginx-ingress
-    - nginx-ingress-cel
-    - openshift
-    - openshift-cel
-    - other
-    - other-vpol
-    - other-mpol
-    - other-cel
-    - other-gpol
-    - pod-security
-    - pod-security-cel
-    - pod-security-vpol
-    - psa
-    - psa-cel
-    - psa-mpol
-    - psp-migration
-    - psp-migration-cel
-    - psp-migration-mpol
-    - tekton
-    - tekton-cel
-    - traefik
-    - traefik-cel
-    - velero
-    - velero-cel
-    - velero-mpol
-    - windows-security
-    runs-on: ubuntu-latest
-    if: ${{ success() }}
-    steps:
-    - run: ${{ true }}
-
-  e2e-required-failure:
-    name: e2e-required
-    needs:
-    - argo
-    - argo-cel
+    - argo-vpol
     - aws
     - aws-cel
     - best-practices
@@ -1299,6 +1232,78 @@ jobs:
     - other-mpol
     - other-cel
     - other-gpol
+    - other-ivpol
+    - pod-security
+    - pod-security-cel
+    - pod-security-vpol
+    - psa
+    - psa-cel
+    - psa-mpol
+    - psp-migration
+    - psp-migration-cel
+    - psp-migration-mpol
+    - tekton
+    - tekton-cel
+    - traefik
+    - traefik-cel
+    - velero
+    - velero-cel
+    - velero-mpol
+    - windows-security
+    runs-on: ubuntu-latest
+    if: ${{ success() }}
+    steps:
+    - run: ${{ true }}
+
+  e2e-required-failure:
+    name: e2e-required
+    needs:
+    - argo
+    - argo-cel
+    - argo-vpol
+    - aws
+    - aws-cel
+    - best-practices
+    - best-practices-vpol
+    - best-practices-cel
+    - best-practices-mpol
+    - best-practices-gpol
+    - castai
+    - castai-mpol
+    - cert-manager
+    - cleanup
+    - cleanup-dpol
+    - consul
+    - consul-cel
+    - external-secret-operator
+    - flux
+    - flux-cel
+    - istio
+    - istio-cel
+    - istio-mpol
+    - karpenter
+    - karpenter-mpol
+    - kasten
+    - kasten-cel
+    - kubecost
+    - kubecost-cel
+    - kubecost-mpol
+    - kubeops
+    - kubevirt
+    - kubevirt-gpol
+    - linkerd
+    - linkerd-cel
+    - linkerd-mpol
+    - nginx-ingress
+    - nginx-ingress-cel
+    - openshift
+    - openshift-cel
+    - other
+    - other-vpol
+    - other-mpol
+    - other-cel
+    - other-gpol
+    - other-ivpol
     - pod-security
     - pod-security-cel
     - pod-security-vpol
