@@ -1,0 +1,24 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-job-timeout-enforcer
+spec:
+  steps:
+  - name: 01-apply-policy
+    try:
+    - apiVersion: kyverno.io/v1
+      kind: ClusterPolicy
+      file: job-timeout-enforcer.yaml
+
+  - name: 02-test-valid-job
+    try:
+    - file: resources/valid-job.yaml
+
+  - name: 03-test-invalid-job
+    try:
+    - file: resources/invalid-job.yaml
+    expect:
+      violation:
+        count: 2
+        match:
+        - message: "Jobs must specify activeDeadlineSeconds between 3600 (1 hour) and 86400 (24 hours)"
