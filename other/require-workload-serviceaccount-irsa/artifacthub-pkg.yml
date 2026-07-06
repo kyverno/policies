@@ -1,0 +1,31 @@
+version: 1.0.0
+name: require-workload-serviceaccount-irsa
+displayName: Require Workload ServiceAccount IRSA Annotation
+createdAt: "2026-04-13T00:00:00Z"
+description: >-
+  Requires ServiceAccounts labeled with aws-access=true to carry the
+  eks.amazonaws.com/role-arn annotation, enforcing IRSA usage over
+  node instance profile inheritance on EKS clusters.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-workload-serviceaccount-irsa/require-workload-serviceaccount-irsa.yaml
+  ```
+keywords:
+  - kyverno
+  - aws
+  - eks
+  - irsa
+  - iam
+  - security
+  - serviceaccount
+readme: |-
+  In EKS clusters, workloads that require AWS API access should use IAM Roles
+  for Service Accounts (IRSA) rather than relying on the EC2 instance profile
+  assigned to the worker node. This policy requires that any ServiceAccount
+  carrying the label `aws-access: "true"` must have the
+  `eks.amazonaws.com/role-arn` annotation set to a valid IAM role ARN.
+annotations:
+  kyverno/category: "AWS, EKS Best Practices"
+  kyverno/kubernetesVersion: "1.24-1.30"
+  kyverno/subject: "ServiceAccount"
+digest: ""
