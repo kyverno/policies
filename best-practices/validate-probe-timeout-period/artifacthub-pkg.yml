@@ -1,0 +1,21 @@
+name: validate-probe-timeout-period
+version: 1.0.0
+displayName: Validate Probe Timeout Period
+createdAt: "2026-06-26T00:00:00.000Z"
+description: >-
+  Probe timeoutSeconds should be less than periodSeconds to prevent overlapping probe executions. When timeoutSeconds is greater than or equal to periodSeconds, multiple concurrent probes can run simultaneously for the same container, leading to resource waste, unclear probe states, and unexpected behavior. This policy validates that for all probe types (liveness, readiness, startup), the timeout value is less than the period value, accounting for default values (timeoutSeconds defaults to 1, periodSeconds defaults to 10).
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices/validate-probe-timeout-period/validate-probe-timeout-period.yaml
+  ```
+keywords:
+  - kyverno
+  - Best Practices
+readme: |
+  Probe timeoutSeconds should be less than periodSeconds to prevent overlapping probe executions. When timeoutSeconds is greater than or equal to periodSeconds, multiple concurrent probes can run simultaneously for the same container, leading to resource waste, unclear probe states, and unexpected behavior. This policy validates that for all probe types (liveness, readiness, startup), the timeout value is less than the period value, accounting for default values (timeoutSeconds defaults to 1, periodSeconds defaults to 10).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Best Practices"
+  kyverno/subject: "Pod"
+digest: 0cc735cd221582df3876377305905f9482eff5f68d1a3437b6c922dd135e2e0d
