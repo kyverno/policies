@@ -1,0 +1,40 @@
+name: require-ai-workload-controls
+version: 1.0.0
+displayName: Require AI Workload Controls
+createdAt: "2026-06-30T00:00:00.000Z"
+description: >-
+  Enforces security controls on AI model workload pods identified by the label
+  ai.workload/type. Requires an audit-logging annotation and blocks plain-text
+  AI API credentials in environment variables — API keys, tokens, and secrets
+  must be sourced from a Kubernetes Secret via secretKeyRef.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-ai-workload-controls/require-ai-workload-controls.yaml
+  ```
+keywords:
+  - kyverno
+  - ai
+  - security
+  - credentials
+  - audit
+  - machine-learning
+readme: |
+  Enforces two security controls on pods labelled as AI workloads
+  (ai.workload/type label present):
+
+  1. Requires the annotation `ai.workload/audit-logging: enabled` to confirm
+     that audit logging is configured for the workload.
+
+  2. Blocks plain-text AI API credentials in environment variables. Environment
+     variable names matching common AI service credential patterns
+     (OPENAI_API_KEY, ANTHROPIC_API_KEY, HUGGINGFACE_TOKEN, etc.) must use
+     secretKeyRef — plain-text values risk credential exposure in pod specs,
+     logs, and Kubernetes audit records.
+
+  Refer to the documentation for more details on Kyverno annotations:
+  https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.24+"
+  kyverno/subject: "Pod"
+digest: a3306c64b8dbbbb5035cef440ecfa44a100b61a46e0be8f0aab97d4daa442deb
