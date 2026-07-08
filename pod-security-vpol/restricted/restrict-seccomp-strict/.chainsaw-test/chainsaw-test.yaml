@@ -28,6 +28,7 @@ spec:
   - name: step-02
     try:
     - apply:
+        dryRun: true
         file: pod-good.yaml
     - apply:
         expect:
@@ -35,6 +36,7 @@ spec:
             ($error != null): true
         file: pod-bad.yaml
     - apply:
+        dryRun: true
         file: podcontroller-good.yaml
     - apply:
         expect:
