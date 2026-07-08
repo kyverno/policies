@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  namespace: test-signing
+spec:
+  containers:
+    - name: test-container
+      image: 'ghcr.io/kyverno/test-verify-image@sha256:b588b277f929d067df06f8a88edfc4c5f9b0ec4349aa426e74e2923df46b3656'
+      imagePullPolicy: Always
