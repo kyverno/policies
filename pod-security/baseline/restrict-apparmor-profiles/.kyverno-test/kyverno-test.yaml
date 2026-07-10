@@ -28,6 +28,48 @@ results:
 - kind: CronJob
   policy: restrict-apparmor-profiles
   resources:
+  - badcronjob02
+  result: fail
+  rule: app-armor-native-pod
+- kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - baddeployment02
+  result: fail
+  rule: app-armor-native-pod
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - badpod02
+  result: fail
+  rule: app-armor-native-pod
+- kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
+  - badcronjob03
+  result: fail
+  rule: app-armor-native-containers
+- kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - baddeployment03
+  result: fail
+  rule: app-armor-native-containers
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - badpod03
+  result: fail
+  rule: app-armor-native-containers
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - badpod04
+  result: fail
+  rule: app-armor-native-containers
+- kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
   - goodcronjob01
   - goodcronjob02
   - goodcronjob03
@@ -49,3 +91,45 @@ results:
   - goodpod03
   result: pass
   rule: app-armor
+- kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodcronjob04
+  result: pass
+  rule: app-armor-native-pod
+- kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - gooddeployment04
+  result: pass
+  rule: app-armor-native-pod
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodpod04
+  result: pass
+  rule: app-armor-native-pod
+- kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodcronjob05
+  result: pass
+  rule: app-armor-native-containers
+- kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - gooddeployment05
+  result: pass
+  rule: app-armor-native-containers
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodpod05
+  result: pass
+  rule: app-armor-native-containers
+- kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodpod06
+  result: pass
+  rule: app-armor-native-containers
