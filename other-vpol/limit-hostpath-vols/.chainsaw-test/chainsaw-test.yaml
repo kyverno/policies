@@ -12,7 +12,7 @@ spec:
         file: ../limit-hostpath-vols.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: limit-hostpath-vols
