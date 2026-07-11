@@ -1,0 +1,30 @@
+name: restrict-weak-crypto-keys
+version: 1.0.0
+displayName: Restrict Weak Crypto Keys (Block Classical Algorithms)
+createdAt: "2026-06-20T00:00:00.000Z"
+description: >-
+  Classical key algorithms such as RSA, ECDSA, and DSA are vulnerable to quantum computing attacks via Shor's algorithm. CNSA 2.0 and NIST PQC guidance recommend migrating to post-quantum cryptography (PQC) algorithms such as ML-DSA (Dilithium). This policy blocks the creation of TLS Secrets that use any classical PublicKeyAlgorithm (RSA, ECDSA, DSA), enforcing a migration to PQC-safe algorithms.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-weak-crypto-keys/restrict-weak-crypto-keys.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - PQC
+  - Post-Quantum Cryptography
+readme: |
+  Classical key algorithms such as RSA, ECDSA, and DSA are vulnerable to
+  quantum computing attacks via Shor's algorithm. CNSA 2.0 and NIST PQC
+  guidance recommend migrating to post-quantum cryptography (PQC) algorithms
+  such as ML-DSA (Dilithium). Checking RSA key bit length via x509_decode is
+  unreliable because PublicKey.N is returned as a decimal string whose
+  character count does not equal the bit length. Instead, this policy blocks
+  TLS Secrets that use any classical PublicKeyAlgorithm (RSA, ECDSA, DSA),
+  enforcing a migration to PQC-safe algorithms.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Secret"

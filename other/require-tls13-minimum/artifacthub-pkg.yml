@@ -1,0 +1,34 @@
+name: require-tls13-minimum
+version: 1.0.0
+displayName: Require TLS 1.3 Minimum
+createdAt: "2026-06-20T00:00:00.000Z"
+description: >-
+  TLS 1.3 is a prerequisite for post-quantum cryptography (PQC) key exchange mechanisms such as ML-KEM (Kyber). Older TLS versions (1.0, 1.1, 1.2) do not support the hybrid key exchange groups required for quantum-safe communication. This policy audits Ingress resources managed by the nginx-ingress-controller to ensure they enforce TLS 1.3 as the minimum protocol version via the nginx.ingress.kubernetes.io/ssl-min-protocol annotation. Ingress resources missing this annotation or specifying a version lower than TLS 1.3 will be reported in a PolicyReport. NOTE: This policy is specific to nginx-ingress-controller. Other ingress controllers (Traefik, HAProxy, Istio, etc.) require separate policies.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-tls13-minimum/require-tls13-minimum.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - PQC
+  - Post-Quantum Cryptography
+readme: |
+  TLS 1.3 is a prerequisite for post-quantum cryptography (PQC) key exchange
+  mechanisms such as ML-KEM (Kyber). Older TLS versions (1.0, 1.1, 1.2) do not
+  support the hybrid key exchange groups required for quantum-safe communication.
+  This policy audits Ingress resources managed by the nginx-ingress-controller
+  to ensure they enforce TLS 1.3 as the minimum protocol version via the
+  `nginx.ingress.kubernetes.io/ssl-min-protocol` annotation. Ingress resources
+  missing this annotation or specifying a version lower than TLS 1.3 will be
+  reported in a PolicyReport.
+
+  **NOTE:** This policy is specific to nginx-ingress-controller. Other ingress
+  controllers (Traefik, HAProxy, Istio, etc.) use different annotations or CRDs
+  and require separate policies.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Ingress"
