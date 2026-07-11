@@ -14,7 +14,8 @@ metadata:
       Certain system groups exist in Kubernetes which grant permissions that
       are used for certain system-level functions yet typically never appropriate
       for other users. This policy prevents creating bindings to some of these
-      groups including system:anonymous, system:unauthenticated, and system:masters.
+      groups including system:anonymous, system:unauthenticated, system:authenticated,
+      and system:masters.
 spec:
   validationFailureAction: Audit
   background: true
@@ -38,4 +39,6 @@ spec:
               message: "Binding to system:unauthenticated is not allowed."
             - expression: "object.subjects.all(subject, subject.name != 'system:masters')"
               message: "Binding to system:masters is not allowed."
+            - expression: "object.subjects.all(subject, subject.name != 'system:authenticated')"
+              message: "Binding to system:authenticated is not allowed."
             
