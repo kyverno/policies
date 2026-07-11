@@ -14,7 +14,6 @@ metadata:
       This policy ensures that the name of the ApplicationSet is the
       same value provided in the project.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: match-name
@@ -27,6 +26,7 @@ spec:
             - CREATE
             - UPDATE
       validate:
+        failureAction: Audit
         cel:
           expressions:
             - expression: "object.spec.template.spec.project == object.metadata.name"

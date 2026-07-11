@@ -12,7 +12,6 @@ metadata:
     policies.kyverno.io/description: >-
       This policy prevents updates to the project field after an Application is created.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: project-updates
@@ -25,6 +24,7 @@ spec:
         - name: "operation-should-be-update"
           expression: "request.operation == 'UPDATE'"
       validate:
+        failureAction: Audit
         cel:  
           expressions:
             - expression: "object.spec.project == oldObject.spec.project"

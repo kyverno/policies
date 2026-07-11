@@ -15,7 +15,6 @@ metadata:
       Path or chart must be specified but never both. And destination.name or
       destination.server must be specified but never both.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: source-path-chart
@@ -25,6 +24,7 @@ spec:
             kinds:
             - Application
       validate:
+        failureAction: Audit
         message: >-
           `spec.source.path` OR `spec.source.chart` should be specified but never both.
         anyPattern:
@@ -43,6 +43,7 @@ spec:
             kinds:
             - Application
       validate:
+        failureAction: Audit
         message: >-
           `spec.destination.server` OR `spec.destination.name` should be specified but never both.
         anyPattern:
