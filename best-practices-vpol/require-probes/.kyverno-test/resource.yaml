@@ -108,3 +108,35 @@ spec:
       periodSeconds: 10
   - name: nginx
     image: nginx:latest
+---
+# CronJob: containers live under spec.jobTemplate.spec.template.spec.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: c
+              image: busybox
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: c
+              image: busybox
+              livenessProbe:
+                exec:
+                  command: ["true"]
