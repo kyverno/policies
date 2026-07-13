@@ -35,11 +35,16 @@ spec:
       resources: ["jobs", "cronjobs"]
       operations: ["CREATE", "UPDATE"]
   variables:
+  # Resolve the pod spec across the three matched shapes: bare Pod (spec),
+  # CronJob (spec.jobTemplate.spec.template.spec) and other controllers (spec.template.spec).
+  - name: podSpec
+    expression: >-
+      has(object.spec.containers) ? object.spec :
+        has(object.spec.jobTemplate) ? object.spec.jobTemplate.spec.template.spec :
+          object.spec.template.spec
   - name: allContainers
     expression: >-
-      has(object.spec.containers) ? 
-        object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]) : 
-        object.spec.template.spec.containers + object.spec.template.spec.?initContainers.orValue([]) + object.spec.template.spec.?ephemeralContainers.orValue([])      
+      variables.podSpec.containers + variables.podSpec.?initContainers.orValue([]) + variables.podSpec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
       variables.allContainers.all(container, 
@@ -49,4 +54,4 @@ spec:
       'All containers must have at least one probe (livenessProbe, readinessProbe, or startupProbe) defined. Missing probes in containers: ' + 
       variables.allContainers.filter(container, 
         !(has(container.livenessProbe) || has(container.readinessProbe) || has(container.startupProbe))
-      ).map(container, container.name).join(', ')  
+      ).map(container, container.name).join(', ')
