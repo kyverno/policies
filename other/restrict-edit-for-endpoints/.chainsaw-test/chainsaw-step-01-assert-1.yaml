@@ -1,0 +1,10 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-edit-for-endpoints
+status:
+  conditions:
+  - reason: Succeeded
+    status: "True"
+    type: Ready
+
