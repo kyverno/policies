@@ -29,12 +29,9 @@ spec:
         has(object.spec.volumes) ? 
           object.spec.volumes.filter(v, has(v.hostPath)).map(v, v.name) : 
           []
-    - name: hasHostPath
-      expression: |
-        variables.hostpathVolumes.size() > 0
   matchConditions:
     - name: has-hostpath-volumes
-      expression: variables.hasHostPath
+      expression: has(object.spec.volumes) && object.spec.volumes.exists(v, has(v.hostPath))
   mutations:
     - patchType: JSONPatch
       jsonPatch:
