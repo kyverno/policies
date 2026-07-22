@@ -1226,6 +1226,29 @@ spec:
           - name: container01
             image: dummyimagename
 ---
+###### Pods - Good (null seLinuxOptions)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: null-goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    seLinuxOptions: null
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: null-goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seLinuxOptions: null
+---
 #############################
 ## Rule: selinux-user-role ##
 #############################
