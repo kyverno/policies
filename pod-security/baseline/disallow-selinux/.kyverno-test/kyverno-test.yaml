@@ -98,8 +98,17 @@ results:
   - goodpod12
   - goodpod13
   - goodpod14
+  - null-goodpod01
+  - null-goodpod02
   result: pass
   rule: selinux-type
+- kind: Pod
+  policy: disallow-selinux
+  resources:
+  - null-goodpod01
+  - null-goodpod02
+  result: pass
+  rule: selinux-user-role
 - kind: CronJob
   policy: disallow-selinux
   resources:
