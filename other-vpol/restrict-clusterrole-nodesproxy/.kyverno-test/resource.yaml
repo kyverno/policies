@@ -48,3 +48,23 @@ metadata:
   name: default-rules
 rules: null
 ---
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: badcr03
+rules:
+- apiGroups: ["*"]
+  resources: ["nodes/proxy"]
+  verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: goodcr03
+rules:
+- apiGroups: ["networking.istio.io"]
+  resources: ["*"]
+  verbs: ["get", "watch", "list"]
