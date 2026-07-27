@@ -45,4 +45,9 @@ results:
   - goodrole05
   - default-rules
   result: pass
-
+- policy: restrict-wildcard-resources
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - cr-nonresource-only
+  result: pass

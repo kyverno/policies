@@ -21,3 +21,13 @@ results:
   - goodpod03
   - goodpod04
   result: pass
+- kind: CronJob
+  policy: require-pod-probes
+  resources:
+  - badcronjob01
+  result: fail
+- kind: CronJob
+  policy: require-pod-probes
+  resources:
+  - goodcronjob01
+  result: pass

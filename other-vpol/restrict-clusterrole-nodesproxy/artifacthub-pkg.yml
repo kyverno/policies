@@ -1,8 +1,7 @@
 name: restrict-clusterrole-nodesproxy-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict ClusterRole with Nodes Proxy in ValidatingPolicy
-description: >-
-  A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
+description: "A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. "
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-clusterrole-nodesproxy/restrict-clusterrole-nodesproxy.yaml
@@ -11,15 +10,10 @@ keywords:
   - kyverno
   - Sample
   - ValidatingPolicy
-readme: |
-  A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. 
-  
-  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+readme: "A ClusterRole with nodes/proxy resource access allows a user to perform anything the kubelet API allows. It also allows users to bypass the API server and talk directly to the kubelet potentially circumventing audits and admission controllers. See https://blog.aquasec.com/privilege-escalation-kubernetes-rbac for more info. This policy prevents the creation of a ClusterRole if it contains the nodes/proxy resource. \n\nRefer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/\n"
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "ClusterRole, RBAC"
-digest: b686a5c559918a918a61a7c744e29e09e8e4b363c32e0430d7faf1c51007ee1b
-
-
+digest: 41942f85c112b1c00f96cbd6860b6edd3588c74fb7d3e0a3fcfae8caafdf1fc0
 createdAt: "2025-05-11T17:46:11Z"

@@ -1,5 +1,5 @@
 name: restrict-escalation-verbs-roles-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict Escalation Verbs in Roles in ValidatingPolicy
 description: >-
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
@@ -13,13 +13,11 @@ keywords:
   - ValidatingPolicy
 readme: |
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
-  
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: a26cb647dab19f806b82f72d9fae59217f2a88d53a8f637fc723aa9551628733
-
-
+digest: ee4e329bd64ab2276413720bd87dbec77c7b3739c20a0150842ca7a463289aca
 createdAt: "2025-05-11T17:46:11Z"

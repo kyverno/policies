@@ -1,0 +1,15 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-edit-for-endpoints
+policies:
+- ../restrict-edit-for-endpoints.yaml
+resources:
+- resource.yaml
+results:
+- policy: restrict-edit-for-endpoints
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - system:aggregate-to-edit
+  result: fail
