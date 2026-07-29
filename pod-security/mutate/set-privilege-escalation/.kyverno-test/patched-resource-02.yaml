@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+      securityContext:
+        allowPrivilegeEscalation: false
