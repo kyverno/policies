@@ -1,0 +1,96 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-inject-pod
+  namespace: ns-wo-annotations
+  annotations:
+    otel.corp.org/inject-env-var: "false"
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-inject-ns
+  namespace: ns-w-inject-false
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-ns
+  namespace: ns-w-inject-true
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-pod
+  namespace: ns-wo-annotations
+  annotations:
+    otel.corp.org/inject-env-var: "true"
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-default
+  namespace: ns-wo-annotations
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-before-preexisting-env
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+    env:
+    - name: TEST_ENV
+      value: test
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-custom-endpoint-pod
+  annotations:
+    otel.corp.org/otlp-endpoint: http://http-collector:4318
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-custom-endpoint-ns
+  namespace: ns-w-custom-endpoint
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-inject-ns-excluded-by-configmap
+  namespace: ns-excluded-by-configmap
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-custom-endpoint-ns
+  namespace: ns-w-custom-endpoint
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+    env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://http-collector:4318

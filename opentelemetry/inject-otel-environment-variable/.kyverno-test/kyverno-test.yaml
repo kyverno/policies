@@ -1,0 +1,79 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-otel-environment-variable
+policies:
+  - ../inject-otel-environment-variable.yaml
+resources:
+  - resource.yaml
+variables: values.yaml
+results:
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - no-inject-pod
+    kind: Pod
+    result: skip
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - no-inject-ns
+    kind: Pod
+    result: skip
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-ns
+    patchedResources: expected/inject-ns.yaml
+    kind: Pod
+    result: pass
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-pod
+    patchedResources: expected/inject-pod.yaml
+    kind: Pod
+    result: pass
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-default
+    patchedResources: expected/inject-default.yaml
+    kind: Pod
+    result: pass
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-before-preexisting-env
+    patchedResources: expected/inject-before-preexisting-env.yaml
+    kind: Pod
+    result: pass
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-custom-endpoint-pod
+    patchedResources: expected/inject-custom-endpoint-pod.yaml
+    kind: Pod
+    result: pass
+
+  - policy: inject-otel-environment-variable
+    rule: inject-otel-environment-variable
+    resources:
+    - inject-custom-endpoint-ns
+    patchedResources: expected/inject-custom-endpoint-ns.yaml
+    kind: Pod
+    result: pass
+
+  ## Enable for ConfigMap namespace filtering (see rule comments ConfigMap-NS-Filtering for detail)
+  # - policy: inject-otel-environment-variable
+  #   rule: inject-otel-environment-variable
+  #   resources:
+  #   - no-inject-ns-excluded-by-configmap
+  #   kind: Pod
+  #   result: skip
