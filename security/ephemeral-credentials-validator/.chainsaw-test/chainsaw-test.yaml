@@ -1,0 +1,41 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: simple-ttl-validator
+spec:
+  # Define the steps of the Chainsaw test
+  steps:
+  # Step 1: Apply the TTL validator policy
+  - name: apply-policy
+    try:
+    - apply:
+        file: simple-policy.yaml
+    assert:
+    - check:
+        kind: ClusterPolicy
+        name: simple-ttl-validator
+        namespace: ""
+
+  # Step 2: Test with a compliant secret (with TTL annotation)
+  - name: test-compliant-secret
+    try:
+    - apply:
+        file: test-compliant-secret.yaml
+    assert:
+    - check:
+        kind: Secret
+        name: test-secret-with-ttl
+        namespace: default
+
+  # Step 3: Test with a non-compliant secret (without TTL annotation)
+  - name: test-non-compliant-secret
+    try:
+    - apply:
+        file: test-non-compliant-secret.yaml
+    assert:
+    - check:
+        kind: Secret
+        name: test-secret-no-ttl
+        namespace: default
+        expectedValidation:
+          messageRegex: "Secret must have a TTL annotation" 
