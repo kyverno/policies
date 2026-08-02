@@ -31,13 +31,23 @@ spec:
   variables:
   - name: allContainers
     expression: >-
-      object.spec.containers + 
-      object.spec.?initContainers.orValue([]) + 
-      object.spec.?ephemeralContainers.orValue([])
+      object.spec.containers
+      + object.spec.?initContainers.orValue([])
+      + object.spec.?ephemeralContainers.orValue([])
   validations:
-  - expression: >- 
-      object.spec.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost']
-      && variables.allContainers.all(container, 
-      container.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost'])
+  - expression: >-
+      !object.spec.?securityContext.?seccompProfile.?type.hasValue() ||
+      object.spec.securityContext.seccompProfile.type in ['RuntimeDefault', 'Localhost']
     message: >-
-      seccompProfile.type must be either 'RuntimeDefault' or 'Localhost'.
+      The field spec.securityContext.seccompProfile.type must be unset or
+      set to `RuntimeDefault` or `Localhost`.
+
+  - expression: >-
+      variables.allContainers.all(c,
+        c.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost'] ||
+        (!c.?securityContext.?seccompProfile.?type.hasValue() &&
+         object.spec.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost']))
+    message: >-
+      Containers must set securityContext.seccompProfile.type to `RuntimeDefault`
+      or `Localhost`, or inherit a valid pod-level
+      spec.securityContext.seccompProfile.type.
