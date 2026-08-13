@@ -1,0 +1,120 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-dra-adminaccess-claims
+  annotations:
+    policies.kyverno.io/title: Restrict DRA AdminAccess Claims via SubjectAccessReview
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.18.2
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.36"
+    policies.kyverno.io/subject: ResourceClaim, ResourceClaimTemplate
+    policies.kyverno.io/description: >-
+      Kubernetes' DRA adminAccess authorization (AuthorizedForAdmin in
+      pkg/registry/resource/utils.go) only checks whether the claim's namespace
+      carries the resource.kubernetes.io/admin-access label -- it never checks the
+      identity of the principal creating the claim, so *every* authorized
+      claim-creator in a labeled namespace gets this capability, not just a
+      specifically-trusted one (see kubernetes/kubernetes#141293, including the
+      live-verified finding that a completely uninvolved bystander in the same
+      namespace inherits it automatically). This policy closes that gap by
+      performing a SubjectAccessReview for a dedicated, synthetic permission
+      (resourceclaims/adminaccess, verb create) before allowing any ResourceClaim
+      or ResourceClaimTemplate that requests adminAccess: true -- re-implementing,
+      via policy, the same kind of RBAC-backed check Kubernetes already uses
+      natively for the resourceclaims/binding and resourceclaims/driver
+      subresources. Grant resourceclaims/adminaccess to specific trusted
+      ServiceAccounts (e.g. a monitoring/management workload) via a dedicated
+      ClusterRole and RoleBinding -- see grant-dra-adminaccess-role.yaml in this
+      folder for an example.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: check-adminaccess-sar-resourceclaim
+    match:
+      any:
+      - resources:
+          kinds:
+            - ResourceClaim
+    preconditions:
+      all:
+      - key: "{{ request.object.spec.devices.requests[?exactly.adminAccess] || `[]` | length(@) }}"
+        operator: GreaterThanOrEquals
+        value: 1
+    context:
+      - name: sar
+        apiCall:
+          urlPath: /apis/authorization.k8s.io/v1/subjectaccessreviews
+          method: POST
+          data:
+          - key: kind
+            value: SubjectAccessReview
+          - key: apiVersion
+            value: authorization.k8s.io/v1
+          - key: spec
+            value:
+              resourceAttributes:
+                group: resource.k8s.io
+                resource: resourceclaims
+                subresource: adminaccess
+                namespace: "{{ request.namespace }}"
+                verb: create
+              user: "{{ request.userInfo.username }}"
+              groups: "{{ request.userInfo.groups }}"
+    validate:
+      message: >-
+        Requesting adminAccess on a DRA ResourceClaim requires the
+        resourceclaims/adminaccess:create permission -- ask a cluster admin to
+        grant it if this is a legitimate monitoring/management workload. See
+        kubernetes/kubernetes#141293.
+      deny:
+        conditions:
+          any:
+          - key: "{{ sar.status.allowed }}"
+            operator: NotEquals
+            value: true
+  - name: check-adminaccess-sar-resourceclaimtemplate
+    match:
+      any:
+      - resources:
+          kinds:
+            - ResourceClaimTemplate
+    preconditions:
+      all:
+      - key: "{{ request.object.spec.spec.devices.requests[?exactly.adminAccess] || `[]` | length(@) }}"
+        operator: GreaterThanOrEquals
+        value: 1
+    context:
+      - name: sar
+        apiCall:
+          urlPath: /apis/authorization.k8s.io/v1/subjectaccessreviews
+          method: POST
+          data:
+          - key: kind
+            value: SubjectAccessReview
+          - key: apiVersion
+            value: authorization.k8s.io/v1
+          - key: spec
+            value:
+              resourceAttributes:
+                group: resource.k8s.io
+                resource: resourceclaimtemplates
+                subresource: adminaccess
+                namespace: "{{ request.namespace }}"
+                verb: create
+              user: "{{ request.userInfo.username }}"
+              groups: "{{ request.userInfo.groups }}"
+    validate:
+      message: >-
+        Requesting adminAccess on a DRA ResourceClaimTemplate requires the
+        resourceclaimtemplates/adminaccess:create permission -- ask a cluster
+        admin to grant it if this is a legitimate monitoring/management workload.
+        See kubernetes/kubernetes#141293.
+      deny:
+        conditions:
+          any:
+          - key: "{{ sar.status.allowed }}"
+            operator: NotEquals
+            value: true

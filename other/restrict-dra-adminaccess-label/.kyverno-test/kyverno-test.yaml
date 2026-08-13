@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-dra-adminaccess-label
+userinfo: ./userinfo.yaml
+policies:
+- ../restrict-dra-adminaccess-label.yaml
+resources:
+- resources.yaml
+results:
+- policy: restrict-dra-adminaccess-label
+  rule: check-admin-access-label
+  kind: Namespace
+  resources:
+  - dra-self-escalated-ns
+  result: fail
