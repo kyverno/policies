@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secured-agent-worker
+  labels:
+    app.kubernetes.io/component: ai-agent
+spec:
+  containers:
+    - name: langgraph-agent
+      image: ghcr.io/langchain-ai/langgraph:latest
+      securityContext:
+        privileged: false
+      env:
+        - name: AAG_PROVE_TOKEN
+          value: "prov_live_99a8b7c6d5e4f3a2"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: un-gated-agent-worker
+  labels:
+    app.kubernetes.io/component: ai-agent
+spec:
+  containers:
+    - name: rogue-agent
+      image: alpine:latest
+      securityContext:
+        privileged: true
+      # Missing AAG_PROVE_TOKEN
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: standard-web-pod
+  labels:
+    app.kubernetes.io/component: frontend
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest
