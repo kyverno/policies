@@ -1,0 +1,23 @@
+name: require-ai-agent-action-boundary
+version: 1.0.0
+displayName: Require AI Agent Action Boundary
+createdAt: "2026-08-17T20:00:00.000Z"
+description: >-
+  Autonomous AI agent worker pods and LLM microservices execute tool invocations that may mutate cluster or cloud state. This policy enforces zero-trust Gate/Prove ActionBoundary governance by requiring that pods labeled as AI agents configure the mandatory AAG_PROVE_TOKEN environment variable and run with unprivileged container contexts.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-ai-agent-action-boundary/require-ai-agent-action-boundary.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ai-agent
+  - security
+readme: |
+  Autonomous AI agent worker pods and LLM microservices execute tool invocations that may mutate cluster or cloud state. This policy enforces zero-trust Gate/Prove ActionBoundary governance by requiring that pods labeled as AI agents configure the mandatory `AAG_PROVE_TOKEN` environment variable and run with unprivileged container contexts.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.26"
+  kyverno/subject: "Pod"
