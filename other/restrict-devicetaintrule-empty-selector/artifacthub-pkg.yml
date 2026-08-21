@@ -1,0 +1,25 @@
+name: restrict-devicetaintrule-empty-selector
+version: 1.0.0
+displayName: Restrict Empty DeviceTaintRule Selector
+description: >-
+  Kubernetes Dynamic Resource Allocation's `DeviceTaintRule` has a `deviceSelector` field (`driver`/`pool`/`device`). Per the field's own API documentation, an *empty* selector (all three fields unset) matches every device in the cluster, while a *missing* selector matches no devices at all — two very different outcomes from what looks like the same "nothing set" state. Validation admits an empty selector without any warning, so a single templating mistake silently turns a rule meant to drain one device into a cluster-wide, cross-tenant, priority-blind `NoExecute` eviction. This policy requires at least one of `driver`, `pool`, or `device` to be set whenever `deviceSelector` is present at all — it does not touch `DeviceTaintRule`s that omit the field entirely, since that is the documented safe case.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-devicetaintrule-empty-selector/restrict-devicetaintrule-empty-selector.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Dynamic Resource Allocation
+readme: |
+  Kubernetes Dynamic Resource Allocation's `DeviceTaintRule` has a `deviceSelector` field (`driver`/`pool`/`device`).
+
+  Per the field's own API documentation, an *empty* selector (all three fields unset) matches every device in the cluster, while a *missing* selector matches no devices at all — two very different outcomes from what looks like the same "nothing set" state. Validation (`validateDeviceTaintSelector` in `pkg/apis/resource/validation/validation.go`) admits an empty selector without any warning, so a single templating mistake — omitting `driver`/`pool`, or rendering `deviceSelector: {}` instead of a scoped selector — silently turns a rule meant to drain one device into a cluster-wide, cross-tenant, priority-blind `NoExecute` eviction. See [kubernetes/kubernetes#141422](https://github.com/kubernetes/kubernetes/issues/141422) for the live-verified finding this policy mitigates (fix pending upstream in [kubernetes/kubernetes#141425](https://github.com/kubernetes/kubernetes/pull/141425)).
+
+  This policy requires at least one of `driver`, `pool`, or `device` to be set whenever `deviceSelector` is present at all. It intentionally does not touch `DeviceTaintRule`s that omit the field entirely, since a missing selector is the documented safe case (matches no devices).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.37"
+  kyverno/subject: "DeviceTaintRule"
