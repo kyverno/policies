@@ -108,3 +108,82 @@ spec:
       periodSeconds: 10
   - name: nginx
     image: nginx:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: init-setup
+    image: registry.k8s.io/goproxy:0.1
+    command: ["sh", "-c", "echo setup"]
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: sidecar
+    image: registry.k8s.io/goproxy:0.1
+    restartPolicy: Always
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+  ephemeralContainers:
+  - name: debugger
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: sidecar
+    image: registry.k8s.io/goproxy:0.1
+    restartPolicy: Always
+    startupProbe:
+      tcpSocket:
+        port: 9090
+      periodSeconds: 10
+  containers:
+  - name: goproxy
+    image: registry.k8s.io/goproxy:0.1
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
