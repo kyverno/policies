@@ -12,8 +12,10 @@ metadata:
       deployments, restarts, and upgrades. Liveness probes help the kubelet determine
       when to restart containers, while readiness probes help Services and Deployments
       determine when Pods are ready to receive traffic. Startup probes provide additional
-      control during container startup. This policy validates that all containers have
-      at least one of livenessProbe, readinessProbe, or startupProbe defined.      
+      control during container startup. This policy validates that all containers and
+      sidecar containers (init containers with restartPolicy: Always) have at least one
+      of livenessProbe, readinessProbe, or startupProbe defined. Plain init containers
+      and ephemeral containers are not checked because Kubernetes forbids probes on them.
     policies.kyverno.io/minversion: "1.14.0"
 spec:
   validationActions: ["Deny"]
@@ -35,11 +37,22 @@ spec:
       resources: ["jobs", "cronjobs"]
       operations: ["CREATE", "UPDATE"]
   variables:
+  # Resolve the pod spec for both bare Pods and pod controllers.
+  - name: podSpec
+    expression: >-
+      has(object.spec.containers) ?
+        object.spec :
+        object.spec.template.spec
+  # Checked are regular containers plus sidecar containers, i.e. init containers with
+  # restartPolicy: Always (Kubernetes >= 1.29), which are long-running and therefore
+  # benefit from probes just like regular containers.
+  # Plain init containers and ephemeral containers are excluded because Kubernetes
+  # rejects probes on them ("may not be set for init containers without
+  # restartPolicy=Always"), which would make this policy impossible to satisfy.
   - name: allContainers
     expression: >-
-      has(object.spec.containers) ? 
-        object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]) : 
-        object.spec.template.spec.containers + object.spec.template.spec.?initContainers.orValue([]) + object.spec.template.spec.?ephemeralContainers.orValue([])      
+      variables.podSpec.containers +
+      variables.podSpec.?initContainers.orValue([]).filter(container, container.?restartPolicy.orValue("") == "Always")
   validations:
   - expression: >-
       variables.allContainers.all(container, 
