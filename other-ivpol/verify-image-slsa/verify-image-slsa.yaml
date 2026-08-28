@@ -50,6 +50,12 @@ spec:
       expression: >-
         images.containers.map(image, verifyAttestationSignatures(image, attestations.slsaProvenance, [attestors.cosign])).all(e, e > 0)
 
+    # This expression uses a regex pattern to ensure the builder.id in the attestation is equal to the official
+    # SLSA provenance generator workflow and uses a tagged release in semver format. If using a specific SLSA
+    # provenance generation workflow, you may need to adjust the pattern as necessary.
+    # Literal dots are escaped so they cannot match arbitrary characters, and each semver component accepts
+    # multiple digits so tags such as v1.10.0 are matched. Only final releases are accepted; prerelease and
+    # build metadata tags such as v1.10.0-rc.1 are rejected.
     - message: "builder.id in the attestation is not equal to the official SLSA provenance generator workflow"
       expression: >-
-        images.containers.map(image, extractPayload(image, attestations.slsaProvenance).builder.id.matches('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$')).all(e, e)
+        images.containers.map(image, extractPayload(image, attestations.slsaProvenance).builder.id.matches('^https://github\\.com/slsa-framework/slsa-github-generator/\\.github/workflows/generator_container_slsa3\\.yml@refs/tags/v[0-9]+\\.[0-9]+\\.[0-9]+$')).all(e, e)
