@@ -1,0 +1,55 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-probes-host
+policies:
+- ../disallow-probes-host.yaml
+resources:
+- resource.yaml
+results:
+- kind: CronJob
+  policy: disallow-probes-host
+  resources:
+  - badcronjob01
+  result: fail
+  rule: probes-host
+- kind: Deployment
+  policy: disallow-probes-host
+  resources:
+  - baddeployment01
+  result: fail
+  rule: probes-host
+- kind: Pod
+  policy: disallow-probes-host
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  result: fail
+  rule: probes-host
+- kind: CronJob
+  policy: disallow-probes-host
+  resources:
+  - goodcronjob01
+  result: pass
+  rule: probes-host
+- kind: Deployment
+  policy: disallow-probes-host
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  result: pass
+  rule: probes-host
+- kind: Pod
+  policy: disallow-probes-host
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  result: pass
+  rule: probes-host
