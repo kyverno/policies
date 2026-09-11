@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-pod-optout
+  namespace: otel-inject-default
+spec:
+  containers:
+  - name: busybox
+    env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: inject-ns-optout
+  namespace: otel-inject-disabled
+spec:
+  containers:
+  - name: busybox
+    env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT

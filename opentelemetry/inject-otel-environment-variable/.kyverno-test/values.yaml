@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+policies:
+- name: inject-otel-environment-variable
+  rules:
+  - name: inject-otel-environment-variable
+    values:
+      namespacefilters.data.exclude: '["ns-excluded-by-configmap"]'
+      # Global Reference simulation
+      namespaces:
+      - metadata:
+          name: ns-wo-annotations
+      - metadata:
+          name: ns-w-inject-true
+          annotations:
+            otel.corp.org/inject-env-var: "true"
+      - metadata:
+          name: ns-w-inject-false
+          annotations:
+            otel.corp.org/inject-env-var: "false"
+      - metadata:
+          name: ns-w-custom-endpoint
+          annotations:
+            otel.corp.org/otlp-endpoint: "http://http-collector:4318"

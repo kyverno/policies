@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    otel.corp.org/otlp-endpoint: http://http-collector:4318
+  name: inject-custom-endpoint-pod
+  namespace: default
+spec:
+  containers:
+  - name: debdiag
+    image: ghcr.io/babs/debdiag:0
+    env:
+    - name: OTEL_EXPORTER_OTLP_ENDPOINT
+      value: http://http-collector:4318

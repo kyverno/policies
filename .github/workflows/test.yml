@@ -749,6 +749,24 @@ jobs:
       with:
         path: openshift-cel
 
+  opentelemetry:
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: opentelemetry
+
   other:
     strategy:
       fail-fast: false
@@ -1225,6 +1243,7 @@ jobs:
     - nginx-ingress-cel
     - openshift
     - openshift-cel
+    - opentelemetry
     - other
     - other-vpol
     - other-mpol
@@ -1294,6 +1313,7 @@ jobs:
     - nginx-ingress-cel
     - openshift
     - openshift-cel
+    - opentelemetry
     - other
     - other-vpol
     - other-mpol
