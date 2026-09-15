@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sealed-secret-config
+  namespace: default
+data:
+  secret_resource: "kbs://default/my-secret"
+  target_path: "/etc/secrets/my-secret"

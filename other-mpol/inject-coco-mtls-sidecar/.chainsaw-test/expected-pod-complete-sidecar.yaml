@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-complete-sidecar-pod
+  namespace: default
+  labels:
+    coco: enabled
+  annotations:
+    coco.io/sidecar-config: coco-sidecar-config
+spec:
+  containers:
+  - name: main-app
+    image: nginx:1.20
+  - name: coco-sidecar
+    image: ghcr.io/confidential-containers/secure-sidecar:v1.0
+    ports:
+    - containerPort: 9443
+      name: https
+      protocol: TCP
+    env:
+    - name: TLS_CERT_URI
+      value: https://kbs.example.com/certs/tls.crt
+    - name: HTTPS_PORT
+      value: "9443"
+    - name: FORWARD_PORT
+      value: "9080"
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi

@@ -1,0 +1,146 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    coco: enabled
+  name: coco-enabled-pod
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    coco: disabled
+  name: coco-disabled-pod
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: web
+  name: no-coco-label-pod
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-labels-pod
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    coco: enabled
+  name: coco-enabled-existing-runtime
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+  runtimeClassName: existing-runtime
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: web
+    coco: enabled
+    tier: frontend
+  name: coco-enabled-multiple-labels
+  namespace: test-namespace
+spec:
+  containers:
+  - image: httpd:2.4
+    name: web-server
+  - image: busybox:latest
+    name: sidecar
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    coco: Enabled
+  name: coco-case-sensitive
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    coco: ""
+  name: empty-coco-label
+  namespace: default
+spec:
+  containers:
+  - image: nginx:latest
+    name: nginx
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coco-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: coco-app
+  template:
+    metadata:
+      labels:
+        app: coco-app
+        coco: enabled
+    spec:
+      containers:
+      - image: nginx:latest
+        name: app
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: non-coco-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: regular-app
+  template:
+    metadata:
+      labels:
+        app: regular-app
+    spec:
+      containers:
+      - image: nginx:latest
+        name: app

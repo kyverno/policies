@@ -1,0 +1,138 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-inject-coco-attestation-init
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../inject-coco-attestation-init.yaml
+    - assert:
+        file: policy-ready.yaml
+        timeout: 10s
+  - name: step-02
+    try:
+    - apply:
+        file: config-map-with-custom-values.yaml
+    - apply:
+        file: config-map-default-values.yaml
+  - catch:
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        name: good-pod-with-coco-label-and-annotation
+        namespace: default
+    - events:
+        namespace: default
+    name: step-03
+    try:
+    - apply:
+        file: good-pod-with-coco-label-and-annotation.yaml
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: good-pod-with-coco-label-and-annotation
+            namespace: default
+          spec:
+            initContainers:
+            - env:
+              - name: KBS_URL
+                value: https://kbs.example.com
+              - name: ATTESTATION_TIMEOUT
+                value: "120"
+              image: custom-registry.io/attestation-init:v1.0.0
+              imagePullPolicy: IfNotPresent
+              name: coco-attestation-init
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 64Mi
+                requests:
+                  cpu: 25m
+                  memory: 32Mi
+        timeout: 60s
+  - catch:
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        name: good-pod-with-default-config
+        namespace: default
+    - events:
+        namespace: default
+    name: step-04
+    try:
+    - apply:
+        file: good-pod-with-default-config.yaml
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: good-pod-with-default-config
+            namespace: default
+          spec:
+            initContainers:
+            - env:
+              - name: ATTESTATION_TIMEOUT
+                value: "60"
+              image: ghcr.io/confidential-containers/attestation-init:latest
+              imagePullPolicy: IfNotPresent
+              name: coco-attestation-init
+              resources:
+                limits:
+                  cpu: 50m
+                  memory: 64Mi
+                requests:
+                  cpu: 25m
+                  memory: 32Mi
+        timeout: 60s
+  - name: step-05
+    try:
+    - apply:
+        file: pod-without-coco-label.yaml
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: pod-without-coco-label
+            namespace: default
+          spec:
+            initContainers:
+            - name: coco-attestation-init
+        timeout: 10s
+  - name: step-06
+    try:
+    - apply:
+        file: pod-without-init-config-annotation.yaml
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: pod-without-init-config-annotation
+            namespace: default
+          spec:
+            initContainers:
+            - name: coco-attestation-init
+        timeout: 10s
+  - name: step-07
+    try:
+    - apply:
+        file: pod-with-empty-init-config.yaml
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: pod-with-empty-init-config
+            namespace: default
+          spec:
+            initContainers:
+            - name: coco-attestation-init
+        timeout: 10s
+  template: false

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-no-label
+  namespace: default
+  annotations:
+    coco.io/sealed-secret-config: sealed-secret-config
+spec:
+  containers:
+  - name: app
+    image: nginx:1.20
+    env:
+    - name: EXISTING_VAR
+      value: "existing-value"

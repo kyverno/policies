@@ -1,7 +1,7 @@
-apiVersion: policies.kyverno.io/v1alpha1
-kind: ValidatingPolicy
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
 metadata:
-  name: allowed-annotations
+  name: verify-slsa-provenance-keyless
 status:
   conditionStatus:
     (conditions[?type == 'RBACPermissionsGranted']):

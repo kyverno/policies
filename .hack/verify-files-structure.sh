@@ -28,6 +28,11 @@ for policy_dir in $(find "$GITHUB_WORKSPACE" -type d ! -name '.*' ! -path '*/\.*
         continue
     fi
 
+    # Skip internal template/helper directories prefixed with underscore.
+    if [[ $dir_name == _* ]]; then
+        continue
+    fi
+
     # Check if the directory name only contains alphanumeric characters and dashes
     if [[ ! $dir_name =~ ^[a-zA-Z0-9-]+$ ]]; then
         echo "Directory $dir_name contains invalid characters. Only alphanumeric characters and dashes are allowed."

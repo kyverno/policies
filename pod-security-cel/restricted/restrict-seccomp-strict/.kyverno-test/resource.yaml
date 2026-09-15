@@ -107,6 +107,15 @@ spec:
   - name: container01
     image: dummyimagename
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -274,6 +283,18 @@ spec:
   securityContext:
     seccompProfile:
       type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1

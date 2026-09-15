@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-default-values-pod
+  namespace: default
+  labels:
+    coco: enabled
+  annotations:
+    coco.io/sidecar-config: coco-default-config
+spec:
+  containers:
+  - name: main-app
+    image: busybox:latest
+  - name: coco-sidecar
+    image: custom-registry/secure-sidecar:latest
+    ports:
+    - containerPort: 8443
+      name: https
+      protocol: TCP
+    env:
+    - name: TLS_CERT_URI
+    - name: HTTPS_PORT
+      value: "8443"
+    - name: FORWARD_PORT
+      value: "8080"
+    resources:
+      limits:
+        cpu: 100m
+        memory: 128Mi
+      requests:
+        cpu: 50m
+        memory: 64Mi
