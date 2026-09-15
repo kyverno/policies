@@ -41,6 +41,7 @@ results:
   - badpod05
   - badpod06
   - badpod07
+  - badpod08
   result: fail
   rule: check-seccomp-strict
 - kind: CronJob
@@ -86,5 +87,6 @@ results:
   - goodpod08
   - goodpod09
   - goodpod10
+  - goodpod11
   result: pass
   rule: check-seccomp-strict
