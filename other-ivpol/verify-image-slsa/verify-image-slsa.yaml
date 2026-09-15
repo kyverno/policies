@@ -1,0 +1,55 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-slsa-provenance-keyless
+  annotations:
+    policies.kyverno.io/title: Verify SLSA Provenance (Keyless)
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.18.0
+    policies.kyverno.io/description: >-
+      Provenance is used to identify how an artifact was produced
+      and from where it originated. SLSA provenance is an industry-standard
+      method of representing that provenance. This policy verifies that an
+      image has SLSA provenance and was signed by the expected subject and issuer
+      when produced through GitHub Actions. It requires configuration based upon
+      your own values.
+spec:
+  validationActions: [Deny]
+  webhookConfiguration:
+    timeoutSeconds: 30
+
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+
+  matchImageReferences:
+    - glob: "myreg.org/path/repo:*"
+
+  attestors:
+    - name: cosign
+      cosign:
+        keyless:
+          identities:
+            - subject: "https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v*"
+              issuer: "https://token.actions.githubusercontent.com"
+        ctlog:
+          url: https://rekor.sigstore.dev
+
+  attestations:
+    - name: slsaProvenance
+      intoto:
+        type: https://slsa.dev/provenance/v0.2
+
+  validations:
+    - message: "Failed to verify SLSA provenance attestation signature with Cosign keyless"
+      expression: >-
+        images.containers.map(image, verifyAttestationSignatures(image, attestations.slsaProvenance, [attestors.cosign])).all(e, e > 0)
+
+    - message: "builder.id in the attestation is not equal to the official SLSA provenance generator workflow"
+      expression: >-
+        images.containers.map(image, extractPayload(image, attestations.slsaProvenance).builder.id.matches('^https://github.com/slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@refs/tags/v[0-9].[0-9].[0-9]$')).all(e, e)
