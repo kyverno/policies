@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-devicetaintrule-empty-selector
+policies:
+- ../restrict-devicetaintrule-empty-selector.yaml
+resources:
+- resources.yaml
+results:
+- policy: restrict-devicetaintrule-empty-selector
+  rule: require-devicetaintrule-selector-field
+  kind: DeviceTaintRule
+  resources:
+  - no-selector-field
+  result: skip
+- policy: restrict-devicetaintrule-empty-selector
+  rule: require-devicetaintrule-selector-field
+  kind: DeviceTaintRule
+  resources:
+  - empty-selector-object
+  result: fail
+- policy: restrict-devicetaintrule-empty-selector
+  rule: require-devicetaintrule-selector-field
+  kind: DeviceTaintRule
+  resources:
+  - good-scoped-selector
+  result: pass
