@@ -48,4 +48,5 @@ spec:
               - persistentVolumeClaim
               - projected
               - secret
+              - image
               - ''

@@ -497,6 +497,23 @@ spec:
     secret:
       secretName: mysecret
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    volumeMounts:
+    - mountPath: /mysecret
+      name: myimage
+  volumes:
+  - name: myimage
+    image:
+      reference: dummyimagename
+      pullPolicy: IfNotPresent
+---
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
