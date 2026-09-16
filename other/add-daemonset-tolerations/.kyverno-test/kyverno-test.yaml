@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-daemonset-tolerations-test
+policies:
+  - ../add-daemonset-tolerations.yaml
+resources:
+  - resources.yaml
+results:
+  # Real filed bugs: manifest had NO tolerations at all -> must be mutated
+  - kind: DaemonSet
+    policy: add-daemonset-tolerations
+    rule: add-daemonset-tolerations
+    resources:
+      - nvidia-vgpu-device-manager
+    patchedResources: patched-vgpu-device-manager.yaml
+    result: pass
+  - kind: DaemonSet
+    policy: add-daemonset-tolerations
+    rule: add-daemonset-tolerations
+    resources:
+      - sriov-network-metrics-exporter
+    patchedResources: patched-sriov-metrics-exporter.yaml
+    result: pass
+  # Already had tolerations set -> must NOT be touched
+  - kind: DaemonSet
+    policy: add-daemonset-tolerations
+    rule: add-daemonset-tolerations
+    resources:
+      - nvidia-device-plugin-daemonset
+      - sriov-network-config-daemon
+      - kube-multus-ds
+      - cni-plugins-ds
+      - rdma-shared-dp-ds
+    result: skip

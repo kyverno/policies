@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  annotations:
+    openshift.io/scc: nvidia-vgpu-device-manager
+  labels:
+    app: nvidia-vgpu-device-manager
+  name: nvidia-vgpu-device-manager
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: nvidia-vgpu-device-manager
+  template:
+    metadata:
+      labels:
+        app: nvidia-vgpu-device-manager
+    spec:
+      containers:
+      - env:
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: CONFIG_FILE
+          value: /vgpu-config/config.yaml
+        image: registry.k8s.io/pause:3.10
+        imagePullPolicy: IfNotPresent
+        name: nvidia-vgpu-device-manager
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /vgpu-config
+          name: vgpu-config
+        - mountPath: /sys
+          name: host-sys
+        - mountPath: /host
+          mountPropagation: HostToContainer
+          name: host-root
+        - mountPath: /driver-root
+          mountPropagation: HostToContainer
+          name: driver-install-dir
+      initContainers:
+      - args:
+        - until [ -f /run/nvidia/validations/vgpu-manager-ready ]; do echo waiting
+          for NVIDIA vGPU Manager to be setup; sleep 5; done
+        command:
+        - sh
+        - -c
+        image: registry.k8s.io/pause:3.10
+        name: vgpu-manager-validation
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /run/nvidia/validations
+          mountPropagation: Bidirectional
+          name: run-nvidia-validations
+      nodeSelector:
+        nvidia.com/gpu.deploy.vgpu-device-manager: "true"
+      serviceAccountName: nvidia-vgpu-device-manager
+      tolerations:
+      - operator: Exists
+      volumes:
+      - configMap:
+          name: default
+        name: vgpu-config
+      - hostPath:
+          path: /sys
+          type: Directory
+        name: host-sys
+      - hostPath:
+          path: /
+        name: host-root
+      - hostPath:
+          path: /run/nvidia/driver
+          type: DirectoryOrCreate
+        name: driver-install-dir
+      - hostPath:
+          path: /run/nvidia/validations
+          type: DirectoryOrCreate
+        name: run-nvidia-validations
+
+---
+

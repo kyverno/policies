@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: sriov-network-metrics-exporter
+  name: sriov-network-metrics-exporter
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: sriov-network-metrics-exporter
+  template:
+    metadata:
+      labels:
+        app: sriov-network-metrics-exporter
+    spec:
+      containers:
+      - image: metrics-exporter:latest
+        name: metrics-exporter
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+      hostNetwork: true
+      nodeSelector:
+        kubernetes.io/os: linux
+        node-role.kubernetes.io/worker: ""
+      serviceAccountName: metrics-exporter-sa
+      tolerations:
+      - operator: Exists
+
+---
+
