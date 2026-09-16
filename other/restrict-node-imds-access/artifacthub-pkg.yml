@@ -1,0 +1,32 @@
+version: 1.0.0
+name: restrict-node-imds-access
+displayName: Restrict Pod Access to Node Instance Metadata
+createdAt: "2026-04-13T00:00:00Z"
+description: >-
+  Blocks pod configurations that allow access to the EC2 Instance Metadata
+  Service (IMDS) endpoint on EKS worker nodes, preventing credential theft
+  from the node instance profile. Complements IRSA enforcement policies.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-node-imds-access/restrict-node-imds-access.yaml
+  ```
+keywords:
+  - kyverno
+  - aws
+  - eks
+  - imds
+  - imdsv2
+  - security
+  - credential-theft
+  - instance-profile
+readme: |-
+  On EKS worker nodes, the EC2 Instance Metadata Service (IMDS) is reachable
+  from all pods by default via 169.254.169.254. This policy blocks pods from
+  using hostNetwork or hostAliases configurations that enable IMDS access,
+  providing defence-in-depth alongside IRSA and node-level IMDSv2 hop limit
+  enforcement.
+annotations:
+  kyverno/category: "AWS, EKS Best Practices"
+  kyverno/kubernetesVersion: "1.24-1.30"
+  kyverno/subject: "Pod"
+digest: ""

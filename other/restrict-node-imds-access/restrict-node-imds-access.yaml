@@ -1,0 +1,62 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-node-imds-access
+  annotations:
+    policies.kyverno.io/title: Restrict Pod Access to Node Instance Metadata
+    policies.kyverno.io/category: AWS, EKS Best Practices
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kyverno-version: 1.11.0
+    kyverno.io/kubernetes-version: "1.24-1.30"
+    policies.kyverno.io/description: >-
+      On EKS worker nodes, the EC2 Instance Metadata Service (IMDS) is accessible
+      from all pods by default. This means any pod can query the node's instance
+      profile credentials via http://169.254.169.254, potentially escalating
+      privileges beyond what IRSA grants. AWS recommends setting the IMDSv2
+      hop limit to 1 at the node level to prevent pod access; however, as an
+      additional defence-in-depth control, this policy blocks pods from explicitly
+      configuring hostNetwork or accessing the link-local metadata range via
+      hostAliases. It also disallows pods from mounting the node's
+      /var/run/secrets/kubernetes.io/serviceaccount token path directly.
+      This policy complements require-workload-serviceaccount-irsa by
+      ensuring that even if a pod attempts to access IMDS, Kyverno blocks
+      the risky configuration patterns at admission time.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: block-imds-host-network
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: >-
+          Pods must not use hostNetwork: true as this allows direct access
+          to the node's network interfaces including the IMDS endpoint at
+          169.254.169.254, enabling credential theft from the instance profile.
+          Use IRSA for AWS API access instead.
+        pattern:
+          spec:
+            =(hostNetwork): "false"
+    - name: block-imds-host-alias
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        message: >-
+          Pods must not configure hostAliases that resolve to the IMDS
+          link-local address 169.254.169.254. This is a known technique
+          to redirect IMDS traffic and intercept instance profile credentials.
+        deny:
+          conditions:
+            any:
+              - key: "{{ request.object.spec.hostAliases[].ip }}"
+                operator: AnyIn
+                value:
+                  - "169.254.169.254"
