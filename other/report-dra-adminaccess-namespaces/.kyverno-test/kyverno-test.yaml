@@ -1,0 +1,15 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: report-dra-adminaccess-namespaces
+policies:
+- ../report-dra-adminaccess-namespaces.yaml
+resources:
+- resources.yaml
+results:
+- policy: report-dra-adminaccess-namespaces
+  rule: flag-adminaccess-namespace
+  kind: Namespace
+  resources:
+  - dra-labeled-ns
+  result: fail

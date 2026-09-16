@@ -1,0 +1,28 @@
+# Example: grant the synthetic resourceclaims/adminaccess permission this policy
+# checks for to a specific, trusted monitoring/management ServiceAccount. This
+# subresource does not exist in the real Kubernetes API -- it is a convention this
+# policy's SubjectAccessReview checks for, purely as an RBAC-expressible permission
+# string, mirroring how kubernetes/kubernetes already gates resourceclaims/binding
+# and resourceclaims/driver.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: dra-adminaccess-grantee
+rules:
+- apiGroups: ["resource.k8s.io"]
+  resources: ["resourceclaims/adminaccess", "resourceclaimtemplates/adminaccess"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: gpu-monitoring-adminaccess
+  namespace: gpu-monitoring   # the namespace your trusted monitoring/management workload runs in
+subjects:
+- kind: ServiceAccount
+  name: gpu-monitoring        # replace with your actual trusted ServiceAccount
+  namespace: gpu-monitoring
+roleRef:
+  kind: ClusterRole
+  name: dra-adminaccess-grantee
+  apiGroup: rbac.authorization.k8s.io
