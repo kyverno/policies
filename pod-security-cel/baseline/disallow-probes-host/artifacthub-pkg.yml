@@ -1,0 +1,31 @@
+name: disallow-probes-host-cel
+version: 1.0.0
+displayName: Disallow the host field in probes and lifecycle hooks in CEL
+description: >-
+  The `host` field is used for allowing users to specify another entity other than the podIP
+  (which is the default value) to which Kubelet should perform probes to. However this
+  opens it up for security attacks since the `host`` field can be set to pretty much any
+  value in the system including security sensitive external hosts or localhost on the node.
+  Kubelet will be probing this set `host` value which can lead to blind SSRF attacks.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-cel/baseline/disallow-probes-host/disallow-probes-host.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - CEL Expressions
+readme: |
+  The `host` field is used for allowing users to specify another entity other than the podIP
+  (which is the default value) to which Kubelet should perform probes to. However this
+  opens it up for security attacks since the `host`` field can be set to pretty much any
+  value in the system including security sensitive external hosts or localhost on the node.
+  Kubelet will be probing this set `host` value which can lead to blind SSRF attacks.
+  
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in CEL"
+  kyverno/kubernetesVersion: "1.34-1.37"
+  kyverno/subject: "Pod"
+digest: 73182a57fef336f94d47205ca7f0bf836de9b5db2b90e00ce333329afc172e36
+createdAt: "2026-08-29T15:02:34Z"

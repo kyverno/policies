@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    livenessProbe:
+      httpGet:
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    startupProbe:
+      httpGet:
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        httpGet:
+          port: 8080
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    readinessProbe:
+      httpGet:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      httpGet:
+        host: ""
+        port: 8080
