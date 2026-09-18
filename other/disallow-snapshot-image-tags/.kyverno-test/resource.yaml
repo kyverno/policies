@@ -1,0 +1,142 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-release-tag
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0
+  initContainers:
+  - name: init
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-tag
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0-SNAPSHOT
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-tag-lowercase
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/example/app:snapshot-20260101
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-tag-with-digest
+spec:
+  containers:
+  - name: app
+    image: registry.example.com/team/app:1.0.0-SNAPSHOT@sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-digest-only
+spec:
+  containers:
+  - name: app
+    image: registry.example.com/team/app@sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-in-path-clean-tag
+spec:
+  containers:
+  - name: app
+    image: registry.example.com/snapshot-tools/app:1.2.3
+  - name: sidecar
+    image: registry.example.com:5000/team/snapshot:2.0.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-init-container
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0
+  initContainers:
+  - name: init
+    image: busybox:1.36-snapshot
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-snapshot-ephemeral-container
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0
+  ephemeralContainers:
+  - name: debugger
+    image: busybox:SNAPSHOT
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-no-tag
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-release-tag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27.0
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-snapshot-tag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: nginx:1.27.0-SNAPSHOT
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-snapshot-tag
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: job
+            image: registry.example.com/team/job:0.9-snapshot
