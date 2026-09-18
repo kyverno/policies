@@ -158,6 +158,33 @@ spec:
               expirationSeconds: 7200
               audience: vault
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # skipping right to 10 to keep consistent with pod-good.yaml
+  name: gooddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - mountPath: /myimage
+          name: myimage
+      volumes:
+      - name: myimage
+        image:
+          reference: ghcr.io/kyverno/test-busybox:1.35
+          pullPolicy: IfNotPresent
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -369,3 +396,26 @@ spec:
           - name: mysecret
             secret:
               secretName: mysecret
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            volumeMounts:
+            - mountPath: /myimage
+              name: myimage
+          volumes:
+          - name: myimage
+            image:
+              reference: ghcr.io/kyverno/test-busybox:1.35
+              pullPolicy: IfNotPresent
