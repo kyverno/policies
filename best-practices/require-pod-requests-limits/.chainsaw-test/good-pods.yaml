@@ -14,6 +14,9 @@ spec:
         cpu: "100m"
       limits:
         memory: "100Mi"
+  ephemeralContainers:
+    - name: nginx-debug
+      image: nginx-debug
 ---
 apiVersion: v1
 kind: Pod
