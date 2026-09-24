@@ -17,7 +17,7 @@ See https://kyverno.io/policies/ for a list of all the policies represented here
 
 Anyone and everyone is welcome to write and contribute Kyverno policies! We have standardized on several practices to ensure these policies are effective, descriptive, and assist in easy location on the website. Please follow these guidelines when contributing or modifying a policy.
 
-* As a CNCF project, Kyverno requires all contributors to abide by the DCO guidelines published [here](https://github.com/cncf/foundation/blob/main/dco-guidelines.md). This entails signing off on all git commits.
+* As a CNCF project, Kyverno requires all contributors to abide by the DCO guidelines published [here](https://github.com/cncf/foundation/blob/main/policies-guidance/dco-guidelines.md). This entails signing off on all git commits.
 
 * Use the [Kyverno annotations](https://github.com/kyverno/policies/wiki/Kyverno-annotations) to mark your policy with descriptive metadata. This is not only important to explain your policy, but to allow the filtering logic on the [policies page](https://kyverno.io/policies/) to work effectively.
 
