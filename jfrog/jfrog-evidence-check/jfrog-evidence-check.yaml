@@ -1,0 +1,93 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: jfrog-evidence-check
+  annotations:
+    policies.kyverno.io/title: Require JFrog Evidence on Image
+    policies.kyverno.io/category: JFrog
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.8.0
+    kyverno.io/kubernetes-version: ">=1.33"
+    policies.kyverno.io/description: >-
+      This policy checks for verified evidence on the JFrog platform for the pod images allowing for automation of complaince controls checks (i.e. SOC2, ISO 27001, etc.).
+      The policy uses Kyverno's apiCall feature to search for evidence in the JFrog GraphQL API.
+      When specific Verified Evidence Types are found on JFrog platform linked to the pod images the verification passes. this example checks specifically for Sonar evidence
+      Prerequisite: Kubernetes docker-registry secret called `jfrog-secret` with a JFrog token added to the kyverno deployment, --set "admissionController.container.extraArgs={--imagePullSecrets=jfrog-secret,--webhookTimeout=<seconds>}"
+spec:
+  background: true
+  admission: true
+  applyRules: All
+  webhookConfiguration:
+      timeoutSeconds: 20
+  rules:
+  - name: evidence-must-exist-on-image
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          operations:
+          - CREATE
+          - UPDATE
+          namespaces:
+          - "*"
+    validate:
+      allowExistingViolations: false
+      failureAction: Audit   
+      message: "Pod {{request.object.metadata.name}}: Missing verified sonar evidence for one or more container images."
+      foreach:
+        - list: request.object.spec.containers[]
+          context:
+            - name: imageData
+              imageRegistry: 
+                reference: "{{element.image}}"
+            - name: registryHost
+              variable:
+                jmesPath: "imageData.registry"
+            - name: repositoryKey
+              variable:
+                jmesPath: "imageData.repository | split(@, '/') | [0]"
+            - name: image_Path
+              variable:
+                jmesPath: "imageData.repository | split(@, '/') | [1:] | join('/', @)"
+            - name: imageTag
+              variable:
+                jmesPath: "imageData.identifier"
+            - name: imageDigest
+              variable:
+                jmesPath: "imageData.resolvedImage  | split(@, '@') | [1] | split(@, ':') | [1]"
+            - name: jfrogSecret
+              apiCall:
+                jmesPath: "data.\".dockerconfigjson\"|base64_decode(@)| parse_json(@).auths.\"{{registryHost}}\".password"
+                urlPath: "/api/v1/namespaces/kyverno/secrets/jfrog-secret"                    
+            - name: sonarEvidence
+              apiCall:
+                method: POST
+                jmesPath: "data.evidence.searchEvidence.edges[?node.predicateType == 'https://sonar.com/evidence/sonarqube/v1']"
+                service:
+                  url: "https://{{registryHost}}/onemodel/api/v1/graphql"          
+                  headers:
+                    - key: "Content-Type"
+                      value: "application/json"
+                    - key: "Accept"
+                      value: "application/json"
+                    - key: "Authorization"
+                      value: "Bearer {{jfrogSecret}}"
+                data:
+                  - key: query
+                    value: "{ evidence { searchEvidence(where: { hasSubjectWith: { repositoryKey: \"{{repositoryKey}}\", path: \"{{image_Path}}/{{imageTag}}\", sha256: \"{{imageDigest}}\" } }) { edges { node { downloadPath path name sha256 subject { repositoryKey path name } predicateType predicate createdBy createdAt verified } } } }}"             
+          deny:
+            conditions:
+              any:
+              - key: "{{sonarEvidence}}"
+                operator: AnyNotIn
+                value: ["*"]
+                message: "Pod {{request.object.metadata.name}}: Missing verified sonar evidence for container '{{element.name}}' with image '{{element.image}}'."
+              - key: "{{sonarEvidence | length(@)}}"
+                operator: Equals
+                value: 0
+              - key: "{{sonarEvidence[0].node.verified}}"
+                operator: NotEquals
+                value: true
+          

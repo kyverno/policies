@@ -1,0 +1,33 @@
+---
+name: jfrog-evidence-check
+version: 1.0.0
+displayName: Require JFrog Evidence on Image
+createdAt: "2026-01-19T00:00:00.000Z" 
+description: >-
+# This policy checks for verified evidence on the JFrog platform for the pod images allowing for automation of complaince controls checks (i.e. SOC2, ISO 27001, etc.).
+      The policy uses Kyverno's apiCall feature to search for evidence in the JFrog GraphQL API.
+      When specific Verified Evidence Types are found on JFrog platform linked to the pod images the verification passes. 
+      this example checks specifically for SonarQube evidence
+      Prerequisite: Kubernetes docker-registry secret called `jfrog-secret` with a JFrog token added to the kyverno deployment:
+      --set "admissionController.container.extraArgs={--imagePullSecrets=jfrog-secret,--webhookTimeout=<seconds>}"
+install: |- 
+    ```shell
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/jfrog/jfrog-evidence-check/jfrog-evidence-check.yaml
+    ```   
+keywords: 
+  - jfrog
+  - kyverno
+readme: | 
+  This policy checks for verified evidence on the JFrog platform for the pod images allowing for automation of complaince controls checks (i.e. SOC2, ISO 27001, etc.).
+      The policy uses Kyverno's apiCall feature to search for evidence in the JFrog GraphQL API.
+      When specific Verified Evidence Types are found on JFrog platform linked to the pod images the verification passes. 
+      this example checks specifically for SonarQube evidence
+      Prerequisite: Kubernetes docker-registry secret called `jfrog-secret` with a JFrog token added to the kyverno deployment:
+      --set "admissionController.container.extraArgs={--imagePullSecrets=jfrog-secret,--webhookTimeout=<seconds>}"
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations: # See the annotations guide on Artifact Hub here: https://artifacthub.io/docs/topics/annotations/kyverno/
+  kyverno/category: "JFrog"
+  kyverno/kubernetesVersion: "1.33"
+  kyverno/subject: "Pod"
+digest: 5f9d09e110d851c5151deaeaabb3b2dc17fca4f7f3b0da1a8c35e48644bddcf4  
