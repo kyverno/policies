@@ -1,9 +1,0 @@
-apiVersion: tekton.dev/v1
-kind: PipelineRun
-metadata:
-  name: goodpipelinerun01
-  namespace: req-tekton-ns
-spec:
-  pipelineRef:
-    name: mypipeline
-    bundle: docker.io/foo/bar

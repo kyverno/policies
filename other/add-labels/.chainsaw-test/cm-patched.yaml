@@ -1,9 +1,0 @@
-apiVersion: v1
-data:
-  key: label
-kind: ConfigMap
-metadata:
-  name: cm01
-  labels:
-    bar: foo
-    foo: bar

@@ -16,7 +16,7 @@ spec:
         file: ../exclude-namespaces-dynamically.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: exclude-namespaces-example

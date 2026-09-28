@@ -1,5 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: foo-sa
-  namespace: disable-satokenmount-ns

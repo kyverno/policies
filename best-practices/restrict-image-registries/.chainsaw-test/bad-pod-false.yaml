@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: badpod01-registry
-spec:
-  containers:
-  - name: k8s-nginx
-    image: registry.k8s.io/nginx:1.7.9

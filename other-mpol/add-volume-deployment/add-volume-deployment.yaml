@@ -1,4 +1,4 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: MutatingPolicy
 metadata:
   name: add-volume
@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/title: Add Volume to Deployment
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Deployment, Volume
-    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/description: >-
       Some Kubernetes applications like HashiCorp Vault must perform some modifications
       to resources in order to invoke their specific functionality. Often times, that functionality
