@@ -80,6 +80,17 @@ spec:
     securityContext:
       allowPrivilegeEscalation: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  os:
+    name: linux
+  containers:
+  - name: container01
+    image: dummyimagename
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -166,6 +177,20 @@ spec:
     image: dummyimagename
     securityContext:
       allowPrivilegeEscalation: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  os:
+    name: windows
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -302,6 +327,26 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: linux
+      containers:
+      - name: container01
+        image: dummyimagename
+---
 ###### Deployments - Good
 apiVersion: apps/v1
 kind: Deployment
@@ -434,6 +479,29 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: windows
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+      containers:
+      - name: container01
+        image: dummyimagename
+---
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
@@ -551,6 +619,23 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
 ---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: linux
+          containers:
+          - name: container01
+            image: dummyimagename
+---
 ###### CronJobs - Good
 apiVersion: batch/v1
 kind: CronJob
@@ -667,3 +752,23 @@ spec:
             image: dummyimagename
             securityContext:
               allowPrivilegeEscalation: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: windows
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+          containers:
+          - name: container01
+            image: dummyimagename

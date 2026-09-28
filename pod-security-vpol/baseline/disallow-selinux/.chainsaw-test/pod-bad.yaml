@@ -8,7 +8,7 @@ spec:
     image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seLinuxOptions:
-        type: container_engine_t
+        type: spc_t
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -49,7 +49,7 @@ metadata:
 spec:
   securityContext:
     seLinuxOptions:
-      type: container_engine_t
+      type: spc_t
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -69,7 +69,7 @@ spec:
     image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       seLinuxOptions:
-        type: container_engine_t
+        type: spc_t
 ---
 apiVersion: v1
 kind: Pod
