@@ -47,7 +47,9 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
-          variables.hasVaultAgent ?
+          variables.hasVaultAgent &&
+          has(object.metadata.annotations) &&
+          object.metadata.annotations['vault.hashicorp.com/agent-inject'] == 'true' ?
           [
             JSONPatch{
               op: "replace",
