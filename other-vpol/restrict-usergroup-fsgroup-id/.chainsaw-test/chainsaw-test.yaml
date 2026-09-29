@@ -12,7 +12,7 @@ spec:
         file: ../restrict-usergroup-fsgroup-id.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: validate-userid-groupid-fsgroup

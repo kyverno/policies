@@ -14,7 +14,7 @@ spec:
         file: ../enforce-pod-duration.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: pod-lifetime
