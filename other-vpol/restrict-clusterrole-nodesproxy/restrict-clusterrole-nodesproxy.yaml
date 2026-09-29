@@ -34,6 +34,6 @@ spec:
         object.rules == null || 
         !object.rules.exists(rule, 
         rule.resources.exists(resource, resource == 'nodes/proxy') && 
-        rule.apiGroups.exists(apiGroup, apiGroup == ''))
+        rule.apiGroups.exists(apiGroup, apiGroup == '' || apiGroup == '*'))
       message: "A ClusterRole containing the nodes/proxy resource is not allowed."
 
