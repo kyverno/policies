@@ -16,7 +16,6 @@ metadata:
       to or replacement of this policy, preventing users from mounting the parent directories
       (/var/run and /var) may be necessary to completely prevent socket bind mounts.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-docker-sock-mount
@@ -26,6 +25,7 @@ spec:
           kinds:
           - Pod
     validate:
+      failureAction: Audit
       message: "Use of the Docker Unix socket is not allowed."
       pattern:
         spec:
@@ -39,6 +39,7 @@ spec:
           kinds:
           - Pod
     validate:
+      failureAction: Audit
       message: "Use of the Containerd Unix socket is not allowed."
       pattern:
         spec:
@@ -52,6 +53,7 @@ spec:
           kinds:
           - Pod
     validate:
+      failureAction: Audit
       message: "Use of the CRI-O Unix socket is not allowed."
       pattern:
         spec:
@@ -65,6 +67,7 @@ spec:
           kinds:
           - Pod
     validate:
+      failureAction: Audit
       message: "Use of the Docker CRI socket is not allowed."
       pattern:
         spec:

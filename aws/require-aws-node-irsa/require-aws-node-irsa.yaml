@@ -19,7 +19,6 @@ metadata:
       the `aws-node` DaemonSet to use IRSA. This policy ensures that the `aws-node` DaemonSet
       running in the `kube-system` Namespace is not still using the `aws-node` ServiceAccount.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
   - name: validate-node-daemonset-irsa
@@ -33,6 +32,7 @@ spec:
           namespaces:
           - kube-system
     validate:
+      failureAction: Audit
       message: "Update the aws-node daemonset to use IRSA."
       pattern:
         spec:
