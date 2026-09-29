@@ -155,3 +155,20 @@ spec:
     secret:
       secretName: mysecret
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod10
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    volumeMounts:
+    - mountPath: /myimage
+      name: myimage
+  volumes:
+  - name: myimage
+    image:
+      reference: ghcr.io/kyverno/test-busybox:1.35
+      pullPolicy: IfNotPresent
+---
