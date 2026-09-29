@@ -14,7 +14,7 @@ keywords:
   - EKS Best Practices
 readme: |
   If a Pod exists with the annotation `karpenter.sh/do-not-disrupt: true` on a Node, and a request is made to delete the Node, Karpenter will not drain any Pods from that Node or otherwise try to delete the Node. This is useful for Pods that should run uninterrupted to completion. This policy mutates Jobs and CronJobs so that Pods spawned by them will contain the `karpenter.sh/do-not-disrupt: true` annotation.
-  
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
