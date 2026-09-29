@@ -108,6 +108,19 @@ spec:
         add:
         - SYS_ADMIN
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      capabilities:
+        add:
+        - ""
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -360,6 +373,28 @@ spec:
           capabilities:
             add:
             - SYS_ADMIN
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          capabilities:
+            add:
+            - ""
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -649,6 +684,25 @@ spec:
               capabilities:
                 add:
                 - SYS_ADMIN
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              capabilities:
+                add:
+                - ""
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1

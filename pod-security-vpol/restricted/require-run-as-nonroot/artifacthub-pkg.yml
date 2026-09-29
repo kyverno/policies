@@ -2,7 +2,7 @@ name: require-run-as-nonroot-vpol
 version: 1.0.0
 displayName: Require runAsNonRoot in ValidatingPolicy
 description: >-
-  Containers must be required to run as non-root users. This policy ensures `runAsNonRoot` is set to `true`.
+  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/require-run-as-nonroot/require-run-as-nonroot.yaml
@@ -12,12 +12,12 @@ keywords:
   - Pod Security Standards (Restricted)
   - ValidatingPolicy
 readme: |
-  Containers must be required to run as non-root users. This policy ensures `runAsNonRoot` is set to `true`.
+  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 61b7c5142a719b5c9a0cb8bb99eabcc428e636bbb72386008cb4f09057e985f6
+digest: 310d7e616ac81cd47b5202e9aad125a625263c9ff012ed6381c362452ba186a3
 createdAt: "2025-03-13T23:26:58Z"

@@ -11,8 +11,8 @@ metadata:
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
-      Containers must be required to run as non-root. This policy ensures
-      `runAsNonRoot` is set to true.
+      Containers must run as non-root users. This policy ensures that every container sets
+      `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`.
 spec:
   validationActions:
      - Audit
@@ -33,10 +33,12 @@ spec:
       object.spec.?ephemeralContainers.orValue([])
   validations:
     - expression: >-
-        (object.spec.?securityContext.?runAsNonRoot.orValue(false) == true
-          && variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(true) == true))
-          || variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(false) == true)
+        object.spec.?securityContext.?runAsNonRoot.orValue(true) == true &&
+        variables.ctnrs.all(c,
+          c.?securityContext.?runAsNonRoot.orValue(
+            object.spec.?securityContext.?runAsNonRoot.orValue(false)) == true)
       message: >-
-        Running as root is not allowed. Either spec.securityContext.runAsNonRoot 
-        must be set to true, or all containers (spec.containers[*], spec.initContainers[*], 
-        spec.ephemeralContainers[*]) must have securityContext.runAsNonRoot set to true.
+        Running as root is not allowed. Every container (spec.containers[*], spec.initContainers[*], and
+        spec.ephemeralContainers[*]) must set securityContext.runAsNonRoot to `true`, or inherit `true`
+        from spec.securityContext.runAsNonRoot. Neither spec.securityContext.runAsNonRoot nor
+        container-level securityContext.runAsNonRoot may be set to `false`.
