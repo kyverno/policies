@@ -18,3 +18,15 @@ rules:
 - apiGroups: [""]
   resources: ["pods", "nodes/proxy"]
   verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: badcr03
+rules:
+- apiGroups: ["*"]
+  resources: ["nodes/proxy", "namespaces"]
+  verbs: ["get", "watch", "list"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "watch", "list"]
