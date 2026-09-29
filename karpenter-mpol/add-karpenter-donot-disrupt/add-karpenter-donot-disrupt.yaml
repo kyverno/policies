@@ -21,14 +21,14 @@ spec:
         object.kind == "Job" ?
           (has(object.spec.template.metadata) ?
             (has(object.spec.template.metadata.annotations) ?
-              [JSONPatch{op: "add", path: "/spec/template/metadata/annotations/" + jsonpatch.escapeKey("karpenter.sh/do-not-disrupt"), value: "true"}] : 
+              [JSONPatch{op: "add", path: "/spec/template/metadata/annotations/" + jsonpatch.escapeKey("karpenter.sh/do-not-disrupt"), value: "true"}] :
               [JSONPatch{op: "add", path: "/spec/template/metadata/annotations", value: {"karpenter.sh/do-not-disrupt": "true"}}]
             ) :
             [JSONPatch{op: "add", path: "/spec/template/metadata", value: {"annotations": {"karpenter.sh/do-not-disrupt": "true"}}}]
           ) :
           (has(object.spec.jobTemplate.spec.template.metadata) ?
             (has(object.spec.jobTemplate.spec.template.metadata.annotations) ?
-              [JSONPatch{op: "add", path: "/spec/jobTemplate/spec/template/metadata/annotations/" + jsonpatch.escapeKey("karpenter.sh/do-not-disrupt"), value: "true"}] : 
+              [JSONPatch{op: "add", path: "/spec/jobTemplate/spec/template/metadata/annotations/" + jsonpatch.escapeKey("karpenter.sh/do-not-disrupt"), value: "true"}] :
               [JSONPatch{op: "add", path: "/spec/jobTemplate/spec/template/metadata/annotations", value: {"karpenter.sh/do-not-disrupt": "true"}}]
             ) :
             [JSONPatch{op: "add", path: "/spec/jobTemplate/spec/template/metadata", value: {"annotations": {"karpenter.sh/do-not-disrupt": "true"}}}]
