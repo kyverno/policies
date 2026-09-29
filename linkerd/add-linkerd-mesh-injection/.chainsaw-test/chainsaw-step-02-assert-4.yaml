@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  annotations:
-    config.linkerd.io/proxy-await: disabled
-    linkerd.io/inject: enabled
-  name: lmi-ns04

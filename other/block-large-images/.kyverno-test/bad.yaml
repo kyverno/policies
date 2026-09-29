@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: large-image
-spec:
-  containers:
-  - name: large-image
-    image: nvidia/cuda:12.2.0-devel-ubi8

@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  allowedbaseimages: gcr.io/distroless/static:nonroot
-kind: ConfigMap
-metadata:
-  name: baseimages
-  namespace: platform

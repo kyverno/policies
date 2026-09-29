@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-ghcr-notification-controller
-spec:
-  containers:
-  - name: pod-ghcr-notification-controller
-    image: ghcr.io/fluxcd/notification-controller:replacethistag

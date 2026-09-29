@@ -39,3 +39,7 @@ spec:
         - check:
             ($error != null): true
         file: podcontrollers-bad.yaml
+  - name: step-99
+    try:
+    - script:
+        content: kubectl delete all --all --force --grace-period=0 -n block-staleimg-ns

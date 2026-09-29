@@ -1,8 +1,0 @@
-apiVersion: cli.kyverno.io/v1alpha1
-kind: Values
-policies:
-- name: require-unique-uid-per-workload
-  rules:
-  - name: require-unique-uid
-    values:
-      uidsAllPodsExceptSameOwnerAsRequestObject: '["1337"]'

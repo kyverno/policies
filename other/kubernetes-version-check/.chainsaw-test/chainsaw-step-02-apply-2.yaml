@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  key: bGFiZWw=
-kind: Secret
-metadata:
-  name: kversion-secret
-  namespace: kubversion-ns
