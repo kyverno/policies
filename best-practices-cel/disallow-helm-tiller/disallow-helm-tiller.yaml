@@ -16,7 +16,6 @@ metadata:
       Tiller for these reasons. This policy validates that there is not an image
       containing the name `tiller`.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: validate-helm-tiller
@@ -29,6 +28,7 @@ spec:
             - CREATE
             - UPDATE
       validate:
+        failureAction: Audit
         cel:
           expressions:
             - expression: "object.spec.containers.all(container, !container.image.contains('tiller'))"

@@ -14,7 +14,6 @@ metadata:
       This policy ensures that the name of the ApplicationSet is the
       same value provided in the project.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
     - name: match-name
@@ -29,6 +28,7 @@ spec:
           operator: NotEquals
           value: DELETE
       validate:
+        failureAction: Audit
         message: "The name must match the project."
         pattern:
           spec:
