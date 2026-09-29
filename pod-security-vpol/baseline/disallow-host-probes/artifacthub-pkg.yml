@@ -1,0 +1,23 @@
+name: disallow-host-probes-vpol
+version: 1.0.0
+displayName: Disallow Host Probes in ValidatingPolicy
+description: >-
+  Probes and lifecycle handlers that set a `host` let a Pod direct the kubelet to make requests to arbitrary addresses, including link-local metadata endpoints. This policy ensures the `httpGet.host` and `tcpSocket.host` fields of every probe and lifecycle handler are unset or empty. It implements the `hostProbesAndHostLifecycle` check that Kubernetes added to the Baseline profile in v1.34.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-host-probes/disallow-host-probes.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - ValidatingPolicy
+readme: |
+  Probes and lifecycle handlers that set a `host` let a Pod direct the kubelet to make requests to arbitrary addresses, including link-local metadata endpoints. This policy ensures the `httpGet.host` and `tcpSocket.host` fields of every probe and lifecycle handler are unset or empty. It implements the `hostProbesAndHostLifecycle` check that Kubernetes added to the Baseline profile in v1.34.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod"
+digest: 944a00ed118b051a25a3f45e188259f2bcf85e4c28068940ceb231e907eb1487
+createdAt: "2026-09-28T08:51:40Z"

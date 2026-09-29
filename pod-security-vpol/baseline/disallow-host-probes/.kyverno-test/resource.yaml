@@ -1,0 +1,857 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: 169.254.169.254
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+        host: 10.0.0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: example.com
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+        host: 169.254.169.254
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: 10.0.0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    startupProbe:
+      tcpSocket:
+        port: 8080
+        host: example.com
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: 169.254.169.254
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+          host: 10.0.0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod09
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    lifecycle:
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: example.com
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod10
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    lifecycle:
+      preStop:
+        tcpSocket:
+          port: 8080
+          host: 169.254.169.254
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod11
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: 10.0.0.1
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod12
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+        host: example.com
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod13
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: 169.254.169.254
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod14
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+        host: 10.0.0.1
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod15
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: example.com
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod16
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    startupProbe:
+      tcpSocket:
+        port: 8080
+        host: 169.254.169.254
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod17
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: 10.0.0.1
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod18
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+          host: example.com
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod19
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    lifecycle:
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: 169.254.169.254
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod20
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    lifecycle:
+      preStop:
+        tcpSocket:
+          port: 8080
+          host: 10.0.0.1
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod21
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+  - name: container02
+    image: dummyimagename
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+        host: 10.0.0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod22
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+    lifecycle:
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: 169.254.169.254
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: ""
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+        host: ""
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: ""
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+          host: ""
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: ""
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+    readinessProbe:
+      grpc:
+        port: 8080
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - sleep
+          - "5"
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            host: 169.254.169.254
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        lifecycle:
+          postStart:
+            tcpSocket:
+              port: 8080
+              host: 10.0.0.1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        restartPolicy: Always
+        lifecycle:
+          preStop:
+            tcpSocket:
+              port: 8080
+              host: 10.0.0.1
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        lifecycle:
+          postStart:
+            httpGet:
+              path: /healthz
+              port: 8080
+          preStop:
+            httpGet:
+              path: /healthz
+              port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            host: ""
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+            host: ""
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            host: ""
+        lifecycle:
+          postStart:
+            tcpSocket:
+              port: 8080
+              host: ""
+          preStop:
+            httpGet:
+              path: /healthz
+              port: 8080
+              host: ""
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+                host: 169.254.169.254
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            lifecycle:
+              postStart:
+                tcpSocket:
+                  port: 8080
+                  host: 10.0.0.1
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            restartPolicy: Always
+            lifecycle:
+              preStop:
+                tcpSocket:
+                  port: 8080
+                  host: 10.0.0.1
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            readinessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            startupProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            lifecycle:
+              postStart:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+              preStop:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+                host: ""
+            readinessProbe:
+              tcpSocket:
+                port: 8080
+                host: ""
+            startupProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+                host: ""
+            lifecycle:
+              postStart:
+                tcpSocket:
+                  port: 8080
+                  host: ""
+              preStop:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+                  host: ""
