@@ -23,6 +23,7 @@ results:
   - goodcr02
   - goodcr03
   - default-rules
+  - nonresource-rule
   result: pass
 - isValidatingPolicy: true
   kind: Role

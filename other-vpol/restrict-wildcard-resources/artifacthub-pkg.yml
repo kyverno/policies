@@ -1,5 +1,5 @@
 name: restrict-wildcard-resources-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict Wildcards in Resources in ValidatingPolicy
 description: >-
   Wildcards ('*') in resources grants access to all of the resources referenced by the given API group and does not follow the principal of least privilege. As much as possible, avoid such open resources unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the resources list found in any rule.
@@ -14,13 +14,11 @@ keywords:
   - ValidatingPolicy
 readme: |
   Wildcards ('*') in resources grants access to all of the resources referenced by the given API group and does not follow the principal of least privilege. As much as possible, avoid such open resources unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the resources list found in any rule.
-  
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "ClusterRole, Role, RBAC"
-digest: 2e3606f23a81d1d7150909a038976c777b4e56e2e74c66010c3d51040175f75f
-
-
+digest: d09d68dd06320088335465559ed8aafecb447ac459189f35338e49b01b71f5e5
 createdAt: "2025-05-11T17:46:12Z"

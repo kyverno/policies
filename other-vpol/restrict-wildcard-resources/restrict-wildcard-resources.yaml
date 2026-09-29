@@ -29,6 +29,6 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["roles", "clusterroles"]
   validations:
-    - expression: "object.rules == null || !object.rules.exists(rule, '*' in rule.resources)"
+    - expression: "object.?rules.orValue([]) == null || object.?rules.orValue([]).all(rule, !('*' in rule.?resources.orValue([])))"
       message: "Use of a wildcard ('*') in any resources is forbidden."
 

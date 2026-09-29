@@ -1,5 +1,5 @@
 name: restrict-binding-system-groups-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict Binding System Groups in ValidatingPolicy
 description: >-
   Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
@@ -14,13 +14,11 @@ keywords:
   - ValidatingPolicy
 readme: |
   Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
-  
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
-digest: 9696b546b9c1be6ce7b87ea664d07a74d730a8267af028a1187b98814806ba3b
-
-
+digest: 7a40b8cd6a54df47578e3f091a535d0949ee7e6b67c2bb113f71ff16a7403f81
 createdAt: "2025-05-11T17:46:11Z"
