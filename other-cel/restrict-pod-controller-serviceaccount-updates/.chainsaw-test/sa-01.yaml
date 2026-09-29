@@ -1,5 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: serviceaccount01
-  namespace: restrict-sa-ns
