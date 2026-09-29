@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./enforce-sidecar-injection-namespace/enforce-sidecar-injection-namespace.yaml
+  - ./enforce-strict-mtls/enforce-strict-mtls.yaml
+  - ./prevent-disabling-injection-pods/prevent-disabling-injection-pods.yaml

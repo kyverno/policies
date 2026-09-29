@@ -1,0 +1,26 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./add-network-policy/add-network-policy.yaml
+  - ./add-networkpolicy-dns/add-networkpolicy-dns.yaml
+  - ./add-ns-quota/add-ns-quota.yaml
+  - ./add-rolebinding/add-rolebinding.yaml
+  - ./add-safe-to-evict/add-safe-to-evict.yaml
+  - ./check-deprecated-apis/check-deprecated-apis.yaml
+  - ./disallow-cri-sock-mount/disallow-cri-sock-mount.yaml
+  - ./disallow-default-namespace/disallow-default-namespace.yaml
+  - ./disallow-empty-ingress-host/disallow-empty-ingress-host.yaml
+  - ./disallow-helm-tiller/disallow-helm-tiller.yaml
+  - ./disallow-latest-tag/disallow-latest-tag.yaml
+  - ./require-drop-all/require-drop-all.yaml
+  - ./require-drop-cap-net-raw/require-drop-cap-net-raw.yaml
+  - ./require-labels/require-labels.yaml
+  - ./require-pod-requests-limits/require-pod-requests-limits.yaml
+  - ./require-probes/require-probes.yaml
+  - ./require-ro-rootfs/require-ro-rootfs.yaml
+  - ./restrict-image-registries/restrict-image-registries.yaml
+  - ./restrict-node-port/restrict-node-port.yaml
+  - ./restrict-service-external-ips/restrict-service-external-ips.yaml
