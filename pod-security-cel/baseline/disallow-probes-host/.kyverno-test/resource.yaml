@@ -1,0 +1,300 @@
+###### Pods - Bad
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    livenessProbe:
+      httpGet:
+        host: 127.0.0.1
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        host: 127.0.0.1
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    startupProbe:
+      httpGet:
+        host: 127.0.0.1
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          host: 127.0.0.1
+          port: 8080
+      preStop:
+        tcpSocket:
+          host: 127.0.0.1
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    readinessProbe:
+      httpGet:
+        host: 127.0.0.1
+        port: 8080
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  containers:
+  - name: good
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: bad
+    image: ghcr.io/kyverno/test-busybox:1.35
+    lifecycle:
+      preStop:
+        httpGet:
+          host: 127.0.0.1
+          port: 8080
+---
+###### Pods - Good
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    livenessProbe:
+      httpGet:
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    startupProbe:
+      httpGet:
+        port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        httpGet:
+          port: 8080
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: busybox-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    readinessProbe:
+      httpGet:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      httpGet:
+        host: ""
+        port: 8080
+---
+###### Deployments - Bad
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: baddeployment01
+  template:
+    metadata:
+      labels:
+        app: baddeployment01
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        readinessProbe:
+          httpGet:
+            host: 127.0.0.1
+            path: /ready
+            port: 8080
+---
+###### Deployments - Good
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gooddeployment01
+  template:
+    metadata:
+      labels:
+        app: gooddeployment01
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gooddeployment02
+  template:
+    metadata:
+      labels:
+        app: gooddeployment02
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        lifecycle:
+          postStart:
+            tcpSocket:
+              host: ""
+              port: 8080
+---
+###### CronJobs - Bad
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: busybox-init
+            image: ghcr.io/kyverno/test-busybox:1.35
+            restartPolicy: Always
+            lifecycle:
+              preStop:
+                tcpSocket:
+                  host: 127.0.0.1
+                  port: 8080
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          restartPolicy: Never
+---
+###### CronJobs - Good
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: busybox-init
+            image: ghcr.io/kyverno/test-busybox:1.35
+            restartPolicy: Always
+            startupProbe:
+              tcpSocket:
+                port: 8080
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          restartPolicy: Never

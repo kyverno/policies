@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gooddeployment01
+  template:
+    metadata:
+      labels:
+        app: gooddeployment01
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gooddeployment02
+  template:
+    metadata:
+      labels:
+        app: gooddeployment02
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        lifecycle:
+          postStart:
+            tcpSocket:
+              host: ""
+              port: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          initContainers:
+          - name: busybox-init
+            image: ghcr.io/kyverno/test-busybox:1.35
+            restartPolicy: Always
+            startupProbe:
+              tcpSocket:
+                port: 8080
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+          restartPolicy: Never
