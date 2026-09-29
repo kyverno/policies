@@ -37,12 +37,14 @@ spec:
       resources: ["jobs", "cronjobs"]
       operations: ["CREATE", "UPDATE"]
   variables:
-  # Resolve the pod spec for both bare Pods and pod controllers.
+  # Resolve the pod spec for bare Pods, CronJobs and all other pod controllers.
   - name: podSpec
     expression: >-
       has(object.spec.containers) ?
         object.spec :
-        object.spec.template.spec
+        has(object.spec.jobTemplate) ?
+          object.spec.jobTemplate.spec.template.spec :
+          object.spec.template.spec
   # Checked are regular containers plus sidecar containers, i.e. init containers with
   # restartPolicy: Always (Kubernetes >= 1.29), which are long-running and therefore
   # benefit from probes just like regular containers.

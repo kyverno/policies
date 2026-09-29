@@ -25,3 +25,22 @@ spec:
           tcpSocket:
             port: 8080
           periodSeconds: 10
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: reqprobes-goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:1.35
+            livenessProbe:
+              tcpSocket:
+                port: 7070
+              periodSeconds: 20
