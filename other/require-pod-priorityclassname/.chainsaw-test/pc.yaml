@@ -1,7 +1,0 @@
-apiVersion: scheduling.k8s.io/v1
-kind: PriorityClass
-metadata:
-  name: high
-value: 1234
-globalDefault: false
-description: "This priority class should be used for XYZ service pods only."

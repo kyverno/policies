@@ -1,10 +1,10 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: MutatingPolicy
 metadata:
   name: add-env-vars-from-cm
   annotations:
     policies.kyverno.io/title: Add Environment Variables from ConfigMap
-    policies.kyverno.io/minversion: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: Other
     policies.kyverno.io/description: >-

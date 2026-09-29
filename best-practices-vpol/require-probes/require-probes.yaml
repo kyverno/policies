@@ -1,4 +1,4 @@
-apiVersion: policies.kyverno.io/v1beta1
+apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   name: require-pod-probes
@@ -14,7 +14,7 @@ metadata:
       determine when Pods are ready to receive traffic. Startup probes provide additional
       control during container startup. This policy validates that all containers have
       at least one of livenessProbe, readinessProbe, or startupProbe defined.      
-    policies.kyverno.io/minversion: "1.14.0"
+    policies.kyverno.io/minversion: 1.17.0
 spec:
   validationActions: ["Deny"]
   autogen:

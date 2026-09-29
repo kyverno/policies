@@ -1,4 +1,4 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: MutatingPolicy
 metadata:
   name: inject-sidecar
@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Inject Sidecar Container
     policies.kyverno.io/category: Sample
     policies.kyverno.io/subject: Deployment,Volume
-    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/description: >-
       The sidecar pattern is very common in Kubernetes whereby other applications can
       insert components via tacit modification of a submitted resource. This is, for example,

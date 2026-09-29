@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels:
-    dataprotection: gold
-  name: k10-gp-label-ns01

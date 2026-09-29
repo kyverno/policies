@@ -9,6 +9,20 @@ Made with [contributors-img](https://contrib.rocks).
 
 This repository contains Kyverno policies for a wide array of usage on various Kubernetes and ecosystem resources and subjects. For the optimal searching and browsing experience, please see [Usage and Documentation](#usage-and-documentation). For guidance on how you can contribute your own, please see [Contribution](#contribution). To request a Kyverno policy be created which doesn't exist, please see [Policy Requests](#policy-requests).
 
+Policy samples use the CEL-based `policies.kyverno.io/v1` API: `ValidatingPolicy`,
+`MutatingPolicy`, `GeneratingPolicy`, `DeletingPolicy`, and `ImageValidatingPolicy`.
+They require Kyverno 1.17 or later; individual policies may have additional requirements.
+Legacy `ClusterPolicy`, `Policy`, `ClusterCleanupPolicy`, and `CleanupPolicy` samples
+have been removed, including legacy policies that used CEL validation expressions.
+Test resources and third-party Kubernetes APIs are not policy samples and retain
+their own API versions.
+
+The [migration audit](.github/legacy-policy-migration.json) records every removed
+sample, its immutable source revision, replacement candidates, and any behavioral
+gaps. A partial replacement is not considered equivalent. See
+[kyverno/kyverno#17771](https://github.com/kyverno/kyverno/issues/17771) for the complete
+missing-policy checklist and per-sample remediation details.
+
 ## Usage and Documentation
 
 See https://kyverno.io/policies/ for a list of all the policies represented here in a simplified list with easy filtering abilities.
@@ -23,11 +37,11 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 * Name your policy something descriptive which matches its function. Either dashes or underscores are permitted.
 
-* Provide test resources (where possible) which allow your policy to be validated using the Kyverno CLI. See an example of a complete policy, resource, and test [here](https://github.com/kyverno/policies/tree/main/pod-security/baseline/disallow-capabilities). If unfamiliar with the Kyverno CLI and its test ability, please see the documentation [here](https://kyverno.io/docs/testing-policies/).
+* Provide test resources (where possible) which allow your policy to be validated using the Kyverno CLI. See an example of a complete policy, resource, and test [here](pod-security-vpol/baseline/disallow-capabilities). If unfamiliar with the Kyverno CLI and its test ability, please see the documentation [here](https://kyverno.io/docs/testing-policies/).
 
-* For `validate` rules, please set `validationFailureAction: Audit` so that should a user download and apply the policy without having a yet full understanding of Kyverno, it will not cause unintended harm to their environment by blocking resources.
+* For validating policies, please set `spec.validationActions: [Audit]` so that should a user download and apply the policy without having a yet full understanding of Kyverno, it will not cause unintended harm to their environment by blocking resources.
 
-* String values do not need to be quoted nor do values which contain JMESPath expressions such as `{{request.operation}}`. The exception is if a field's value is *only* such an expression. In those cases, the JMESPath expression needs to be double quoted.
+* Use CEL expressions in the fields supported by each policy type. YAML block scalars (`>-` or `|`) are useful for expressions containing quotes or multiple lines; legacy JMESPath template expressions are not interchangeable with CEL.
 
 * Since Kyverno policies are made available on [Artifact Hub](https://artifacthub.io/), each new policy requires a separate metadata file. Create the `artifacthub-pkg.yml` file in the same directory as your policy. See the [Artifact Hub](#artifact-hub) section below for more details on its contents.
 
@@ -41,33 +55,38 @@ Anyone and everyone is welcome to write and contribute Kyverno policies! We have
 
 Once your policy is written within these guidelines and tested, please open a standard PR against the `main` branch of kyverno/policies. In order for a policy to make it to the website's [policies page](https://kyverno.io/policies/), it must first be committed to the `main` branch in this repo. Following that, an administrator will render these policies to produce Markdown files in a second PR. You do not need to worry about this process, however.
 
-In order to streamline the process, the beginning "stub" of a ClusterPolicy resource is provided below with an example of how especially the annotations should be completed. Be sure to check the documentation and other sample policies as there is no guarantee this below stub is up to date.
+The following `ValidatingPolicy` illustrates the API, annotations, resource matching,
+and a CEL validation. It audits Pods that do not have an `app` label. Consult the
+other samples for the fields supported by each policy type.
 
 ```yaml
-apiVersion: kyverno.io/v1
-kind: ClusterPolicy
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
 metadata:
-  name: disallow-capabilities
+  name: require-app-label
   annotations:
-    policies.kyverno.io/title: Disallow Capabilities
-    policies.kyverno.io/category: Pod Security Standards (Baseline)
+    policies.kyverno.io/title: Require App Label
+    policies.kyverno.io/category: Best Practices
     policies.kyverno.io/severity: medium
-    kyverno.io/kyverno-version: 1.6.0
-    policies.kyverno.io/minversion: 1.6.0
-    kyverno.io/kubernetes-version: "1.22-1.23"
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
-      Adding capabilities beyond those listed in the policy must be disallowed.
+      Pods must have an app label identifying their application.
 spec:
-  validationFailureAction: Audit
-  background: true
-  rules:
-  - name: my-rule-name
-    match:
-      any:
-      - resources:
-          kinds:
-            - Resource
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  validations:
+  - expression: "has(object.metadata.labels) && 'app' in object.metadata.labels"
+    message: "An app label is required."
 ```
 
 ### Artifact Hub
@@ -80,8 +99,8 @@ name: backup-all-volumes # The name of the package (only alphanum, no spaces, da
 version: 1.0.0 # Version of the policy
 displayName: Backup All Volumes  # Display name of the policy
 createdAt: "2023-03-29T00:00:00.000Z" # The date this package was created (RFC3339 layout)
-description: >-
 # The description value should be taken from the relevant annotation policies.kyverno.io/description
+description: >-
       In order for Velero to backup volumes in a Pod using an opt-in approach, it
       requires an annotation on the Pod called `backup.velero.io/backup-volumes` with the
       value being a comma-separated list of the volumes mounted to that Pod. This policy
@@ -90,7 +109,7 @@ description: >-
       `velero-backup-pvc=true`.
 install: |- # The installation instructions for the package
     ```shell
-    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero/backup-all-volumes/backup-all-volumes.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero-mpol/backup-all-volumes/backup-all-volumes.yaml
     ```   
 keywords: # Keywords should always have "kyverno" and whatever the value of the policies.kyverno.io/category annotation. 
   - velero
@@ -108,7 +127,7 @@ annotations: # See the annotations guide on Artifact Hub here: https://artifacth
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod, Annotation"
-digest: 795012387c2755c61fa802fea900011c45520c2cffb27238210933ebb9a7f2c0 # The SHA256 hash String that uniquely identifies this package version
+digest: 72ebf5e9553ce341a54de68014a72a3d6e5603e9314dcf61c7e80f236f1d7106 # The SHA256 hash String that uniquely identifies this package version
 ```
 
 ## Policy Requests

@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ServiceAccount
-automountServiceAccountToken: false
-metadata:
-  name: default
-  namespace: disable-satokenmount-ns

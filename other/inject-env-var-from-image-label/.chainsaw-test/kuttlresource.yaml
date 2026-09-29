@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: testpodlabel
-  namespace: inject-env-var-from-image-label
-spec:
-  containers:
-  - name: nginx
-    image: ghcr.io/kyverno/test-nginx@sha256:eca6768a39363decf0a4606a282e222552576fec380f555b65560983f7305cf7

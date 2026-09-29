@@ -14,7 +14,7 @@ spec:
         file: ../restrict-secrets-by-name.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: restrict-secrets-by-name

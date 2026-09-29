@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  exclude: "exclude-ns, exclude-ns-2"
-kind: ConfigMap
-metadata:
-  name: namespace-filters
-  namespace: default
