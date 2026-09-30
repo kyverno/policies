@@ -19,6 +19,8 @@ results:
   resources:
   - badpod01
   - badpod02
+  - badpod-init-latest
+  - badpod-ephemeral-latest
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
