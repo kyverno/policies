@@ -1,0 +1,26 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-default-sa
+policies:
+- ../restrict-default-sa.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-default-sa
+  resources:
+  - good-pod-01
+  - good-pod-02
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-default-sa
+  resources:
+  - bad-pod-default-01
+  - bad-pod-default-02
+  - bad-pod-empty-01
+  - bad-pod-missing-01
+  - bad-pod-missing-02
+  result: fail
