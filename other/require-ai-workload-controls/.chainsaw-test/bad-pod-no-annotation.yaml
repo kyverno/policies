@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-ai-workload-no-annotation
+  labels:
+    ai.workload/type: model-serving
+  # Missing: ai.workload/audit-logging annotation
+spec:
+  containers:
+  - name: inference-server
+    image: pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
