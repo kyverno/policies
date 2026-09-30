@@ -1,0 +1,65 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-devicetaintrule-empty-selector
+  annotations:
+    policies.kyverno.io/title: Restrict Empty DeviceTaintRule Selector
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.18.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.37"
+    policies.kyverno.io/subject: DeviceTaintRule
+    policies.kyverno.io/description: >-
+      Kubernetes Dynamic Resource Allocation's DeviceTaintRule has a
+      deviceSelector field (driver/pool/device). Per the field's own API
+      documentation, an *empty* selector (all three fields unset) matches
+      every device in the cluster, while a *missing* selector matches no
+      devices at all -- two very different outcomes from what looks like the
+      same "nothing set" state. Validation admits an empty selector without
+      any warning (validateDeviceTaintSelector in
+      pkg/apis/resource/validation/validation.go), so a single templating
+      mistake -- omitting driver/pool, or rendering deviceSelector: {} instead
+      of a scoped selector -- silently turns a rule meant to drain one device
+      into a cluster-wide, cross-tenant, priority-blind NoExecute eviction.
+      See kubernetes/kubernetes#141422 for the live-verified finding this
+      policy mitigates (fix pending upstream in
+      kubernetes/kubernetes#141425). This policy requires at least one of
+      driver, pool, or device to be set whenever deviceSelector is present at
+      all -- it does not touch DeviceTaintRules that omit the field entirely,
+      since that is the documented safe case.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: require-devicetaintrule-selector-field
+    match:
+      any:
+      - resources:
+          kinds:
+            - DeviceTaintRule
+    preconditions:
+      all:
+      - key: "{{ request.object.spec.deviceSelector != null }}"
+        operator: Equals
+        value: true
+    validate:
+      message: >-
+        This DeviceTaintRule's deviceSelector is present but has none of
+        driver, pool, or device set. Per the API's own documentation, that
+        matches every device in the cluster -- see
+        kubernetes/kubernetes#141422. Set at least one of driver/pool/device
+        to scope this rule, or omit deviceSelector entirely if a no-op rule
+        was intended (a missing selector matches no devices).
+      deny:
+        conditions:
+          all:
+          - key: "{{ length(request.object.spec.deviceSelector.driver || '') }}"
+            operator: Equals
+            value: 0
+          - key: "{{ length(request.object.spec.deviceSelector.pool || '') }}"
+            operator: Equals
+            value: 0
+          - key: "{{ length(request.object.spec.deviceSelector.device || '') }}"
+            operator: Equals
+            value: 0
