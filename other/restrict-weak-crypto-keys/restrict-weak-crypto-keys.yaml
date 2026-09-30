@@ -1,0 +1,63 @@
+apiVersion: kyverno.io/v2beta1
+kind: ClusterPolicy
+metadata:
+  name: restrict-weak-crypto-keys
+  annotations:
+    policies.kyverno.io/title: Restrict Weak Crypto Keys (Block Classical Algorithms)
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/subject: Secret
+    policies.kyverno.io/description: >-
+      Classical key algorithms such as RSA, ECDSA, and DSA are vulnerable to
+      quantum computing attacks via Shor's algorithm. CNSA 2.0 and NIST PQC
+      guidance recommend migrating to post-quantum cryptography (PQC)
+      algorithms such as ML-DSA (Dilithium). Checking RSA key bit length
+      via x509_decode is unreliable because PublicKey.N is returned as a
+      decimal string whose character count does not equal the bit length.
+      Instead, this policy blocks TLS Secrets that use any classical
+      PublicKeyAlgorithm (RSA, ECDSA, DSA), enforcing a migration to
+      PQC-safe algorithms.
+spec:
+  validationFailureAction: Enforce
+  background: false
+  rules:
+  - name: block-classical-key-algorithms
+    match:
+      any:
+      - resources:
+          kinds:
+          - Secret
+    preconditions:
+      all:
+      - key: "{{ request.object.type || '' }}"
+        operator: Equals
+        value: kubernetes.io/tls
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    context:
+    - name: certData
+      variable:
+        jmesPath: "x509_decode(base64_decode('{{ request.object.data.\"tls.crt\" }}'))"
+    validate:
+      message: >-
+        TLS Secret "{{ request.object.metadata.name }}" uses the
+        {{ certData.PublicKeyAlgorithm }} public key algorithm which is
+        vulnerable to quantum computing attacks. Classical algorithms
+        (RSA, ECDSA, DSA) do not meet CNSA 2.0 guidelines for
+        quantum-preparedness. Migrate to post-quantum cryptography (PQC)
+        algorithms such as ML-DSA (Dilithium) or hybrid key schemes.
+      deny:
+        conditions:
+          any:
+          - key: "{{ certData.PublicKeyAlgorithm }}"
+            operator: AnyIn
+            value:
+            - RSA
+            - ECDSA
+            - DSA
