@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-coco-initdata-configmap-test
+policies:
+- ../validate-initdata-configmap.yaml
+resources:
+- resources.yaml
+results:
+- kind: ConfigMap
+  policy: validate-initdata-configmap
+  resources:
+  - default/test-initdata-valid
+  result: pass
+  isValidatingPolicy: true
+- kind: ConfigMap
+  policy: validate-initdata-configmap
+  resources:
+  - default/test-initdata-invalid
+  result: fail
+  isValidatingPolicy: true
+- kind: ConfigMap
+  policy: validate-initdata-configmap
+  resources:
+  - default/regular-configmap
+  result: skip
+  isValidatingPolicy: true

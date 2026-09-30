@@ -4,13 +4,17 @@ inputs:
   k8s-version:
     description: "Kubernetes version"
     required: true
+  kyverno-version:
+    description: "Kyverno release tag to install. Leave empty to resolve the latest v1.19.x release."
+    required: false
+    default: ""
 runs:
   using: "composite"
   steps:
     - name: Setup Go
       uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
       with:
-        go-version: ~1.25.3
+        go-version: ~1.26.1
     - name: Install Tools
       shell: bash
       run: |
@@ -36,11 +40,24 @@ runs:
       run: |
         set -e
         kind create cluster --image kindest/node:${{ inputs.k8s-version }} --config ./.github/kind.yml
-    - name: Install latest kyverno
+    - name: Install kyverno
       shell: bash
       run: |
         set -e
-        kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+        # This branch targets Kyverno 1.19. Installing main's `install-latest-testing.yaml`
+        # would pull `:latest` images built from main, which reject legacy kyverno.io/v1
+        # ClusterPolicy resources that are still supported on 1.19.
+        VERSION="${{ inputs.kyverno-version }}"
+        if [ -z "$VERSION" ]; then
+          VERSION=$(git ls-remote --tags --refs https://github.com/kyverno/kyverno.git 'v1.19.*' \
+            | awk -F/ '{print $NF}' | grep -vE -- '-rc' | sort -V | tail -1)
+        fi
+        if [ -z "$VERSION" ]; then
+          echo "Unable to resolve a Kyverno v1.19.x release tag" >&2
+          exit 1
+        fi
+        echo "Installing Kyverno ${VERSION}"
+        kubectl create -f "https://github.com/kyverno/kyverno/releases/download/${VERSION}/install.yaml"
     - name: Wait for kyverno ready
       shell: bash
       run: |

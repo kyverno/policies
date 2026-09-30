@@ -1,0 +1,138 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: test-inject-coco-initdata
+spec:
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../inject-coco-initdata.yaml
+    - assert:
+        file: policy-ready.yaml
+        timeout: 10s
+
+  - name: step-02
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          data:
+            data: confidential-data-payload
+          kind: ConfigMap
+          metadata:
+            name: coco-initdata
+            namespace: default
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              coco.io/initdata-configmap: coco-initdata
+            labels:
+              coco: enabled
+            name: good-pod-coco-enabled
+            namespace: default
+          spec:
+            containers:
+            - image: nginx:1.21.0
+              name: nginx
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              io.katacontainers.config.runtime.cc_init_data: confidential-data-payload
+            name: good-pod-coco-enabled
+            namespace: default
+        timeout: 60s
+
+  - name: step-03
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              coco.io/initdata-configmap: coco-initdata
+            name: pod-no-coco-label
+            namespace: default
+          spec:
+            containers:
+            - image: nginx:1.21.0
+              name: nginx
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              io.katacontainers.config.runtime.cc_init_data: confidential-data-payload
+            name: pod-no-coco-label
+            namespace: default
+        timeout: 10s
+  - name: step-04
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            labels:
+              coco: enabled
+            name: pod-no-configmap-annotation
+            namespace: default
+          spec:
+            containers:
+            - image: nginx:1.21.0
+              name: nginx
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              io.katacontainers.config.runtime.cc_init_data: confidential-data-payload
+            name: pod-no-configmap-annotation
+            namespace: default
+        timeout: 10s
+  - name: step-05
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          data: {}
+          kind: ConfigMap
+          metadata:
+            name: empty-initdata
+            namespace: default
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              coco.io/initdata-configmap: empty-initdata
+            labels:
+              coco: enabled
+            name: pod-empty-configmap
+            namespace: default
+          spec:
+            containers:
+            - image: nginx:1.21.0
+              name: nginx
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            annotations:
+              io.katacontainers.config.runtime.cc_init_data: confidential-data-payload
+            name: pod-empty-configmap
+            namespace: default
+        timeout: 10s

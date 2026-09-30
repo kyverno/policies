@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-initdata-valid
+  namespace: default
+  labels:
+    coco.io/type: initdata
+data:
+  version: "0.1.0"
+  algorithm: "sha384"
+  policy.rego: |
+    package agent_policy
+    default allow = true
+  aa.toml: |
+    [token_configs.kbs]
+    url = "https://kbs.example.com:8080"
+  cdh.toml: |
+    [kbc]
+    name = "cc_kbc"
+    url = "https://kbs.example.com:8080"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: test-initdata-invalid
+  namespace: default
+  labels:
+    coco.io/type: initdata
+data:
+  algorithm: "sha384"
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: regular-configmap
+  namespace: default
+  labels:
+    app: example
+data:
+  config.yaml: 'key: value'

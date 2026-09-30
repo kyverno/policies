@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-configmap-for-sa
+userinfo: ./userinfo.yaml
+policies:
+- ../limit-configmap-for-sa.yaml
+resources:
+- resource.yaml
+results:
+- kind: ConfigMap
+  policy: limit-configmap-for-sa
+  resources:
+  - any-configmap-name-good
+  result: fail
+  isValidatingPolicy: true
+- kind: ConfigMap
+  policy: limit-configmap-for-sa
+  resources:
+  - any-configmap-name-bad
+  result: skip
+  isValidatingPolicy: true

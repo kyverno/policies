@@ -1,0 +1,66 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  annotations:
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/description: >-
+      This policy inspects all CertificateSigningRequest resources and records
+      detailed information about the requester including their identity,
+      permissions, and the CSR content for auditing purposes.
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/title: Inspect Certificate Signing Requests
+  name: inspect-csr
+spec:
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - certificates.k8s.io
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+        resources:
+          - certificatesigningrequests
+  validationActions:
+    - Audit
+  validations:
+    - expression: 'false'
+      messageExpression: >-
+        'CSR Audit Report - User Identity: username=' + variables.username + ',
+        groups=' + variables.groups.join(',') + ' | Permissions: ClusterRoles=['
+        + variables.clusterRoles.join(',') + '], Roles=[' +
+        variables.roles.join(',') + '] | CSR Content: signerName=' +
+        variables.signerName + ', usages=[' + variables.usages.join(',') + ']'
+  variables:
+    - expression: request.userInfo.username
+      name: username
+    - expression: request.userInfo.groups
+      name: groups
+    - expression: >-
+        resource.List('rbac.authorization.k8s.io/v1', 'clusterrolebindings',
+        '').items
+      name: allClusterRoleBindings
+    - expression: >-
+        dyn(variables.allClusterRoleBindings).filter(crb,
+        dyn(crb).?subjects.orValue([]).exists(s, (s.kind == 'User' && s.name ==
+        variables.username) || (s.kind == 'Group' && s.name in
+        variables.groups))).map(crb, dyn(crb).roleRef.name)
+      name: clusterRoles
+    - expression: 'resource.List(''rbac.authorization.k8s.io/v1'', ''rolebindings'', '''').items'
+      name: allRoleBindings
+    - expression: >-
+        dyn(variables.allRoleBindings).filter(rb,
+        dyn(rb).?subjects.orValue([]).exists(s, (s.kind == 'User' && s.name ==
+        variables.username) || (s.kind == 'Group' && s.name in
+        variables.groups))).map(rb, dyn(rb).metadata.namespace + '/' +
+        dyn(rb).roleRef.name)
+      name: roles
+    - expression: object.spec.request
+      name: csrRequest
+    - expression: object.spec.?signerName.orValue('unknown')
+      name: signerName
+    - expression: 'object.spec.?usages.orValue([])'
+      name: usages

@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  images:
+  - image: docker.io/redis:6.0.0-buster
+    config:
+      created: "2020-05-01T03:15:12-07:00"
+  - image: docker.io/redis:latest
+    config:
+      created: "2099-05-01T03:15:12-07:00"

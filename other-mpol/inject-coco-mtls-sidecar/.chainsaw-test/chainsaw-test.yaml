@@ -1,0 +1,169 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-coco-mtls-sidecar-complete
+spec:
+  template: false
+  steps:
+  - name: step-01-install-policy
+    try:
+    - apply:
+        file: ../inject-coco-mtls-sidecar.yaml
+    - assert:
+        file: policy-ready.yaml
+        timeout: 10s
+  
+  - name: step-02-test-complete-sidecar-injection
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: coco-sidecar-config
+            namespace: default
+          data:
+            sidecar_image: "ghcr.io/confidential-containers/secure-sidecar:v1.0"
+            https_port: "9443"
+            forward_port: "9080"
+            tls_cert_uri: "https://kbs.example.com/certs/tls.crt"
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-complete-sidecar-pod
+            namespace: default
+            labels:
+              coco: enabled
+            annotations:
+              coco.io/sidecar-config: coco-sidecar-config
+          spec:
+            containers:
+            - name: main-app
+              image: nginx:1.20
+    - sleep:
+        duration: 2s
+    - assert:
+        file: expected-pod-complete-sidecar.yaml
+        timeout: 30s
+
+  - name: step-03-test-default-values
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: coco-default-config
+            namespace: default
+          data:
+            sidecar_image: "custom-registry/secure-sidecar:latest"
+            # Only provide image, test defaults for other values
+    - sleep:
+        duration: 2s
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-default-values-pod
+            namespace: default
+            labels:
+              coco: enabled
+            annotations:
+              coco.io/sidecar-config: coco-default-config
+          spec:
+            containers:
+            - name: main-app
+              image: busybox:latest
+    - sleep:
+        duration: 2s
+    - assert:
+        file: expected-pod-default-values.yaml
+        timeout: 30s
+
+  - name: step-04-test-no-label
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-pod-no-label
+            namespace: default
+            annotations:
+              coco.io/sidecar-config: coco-sidecar-config
+          spec:
+            containers:
+            - name: main
+              image: nginx:1.20
+    - sleep:
+        duration: 2s
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-pod-no-label
+            namespace: default
+          spec:
+            # Should NOT have sidecar container
+            (containers[?name=='coco-sidecar'] | length(@) == `0`): true
+            # Should only have the original container
+            (length(containers) == `1`): true
+        timeout: 30s
+
+  - name: step-05-test-no-annotation
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-pod-no-annotation
+            namespace: default
+            labels:
+              coco: enabled
+          spec:
+            containers:
+            - name: main
+              image: nginx:1.20
+    - sleep:
+        duration: 2s
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-pod-no-annotation
+            namespace: default
+          spec:
+            # Should NOT have sidecar container
+            (containers[?name=='coco-sidecar'] | length(@) == `0`): true
+            # Should only have the original container
+            (length(containers) == `1`): true
+        timeout: 30s
+
+  - name: step-06-test-invalid-configmap
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: test-pod-invalid-configmap
+            namespace: default
+            labels:
+              coco: enabled
+            annotations:
+              coco.io/sidecar-config: nonexistent-configmap
+          spec:
+            containers:
+            - name: main
+              image: nginx:1.20
+        expect:
+        - check:
+            ($error != null): true
+        timeout: 30s
