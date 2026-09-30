@@ -35,3 +35,23 @@ spec:
       tcpSocket:
         port: 8080
       periodSeconds: 10
+---
+# Sidecar container (init container with restartPolicy: Always) without any probe.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: sidecar
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
