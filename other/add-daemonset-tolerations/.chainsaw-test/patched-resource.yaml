@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nvidia-vgpu-device-manager
+  namespace: default
+spec:
+  template:
+    spec:
+      tolerations:
+      - operator: Exists
