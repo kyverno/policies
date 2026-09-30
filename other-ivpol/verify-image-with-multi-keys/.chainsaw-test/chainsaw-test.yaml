@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: verify-image-with-multi-keys
+spec:
+  # disable templating because it can cause issues with CEL expressions
+  template: false
+
+  steps:
+  - name: step-01
+    try:
+    - script:
+        content: kubectl create namespace test-signing || true
+    - apply:
+        file: ../verify-image-with-multi-keys.yaml
+    - apply:
+        file: configmap.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - create:
+        file: good.yaml
+        timeout: 360s
+    - create:
+        timeout: 360s
+        expect:
+        - check:
+            ($error != null): true
+        file: bad.yaml

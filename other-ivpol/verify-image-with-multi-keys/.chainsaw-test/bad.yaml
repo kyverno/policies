@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  namespace: test-signing
+spec:
+  containers:
+    - name: test-container
+      image: 'ghcr.io/kyverno/test-verify-image:unsigned'
+      imagePullPolicy: Always
