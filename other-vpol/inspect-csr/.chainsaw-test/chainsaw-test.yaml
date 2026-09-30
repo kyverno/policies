@@ -41,6 +41,8 @@ spec:
           #### Approve CSR
           kubectl certificate approve $USERNAME
           #### Download certificate
+          #### The signer sets the certificate shortly after the approval, so wait for it
+          for i in $(seq 1 30); do [ -n "$(kubectl get csr $USERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
           kubectl get csr $USERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $USERNAME.crt
           ####
           #### Create the credential object and output the new kubeconfig file
