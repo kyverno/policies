@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: aws-node
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: aws-node
+  template:
+    metadata:
+      labels:
+        app: aws-node
+    spec:
+      serviceAccountName: aws-node
+      containers:
+        - name: c
+          image: registry.k8s.io/pause
