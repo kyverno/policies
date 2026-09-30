@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./check-routes/check-routes.yaml
+  - ./disallow-deprecated-apis/disallow-deprecated-apis.yaml
+  - ./disallow-jenkins-pipeline-strategy/disallow-jenkins-pipeline-strategy.yaml
+  - ./disallow-security-context-constraint-anyuid/disallow-security-context-constraint-anyuid.yaml
+  - ./disallow-self-provisioner-binding/disallow-self-provisioner-binding.yaml
+  - ./enforce-etcd-encryption/enforce-etcd-encryption.yaml
+  - ./inject-infrastructurename/inject-infrastructurename.yaml
+  - ./team-validate-ns-name/team-validate-ns-name.yaml
+  - ./unique-routes/unique-routes.yaml

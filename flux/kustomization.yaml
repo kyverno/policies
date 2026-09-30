@@ -1,0 +1,10 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./generate-flux-multi-tenant-resources/generate-flux-multi-tenant-resources.yaml
+  - ./verify-flux-images/verify-flux-images.yaml
+  - ./verify-flux-sources/verify-flux-sources.yaml
+  - ./verify-git-repositories/verify-git-repositories.yaml
