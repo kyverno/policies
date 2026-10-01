@@ -18,12 +18,37 @@ spec:
             file: ns.yaml
         - apply:
             file: pods.yaml
+        - script:
+            content: kubectl wait -n bkc-podlabel-ns --for=condition=Ready pod/pod01 --timeout=90s
     - name: step-03
       try:
         - script:
-            content: if kubectl cp -n bkc-podlabel-ns pod01:/test1.txt ./test1.txt; then exit 1;else
-              exit 0; fi
-    - name: step-04
+            content: |
+              set -eu
+              copy_dir=$(mktemp -d)
+              trap 'rm -rf "$copy_dir"' EXIT
+              if kubectl cp -n bkc-podlabel-ns pod01:/test1.txt "$copy_dir/test1.txt" >"$copy_dir/output" 2>&1; then
+                cat "$copy_dir/output"
+                exit 1
+              fi
+              cat "$copy_dir/output"
+              grep -F 'block-kubectl-cp' "$copy_dir/output"
+              grep -F 'Cannot use `kubectl cp` on pods' "$copy_dir/output"
+    - name: allow-one-word-command
       try:
-        - script:
-            content: rm -rf ./test1.txt
+        - continueOnError: true
+          script:
+            content: kubectl exec -n bkc-podlabel-ns pod01 -- true
+    - name: allow-tar-with-other-argument
+      try:
+        - continueOnError: true
+          script:
+            content: kubectl exec -n bkc-podlabel-ns pod01 -- tar --help
+    - name: allow-non-tar-with-cf-argument
+      try:
+        - continueOnError: true
+          script:
+            content: |
+              set -eu
+              output=$(kubectl exec -n bkc-podlabel-ns pod01 -- echo cf)
+              test "$output" = cf
