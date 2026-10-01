@@ -21,3 +21,10 @@ results:
   - skipjob02
   result: skip
   isMutatingPolicy: true
+- kind: Job
+  patchedResources: patched02.yaml
+  policy: add-ttl-jobs
+  resources:
+  - addjob02
+  result: pass
+  isMutatingPolicy: true
