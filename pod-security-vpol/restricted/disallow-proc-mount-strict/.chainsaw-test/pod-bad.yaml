@@ -1,0 +1,87 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  - name: initcontainer02
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+---
+# Only hostUsers: false lets procMount: Unmasked pass API validation, so this case tests Kyverno.
+# Before 1.33, UserNamespacesSupport is off by default, so the API drops hostUsers and rejects it.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  hostUsers: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      procMount: Unmasked
+---

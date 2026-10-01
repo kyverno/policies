@@ -16,6 +16,8 @@ results:
   - badcronjob03
   - badcronjob04
   - badcronjob05
+  - badcronjob06
+  - badcronjob07
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
@@ -26,6 +28,8 @@ results:
   - baddeployment03
   - baddeployment04
   - baddeployment05
+  - baddeployment06
+  - baddeployment07
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -36,6 +40,9 @@ results:
   - badpod03
   - badpod04
   - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
@@ -47,6 +54,7 @@ results:
   - goodcronjob04
   - goodcronjob05
   - goodcronjob06
+  - goodcronjob07
   result: pass
 - isValidatingPolicy: true
   kind: Deployment
@@ -58,6 +66,7 @@ results:
   - gooddeployment04
   - gooddeployment05
   - gooddeployment06
+  - gooddeployment07
   result: pass
 - isValidatingPolicy: true
   kind: Pod
@@ -69,4 +78,6 @@ results:
   - goodpod04
   - goodpod05
   - goodpod06
+  - goodpod07
+  - goodpod08
   result: pass

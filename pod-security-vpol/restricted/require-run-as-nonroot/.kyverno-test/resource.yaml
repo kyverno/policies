@@ -1470,3 +1470,271 @@ spec:
             image: dummyimagename
             securityContext:
               runAsNonRoot: true
+###### User namespace (spec.hostUsers) cases
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod17
+spec:
+  hostUsers: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: true
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob16
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: true
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod18
+spec:
+  hostUsers: true
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment17
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: true
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          runAsNonRoot: false
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob17
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: true
+          securityContext:
+            runAsNonRoot: true
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              runAsNonRoot: false
+---
+# hostUsers true does not relax runAsNonRoot
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod19
+spec:
+  hostUsers: true
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  hostUsers: false
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: false
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: false
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod12
+spec:
+  hostUsers: false
+  securityContext:
+    runAsNonRoot: false
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment12
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: false
+      securityContext:
+        runAsNonRoot: false
+      initContainers:
+      - name: initcontainer01
+        image: dummyimagename
+        securityContext:
+          runAsNonRoot: false
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          runAsNonRoot: false
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob12
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: false
+          securityContext:
+            runAsNonRoot: false
+          initContainers:
+          - name: initcontainer01
+            image: dummyimagename
+            securityContext:
+              runAsNonRoot: false
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              runAsNonRoot: false
+---
+# hostUsers false relaxes runAsNonRoot (PSS v1.35+)
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod13
+spec:
+  hostUsers: false
+  securityContext:
+    runAsNonRoot: true
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: false
