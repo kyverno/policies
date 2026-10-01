@@ -53,3 +53,26 @@ spec:
       image: myknownimage
     - name: pod-02
       image: docker.io/busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-digest
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+  - image: ghcr.io/example/notallowed@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-init-digest
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  initContainers:
+  - image: ghcr.io/example/notallowed@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra
