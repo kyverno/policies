@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: limit-only-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: limit-only
+  template:
+    metadata:
+      labels:
+        app: limit-only
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        resources:
+          limits:
+            memory: 128Mi
