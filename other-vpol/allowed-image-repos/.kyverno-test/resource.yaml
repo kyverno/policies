@@ -261,3 +261,132 @@ spec:
           - name: bb-02
             image: kyverno
           restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-untagged
+spec:
+  containers:
+  - image: kyverno
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-tagged
+spec:
+  containers:
+  - image: kyverno:latest
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-digest
+spec:
+  containers:
+  - image: kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-tag-digest
+spec:
+  containers:
+  - image: kyverno:latest@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-registry-tagged
+spec:
+  containers:
+  - image: ghcr.io/kyverno/kyverno:latest
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-registry-digest
+spec:
+  containers:
+  - image: ghcr.io/kyverno/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-port-digest
+spec:
+  containers:
+  - image: registry.example.com:5000/team/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-myknownimage-digest
+spec:
+  containers:
+  - image: ghcr.io/images/myknownimage@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-digest
+spec:
+  containers:
+  - image: ghcr.io/example/notallowed@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-init-digest
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  initContainers:
+  - image: ghcr.io/example/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-init-digest
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  initContainers:
+  - image: ghcr.io/example/notallowed@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-ephemeral-digest
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  ephemeralContainers:
+  - image: ghcr.io/example/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-ephemeral-digest
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  ephemeralContainers:
+  - image: ghcr.io/example/notallowed@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra

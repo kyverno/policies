@@ -36,3 +36,36 @@ spec:
       image: myknownimage:1.14
     - name: pod-02
       image: kyverno
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-registry-digest
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+  - image: ghcr.io/kyverno/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-myknownimage-digest
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+  - image: ghcr.io/images/myknownimage@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-init-digest
+  namespace: allowed-image-repos-ns
+spec:
+  containers:
+  - image: kyverno
+    name: app
+  initContainers:
+  - image: ghcr.io/example/kyverno@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    name: extra
