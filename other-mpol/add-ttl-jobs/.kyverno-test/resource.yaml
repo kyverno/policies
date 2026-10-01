@@ -62,3 +62,18 @@ spec:
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: addjob02
+  ownerReferences: []
+spec:
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        command: ["sleep", "3600"]
+      restartPolicy: Never
+  backoffLimit: 4
