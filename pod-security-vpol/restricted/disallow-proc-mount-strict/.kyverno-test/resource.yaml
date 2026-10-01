@@ -618,7 +618,7 @@ spec:
               procMount: Default
 ###### User namespace (spec.hostUsers) cases
 ---
-# hostUsers true does not relax procMount
+# hostUsers true keeps procMount strict
 apiVersion: v1
 kind: Pod
 metadata:
@@ -631,7 +631,7 @@ spec:
     securityContext:
       procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers true keeps procMount strict
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -653,7 +653,7 @@ spec:
         securityContext:
           procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers true keeps procMount strict
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -672,23 +672,20 @@ spec:
             securityContext:
               procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod07
 spec:
-  hostUsers: true
-  initContainers:
-  - name: initcontainer01
-    image: dummyimagename
-    securityContext:
-      procMount: Unmasked
+  hostUsers: false
   containers:
   - name: container01
     image: dummyimagename
+    securityContext:
+      procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -703,17 +700,14 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: true
-      initContainers:
-      - name: initcontainer01
-        image: dummyimagename
-        securityContext:
-          procMount: Unmasked
+      hostUsers: false
       containers:
       - name: container01
         image: dummyimagename
+        securityContext:
+          procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -725,37 +719,18 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          hostUsers: true
-          initContainers:
-          - name: initcontainer01
-            image: dummyimagename
-            securityContext:
-              procMount: Unmasked
+          hostUsers: false
           containers:
           - name: container01
             image: dummyimagename
+            securityContext:
+              procMount: Unmasked
 ---
-# hostUsers true does not relax procMount
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: v1
 kind: Pod
 metadata:
   name: badpod08
-spec:
-  hostUsers: true
-  containers:
-  - name: container01
-    image: dummyimagename
-  ephemeralContainers:
-  - name: ephcontainer01
-    image: dummyimagename
-    securityContext:
-      procMount: Unmasked
----
-# hostUsers false relaxes procMount (PSS v1.35+)
-apiVersion: v1
-kind: Pod
-metadata:
-  name: goodpod07
 spec:
   hostUsers: false
   initContainers:
@@ -766,14 +741,12 @@ spec:
   containers:
   - name: container01
     image: dummyimagename
-    securityContext:
-      procMount: Unmasked
 ---
-# hostUsers false relaxes procMount (PSS v1.35+)
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gooddeployment07
+  name: baddeployment08
 spec:
   replicas: 1
   selector:
@@ -793,14 +766,12 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
-        securityContext:
-          procMount: Unmasked
 ---
-# hostUsers false relaxes procMount (PSS v1.35+)
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: goodcronjob07
+  name: badcronjob08
 spec:
   schedule: "*/1 * * * *"
   jobTemplate:
@@ -817,14 +788,12 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
-            securityContext:
-              procMount: Unmasked
 ---
-# hostUsers false relaxes procMount (PSS v1.35+)
+# hostUsers false keeps procMount strict under Restricted
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod08
+  name: badpod09
 spec:
   hostUsers: false
   containers:
@@ -835,3 +804,105 @@ spec:
     image: dummyimagename
     securityContext:
       procMount: Unmasked
+---
+# hostUsers false with the default procMount
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod07
+spec:
+  hostUsers: false
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      procMount: Default
+---
+# hostUsers false with the default procMount
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment07
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: false
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          procMount: Default
+---
+# hostUsers false with the default procMount
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob07
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: false
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              procMount: Default
+---
+# hostUsers true with no procMount
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  hostUsers: true
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+# hostUsers true with no procMount
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostUsers: true
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+# hostUsers true with no procMount
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostUsers: true
+          containers:
+          - name: container01
+            image: dummyimagename
