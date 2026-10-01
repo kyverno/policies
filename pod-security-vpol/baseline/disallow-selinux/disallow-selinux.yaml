@@ -32,7 +32,7 @@ spec:
       object.spec.?initContainers.orValue([]) + 
       object.spec.?ephemeralContainers.orValue([])
   - name: seLinuxTypes
-    expression: "['container_t', 'container_init_t', 'container_kvm_t']"
+    expression: "['container_t', 'container_init_t', 'container_kvm_t', 'container_engine_t']"
   - name: hasValidSELinuxType
     expression: >-
       object.spec.?securityContext.?seLinuxOptions.?type.orValue('') == '' || 
@@ -48,12 +48,13 @@ spec:
         container.?securityContext.?seLinuxOptions.?type.orValue('') == '' || 
         variables.seLinuxTypes.exists(type, type == container.securityContext.seLinuxOptions.type))
     message: >-
-      Setting the SELinux type is restricted. The field securityContext.seLinuxOptions.type 
-      must either be unset or set to one of the allowed values (container_t, container_init_t, or container_kvm_t).
+      Setting the SELinux type is restricted. The field securityContext.seLinuxOptions.type
+      must be unset, empty, or set to one of the allowed values (container_t, container_init_t,
+      container_kvm_t, or container_engine_t).
   - expression: >-
       variables.hasValidSELinuxUserRole &&
       variables.allContainerTypes.all(container,
         container.?securityContext.?seLinuxOptions.?user.orValue('') == '' &&
         container.?securityContext.?seLinuxOptions.?role.orValue('') == '')
     message: >-
-      Setting the SELinux user or role is forbidden. The fields seLinuxOptions.user and seLinuxOptions.role must be unset.
+      Setting the SELinux user or role is forbidden. The fields seLinuxOptions.user and seLinuxOptions.role must be unset or empty.

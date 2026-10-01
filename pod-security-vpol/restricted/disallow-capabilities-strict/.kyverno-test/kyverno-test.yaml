@@ -22,6 +22,7 @@ results:
   - addcap-badcronjob08
   - addcap-badcronjob09
   - addcap-badcronjob10
+  - addcap-badcronjob11
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
@@ -37,6 +38,7 @@ results:
   - addcap-baddeployment08
   - addcap-baddeployment09
   - addcap-baddeployment10
+  - addcap-baddeployment11
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -52,6 +54,7 @@ results:
   - addcap-badpod08
   - addcap-badpod09
   - addcap-badpod10
+  - addcap-badpod11
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
@@ -67,6 +70,9 @@ results:
   - addcap-goodcronjob08
   - addcap-goodcronjob09
   - addcap-goodcronjob10
+  - addcap-goodcronjob11
+  - addcap-goodcronjob12
+  - addcap-goodcronjob13
   result: pass 
 - isValidatingPolicy: true
   kind: Deployment
@@ -82,6 +88,9 @@ results:
   - addcap-gooddeployment08
   - addcap-gooddeployment09
   - addcap-gooddeployment10
+  - addcap-gooddeployment11
+  - addcap-gooddeployment12
+  - addcap-gooddeployment13
   result: pass 
 - isValidatingPolicy: true
   kind: Pod
@@ -97,6 +106,9 @@ results:
   - addcap-goodpod08
   - addcap-goodpod09
   - addcap-goodpod10
+  - addcap-goodpod11
+  - addcap-goodpod12
+  - addcap-goodpod13
   result: pass 
 - isValidatingPolicy: true
   kind: CronJob
@@ -112,6 +124,7 @@ results:
   - badcronjob08
   - badcronjob09
   - badcronjob10
+  - badcronjob11
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
@@ -127,6 +140,7 @@ results:
   - baddeployment08
   - baddeployment09
   - baddeployment10
+  - baddeployment11
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -142,6 +156,7 @@ results:
   - badpod08
   - badpod09
   - badpod10
+  - badpod11
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
@@ -153,6 +168,8 @@ results:
   - goodcronjob04
   - goodcronjob05
   - goodcronjob06
+  - goodcronjob07
+  - goodcronjob08
   result: pass
 - isValidatingPolicy: true
   kind: Deployment
@@ -164,6 +181,8 @@ results:
   - gooddeployment04
   - gooddeployment05
   - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
   result: pass
 - isValidatingPolicy: true
   kind: Pod
@@ -175,5 +194,49 @@ results:
   - goodpod04
   - goodpod05
   - goodpod06
+  - goodpod07
+  - goodpod08
+  result: pass
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-badcronjob11
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-baddeployment11
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-badpod11
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-goodcronjob11
+  - addcap-goodcronjob12
+  - addcap-goodcronjob13
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-gooddeployment11
+  - addcap-gooddeployment12
+  - addcap-gooddeployment13
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-capabilities-strict
+  resources:
+  - addcap-goodpod11
+  - addcap-goodpod12
+  - addcap-goodpod13
   result: pass
 

@@ -257,6 +257,26 @@ spec:
             drop:
             - ALL
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: linux
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -485,6 +505,23 @@ spec:
               capabilities:
                 drop:
                 - ALL
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: linux
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -39,6 +39,7 @@ results:
   - goodcronjob05
   - goodcronjob06
   - goodcronjob07
+  - goodcronjob08
   result: pass
 - isValidatingPolicy: true
   kind: Deployment
@@ -51,6 +52,7 @@ results:
   - gooddeployment05
   - gooddeployment06
   - gooddeployment07
+  - gooddeployment08
   result: pass
 - isValidatingPolicy: true
   kind: Pod
@@ -63,4 +65,5 @@ results:
   - goodpod05
   - goodpod06
   - goodpod07
+  - goodpod08
   result: pass
