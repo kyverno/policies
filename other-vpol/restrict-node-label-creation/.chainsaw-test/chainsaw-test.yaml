@@ -6,32 +6,52 @@ metadata:
   name: restrict-node-label-creation
 spec:
   steps:
-  - name: step-01
+  - name: node-label-transitions
     try:
     - script:
         content: |
           kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' - | sed 's/\[Node,\*,\*\]//g' - | kubectl apply -f -
     - sleep:
         duration: 5s
-  - name: step-02
-    try:
     - apply:
         file: ../restrict-node-label-creation.yaml
     - assert:
         file: policy-ready.yaml
     - sleep:
-       duration: 10s
-  - name: step-03
-    try:
+        duration: 10s
     - script:
         content: |
+          set -eu
           node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
-          if kubectl label --overwrite nodes $node foo=shouldfail; then echo "Failure: successfully set label foo"; exit 1; else echo "Success: failed to set label foo"; fi
-          if kubectl label --overwrite nodes $node bar=bar; then echo "Success: set label bar"; else echo "Failed to set label bar"; exit 1; fi
-          if kubectl label --overwrite nodes $node bar=foo; then echo "Success: modified label bar"; else echo "Failed to modify label bar"; exit 1; fi
-          if kubectl label nodes $node bar-; then echo "Success: removed label bar"; else echo "Failed to remove label bar"; exit 1; fi
-  - name: step-04
-    try:
+          output_dir=$(mktemp -d)
+          trap 'rm -rf "$output_dir"' EXIT
+          foo_state() {
+            kubectl get nodes "$node" -o go-template='{{range $key, $value := .metadata.labels}}{{if eq $key "foo"}}present:{{$value}}{{end}}{{end}}'
+          }
+          test -z "$(foo_state)"
+          if ! kubectl label --overwrite nodes "$node" foo= > "$output_dir/empty" 2>&1; then
+            cat "$output_dir/empty"
+            exit 1
+          fi
+          test "$(foo_state)" = 'present:'
+          if ! kubectl label nodes "$node" foo- > "$output_dir/remove" 2>&1; then
+            cat "$output_dir/remove"
+            exit 1
+          fi
+          test -z "$(foo_state)"
+          if kubectl label --overwrite nodes "$node" foo=shouldfail > "$output_dir/deny" 2>&1; then
+            cat "$output_dir/deny"
+            echo "Failure: successfully set label foo"
+            exit 1
+          fi
+          cat "$output_dir/deny"
+          grep -F 'restrict-node-label-creation' "$output_dir/deny"
+          grep -F 'Setting the `foo` label on a Node is not allowed.' "$output_dir/deny"
+          test -z "$(foo_state)"
+          kubectl label --overwrite nodes "$node" bar=bar
+          kubectl label --overwrite nodes "$node" bar=foo
+          kubectl label nodes "$node" bar-
+    finally:
     - script:
         content: |
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' - | kubectl apply -f -
