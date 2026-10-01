@@ -13,6 +13,7 @@ results:
   resources:
   - default/badpod01
   - default/badpod02
+  - default/badpod-keyless
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -20,5 +21,7 @@ results:
   resources:
   - default/goodpod01
   - default/goodpod02
+  - default/goodpod-no-tolerations
+  - default/goodpod-empty-key
   result: pass
 
