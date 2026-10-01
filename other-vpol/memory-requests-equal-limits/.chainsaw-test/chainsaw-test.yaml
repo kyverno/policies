@@ -29,6 +29,21 @@ spec:
     try:
     - apply:
         file: pod-good.yaml
+    # Kubernetes defaults a Pod's missing request to its limit before validation.
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: goodpod03
+          spec:
+            containers:
+            - name: busybox
+              resources:
+                requests:
+                  memory: 128Mi
+                limits:
+                  memory: 128Mi
     - apply:
         expect:
         - check:
@@ -42,3 +57,11 @@ spec:
             ($error != null): true
         file: podcontroller-bad.yaml
 
+  - name: limit-only-controller
+    try:
+    - apply:
+        file: limit-only-deployment.yaml
+        expect:
+        - check:
+            ($error != null): true
+            (contains($error || '', 'memory-requests-equal-limits')): true

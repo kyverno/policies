@@ -71,3 +71,54 @@ spec:
                 memory: "1000m"
           restartPolicy: OnFailure
   
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: equal-memory
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests:
+        memory: 128Mi
+      limits:
+        memory: 128Mi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: limit-only
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      limits:
+        memory: 128Mi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: request-only
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests:
+        memory: 128Mi
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-memory
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
