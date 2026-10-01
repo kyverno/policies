@@ -1,0 +1,189 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+        lifecycle:
+          postStart:
+            httpGet:
+              path: /healthz
+              port: 8080
+          preStop:
+            httpGet:
+              path: /healthz
+              port: 8080
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            host: ""
+        readinessProbe:
+          tcpSocket:
+            port: 8080
+            host: ""
+        startupProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+            host: ""
+        lifecycle:
+          postStart:
+            tcpSocket:
+              port: 8080
+              host: ""
+          preStop:
+            httpGet:
+              path: /healthz
+              port: 8080
+              host: ""
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            readinessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            startupProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+            lifecycle:
+              postStart:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+              preStop:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob03
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            livenessProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+                host: ""
+            readinessProbe:
+              tcpSocket:
+                port: 8080
+                host: ""
+            startupProbe:
+              httpGet:
+                path: /healthz
+                port: 8080
+                host: ""
+            lifecycle:
+              postStart:
+                tcpSocket:
+                  port: 8080
+                  host: ""
+              preStop:
+                httpGet:
+                  path: /healthz
+                  port: 8080
+                  host: ""
