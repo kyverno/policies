@@ -222,3 +222,16 @@ spec:
   securityContext:
     allowPrivilegeEscalation: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod17
+spec:
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: false
+---

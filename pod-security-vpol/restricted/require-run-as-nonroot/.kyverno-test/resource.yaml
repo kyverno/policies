@@ -224,6 +224,19 @@ spec:
   securityContext:
     allowPrivilegeEscalation: false
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod17
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      runAsNonRoot: true
+  securityContext:
+    runAsNonRoot: false
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -718,6 +731,28 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+      securityContext:
+        runAsNonRoot: false
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          runAsNonRoot: true
       securityContext:
         runAsNonRoot: false
 ---
@@ -1260,6 +1295,25 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+          securityContext:
+            runAsNonRoot: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob16
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              runAsNonRoot: true
           securityContext:
             runAsNonRoot: false
 ---

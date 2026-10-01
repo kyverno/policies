@@ -98,6 +98,19 @@ spec:
       windowsOptions:
         hostProcess: true
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  hostNetwork: true
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    windowsOptions:
+      hostProcess: true
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -330,6 +343,28 @@ spec:
         securityContext:
           windowsOptions:
             hostProcess: true
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostNetwork: true
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        windowsOptions:
+          hostProcess: true
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -602,6 +637,25 @@ spec:
             securityContext:
               windowsOptions:
                 hostProcess: true
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          hostNetwork: true
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            windowsOptions:
+              hostProcess: true
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
