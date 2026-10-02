@@ -1,0 +1,75 @@
+apiVersion : kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: mount-volumes-for-ephemeral-containers
+spec:
+  background: false
+  rules:
+    - name: add-volume-to-debug-pod
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - default
+              selector:
+                matchLabels:
+                  ephemeral-debug: "true"
+              operations:
+                - CREATE
+      mutate:
+        patchStrategicMerge:
+          spec:
+            volumes:
+              - name: ephemeralcontainer-tmp-tcpdump-volume
+                emptyDir:
+                  sizeLimit: 1G
+    - name: mutate-ephemeralcontainers-readonlyrootfilesystem
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - default
+      preconditions:
+        all:
+          - key: "{{ request.object.spec.ephemeralContainers[] || `[]` | length(@) }}"
+            operator: GreaterThanOrEquals
+            value: 1
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers[]"
+            patchStrategicMerge:
+              spec:
+                ephemeralContainers:
+                  - name: "{{ element.name }}"
+                    +(securityContext):
+                      +(readOnlyRootFilesystem): true
+    - name: add-volumemount
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              namespaces:
+                - default
+      preconditions:
+        all:
+          - key: "{{ request.object.spec.ephemeralContainers[] || `[]` | length(@) }}"
+            operator: GreaterThanOrEquals
+            value: 1
+          - key: "{{ request.object.spec.ephemeralContainers[].volumeMounts[?name=='ephemeralcontainer-tmp-tcpdump-volume'] | `[]` | length(@) }}"
+            operator: LessThan
+            value: "{{ request.object.spec.ephemeralContainers[] || `[]` | length(@) }}"
+      mutate:
+        foreach:
+          - list: "request.object.spec.ephemeralContainers"
+            patchStrategicMerge:
+              spec:
+                ephemeralContainers:
+                  - name: "{{ element.name }}"
+                    volumeMounts:
+                      - mountPath: /tmp
+                        name: ephemeralcontainer-tmp-tcpdump-volume
