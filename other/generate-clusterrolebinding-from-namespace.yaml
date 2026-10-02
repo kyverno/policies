@@ -1,0 +1,32 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: generate-clusterrolebinding-from-namespace
+  annotations:
+    policies.kyverno.io/title: Generate ClusterRoleBinding from Namespace
+    policies.kyverno.io/category: RBAC
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      Demonstrates a supported pattern for generating a cluster-scoped
+      ClusterRoleBinding resource triggered by Namespace creation.
+spec:
+  rules:
+    - name: generate-viewer-crb
+      match:
+        resources:
+          kinds:
+            - Namespace
+      generate:
+        apiVersion: rbac.authorization.k8s.io/v1
+        kind: ClusterRoleBinding
+        name: "{{request.object.metadata.name}}-viewer"
+        data:
+          subjects:
+            - kind: ServiceAccount
+              name: default
+              namespace: "{{request.object.metadata.name}}"
+          roleRef:
+            kind: ClusterRole
+            name: view
+            apiGroup: rbac.authorization.k8s.io
+
