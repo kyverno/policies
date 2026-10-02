@@ -1,0 +1,24 @@
+name: require-workload-serviceaccount-irsa
+policies:
+  - require-workload-serviceaccount-irsa.yaml
+resources:
+  - resources.yaml
+results:
+  - policy: require-workload-serviceaccount-irsa
+    rule: require-irsa-annotation
+    resource: app-with-irsa
+    namespace: default
+    kind: ServiceAccount
+    result: pass
+  - policy: require-workload-serviceaccount-irsa
+    rule: require-irsa-annotation
+    resource: app-without-irsa
+    namespace: default
+    kind: ServiceAccount
+    result: fail
+  - policy: require-workload-serviceaccount-irsa
+    rule: require-irsa-annotation
+    resource: app-no-aws
+    namespace: default
+    kind: ServiceAccount
+    result: skip
