@@ -1,0 +1,45 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: replace-configmap-region-string
+  annotations:
+    policies.kyverno.io/title: Replace ConfigMap Region String
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ConfigMap
+    policies.kyverno.io/minversion: 1.9.0
+    kyverno.io/kyverno-version: 1.9.0
+    kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/description: >-
+      ConfigMap values sometimes embed cloud region identifiers that need to be
+      rewritten during a migration, for example from `ap-south-1` to `ap-south-2`.
+      This sample policy mutates every data entry in a ConfigMap and replaces the
+      old region substring with the new one using `replace_all`. Customize the
+      from/to strings to match your migration.
+spec:
+  background: false
+  rules:
+  - name: replace-region-in-configmap-data
+    match:
+      any:
+      - resources:
+          kinds:
+          - ConfigMap
+    preconditions:
+      all:
+      - key: "{{ request.operation || 'BACKGROUND' }}"
+        operator: AnyIn
+        value:
+        - CREATE
+        - UPDATE
+    mutate:
+      foreach:
+      - list: request.object.data | keys(@)
+        context:
+        - name: oldvalue
+          variable:
+            jmesPath: "request.object.data.\"{{element}}\""
+        patchesJson6902: |-
+          - path: /data/{{element}}
+            op: replace
+            value: "{{ replace_all('{{oldvalue}}', 'ap-south-1', 'ap-south-2') }}"
