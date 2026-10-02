@@ -1,0 +1,40 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: label-node-selector
+  annotations:
+    policies.kyverno.io/title: Label Nodes with Node Selector
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Node, Label
+    kyverno.io/kyverno-version: 1.7.2
+    policies.kyverno.io/minversion: 1.7.0
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/description: >-
+      Label Nodes with Node Selector so only well-known labels can be applied during node bootstrapping.
+      This policy reads the `NodeType` label on a Node and writes a corresponding
+      `node-role.kubernetes.io/<NodeType>` label to that Node. The Node resource filter should
+      be removed and users may need to grant the Kyverno ServiceAccount permission to update Nodes.
+spec:
+  mutateExistingOnPolicyUpdate: true
+  rules:
+    - name: label-node-selector
+      match:
+        any:
+          - resources:
+              kinds:
+                - Node
+      preconditions:
+        all:
+          - key: "{{ request.object.metadata.labels.NodeType || '' }}"
+            operator: NotEquals
+            value: ""
+      mutate:
+        targets:
+          - apiVersion: v1
+            kind: Node
+            name: "{{ request.object.metadata.name }}"
+        patchesJson6902: |-
+          - op: add
+            path: /metadata/labels/node-role.kubernetes.io~1{{ request.object.metadata.labels.NodeType }}
+            value: ""
