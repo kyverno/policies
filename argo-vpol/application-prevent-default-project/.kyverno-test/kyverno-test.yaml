@@ -7,12 +7,14 @@ policies:
 resources:
   - ../.chainsaw-test/bad-application.yaml
   - ../.chainsaw-test/good-application.yaml
+  - no-project-application.yaml
 results:
   - policy: application-prevent-default-project
     rule: default-project
     kind: Application
     resources:
       - badapp
+      - noprojectapp
     result: fail
   - policy: application-prevent-default-project
     rule: default-project
