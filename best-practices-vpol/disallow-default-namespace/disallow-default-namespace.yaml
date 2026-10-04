@@ -14,21 +14,31 @@ metadata:
       isolate cluster resources across multiple applications and users. As a best
       practice, workloads should be isolated with Namespaces. Namespaces should be required
       and the default (empty) Namespace should not be used. This policy validates that Pods
-      specify a Namespace name other than `default`. Rule auto-generation is disabled here
-      due to Pod controllers need to specify the `namespace` field under the top-level `metadata`
-      object and not at the Pod template level.
+      and Pod controllers specify a Namespace name other than `default`. Rule auto-generation
+      is disabled here due to Pod controllers need to specify the `namespace` field under the
+      top-level `metadata` object and not at the Pod template level.
 spec:
   validationActions: [Audit]
   evaluation:
-    background: 
-           enabled: true
+    background:
+      enabled: true
+  autogen:
+    podControllers:
+      controllers: []
   matchConstraints:
-        resourceRules:
-          - apiGroups: ['']
-            apiVersions: [v1]
-            operations: [CREATE, UPDATE]
-            resources: [pods]
+    resourceRules:
+      - apiGroups: ['']
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+      - apiGroups: [apps]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [daemonsets, deployments, statefulsets]
+      - apiGroups: [batch]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [jobs]
   validations:
-          - expression: "namespaceObject.metadata.name != 'default'"
-            message: "Using 'default' namespace is not allowed."
-       
+    - expression: "object.metadata.?namespace.orValue('default') != 'default'"
+      message: "Using 'default' namespace is not allowed."
