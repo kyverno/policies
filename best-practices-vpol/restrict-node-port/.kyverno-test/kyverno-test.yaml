@@ -18,5 +18,6 @@ results:
   resources:
   - goodservice01
   - goodservice02
+  - goodservice03
   result: pass
   isValidatingPolicy: true
