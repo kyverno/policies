@@ -36,3 +36,15 @@ spec:
       port: 80
       targetPort: 9376
   type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodservice03
+spec:
+  selector:
+    app: MyApp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 9376

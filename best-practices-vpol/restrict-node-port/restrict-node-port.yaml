@@ -29,5 +29,5 @@ spec:
   validationActions:
     - Audit
   validations:
-    - expression: object.spec.type != 'NodePort'
+    - expression: object.spec.?type.orValue('ClusterIP') != 'NodePort'
       message: Services of type NodePort are not allowed.
