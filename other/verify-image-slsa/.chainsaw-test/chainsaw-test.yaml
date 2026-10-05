@@ -1,0 +1,38 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: verify-image-slsa
+spec:
+  # disable templating because it can cause issues with the JMESPath expressions
+  template: false
+
+  steps:
+    - name: step-01
+      try:
+        - apply:
+            file: ../verify-image-slsa.yaml
+        # the published policy audits so it is safe to install; switch it to
+        # Enforce here so image verification failures are observable
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: verify-slsa-provenance-keyless
+              spec:
+                validationFailureAction: Enforce
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - create:
+            file: good.yaml
+            timeout: 60s
+        - create:
+            timeout: 60s
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad.yaml
