@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-liveness-timeout
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+      timeoutSeconds: 15
+      periodSeconds: 10
