@@ -3,7 +3,7 @@ version: 1.0.0
 displayName: Restart Deployment On Secret Change
 createdAt: "2023-04-10T20:30:06.000Z"
 description: >-
-  If Secrets are mounted in ways which do not naturally allow updates to be live refreshed it may be necessary to modify a Deployment. This policy watches a Secret and if it changes will write an annotation to one or more target Deployments thus triggering a new rollout and thereby refreshing the referred Secret. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
+  If Secrets are mounted in ways which do not naturally allow updates to be live refreshed it may be necessary to modify a Deployment. This policy watches a Secret and if it changes will write an annotation to one or more target Deployments thus triggering a new rollout and thereby refreshing the referred Secret. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments. Only one resource may be defined per rule. If multiple resources are listed in a single rule, the resourceVersion will continuously oscillate between them, causing unnecessary and repeated rollouts. If multiple resources must be watched, create a separate rule (with a unique annotation key) for each resource.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restart-deployment-on-secret-change/restart-deployment-on-secret-change.yaml
@@ -12,11 +12,11 @@ keywords:
   - kyverno
   - other
 readme: |
-  If Secrets are mounted in ways which do not naturally allow updates to be live refreshed it may be necessary to modify a Deployment. This policy watches a Secret and if it changes will write an annotation to one or more target Deployments thus triggering a new rollout and thereby refreshing the referred Secret. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
+  If Secrets are mounted in ways which do not naturally allow updates to be live refreshed it may be necessary to modify a Deployment. This policy watches a Secret and if it changes will write an annotation to one or more target Deployments thus triggering a new rollout and thereby refreshing the referred Secret. It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments. Only one resource may be defined per rule. If multiple resources are listed in a single rule, the resourceVersion will continuously oscillate between them, causing unnecessary and repeated rollouts. If multiple resources must be watched, create a separate rule (with a unique annotation key) for each resource.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Deployment"
-digest: cb76eafdec2267ad4e19ec2ffb9508abecfb9a99eeb1a588432fc94d64537940
+digest: f42ab3b22146831985f5236c64906399a3546a650556c72c2bec81ef28de45a9
