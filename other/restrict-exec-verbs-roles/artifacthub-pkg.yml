@@ -1,0 +1,22 @@
+name: restrict-exec-verbs-roles
+version: 1.0.0
+displayName: Restrict Exec Verbs in Roles
+createdAt: "2026-07-07T00:00:00.000Z"
+description: >-
+  A Role or ClusterRole granting create or get on pods/exec, pods/attach, or pods/portforward hands out standing interactive access to workloads, equivalent to code execution inside every reachable container. Existing policies block exec requests at admission time (PodExecOptions); this policy prevents the RBAC grant itself from being created, which is the durable control. This policy blocks any Role or ClusterRole that grants these verbs on those subresources.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-exec-verbs-roles/restrict-exec-verbs-roles.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+readme: |
+  A Role or ClusterRole granting create or get on pods/exec, pods/attach, or pods/portforward hands out standing interactive access to workloads, equivalent to code execution inside every reachable container. Existing policies block exec requests at admission time (PodExecOptions); this policy prevents the RBAC grant itself from being created, which is the durable control. This policy blocks any Role or ClusterRole that grants these verbs on those subresources.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Role, ClusterRole, RBAC"
+digest: a2e060fe376b5013b641d8ba3e9881fc937b2e6a4935c0e9a7952401e1d7b2f2
