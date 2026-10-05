@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./add-ambient-mode-namespace/add-ambient-mode-namespace.yaml
+  - ./add-sidecar-injection-namespace/add-sidecar-injection-namespace.yaml
+  - ./create-authorizationpolicy/create-authorizationpolicy.yaml
+  - ./enforce-ambient-mode-namespace/enforce-ambient-mode-namespace.yaml
+  - ./enforce-sidecar-injection-namespace/enforce-sidecar-injection-namespace.yaml
+  - ./enforce-strict-mtls/enforce-strict-mtls.yaml
+  - ./enforce-tls-hosts-host-subnets/enforce-tls-hosts-host-subnets.yaml
+  - ./prevent-disabling-injection-pods/prevent-disabling-injection-pods.yaml
+  - ./require-authorizationpolicy/require-authorizationpolicy.yaml
+  - ./restrict-virtual-service-wildcard/restrict-virtual-service-wildcard.yaml
+  - ./service-mesh-disallow-capabilities/service-mesh-disallow-capabilities.yaml
+  - ./service-mesh-require-run-as-nonroot/service-mesh-require-run-as-nonroot.yaml

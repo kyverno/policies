@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./block-tekton-task-runs/block-tekton-task-runs.yaml
+  - ./require-tekton-bundle/require-tekton-bundle.yaml
+  - ./require-tekton-namespace-pipelinerun/require-tekton-namespace-pipelinerun.yaml
+  - ./require-tekton-securitycontext/require-tekton-securitycontext.yaml
+  - ./verify-tekton-pipeline-bundle-signatures/verify-tekton-pipeline-bundle-signatures.yaml
+  - ./verify-tekton-taskrun-signatures/verify-tekton-taskrun-signatures.yaml
+  - ./verify-tekton-taskrun-vuln-scan/verify-tekton-taskrun-vuln-scan.yaml
