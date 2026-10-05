@@ -5,7 +5,7 @@ metadata:
 status:
   conditionStatus:
     (conditions[?type == 'RBACPermissionsGranted']):
-    - message: Policy is ready for reporting.
+    - message: Background scanning disabled; reporting permissions not required.
       reason: Succeeded
       status: "True"
     (conditions[?type == 'WebhookConfigured']):

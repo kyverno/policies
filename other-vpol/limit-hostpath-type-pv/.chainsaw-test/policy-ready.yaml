@@ -5,8 +5,9 @@ metadata:
 status:
   conditionStatus:
     (conditions[?type == 'RBACPermissionsGranted']):
-    - reason: Failed
-      status: "False"
+    - message: Background scanning disabled; reporting permissions not required.
+      reason: Succeeded
+      status: "True"
     (conditions[?type == 'WebhookConfigured']):
     - message: Webhook configured.
       reason: Succeeded
