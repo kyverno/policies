@@ -1,0 +1,68 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-ai-workload-controls
+  annotations:
+    policies.kyverno.io/title: Require AI Workload Controls
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kyverno-version: 1.6.0
+    kyverno.io/kubernetes-version: "1.24+"
+    policies.kyverno.io/description: >-
+      Enforces security controls on AI model workload pods identified by the
+      label `ai.workload/type`. Requires an `ai.workload/audit-logging: enabled`
+      annotation to confirm audit logging is configured, and blocks plain-text
+      AI API credentials in environment variables — names matching common AI
+      service credential patterns (e.g. OPENAI_API_KEY, ANTHROPIC_API_KEY,
+      HUGGINGFACE_TOKEN) must be sourced from a Secret via secretKeyRef, not
+      set as plain-text values. These controls reduce the risk of credential
+      exposure in logs and audit trails for AI inference workloads.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: require-audit-logging-annotation
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchExpressions:
+            - key: ai.workload/type
+              operator: Exists
+    validate:
+      message: >-
+        Pods labelled as AI workloads must carry the annotation
+        'ai.workload/audit-logging: enabled' to confirm audit logging
+        is configured for this workload.
+      pattern:
+        metadata:
+          annotations:
+            ai.workload/audit-logging: enabled
+
+  - name: no-plain-text-ai-credentials
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+          selector:
+            matchExpressions:
+            - key: ai.workload/type
+              operator: Exists
+    foreach:
+    - list: "request.object.spec.containers"
+      deny:
+        conditions:
+          any:
+          - key: "{{ element.env[?value != null] | [?regex_match('(OPENAI|ANTHROPIC|HUGGINGFACE|COHERE|REPLICATE|MISTRAL|GEMINI|GROQ|TOGETHER|BEDROCK).*(KEY|TOKEN|SECRET)|.*_(API_KEY|API_TOKEN|MODEL_KEY|MODEL_SECRET)$', name)] | length(@) }}"
+            operator: GreaterThan
+            value: "0"
+    validate:
+      message: >-
+        AI API credentials (API keys, tokens, secrets) must be sourced from
+        a Kubernetes Secret via secretKeyRef — plain-text values in env vars
+        risk credential exposure in pod specs, logs, and audit records.
