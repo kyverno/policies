@@ -120,3 +120,31 @@ spec:
         name: busybox
         command: ["sleep", "9999"]
 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-init-latest
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: init
+    image: busybox:latest
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-ephemeral-latest
+  labels:
+    app: myapp
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+  ephemeralContainers:
+  - name: debugger
+    image: busybox:latest
