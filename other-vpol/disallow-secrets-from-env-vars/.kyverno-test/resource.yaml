@@ -55,3 +55,40 @@ spec:
     secret:
       secretName: mysecret
 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-env-init-pod
+spec:
+  initContainers:
+  - name: init
+    image: registry.k8s.io/busybox
+    command: [ "/bin/sh", "-c", "env" ]
+    env:
+    - name: SECRET_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: password
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+  restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-ref-init-pod
+spec:
+  initContainers:
+  - name: init
+    image: registry.k8s.io/busybox
+    command: [ "/bin/sh", "-c", "env" ]
+    envFrom:
+    - secretRef:
+        name: mysecret
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+  restartPolicy: Never

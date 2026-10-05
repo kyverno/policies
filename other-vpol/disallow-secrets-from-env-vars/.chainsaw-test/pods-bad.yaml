@@ -49,3 +49,18 @@ spec:
             name: foo
             key: pass
 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: init
+      envFrom:
+      - secretRef:
+          name: foo
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox

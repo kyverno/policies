@@ -13,6 +13,8 @@ results:
   resources:
   - default/secret-env-pod
   - default/secret-ref-pod
+  - default/secret-env-init-pod
+  - default/secret-ref-init-pod
   result: fail
 - isValidatingPolicy: true
   kind: Pod
