@@ -1,0 +1,8 @@
+# Real fixture, adapted from the live self-escalation repro behind
+# kubernetes/kubernetes#141293 (C:\YSB\bugs\DRA\2-adminaccess-namespace-label\repro\manifests\1-namespaces.yaml)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dra-self-escalated-ns
+  labels:
+    resource.kubernetes.io/admin-access: "true"

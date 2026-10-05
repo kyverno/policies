@@ -1,0 +1,43 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: report-dra-adminaccess-namespaces
+  annotations:
+    policies.kyverno.io/title: Report Namespaces With DRA AdminAccess Enabled
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.18.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.36"
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      RBAC changes and the resource.kubernetes.io/admin-access namespace label
+      drift independently -- an admin who revokes a user's namespace-edit
+      permission has no built-in signal that the label itself was left behind,
+      still granting every claim-creator in that namespace DRA adminAccess (see
+      kubernetes/kubernetes#141293). This policy runs in background mode and
+      continuously reports every namespace currently carrying the label, so it
+      shows up as a standing entry in routine PolicyReport-based access reviews --
+      the same pattern commonly used to track Pod Security Admission
+      privileged-profile namespaces. It intentionally always reports (never
+      passes) for any matching namespace; the point is visibility, not blocking.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: flag-adminaccess-namespace
+    match:
+      any:
+      - resources:
+          kinds:
+            - Namespace
+          selector:
+            matchLabels:
+              resource.kubernetes.io/admin-access: "true"
+    validate:
+      message: >-
+        This namespace has DRA adminAccess enabled (resource.kubernetes.io/admin-access=true).
+        Every principal authorized to create ResourceClaim/ResourceClaimTemplate objects here
+        can bypass ordinary device access-mode restrictions, cluster-wide in effect. Review
+        periodically as part of routine access reviews -- see kubernetes/kubernetes#141293.
+      deny: {}

@@ -1,0 +1,23 @@
+name: report-dra-adminaccess-namespaces
+version: 1.0.0
+displayName: Report Namespaces With DRA AdminAccess Enabled
+description: >-
+  RBAC changes and the `resource.kubernetes.io/admin-access` namespace label drift independently — an admin who revokes a user's namespace-edit permission has no built-in signal that the label itself was left behind, still granting every claim-creator in that namespace DRA adminAccess. This policy runs in background mode and continuously reports every namespace currently carrying the label, so it shows up as a standing entry in routine PolicyReport-based access reviews.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/report-dra-adminaccess-namespaces/report-dra-adminaccess-namespaces.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Dynamic Resource Allocation
+readme: |
+  RBAC changes and the `resource.kubernetes.io/admin-access` namespace label drift independently — an admin who revokes a user's namespace-edit permission has no built-in signal that the label itself was left behind, still granting every claim-creator in that namespace DRA adminAccess (see [kubernetes/kubernetes#141293](https://github.com/kubernetes/kubernetes/issues/141293)).
+
+  This policy runs in background mode and continuously reports every namespace currently carrying the label, so it shows up as a standing entry in routine PolicyReport-based access reviews — the same pattern commonly used to track Pod Security Admission privileged-profile namespaces. It intentionally always reports (never passes) for any matching namespace; the point is visibility, not blocking.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.36"
+  kyverno/subject: "Namespace"
