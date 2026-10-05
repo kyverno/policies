@@ -1,9 +1,9 @@
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: add-karpenter-donot-evict
+  name: add-karpenter-do-not-disrupt
   annotations:
-    policies.kyverno.io/title: Add Karpenter Do Not Evict
+    policies.kyverno.io/title: Add Karpenter Do Not Disrupt
     policies.kyverno.io/category: Karpenter, EKS Best Practices
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
@@ -11,14 +11,14 @@ metadata:
     policies.kyverno.io/minversion: 1.6.0
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >- 
-      If a Pod exists with the annotation `karpenter.sh/do-not-evict: true` on a Node,
+      If a Pod exists with the annotation `karpenter.sh/do-not-disrupt: true` on a Node,
       and a request is made to delete the Node, Karpenter will not drain any Pods from
       that Node or otherwise try to delete the Node. This is useful for Pods that should
       run uninterrupted to completion. This policy mutates Jobs and CronJobs
-      so that Pods spawned by them will contain the `karpenter.sh/do-not-evict: true` annotation.
+      so that Pods spawned by them will contain the `karpenter.sh/do-not-disrupt: true` annotation.
 spec:
   rules:
-  - name: do-not-evict-jobs
+  - name: do-not-disrupt-jobs
     match:
       any:
       - resources:
@@ -30,8 +30,8 @@ spec:
           template:
             metadata:
               annotations:
-                karpenter.sh/do-not-evict: "true"
-  - name: do-not-evict-cronjobs
+                karpenter.sh/do-not-disrupt: "true"
+  - name: do-not-disrupt-cronjobs
     match:
       any:
       - resources:
@@ -45,4 +45,4 @@ spec:
               template:
                 metadata:
                   annotations:
-                    karpenter.sh/do-not-evict: "true"
+                    karpenter.sh/do-not-disrupt: "true"
