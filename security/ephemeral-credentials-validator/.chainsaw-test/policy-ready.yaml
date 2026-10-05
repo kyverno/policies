@@ -1,0 +1,8 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: simple-ttl-validator
+status:
+  conditions:
+    - type: Ready
+      status: "True" 
