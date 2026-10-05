@@ -1,0 +1,81 @@
+###### Pods - Bad
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: false
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+    - name: container02
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+    - name: container01
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: false
+    - name: container02
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  initContainers:
+    - name: initcontainer01
+      image: dummyimagename
+  containers:
+    - name: container01
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  initContainers:
+    - name: initcontainer01
+      image: dummyimagename
+    - name: initcontainer02
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: false
+  containers:
+    - name: container01
+      image: dummyimagename
+      securityContext:
+        runAsNonRoot: true
