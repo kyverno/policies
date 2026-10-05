@@ -39,3 +39,16 @@ roleRef:
   name: manager
   apiGroup: rbac.authorization.k8s.io
 
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: badcrb04
+subjects:
+- kind: Group
+  name: "system:authenticated"
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: ClusterRole
+  name: manager
+  apiGroup: rbac.authorization.k8s.io
