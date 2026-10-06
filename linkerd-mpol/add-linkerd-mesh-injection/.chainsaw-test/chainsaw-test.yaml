@@ -6,6 +6,11 @@ metadata:
   name: add-linkerd-mesh-injection
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -34,3 +39,15 @@ spec:
         file: chainsaw-step-02-assert-4.yaml
     - assert:
         file: chainsaw-step-02-assert-5.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        file: policy-exception.yaml
+    - apply:
+        file: exception-assert.yaml
+    - apply:
+        file: exception-sibling.yaml
+    - assert:
+        file: exception-expected.yaml
+    - assert:
+        file: exception-sibling-expected.yaml
