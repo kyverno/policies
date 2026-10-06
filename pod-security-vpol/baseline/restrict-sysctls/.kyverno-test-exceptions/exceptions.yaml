@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: partial, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: restrict-sysctls, kind: ValidatingPolicy}]
+  allowedValues: [net.ipv4.foo]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name in ['exception-partial', 'exception-wrong', 'exception-sibling']"}]
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: whole, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: restrict-sysctls, kind: ValidatingPolicy}]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name == 'exception-whole'"}]

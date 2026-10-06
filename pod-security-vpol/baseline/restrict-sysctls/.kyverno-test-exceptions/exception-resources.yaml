@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec: {securityContext: {sysctls: [{name: net.ipv4.foo}]}, containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong, namespace: default}
+spec: {securityContext: {sysctls: [{name: net.ipv4.bar}]}, containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec: {securityContext: {sysctls: [{name: net.ipv4.foo}, {name: net.ipv4.bar}]}, containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec: {securityContext: {sysctls: [{name: net.ipv4.bar}]}, containers: [{name: app, image: nginx:1.27}]}
