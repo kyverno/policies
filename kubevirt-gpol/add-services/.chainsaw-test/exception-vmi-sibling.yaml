@@ -1,0 +1,10 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: exception-vmi-sibling
+  namespace: kubevirt-test-ns
+  labels:
+    kubevirt.io/domain: exception-vmi-sibling
+spec:
+  domain:
+    devices: {}

@@ -14,9 +14,20 @@ keywords:
 readme: |
   Add an SSH Service to every VirtualMachineInstance which is getting created. This Service will use a ClusterIP, thus the admin has to ensure that the IP space is large enough and ClusterIP type can be met.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `GeneratingPolicy` named
+  `k6t-add-services` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/kubevirt-gpol/add-services/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal generation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "KubeVirt"
   kyverno/kubernetesVersion: "1.24-1.25"
   kyverno/subject: "VirtualMachineInstance"
-digest: 79fefc86c3bdcd497988bfa6f0072c3f6b40bbfc33f8b82fade64a297d85288f
+digest: 6c862a7a9851a04056d8e3db016a44a94bfb6c071d0449eb11453355f115f126
