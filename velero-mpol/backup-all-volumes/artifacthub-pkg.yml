@@ -25,9 +25,20 @@ readme: |
   all volumes are listed in the aforementioned annotation if a Namespace with the label
   `velero-backup-pvc=true`.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `backup-all-volumes` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/velero-mpol/backup-all-volumes/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Velero"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod, Annotation"
-digest: 72ebf5e9553ce341a54de68014a72a3d6e5603e9314dcf61c7e80f236f1d7106
+digest: fec1e945b842574446142b507fabe9b46b1c2685165a261b16a32121caf663fc

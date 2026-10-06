@@ -6,6 +6,9 @@ policies:
 - ../backup-all-volumes.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Deployment
   patchedResources: patchedResource-fourth.yaml
@@ -13,6 +16,12 @@ results:
   resources:
   - foo/fourth
   result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: backup-all-volumes
+  resources:
+  - foo/exception-pod
+  result: skip
   isMutatingPolicy: true
 - kind: Pod
   patchedResources: patchedResource-third.yaml
