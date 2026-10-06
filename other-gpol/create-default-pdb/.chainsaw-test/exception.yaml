@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: create-default-pdb-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: create-default-pdb
+    kind: GeneratingPolicy
+  matchConditions:
+  - name: exact-deployment
+    expression: object.metadata.namespace == 'default-pdb-ns' && object.metadata.name == 'exception-deployment'

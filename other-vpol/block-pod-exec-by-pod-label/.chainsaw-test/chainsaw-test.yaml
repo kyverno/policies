@@ -20,8 +20,9 @@ spec:
         file: pods.yaml
   - name: step-03
     try:
-    - sleep:
-        duration: 5s
+    - assert:
+        file: pods-ready.yaml
+        timeout: 2m
   - name: step-04
     try:
     - script:
