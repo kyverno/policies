@@ -16,3 +16,9 @@ spec:
     env:
     - name: K8S_IMAGE
       value: quay.io/nginxsomefoo:1.1.0
+  initContainers:
+  - name: init
+    image: ghcr.io/init:1.0
+    env:
+    - name: K8S_IMAGE
+      value: ghcr.io/init:1.0

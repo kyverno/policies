@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: preserve-log4j-image
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: log4shell-mitigation}]
+  images: [approved.example/keep:1]
+  matchConditions:
+  - name: target
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'partial-exception'

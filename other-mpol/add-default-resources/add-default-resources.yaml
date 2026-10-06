@@ -2,6 +2,8 @@ apiVersion: policies.kyverno.io/v1
 kind: MutatingPolicy
 metadata:
   name: add-default-resources
+  annotations:
+    policies.kyverno.io/minversion: 1.19.1
 spec:
   autogen:
     podControllers:
@@ -29,6 +31,7 @@ spec:
         Object{
           spec: Object.spec{
             containers: object.spec.containers.map(c,
+              exceptions.allowedImages.exists(image, image == c.image) ? c :
               Object.spec.containers{
                 name: c.name,
                 resources: Object.spec.containers.resources{

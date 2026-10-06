@@ -14,9 +14,24 @@ keywords:
 readme: |
   A base image used to construct a container image is not accessible by any Kubernetes component and not a field in a Pod spec as it must be fetched from a registry. Having this information available in the resource referencing the containers helps to provide a clearer understanding of its contents. This policy adds an annotation to a Pod or its controllers with the base image used for each container if present in an OCI annotation.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `annotate-base-images` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  `variables.imageMetadata` stores `{}` instead of fetching registry metadata for
+  an exact exempt image, preserving the original regular-container indices.
+  The annotation mutation skips those indices, leaving their annotations alone;
+  non-exempt images still generate `kyverno.io/baseimages<index>` when metadata
+  provides a base image. The annotations map may still be initialized.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/annotate-base-images/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 04f22eb0a518bdd4368210517d37da827d66e8396ca2e29592e5d3d298975547
+digest: 8686f62ab88c1e1a65874e480d718667909d3872ec7ee231e77d70a7b4a37318

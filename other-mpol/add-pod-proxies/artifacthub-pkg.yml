@@ -14,8 +14,21 @@ keywords:
 readme: |
   In restricted environments, Pods may not be allowed to egress directly to all destinations and some overrides to specific addresses may need to go through a corporate proxy. This policy adds proxy information to Pods in the form of environment variables. It will add the `env` array if not present. If any Pods have any of these env vars, they will be overwritten with the value(s) in this policy.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-pod-proxies` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip proxy environment injection for regular containers
+  in Pods and the explicitly matched controller templates. Other regular
+  containers still receive `HTTP_PROXY`, `HTTPS_PROXY`, and `NO_PROXY`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-pod-proxies/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 4b4b24a8be6c8c3af90cd8c2e8205d56ccc85762980a874aaed7445c1db0253d
+digest: d0a25af8b15ae40f0c7afeeb5b5e3e17e5b0d93f33856d666f8c7c928972d36e

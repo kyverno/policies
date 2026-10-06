@@ -6,6 +6,11 @@ metadata:
   name: prepend-image-registry
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -15,6 +20,24 @@ spec:
   - name: step-02
     try:
     - apply:
+        file: namespace.yaml
+    - apply:
+        file: exception.yaml
+    - script:
+        content: |
+          set -eu
+          probe_dir="$(mktemp -d)"
+          trap 'rm -rf "$probe_dir"' EXIT
+          for attempt in $(seq 1 60); do
+            if kubectl create --dry-run=server -f ../.kyverno-test/resource.yaml -o json > "$probe_dir/result.json" 2> "$probe_dir/error.log" &&
+              jq -e '.spec.initContainers[0].image == "kyverno/kyverno:latest" and .spec.initContainers[1].image == "registry.io/busybox:1.28" and .spec.containers[0].image == "registry.io/kyverno/kyverno:1.2.3" and .spec.containers[1].image == "registry.io/redis:latest"' "$probe_dir/result.json" > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$probe_dir/error.log" >&2
+          exit 1
+    - apply:
         file: ../.kyverno-test/resource.yaml
     - apply:
         file: ../.kyverno-test/withoutinitcontainer.yaml
@@ -23,7 +46,7 @@ spec:
     - apply:
         file: pods.yaml
     - assert:
-        file: ../.kyverno-test/patchedResource.yaml
+        file: exception-patched.yaml
     - assert:
         file: pods-patched.yaml
     - error:

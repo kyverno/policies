@@ -14,9 +14,21 @@ keywords:
 readme: |
   Pulling images from outside registries may be undesirable due to untrustworthiness or simply because the traffic results in an excess of bandwidth usage. Instead of blocking them, they can be mutated to divert to an internal registry which may already contain them or function as a pull-through proxy. This policy prepends all images in both containers and initContainers to come from `registry.io`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `prepend-registry` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact matches against the incoming image preserve the regular or init container.
+  Other images receive the `registry.io/` prefix unless already prefixed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/prepend-image-registry/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.21"
   kyverno/subject: "Pod"
-digest: 0ad92f18a8a08ba054639bd225a8f49a3cf7cb80573abfd54b93559da8e64d04
+digest: e42b5ddaa705878c5661214d465c82399b7cda4e2ae083b12882e3174c319104

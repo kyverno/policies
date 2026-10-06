@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata: {name: registry-context}
+spec:
+  images:
+  - image: registry.example/mutate:1
+    resolvedImage: registry.example/mutate:1@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    manifest:
+      annotations:
+        org.opencontainers.image.base.name: base.example/image:1

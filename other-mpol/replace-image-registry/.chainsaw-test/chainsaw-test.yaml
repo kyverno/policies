@@ -6,6 +6,11 @@ metadata:
   name: replace-image-registry
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -26,5 +31,25 @@ spec:
         file: pod-patched03.yaml
   - name: step-03
     try:
+    - apply:
+        file: partial-exception.yaml
+    - script:
+        content: |
+          set -eu
+          probe_dir="$(mktemp -d)"
+          trap 'rm -rf "$probe_dir"' EXIT
+          for attempt in $(seq 1 60); do
+            if kubectl create --dry-run=server -f partial-exception-pod.yaml -o json > "$probe_dir/result.json" 2> "$probe_dir/error.log" &&
+              jq -e '[.spec.containers[].image] == ["approved.example/keep:1", "myregistry.corp.com/example/mutate:1", "myregistry.corp.com/example/mutate-last:1"]' "$probe_dir/result.json" > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$probe_dir/error.log" >&2
+          exit 1
+    - apply:
+        file: partial-exception-pod.yaml
+    - assert:
+        file: partial-exception-pod-patched.yaml
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n replace-registry-ns
