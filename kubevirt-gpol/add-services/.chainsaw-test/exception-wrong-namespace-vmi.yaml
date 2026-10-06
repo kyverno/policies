@@ -1,0 +1,10 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: exception-vmi
+  namespace: kubevirt-other-ns
+  labels:
+    kubevirt.io/domain: exception-vmi
+spec:
+  domain:
+    devices: {}
