@@ -11,9 +11,11 @@ results:
   kind: Pod
   policy: no-secrets
   resources:
-  - default/secret-env-pod
   - default/secret-ref-pod
   - default/secret-vol-pod
+  - default/projected-secret-pod
+  - default/partial-secret-pod
+  - default/secret-env-pod
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -21,4 +23,3 @@ results:
   resources:
   - default/good-pod
   result: pass
-

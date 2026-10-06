@@ -43,4 +43,15 @@ spec:
         memory: "50Mi"
       limits:
         memory: "50Mi"
-
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: canonical-memory
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests: {memory: 1Gi}
+      limits: {memory: 1024Mi}

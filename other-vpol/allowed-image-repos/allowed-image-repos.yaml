@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.24"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
@@ -36,4 +36,4 @@ spec:
     - messageExpression: |
         'All images in this Pod must come from an authorized repository. Allowed repositories: ' + variables.allowedRepos.join(', ') + '. Found unauthorized images: ' + variables.allContainers.filter(container, !variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo)).map(container, container.image).join(', ')
       expression: |
-        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo))
+        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo) || container.image in exceptions.allowedValues)

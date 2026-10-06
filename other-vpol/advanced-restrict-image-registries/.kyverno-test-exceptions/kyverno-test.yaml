@@ -1,0 +1,19 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: advanced-restrict-image-registries-exception
+policies: [../advanced-restrict-image-registries.yaml]
+resources: [../.kyverno-test/resource.yaml]
+context: ../.kyverno-test/context.yaml
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: advanced-restrict-image-registries
+  resources: [default/badpod01]
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: advanced-restrict-image-registries
+  resources: [imageregistries-ns01/badpod02]
+  result: fail

@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: clover/volume:passbolt
+        image: public.ecr.aws/docker/library/redis@sha256:0b2216cb86345d3ece3696ded9ae59ddf1c65a9e8d48188db1784f1a1f95b448
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: clover/volume:passbolt
+            image: public.ecr.aws/docker/library/redis@sha256:0b2216cb86345d3ece3696ded9ae59ddf1c65a9e8d48188db1784f1a1f95b448
           - name: busybox02
             image: ghcr.io/kyverno/test-busybox:1.35
           restartPolicy: OnFailure

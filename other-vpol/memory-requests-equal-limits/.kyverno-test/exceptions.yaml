@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: memory-limits-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: memory-requests-equal-limits
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'myapp-pod'

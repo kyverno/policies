@@ -13,3 +13,70 @@ spec:
   volumes:
     - name: vol
       emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-emptydir
+spec:
+  containers:
+  - name: test
+    image: busybox
+    volumeMounts:
+    - name: vol
+      mountPath: /cache
+  volumes:
+  - name: vol
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-emptydir-wrong-token
+spec:
+  containers:
+  - name: test
+    image: busybox
+    resources: {}
+    volumeMounts:
+    - name: vol
+      mountPath: /cache
+  volumes:
+  - name: vol
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-emptydir-sibling-name
+spec:
+  containers:
+  - name: test
+    image: busybox
+    resources: {}
+    volumeMounts:
+    - name: vol
+      mountPath: /cache
+  volumes:
+  - name: vol
+    emptyDir: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-emptydir-sibling-volume
+spec:
+  containers:
+  - name: test
+    image: busybox
+    resources: {}
+    volumeMounts:
+    - name: vol
+      mountPath: /cache
+    - name: other
+      mountPath: /other
+  volumes:
+  - name: vol
+    emptyDir: {}
+  - name: other
+    emptyDir: {}

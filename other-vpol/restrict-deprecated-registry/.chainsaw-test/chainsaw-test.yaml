@@ -12,6 +12,15 @@ spec:
     try:
     - apply:
         file: ../restrict-deprecated-registry.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-deprecated-registry
+          spec:
+            validationActions:
+            - Deny
     - apply:
         file: ns.yaml
     - assert:
@@ -34,4 +43,3 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
-

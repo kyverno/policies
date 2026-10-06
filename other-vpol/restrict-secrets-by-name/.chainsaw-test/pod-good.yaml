@@ -89,4 +89,18 @@ spec:
     - name: secret-volume
       secret:
         secretName: safe-secret
-
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  containers:
+    - name: busybox
+      image: ghcr.io/kyverno/test-busybox:1.35
+  volumes:
+    - name: projected-secret-volume
+      projected:
+        sources:
+          - secret:
+              name: safe-secret

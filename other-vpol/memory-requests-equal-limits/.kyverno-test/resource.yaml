@@ -69,5 +69,30 @@ spec:
               limits:
                 cpu: "100m"
                 memory: "1000m"
-          restartPolicy: OnFailure
-  
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: canonical-memory
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests: {memory: 1Gi}
+      limits: {memory: 1024Mi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-memory-mismatch
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests: {memory: 1000m}
+      limits: {memory: 1024Mi}
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35

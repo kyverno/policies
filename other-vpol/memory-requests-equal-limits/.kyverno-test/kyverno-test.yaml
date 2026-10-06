@@ -19,10 +19,19 @@ results:
   resources:
   - fluentd-elasticsearch
   result: pass
-- isValidatingPolicy: true 
+- isValidatingPolicy: true
   kind: Pod
   policy: memory-requests-equal-limits
   resources:
   - myapp-pod
   result: fail
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources: [canonical-memory]
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources: [init-memory-mismatch]
+  result: fail

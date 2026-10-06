@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Sample in Vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
       Pods which have memory limits equal to requests could be given a QoS class of Guaranteed if
@@ -25,10 +25,15 @@ spec:
       apiVersions: ["v1"]
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
+  variables:
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   validations:
     - expression: >-
-        object.spec.containers.all(container, 
+        variables.allContainers.all(container,
+        container.image in exceptions.allowedImages.orValue([]) ||
         !container.?resources.?requests.?memory.hasValue() ||
-        container.resources.requests.memory == container.resources.?limits.?memory.orValue('-1'))
+        (container.?resources.?limits.?memory.hasValue() &&
+        (container.resources.requests.memory == container.resources.limits.memory ||
+        quantity(container.resources.requests.memory) == quantity(container.resources.limits.memory))))
       message: "resources.requests.memory must be equal to resources.limits.memory"
-

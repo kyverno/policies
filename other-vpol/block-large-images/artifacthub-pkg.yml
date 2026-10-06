@@ -14,10 +14,22 @@ keywords:
 readme: |
   Pods which run containers of very large image size take longer to pull and require more space to store. A user may either inadvertently or purposefully name an image which is unusually large to disrupt operations. This policy checks the size of every container image and blocks if it is over 2 Gibibytes.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-large-images` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact container image references in `spec.allowedValues` to bypass the 2Gi
+  layer-size check only for those images. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-large-images/.chainsaw-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: e3d9f0a50c620c35e89dcf0e7d1e12da62e4ddd0768e15839e063f4cb9419d3a
+digest: 0a581dba8c23ae992332fec6cd5b68386de1db0e2b6e08bae9bfc9e9a91306ba
 createdAt: "2025-11-27T18:39:22Z"

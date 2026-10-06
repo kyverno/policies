@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: validate-probes-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: validate-probes
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'mydeploy-2' && object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - goproxy

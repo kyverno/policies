@@ -69,6 +69,21 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: badpod-projected-secret
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox
+  volumes:
+  - name: projected-secret
+    projected:
+      sources:
+      - secret:
+          name: foo-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: badpod04
 spec:
   initContainers:
@@ -94,4 +109,3 @@ spec:
   - name: foo-vol
     secret:
       secretName: foo-secret
-

@@ -11,3 +11,13 @@ spec:
       namespace: default
     data:
       registries: "ghcr.io, myregistry"
+  - apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: default
+  - apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: imageregistries-ns01
+      annotations:
+        corp.com/allowed-registries: "img.corp.com, docker.io"

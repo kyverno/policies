@@ -28,12 +28,12 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy block-images-with-volumes failed')): true
         file: pods-bad.yaml
     - apply:
         file: podcontrollers-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy block-images-with-volumes failed')): true
         file: podcontrollers-bad.yaml

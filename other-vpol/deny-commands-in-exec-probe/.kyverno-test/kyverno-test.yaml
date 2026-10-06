@@ -13,6 +13,11 @@ results:
   resources:
   - badpod01
   - badpod02
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: deny-commands-in-exec-probe
+  resources:
   - badpod03
   result: fail
 - isValidatingPolicy: true

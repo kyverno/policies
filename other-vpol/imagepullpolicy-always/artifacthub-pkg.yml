@@ -14,12 +14,25 @@ keywords:
 readme: |
   If the `latest` tag is allowed for images, it is a good idea to have the imagePullPolicy field set to `Always` to ensure should that tag be overwritten that future pulls will get the updated image. This policy validates the imagePullPolicy is set to `Always` when the `latest` tag is specified explicitly or where a tag is not defined at all.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `imagepullpolicy-always` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/imagepullpolicy-always/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 52393a084cabe7cdde805a9aae0062b23dab8a822754efdb17635cfec7927738
+digest: 2c6b3232d75c666a1334578d418ad6a74ec089977b82588c4f6e9316c903554f
 
 
 createdAt: "2025-05-11T17:46:11Z"
