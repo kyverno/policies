@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-deployment-without-hpa
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: check-hpa-exists
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-deployment
+    expression: "['deployment-without-hpa', 'deployment-uses-hpa'].exists(name, object.metadata.name == name) && object.metadata.namespace == 'default'"
+  allowedValues:
+  - deployment-without-hpa

@@ -6,6 +6,11 @@ metadata:
   name: check-subjectaccessreview
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
@@ -23,6 +28,8 @@ spec:
              - Deny
     - assert:
         file: policy-ready.yaml
+    - apply:
+        file: exception.yaml
   - name: step-02
     try:
     - script:
@@ -33,6 +40,7 @@ spec:
           export KUBECONFIG=./temp
           export USERNAME=subreviewuser
           export BADUSERNAME=badsubreviewuser
+          export WRONGUSERNAME=wrongsubreviewuser
           export CA=ca.crt
           #### Get CA certificate from kubeconfig assuming it's the first in the list.
           kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' | base64 --decode > ./ca.crt
@@ -43,9 +51,11 @@ spec:
           #### Generate private key
           openssl genrsa -out $USERNAME.key 2048
           openssl genrsa -out $BADUSERNAME.key 2048
+          openssl genrsa -out $WRONGUSERNAME.key 2048
           #### Create CSR
           openssl req -new -key $USERNAME.key -out $USERNAME.csr -subj "/O=testorg/CN=$USERNAME"
           openssl req -new -key $BADUSERNAME.key -out $BADUSERNAME.csr -subj "/O=testorg/CN=$BADUSERNAME"
+          openssl req -new -key $WRONGUSERNAME.key -out $WRONGUSERNAME.csr -subj "/O=testorg/CN=$WRONGUSERNAME"
           #### Send CSR to kube-apiserver for approval
           cat <<EOF | kubectl apply -f -
           apiVersion: certificates.k8s.io/v1
@@ -54,6 +64,17 @@ spec:
             name: $USERNAME
           spec:
             request: $(cat $USERNAME.csr | base64 | tr -d '\n')
+            signerName: kubernetes.io/kube-apiserver-client
+            usages:
+            - client auth
+          EOF
+          cat <<EOF | kubectl apply -f -
+          apiVersion: certificates.k8s.io/v1
+          kind: CertificateSigningRequest
+          metadata:
+            name: $WRONGUSERNAME
+          spec:
+            request: $(cat $WRONGUSERNAME.csr | base64 | tr -d '\n')
             signerName: kubernetes.io/kube-apiserver-client
             usages:
             - client auth
@@ -72,22 +93,28 @@ spec:
           #### Approve CSR
           kubectl certificate approve $USERNAME
           kubectl certificate approve $BADUSERNAME
+          kubectl certificate approve $WRONGUSERNAME
           #### Download certificate
           #### The signer sets the certificate shortly after the approval, so wait for it
           for i in $(seq 1 30); do [ -n "$(kubectl get csr $USERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
           kubectl get csr $USERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $USERNAME.crt
           for i in $(seq 1 30); do [ -n "$(kubectl get csr $BADUSERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
           kubectl get csr $BADUSERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $BADUSERNAME.crt
+          for i in $(seq 1 30); do [ -n "$(kubectl get csr $WRONGUSERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
+          kubectl get csr $WRONGUSERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $WRONGUSERNAME.crt
           ####
           #### Create the credential object and output the new kubeconfig file
           kubectl config set-credentials $USERNAME --client-certificate=$USERNAME.crt --client-key=$USERNAME.key --embed-certs
           kubectl config set-credentials $BADUSERNAME --client-certificate=$BADUSERNAME.crt --client-key=$BADUSERNAME.key --embed-certs
+          kubectl config set-credentials $WRONGUSERNAME --client-certificate=$WRONGUSERNAME.crt --client-key=$WRONGUSERNAME.key --embed-certs
           #### Set the context
           kubectl config set-context $USERNAME-context --user=$USERNAME --cluster=$CLUSTER
           kubectl config set-context $BADUSERNAME-context --user=$BADUSERNAME --cluster=$CLUSTER
+          kubectl config set-context $WRONGUSERNAME-context --user=$WRONGUSERNAME --cluster=$CLUSTER
           # Delete CSR
           kubectl delete csr $USERNAME
           kubectl delete csr $BADUSERNAME
+          kubectl delete csr $WRONGUSERNAME
     - apply:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
@@ -98,6 +125,8 @@ spec:
         file: chainsaw-step-03-apply-4.yaml
     - apply:
         file: chainsaw-step-03-apply-5.yaml
+    - apply:
+        file: chainsaw-step-03-apply-6.yaml
     - script:
         content: |
           set -eu
@@ -107,7 +136,17 @@ spec:
         content: |
           set -eu
           export KUBECONFIG=./temp
-          if kubectl create --context=badsubreviewuser-context -f cm-two.yaml; then exit 1; else exit 0; fi
+          kubectl create --context=badsubreviewuser-context -f cm-two.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl create --context=badsubreviewuser-context -f cm-three.yaml; then exit 1; else exit 0; fi
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl create --context=wrongsubreviewuser-context -f cm-two.yaml; then exit 1; else exit 0; fi
     finally:
     - script:
         content: |
@@ -121,6 +160,14 @@ spec:
         content: |
           set -e
           kubectl delete -f cm-two.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f cm-three.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete clusterrolebinding cm-creator:wrongsubreviewuser --ignore-not-found
     - script:
         content: |
           set -e

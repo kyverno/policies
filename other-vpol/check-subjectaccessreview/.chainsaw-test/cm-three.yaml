@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-three
+  namespace: subreview-ns
+data:
+  key: value
