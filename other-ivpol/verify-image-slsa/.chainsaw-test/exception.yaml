@@ -1,0 +1,17 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: verify-image-slsa-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: verify-slsa-provenance-keyless
+    kind: ImageValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'slsa-exception-pod'
+  - name: approved-image-set
+    expression: >-
+      object.spec.containers.all(c, c.image == 'ghcr.io/kyverno/test-verify-image:unsigned') &&
+      object.spec.?initContainers.orValue([]).all(c, c.image == 'ghcr.io/kyverno/test-verify-image:unsigned') &&
+      object.spec.?ephemeralContainers.orValue([]).all(c, c.image == 'ghcr.io/kyverno/test-verify-image:unsigned')

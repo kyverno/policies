@@ -14,6 +14,25 @@ spec:
             file: ../verify-image-slsa.yaml
         - assert:
             file: policy.yaml
+    - name: transport-failure-fails-closed
+      try:
+        - create:
+            timeout: 60s
+            expect:
+              - check:
+                  (contains($error, 'failed to update digest')): true
+            file: transport-bad.yaml
+    - name: reachable-image-verification
+      try:
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ImageValidatingPolicy
+              metadata:
+                name: verify-slsa-provenance-keyless
+              spec:
+                matchImageReferences:
+                - glob: ghcr.io/kyverno/test-verify-image:*
     - name: step-02
       try:
         - create:
@@ -23,5 +42,54 @@ spec:
             timeout: 60s
             expect:
               - check:
-                  ($error != null): true
+                  (contains($error, 'Policy verify-slsa-provenance-keyless failed') && contains($error, 'Failed to verify SLSA provenance attestation signature with Cosign keyless')): true
             file: bad.yaml
+    - name: full-resource-exception-and-no-bypass
+      try:
+        - apply:
+            file: exception-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - create:
+            file: exception-mixed-images.yaml
+            timeout: 60s
+            expect:
+            - check:
+                (contains($error, 'Policy verify-slsa-provenance-keyless failed') && contains($error, 'Failed to verify SLSA provenance attestation signature with Cosign keyless')): true
+        - create:
+            file: exception-pod.yaml
+            timeout: 60s
+        - create:
+            file: exception-sibling-pod.yaml
+            timeout: 60s
+            expect:
+            - check:
+                (contains($error, 'Policy verify-slsa-provenance-keyless failed') && contains($error, 'Failed to verify SLSA provenance attestation signature with Cosign keyless')): true
+        - apply:
+            file: exception-wrong-namespace.yaml
+        - create:
+            file: exception-wrong-namespace-pod.yaml
+            timeout: 60s
+            expect:
+            - check:
+                (contains($error, 'Policy verify-slsa-provenance-keyless failed') && contains($error, 'Failed to verify SLSA provenance attestation signature with Cosign keyless')): true
+        - delete:
+            ref:
+              apiVersion: policies.kyverno.io/v1
+              kind: PolicyException
+              name: verify-image-slsa-exception
+              namespace: policy-exceptions
+        - delete:
+            ref:
+              apiVersion: v1
+              kind: Pod
+              name: slsa-exception-pod
+              namespace: default
+        - sleep:
+            duration: 5s
+        - create:
+            file: exception-pod.yaml
+            timeout: 60s
+            expect:
+            - check:
+                (contains($error, 'Policy verify-slsa-provenance-keyless failed') && contains($error, 'Failed to verify SLSA provenance attestation signature with Cosign keyless')): true
