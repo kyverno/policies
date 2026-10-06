@@ -1,6 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-requests-limits
+  namespace: default
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod01
   labels:
     app: myapp

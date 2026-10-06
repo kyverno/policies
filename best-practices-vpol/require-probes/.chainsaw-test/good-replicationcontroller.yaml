@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: reqprobes-goodrc
+spec:
+  replicas: 1
+  selector:
+    app: reqprobes-goodrc
+  template:
+    metadata:
+      labels:
+        app: reqprobes-goodrc
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        startupProbe:
+          exec:
+            command: ["true"]

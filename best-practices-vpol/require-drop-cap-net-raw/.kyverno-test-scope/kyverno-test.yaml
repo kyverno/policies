@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-drop-cap-net-raw-exception-namespace-scope}
+policies: [../require-drop-cap-net-raw.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: drop-cap-net-raw
+  resources: [default/exception-net-raw]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: drop-cap-net-raw
+  resources: [team-b/exception-net-raw]
+  result: fail
+  isValidatingPolicy: true

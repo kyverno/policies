@@ -30,20 +30,20 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-requests-limits failed')): true
         file: bad-pod-nolimit.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-requests-limits failed')): true
         file: bad-pod-nores.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-requests-limits failed')): true
         file: bad-pod-nothing.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-requests-limits failed')): true
         file: bad-podcontrollers.yaml

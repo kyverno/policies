@@ -5,7 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Drop CAP_NET_RAW in VPOL
     policies.kyverno.io/category: Best Practices in VPOL
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
@@ -34,7 +34,8 @@ spec:
               expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   validations:
             - expression: >-
-                variables.allContainers.all(container, 
+                variables.allContainers.all(container,
+                (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
                 container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability.upperAscii() in variables.mustDropCapabilities))
               message: >-
                 Containers must drop the `CAP_NET_RAW` capability.
