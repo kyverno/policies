@@ -15,12 +15,24 @@ keywords:
 readme: |
   Developers may feel compelled to use simple shell commands as a workaround to creating "proper" liveness or readiness probes for a Pod. Such a practice can be discouraged via detection of those commands. This policy prevents the use of certain commands `jcmd`, `ps`, or `ls` if found in a Pod's liveness exec probe.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deny-commands-in-exec-probe` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `probe-command:<command>` in `spec.allowedValues`, with the exact offending
+  exec-probe command string, to exempt only that command. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/deny-commands-in-exec-probe/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: eec9f1a5908633c7b2c2d82ceeb052f44e4ae895b52eb5fdf4615f6ccb03da2d
+digest: 263107475786f299cbe62e9f5ae3ec00bc4a360039df0fb319b208de056feab1
 
 
 createdAt: "2025-05-11T17:46:10Z"

@@ -8,12 +8,17 @@ resources:
 - resource-fail.yaml
 - resource-pass.yaml
 - resource-skip.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
   policy: require-emptydir-requests-and-limits
   resources:
   - fail-pod
+  - exception-emptydir-wrong-token
+  - exception-emptydir-sibling-name
+  - exception-emptydir-sibling-volume
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -21,6 +26,7 @@ results:
   resources:
   - pass-pod-01
   - pass-pod-02
+  - exception-emptydir
   result: pass
 - isValidatingPolicy: true
   kind: Pod

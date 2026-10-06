@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: secret-reference-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-secrets-by-name
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && (request.name == 'bad-pod-projected' || request.name == 'bad-pod-projected-sibling')
+  allowedValues:
+  - projected.secret:unsafe-secret

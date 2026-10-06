@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-bad01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: forbid-cpu-limits
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: "['bad01', 'bad02'].exists(name, request.name == name) && request.namespace == 'default'"
+  allowedValues:
+  - webserver1

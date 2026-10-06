@@ -15,9 +15,22 @@ keywords:
 readme: |
   OCI images may optionally be built with VOLUME statements which, if run in read-only mode, would still result in write access to the specified location. This may be unexpected and undesirable. This policy checks the contents of every container image and inspects them for such VOLUME statements, then blocks if found.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-images-with-volumes` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-images-with-volumes/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 67eeded8eb24cac8bc89677a918ec6ae359163744a396c38045522ab3f86ae3b
+digest: 439020d43c170e5a4bf0a58b75eba7b46eaaf36f6b7bf0dbb6580754bfb67853

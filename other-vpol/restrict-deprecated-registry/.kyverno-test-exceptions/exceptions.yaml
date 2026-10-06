@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: exact-registry-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-deprecated-registry}]
+  images: [k8s.gcr.io/google-containers/pause:3.2]
+  matchConditions:
+    - name: exact-resource
+      expression: request.name == 'test-pod-bad' && request.namespace == 'policy-test'

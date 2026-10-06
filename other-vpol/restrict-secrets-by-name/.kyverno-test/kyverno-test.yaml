@@ -6,6 +6,8 @@ policies:
 - ../restrict-secrets-by-name.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Deployment
@@ -59,6 +61,23 @@ results:
   kind: Pod
   policy: restrict-secrets-by-name
   resources:
+  - policy-exceptions/bad-pod-projected
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - good-pod-projected
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
+  - policy-exceptions/bad-pod-projected-sibling
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-secrets-by-name
+  resources:
   - good-pod-all
   result: pass
-

@@ -14,10 +14,22 @@ keywords:
 readme: |
   Containers which request use of an NVIDIA GPU often need to be authored to consume them via a CUDA environment variable called NVIDIA_VISIBLE_DEVICES. This policy checks the containers which request a GPU to ensure they have been authored with this environment variable.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-nvidia-gpus` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact container image references in `spec.allowedValues` to bypass the NVIDIA GPU
+  image check for those images. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-nvidia-gpu/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: e02768c20385e45d2646e0199034b01ed975abd8bc52de6dfae25cf256851d4d
+digest: 4d312b170351cf9d9f5861b37c507e1766cec9ac905b4e1225328c6abe5fe469
 createdAt: "2025-12-15T12:37:33Z"

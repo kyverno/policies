@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Sample in Vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
       Use of a SHA checksum when pulling an image is often preferable because tags
@@ -19,6 +19,9 @@ spec:
   evaluation:
     background:
       enabled: true
+  variables:
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   matchConstraints:
     resourceRules:
     - apiGroups:   [""]
@@ -26,6 +29,5 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-    - expression: "object.spec.containers.all(container, container.image.contains('@'))"
+    - expression: "variables.allContainers.all(container, container.image.contains('@') || (has(exceptions.allowedImages) && exceptions.allowedImages.exists(image, image == container.image)))"
       message: "Images must use checksums rather than tags."
-

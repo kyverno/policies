@@ -1,0 +1,15 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: block-images-with-volumes-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: block-images-with-volumes
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'badcronjob01'
+  images:
+  - ghcr.io/kyverno/test-busybox:1.35
+  - clover/volume:passbolt

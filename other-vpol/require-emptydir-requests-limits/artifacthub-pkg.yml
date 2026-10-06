@@ -14,11 +14,24 @@ keywords:
 readme: |
   Pods which mount emptyDir volumes may be allowed to potentially overrun the medium backing the emptyDir volume. This sample ensures that any initContainers or containers mounting an emptyDir volume have ephemeral-storage requests and limits set. Policy will be skipped if the volume has already a sizeLimit set.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-emptydir-requests-and-limits` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `emptyDir:<volume-name>` in `spec.allowedValues` to exempt mounts of that volume
+  from ephemeral-storage requests and limits. A container mounting any other unsized
+  emptyDir still needs both fields. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-emptydir-requests-limits/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 748a4097d384af210151b73def3754af5edd4dd42f5fa086c5ba85f1fab35ad0
+digest: e3c503e2a955fbdbb45472cf8fc328d187f12aa666d7761ba4a5a1b050a792ff
 
 createdAt: "2025-05-11T17:46:11Z"

@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-image-checksum-exceptions}
+policies: [../require-image-checksum.yaml]
+resources: [../.kyverno-test/resource.yaml, ../.kyverno-test/exception-resource.yaml, ../.kyverno-test/mixed-image-pod.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: require-image-checksum, resources: [myapp-pod-2], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: require-image-checksum, resources: [mixed-image-pod], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: require-image-checksum, resources: [whole-image-exempt], result: skip}

@@ -101,6 +101,56 @@ spec:
     secret:
       secretName: boo-secret
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-projected
+  namespace: policy-exceptions
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+  volumes:
+  - name: projected-secret
+    projected:
+      sources:
+      - secret:
+          name: unsafe-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-projected
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+  volumes:
+  - name: projected-secret
+    projected:
+      sources:
+      - secret:
+          name: safe-secret
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-projected-sibling
+  namespace: policy-exceptions
+spec:
+  containers:
+  - name: busybox
+    image: busybox:1.28
+    envFrom:
+    - secretRef:
+        name: unsafe-env-secret
+  volumes:
+  - name: projected-secret
+    projected:
+      sources:
+      - secret:
+          name: unsafe-secret
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -179,4 +229,3 @@ spec:
       - name: mysecret
         secret:
           secretName: boo-secret
-
