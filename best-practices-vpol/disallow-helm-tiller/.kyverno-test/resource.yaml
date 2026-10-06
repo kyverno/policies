@@ -1,6 +1,28 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-tiller-positive
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: docker.io/tiller:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-tiller
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: docker.io/tiller:latest
+  - name: sibling
+    image: docker.io/tiller:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: badpod01
 spec:
   containers:
@@ -80,4 +102,3 @@ spec:
       containers:
       - image: docker.io/tiller:latest
         name: helm-tiller
-

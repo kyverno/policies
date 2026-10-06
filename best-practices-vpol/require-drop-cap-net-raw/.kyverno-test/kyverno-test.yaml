@@ -6,12 +6,19 @@ policies:
 - ../require-drop-cap-net-raw.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
   policy: drop-cap-net-raw
   resources:
   - badpod01
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
   - badpod02
   result: fail
 - isValidatingPolicy: true
@@ -20,4 +27,15 @@ results:
   resources:
   - drop-good
   result: pass
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - exception-net-raw
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - exception-net-raw-positive
+  result: pass

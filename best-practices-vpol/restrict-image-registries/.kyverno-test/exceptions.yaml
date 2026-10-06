@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: registry-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-image-registries
+  images: [registry.k8s.io/nginx:1.7.9]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.namespace == 'default' && (object.metadata.name in ['exception-registries', 'exception-registries-positive'])

@@ -6,11 +6,17 @@ policies:
 - ../require-probes.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   policy: require-pod-probes
   resources:
   - badpod01
+  result: fail
+- kind: Pod
+  policy: require-pod-probes
+  resources:
   - badpod02
   result: fail
 - kind: Pod
@@ -21,3 +27,30 @@ results:
   - goodpod03
   - goodpod04
   result: pass
+- kind: Pod
+  policy: require-pod-probes
+  resources:
+  - exception-probes
+  result: pass
+- kind: CronJob
+  policy: require-pod-probes
+  resources:
+  - goodcronjob01
+  - exception-cronjob
+  result: pass
+- kind: CronJob
+  policy: require-pod-probes
+  resources:
+  - badcronjob01
+  - exception-cronjob-mixed
+  result: fail
+- kind: ReplicationController
+  policy: require-pod-probes
+  resources:
+  - goodrc01
+  result: pass
+- kind: ReplicationController
+  policy: require-pod-probes
+  resources:
+  - badrc01
+  result: fail

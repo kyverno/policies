@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-drop-all-exception-namespace-scope}
+policies: [../require-drop-all.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: drop-all-capabilities
+  resources: [default/exception-drop-all]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: drop-all-capabilities
+  resources: [team-b/exception-drop-all]
+  result: fail
+  isValidatingPolicy: true

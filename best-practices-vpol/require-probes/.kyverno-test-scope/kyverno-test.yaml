@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-probes-exception-namespace-scope}
+policies: [../require-probes.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: require-pod-probes
+  resources: [default/exception-probes]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-pod-probes
+  resources: [team-b/exception-probes]
+  result: fail
+  isValidatingPolicy: true

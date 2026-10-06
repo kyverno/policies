@@ -6,13 +6,24 @@ policies:
 - ../require-ro-rootfs.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   policy: require-ro-rootfs
   resources:
   - badpod01
-  - badpod02
+  result: fail
+- kind: Pod
+  policy: require-ro-rootfs
+  resources:
   - badpod03
+  result: fail
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-ro-rootfs
+  resources:
+  - badpod02
   result: fail
   isValidatingPolicy: true
 - kind: Pod
@@ -20,5 +31,11 @@ results:
   resources:
   - goodpod01
   - goodpod02
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-ro-rootfs
+  resources:
+  - exception-rootfs
   result: pass
   isValidatingPolicy: true
