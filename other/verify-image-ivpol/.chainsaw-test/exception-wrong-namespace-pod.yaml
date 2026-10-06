@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-exception-pod
+  namespace: verify-image-other-ns
+spec:
+  containers:
+  - name: test-container
+    image: ghcr.io/kyverno/test-verify-image:unsigned
+    imagePullPolicy: Always
