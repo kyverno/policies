@@ -6,12 +6,29 @@ policies:
 - ../add-castai-removal-disabled.yaml
 resources:
 - resources.yaml
+- exception-resource.yaml
+- exception-sibling-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: CronJob
   patchedResources: patched02.yaml
   policy: add-castai-removal-disabled
   resources:
   - addcronjob01
+  result: pass
+  isMutatingPolicy: true
+- kind: Job
+  policy: add-castai-removal-disabled
+  resources:
+  - exception-job
+  result: skip
+  isMutatingPolicy: true
+- kind: Job
+  patchedResources: exception-sibling-patched.yaml
+  policy: add-castai-removal-disabled
+  resources:
+  - exception-sibling
   result: pass
   isMutatingPolicy: true
 - kind: Job
