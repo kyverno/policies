@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: goodcm01
+  namespace: testnamespace
+stringData:
+  foo: other

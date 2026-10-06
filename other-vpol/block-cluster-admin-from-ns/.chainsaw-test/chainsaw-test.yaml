@@ -6,12 +6,26 @@ metadata:
   name: block-cluster-admin-from-ns
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: permissions.yaml
     - apply:
         file: ../block-cluster-admin-from-ns.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: block-cluster-admin-from-ns
+          spec:
+            validationActions:
+            - Deny
     - apply:
         file: ns.yaml
     - assert:
@@ -72,12 +86,61 @@ spec:
         content: |
           set -eu
           export KUBECONFIG=./temp
-          if kubectl --context=testuser-context apply -f bad-cm-update.yaml; then exit 1; else exit 0; fi
+          if kubectl --context=testuser-context apply -f bad-cm-update.yaml 2>denied-update.err; then exit 1; fi
+          grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-update.err
     - script:
         content: |
           set -eu
           export KUBECONFIG=./temp
-          if kubectl --context=testuser-context delete -f good-cm.yaml; then exit 1; else exit 0; fi
+          if kubectl --context=testuser-context delete -f good-cm.yaml 2>denied-delete.err; then exit 1; fi
+          grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-delete.err
+    - apply:
+        file: exception.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          for attempt in $(seq 1 30); do
+            if kubectl --context=testuser-context apply -f bad-cm-update.yaml 2>denied-exception-scope.err; then
+              sleep 1
+              continue
+            fi
+            if grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-exception-scope.err; then exit 0; fi
+            cat denied-exception-scope.err >&2
+            exit 1
+          done
+          exit 1
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl --context=testuser-context delete -f good-cm.yaml
+    - apply:
+        file: other-cm.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          if kubectl --context=testuser-context delete -f other-cm.yaml 2>denied-sibling.err; then exit 1; fi
+          grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-sibling.err
+    - delete:
+        file: exception.yaml
+    - apply:
+        file: good-cm.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          for attempt in $(seq 1 30); do
+            if kubectl --context=testuser-context delete -f good-cm.yaml 2>denied-after-delete.err; then
+              sleep 1
+              continue
+            fi
+            if grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-after-delete.err; then exit 0; fi
+            cat denied-after-delete.err >&2
+            exit 1
+          done
+          exit 1
     - script:
         content: |
           set -eu
@@ -87,7 +150,8 @@ spec:
         content: |
           set -eu
           export KUBECONFIG=./temp
-          if kubectl --context=testuser-context create -f bad-pod.yaml; then exit 1; else exit 0; fi
+          if kubectl --context=testuser-context create -f bad-pod.yaml 2>denied-pod.err; then exit 1; fi
+          grep -F "The cluster-admin 'testuser' user cannot touch testnamespace Namespace." denied-pod.err
     - apply:
         file: good-pod-not-admin.yaml
     finally:
@@ -97,6 +161,10 @@ spec:
         content: kubectl delete -f good-cm.yaml --ignore-not-found
     - script:
         content: kubectl delete -f bad-cm-update.yaml --ignore-not-found
+    - script:
+        content: kubectl delete -f other-cm.yaml --ignore-not-found
+    - script:
+        content: kubectl delete -f exception.yaml --ignore-not-found
     - script:
         content: |
           set -e

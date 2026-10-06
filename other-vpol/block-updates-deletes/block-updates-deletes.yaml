@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Block Updates and Deletes
     policies.kyverno.io/category: Sample
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/subject: RBAC
     policies.kyverno.io/description: >-
       Kubernetes RBAC allows for controls on kinds of resources or those
@@ -30,4 +31,4 @@ spec:
       apiVersions: ["v1"]
   validations:
   - message: "This resource is protected and changes are not allowed. Please seek a cluster-admin."
-    expression: "!(variables.isProtectedService && !variables.hasClusterAdminRole)"
+    expression: "!(variables.isProtectedService && !variables.hasClusterAdminRole) || exceptions.allowedValues.exists(value, value == 'protected-service:true')"
