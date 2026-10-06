@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
@@ -21,21 +21,37 @@ spec:
       enabled: true
   matchConstraints:
     resourceRules:
-      - apiGroups:   [""]
-        apiVersions: ["v1"]
-        operations:  ["CREATE", "UPDATE"]
-        resources:   ["pods"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/ephemeralcontainers"]
   variables:
-   - name: ctnrs
-     expression: >-
-      object.spec.containers + 
-      object.spec.?initContainers.orValue([]) + 
-      object.spec.?ephemeralContainers.orValue([])
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: ctnrs
+      expression: >-
+        variables.podSpec.containers +
+        variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
   validations:
     - expression: >-
-        (object.spec.?securityContext.?runAsNonRoot.orValue(false) == true
+        (variables.podSpec.?securityContext.?runAsNonRoot.orValue(false) == true
           && variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(true) == true))
-          || variables.ctnrs.all(c, c.?securityContext.?runAsNonRoot.orValue(false) == true)
+          || variables.ctnrs.all(c, c.image in exceptions.allowedImages || c.?securityContext.?runAsNonRoot.orValue(false) == true)
       message: >-
         Running as root is not allowed. Either spec.securityContext.runAsNonRoot 
         must be set to true, or all containers (spec.containers[*], spec.initContainers[*], 

@@ -6,6 +6,9 @@ policies:
 - ../disallow-capabilities.yaml
 resources:
 - resource.yaml
+- exception-resources.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: CronJob
@@ -51,6 +54,25 @@ results:
   - goodcronjob05
   - goodcronjob06
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-capabilities
+  resources:
+  - exception-partial
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-capabilities
+  resources:
+  - exception-wrong-value
+  - exception-sibling
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-capabilities
+  resources:
+  - exception-whole
+  result: skip
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-capabilities

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seLinuxOptions: {type: spc}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seLinuxOptions: {type: wrong}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seLinuxOptions: {type: spc, user: bad}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seLinuxOptions: {type: wrong}}}]}

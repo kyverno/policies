@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-process-controllers
+policies:
+- ../disallow-host-process.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-process
+  resources:
+  - unsafe-disallow-host-process-7
+  result: fail

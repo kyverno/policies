@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-seccomp-controllers
+policies:
+- ../restrict-seccomp.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-seccomp
+  resources:
+  - unsafe-restrict-seccomp-7
+  result: fail

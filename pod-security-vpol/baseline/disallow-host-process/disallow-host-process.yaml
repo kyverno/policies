@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
       Windows pods offer the ability to run HostProcess containers which enables privileged
@@ -22,19 +22,40 @@ spec:
       enabled: true
   matchConstraints:
     resourceRules:
-      - apiGroups:   [""]
-        apiVersions: ["v1"]
-        operations:  ["CREATE", "UPDATE"]
-        resources:   ["pods"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/ephemeralcontainers"]
   variables:
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: podHostProcess
+      expression: >-
+        variables.podSpec.?securityContext.?windowsOptions.?hostProcess.orValue(false)
     - name: allContainers
       expression: >-
-        object.spec.containers + 
-          object.spec.?initContainers.orValue([]) + 
-          object.spec.?ephemeralContainers.orValue([])
+        variables.podSpec.containers +
+        variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
   validations:
     - expression: >-
+        (!variables.podHostProcess || 'control:podHostProcess' in exceptions.allowedValues) &&
         variables.allContainers.all(container,
+        container.image in exceptions.allowedImages ||
         container.?securityContext.?windowsOptions.?hostProcess.orValue(false) == false)
       message: >-
         HostProcess containers are disallowed. The field spec.containers[*].securityContext.windowsOptions.hostProcess,

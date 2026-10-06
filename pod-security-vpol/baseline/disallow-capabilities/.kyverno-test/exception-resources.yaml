@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec:
+  containers:
+  - {name: app, image: nginx:1.27, securityContext: {capabilities: {add: [SYS_ADMIN]}}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong-value, namespace: default}
+spec:
+  containers:
+  - {name: app, image: nginx:1.27, securityContext: {capabilities: {add: [SYS_PTRACE]}}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec:
+  containers:
+  - {name: exempt, image: exempt.example/app:1, securityContext: {capabilities: {add: [SYS_ADMIN]}}}
+  - {name: app, image: nginx:1.27, securityContext: {capabilities: {add: [SYS_PTRACE]}}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec:
+  containers:
+  - {name: app, image: nginx:1.27, securityContext: {capabilities: {add: [SYS_PTRACE]}}}
