@@ -4,6 +4,7 @@ metadata:
   name: resolve-image-to-digest
   annotations:
     policies.kyverno.io/title: Resolve Image to Digest
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/description: >-
@@ -54,7 +55,9 @@ spec:
       expression: >-
         variables.containers.map(container, {
           'name': container.name,
-          'image': image.GetMetadata(container.image).resolvedImage
+          'originalImage': container.image,
+          'image': exceptions.allowedImages.exists(image, image == container.image) ?
+            container.image : image.GetMetadata(container.image).resolvedImage
         })
 
   mutations:
@@ -65,6 +68,7 @@ spec:
           Object{
             spec: Object.spec{
               containers: variables.resolvedContainers.map(rc,
+                exceptions.allowedImages.exists(image, image == rc.originalImage) ? object.spec.containers[variables.resolvedContainers.indexOf(rc)] :
                 Object.spec.containers{
                   name: rc.name,
                   image: rc.image
@@ -80,8 +84,9 @@ spec:
           Object{
             spec: Object.spec{
               template: Object.spec.template{
-                spec: Object.spec.template.spec{
+                  spec: Object.spec.template.spec{
                   containers: variables.resolvedContainers.map(rc,
+                    exceptions.allowedImages.exists(image, image == rc.originalImage) ? object.spec.template.spec.containers[variables.resolvedContainers.indexOf(rc)] :
                     Object.spec.template.spec.containers{
                       name: rc.name,
                       image: rc.image
@@ -101,8 +106,9 @@ spec:
               jobTemplate: Object.spec.jobTemplate{
                 spec: Object.spec.jobTemplate.spec{
                   template: Object.spec.jobTemplate.spec.template{
-                    spec: Object.spec.jobTemplate.spec.template.spec{
+                      spec: Object.spec.jobTemplate.spec.template.spec{
                       containers: variables.resolvedContainers.map(rc,
+                        exceptions.allowedImages.exists(image, image == rc.originalImage) ? object.spec.jobTemplate.spec.template.spec.containers[variables.resolvedContainers.indexOf(rc)] :
                         Object.spec.jobTemplate.spec.template.spec.containers{
                           name: rc.name,
                           image: rc.image

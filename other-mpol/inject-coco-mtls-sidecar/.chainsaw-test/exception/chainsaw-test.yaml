@@ -1,0 +1,33 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-coco-mtls-sidecar-exception
+spec:
+  steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+  - try:
+    - apply: {file: ../../inject-coco-mtls-sidecar.yaml}
+    - assert:
+        file: ../policy-ready.yaml
+        timeout: 90s
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata: {name: coco-sidecar-config, namespace: default}
+          data:
+            sidecar_image: ghcr.io/confidential-containers/secure-sidecar:v1.0
+            https_port: "9443"
+            forward_port: "9080"
+            tls_cert_uri: https://kbs.example.com/certs/tls.crt
+    - apply: {file: exception.yaml}
+    - apply: {file: pod.yaml}
+    - assert: {file: pod-unchanged.yaml}
+    - apply: {file: pod-sibling.yaml}
+    - assert:
+        file: pod-sibling-patched.yaml
+        timeout: 30s

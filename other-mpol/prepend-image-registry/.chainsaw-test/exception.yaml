@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: preserve-approved-image
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: MutatingPolicy
+    name: prepend-registry
+  images:
+  - kyverno/kyverno:latest
+  matchConditions:
+  - name: target-resource
+    expression: object.metadata.namespace == 'prepend-image-registry' && object.metadata.name == 'mypod'

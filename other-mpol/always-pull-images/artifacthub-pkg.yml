@@ -14,8 +14,32 @@ keywords:
 readme: |
   By default, images that have already been pulled can be accessed by other Pods without re-pulling them if the name and tag are known. In multi-tenant scenarios, this may be undesirable. This policy mutates all incoming Pods to set their imagePullPolicy to Always. An alternative to the Kubernetes admission controller AlwaysPullImages.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `always-pull-images` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip setting `imagePullPolicy: Always` on that container;
+  other eligible regular, init, and ephemeral containers remain enforced.
+
+  Internal routing helpers keep the same filtering on Pods and controllers:
+  `variables.isPod` recognizes Pods, `variables.isCronJob` recognizes CronJobs,
+  and `variables.isPodController` detects `spec.template.spec`.
+  `variables.podSpec` selects their container-bearing spec; `variables.specPath`
+  selects `/spec`, `/spec/jobTemplate/spec/template/spec`, or `/spec/template/spec`
+  so JSON patches target the original container indices, not a filtered list.
+  `variables.isEphemeralUpdate` detects the `ephemeralcontainers` subresource
+  and suppresses regular/init-container patches on that update. Comparing names
+  with `oldObject.spec.ephemeralContainers` preserves existing immutable ephemeral
+  containers, including after exception revocation; new non-exempt ephemeral
+  containers still receive `Always`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/always-pull-images/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 30fa294cc094b8d5c83739dc05927e6664f14b73125042e33cdd97cccc13db81
+digest: fc64211b0653b350f130cdc3d3553689a7ec4207181fa48cae74b9664ae1fc20

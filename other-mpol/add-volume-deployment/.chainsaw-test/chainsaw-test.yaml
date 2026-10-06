@@ -6,6 +6,11 @@ metadata:
   name: add-volume-deployment
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -18,3 +23,102 @@ spec:
         file: kuttlresource.yaml
     - assert:
         file: resource-mutated.yaml
+  - name: step-03-exception
+    try:
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: volume-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: add-volume
+              kind: MutatingPolicy
+            matchConditions:
+            - name: exact-deployment
+              expression: object.metadata.namespace == 'default' && object.metadata.name == 'volume-exception'
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: volume-exception
+            namespace: default
+          spec:
+            selector:
+              matchLabels: {app: exception}
+            template:
+              metadata:
+                labels: {app: exception}
+                annotations: {vault.k8s.corp.net/inject: enabled}
+              spec:
+                containers: [{name: app, image: nginx:latest}]
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: volume-exception
+            namespace: default
+          spec:
+            template:
+              spec:
+                containers: [{name: app, image: nginx:latest}]
+                (length((volumes || `[]`)[?name == 'vault-secret']) == `0`): true
+                (length((containers[?name == 'app'].volumeMounts[] || `[]`)[?name == 'vault-secret']) == `0`): true
+    - error:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: volume-exception
+            namespace: default
+          spec:
+            template:
+              spec:
+                volumes:
+                - name: vault-secret
+                  emptyDir:
+                    medium: Memory
+                containers:
+                - name: app
+                  volumeMounts:
+                  - name: vault-secret
+                    mountPath: /secret
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: volume-sibling
+            namespace: default
+          spec:
+            selector:
+              matchLabels: {app: sibling}
+            template:
+              metadata:
+                labels: {app: sibling}
+                annotations: {vault.k8s.corp.net/inject: enabled}
+              spec:
+                containers: [{name: app, image: nginx:latest}]
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: volume-sibling
+            namespace: default
+          spec:
+            template:
+              spec:
+                volumes:
+                - name: vault-secret
+                  emptyDir:
+                    medium: Memory
+                containers:
+                - name: app
+                  volumeMounts:
+                  - name: vault-secret
+                    mountPath: /secret

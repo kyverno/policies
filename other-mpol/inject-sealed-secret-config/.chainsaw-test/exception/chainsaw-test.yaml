@@ -1,0 +1,17 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-sealed-secret-config-exception
+spec:
+  steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+  - try:
+    - apply: {file: ../../inject-sealed-secret-config.yaml}
+    - apply: {file: ../configmap.yaml}
+    - apply: {file: exception.yaml}
+    - apply: {file: pod.yaml}
+    - assert: {file: pod-unchanged.yaml}
