@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-sysctls-exceptions}
+policies: [../restrict-sysctls.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-sysctls, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-sysctls, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-sysctls, resources: [exception-whole], result: skip}
