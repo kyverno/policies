@@ -6,12 +6,22 @@ policies:
 - ../add-apparmor.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource1.yaml
   policy: add-apparmor-annotations
   resources:
   - pod01
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource3.yaml
+  policy: add-apparmor-annotations
+  resources:
+  - exception-pod
   result: pass
   isMutatingPolicy: true
 - kind: Pod

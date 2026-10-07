@@ -14,9 +14,25 @@ keywords:
 readme: |
   In the earlier Pod Security Policy controller, it was possible to define a setting which would enable AppArmor for all the containers within a Pod so they may be assigned the desired profile. Assigning an AppArmor profile, accomplished via an annotation, is useful in that it allows secure defaults to be defined and may also result in passing other validation rules such as those in the Pod Security Standards. This policy mutates Pods to add an annotation for every container to enabled AppArmor at the runtime/default level.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-apparmor-annotations` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  `variables.containersToMutate` filters `variables.allContainers` against
+  `exceptions.allowedImages`, populated from matching exceptions' `spec.images`.
+  It excludes approved images across regular, init, and ephemeral containers
+  from AppArmor annotation patches, while all remaining containers receive
+  `runtime/default`. Image matching is exact, not a wildcard or prefix match.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/psp-migration-mpol/add-apparmor/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "PSP Migration"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Pod,Annotation"
-digest: 210db03e68bc604b60d0ffe1f408a40cc51c97f086e891c120aa1df57c18a2cc
+digest: 00c51d0d6bac0eb81ce521850732e719d776bc9fe3d610b1cb3ee1a588aa2b1d

@@ -1,0 +1,15 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: apparmor-exception-pod
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-apparmor-annotations
+    kind: MutatingPolicy
+  images:
+  - exempt.example/first:1
+  - exempt.example/last:1
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'exception-pod'

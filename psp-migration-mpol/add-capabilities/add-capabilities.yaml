@@ -4,6 +4,7 @@ metadata:
   name: add-capabilities
   annotations:
     policies.kyverno.io/title: Add Capabilities
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/category: PSP Migration
     policies.kyverno.io/subject: Pod
     pod-policies.kyverno.io/autogen-controllers: none
