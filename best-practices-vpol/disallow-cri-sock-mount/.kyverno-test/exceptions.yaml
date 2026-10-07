@@ -1,0 +1,29 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: disallow-cri-sock-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: disallow-container-sock-mounts
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.name == 'exception-docker-sock' && object.metadata.namespace == 'test'
+  allowedValues:
+  - /var/run/docker.sock
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: disallow-cri-sock-mixed-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: disallow-container-sock-mounts
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.name == 'exception-docker-sock-mixed' && object.metadata.namespace == 'test'
+  allowedValues:
+  - /var/run/docker.sock

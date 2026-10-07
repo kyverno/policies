@@ -3,6 +3,7 @@ kind: ValidatingPolicy
 metadata:
  name: check-deprecated-apis
  annotations:
+   policies.kyverno.io/minversion: 1.19.1
    policies.kyverno.io/title: Check deprecated APIs in VPOL
    policies.kyverno.io/category: Best Practices in VPOL
    policies.kyverno.io/subject: Kubernetes APIs
@@ -86,6 +87,6 @@ spec:
                  'storage.k8s.io/v1beta1'
                ]
  validations:
-         - expression: "false"
+         - expression: "'deprecated-api' in exceptions.allowedValues || false"
            messageExpression: >-
              string(object.apiVersion) + '/' + string(object.kind) + ' is deprecated and will be removed in a future Kubernetes version. See: https://kubernetes.io/docs/reference/using-api/deprecation-guide/'

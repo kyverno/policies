@@ -14,10 +14,23 @@ keywords:
 readme: |
   Define and use labels that identify semantic attributes of your application or Deployment. A common set of labels allows tools to work collaboratively, describing objects in a common manner that all tools can understand. The recommended labels describe applications in a way that can be queried. This policy validates that the label `app.kubernetes.io/name` is specified with some value.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-labels` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `missing-label:app.kubernetes.io/name` in
+  `spec.allowedValues` to permit the matched Pod to omit that label or leave it
+  empty. Kyverno exposes it as `exceptions.allowedValues`; it is not a permitted
+  label value. Other requests still require a non-empty `app.kubernetes.io/name`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-labels/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod, Label"
-digest: 39adff051f3eb61c2569355e4cfcbce3e0df57a53cc73d6cbc36b76f9f69a82f
+digest: ea13616d0a9250f1f297b3d669f6b6ddf8cf81fabc7dcaf954ce090b22e54a2d
 createdAt: "2025-05-05T13:19:12Z"

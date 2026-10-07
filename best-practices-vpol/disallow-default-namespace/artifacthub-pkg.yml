@@ -14,10 +14,23 @@ keywords:
 readme: |
   Kubernetes Namespaces are an optional feature that provide a way to segment and isolate cluster resources across multiple applications and users. As a best practice, workloads should be isolated with Namespaces. Namespaces should be required and the default (empty) Namespace should not be used. This policy validates that Pods specify a Namespace name other than `default`. Rule auto-generation is disabled here due to Pod controllers need to specify the `namespace` field under the top-level `metadata` object and not at the Pod template level.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-default-namespace` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `namespace:default` in `spec.allowedValues` to
+  allow the matched Pod to use the default namespace. Kyverno exposes the token
+  as `exceptions.allowedValues`; the bare value `default` does not waive this check.
+  Other requests still undergo the namespace check.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-default-namespace/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Multi-Tenancy in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 77119e0fb24b15a295d4051eadb9a533a8a4cffe9baddc8c42a7fc82a42a0106
+digest: f383d4237bad7936551cad44d0a9a52dfeb69cc79db8e64b2bdde6c4f4820870
 createdAt: "2025-05-05T13:19:12Z"
