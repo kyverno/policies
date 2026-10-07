@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ndots-exception
+spec:
+  dnsConfig:
+    options:
+    - name: ndots
+      value: "4"
+  containers:
+  - name: app
+    image: nginx:latest

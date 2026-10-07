@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: label-nodes-cri-exception
+policies:
+- ../label-nodes-cri.yaml
+resources:
+- baseline-resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
+results:
+- kind: Node
+  patchedResources: baseline-patched.yaml
+  policy: label-nodes-cri
+  resources: [baseline-node]
+  result: pass
+  isMutatingPolicy: true
+- kind: Node
+  policy: label-nodes-cri
+  resources: [exception-node]
+  result: skip
+  isMutatingPolicy: true

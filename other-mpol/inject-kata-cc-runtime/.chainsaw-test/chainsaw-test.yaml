@@ -1,0 +1,17 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-kata-cc-runtime
+spec:
+  steps:
+  - try:
+    - apply:
+        file: runtimeclass.yaml
+    - apply:
+        file: ../inject-kata-cc-runtime.yaml
+    - assert:
+        file: policy-ready.yaml
+    - apply:
+        file: pod.yaml
+    - assert:
+        file: pod-patched.yaml

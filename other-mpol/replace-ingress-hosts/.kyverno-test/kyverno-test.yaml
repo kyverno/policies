@@ -1,0 +1,37 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: replace-ingress-hosts-exception
+policies:
+- ../replace-ingress-hosts.yaml
+resources:
+- baseline-resource.yaml
+- exception-resource.yaml
+- ../.chainsaw-test/kuttlresource.yaml
+- optional-tls-resource.yaml
+exceptions:
+- exception.yaml
+results:
+- kind: Ingress
+  patchedResources: baseline-patched.yaml
+  policy: replace-ingress-hosts
+  resources: [baseline-ingress]
+  result: pass
+  isMutatingPolicy: true
+- kind: Ingress
+  patchedResources: ../.chainsaw-test/resource-mutated.yaml
+  policy: replace-ingress-hosts
+  resources: [kuard]
+  result: pass
+  isMutatingPolicy: true
+- kind: Ingress
+  patchedResources: optional-tls-patched.yaml
+  policy: replace-ingress-hosts
+  resources: [optional-tls-ingress]
+  result: pass
+  isMutatingPolicy: true
+- kind: Ingress
+  policy: replace-ingress-hosts
+  resources: [exception-ingress]
+  result: skip
+  isMutatingPolicy: true

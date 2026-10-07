@@ -14,9 +14,23 @@ keywords:
 readme: |
   Jobs which are user created can often pile up and consume excess space in the cluster. In Kubernetes 1.23, the TTL-after-finished controller is stable and will automatically clean up these Jobs if the ttlSecondsAfterFinished is specified. This policy adds the ttlSecondsAfterFinished field to an Job that does not have an ownerReference set if not already specified.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-ttl-jobs` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `ttlSecondsAfterFinished` in `spec.allowedValues`,
+  which Kyverno exposes as `exceptions.allowedValues`, to skip the TTL mutation
+  on the matched Job. This is a field-level control, not an allowed TTL value.
+  Other eligible Jobs without ownerReferences or a TTL still receive the default
+  `ttlSecondsAfterFinished: 900`; existing TTL values are not overwritten.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-ttl-jobs/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Job"
-digest: 9d45309b818c8db28592a75eeb95e2859dbcec37a84270d419de6d8adb66718d
+digest: 2e309871ea69b9a8ade493b4189d390f3568c5b14917e401b3bac072a5512548

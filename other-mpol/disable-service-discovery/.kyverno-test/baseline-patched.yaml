@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: baseline-pod, namespace: team-a}
+spec:
+  dnsPolicy: Default
+  enableServiceLinks: false
+  containers: [{name: app, image: nginx:latest}]

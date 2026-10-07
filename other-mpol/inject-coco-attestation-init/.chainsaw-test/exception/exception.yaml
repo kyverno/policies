@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-attestation-init
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: inject-coco-attestation-init}]
+  matchConditions:
+  - name: exact-target
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'exception-pod'

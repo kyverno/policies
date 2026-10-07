@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-namespace-label
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: label-existing-namespaces}]
+  matchConditions:
+  - name: exact-target
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'exception-namespace'

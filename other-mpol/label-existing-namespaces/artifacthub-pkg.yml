@@ -14,6 +14,17 @@ keywords:
 readme: |
   Namespaces which preexist may need to be labeled after the fact and it is time consuming to identify which ones should be labeled and either doing so manually or with a scripted approach. This policy, which triggers on any AdmissionReview request to any Namespace, will result in applying the label `mykey=myvalue` to all existing Namespaces. If this policy is updated to change the desired label key or value, it will cause another mutation which updates all Namespaces.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `label-existing-namespaces` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/label-existing-namespaces/.chainsaw-test/exception/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"

@@ -14,6 +14,17 @@ keywords:
 readme: |
   A Pod PriorityClass is used to provide a guarantee on the scheduling of a Pod relative to others. This policy adds the priorityClassName of `non-production` to any Pod controller deployed into a Namespace that does not have the label env=production.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-pod-priorityclassname` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-pod-priorityclassname/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"

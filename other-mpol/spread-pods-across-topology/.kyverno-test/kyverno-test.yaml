@@ -6,6 +6,9 @@ policies:
 - ../spread-pods-across-topology.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Deployment
   patchedResources: patchedResource.yaml
@@ -13,4 +16,9 @@ results:
   resources:
   - mydeploy
   result: pass
+  isMutatingPolicy: true
+- kind: Deployment
+  policy: spread-pods
+  resources: [exception-deployment]
+  result: skip
   isMutatingPolicy: true
