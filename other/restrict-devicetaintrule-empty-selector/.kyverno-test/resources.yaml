@@ -1,0 +1,31 @@
+apiVersion: resource.k8s.io/v1beta2
+kind: DeviceTaintRule
+metadata:
+  name: no-selector-field
+spec:
+  taint:
+    key: test.example.com/no-selector
+    effect: NoSchedule
+
+---
+apiVersion: resource.k8s.io/v1beta2
+kind: DeviceTaintRule
+metadata:
+  name: empty-selector-object
+spec:
+  deviceSelector: {}
+  taint:
+    key: test.example.com/empty-selector
+    effect: NoSchedule
+
+---
+apiVersion: resource.k8s.io/v1beta2
+kind: DeviceTaintRule
+metadata:
+  name: good-scoped-selector
+spec:
+  deviceSelector:
+    driver: gpu.example.com
+  taint:
+    key: test.example.com/scoped-selector
+    effect: NoSchedule
