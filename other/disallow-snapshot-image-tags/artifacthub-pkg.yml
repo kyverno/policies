@@ -1,0 +1,22 @@
+name: disallow-snapshot-image-tags
+version: 1.0.0
+displayName: Disallow Snapshot Image Tags
+createdAt: "2026-09-18T14:25:51Z"
+description: >-
+  Build systems commonly publish unstable, pre-release images under tags that contain the word "snapshot" (for example `1.4.0-SNAPSHOT` or `snapshot-20260101`). Such tags are mutable and are routinely overwritten, so a workload that references one can silently change from one restart to the next. This policy reports any Pod whose containers, init containers, or ephemeral containers reference an image whose tag segment contains "snapshot" in any letter case. Only the tag segment is inspected: a registry or repository path that contains the word "snapshot" is not flagged. An image reference that carries both a snapshot tag and a digest (`repo:1.0-SNAPSHOT@sha256:...`) is still flagged, because the tag still signals an unstable build even though the digest pins the bytes. Images with no tag, or with a digest only, are not flagged by this policy; see the `disallow-latest-tag` policy for tag presence and the `require-image-checksum` policy for digest pinning.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/disallow-snapshot-image-tags/disallow-snapshot-image-tags.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  Build systems commonly publish unstable, pre-release images under tags that contain the word "snapshot" (for example `1.4.0-SNAPSHOT` or `snapshot-20260101`). Such tags are mutable and are routinely overwritten, so a workload that references one can silently change from one restart to the next. This policy reports any Pod whose containers, init containers, or ephemeral containers reference an image whose tag segment contains "snapshot" in any letter case. Only the tag segment is inspected: a registry or repository path that contains the word "snapshot" is not flagged. An image reference that carries both a snapshot tag and a digest (`repo:1.0-SNAPSHOT@sha256:...`) is still flagged, because the tag still signals an unstable build even though the digest pins the bytes. Images with no tag, or with a digest only, are not flagged by this policy; see the `disallow-latest-tag` policy for tag presence and the `require-image-checksum` policy for digest pinning.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.30-1.33"
+  kyverno/subject: "Pod"
+digest: c38f65bc81b2e1f173bc7b6fc0aac87cd61f69b17f77834c8905eaeebc11bd9a
