@@ -14,11 +14,24 @@ keywords:
 readme: |
   Node labels are critical pieces of metadata upon which many other applications and logic may depend and should not be altered or removed by regular users. Many cloud providers also use Node labels to signal specific functions to applications. This policy prevents setting of a new label called `foo` on cluster Nodes. Use of this policy requires removal of the Node resource filter in the Kyverno ConfigMap ([Node,*,*]). Due to Kubernetes CVE-2021-25735, this policy requires, at minimum, one of the following versions of Kubernetes: v1.18.18, v1.19.10, v1.20.6, or v1.21.0.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-node-label-creation` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  `variables.fooExceptionValue` encodes the resulting Node label as `foo:<value>` or
+  `foo:<absent>`. Put that exact token in `spec.allowedValues` to permit the matched label
+  change, including removal only with `foo:<absent>`. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-node-label-creation/.chainsaw-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Node, Label"
-digest: 092838113d3ad103e26d06a9c968640001b173609d4896453b053e589b68ae62
+digest: 0736889bfc1a76f9a5fca1d1bfbabdec930967dcd86229864a7ce75f233089d1
 
 createdAt: "2025-05-11T17:46:11Z"

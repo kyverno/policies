@@ -34,4 +34,3 @@ spec:
         - check:
             ($error != null): true
         file: pv-bad.yaml
-

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: clusteradmin-binding-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-binding-clusteradmin
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'badrb02'
+  allowedValues:
+  - roleRef.name:cluster-admin

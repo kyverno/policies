@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: deny-secret-token-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deny-secret-service-account-token-type
+  allowedValues: [kubernetes.io/service-account-token]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'bad-secret'

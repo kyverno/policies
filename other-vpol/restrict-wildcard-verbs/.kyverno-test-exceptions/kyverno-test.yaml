@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-wildcard-verbs-exception
+policies: [../restrict-wildcard-verbs.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: ClusterRole
+  policy: restrict-wildcard-verbs
+  resources: [badcr01]
+  result: fail
+- isValidatingPolicy: true
+  kind: ClusterRole
+  policy: restrict-wildcard-verbs
+  resources: [badcr02]
+  result: fail
+- isValidatingPolicy: true
+  kind: ClusterRole
+  policy: restrict-wildcard-verbs
+  resources: [badcr03]
+  result: pass

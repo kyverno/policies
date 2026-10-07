@@ -6,6 +6,8 @@ policies:
 - ../pdb-maxunavailable.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: PodDisruptionBudget
@@ -20,5 +22,5 @@ results:
   resources:
   - kube-system/good-pdb
   - kube-system/good-pdb-none
+  - kube-system/exception-pdb-zero
   result: pass
-

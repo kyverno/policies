@@ -36,6 +36,34 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: badpod03-keyless-exists
+spec:
+  tolerations:
+  - operator: Exists
+    effect: NoSchedule
+  containers:
+  - image: nginx
+    name: pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-controlplane
+spec:
+  tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: unrelated
+    operator: Exists
+    effect: NoSchedule
+  containers:
+  - image: nginx
+    name: pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod01
   labels:
     app: myapp
@@ -66,4 +94,3 @@ spec:
   containers:
   - name: busybox
     image: busybox:1.35
-

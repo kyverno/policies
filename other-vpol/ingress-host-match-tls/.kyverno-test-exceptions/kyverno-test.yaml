@@ -1,0 +1,13 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: ingress-host-match-tls-exceptions}
+policies: [../ingress-host-match-tls.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- partial-resources.yaml
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Ingress, policy: ingress-host-match-tls, resources: [badingress01], result: skip}
+- {isValidatingPolicy: true, kind: Ingress, policy: ingress-host-match-tls, resources: [badingress02], result: fail}
+- {isValidatingPolicy: true, kind: Ingress, policy: ingress-host-match-tls, resources: [partial-tls-approved], result: pass}
+- {isValidatingPolicy: true, kind: Ingress, policy: ingress-host-match-tls, resources: [partial-tls-sibling], result: fail}

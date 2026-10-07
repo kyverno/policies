@@ -19,10 +19,10 @@ spec:
       containers:
       - name: bb
         image: busybox:1.35
-        command: ["sleep", "300"]
+        command: ["sleep", "3600"]
       - name: bb2
         image: busybox:1.35
-        command: ["sleep", "300"]
+        command: ["sleep", "3600"]
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -45,7 +45,7 @@ spec:
       containers:
       - name: bb
         image: busybox:1.35
-        command: ["sleep", "300"]
+        command: ["sleep", "3600"]
       - name: bb2
         image: busybox:1.35
-        command: ["sleep", "300"]
+        command: ["sleep", "3600"]

@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-badingress01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: require-ingress-https
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-ingress
+    expression: object.metadata.name == 'badingress01' && object.metadata.namespace == 'default'

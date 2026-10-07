@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod
+  namespace: restrict-sa-ns
+spec:
+  serviceAccountName: serviceaccount02
+  containers:
+  - name: pod
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  namespace: restrict-sa-ns
+spec:
+  serviceAccountName: another-developer
+  containers:
+  - name: pod
+    image: busybox

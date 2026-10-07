@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: qos-class-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-qos-guaranteed
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-qos'
+  - name: target-namespace
+    expression: request.namespace == 'default'
+  allowedValues:
+  - qos.class:Burstable

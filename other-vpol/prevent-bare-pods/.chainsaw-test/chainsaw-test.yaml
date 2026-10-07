@@ -8,6 +8,11 @@ spec:
   # disable templating because it can cause issues with ValidatingPolicy
   template: false
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
@@ -38,6 +43,26 @@ spec:
         file: pod-bad.yaml
     - apply:
         file: deployment.yaml
+  - name: step-04
+    try:
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: pod-exception.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Bare Pods are not allowed. They must be created by Pod controllers.')): true
+        file: pod-sibling.yaml
+    - delete:
+        file: pod-exception.yaml
+    - delete:
+        file: exception.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Bare Pods are not allowed. They must be created by Pod controllers.')): true
+        file: pod-exception.yaml
   - name: step-03
     try:
     - sleep:
@@ -49,4 +74,3 @@ spec:
     try:
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n prevent-naked-pods-ns
-

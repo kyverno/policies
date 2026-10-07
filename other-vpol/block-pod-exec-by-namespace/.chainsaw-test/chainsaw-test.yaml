@@ -6,10 +6,25 @@ metadata:
   name: block-pod-exec-by-namespace
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../block-pod-exec-by-namespace.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-exec-by-namespace-name
+          spec:
+            validationActions: [Deny]
+    - apply:
+        file: policy-exception.yaml
     - assert:
         file: policy-ready.yaml
   - name: step-02
@@ -22,26 +37,74 @@ spec:
         file: podcontrollers.yaml
   - name: step-03
     try:
-    - sleep:
-        duration: 5s
+    - script:
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod --all -n pci --timeout=60s
+          kubectl wait --for=condition=Ready pod --all -n block-pod-exec-ns --timeout=60s
+          kubectl rollout status deployment/deployment01 -n pci --timeout=60s
+          kubectl rollout status deployment/deployment02 -n block-pod-exec-ns --timeout=60s
   - name: step-04
     try:
     - script:
-        content: if kubectl exec -n pci pod02 -- ls; then exit 1;else exit 0; fi
+        content: |
+          set -eu
+          output="$(kubectl exec -n pci pod02 -- sh -c 'printf policy-exec-ok')"
+          test "$output" = policy-exec-ok
     - script:
-        content: if kubectl exec -n pci deploy/deployment01 -- ls; then exit 1;else
-          exit 0; fi
+        content: |
+          set -eu
+          if kubectl exec -n pci pod03 -- sh -c 'printf unexpected' > /tmp/exec-denied 2>&1; then exit 1; fi
+          grep -F "Pods in this namespace may not be exec'd into." /tmp/exec-denied
     - script:
-        content: kubectl exec -n block-pod-exec-ns pod01 -- ls
+        content: |
+          set -eu
+          if kubectl exec -n pci deploy/deployment01 -- sh -c 'printf unexpected' > /tmp/exec-denied 2>&1; then exit 1; fi
+          grep -F "Pods in this namespace may not be exec'd into." /tmp/exec-denied
     - script:
-        content: kubectl exec -n block-pod-exec-ns deploy/deployment02 -- ls
+        content: |
+          set -eu
+          output="$(kubectl exec -n block-pod-exec-ns pod01 -- sh -c 'printf policy-exec-ok')"
+          test "$output" = policy-exec-ok
+    - script:
+        content: |
+          set -eu
+          output="$(kubectl exec -n block-pod-exec-ns deploy/deployment02 -- sh -c 'printf policy-exec-ok')"
+          test "$output" = policy-exec-ok
+  - name: step-05
+    try:
+    - delete:
+        ref:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          name: pci-exec-exception
+          namespace: policy-exceptions
+    - sleep:
+        duration: 5s
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            if kubectl get policyexception pci-exec-exception -n policy-exceptions >/dev/null 2>&1; then sleep 1; continue; fi
+            if kubectl exec -n pci pod02 -- sh -c 'printf unexpected' > /tmp/exec-denied-after-removal 2>&1; then
+              sleep 1
+              continue
+            fi
+            if grep -F "Pods in this namespace may not be exec'd into." /tmp/exec-denied-after-removal; then
+              exit 0
+            fi
+            cat /tmp/exec-denied-after-removal >&2
+            exit 1
+          done
+          echo "PolicyException removal was not observed within 30 seconds" >&2
+          exit 1
   - name: step-99
     try:
     - script:
-        content: kubectl delete deployments --all --force --grace-period=0 -n pci
+        content: kubectl delete deployments --all --ignore-not-found --wait=true --timeout=60s -n pci
     - script:
-        content: kubectl delete deployments --all --force --grace-period=0 -n block-pod-exec-ns
+        content: kubectl delete deployments --all --ignore-not-found --wait=true --timeout=60s -n block-pod-exec-ns
     - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n pci
+        content: kubectl delete pods --all --ignore-not-found --wait=true --timeout=60s -n pci
     - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n block-pod-exec-ns
+        content: kubectl delete pods --all --ignore-not-found --wait=true --timeout=60s -n block-pod-exec-ns

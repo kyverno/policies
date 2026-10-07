@@ -6,10 +6,23 @@ metadata:
   name: block-pod-exec-by-pod-and-container
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: exception-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../block-pod-exec-by-pod-and-container.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-exec-by-pod-and-container
+          spec:
+            validationActions: [Deny]
     - assert:
         file: policy-ready.yaml
   - name: step-02
@@ -22,6 +35,10 @@ spec:
         file: chainsaw-step-02-apply-3.yaml
     - apply:
         file: chainsaw-step-02-apply-4.yaml
+    - apply:
+        file: exception-pod.yaml
+    - apply:
+        file: exception.yaml
   - name: step-03
     try:
     - sleep:
@@ -29,14 +46,34 @@ spec:
   - name: step-04
     try:
     - script:
-        content: if kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container
-          nginx -- ls; then exit 1;else exit 0; fi
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod --all -n bpe-podcontainer-ns --timeout=60s
+    - script:
+        content: |
+          set -eu
+          set +e
+          output=$(kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container nginx -- ls 2>&1)
+          code=$?
+          set -e
+          test "$code" -ne 0
+          printf '%s' "$output" | grep -F "Nginx containers inside myapp-maintenance Pods may not be exec'd into."
     - script:
         content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-01 --container busybox -- ls
     - script:
         content: kubectl exec -n bpe-podcontainer-ns myapp-maintenance-02 --container busybox -- ls
     - script:
         content: kubectl exec -n bpe-podcontainer-ns not-myapp --container nginx -- ls
+    - script:
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod/myapp-maintenance-exception -n bpe-podcontainer-ns --timeout=60s
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n bpe-podcontainer-ns myapp-maintenance-exception --container nginx -- ls >/dev/null 2>exec-allowed.err; then exit 0; fi
+            cat exec-allowed.err >&2
+            sleep 1
+          done
+          exit 1
   - name: step-99
     try:
     - script:

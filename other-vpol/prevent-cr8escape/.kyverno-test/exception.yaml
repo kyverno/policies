@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-badpod01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: prevent-cr8escape
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: "['badpod01', 'badpod02'].exists(name, request.name == name) && request.namespace == 'default'"
+  allowedValues:
+  - "1+kernel.core_pattern=|/var/lib/containers/storage/overlay/3ef1281bce79865599f673b476957be73f994d17c15109d2b6a426711cf753e6/diff/malicious.sh #"

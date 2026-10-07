@@ -30,5 +30,5 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy topologyspreadconstraints-policy failed')): true
         file: podcontrollers-bad.yaml

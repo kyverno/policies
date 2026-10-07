@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Sample in Vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
@@ -28,10 +28,9 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-    - expression: "object.spec.?securityContext.?runAsUser.orValue(1) == 1000"
+    - expression: "object.spec.?securityContext.?runAsUser.orValue(1) == 1000 || exceptions.allowedValues.exists(value, value == 'runAsUser:' + string(object.spec.?securityContext.?runAsUser.orValue(1)))"
       message: "User ID should be 1000."
-    - expression: "object.spec.?securityContext.?runAsGroup.orValue(1) == 3000"
+    - expression: "object.spec.?securityContext.?runAsGroup.orValue(1) == 3000 || exceptions.allowedValues.exists(value, value == 'runAsGroup:' + string(object.spec.?securityContext.?runAsGroup.orValue(1)))"
       message: "Group ID should be 3000."
-    - expression: "object.spec.?securityContext.?fsGroup.orValue(1) == 2000"
+    - expression: "object.spec.?securityContext.?fsGroup.orValue(1) == 2000 || exceptions.allowedValues.exists(value, value == 'fsGroup:' + string(object.spec.?securityContext.?fsGroup.orValue(1)))"
       message: "fs Group should be 2000."
-

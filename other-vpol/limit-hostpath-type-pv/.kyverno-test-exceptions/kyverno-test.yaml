@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: limit-hostpath-type-pv-exception
+policies: [../limit-hostpath-type-pv.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: PersistentVolume
+  policy: limit-hostpath-type-pv
+  resources: [bad-pv]
+  result: pass
+- isValidatingPolicy: true
+  kind: PersistentVolume
+  policy: limit-hostpath-type-pv
+  resources: [bad-pv-data-other]
+  result: fail

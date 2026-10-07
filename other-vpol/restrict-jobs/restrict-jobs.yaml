@@ -7,6 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Job
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.12.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
@@ -23,8 +24,7 @@ spec:
         resources:   ["jobs"]
   matchConditions:
     - name: "not-created-by-cronjob"
-      expression: "!has(object.metadata.ownerReferences) || object.metadata.ownerReferences[0].kind != 'CronJob'"
+      expression: "!object.metadata.?ownerReferences.orValue([]).exists(owner, owner.kind == 'CronJob' && owner.?controller.orValue(false))"
   validations:
-    - expression: "false"
+    - expression: "exceptions.allowedValues.exists(value, value == 'job-owner:' + object.metadata.name)"
       message: Jobs are only allowed if spawned from CronJobs.
-

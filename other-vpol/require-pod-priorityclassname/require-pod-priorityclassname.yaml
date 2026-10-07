@@ -8,6 +8,7 @@ metadata:
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     kyverno.io/kyverno-version: 1.14.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
       A Pod may optionally specify a priorityClassName which indicates the scheduling
@@ -29,6 +30,5 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-    - expression: "object.spec.?priorityClassName.orValue('') != ''"
+    - expression: "object.spec.?priorityClassName.orValue('') != '' || object.spec.?priorityClassName.orValue('') in exceptions.allowedValues.orValue([])"
       message: "Pods must define the priorityClassName field."
-

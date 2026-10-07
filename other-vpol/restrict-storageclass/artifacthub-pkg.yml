@@ -15,12 +15,24 @@ keywords:
 readme: |
   StorageClasses allow description of custom "classes" of storage offered by the cluster, based on quality-of-service levels, backup policies, or custom policies determined by the cluster administrators. For shared StorageClasses in a multi-tenancy environment, a reclaimPolicy of `Delete` should be used to ensure a PersistentVolume cannot be reused across Namespaces. This policy requires StorageClasses set a reclaimPolicy of `Delete`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-storageclass` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact reclaim-policy values such as `Retain` in `spec.allowedValues` to allow them
+  instead of `Delete`. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`;
+  unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-storageclass/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other, Multi-Tenancy in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "StorageClass"
-digest: 7d17c8c08b78c463fba7393a172dd2fa3590fcc7a490d31aef8ec53aa4e35ea4
+digest: f45de3bb9f4a63de9569ba32cf0466f67c29658ece8c0f869589059a13cc4e8c
 
 
 createdAt: "2025-05-11T17:46:12Z"

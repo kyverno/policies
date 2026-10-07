@@ -1,0 +1,19 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-secret-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: check-serviceaccount-secrets}]
+  allowedValues: ['serviceaccount-secret:build-robot-secret']
+  matchConditions:
+  - name: exact-resource
+    expression: "object.metadata.name == 'bad-svc-account' && object.metadata.?namespace.orValue('') == 'default'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-namespace-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: check-serviceaccount-secrets}]
+  allowedValues: ['serviceaccount-secret:build-robot-secret']
+  matchConditions:
+  - name: wrong-namespace
+    expression: "object.metadata.name == 'other-bad-svc' && object.metadata.?namespace.orValue('') == 'team-b'"

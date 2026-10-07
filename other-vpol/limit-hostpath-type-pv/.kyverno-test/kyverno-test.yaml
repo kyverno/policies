@@ -17,6 +17,11 @@ results:
   kind: PersistentVolume
   policy: limit-hostpath-type-pv
   resources:
+  - bad-pv-data-other
+  result: fail
+- isValidatingPolicy: true
+  kind: PersistentVolume
+  policy: limit-hostpath-type-pv
+  resources:
   - good-pv
   result: pass
-

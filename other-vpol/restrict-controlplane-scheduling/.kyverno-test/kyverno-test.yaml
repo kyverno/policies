@@ -6,6 +6,8 @@ policies:
 - ../restrict-controlplane-scheduling.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -13,6 +15,7 @@ results:
   resources:
   - default/badpod01
   - default/badpod02
+  - default/badpod03-keyless-exists
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -20,5 +23,5 @@ results:
   resources:
   - default/goodpod01
   - default/goodpod02
+  - default/exception-controlplane
   result: pass
-

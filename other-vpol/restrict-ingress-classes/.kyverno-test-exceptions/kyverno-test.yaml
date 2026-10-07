@@ -1,0 +1,32 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-ingress-classes-exceptions
+policies:
+- ../restrict-ingress-classes.yaml
+resources:
+- ../.kyverno-test/resource.yaml
+- partial-resources.yaml
+exceptions:
+- ../.kyverno-test/exceptions.yaml
+results:
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources: [default/minimal-ingress-2]
+  result: skip
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources: [default/minimal-ingress-1]
+  result: pass
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources: [default/partial-class-approved]
+  result: pass
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: restrict-ingress-classes
+  resources: [default/partial-class-forbidden]
+  result: fail

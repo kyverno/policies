@@ -14,9 +14,21 @@ keywords:
 readme: |
   The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods having the label `exec=false`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deny-exec-by-pod-label` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `pod.exec:<namespace>:<pod-name>` in `spec.allowedValues` to allow exec only for
+  that Pod despite its exec label. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-pod-exec-by-pod-label/.chainsaw-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 3e06c2f03c839f3786beb062b72223fbbd3abf9c58411a341e8d629f558bcd03
+digest: e7d99c781a8ba4dc9fe9b06a2547bd1f27acf1ec19905967c9201b356aa86a48
 createdAt: "2025-12-02T13:59:46Z"

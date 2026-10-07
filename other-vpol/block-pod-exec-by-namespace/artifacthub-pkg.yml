@@ -14,9 +14,21 @@ keywords:
 readme: |
   The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to Pods in a Namespace called `pci`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deny-exec-by-namespace-name` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `pod:<namespace>/<pod-name>` in `spec.allowedValues` to allow exec only for that Pod
+  in the otherwise-blocked namespace. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-pod-exec-by-namespace/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 00a90c4b3f11fe883dd0c67ece20f0f2ffeeddb9ee439086047741b00226d72d
+digest: 53d283e34d7bae257101e8891c96541b07794a2f6b4e507dab8f55b8d0706f66
 createdAt: "2025-12-02T13:59:47Z"

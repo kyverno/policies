@@ -14,9 +14,22 @@ keywords:
 readme: |
   The `exec` command may be used to gain shell access, or run other commands, in a Pod's container. While this can be useful for troubleshooting purposes, it could represent an attack vector and is discouraged. This policy blocks Pod exec commands to containers named `nginx` in Pods starting with name `myapp-maintenance`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deny-exec-by-pod-and-container` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List the exact exec target container name in `spec.allowedValues` to allow that
+  container; retain Pod name and namespace constraints in `spec.matchConditions`. CEL
+  consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-pod-exec-by-pod-and-container/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Pod"
-digest: 2d973041ea521850048139da2f7126a049c837f980cbe907e033f1c3e8e7bc0f
+digest: e50b35e71e4d333bd8d4fe6b89c8360f6c404f6c013eab0fb701d0f9b6d4ba39
 createdAt: "2025-12-10T14:21:28Z"

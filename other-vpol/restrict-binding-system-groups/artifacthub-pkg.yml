@@ -15,12 +15,25 @@ keywords:
 readme: |
   Certain system groups exist in Kubernetes which grant permissions that are used for certain system-level functions yet typically never appropriate for other users. This policy prevents creating bindings to some of these groups including system:anonymous, system:unauthenticated, and system:masters.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-binding-system-groups` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact subject names (`system:anonymous`, `system:unauthenticated`, or
+  `system:masters`) in `spec.allowedValues`; each unlisted restricted subject still fails.
+  CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-binding-system-groups/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
-digest: 2072aded6192490850c94e9ef8d6d22b244c40cdf69266c9ff286b6ea045f8e5
+digest: 10ed1d98efc89abde0df5552ccf0b50aaac04d3d03ac7ff9ee4ec7e4b2b70e90
 
 
 createdAt: "2025-05-11T17:46:11Z"

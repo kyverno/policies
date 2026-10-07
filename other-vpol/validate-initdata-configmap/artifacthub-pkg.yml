@@ -15,8 +15,22 @@ keywords:
 readme: |
   Validates that ConfigMaps with a label key coco.io/type and value initdata contain all required fields with proper values.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `validate-initdata-configmap` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `missing-key:version`, `missing-key:policy.rego`, `missing-key:aa.toml`, or
+  `missing-key:cdh.toml` in `spec.allowedValues` to allow that key to be absent or empty.
+  Use `algorithm:<value>` for a present algorithm outside `variables.allowedAlgorithms`
+  (`sha256`, `sha384`, `sha512`); it does not waive a missing algorithm. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/validate-initdata-configmap/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Confidential Computing"
   kyverno/subject: "ConfigMap"
-digest: 8c3e911c03c36861bccfb351f4fe442667022bd505efefeb6d485a4421d1862d
+digest: 9fe23803c43f7c529cf888baa0ae8aa08216f78ff1b78714039a4c3b0adb7153

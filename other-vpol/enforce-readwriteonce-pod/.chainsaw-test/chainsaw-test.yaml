@@ -1,0 +1,59 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-readwriteonce-pod-exceptions
+spec:
+  catch:
+  - script:
+      content: |
+        set -eu
+        kubectl delete -f pvc-legacy.yaml --ignore-not-found --wait=true --timeout=30s
+        kubectl delete -f exceptions.yaml --ignore-not-found --wait=true --timeout=30s
+  steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+  - name: install-policy
+    try:
+    - apply:
+        file: ../enforce-readwriteonce-pod.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: readwriteonce-pod
+          spec:
+            validationActions: [Deny]
+  - name: resource-namespace
+    try:
+    - apply:
+        file: namespaces.yaml
+  - name: install-exception
+    skipDelete: true
+    try:
+    - apply:
+        file: exceptions.yaml
+  - name: full-resource-exception
+    try:
+    - script:
+        content: kubectl create -f pvc-legacy.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'The accessMode must be set to ReadWriteOncePod.')): true
+        file: pvc-protected.yaml
+  - name: lifecycle-removal
+    try:
+    - script:
+        content: kubectl delete -f pvc-legacy.yaml --wait=true --timeout=30s
+    - delete:
+        file: exceptions.yaml
+    - script:
+        content: >-
+          for attempt in $(seq 1 20); do output=$(kubectl create -f pvc-legacy.yaml --dry-run=server -o yaml
+          2>&1); status=$?; if test "$status" -ne 0; then echo "$output" | grep -F
+          "The accessMode must be set to ReadWriteOncePod." >/dev/null && exit 0; echo "$output"; exit 1;
+          fi; sleep 1; done; echo "$output"; exit 1

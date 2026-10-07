@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: qos-burstable-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-qos-burstable
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'badpod01' && request.namespace == 'default'
+  allowedValues:
+  - qos.class:BestEffort

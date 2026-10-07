@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-priority-approved
+  namespace: default
+spec:
+  containers: [{name: app, image: ghcr.io/kyverno/test-busybox:1.35}]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-priority-wrong
+  namespace: other
+spec:
+  priorityClassName: ''
+  containers: [{name: app, image: ghcr.io/kyverno/test-busybox:1.35}]

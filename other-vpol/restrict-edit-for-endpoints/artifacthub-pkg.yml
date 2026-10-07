@@ -14,11 +14,24 @@ keywords:
 readme: |
   Clusters not initially installed with Kubernetes 1.22 may be vulnerable to an issue defined in CVE-2021-25740 which could enable users to send network traffic to locations they would otherwise not have access to via a confused deputy attack. This was due to the system:aggregate-to-edit ClusterRole having edit permission of Endpoints. This policy, intended to run in background mode, checks if your cluster is vulnerable to CVE-2021-25740 by ensuring the system:aggregate-to-edit ClusterRole does not have the edit permission of Endpoints.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-edit-for-endpoints` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact verbs (`create`, `update`, `patch`, `delete`, or `*`) in `spec.allowedValues`
+  to permit only those verbs on endpoints. `*` is a literal verb token, not an exception
+  wildcard. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted
+  values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-edit-for-endpoints/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "ClusterRole"
-digest: c6c99c6ef3023ce14a783b0c47986f3e985ebc0a97d0478143e367c2f47832d3
+digest: 805aaa6817a071fc9866118b38deffaa17b6ff53bd1793e7c965ed8c081d921f
 
 createdAt: "2025-05-11T17:46:12Z"
