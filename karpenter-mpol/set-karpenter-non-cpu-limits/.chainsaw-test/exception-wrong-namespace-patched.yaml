@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-limits-pod
+  namespace: karpenter-other-ns
+spec:
+  containers:
+  - name: app
+    image: nginx:1.27
+    resources:
+      limits:
+        memory: 100Mi
+        ephemeral-storage: 1Gi
