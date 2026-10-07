@@ -14,10 +14,26 @@ keywords:
 readme: |
   Windows pods offer the ability to run HostProcess containers which enables privileged access to the Windows node. Privileged access to the host is disallowed in the baseline policy. HostProcess pods are an alpha feature as of Kubernetes v1.22. This policy ensures the `hostProcess` field, if present, is set to `false`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-host-process` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `control:podHostProcess` in `spec.allowedValues` to waive only the Pod-level value
+  read by `variables.podHostProcess`. Container hostProcess settings still require exact
+  image references in `spec.images`; an image allowance does not waive the Pod-level
+  control. `variables.podSpec` selects the Pod spec directly or from the workload
+  template. `variables.allContainers` includes regular, init, and ephemeral containers.
+  CEL reads images through `exceptions.allowedImages` and tokens through
+  `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-host-process/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: a81ea633d5a3cbdbc96645108d99397a530cdcaa2c37c1099a16935fd21d66ed
+digest: 722458d0a76cfddd75232dd5492e1e9e071fa8f92584f9bceac085fb9ecfc8a6
 createdAt: "2025-03-13T23:26:58Z"

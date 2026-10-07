@@ -14,10 +14,24 @@ keywords:
 readme: |
   Privilege escalation, such as via set-user-ID or set-group-ID file mode, should not be allowed. This policy ensures the `allowPrivilegeEscalation` field is set to `false`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-privilege-escalation` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use exact image references in `spec.images` to waive the explicit
+  `allowPrivilegeEscalation: false` requirement only for matching containers.
+  `variables.podSpec` selects the Pod spec directly or from the workload template.
+  `variables.allContainers` includes regular, init, and ephemeral containers. CEL reads
+  images through `exceptions.allowedImages`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/restricted/disallow-privilege-escalation/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 472536c045db34e54d761902da061116b0f69c0705f4ab61959dfabbe3db55ef
+digest: 317e8d41ce06b6e1c5fa8b46a359ca6b61a50b57ef13a039c536c3301d0317a4
 createdAt: "2025-03-13T23:26:58Z"

@@ -12,6 +12,7 @@ spec:
       labels:
         app: app
     spec:
+      hostNetwork: true
       initContainers:
       - name: busybox01-init
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -23,9 +24,12 @@ spec:
         image: ghcr.io/kyverno/test-busybox:1.35
         securityContext:
           windowsOptions:
-            hostProcess: false
+            hostProcess: true
       - name: busybox02
         image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -37,16 +41,20 @@ spec:
     spec:
       template:
         spec:
+          hostNetwork: true
           restartPolicy: Never
           initContainers:
           - name: busybox01-init
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               windowsOptions:
-                hostProcess: false
+                hostProcess: true
           containers:
           - name: busybox01
             image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              windowsOptions:
+                hostProcess: true
           - name: busybox02
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:

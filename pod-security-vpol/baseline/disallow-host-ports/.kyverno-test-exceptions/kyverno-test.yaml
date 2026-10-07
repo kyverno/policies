@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-host-ports-exceptions}
+policies: [../disallow-host-ports.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-ports, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-ports, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-ports, resources: [exception-whole], result: skip}

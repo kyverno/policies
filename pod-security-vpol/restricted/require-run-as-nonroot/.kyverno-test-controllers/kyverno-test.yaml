@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-run-as-nonroot-controllers
+policies:
+- ../require-run-as-nonroot.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - unsafe-require-run-as-nonroot-7
+  result: fail

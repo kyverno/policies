@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
@@ -21,24 +21,41 @@ spec:
       enabled: true
   matchConstraints:
     resourceRules:
-      - apiGroups:   [""]
-        apiVersions: ["v1"]
-        operations:  ["CREATE", "UPDATE"]
-        resources:   ["pods"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/ephemeralcontainers"]
   variables:
-  - name: allContainers
-    expression: >-
-      object.spec.containers + 
-      object.spec.?initContainers.orValue([]) + 
-      object.spec.?ephemeralContainers.orValue([])
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: allContainers
+      expression: >-
+        variables.podSpec.containers +
+        variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
-      object.spec.?securityContext.?runAsUser.orValue(1) > 0
+      variables.podSpec.?securityContext.?runAsUser.orValue(1) > 0
     message: >-
       Running as root is not allowed. The field spec.securityContext.runAsUser 
       must be unset or set to a number greater than zero.
   - expression: >-
-      variables.allContainers.all(container, 
+      variables.allContainers.all(container,
+        container.image in exceptions.allowedImages ||
         container.?securityContext.?runAsUser.orValue(1) > 0)
     message: >-
       Running as root is not allowed. The field spec.containers[*].securityContext.runAsUser, 

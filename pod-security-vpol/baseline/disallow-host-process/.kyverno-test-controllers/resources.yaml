@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-disallow-host-process-1
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: unsafe-disallow-host-process-2
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unsafe-disallow-host-process-3
+spec:
+  serviceName: app
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: unsafe-disallow-host-process-4
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: unsafe-disallow-host-process-5
+spec:
+  selector:
+    app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unsafe-disallow-host-process-6
+spec:
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          windowsOptions:
+            hostProcess: true
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unsafe-disallow-host-process-7
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              windowsOptions:
+                hostProcess: true
