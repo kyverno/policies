@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-ns-quota-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-ns-quota
+    kind: GeneratingPolicy
+  matchConditions:
+  - name: exact-namespace
+    expression: object.metadata.name == 'exception-ns-quota'
+  allowedValues:
+  - ResourceQuota/default-resourcequota
