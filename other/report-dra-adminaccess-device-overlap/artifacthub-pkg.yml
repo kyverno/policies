@@ -1,0 +1,34 @@
+name: report-dra-adminaccess-device-overlap
+version: 1.0.0
+displayName: Report DRA AdminAccess Device Overlap
+description: >-
+  Kubernetes Dynamic Resource Allocation's `adminAccess` intentionally ignores ordinary claims'
+  exclusivity when allocating a device -- working as designed, not a bug (see
+  kubernetes/kubernetes#141293). That means two `ResourceClaim`s from completely unrelated
+  namespaces can end up allocated to the exact same physical device at the same time, with nothing
+  today surfacing that it happened. This policy runs in background mode and periodically correlates
+  every `ResourceClaim`'s allocated devices against every other claim's: whenever an
+  adminAccess-allocated device (driver/pool/device) also appears in a different claim's allocation
+  without adminAccess, it reports the claim. It intentionally never blocks anything -- adminAccess
+  device sharing is expected behavior; the point is giving cluster operators a standing signal for
+  when it is actually happening.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/report-dra-adminaccess-device-overlap/report-dra-adminaccess-device-overlap.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Dynamic Resource Allocation
+readme: |
+  Kubernetes Dynamic Resource Allocation's `adminAccess` intentionally ignores ordinary claims' exclusivity when allocating a device -- working as designed, not a bug (see [kubernetes/kubernetes#141293](https://github.com/kubernetes/kubernetes/issues/141293)).
+
+  That means two `ResourceClaim`s from completely unrelated namespaces can end up allocated to the exact same physical device at the same time, and nothing today surfaces that it happened. This policy runs in background mode and periodically correlates every `ResourceClaim`'s allocated devices (`status.allocation.devices.results`) against every other claim's: whenever an adminAccess-allocated device (identified by `driver`/`pool`/`device`) also appears in a different claim's allocation without adminAccess, the adminAccess-holding claim is reported.
+
+  This policy intentionally never blocks anything -- adminAccess device sharing is expected, working-as-designed behavior. The point is giving cluster operators a standing PolicyReport signal for when it is actually happening, the same way PolicyReport-based access reviews already track other security-relevant conditions (see the companion policy `report-dra-adminaccess-namespaces`).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.37"
+  kyverno/subject: "ResourceClaim"
