@@ -14,10 +14,23 @@ keywords:
 readme: |
   A Kubernetes Service of type NodePort uses a host port to receive traffic from any source. A NetworkPolicy cannot be used to control traffic to host ports. Although NodePort Services can be useful, their use must be limited to Services with additional upstream security checks. This policy validates that any new Services do not use the `NodePort` type.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-nodeport` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `service-type:NodePort` in `spec.allowedValues`
+  to permit the matched Service to use type `NodePort`. Kyverno exposes it as
+  `exceptions.allowedValues`; the bare value `NodePort` does not waive this check.
+  Other requests still undergo the Service type check.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/restrict-node-port/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Service"
-digest: e284b24983335628bbce4e736fade7265cec3fcb7978c56f1f5bda144e4feb38
+digest: dabef699f5559e91651e71a16c215b52d3886a9603db93bd75550287554f7290
 createdAt: "2025-05-05T13:19:13Z"

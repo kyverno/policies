@@ -2,6 +2,7 @@ apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
   name: bad-cronjob
+  namespace: test
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -24,6 +25,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: good-cronjob
+  namespace: test
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -49,4 +51,19 @@ spec:
   matchingPrecedence: 1000
   priorityLevelConfiguration:
     name: exempt
-  
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: exception-bad-cronjob
+  namespace: test
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: hello
+            image: busybox:1.28
+          restartPolicy: OnFailure

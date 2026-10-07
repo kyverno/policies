@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-deprecated-apis
+spec:
+  steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+  - name: apply-policy
+    try:
+    - apply:
+        file: rbac-reporting.yaml
+    - sleep:
+        duration: 5s
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            ready=true
+            for verb in get list watch; do
+              if ! kubectl auth can-i "$verb" events.events.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+              if ! kubectl auth can-i "$verb" runtimeclasses.node.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+              if ! kubectl auth can-i "$verb" flowschemas.flowcontrol.apiserver.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+              if ! kubectl auth can-i "$verb" prioritylevelconfigurations.flowcontrol.apiserver.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+              if ! kubectl auth can-i "$verb" poddisruptionbudgets.policy --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+              if ! kubectl auth can-i "$verb" csistoragecapacities.storage.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+            done
+            if [ "$ready" = true ]; then exit 0; fi
+            sleep 1
+          done
+          echo 'deprecated-api reporting RBAC aggregation did not become observable for reports-controller'
+          exit 1
+    - apply:
+        file: ../check-deprecated-apis.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: check-deprecated-apis
+          spec:
+            validationActions: [Deny]
+    - assert:
+        file: policy-ready.yaml
+  - name: reject-deprecated-api
+    try:
+    - script:
+        content: |
+          set -eu
+          set +e
+          discovery=$(kubectl get --raw /apis/flowcontrol.apiserver.k8s.io/v1beta3 2>&1)
+          discovery_status=$?
+          set -e
+          if [ "$discovery_status" -ne 0 ]; then
+            if printf '%s' "$discovery" | grep -Eqi 'not found|could not find the requested resource|does not exist'; then
+              echo 'SKIP: flowcontrol.apiserver.k8s.io/v1beta3 is not served on this Kubernetes version'
+              exit 0
+            fi
+            echo "$discovery"
+            echo 'API discovery failed for a reason other than an unsupported version'
+            exit 1
+          fi
+          kubectl apply -f stable-flowschema.yaml
+          kubectl delete -f stable-flowschema.yaml --ignore-not-found
+          kubectl apply -f approved-exception.yaml
+          kubectl apply -f deprecated-flowschema.yaml
+          kubectl delete -f approved-exception.yaml --ignore-not-found
+          kubectl delete -f deprecated-flowschema.yaml --ignore-not-found
+          set +e
+          output=$(kubectl create -f deprecated-flowschema.yaml 2>&1)
+          apply_status=$?
+          set -e
+          echo "$output"
+          if [ "$apply_status" -eq 0 ]; then
+            echo 'Expected deprecated API admission to be denied after exception removal'
+            exit 1
+          fi
+          if ! printf '%s' "$output" | grep -Fqi 'admission webhook'; then
+            echo 'Expected an admission webhook denial, not an API or client error'
+            exit 1
+          fi
+          if ! printf '%s' "$output" | grep -Fqi 'check-deprecated-apis'; then
+            echo 'Expected a policy-specific deprecated-API denial'
+            exit 1
+          fi
+  - name: cleanup-rbac
+    try:
+    - delete:
+        file: rbac-reporting.yaml

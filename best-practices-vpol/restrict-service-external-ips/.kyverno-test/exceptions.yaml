@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: external-ips-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-external-ips
+  allowedValues: [externalIPs]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Service' && object.metadata.name == 'exception-external-ips' && object.metadata.namespace == 'test'

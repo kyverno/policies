@@ -6,6 +6,8 @@ policies:
 - ../restrict-node-port.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Service
   policy: restrict-nodeport
@@ -18,5 +20,10 @@ results:
   resources:
   - goodservice01
   - goodservice02
+  result: pass
+- kind: Service
+  policy: restrict-nodeport
+  resources:
+  - exception-nodeport
   result: pass
   isValidatingPolicy: true

@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: check-deprecated-apis
+status:
+  conditionStatus:
+    (conditions[?type == 'WebhookConfigured']):
+    - reason: Succeeded
+      message: Webhook configured.
+      type: WebhookConfigured
+      status: "True"
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Succeeded
+      message: Policy is ready for reporting.
+      type: RBACPermissionsGranted
+      status: "True"

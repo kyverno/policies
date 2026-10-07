@@ -1,0 +1,22 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno-policy-test-deprecated-reporting
+  labels:
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+rules:
+- apiGroups: [events.k8s.io]
+  resources: [events]
+  verbs: [get, list, watch]
+- apiGroups: [policy]
+  resources: [poddisruptionbudgets, podsecuritypolicies]
+  verbs: [get, list, watch]
+- apiGroups: [node.k8s.io]
+  resources: [runtimeclasses]
+  verbs: [get, list, watch]
+- apiGroups: [flowcontrol.apiserver.k8s.io]
+  resources: [flowschemas, prioritylevelconfigurations]
+  verbs: [get, list, watch]
+- apiGroups: [storage.k8s.io]
+  resources: [csistoragecapacities]
+  verbs: [get, list, watch]

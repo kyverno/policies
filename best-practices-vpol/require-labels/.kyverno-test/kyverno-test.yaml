@@ -6,11 +6,18 @@ policies:
 - ../require-labels.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   policy: require-labels
   resources:
   - badpod01
+  result: fail
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-labels
+  resources:
   - badpod02
   - badpod03
   result: fail
@@ -20,5 +27,11 @@ results:
   resources:
   - goodpod01
   - goodpod02
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-labels
+  resources:
+  - exception-labels
   result: pass
   isValidatingPolicy: true

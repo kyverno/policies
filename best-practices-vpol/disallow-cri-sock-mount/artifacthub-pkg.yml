@@ -15,10 +15,25 @@ keywords:
 readme: |
   Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition to or replacement of this policy, preventing users from mounting the parent directories (/var/run and /var) may be necessary to completely prevent socket bind mounts.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-container-sock-mounts` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put exact hostPath socket paths in `spec.allowedValues`, which Kyverno exposes
+  as `exceptions.allowedValues`. Only those paths are exempted on the matched Pod.
+  `variables.forbiddenSockets` lists the four paths checked for exact equality:
+  `/var/run/docker.sock`, `/var/run/containerd/containerd.sock`,
+  `/var/run/crio/crio.sock`, and `/var/run/cri-dockerd.sock`.
+  Other forbidden socket paths remain rejected; entries are not patterns.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-cri-sock-mount/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 3d67c209681634471671c3954d7ca4bd7bc79ba31f039b3c6a29d7b75e0d813b
+digest: 3c290b900b92896bb0d6a897c0b7193b5998e1d9877751c7db92dcb2b48e0cca
 createdAt: "2025-05-05T13:19:12Z"

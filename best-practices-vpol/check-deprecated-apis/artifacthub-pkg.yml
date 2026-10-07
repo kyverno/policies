@@ -14,10 +14,24 @@ keywords:
 readme: |
   Kubernetes APIs are sometimes deprecated and removed after a few releases. As a best practice, older API versions should be replaced with newer versions. This policy validates for APIs that are deprecated or scheduled for removal. Note that checking for some of these resources may require modifying the Kyverno ConfigMap to remove filters. PodSecurityPolicy is removed in v1.25 so therefore the validate-v1-25-removals rule may not completely work on 1.25+. 
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-deprecated-apis` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put `deprecated-api` in `spec.allowedValues` to waive deprecated-API
+  validation for the matched request. Kyverno exposes this control token through
+  `exceptions.allowedValues`; it is not an API version or resource name.
+  Use `spec.matchConditions` to restrict the approved API version, kind, namespace,
+  and name; without that token, matched deprecated APIs still fail validation.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/check-deprecated-apis/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Kubernetes APIs"
-digest: 66a4262e06e72826b312ed0f7162bea5910249a4337dc81be09264f9bd848477
+digest: ff3381547d52102aae74e8426bc0aa2c9eb11ce473bc2af1380a6b3dcff9caeb
 createdAt: "2025-05-08T15:39:46Z"

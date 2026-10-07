@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: disallow-empty-ingress-host-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: disallow-empty-ingress-host
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Ingress' && object.metadata.name == 'exception-empty-host' && object.metadata.namespace == 'test'
+  allowedValues:
+  - ingress-host
