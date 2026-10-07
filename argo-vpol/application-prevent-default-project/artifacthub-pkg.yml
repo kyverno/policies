@@ -14,10 +14,27 @@ keywords:
 readme: |
   This policy prevents the use of the default project in an Application.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `application-prevent-default-project` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts project names in `spec.allowedValues`. Use `default` to
+  exempt the default-project restriction for the matched Application; missing
+  or empty project names are also treated as `default`. Other Applications
+  remain checked normally. Applications must still satisfy their CRD schema.
+  `variables.canonicalProject` supplies that normalized project name, while
+  `variables.allowedProjects` reads `exceptions.allowedValues` from matching
+  exceptions. The validation allows `default` only when that normalized value
+  is in the allowed project list; unrelated allowed values do not exempt it.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/argo-vpol/application-prevent-default-project/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Argo in CEL"
   kyverno/kubernetesVersion: "1.34-1.35"
   kyverno/subject: "Application"
-digest: 4c0f3a7717deed22d06c504d9374feb626eac564e3c0b4620b8ea965675c430f
+digest: 9106afe903a1aff7e42cc371b5d708353d735fcf60353cb6fa636cf13eb31c83
 createdAt: "2026-04-02T03:33:39Z"
