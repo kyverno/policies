@@ -30,8 +30,17 @@ spec:
   tls:
   - hosts:
     - kuard.new.com
+    - kuard.new.com
+    - kuard-foo.new.com
+    secretName: foosecret.new.com
+  - hosts:
+    - kuard.new.com
+    - kuard.new.com
     - kuard-foo.new.com
     secretName: foosecret.new.com
   - hosts:
     - hr.new.com
     secretName: hr.new.com
+  - hosts:
+    - api.new.com
+    secretName: api.new.com

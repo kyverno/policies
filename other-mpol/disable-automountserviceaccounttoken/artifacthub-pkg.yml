@@ -15,6 +15,17 @@ keywords:
 readme: |
   A new ServiceAccount called `default` is created whenever a new Namespace is created. Pods spawned in that Namespace, unless otherwise set, will be assigned this ServiceAccount. This policy mutates any new `default` ServiceAccounts to disable auto-mounting of the token into Pods obviating the need to do so individually.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `disable-automountserviceaccounttoken` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/disable-automountserviceaccounttoken/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other, EKS Best Practices"

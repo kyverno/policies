@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: priority-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: add-pod-priorityclassname}]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'blank'

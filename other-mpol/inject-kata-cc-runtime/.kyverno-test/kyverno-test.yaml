@@ -6,6 +6,9 @@ policies:
 - ../inject-kata-cc-runtime.yaml
 resources:
 - resources.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   policy: inject-kata-cc-runtime
@@ -75,5 +78,12 @@ results:
   isMutatingPolicy: true
   resources:
   - default/non-coco-deployment
+  result: skip
+  rule: ""
+- kind: Pod
+  policy: inject-kata-cc-runtime
+  isMutatingPolicy: true
+  resources:
+  - team-a/exception-pod
   result: skip
   rule: ""

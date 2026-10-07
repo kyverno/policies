@@ -14,6 +14,17 @@ keywords:
 readme: |
   When a Pod requests an emptyDir, by default it does not have a size limit which may allow it to consume excess or all of the space in the medium backing the volume. This can quickly overrun a Node and may result in a denial of service for other workloads. This policy adds a sizeLimit field to all Pods mounting emptyDir volumes, if not present, and sets it to 100Mi.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-emptydir-sizelimit` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-emptydir-sizelimit/.chainsaw-test/exception/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"

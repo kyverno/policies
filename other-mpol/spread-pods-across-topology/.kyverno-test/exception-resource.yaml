@@ -1,0 +1,6 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: exception-deployment, namespace: team-a, labels: {distributed: required}}
+spec:
+  selector: {matchLabels: {app: exception}}
+  template: {metadata: {labels: {app: exception}}, spec: {containers: [{name: app, image: nginx:latest}]}}
