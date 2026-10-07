@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-exception
+  namespace: kp-med-ns
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35
+(length(spec.nodeSelector || `{}`) == `0`): true

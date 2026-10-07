@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: exception-daemonset
+spec:
+  selector:
+    matchLabels: {app: exception}
+  template:
+    metadata:
+      labels: {app: exception}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36

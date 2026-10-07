@@ -15,6 +15,17 @@ keywords:
 readme: |
   Selecting the correct Node(s) provisioned by Karpenter is a way to specify the appropriate resource landing zone for a workload. This policy injects a nodeSelector map into the Pod based on the Namespace type where it is deployed.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-karpenter-nodeselector` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/karpenter-mpol/add-karpenter-nodeselector/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
