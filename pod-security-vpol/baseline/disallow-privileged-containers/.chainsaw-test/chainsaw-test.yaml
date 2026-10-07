@@ -11,6 +11,24 @@ spec:
   - name: step-01
     try:
     - apply:
+        file: ephemeral-rbac.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 120); do
+            ready=true
+            for verb in get list watch update; do
+            if ! kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-admission-controller | grep -qx yes; then
+                ready=false
+              fi
+            done
+            if [ "$ready" = true ]; then
+              exit 0
+            fi
+          done
+          echo "admission controller lacks pods/ephemeralcontainers permissions" >&2
+          exit 1
+    - apply:
         file: ../disallow-privileged-containers.yaml
     - patch:
         resource:
@@ -32,12 +50,109 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy disallow-privileged-containers failed')): true
         file: pod-bad.yaml
     - apply:
         file: podcontroller-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy disallow-privileged-containers failed')): true
         file: podcontroller-bad.yaml
+  - name: step-03-ephemeralcontainers
+    try:
+    - script:
+        content: |
+          set -eu
+          replace_ephemeral() {
+            file=$1
+            url=$2
+            transient_message=$3
+            for attempt in 1 2 3 4 5; do
+              rv=$(kubectl get pod "$pod_name" -o jsonpath='{.metadata.resourceVersion}')
+              jq --arg rv "$rv" '.metadata.resourceVersion=$rv' "$file" >/tmp/ephemeral-rv.json
+              set +e
+              dry=$(kubectl replace --raw "${url}?dryRun=All" -f /tmp/ephemeral-rv.json 2>&1)
+              dry_code=$?
+              set -e
+              if [ "$dry_code" -ne 0 ]; then
+                printf '%s' "$dry" | grep -Fq "$transient_message" && continue
+                printf '%s' "$dry" | grep -Eq 'the object has been modified|Conflict' && continue
+                printf '%s\n' "$dry" >&2
+                return "$dry_code"
+              fi
+              set +e
+              actual=$(kubectl replace --raw "$url" -f /tmp/ephemeral-rv.json 2>&1)
+              actual_code=$?
+              set -e
+              if [ "$actual_code" -eq 0 ]; then
+                printf '%s' "$actual"
+                return 0
+              fi
+              printf '%s' "$actual" | grep -Eq 'the object has been modified|Conflict' && continue
+              printf '%s\n' "$actual" >&2
+              return "$actual_code"
+            done
+            echo "ephemeralcontainers update conflicted after 5 attempts" >&2
+            return 1
+          }
+          kubectl apply -f - <<'YAML'
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: policy-exceptions
+          ---
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: privileged-ephemeral-live
+            namespace: default
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-busybox:1.35
+              command: ["sleep", "3600"]
+          YAML
+          kubectl wait --for=jsonpath='{.status.phase}'=Running pod/privileged-ephemeral-live --timeout=120s
+          cat > /tmp/ephemeral-denied.json <<'JSON'
+          {"apiVersion":"v1","kind":"Pod","metadata":{"name":"privileged-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"nginx:1.27","securityContext":{"privileged":true}}]}}
+          JSON
+          set +e
+          rv=$(kubectl get pod privileged-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
+          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/ephemeral-denied.json >/tmp/ephemeral-denied-rv.json
+          denied=$(kubectl replace --raw /api/v1/namespaces/default/pods/privileged-ephemeral-live/ephemeralcontainers -f /tmp/ephemeral-denied-rv.json 2>&1)
+          code=$?
+          set -e
+          test "$code" -ne 0
+          printf '%s' "$denied" | grep -F "Privileged mode is disallowed"
+          kubectl apply -f - <<'YAML'
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: privileged-ephemeral-image
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: disallow-privileged-containers
+              kind: ValidatingPolicy
+            images: ["exempt.example/app:1"]
+            matchConditions:
+            - name: exact-workload
+              expression: object.metadata.namespace == 'default' && object.metadata.name == 'privileged-ephemeral-live'
+          YAML
+          cat > /tmp/ephemeral-approved.json <<'JSON'
+          {"apiVersion":"v1","kind":"Pod","metadata":{"name":"privileged-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"privileged":true}}]}}
+          JSON
+          pod_name='privileged-ephemeral-live'
+          replace_ephemeral /tmp/ephemeral-approved.json '/api/v1/namespaces/default/pods/privileged-ephemeral-live/ephemeralcontainers' 'Privileged mode is disallowed'
+          cat > /tmp/ephemeral-sibling.json <<'JSON'
+          {"apiVersion":"v1","kind":"Pod","metadata":{"name":"privileged-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"privileged":true}},{"name":"unapproved","image":"nginx:1.27","securityContext":{"privileged":true}}]}}
+          JSON
+          set +e
+          rv=$(kubectl get pod privileged-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
+          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/ephemeral-sibling.json >/tmp/ephemeral-sibling-rv.json
+          sibling=$(kubectl replace --raw /api/v1/namespaces/default/pods/privileged-ephemeral-live/ephemeralcontainers -f /tmp/ephemeral-sibling-rv.json 2>&1)
+          code=$?
+          set -e
+          test "$code" -ne 0
+          printf '%s' "$sibling" | grep -F "Privileged mode is disallowed"

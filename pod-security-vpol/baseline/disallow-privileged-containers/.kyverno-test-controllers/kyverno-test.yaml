@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-privileged-containers-controllers
+policies:
+- ../disallow-privileged-containers.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-privileged-containers
+  resources:
+  - unsafe-disallow-privileged-containers-7
+  result: fail

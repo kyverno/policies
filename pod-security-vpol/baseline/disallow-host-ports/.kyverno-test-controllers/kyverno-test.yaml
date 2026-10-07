@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-ports-controllers
+policies:
+- ../disallow-host-ports.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-ports
+  resources:
+  - unsafe-disallow-host-ports-7
+  result: fail

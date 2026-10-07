@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-host-process-exceptions}
+policies: [../disallow-host-process.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-process, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-process, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-host-process, resources: [exception-whole], result: skip}

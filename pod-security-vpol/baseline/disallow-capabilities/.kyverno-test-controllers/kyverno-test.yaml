@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-capabilities-controllers
+policies:
+- ../disallow-capabilities.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-capabilities
+  resources:
+  - unsafe-disallow-capabilities-7
+  result: fail

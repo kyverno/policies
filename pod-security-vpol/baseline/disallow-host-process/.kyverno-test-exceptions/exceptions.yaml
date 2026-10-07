@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: partial, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: disallow-host-process, kind: ValidatingPolicy}]
+  images: [exempt.example/app:1]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name in ['exception-partial', 'exception-wrong', 'exception-sibling']"}]
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: whole, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: disallow-host-process, kind: ValidatingPolicy}]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name == 'exception-whole'"}]

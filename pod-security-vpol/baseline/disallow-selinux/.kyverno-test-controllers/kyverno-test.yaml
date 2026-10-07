@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-selinux-controllers
+policies:
+- ../disallow-selinux.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-selinux
+  resources:
+  - unsafe-disallow-selinux-7
+  result: fail

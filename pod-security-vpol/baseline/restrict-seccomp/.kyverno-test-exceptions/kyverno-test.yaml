@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-seccomp-exceptions}
+policies: [../restrict-seccomp.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-seccomp, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-seccomp, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: restrict-seccomp, resources: [exception-whole], result: skip}
