@@ -4,6 +4,7 @@ metadata:
   name: add-apparmor-annotations
   annotations:
     policies.kyverno.io/title: Add AppArmor Annotations
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: PSP Migration
     policies.kyverno.io/subject: Pod,Annotation
     pod-policies.kyverno.io/autogen-controllers: none
@@ -31,6 +32,8 @@ spec:
         object.spec.containers + 
         (has(object.spec.initContainers) ? object.spec.initContainers : []) + 
         (has(object.spec.ephemeralContainers) ? object.spec.ephemeralContainers : [])
+    - name: containersToMutate
+      expression: variables.allContainers.filter(c, !(c.image in exceptions.allowedImages))
   mutations:
   # First, ensure annotations exist
   - patchType: JSONPatch
@@ -48,7 +51,7 @@ spec:
   - patchType: JSONPatch
     jsonPatch:
       expression: |
-        variables.allContainers.map(c,
+        variables.containersToMutate.map(c,
           JSONPatch{
             op: "add",
             path: "/metadata/annotations/" + jsonpatch.escapeKey("container.apparmor.security.beta.kubernetes.io/" + c.name),

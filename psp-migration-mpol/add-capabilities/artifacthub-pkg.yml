@@ -14,9 +14,20 @@ keywords:
 readme: |
   In the earlier Pod Security Policy controller, it was possible to configure a policy to add capabilities to containers within a Pod. This made it easier to assign some basic defaults rather than blocking Pods or to simply provide capabilities for certain workloads if not specified. This policy mutates Pods to add the capabilities SETFCAP and SETUID so long as they are not listed as dropped capabilities first.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-capabilities` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/psp-migration-mpol/add-capabilities/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "PSP Migration"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Pod"
-digest: 5a4d390bc892adbfeb4b20d05df6687157ef04aa71ed6c3d78673e078599bdcc
+digest: 5cae64acf5fc3930f2a4731bca830a780b7b7a8eeae378ac2ca03a9cd36a8fe0
