@@ -1,0 +1,6 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-exception-ns
+  labels:
+    foo: bar

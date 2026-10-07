@@ -14,6 +14,17 @@ keywords:
 readme: |
   When Pod Security Admission is configured with a cluster-wide AdmissionConfiguration file which sets either baseline or restricted, for example in many PaaS CIS profiles, it may be necessary to relax this to privileged on a per-Namespace basis so that more granular control can be provided. This policy labels new and existing Namespaces, except that of kube-system, with the `pod-security.kubernetes.io/enforce: privileged` label.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-privileged-existing-namespaces` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/psa-mpol/add-privileged-existing-namespaces/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Admission"
