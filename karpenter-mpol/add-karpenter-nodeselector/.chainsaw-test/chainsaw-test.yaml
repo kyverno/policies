@@ -6,6 +6,11 @@ metadata:
   name: add-karpenter-nodeselector
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -28,3 +33,15 @@ spec:
         file: patch-lg-bad.yaml
     - error:
         file: patch-sm-bad.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: exception-pod.yaml
+    - apply:
+        file: exception-sibling.yaml
+    - assert:
+        file: exception-expected.yaml
+    - assert:
+        file: exception-sibling-expected.yaml

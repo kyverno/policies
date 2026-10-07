@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: karpenter-nodeselector-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-karpenter-nodeselector
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: object.metadata.namespace == 'kp-med-ns' && object.metadata.name == 'pod-exception'
