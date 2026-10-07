@@ -22,6 +22,7 @@ spec:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
+        operations: ["DELETE"]
         resources: ["pods"]
   conditions:
     - name: is-bare-pod
