@@ -4,6 +4,7 @@ metadata:
   name: restrict-storageclass
   annotations:
     policies.kyverno.io/title: Restrict StorageClass in ValidatingPolicy
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Other, Multi-Tenancy in vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: StorageClass
@@ -29,6 +30,5 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["storageclasses"]
   validations:
-    - expression: "object.reclaimPolicy == 'Delete'"
+    - expression: "object.reclaimPolicy == 'Delete' || object.reclaimPolicy in exceptions.allowedValues"
       message: "StorageClass must define a reclaimPolicy of Delete."
-

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-maintenance-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: deny-exec-by-pod-and-container
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: request.name == 'myapp-maintenance-exception' && request.namespace == 'bpe-podcontainer-ns'
+  allowedValues:
+  - nginx

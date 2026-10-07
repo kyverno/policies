@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: validate-initdata-configmap
+status:
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Succeeded
+      status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+    - reason: Succeeded
+      status: "True"
+      type: WebhookConfigured

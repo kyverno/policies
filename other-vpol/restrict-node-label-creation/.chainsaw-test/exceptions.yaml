@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-node-label-creation-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-node-label-creation
+  matchConditions:
+  - name: exact-node
+    expression: object.metadata.name == 'approved-node' && object.metadata.?namespace.orValue('') == ''
+  allowedValues:
+  - foo:exception-approved

@@ -6,10 +6,17 @@ metadata:
   name: check-serviceaccount
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../check-serviceaccount.yaml
+    - apply:
+        file: policy-exception.yaml
     - patch:
         resource:
           apiVersion: policies.kyverno.io/v1

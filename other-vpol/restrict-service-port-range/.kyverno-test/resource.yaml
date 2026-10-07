@@ -23,4 +23,20 @@ spec:
     - port: 32000
       targetPort: 80
       nodePort: 32000
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: approved-service
+spec:
+  ports:
+  - port: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mixed-service
+spec:
+  ports:
+  - port: 80
+  - port: 90

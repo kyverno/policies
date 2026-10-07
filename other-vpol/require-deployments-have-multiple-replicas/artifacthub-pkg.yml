@@ -14,12 +14,24 @@ keywords:
 readme: |
   Deployments with a single replica cannot be highly available and thus the application may suffer downtime if that one replica goes down. This policy validates that Deployments have more than one replica.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deployment-has-multiple-replicas` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List decimal replica counts as strings in `spec.allowedValues`, such as `"1"`, to allow
+  only those otherwise-invalid counts. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-deployments-have-multiple-replicas/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Deployment"
-digest: 3ab8707850e089849a866bdf8820264387ad5a6475c589e5610e2d62ad1620f2
+digest: 505e2ece10548b7cac0c9494bb15807cfe7c4650183368806d964e61e6e0c938
 
 
 createdAt: "2025-05-11T17:46:11Z"

@@ -1,0 +1,17 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: validate-initdata-partial-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: validate-initdata-configmap
+  matchConditions:
+  - name: exact-configmap
+    expression: object.metadata.name == 'chainsaw-initdata-invalid' && object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - missing-key:version
+  - missing-key:policy.rego
+  - missing-key:aa.toml
+  - missing-key:cdh.toml

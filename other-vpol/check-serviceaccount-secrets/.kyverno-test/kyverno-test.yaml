@@ -6,6 +6,7 @@ policies:
 - ../check-serviceaccount-secrets.yaml
 resources:
 - resource.yaml
+- empty-svc-account.yaml
 results:
 - isValidatingPolicy: true
   kind: ServiceAccount
@@ -19,4 +20,9 @@ results:
   resources:
   - good-svc-account
   result: pass
-
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: check-serviceaccount-secrets
+  resources:
+  - empty-svc-account
+  result: pass

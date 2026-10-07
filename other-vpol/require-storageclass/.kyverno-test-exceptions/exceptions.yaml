@@ -1,0 +1,28 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-storage-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-storageclass}]
+  allowedValues: ['']
+  matchConditions:
+  - name: exact-resource
+    expression: "object.metadata.name == 'badpvc' && object.metadata.?namespace.orValue('') == 'default'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-namespace-storage-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-storageclass}]
+  matchConditions:
+  - name: wrong-namespace
+    expression: "object.metadata.name == 'badss' && object.metadata.?namespace.orValue('') == 'team-b'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-storage-value, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-storageclass}]
+  allowedValues: ['slow']
+  matchConditions:
+  - name: same-object-wrong-value
+    expression: object.metadata.name == 'wrong-token-pvc' && object.metadata.?namespace.orValue('') == 'default'

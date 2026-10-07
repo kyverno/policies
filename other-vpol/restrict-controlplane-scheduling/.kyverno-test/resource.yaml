@@ -36,6 +36,22 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-controlplane
+spec:
+  tolerations:
+  - key: node-role.kubernetes.io/master
+    operator: Exists
+    effect: NoSchedule
+  - key: unrelated
+    operator: Exists
+    effect: NoSchedule
+  containers:
+  - image: nginx
+    name: pod
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod01
   labels:
     app: myapp

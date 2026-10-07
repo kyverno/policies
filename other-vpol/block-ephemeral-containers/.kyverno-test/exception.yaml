@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-badpod01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: block-ephemeral-containers
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: "['badpod01', 'badpod02'].exists(name, request.name == name) && request.namespace == 'default'"
+  allowedValues:
+  - ephcontainer01

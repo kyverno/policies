@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Service
     policies.kyverno.io/description: >-
@@ -26,6 +26,5 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["services"]
   validations:
-    - expression: "object.spec.ports.all(p, p.port >= 32000 && p.port <= 33000)"
+    - expression: "object.spec.ports.all(p, (p.port >= 32000 && p.port <= 33000) || string(p.port) in exceptions.allowedValues.orValue([]))"
       message: Ports must be between 32000-33000
-

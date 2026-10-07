@@ -7,6 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
@@ -32,6 +33,5 @@ spec:
     - name: isAllowDockerLabelTrue
       expression: "object.metadata.?labels[?'allow-docker'].orValue('false') == 'true'"
   validations:
-    - expression: "!variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
+    - expression: "(has(exceptions.allowedValues) && object.metadata.name in exceptions.allowedValues) || !variables.hasDockerSocket || variables.isAllowDockerLabelTrue"
       message: "If a hostPath volume exists and is set to `/var/run/docker.sock`, the label `allow-docker` must equal `true`."
-

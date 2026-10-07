@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: partial-class-approved
+  namespace: default
+  annotations: {kubernetes.io/ingress.class: custom}
+spec: {rules: []}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: partial-class-forbidden
+  namespace: default
+  annotations: {kubernetes.io/ingress.class: forbidden}
+spec: {rules: []}

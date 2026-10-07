@@ -35,6 +35,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress02
+  namespace: unique-ingress-paths-ns
 spec:
   rules:
   - host: foo

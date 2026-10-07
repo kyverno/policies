@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: unique-ingress-path-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: unique-ingress-path
+  allowedValues: ['/foo']
+  matchConditions:
+  - name: exact-ingress
+    expression: object.metadata.namespace == 'exception-ingress-ns' && object.metadata.name == 'approved-ingress'

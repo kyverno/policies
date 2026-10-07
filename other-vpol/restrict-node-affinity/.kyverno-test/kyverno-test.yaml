@@ -14,12 +14,6 @@ results:
   - baddeploy01
   result: fail
 - isValidatingPolicy: true
-  kind: Pod
-  policy: restrict-node-affinity
-  resources:
-  - badpod01
-  result: fail
-- isValidatingPolicy: true
   kind: Deployment
   policy: restrict-node-affinity
   resources:
@@ -31,4 +25,9 @@ results:
   resources:
   - goodpod01
   result: pass
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-node-affinity
+  resources:
+  - badpod01
+  result: fail

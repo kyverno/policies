@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod, Label
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
       Rather than a simple check to see if given metadata such as labels and annotations are present,
@@ -28,7 +28,7 @@ spec:
       resources:   ["pods"]
   validations:
     - expression: >-
-        object.metadata.?labels[?'corp.org/version'].orValue('default').matches('^v[0-9].[0-9].[0-9]$')
+        object.metadata.?labels[?'corp.org/version'].orValue('default').matches('^v[0-9]\\.[0-9]\\.[0-9]$') ||
+        object.metadata.?labels[?'corp.org/version'].orValue('') in exceptions.allowedValues
       message: >-
-        The label `corp.org/version` is required and must match the specified regex: ^v[0-9].[0-9].[0-9]$
-
+        The label `corp.org/version` is required and must match the specified regex: ^v[0-9]\\.[0-9]\\.[0-9]$

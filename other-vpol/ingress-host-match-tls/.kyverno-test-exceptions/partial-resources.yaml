@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: partial-tls-approved
+  namespace: default
+spec:
+  rules:
+  - host: allowed.example
+    http: {paths: []}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: partial-tls-sibling
+  namespace: default
+spec:
+  rules:
+  - host: allowed.example
+    http: {paths: []}
+  - host: forbidden.example
+    http: {paths: []}

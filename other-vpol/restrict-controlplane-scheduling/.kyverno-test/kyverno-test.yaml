@@ -6,6 +6,8 @@ policies:
 - ../restrict-controlplane-scheduling.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -23,5 +25,5 @@ results:
   - default/goodpod02
   - default/goodpod-no-tolerations
   - default/goodpod-empty-key
+  - default/exception-controlplane
   result: pass
-

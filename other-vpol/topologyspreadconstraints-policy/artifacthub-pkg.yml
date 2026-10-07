@@ -14,12 +14,24 @@ keywords:
 readme: |
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy ensures topologySpreadConstraints are defined,  to spread pods over nodes and zones. Deployments or Statefulsets with leass than 3  replicas are skipped.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `topologyspreadconstraints-policy` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `topologySpreadConstraints:missing` in `spec.allowedValues` to waive this matched
+  workload's required hostname/zone constraint-count check. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/topologyspreadconstraints-policy/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Deployment, StatefulSet"
-digest: 8c14fda4ac658da76114e88005cf94ce13b5f4be8d7fe7a94676dc4721fad496
+digest: 689aa028658aec38257dd3b1069ad44424f2cbc002b8a85f2ee11ec69f1c68e6
 
 
 createdAt: "2025-05-11T17:46:11Z"

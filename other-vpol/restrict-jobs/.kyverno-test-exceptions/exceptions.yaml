@@ -1,0 +1,21 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: exact-job-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-jobs}]
+  allowedValues: ['job-owner:badjob']
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'badjob' && object.metadata.?namespace.orValue('') == 'default'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-owner-value, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-jobs}]
+  allowedValues: ['job-owner:other-name']
+  matchConditions:
+  - name: same-object-wrong-value
+    expression: object.metadata.name == 'wrong-token-job' && object.metadata.?namespace.orValue('') == 'default'

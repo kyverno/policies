@@ -14,12 +14,24 @@ keywords:
 readme: |
   Ingress resources which name a host name that is not present in the TLS section can produce ingress routing failures as a TLS certificate may not correspond to the destination host. This policy ensures that the host name in an Ingress rule is also found in the list of TLS hosts.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `ingress-host-match-tls` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact Ingress rule hostnames in `spec.allowedValues` to allow those hosts without a
+  matching TLS host. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`;
+  unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/ingress-host-match-tls/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Ingress"
-digest: 694c1310cd5784d0dd453fc4041f7813989845ceaa5db599126aa61c2b0f0c17
+digest: b5a2e1b48355786493bf7a7e55fb7a2d2381c1c724c703c165bc74f1c6a9645c
 
 
 createdAt: "2025-05-11T17:46:11Z"

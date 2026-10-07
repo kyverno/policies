@@ -7,6 +7,7 @@ policies:
 resources:
 - ../.chainsaw-test/pod-bad.yaml
 - ../.chainsaw-test/pod-good.yaml
+- empty-owner-pod.yaml
 results:
 - policy: prevent-bare-pods
   isValidatingPolicy: true
@@ -20,4 +21,9 @@ results:
   resources:
   - goodpod01
   result: pass
-
+- policy: prevent-bare-pods
+  isValidatingPolicy: true
+  kind: Pod
+  resources:
+  - empty-owner-pod
+  result: fail

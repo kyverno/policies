@@ -1,0 +1,54 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-initdata-configmap
+spec:
+  steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+  - name: install
+    try:
+    - apply:
+        file: ../validate-initdata-configmap.yaml
+        template: false
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: validate-initdata-configmap
+          spec:
+            validationActions: [Deny]
+    - assert:
+        file: policy-ready.yaml
+  - name: baseline
+    try:
+    - apply:
+        file: valid.yaml
+        expect:
+        - check:
+            ($error == null): true
+    - apply:
+        file: invalid.yaml
+        expect:
+        - check:
+            (contains($error, 'ConfigMap must contain')): true
+  - name: partial-exception
+    try:
+    - apply:
+        file: exceptions.yaml
+    - apply:
+        file: invalid.yaml
+        expect:
+        - check:
+            ($error == null): true
+    - script:
+        content: kubectl delete -f exceptions.yaml
+    - apply:
+        file: invalid.yaml
+        expect:
+        - check:
+            (contains($error, 'ConfigMap must contain')): true

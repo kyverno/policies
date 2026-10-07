@@ -11,8 +11,8 @@ results:
   isValidatingPolicy: true
   kind: ClusterRole
   resources:
-  - badcr01
   - badcr02
+  - badcr01
   result: fail
 - policy: restrict-clusterrole-nodesproxy
   isValidatingPolicy: true
@@ -22,4 +22,3 @@ results:
   - goodcr02
   - default-rules
   result: pass
-

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-pod
+  namespace: restrict-sa-ns
+spec:
+  serviceAccountName: serviceaccount02
+  containers:
+  - name: pod
+    image: busybox

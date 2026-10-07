@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+  namespace: policy-exceptions
+  annotations:
+    fluxcd.io/bat: flap
+    corp.com/bar: baz
+spec:
+  containers:
+  - name: busybox
+    image: registry.corp/sdf3vhadfa:1.28

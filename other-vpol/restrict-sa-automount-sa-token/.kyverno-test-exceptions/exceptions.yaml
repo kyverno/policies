@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: exact-automount-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-sa-automount-sa-token}]
+  allowedValues: ['automountServiceAccountToken:true']
+  matchConditions:
+    - name: exact-resource
+      expression: object.metadata.name == 'bad-svc' && object.metadata.?namespace.orValue('') == 'default'

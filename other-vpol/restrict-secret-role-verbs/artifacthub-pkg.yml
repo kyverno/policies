@@ -14,12 +14,24 @@ keywords:
 readme: |
   The verbs `get`, `list`, and `watch` in a Role or ClusterRole, when paired with the Secrets resource, effectively allows Secrets to be read which may expose sensitive information. This policy prevents a Role or ClusterRole from using these verbs in tandem with Secret resources. In order to fully implement this control, it is recommended to pair this policy with another which also prevents use of the wildcard ('*') in the verbs list either when explicitly naming Secrets or when also using a wildcard in the base API group.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-secret-role-verbs` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact verbs (`get`, `list`, or `watch`) in `spec.allowedValues` to permit only
+  those verbs on Secrets; every unlisted restricted verb remains checked. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-secret-role-verbs/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: b2ebbd29feff7d4b606104cedc9eb45f369b90f45227f425b008102025989f3d
+digest: 6f636cd485e0ef67275e152767aadaadd2bdd33b6cf4fec7d209eb83ce925b93
 
 
 createdAt: "2025-05-11T17:46:11Z"

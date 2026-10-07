@@ -10,6 +10,15 @@ spec:
     try:
     - apply:
         file: ../restrict-jobs.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-jobs
+          spec:
+            validationActions:
+            - Deny
     - assert:
         file: policy-ready.yaml
     - sleep: 

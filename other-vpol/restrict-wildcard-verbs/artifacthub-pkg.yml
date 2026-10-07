@@ -15,12 +15,25 @@ keywords:
 readme: |
   Wildcards ('*') in verbs grants all access to the resources referenced by it and does not follow the principal of least privilege. As much as possible, avoid such open verbs unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the verbs list found in any rule.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-wildcard-verbs` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `<resource>:*` in `spec.allowedValues`, such as `pods:*`, to permit the literal
+  wildcard verb on only that resource; other resources in the same rule still need their
+  own token. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted
+  values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-wildcard-verbs/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: e747df11331487edd437a5a20e210abce7b5db39d3870bc5cb3b1844d7f50285
+digest: 9e75ca7a8dc49f6bd245c60b46bca28f86685c570be826635e659a49e0b23430
 
 
 createdAt: "2025-05-11T17:46:11Z"
