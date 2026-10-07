@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-safe-to-evict-pod05
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-safe-to-evict
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'myapp-cli-exception-pod'
