@@ -9,7 +9,7 @@ metadata:
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/minversion: 1.17.0
     kyverno.io/kyverno-version: 1.14.0
-    kyverno.io/kubernetes-version: "1.30+"
+    kyverno.io/kubernetes-version: "1.34+"
     policies.kyverno.io/description: >-
       Probes and lifecycle handlers that set a `host` let a Pod direct the kubelet to make requests
       to arbitrary addresses, including link-local metadata endpoints. This policy ensures the
