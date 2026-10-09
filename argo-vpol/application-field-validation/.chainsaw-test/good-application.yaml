@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: goodapp01
+  namespace: default
+spec:
+  project: biz
+  source:
+    repoURL: https://github.com/argoproj/argocd-example-apps.git
+    targetRevision: HEAD
+    path: guestbook
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: goodapp02
+  namespace: default
+spec:
+  project: biz
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 1.0.0
+    chart: nginx
+  destination:
+    name: in-cluster
+    namespace: guestbook

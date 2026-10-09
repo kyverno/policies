@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: application-field-validation
+  annotations:
+    policies.kyverno.io/title: Application Field Validation in CEL expressions
+    policies.kyverno.io/category: Argo in CEL
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Application
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/description: >-
+      This policy performs some best practices validation on Application fields.
+      Path or chart must be specified but never both. And destination.name or
+      destination.server must be specified but never both.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["argoproj.io"]
+        apiVersions: [v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [applications]
+  validations:
+    - message: >-
+        `spec.source.path` OR `spec.source.chart` should be specified but never both.
+      expression: >-
+        has(object.spec.source) &&
+        (
+          (has(object.spec.source.path) && object.spec.source.path != '' && !has(object.spec.source.chart)) ||
+          (!has(object.spec.source.path) && has(object.spec.source.chart) && object.spec.source.chart != '')
+        )
+    - message: >-
+        `spec.destination.server` OR `spec.destination.name` should be specified but never both.
+      expression: >-
+        has(object.spec.destination) &&
+        (
+          (has(object.spec.destination.server) && object.spec.destination.server != '' && !has(object.spec.destination.name)) ||
+          (!has(object.spec.destination.server) && has(object.spec.destination.name) && object.spec.destination.name != '')
+        )
