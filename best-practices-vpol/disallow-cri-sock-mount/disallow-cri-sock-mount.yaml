@@ -13,9 +13,10 @@ metadata:
       Container daemon socket bind mounts allows access to the container engine on the
       node. This access can be used for privilege escalation and to manage containers
       outside of Kubernetes, and hence should not be allowed. This policy validates that
-      the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition
-      to or replacement of this policy, preventing users from mounting the parent directories
-      (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+      the sockets used for CRI engines Docker, Containerd, and CRI-O are not used, whether they
+      are referenced under /var/run or under /run (/var/run is normally a symlink to /run). It
+      also blocks mounting the parent directories (/, /var, /var/run and /run), which would
+      expose the same sockets.
 spec:
   validationActions: [Audit]
   evaluation:
@@ -55,3 +56,12 @@ spec:
               variables.volumesWithHostPath.all(volume, !volume.hostPath.path.matches('/var/run/cri-dockerd.sock'))
             message: "Use of the Docker CRI socket is not allowed."
 
+          - expression: >-
+              variables.hasVolumes || 
+              variables.volumesWithHostPath.all(volume, !volume.hostPath.path.matches('/run/(docker.sock|containerd/containerd.sock|crio/crio.sock|cri-dockerd.sock)'))
+            message: "Use of a container runtime socket under /run is not allowed."
+
+          - expression: >-
+              variables.hasVolumes || 
+              variables.volumesWithHostPath.all(volume, !volume.hostPath.path.matches('^/+((var/+run|var|run)/*)?$'))
+            message: "Mounting /, /var, /var/run or /run is not allowed because it exposes the container runtime sockets."

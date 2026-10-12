@@ -30,3 +30,147 @@ spec:
     hostPath:
       path: /data
 
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-docker-sock-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/docker.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-containerd-sock-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/containerd/containerd.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-doubled-slash-run-crio-sock-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: //run/crio/crio.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-root-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-run-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/run/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-log-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/log
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-runner-mount
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/runner
