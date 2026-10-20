@@ -21,6 +21,10 @@ spec:
           spec:
             validationActions:
              - Deny
+            matchConstraints:
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: $namespace
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
