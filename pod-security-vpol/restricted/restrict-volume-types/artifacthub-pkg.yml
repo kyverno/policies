@@ -14,10 +14,23 @@ keywords:
 readme: |
   In addition to restricting HostPath volumes, the restricted pod security profile limits usage of non-core volume types to those defined through PersistentVolumes. This policy blocks any other type of volume other than those in the allow list.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-volume-types` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact hostPath path strings in `spec.allowedValues` to permit only those hostPath
+  volumes; this does not allow other prohibited volume types. `variables.podSpec` selects
+  the Pod spec directly or from the workload template. CEL reads the tokens through
+  `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/restricted/restrict-volume-types/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod,Volume"
-digest: 36e9017d197f837f03f41d7240fb0d336f553c85b004ae999f9191ade205534c
+digest: bae840f11f9116182bf1de4c4edfc551ae3f484881a9a2b0877d4ebc419ec04e
 createdAt: "2025-03-13T23:26:58Z"
