@@ -42,10 +42,10 @@ spec:
     - apply:
         expect:
         - check:
-            (contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image')): true
+            "(contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image'))": true
         file: pod-bad.yaml
     - apply:
         expect:
         - check:
-            (contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image')): true
+            "(contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image'))": true
         file: podcontroller-bad.yaml
