@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-privilege-escalation-controllers
+policies:
+- ../disallow-privilege-escalation.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-privilege-escalation
+  resources:
+  - unsafe-disallow-privilege-escalation-7
+  result: fail

@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Disallow Capabilities (Strict) in ValidatingPolicy
     policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/subject: Pod
@@ -21,26 +21,42 @@ spec:
       enabled: true
   matchConstraints:
     resourceRules:
-      - apiGroups:   [""]
-        apiVersions: ["v1"]
-        operations:  ["CREATE", "UPDATE"]
-        resources:   ["pods"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/ephemeralcontainers"]
   variables:
-  - name: allContainers
-    expression: >-
-      object.spec.containers + 
-      (object.spec.?initContainers.orValue([])) + 
-      (object.spec.?ephemeralContainers.orValue([]))
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: allContainers
+      expression: >-
+        variables.podSpec.?containers.orValue([]) +
+        variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
-      variables.allContainers.all(container, 
+      variables.podSpec.?os.?name.orValue('linux') == 'windows' || variables.allContainers.all(container,
       container.?securityContext.?capabilities.?drop.orValue([]).exists_one(capability, capability == 'ALL'))
     message: >-
       Containers must drop `ALL` capabilities.
   - expression: >-
-      variables.allContainers.all(container, 
-        container.?securityContext.?capabilities.?add.orValue([]).size() == 0 || 
-        (container.securityContext.capabilities.add.orValue([]).size() == 1 && 
-        container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE'))
+      variables.podSpec.?os.?name.orValue('linux') == 'windows' || variables.allContainers.all(container,
+      container.image in exceptions.allowedImages ||
+        container.?securityContext.?capabilities.?add.orValue([]).all(capability,
+        capability == 'NET_BIND_SERVICE' || capability in exceptions.allowedValues))
     message: >-
       Any capabilities added other than NET_BIND_SERVICE are disallowed.

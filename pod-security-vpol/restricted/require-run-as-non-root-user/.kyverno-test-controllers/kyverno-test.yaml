@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-run-as-non-root-user-controllers
+policies:
+- ../require-run-as-non-root-user.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: require-run-as-non-root-user
+  resources:
+  - unsafe-require-run-as-non-root-user-7
+  result: fail

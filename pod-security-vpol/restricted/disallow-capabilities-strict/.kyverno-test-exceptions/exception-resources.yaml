@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {capabilities: {drop: [ALL], add: [SYS_ADMIN, NET_BIND_SERVICE]}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {capabilities: {drop: [ALL], add: [SYS_PTRACE]}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {capabilities: {drop: [], add: [SYS_ADMIN, NET_BIND_SERVICE]}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {capabilities: {drop: [ALL], add: [SYS_PTRACE]}}}]}

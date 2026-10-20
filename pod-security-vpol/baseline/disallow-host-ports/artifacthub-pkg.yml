@@ -14,10 +14,24 @@ keywords:
 readme: |
   Access to host ports allows potential snooping of network traffic and should not be allowed, or at minimum restricted to a known list. This policy ensures the `hostPort` field is unset or set to `0`. 
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-host-ports` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use decimal host ports as strings in `spec.allowedValues`, such as `"8080"`, to allow
+  only those host ports. Exact `spec.images` entries exempt only matching containers.
+  `variables.podSpec` selects the Pod spec directly or from the workload template.
+  `variables.allContainers` includes regular, init, and ephemeral containers. CEL reads
+  images through `exceptions.allowedImages` and tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-host-ports/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 860d61b669f11518aee5406a6a2d8071c0d2c249b3bb8dc4927d82bcd584d4e5
+digest: e0024acaabd53c45a777dcc5c0b13bdba309ce27ba7d9900abcc0f28bf79defc
 createdAt: "2025-03-13T23:26:58Z"

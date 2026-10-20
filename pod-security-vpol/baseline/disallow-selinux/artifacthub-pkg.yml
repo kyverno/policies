@@ -14,10 +14,26 @@ keywords:
 readme: |
   SELinux options can be used to escalate privileges and should not be allowed. This policy ensures that the `seLinuxOptions` field is undefined.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-selinux` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `type:<value>`, `user:<value>`, or `role:<value>` in `spec.allowedValues` for the
+  exact container SELinux field, or `spec.images` for matching containers. Pod-level
+  checks remain enforced by `variables.hasValidSELinuxType` and `hasValidSELinuxUserRole`;
+  `seLinuxTypes` holds the normal type allowlist. `variables.podSpec` selects the Pod spec
+  directly or from the workload template. `variables.allContainerTypes` includes regular,
+  init, and ephemeral containers. CEL reads images through `exceptions.allowedImages` and
+  tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-selinux/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: dfc9fc1b9df62bde03388d7cb80b3d5624943cf130d3e71a11f66db8489226a6
+digest: bec70e307b42b4d1e85bf325c64c283d3679365c64efead9ae81ac1faf2edf80
 createdAt: "2025-03-13T23:26:58Z"
