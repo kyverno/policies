@@ -29,6 +29,8 @@ spec:
       expression: 'variables.baseImageConfigMap.data.?allowedbaseimages.orValue("").split(",").filter(img, img.trim() != "")'
     - name: allContainers
       expression: 'object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])'
+    - name: baseImages
+      expression: 'variables.allContainers.map(container, image.GetMetadata(container.image).manifest.?annotations[?"org.opencontainers.image.base.name"].orValue(""))'
   matchConstraints:
     resourceRules:
       - resources: ["pods"]
@@ -36,10 +38,5 @@ spec:
         apiGroups: [""]
         apiVersions: ["v1"]
   validations:
-    - expression: |
-        variables.allContainers.all(container, 
-          has(image.GetMetadata(container.image).manifest.annotations) && 
-          image.GetMetadata(container.image).manifest.annotations != null && 
-          'org.opencontainers.image.base.name' in image.GetMetadata(container.image).manifest.annotations && 
-          image.GetMetadata(container.image).manifest.annotations['org.opencontainers.image.base.name'] in variables.allowedBaseImages
-        )
+    - expression: 'variables.baseImages.all(base, base in variables.allowedBaseImages)'
+      message: "Container images must have a base image, specified in the org.opencontainers.image.base.name annotation, that is in the allow list."
