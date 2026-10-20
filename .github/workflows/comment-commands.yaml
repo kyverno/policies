@@ -42,15 +42,19 @@ jobs:
         with:
           script: |
             const comment = context.payload.comment;
+            const username = comment.user?.login;
+            if (!username) {
+              throw new Error('Cherry-pick commands require an identified repository writer');
+            }
             const { data } = await github.rest.repos.getCollaboratorPermissionLevel({
               ...context.repo,
-              username: comment.user.login
+              username
             });
             if (!['write', 'maintain', 'admin'].includes(data.permission)) {
               throw new Error('Cherry-pick commands require repository write permission');
             }
             const match = (comment.body || '').split(/\r?\n/, 1)[0]
-              .match(/^\/cherry-pick[ \t]+([A-Za-z0-9][A-Za-z0-9._/-]*)[ \t]*$/);
+              .match(/^\/cherry-pick[ \t]+(\S+)[ \t]*$/);
             if (!match) {
               throw new Error('Expected: /cherry-pick <branch>');
             }
