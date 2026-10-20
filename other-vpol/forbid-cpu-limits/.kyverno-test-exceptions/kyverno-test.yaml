@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: forbid-cpu-limits-exception
+policies: [../forbid-cpu-limits.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: forbid-cpu-limits
+  resources: [default/bad01]
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: forbid-cpu-limits
+  resources: [default/bad02]
+  result: fail

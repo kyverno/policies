@@ -14,12 +14,24 @@ keywords:
 readme: |
   Setting of CPU limits is a debatable poor practice as it can result, when defined, in potentially starving applications of much-needed CPU cycles even when they are available. Ensuring that CPU limits are not set may ensure apps run more effectively. This policy forbids any container in a Pod from defining CPU limits.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `forbid-cpu-limits` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact container names in `spec.allowedValues` to allow CPU limits only for those
+  containers. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted
+  values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/forbid-cpu-limits/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 37c26ef589c194876df6cc6af6714a50ff0bde700fff5094926686d8aa86f223
+digest: b1f033dbf83dac44cb05c1f8a20d802fb9d3c40efe20199c7c8ad78ed6d3c139
 
 
 createdAt: "2025-05-11T17:46:11Z"

@@ -14,12 +14,25 @@ keywords:
 readme: |
   Environment variables control many aspects of a container's execution and are often the source of many different configuration settings. Being able to ensure that the value of a specific environment variable either is or is not set to a specific string is useful to maintain such controls. This policy checks every container to ensure that if the `DISABLE_OPA` environment variable is defined, it must not be set to a value of `"true"`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-env-vars` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `DISABLE_OPA=true` in `spec.allowedValues` to allow that environment setting in the
+  matched Pod. `variables.allContainers` checks regular, init, and ephemeral containers.
+  CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-env-vars/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 0663cb0725030bc24afd18507228fc722af7da834543360b8d077a6c90c2e97e
+digest: 09cdaa24848f6c6248845266e24dae36a476b7cb0d4aaec75b625f2dd99613f5
 
 
 createdAt: "2025-05-11T17:46:11Z"

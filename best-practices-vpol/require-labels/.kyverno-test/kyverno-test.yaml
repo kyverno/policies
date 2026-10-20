@@ -12,6 +12,7 @@ results:
   resources:
   - badpod01
   - badpod02
+  - badpod03
   result: fail
   isValidatingPolicy: true
 - kind: Pod

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: block-large-images-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: block-large-images
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-large-image' && request.namespace == 'default'
+  allowedValues:
+  - nvcr.io/nvidia/cuda@sha256:fbb1580c300b57365c4df0f64b20c6ee80dca0ee9c592311e38567240a334c12

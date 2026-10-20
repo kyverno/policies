@@ -172,6 +172,11 @@ results:
   policy: check-supplementalgroups
   resources:
   - supgrp-badpod01
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-supplementalgroups
+  resources:
   - supgrp-badpod02
   result: fail
 - isValidatingPolicy: true

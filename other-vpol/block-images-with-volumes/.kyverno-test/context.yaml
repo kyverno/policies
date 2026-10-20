@@ -6,14 +6,17 @@ spec:
   images:
   - image: clover/volume:passbolt
     config:
-      Volumes:
-      - name: volume1
+      config:
+        Volumes:
+          /data: {}
   - image: ghcr.io/kyverno/test-busybox:1.35
     config:
-      Volumes: []
+      config:
+        Volumes: {}
   - image: ghcr.io/kyverno/test-busybox:1.28
     config:
-      Volumes: []
+      config: {}
   - image: busybox:1.35
     config:
-      Volumes: []
+      config:
+        Volumes: {}

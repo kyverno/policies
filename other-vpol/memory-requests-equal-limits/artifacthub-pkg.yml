@@ -14,12 +14,25 @@ keywords:
 readme: |
   Pods which have memory limits equal to requests are given a QoS class of Guaranteed which is the highest schedulable class. This policy checks that all containers in a given Pod have memory requests equal to limits.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `memory-requests-equal-limits` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/memory-requests-equal-limits/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 6adf40edf27774890987b2ae056dac24210ebc109d069864ade5752954d3b0a2
+digest: a58c9c7718663e1570595bf6e133f69fb6cdf7fdf44edd0d272499b3d6cf03b9
 
 
 createdAt: "2025-05-11T17:46:11Z"

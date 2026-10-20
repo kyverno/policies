@@ -3,6 +3,12 @@ kind: Pod
 metadata:
   name: badpod01
 spec:
+  initContainers:
+  - name: init-with-mismatched-memory
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests: {memory: 1000m}
+      limits: {memory: 1024Mi}
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -74,4 +80,3 @@ spec:
         memory: "100Mi"
       limits:
         memory: "100Mi"
-

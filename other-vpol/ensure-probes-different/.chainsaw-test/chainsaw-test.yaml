@@ -34,10 +34,9 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Liveness and readiness probes cannot be the same')): true
         file: podcontrollers-bad.yaml
   - name: step-99
     try:
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n ensure-probes-different-ns
-

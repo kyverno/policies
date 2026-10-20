@@ -14,10 +14,22 @@ keywords:
 readme: |
   In addition to restricting the image registry from which images are pulled, in some cases and environments it may be required to also restrict which image repositories are used,  for example in some restricted Namespaces. This policy ensures that the only allowed image repositories present in a given Pod, across any container type, come from the designated list.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `allowed-image-repos` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact container image references in `spec.allowedValues` to bypass the repository
+  check for those images, not repository names. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/allowed-image-repos/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Pod"
-digest: 14e33d87b6b241e73d78fbbd7018c2d6dd96847a2a60237cb3095c75c7dd5cef
+digest: b6ed191f81d4520a02f111fcfd25d03f9558f52ecf271ef02d7472683343c2cf
 createdAt: "2025-11-24T17:13:07Z"

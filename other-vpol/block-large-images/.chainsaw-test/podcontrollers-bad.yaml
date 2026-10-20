@@ -19,7 +19,7 @@ spec:
       - name: busybox
         image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: nvidia/cuda:12.2.0-devel-ubi8
+        image: nvcr.io/nvidia/cuda@sha256:fbb1580c300b57365c4df0f64b20c6ee80dca0ee9c592311e38567240a334c12
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: nvidia/cuda:12.2.0-devel-ubi8
+            image: nvcr.io/nvidia/cuda@sha256:fbb1580c300b57365c4df0f64b20c6ee80dca0ee9c592311e38567240a334c12
           - name: busybox02
             image: ghcr.io/kyverno/test-busybox:1.35
           restartPolicy: OnFailure

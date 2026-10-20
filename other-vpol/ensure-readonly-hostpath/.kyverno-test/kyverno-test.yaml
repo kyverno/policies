@@ -5,9 +5,18 @@ metadata:
 policies:
 - ../ensure-readonly-hostpath.yaml
 resources:
+- exception-pod.yaml
 - good-pod-01.yaml
 - bad-pod-01.yaml
+exceptions:
+- exceptions.yaml
 results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: ensure-readonly-hostpath
+  resources:
+  - exception-hostpath
+  result: pass
 - isValidatingPolicy: true
   kind: Pod
   policy: ensure-readonly-hostpath
@@ -20,4 +29,3 @@ results:
   resources:
   - good-pod-01
   result: pass
-

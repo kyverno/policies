@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: hostpath-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: ensure-readonly-hostpath
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-hostpath'
+  - name: target-namespace
+    expression: request.namespace == 'default'
+  allowedValues:
+  - hostPath:foo
