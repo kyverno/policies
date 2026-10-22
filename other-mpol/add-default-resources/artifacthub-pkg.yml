@@ -14,9 +14,21 @@ keywords:
 readme: |
   Pods which don't specify at least resource requests are assigned a QoS class of BestEffort which can hog resources for other Pods on Nodes. At a minimum, all Pods should specify resource requests in order to be labeled as the QoS class Burstable. This sample mutates any container in a Pod which doesn't specify memory or cpu requests to apply some sane defaults.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-default-resources` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches preserve that regular container's resource configuration;
+  non-exempt containers still receive the policy's normal resource defaults.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-default-resources/.chainsaw-test/partial-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.26"
   kyverno/subject: "Pod"
-digest: c87cd9b7c96c1c07866a5b717660faae1e597c44cc90fb8e62ce66b9a61db65a
+digest: 60a4d16a134753efa35f46603e55ebef95aef6881482e662f0024d9533bcd327

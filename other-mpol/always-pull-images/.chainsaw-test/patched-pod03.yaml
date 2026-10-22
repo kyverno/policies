@@ -10,3 +10,7 @@ spec:
     - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
       imagePullPolicy: Always
+  initContainers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: init-busybox
+      imagePullPolicy: Always

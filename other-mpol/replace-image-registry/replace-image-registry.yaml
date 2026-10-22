@@ -4,6 +4,7 @@ metadata:
   name: replace-image-registry
   annotations:
     policies.kyverno.io/title: Replace Image Registry
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Sample
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
@@ -29,6 +30,7 @@ spec:
           Object{
             spec: Object.spec{
               containers: object.spec.containers.map(c,
+                exceptions.allowedImages.exists(image, image == c.image) ? c :
                 Object.spec.containers{
                   name: c.name,
                   image: 'myregistry.corp.com/' + 
@@ -39,6 +41,7 @@ spec:
               ),
               initContainers: has(object.spec.initContainers) ?
                 object.spec.initContainers.map(c,
+                  exceptions.allowedImages.exists(image, image == c.image) ? c :
                   Object.spec.initContainers{
                     name: c.name,
                     image: 'myregistry.corp.com/' + 

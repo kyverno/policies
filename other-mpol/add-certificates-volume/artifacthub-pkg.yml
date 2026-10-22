@@ -14,9 +14,22 @@ keywords:
 readme: |
   In some cases you would need to trust custom CA certificates for all the containers of a Pod. It makes sense to be in a ConfigMap so that you can automount them by only setting an annotation. This policy adds a volume to all containers in a Pod containing the certificate if the annotation called `inject-certs` with value `enabled` is found.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-certificates-volume` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  The policy compares each regular container's image exactly against
+  `exceptions.allowedImages`, populated from `spec.images` on matching exceptions.
+  Matching containers skip the certificate volumeMount; other containers still
+  receive it. The shared Pod volume is still added, even if every image is exempt.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-certificates-volume/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/kubernetesVersion: "1.21"
   kyverno/subject: "Pod,Volume"
-digest: c5abc5efca7ea5bfd6d1b1a7eac566d4c5238824fcb78a83b9cb6d4304edb7a6
+digest: b634755888a56c1b422233aaa7b01a846fadd4841823433b64943f69fa50f62a

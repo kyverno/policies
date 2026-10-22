@@ -14,9 +14,23 @@ keywords:
 readme: |
   Pod Security Standards define the fields and their options which are allowable for Pods to achieve certain security best practices. While these are typically validation policies, workloads will either be accepted or rejected based upon what has already been defined. It is also possible to mutate incoming Pods to achieve the desired PSS level rather than reject. This policy sets all the fields necessary to pass the PSS Restricted profile. Note that it does not attempt to remove non-compliant volumes and volumeMounts. Additional policies may be employed for this purpose.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `apply-pss-restricted-profile` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip the regular container's securityContext mutations
+  (`privileged`, `capabilities`, and `allowPrivilegeEscalation`). Non-exempt
+  containers still receive them. Pod-level securityContext defaults remain
+  applied, including when every image is exempt; this is not a whole-Pod bypass.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/apply-pss-restricted-profile/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: ac333306cfea3e9552728c4c9e7f1c03ff45054a640c60bbe859b23d744b7685
+digest: 3a11298c559744d219228dec959875da9208ff227c90e2c2a959b72431585723

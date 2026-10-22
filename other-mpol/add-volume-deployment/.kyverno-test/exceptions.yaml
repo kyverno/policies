@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: volume-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: add-volume}]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('default') == 'default' && object.metadata.name == 'mydeploy'

@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: preserve-approved-image
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: resolve-image-to-digest}]
+  images: [registry.invalid/exempt:1]
+  matchConditions:
+  - name: target
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'partial-exception'

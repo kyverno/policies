@@ -1,0 +1,7 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: apply-pss-restricted-profile, kind: MutatingPolicy}]
+  images: [registry.example/skip-first:1, registry.example/skip-last:1]
+  matchConditions: [{name: exact, expression: object.metadata.name == 'exception-pod'}]

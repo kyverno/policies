@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: replace-registry-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: replace-image-registry}]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'myapp-pod1'

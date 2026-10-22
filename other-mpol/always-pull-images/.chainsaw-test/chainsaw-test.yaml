@@ -6,8 +6,57 @@ metadata:
   name: always-pull-images
 spec:
   steps:
+  - name: scoped-replicaset-admission
+    try:
+    - script:
+        content: |
+          set -eu
+          kubectl -n kyverno get configmap kyverno -o json |
+            jq '{data: {resourceFilters: .data.resourceFilters}}' > .replicaset-resource-filters.json
+          python3 -c 'import json; from pathlib import Path; payload = json.loads(Path(".replicaset-resource-filters.json").read_text()); filters = payload["data"]["resourceFilters"] or ""; payload["data"]["resourceFilters"] = filters.replace("[ReplicaSet,*,*]", "").replace("[ReplicaSet/?*,*,*]", ""); print(json.dumps(payload))' > .replicaset-enabled.json
+          kubectl -n kyverno patch configmap kyverno --type=merge --patch-file .replicaset-enabled.json
+          kubectl -n kyverno rollout restart deployment/kyverno-admission-controller
+          kubectl -n kyverno rollout status deployment/kyverno-admission-controller --timeout=180s
+    cleanup:
+    - script:
+        content: |
+          set -eu
+          if [ -f .replicaset-resource-filters.json ]; then
+            kubectl -n kyverno patch configmap kyverno --type=merge --patch-file .replicaset-resource-filters.json
+            kubectl -n kyverno rollout restart deployment/kyverno-admission-controller
+            kubectl -n kyverno rollout status deployment/kyverno-admission-controller --timeout=180s
+          fi
+          rm -f .replicaset-resource-filters.json .replicaset-enabled.json
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
+    - apply:
+        file: ephemeral-rbac.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 60); do
+            ready=true
+            for verb in get list watch update; do
+              result="$(kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-admission-controller 2>&1)" || {
+                printf '%s\n' "$result" >&2
+                exit 1
+              }
+              case "$result" in
+                yes) ;;
+                no) ready=false ;;
+                *) printf 'unexpected authorization result: %s\n' "$result" >&2; exit 1 ;;
+              esac
+            done
+            [ "$ready" = true ] && exit 0
+            sleep 1
+          done
+          printf 'timed out waiting for admission-controller ephemeralcontainers authorization\n' >&2
+          exit 1
     - apply:
         file: ../always-pull-images.yaml
     - assert:
@@ -28,3 +77,46 @@ spec:
         file: podcontrollers.yaml
     - assert:
         file: podcontrollers-patched.yaml
+  - name: step-04-ephemeral-update
+    try:
+    - apply:
+        file: ephemeral-pod.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: always-pull-ephemeral-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: always-pull-images
+              kind: MutatingPolicy
+            images:
+            - registry.example/skip-first:1
+            - registry.example/skip-last:1
+            matchConditions:
+            - name: exact-pod
+              expression: object.metadata.namespace == 'default' && object.metadata.name == 'ephemeral-update-pod'
+    - script:
+        content: |
+          set -eu
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=first --image=registry.example/skip-first:1
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=middle --image=registry.example/mutate-middle:1
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=last --image=registry.example/skip-last:1
+    - assert:
+        file: ephemeral-pod-patched.yaml
+  - name: step-05-ephemeral-revocation
+    try:
+    - delete:
+        ref:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          name: always-pull-ephemeral-exception
+          namespace: policy-exceptions
+    - script:
+        content: |
+          set -eu
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=after-revocation --image=registry.example/skip-first:1
+    - assert:
+        file: ephemeral-pod-revoked-patched.yaml

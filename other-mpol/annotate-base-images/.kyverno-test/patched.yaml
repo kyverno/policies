@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: default
+  annotations: {kyverno.io/baseimages1: base.example/image:1}
+spec:
+  containers:
+  - {name: first, image: registry.invalid/exempt:1}
+  - {name: middle, image: registry.example/mutate:1}
+  - {name: last, image: registry.invalid/exempt:1}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sibling
+  namespace: default
+  annotations: {kyverno.io/baseimages0: base.example/image:1}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scope-target
+  namespace: default
+  annotations: {}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: scope-target
+  namespace: other
+  annotations: {kyverno.io/baseimages0: base.example/image:1}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: other
+  annotations: {kyverno.io/baseimages0: base.example/image:1}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1}

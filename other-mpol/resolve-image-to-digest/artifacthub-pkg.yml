@@ -14,9 +14,24 @@ keywords:
 readme: |
   Image tags are mutable and the change of an image can result in the same tag. This policy resolves the image digest of each image in a container and replaces the image with the fully resolved reference which includes the digest rather than tag.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `resolve-image-to-digest` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  `variables.resolvedContainers` retains each incoming image in `originalImage`
+  and skips `image.GetMetadata` for exact exempt images. Mutation checks
+  `originalImage`, not the resolved digest, to preserve the entire original
+  regular container. Non-exempt images are still resolved and replaced in Pods
+  and explicitly matched controller templates.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/resolve-image-to-digest/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 04c6f841a81597f63a6c3592e93b6302a442da778b0fed525a8e9ecf8f123256
+digest: 706992f46a2114a41fc986b7196101bf8e99490b8173e6453f0f569ffc405380
