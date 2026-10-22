@@ -9,6 +9,6 @@ status:
       type: WebhookConfigured
       status: "True"
     (conditions[?type == 'RBACPermissionsGranted']):
-    - reason: Failed
+    - reason: Succeeded
       type: RBACPermissionsGranted
-      status: "False"
+      status: "True"

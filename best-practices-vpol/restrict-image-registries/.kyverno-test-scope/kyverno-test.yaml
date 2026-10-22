@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-image-registries-exception-namespace-scope}
+policies: [../restrict-image-registries.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: restrict-image-registries
+  resources: [default/exception-registries]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: restrict-image-registries
+  resources: [team-b/exception-registries]
+  result: fail
+  isValidatingPolicy: true

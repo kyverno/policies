@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-latest-tag-exception-namespace-scope}
+policies: [../disallow-latest-tag.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: disallow-latest-tag
+  resources: [default/exception-latest-pod]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: disallow-latest-tag
+  resources: [team-b/exception-latest-pod]
+  result: fail
+  isValidatingPolicy: true

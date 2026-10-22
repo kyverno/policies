@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-helm-tiller-exception-namespace-scope}
+policies: [../disallow-helm-tiller.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: disallow-helm-tiller
+  resources: [default/exception-tiller]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: disallow-helm-tiller
+  resources: [team-b/exception-tiller]
+  result: fail
+  isValidatingPolicy: true

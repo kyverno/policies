@@ -6,15 +6,22 @@ policies:
 - ../restrict-image-registries.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
   policy: restrict-image-registries
   resources:
   - badpod01
-  - badpod02
   - badpod03
   - badpod04
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-image-registries
+  resources:
+  - badpod02
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -24,4 +31,50 @@ results:
   - goodpod02
   - goodpod03
   result: pass
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-image-registries
+  resources:
+  - exception-registries
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-image-registries
+  resources:
+  - exception-registries-positive
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-image-registries
+  resources: [badcontroller-deployment]
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: restrict-image-registries
+  resources: [badcontroller-statefulset]
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: restrict-image-registries
+  resources: [badcontroller-daemonset]
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: restrict-image-registries
+  resources: [badcontroller-replicaset]
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: restrict-image-registries
+  resources: [badcontroller-job]
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-image-registries
+  resources: [badcontroller-cronjob]
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: restrict-image-registries
+  resources: [badcontroller-replicationcontroller]
+  result: fail

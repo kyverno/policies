@@ -6,6 +6,8 @@ policies:
 - ../require-drop-all.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -19,4 +21,15 @@ results:
   resources:
   - add-capabilities
   result: pass
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-all-capabilities
+  resources:
+  - exception-drop-all
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-all-capabilities
+  resources:
+  - exception-drop-all-positive
+  result: pass

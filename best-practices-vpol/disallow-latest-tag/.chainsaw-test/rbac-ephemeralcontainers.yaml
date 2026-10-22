@@ -1,0 +1,10 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno-policy-test-ephemeralcontainers-admission
+  labels:
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+rules:
+- apiGroups: [""]
+  resources: [pods/ephemeralcontainers]
+  verbs: [update]
