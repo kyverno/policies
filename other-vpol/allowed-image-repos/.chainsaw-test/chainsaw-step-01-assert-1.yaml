@@ -1,13 +1,14 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   name: allowed-image-repos
 status:
   conditionStatus:
-    conditions:
+    (conditions[?type == 'WebhookConfigured']):
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"
+    (conditions[?type == 'RBACPermissionsGranted']):
     - reason: Succeeded
       type: RBACPermissionsGranted
       status: "True"

@@ -14,7 +14,7 @@ spec:
         file: ../check-subjectaccessreview.yaml
     - patch:
         resource:
-          apiVersion: policies.kyverno.io/v1alpha1
+          apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
           metadata:
             name: check-subjectaccessreview
@@ -73,7 +73,10 @@ spec:
           kubectl certificate approve $USERNAME
           kubectl certificate approve $BADUSERNAME
           #### Download certificate
+          #### The signer sets the certificate shortly after the approval, so wait for it
+          for i in $(seq 1 30); do [ -n "$(kubectl get csr $USERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
           kubectl get csr $USERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $USERNAME.crt
+          for i in $(seq 1 30); do [ -n "$(kubectl get csr $BADUSERNAME -o jsonpath='{.status.certificate}')" ] && break; sleep 1; done
           kubectl get csr $BADUSERNAME -o jsonpath='{.status.certificate}' | base64 --decode > $BADUSERNAME.crt
           ####
           #### Create the credential object and output the new kubeconfig file

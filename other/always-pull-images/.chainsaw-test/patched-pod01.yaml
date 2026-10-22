@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod01
-spec:
-  containers:
-    - image: ghcr.io/kyverno/test-busybox:1.35
-      name: busybox
-      imagePullPolicy: Always

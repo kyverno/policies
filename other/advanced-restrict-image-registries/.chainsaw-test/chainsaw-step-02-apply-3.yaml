@@ -1,7 +1,0 @@
-apiVersion: v1
-data:
-  registries: corp.img.io/*
-kind: ConfigMap
-metadata:
-  name: clusterregistries
-  namespace: imageregistries-ns01

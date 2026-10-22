@@ -1,7 +1,0 @@
-apiVersion: source.toolkit.fluxcd.io/v1beta2
-kind: HelmRepository
-metadata:
-  name: bad-helmrepo-01
-spec:
-  interval: 5m0s
-  url: https://helmrepo.github.io/podinfo

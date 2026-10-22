@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Pod
-metadata:
-  name: pod-with-root-user
-spec:
-  containers:
-  - name: busybox
-    image: busybox:1.28

@@ -1,9 +1,0 @@
-apiVersion: cli.kyverno.io/v1alpha1
-kind: Values
-policies:
-- name: restrict-service-account
-  rules:
-  - name: validate-service-account
-    values:
-      request.object.spec.serviceAccountName: busybox
-      saMap.data.busybox: '["docker.io/busybox","docker.io/busybox:1.28"]'

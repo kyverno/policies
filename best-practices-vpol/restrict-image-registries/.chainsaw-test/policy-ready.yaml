@@ -1,13 +1,14 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   name: restrict-image-registries
 status:
   conditionStatus:
-    conditions:
+    (conditions[?type == 'WebhookConfigured']):
     - reason: Succeeded
       type: WebhookConfigured
       status: "True"
+    (conditions[?type == 'RBACPermissionsGranted']):
     - reason: Failed
       type: RBACPermissionsGranted
       status: "False"

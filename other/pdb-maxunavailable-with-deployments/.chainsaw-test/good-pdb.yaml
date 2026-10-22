@@ -1,9 +1,0 @@
-apiVersion: policy/v1
-kind: PodDisruptionBudget
-metadata:
-  name: good-pdb01
-spec:
-  maxUnavailable: 0
-  selector:
-    matchLabels:
-      app: busybox

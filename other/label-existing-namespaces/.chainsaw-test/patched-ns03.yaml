@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  labels: 
-    foo: bar
-    mykey: myvalue
-  name: label-namespace03

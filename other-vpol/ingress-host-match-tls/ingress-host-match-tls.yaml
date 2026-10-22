@@ -1,4 +1,4 @@
-apiVersion: policies.kyverno.io/v1alpha1
+apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   name: ingress-host-match-tls
@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.14.0
+    policies.kyverno.io/minversion: 1.17.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-

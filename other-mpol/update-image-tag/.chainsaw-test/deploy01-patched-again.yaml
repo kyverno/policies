@@ -18,8 +18,7 @@ spec:
       labels:
         app: busybox
     spec:
-      containers:
-      - name: vault-agent
+      ~.(containers[?name == 'vault-agent']):
         image: vault:1.6.0
-      - image: ghcr.io/kyverno/test-busybox:1.35
-        name: busybox
+      ~.(containers[?name == 'busybox']):
+        image: ghcr.io/kyverno/test-busybox:1.35

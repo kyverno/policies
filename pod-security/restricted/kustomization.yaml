@@ -1,8 +1,0 @@
-resources:
-  - ../baseline
-  - disallow-capabilities-strict/disallow-capabilities-strict.yaml
-  - disallow-privilege-escalation/disallow-privilege-escalation.yaml
-  - require-run-as-non-root-user/require-run-as-non-root-user.yaml
-  - require-run-as-nonroot/require-run-as-nonroot.yaml
-  - restrict-seccomp-strict/restrict-seccomp-strict.yaml
-  - restrict-volume-types/restrict-volume-types.yaml

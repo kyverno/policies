@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: exclude-ns
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: not-exclude-ns
