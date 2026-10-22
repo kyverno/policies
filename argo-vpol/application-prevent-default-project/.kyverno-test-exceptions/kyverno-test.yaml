@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: application-default-project-exception-isolation
+policies:
+- ../application-prevent-default-project.yaml
+resources:
+- ../.chainsaw-test/exception-application.yaml
+- ../.chainsaw-test/bad-application.yaml
+- ../.chainsaw-test/empty-application.yaml
+- ../.chainsaw-test/good-application.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+- policy: application-prevent-default-project
+  kind: Application
+  resources: [exceptionapp, goodapp]
+  result: pass
+  isValidatingPolicy: true
+- policy: application-prevent-default-project
+  kind: Application
+  resources: [badapp, empty-project-app]
+  result: fail
+  isValidatingPolicy: true
