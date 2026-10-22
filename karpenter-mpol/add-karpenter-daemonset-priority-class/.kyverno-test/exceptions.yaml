@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: karpenter-daemonset-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-karpenter-daemonset-priority-class
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'exception-daemonset'

@@ -6,6 +6,9 @@ policies:
 - ../add-karpenter-donot-evict.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: CronJob
   patchedResources: patched02.yaml
@@ -13,6 +16,12 @@ results:
   resources:
   - addcronjob01
   result: pass
+  isMutatingPolicy: true
+- kind: Job
+  policy: add-karpenter-donot-evict
+  resources:
+  - exception-job
+  result: skip
   isMutatingPolicy: true
 - kind: Job
   patchedResources: patched01.yaml
