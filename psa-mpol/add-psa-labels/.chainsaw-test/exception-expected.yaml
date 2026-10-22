@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-psa-labels-exception-ns
+  labels:
+    foo: bar
+(contains(keys(metadata.labels || `{}`), 'foo') && !contains(keys(metadata.labels || `{}`), 'pod-security.kubernetes.io/enforce') && !contains(keys(metadata.labels || `{}`), 'pod-security.kubernetes.io/warn')): true
