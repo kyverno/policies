@@ -14,11 +14,24 @@ keywords:
 readme: |
   ServiceAccounts which have the ability to edit/patch workloads which they created may potentially use that privilege to update to a different ServiceAccount with higher privileges. This policy, intended to be run in `enforce` mode, blocks updates to Pod controllers if those updates modify the serviceAccountName field. Updates to Pods directly for this field are not possible as it is immutable once set.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-pod-controller-serviceaccount-updates` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `serviceAccountName` in `spec.allowedValues` to allow changing that field in the
+  matched controller's Pod template; the token is a field control, not a ServiceAccount
+  name. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values
+  remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-pod-controller-serviceaccount-updates/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: cdd5970862e066912502f07607b67ba65bb04ed2ac2566400df037c55b5ff934
+digest: c87c3a4e614de72a9d16592cccd70420521ef507183319b29e25027da9364438
 
 createdAt: "2025-05-11T17:46:10Z"

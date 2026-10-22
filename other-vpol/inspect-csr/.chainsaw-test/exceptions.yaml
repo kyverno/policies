@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: inspect-csr-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: inspect-csr
+  matchConditions:
+  - name: exact-request
+    expression: object.metadata.name == 'legacy-csr' && object.metadata.?namespace.orValue('') == ''

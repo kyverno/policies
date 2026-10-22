@@ -6,10 +6,23 @@ metadata:
   name: block-kubectl-cp-by-pod-label
 spec:
   steps:
+    - name: shared-exception-namespace
+      skipDelete: true
+      try:
+      - apply:
+          file: policy-exceptions-namespace.yaml
     - name: step-01
       try:
         - apply:
             file: ../block-kubectl-cp.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: block-kubectl-cp
+              spec:
+                validationActions: [Deny]
         - assert:
             file: policy-ready.yaml
     - name: step-02
@@ -18,12 +31,32 @@ spec:
             file: ns.yaml
         - apply:
             file: pods.yaml
+        - script:
+            content: kubectl wait --for=condition=Ready pod/pod01 -n bkc-podlabel-ns --timeout=120s
     - name: step-03
       try:
+        - apply:
+            file: exceptions.yaml
         - script:
-            content: if kubectl cp -n bkc-podlabel-ns pod01:/test1.txt ./test1.txt; then exit 1;else
-              exit 0; fi
+            content: kubectl exec -n bkc-podlabel-ns pod01 -- /bin/sh -c 'test "$(cat /test1.txt)" = expected-cp-content'
+        - script:
+            content: >-
+              for attempt in $(seq 1 20); do output=$(kubectl cp -n bkc-podlabel-ns
+              pod01:/test1.txt /tmp/kyverno-block-kubectl-cp.txt 2>&1); status=$?;
+              if test "$status" -eq 0; then test "$(cat /tmp/kyverno-block-kubectl-cp.txt)" =
+              expected-cp-content && exit 0; echo "$output"; exit 1; fi; echo "$output" |
+              grep -F "Cannot use \`kubectl cp\` on pods" >/dev/null || { echo "$output"; exit 1; };
+              sleep 1; done; echo "$output"; exit 1
     - name: step-04
       try:
+        - delete:
+            file: exceptions.yaml
         - script:
-            content: rm -rf ./test1.txt
+            content: >-
+              for attempt in $(seq 1 20); do output=$(kubectl cp -n bkc-podlabel-ns
+              pod01:/test1.txt /tmp/kyverno-block-kubectl-cp.txt 2>&1); status=$?;
+              if test "$status" -ne 0; then echo "$output" | grep -F
+              "Cannot use \`kubectl cp\` on pods" >/dev/null && exit 0; echo "$output"; exit 1; fi;
+              sleep 1; done; echo "$output"; exit 1
+        - script:
+            content: rm -f /tmp/kyverno-block-kubectl-cp.txt

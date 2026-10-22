@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: block-kubectl-cp-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: block-kubectl-cp
+  matchConditions:
+  - name: exact-connect-request
+    expression: request.namespace == 'bkc-podlabel-ns' && request.name == 'pod01' && request.operation == 'CONNECT' && request.subResource == 'exec'
