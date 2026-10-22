@@ -6,6 +6,9 @@ policies:
 - ../enable-kubecost-continuous-rightsizing.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Deployment
   patchedResources: patchedResource1.yaml
@@ -18,5 +21,11 @@ results:
   policy: enable-kubecost-continuous-rightsizing
   resources:
   - deploy01
+  result: skip
+  isMutatingPolicy: true
+- kind: Deployment
+  policy: enable-kubecost-continuous-rightsizing
+  resources:
+  - deploy03
   result: skip
   isMutatingPolicy: true
