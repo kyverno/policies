@@ -20,3 +20,13 @@ spec:
     manifest:
       annotations:
         org.opencontainers.image.base.name: gcr.io/distroless/static:nonroot
+  - image: registry.example.com/no-manifest-annotations:v1
+    manifest:
+      schemaVersion: 2
+  - image: registry.example.com/null-annotations:v1
+    manifest:
+      annotations: null
+  - image: registry.example.com/other-annotation:v1
+    manifest:
+      annotations:
+        org.opencontainers.image.title: other

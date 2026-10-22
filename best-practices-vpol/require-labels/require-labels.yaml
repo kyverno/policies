@@ -35,5 +35,4 @@ spec:
         object.metadata.labels['app.kubernetes.io/name'] != ''
       messageExpression: >-
         'Pod ' + object.metadata.name + ' must have the label
-        app.kubernetes.io/name with a non-empty value. Found labels: ' +
-        (has(object.metadata.labels) ? string(object.metadata.labels) : 'none')
+        app.kubernetes.io/name with a non-empty value.'
