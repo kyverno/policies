@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: label-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-labels
+  allowedValues: [missing-label:app.kubernetes.io/name]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.name == 'exception-labels' && object.metadata.namespace == 'test'

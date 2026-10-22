@@ -2,6 +2,7 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   annotations:
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       This policy restricts the use of externalIPs in Service resources.
@@ -27,5 +28,7 @@ spec:
   validationActions:
     - Audit
   validations:
-    - expression: '!has(object.spec.externalIPs) || size(object.spec.externalIPs) == 0'
+    - expression: >-
+        'externalIPs' in exceptions.allowedValues ||
+        !has(object.spec.externalIPs) || size(object.spec.externalIPs) == 0
       message: externalIPs are not allowed.

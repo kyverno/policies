@@ -14,10 +14,23 @@ keywords:
 readme: |
   Service externalIPs can be used for a MITM attack (CVE-2020-8554). Restrict externalIPs or limit to a known set of addresses. See: https://github.com/kyverno/kyverno/issues/1367. This policy validates that the `externalIPs` field is not set on a Service.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-external-ips` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `externalIPs` in `spec.allowedValues` to permit
+  the matched Service to set a non-empty externalIPs list. Kyverno exposes it as
+  `exceptions.allowedValues`. This waives the whole field check, not individual
+  IP addresses; scope the approved Service with `spec.matchConditions`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/restrict-service-external-ips/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Service"
-digest: 720a019bb32f7d12e1efac8b6cd3694852f5a9d4a2ae566ad40eb56b5cb11c66
+digest: b7404489e14219b6b30c9a12ee57943e2ef25e778a301bbc03f98836f9d202cd
 createdAt: "2025-05-05T13:19:13Z"

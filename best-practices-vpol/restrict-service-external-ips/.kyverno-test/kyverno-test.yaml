@@ -6,11 +6,17 @@ policies:
 - ../restrict-service-external-ips.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Service
   policy: restrict-external-ips
   resources:
   - badservice01
+  result: fail
+- kind: Service
+  policy: restrict-external-ips
+  resources:
   - badservice02
   result: fail
   isValidatingPolicy: true
@@ -18,5 +24,11 @@ results:
   policy: restrict-external-ips
   resources:
   - goodservice01
+  result: pass
+  isValidatingPolicy: true
+- kind: Service
+  policy: restrict-external-ips
+  resources:
+  - exception-external-ips
   result: pass
   isValidatingPolicy: true

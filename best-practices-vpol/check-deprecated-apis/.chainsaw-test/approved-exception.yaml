@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: check-deprecated-apis-approved
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: check-deprecated-apis
+  allowedValues:
+  - deprecated-api
+  matchConditions:
+  - name: exact-resource
+    expression: object.apiVersion == 'flowcontrol.apiserver.k8s.io/v1beta3' && object.kind == 'FlowSchema' && object.metadata.name == 'deprecated-api-fixture' && !has(object.metadata.namespace) && request.operation == 'CREATE' && request.?subResource.orValue('') == ''

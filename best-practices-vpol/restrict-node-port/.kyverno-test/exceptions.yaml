@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: nodeport-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-nodeport
+  allowedValues: [service-type:NodePort]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Service' && object.metadata.name == 'exception-nodeport' && object.metadata.namespace == 'test'

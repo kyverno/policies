@@ -28,10 +28,10 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy restrict-external-ips failed')): true
         file: bad-service-oneip.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy restrict-external-ips failed')): true
         file: bad-service-twoeip.yaml
