@@ -1,0 +1,4 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-pod, namespace: team-a}
+spec: {containers: [{name: app, image: nginx:latest}]}

@@ -14,6 +14,17 @@ keywords:
 readme: |
   A Pod securityContext entry defines fields such as the user and group which should be used to run the Pod. Sometimes choosing default values for users rather than blocking is a better alternative to not impede such Pod definitions. This policy will mutate a Pod to set `runAsNonRoot`, `runAsUser`, `runAsGroup`, and `fsGroup` fields within the Pod securityContext if they are not already set.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-default-securitycontext` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-default-securitycontext/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"

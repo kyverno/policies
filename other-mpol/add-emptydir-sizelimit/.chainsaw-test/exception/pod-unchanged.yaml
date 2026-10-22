@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-pod
+  namespace: default
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: app
+    image: busybox:1.35
+    imagePullPolicy: IfNotPresent
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts: [{name: work, mountPath: /work}]
+  volumes:
+  - name: work
+    emptyDir:
+      (sizeLimit == null): true

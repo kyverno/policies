@@ -1,0 +1,14 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: label-existing-namespaces-exception
+spec:
+  steps:
+  - try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+    - apply: {file: ../../label-existing-namespaces.yaml}
+    - apply: {file: exception.yaml}
+    - sleep: {duration: 15s}
+    - apply: {file: namespace.yaml}
+    - assert: {file: namespace-unchanged.yaml}

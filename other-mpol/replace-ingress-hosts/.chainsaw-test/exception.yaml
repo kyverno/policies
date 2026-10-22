@@ -1,0 +1,6 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: replace-ingress-hosts, kind: MutatingPolicy}]
+  matchConditions: [{name: exact, expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'exception-ingress'}]

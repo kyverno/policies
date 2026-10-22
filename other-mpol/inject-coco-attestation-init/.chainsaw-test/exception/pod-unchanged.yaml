@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-pod
+  namespace: default
+  labels: {app: test-app, coco: enabled}
+  annotations: {coco.io/init-config: coco-config-defaults}
+spec:
+  (initContainers == null): true
+  containers: [{name: app, image: nginx:1.21.0}]

@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: automount-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: disable-automountserviceaccounttoken}]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'default'

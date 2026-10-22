@@ -24,3 +24,38 @@ spec:
         file: sa-patched.yaml
     - error:
         file: sa-not-patched.yaml
+  - name: step-04-exception
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: automount-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: disable-automountserviceaccounttoken
+              kind: MutatingPolicy
+            matchConditions:
+            - name: exact-serviceaccount
+              expression: object.metadata.namespace == 'disable-satokenmount-ns' && object.metadata.name == 'default'
+    - sleep: {duration: 15s}
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: default
+            namespace: disable-satokenmount-ns
+          automountServiceAccountToken: true
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ServiceAccount
+          metadata:
+            name: default
+            namespace: disable-satokenmount-ns
+          automountServiceAccountToken: true
