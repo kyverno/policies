@@ -45,6 +45,21 @@ spec:
             ($error != null): true
         file: pod-cri-dockerd-sock.yaml
     - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-run-docker-sock.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-root-mount.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: pod-var-run-mount.yaml
+    - apply:
         file: pod-emptydir-vol.yaml
     - apply:
         file: pod-no-volumes.yaml
