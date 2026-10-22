@@ -4,6 +4,7 @@ metadata:
   name: backup-all-volumes
   annotations:
     policies.kyverno.io/title: Backup All Volumes
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/category: Velero
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod, Deployment, CronJob, Annotation
