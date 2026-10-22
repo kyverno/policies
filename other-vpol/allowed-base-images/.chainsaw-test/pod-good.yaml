@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
   containers:
   - name: kyverno
     image: ghcr.io/dlorenc/hello-ko:latest
@@ -14,6 +16,8 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
   containers:
   - name: ko
     image: ghcr.io/dlorenc/hello-ko:latest
