@@ -14,6 +14,16 @@ keywords:
 readme: |
   A PodDisruptionBudget limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions. For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB) for each application. This policy will create a PDB resource whenever a new Deployment is created.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `GeneratingPolicy`
+  named `create-default-pdb` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity. This policy uses a
+  resource-scoped exception, so no `spec.images` or `spec.allowedValues` entry
+  is needed. See the [tested example](https://github.com/kyverno/policies/blob/main/other-gpol/create-default-pdb/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal generation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"

@@ -24,3 +24,41 @@ spec:
         file: deployment.yaml
     - assert:
         file: pdb-generated.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        file: exception-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: exception-deployment.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: exception-pdb.yaml
+    - apply:
+        file: exception-deployment-sibling.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-pdb-sibling.yaml
+    - apply:
+        file: exception-wrong-namespace.yaml
+    - apply:
+        file: exception-wrong-namespace-deployment.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-wrong-namespace-pdb.yaml
+    - delete:
+        file: exception.yaml
+    - delete:
+        file: exception-deployment.yaml
+    - sleep:
+        duration: 5s
+    - apply:
+        file: exception-deployment.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-pdb.yaml
