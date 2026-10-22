@@ -28,6 +28,7 @@ results:
   - badcronjob15
   - badcronjob16
   - badcronjob17
+  - badcronjob18
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
@@ -50,6 +51,7 @@ results:
   - baddeployment15
   - baddeployment16
   - baddeployment17
+  - baddeployment18
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -74,6 +76,7 @@ results:
   - badpod17
   - badpod18
   - badpod19
+  - badpod20
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
