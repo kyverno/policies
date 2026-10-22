@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: badsvc03
+spec:
+  selector: {app: nginx}
+  ports:
+  - name: foo-port
+    port: 80
+    targetPort: 80
+    nodePort: 30012
+  - name: bar-port
+    port: 32999
+    targetPort: 32999
+    nodePort: 30013
+  type: NodePort

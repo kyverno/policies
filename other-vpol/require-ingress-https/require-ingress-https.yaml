@@ -7,6 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
+    policies.kyverno.io/minversion: 1.17.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
@@ -30,6 +31,5 @@ spec:
     - expression: >-
         object.metadata.?annotations[?'kubernetes.io/ingress.allow-http'].orValue('default') == 'false'
       message: "The kubernetes.io/ingress.allow-http annotation must be set to false."
-    - expression: "has(object.spec.tls)"
+    - expression: "object.spec.?tls.orValue([]).size() > 0"
       message: "TLS must be defined."
-

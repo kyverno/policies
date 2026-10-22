@@ -1,0 +1,42 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: badrole01, namespace: policy-exceptions}
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [impersonate]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: mixedrole01, namespace: policy-exceptions}
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [impersonate, bind]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: mixedrole02, namespace: policy-exceptions}
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [impersonate]
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [escalate]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: badrole01-wrong, namespace: policy-exceptions}
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [impersonate]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata: {name: badrole01, namespace: other-namespace}
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [roles]
+  verbs: [impersonate]

@@ -6,6 +6,8 @@ policies:
 - ../require-qos-guaranteed.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -14,6 +16,8 @@ results:
   - badpod01
   - badpod02
   - badpod03
+  - badpod04-zero
+  - badpod05-init
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -21,4 +25,5 @@ results:
   resources:
   - goodpod01
   - goodpod02
+  - exception-qos
   result: pass

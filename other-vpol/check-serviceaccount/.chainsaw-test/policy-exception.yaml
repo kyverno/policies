@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: serviceaccount-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: check-sa
+  matchConditions:
+  - name: target-namespace
+    expression: request.namespace == 'restrict-sa-ns'
+  - name: target-name
+    expression: request.name == 'exception-pod'
+  allowedValues:
+  - serviceAccount:restrict-sa-ns/another-developer

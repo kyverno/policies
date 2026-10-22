@@ -14,12 +14,25 @@ keywords:
 readme: |
   Pods can have many different containers which are tightly coupled. It may be desirable to limit the amount of containers that can be in a single Pod to control best practice application or so policy can be applied consistently. This policy checks all Pods to ensure they have no more than four containers.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `limit-containers-per-pod` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  `variables.allContainers` counts regular, init, and ephemeral containers;
+  a matching whole-resource exception skips this policy for the entire Pod.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/limit-containers-per-pod/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 6ead247917288b3506c1eb180e48955d990fdb03206b923a092f6b886556af47
+digest: aa53f4555b5cd5ee0b2533d646cc8c8cc55e111b0ce6c041de0d99fb9ac483ce
 
 
 createdAt: "2025-05-11T17:46:12Z"

@@ -6,6 +6,11 @@ metadata:
   name: restrict-node-label-creation
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - script:
@@ -17,6 +22,16 @@ spec:
     try:
     - apply:
         file: ../restrict-node-label-creation.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-node-label-creation
+          spec:
+            validationActions: [Deny]
+    - apply:
+        file: exceptions.yaml
     - assert:
         file: policy-ready.yaml
     - sleep:
@@ -25,7 +40,28 @@ spec:
     try:
     - script:
         content: |
+          set -eu
           node=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          # The static fixture is exercised by the exact-name branch; this dynamic
+          # exception proves the same narrow contract for the live node name.
+          kubectl apply -f - <<EOF
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: live-node-label-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - kind: ValidatingPolicy
+              name: restrict-node-label-creation
+            matchConditions:
+            - name: exact-node-and-value
+              expression: object.metadata.name == '$node' && object.metadata.labels.?foo.orValue('') == 'exception-approved'
+            allowedValues:
+            - foo:exception-approved
+          EOF
+          if kubectl label --overwrite nodes $node foo=exception-approved; then echo "Success: exact exception allowed approved foo"; else echo "Failed: exact exception did not allow foo"; exit 1; fi
+          kubectl delete policyexceptions.policies.kyverno.io live-node-label-exception -n policy-exceptions
           if kubectl label --overwrite nodes $node foo=shouldfail; then echo "Failure: successfully set label foo"; exit 1; else echo "Success: failed to set label foo"; fi
           if kubectl label --overwrite nodes $node bar=bar; then echo "Success: set label bar"; else echo "Failed to set label bar"; exit 1; fi
           if kubectl label --overwrite nodes $node bar=foo; then echo "Success: modified label bar"; else echo "Failed to modify label bar"; exit 1; fi

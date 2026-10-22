@@ -1,0 +1,6 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: UserInfo
+metadata:
+  name: service-account-user
+userInfo:
+  username: system:serviceaccount:restrict-sa-ns:another-developer

@@ -14,12 +14,24 @@ keywords:
 readme: |
   A Service of type ExternalName which points back to localhost can potentially be used to exploit vulnerabilities in some Ingress controllers. This policy audits Services of type ExternalName if the externalName field refers to localhost.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `no-localhost-service` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `externalName:localhost` in `spec.allowedValues` to allow that ExternalName target
+  for the matched Service. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/disallow-localhost-services/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Service"
-digest: 8f7ea149ac71137da19a2dce3eae427e362fe69fcff7bd1522c5fb0a01d6a6f0
+digest: e9a884abff7045acca33bf51ef1a35c63c8b889c8d25df5b5b55daf89e1c391b
 
 
 createdAt: "2025-05-11T17:46:12Z"

@@ -34,5 +34,5 @@ results:
   policy: require-ingress-https
   resources:
   - badingress04
+  - badingress-empty-tls
   result: fail
-

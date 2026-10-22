@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: storageclass-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-storageclass
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'badstorageclass' && object.metadata.?namespace.orValue('') == ''
+  allowedValues:
+  - Retain

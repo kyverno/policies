@@ -1,0 +1,9 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-wildcard-resources-exceptions}
+policies: [../restrict-wildcard-resources.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {policy: restrict-wildcard-resources, isValidatingPolicy: true, kind: ClusterRole, resources: [badcr01], result: skip}
+- {policy: restrict-wildcard-resources, isValidatingPolicy: true, kind: ClusterRole, resources: [badcr02, badcr03], result: fail}

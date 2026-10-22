@@ -6,7 +6,8 @@ metadata:
     policies.kyverno.io/title: Restrict node label creation in ValidatingPolicy
     policies.kyverno.io/category: Sample in Vpol
     policies.kyverno.io/subject: Node, Label
-    kyverno.io/kyverno-version: 1.12.1
+    kyverno.io/kyverno-version: 1.19.1
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/description: >-
       Node labels are critical pieces of metadata upon which many other applications and
@@ -33,6 +34,12 @@ spec:
       expression: "request.operation == 'UPDATE'"
     - name: "has-foo-label"
       expression: "oldObject.metadata.?labels.?foo != object.metadata.?labels.?foo"
+  variables:
+    - name: "fooExceptionValue"
+      expression: >-
+        object.metadata.?labels.?foo.hasValue()
+        ? 'foo:' + object.metadata.labels.foo
+        : 'foo:<absent>'
   validations:
-    - expression: "false"
+    - expression: "variables.fooExceptionValue in exceptions.allowedValues"
       message: "Setting the `foo` label on a Node is not allowed."

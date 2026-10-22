@@ -32,6 +32,17 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: badpod03
+  labels:
+    app.kubernetes.io/name: ''
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod02
   labels:
     foo: bar

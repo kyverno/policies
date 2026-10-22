@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: topology-spread-exceptions}
+policies: [../topologyspreadconstraints-policy.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: topologyspreadconstraints-policy
+  resources: [policy-exceptions/badss03]
+  result: pass

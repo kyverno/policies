@@ -14,11 +14,23 @@ keywords:
 readme: |
   Jobs can be created directly and indirectly via a CronJob controller. In some cases, users may want to only allow Jobs if they are created via a CronJob. This policy restricts Jobs so they may only be created by a CronJob.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-jobs` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `job-owner:<job-name>` in `spec.allowedValues` to permit the matched Job that
+  otherwise fails the ownership condition. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-jobs/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Job"
-digest: 4b6b948cd40c8b68c57a5ca639406bdcdb74d587c4ed5b6c39338f426bfecc42
+digest: 8ddf9f69be1ddba7158badeaf8392f592f20745605e8887852cc4cbf8711a9d9
 
 createdAt: "2025-05-11T17:46:12Z"

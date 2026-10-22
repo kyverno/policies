@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:aggregate-to-edit
+rules:
+- apiGroups: [""]
+  resources: [endpoints]
+  verbs: [get, list, watch, update]
+- apiGroups: ["*"]
+  resources: ["*"]
+  verbs: ["*"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:aggregate-to-edit-safe
+rules:
+- apiGroups: [""]
+  resources: [endpoints]
+  verbs: [get, list, watch]

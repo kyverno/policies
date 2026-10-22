@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
@@ -29,6 +29,5 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["ingresses"]
   validations:
-    - expression: "!object.spec.?rules.orValue([]).exists(rule, has(rule.host) && rule.host.contains('*'))"
+    - expression: "!object.spec.?rules.orValue([]).exists(rule, has(rule.host) && rule.host.contains('*') && !exceptions.allowedValues.exists(value, value == 'host:' + rule.host))"
       message: "Wildcards are not permitted as hosts."
-

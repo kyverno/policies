@@ -1,0 +1,26 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: priority-class-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-pod-priorityclassname
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'badpod01'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: priority-class-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-pod-priorityclassname
+  allowedValues: ['']
+  matchConditions:
+  - name: partial-resource
+    expression: request.namespace == 'default' && request.name.startsWith('partial-priority')

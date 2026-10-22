@@ -14,12 +14,25 @@ keywords:
 readme: |
   Accessing a container engine's socket is for highly specialized use cases and should generally be disabled. If access must be granted, it should be done on an explicit basis. This policy requires that, for any Pod mounting the Docker socket, it must have the label `allow-docker` set to `true`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `docker-socket-check` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List the exact Pod name in `spec.allowedValues` to permit its Docker socket mount
+  without `allow-docker=true`; also constrain the namespace in `spec.matchConditions`. CEL
+  consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/docker-socket-requires-label/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 5c37bbb9f60da2e29b37bda50c1ab5b3c29d705731c9737ada2c58edb739a8fd
+digest: 6442daf779a89a30731d4d204f3b549139c13ed41da58815c032acc1877d390f
 
 
 createdAt: "2025-05-11T17:46:10Z"

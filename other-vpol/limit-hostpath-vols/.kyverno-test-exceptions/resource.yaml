@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pods-all
+  namespace: policy-exceptions
+spec:
+  containers:
+  - name: app
+    image: busybox:1.35
+  volumes:
+  - name: allowed-hostpath
+    hostPath:
+      path: /etc

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: deployment-replicas-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deployment-has-multiple-replicas
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'mydeploybad' && object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - '1'

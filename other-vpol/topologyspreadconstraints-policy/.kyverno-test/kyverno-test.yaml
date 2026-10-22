@@ -17,6 +17,11 @@ results:
   resources:
   - monitoring/badss01
   - monitoring/badss02
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: topologyspreadconstraints-policy
+  resources:
   - monitoring/badss03
   result: fail
 - isValidatingPolicy: true

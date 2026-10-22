@@ -12,10 +12,17 @@ metadata:
   name: my-np-service
 spec:
   type: NodePort
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exception-localhost
+spec:
+  type: ExternalName
+  externalName: localhost
   selector:
     app: MyApp
   ports:
   - port: 80
     targetPort: 80
     protocol: TCP
-

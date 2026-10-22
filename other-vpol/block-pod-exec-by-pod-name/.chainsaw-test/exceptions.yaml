@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: block-pod-exec-name-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deny-exec-by-pod-name
+  matchConditions:
+  - name: exact-connect-request
+    expression: request.namespace == 'bpe-podname-ns' && request.name == 'myapp-maintenance-01' && request.operation == 'CONNECT' && request.subResource == 'exec'

@@ -29,6 +29,10 @@ results:
   kind: RoleBinding
   resources:
   - badrb01
+  result: fail
+- policy: restrict-binding-clusteradmin
+  kind: RoleBinding
+  resources:
   - badrb02
   result: fail
 - policy: restrict-binding-clusteradmin
@@ -38,4 +42,3 @@ results:
   - goodrb01
   - goodrb02
   result: pass
-

@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: check-serviceaccount-secrets-exceptions}
+policies: [../check-serviceaccount-secrets.yaml]
+resources: [../.kyverno-test/resource.yaml, ../.kyverno-test/empty-svc-account.yaml, ../.kyverno-test/exception-svc-account.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: ServiceAccount, policy: check-serviceaccount-secrets, resources: [bad-svc-account], result: pass}
+- {isValidatingPolicy: true, kind: ServiceAccount, policy: check-serviceaccount-secrets, resources: [good-svc-account, empty-svc-account], result: pass}
+- {isValidatingPolicy: true, kind: ServiceAccount, policy: check-serviceaccount-secrets, resources: [other-bad-svc], result: fail}

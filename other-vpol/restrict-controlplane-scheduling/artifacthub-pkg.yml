@@ -14,12 +14,24 @@ keywords:
 readme: |
   Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-controlplane-scheduling` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `toleration:<key>` in `spec.allowedValues` for the exact restricted control-plane
+  toleration key; unrelated tolerations remain checked. CEL consumes `spec.allowedValues`
+  as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-controlplane-scheduling/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: ba605e9c5366f122a6b999d1dbe8cafee73020f483db7af2812cd2a1b8276dc1
+digest: 29cc6d75148010f8eca540a2b37e9eda5af9c3a713c08ca7573344fbc5b7a2a8
 
 
 createdAt: "2025-05-11T17:46:11Z"

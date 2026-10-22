@@ -9,6 +9,7 @@ metadata:
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Secret,ServiceAccount
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/description: >-
       Kubernetes automatically mounts ServiceAccount credentials in each ServiceAccount.
       The ServiceAccount may be assigned roles allowing Pods to access API resources.
@@ -28,6 +29,5 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["serviceaccounts"]
   validations:
-    - expression: "object.?automountServiceAccountToken.orValue(true) == false"
+    - expression: "object.?automountServiceAccountToken.orValue(true) == false || exceptions.allowedValues.exists(value, value == 'automountServiceAccountToken:' + string(object.?automountServiceAccountToken.orValue(true)))"
       message: "ServiceAccounts must set automountServiceAccountToken to false."
-

@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: service-port-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-service-port-range
+  allowedValues: ['80']
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'approved-service'

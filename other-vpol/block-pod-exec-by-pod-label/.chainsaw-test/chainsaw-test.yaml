@@ -6,10 +6,24 @@ metadata:
   name: block-pod-exec-by-pod-label
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../block-pod-exec-by-pod-label.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-exec-by-pod-label
+          spec:
+            validationActions:
+            - Deny
     - assert:
         file: policy-ready.yaml
   - name: step-02
@@ -33,6 +47,18 @@ spec:
         content: kubectl exec -n bpe-podlabel-ns pod02 -- ls
     - script:
         content: kubectl exec -n bpe-podlabel-ns pod04 -- ls
+  - name: step-05
+    try:
+    - apply:
+        file: exceptions.yaml
+    - script:
+        content: kubectl exec -n bpe-podlabel-ns pod03 -- ls
+  - name: step-06
+    try:
+    - delete:
+        file: exceptions.yaml
+    - script:
+        content: if kubectl exec -n bpe-podlabel-ns pod03 -- ls; then exit 1; else exit 0; fi
   - name: step-99
     try:
     - script:

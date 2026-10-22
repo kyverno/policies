@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allow-exact-bare-pod
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: prevent-bare-pods
+  matchConditions:
+    - name: exact-create-request
+      expression: request.operation == 'CREATE' && request.kind.kind == 'Pod' && request.name == 'badpod01' && request.namespace == 'prevent-naked-pods-ns'

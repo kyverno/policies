@@ -2,6 +2,8 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   name: block-ephemeral-containers
+  annotations:
+    policies.kyverno.io/minversion: 1.19.1
 spec:
   validationActions: 
     - Audit
@@ -16,6 +18,6 @@ spec:
       resources: ["pods", "pods/ephemeralcontainers"] 
   validations:
    - expression: >-
-      object.spec.?ephemeralContainers.orValue([]).size() == 0
+      object.spec.?ephemeralContainers.orValue([]).all(container,
+        has(exceptions.allowedValues) && string(container.name) in exceptions.allowedValues)
      message: "Ephemeral (debug) containers are not permitted."
-

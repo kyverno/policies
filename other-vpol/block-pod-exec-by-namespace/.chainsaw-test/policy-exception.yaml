@@ -1,0 +1,18 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: pci-exec-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deny-exec-by-namespace-name
+  matchConditions:
+  - name: target-namespace
+    expression: request.namespace == 'pci'
+  - name: target-name
+    expression: request.name == 'pod02'
+  - name: target-operation
+    expression: request.operation == 'CONNECT' && request.subResource == 'exec'
+  allowedValues:
+  - pod:pci/pod02

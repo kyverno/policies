@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: topology-spread-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: topologyspreadconstraints-policy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'badss03'
+  allowedValues:
+  - topologySpreadConstraints:missing

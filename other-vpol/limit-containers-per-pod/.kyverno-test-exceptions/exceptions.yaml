@@ -1,0 +1,8 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-container-limit-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: limit-containers-per-pod}]
+  matchConditions:
+  - name: exact-resource
+    expression: "request.kind.kind == 'Pod' && object.metadata.name == 'myapp-pod-2' && object.metadata.?namespace.orValue('') == 'default'"

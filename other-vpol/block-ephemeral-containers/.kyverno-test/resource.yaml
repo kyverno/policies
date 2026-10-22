@@ -48,6 +48,8 @@ spec:
   ephemeralContainers:
   - name: ephcontainer01
     image: dummyimagename
+  - name: ephcontainer02
+    image: dummyimagename
 ---
 apiVersion: v1
 kind: Pod
@@ -63,4 +65,3 @@ spec:
   ephemeralContainers:
   - name: ephcontainer01
     image: dummyimagename
-

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: metadata-match-regex-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: metadata-match-regex
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'badpod01' && request.namespace == 'default'
+  allowedValues:
+  - v1.1
