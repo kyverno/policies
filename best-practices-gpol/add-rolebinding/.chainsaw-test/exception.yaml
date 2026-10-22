@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-rolebinding-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-rolebinding
+    kind: GeneratingPolicy
+  matchConditions:
+  - name: exact-namespace
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'exception-rb-ns'

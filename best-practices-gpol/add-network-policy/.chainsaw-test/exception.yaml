@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-network-policy-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-networkpolicy
+    kind: GeneratingPolicy
+  matchConditions:
+  - name: exact-namespace
+    expression: object.metadata.name == 'exception-networkpolicy-ns'
