@@ -4,6 +4,7 @@ metadata:
   name: add-linkerd-mesh-injection
   annotations:
     policies.kyverno.io/title: Add Linkerd Mesh Injection
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/category: Linkerd
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Namespace, Annotation

@@ -14,8 +14,19 @@ keywords:
 readme: |
   Sidecar proxy injection in Linkerd may be handled at the Namespace level by setting the annotation `linkerd.io/inject` to `enabled`. In addition, a second annotation may be applied which controls the Pod startup behavior. This policy sets the annotations, if not present, `linkerd.io/inject` and `config.linkerd.io/proxy-await` to `enabled` on all new Namespaces.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-linkerd-mesh-injection` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/linkerd-mpol/add-linkerd-mesh-injection/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Linkerd"
   kyverno/subject: "Namespace, Annotation"
-digest: cc8fa860468e157de7c3adcd006c51fb94c7e2d65e395597f3222dd7027e5c2b
+digest: 2ba61409c4f061017a23f91328355f9b32ee63938db19d8f3ad0d170e3cf9ca5

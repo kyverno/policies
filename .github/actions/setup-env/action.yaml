@@ -39,13 +39,38 @@ runs:
     - name: Install latest kyverno
       shell: bash
       run: |
-        set -e
-        kubectl create -f https://github.com/kyverno/kyverno/raw/main/config/install-latest-testing.yaml
+        set -euo pipefail
+        curl -fsSL https://raw.githubusercontent.com/kyverno/kyverno/main/config/install-latest-testing.yaml -o install-latest-testing.yaml
+        kubectl create --dry-run=client -f install-latest-testing.yaml -o json | jq -s -e '
+          def expected:
+            {"kyverno-admission-controller": "kyverno",
+             "kyverno-background-controller": "controller",
+             "kyverno-reports-controller": "controller"};
+          {apiVersion: "v1", kind: "List", items: .} |
+          if ([.items[] | select(.apiVersion == "apps/v1" and .kind == "Deployment" and .metadata.namespace == "kyverno" and expected[.metadata.name] != null) | .metadata.name] | sort) != (expected | keys)
+          then error("expected exactly three supported Kyverno deployments")
+          else
+            .items |= map(
+              if .apiVersion == "apps/v1" and .kind == "Deployment" and .metadata.namespace == "kyverno" and expected[.metadata.name] != null then
+                expected[.metadata.name] as $container |
+                if ([.spec.template.spec.containers[] | select(.name == $container)] | length) != 1
+                then error("expected exactly one controller container in " + .metadata.name)
+                else
+                  .spec.template.spec.containers |= map(
+                    if .name == $container then
+                      .args = ((.args // [] | map(select((startswith("--enablePolicyException=") or startswith("--exceptionNamespace=")) | not))) +
+                               ["--enablePolicyException=true", "--exceptionNamespace=policy-exceptions"])
+                    else . end)
+                end
+              else . end)
+          end' > install-with-policy-exceptions.json
+        kubectl create namespace policy-exceptions --dry-run=client -o yaml | kubectl apply -f -
+        kubectl create -f install-with-policy-exceptions.json
     - name: Wait for kyverno ready
       shell: bash
       run: |
         set -e
-        kubectl wait --namespace kyverno --for=condition=ready pod --selector '!job-name' --timeout=120s
+        kubectl wait --namespace kyverno --for=condition=Available deployment --all --timeout=180s
     - name: Install CRDs
       shell: bash
       run: |

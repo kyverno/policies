@@ -4,6 +4,7 @@ metadata:
   name: add-linkerd-policy-annotation
   annotations:
     policies.kyverno.io/title: Add Linkerd Policy Annotation
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/category: Linkerd
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Namespace,Annotation
