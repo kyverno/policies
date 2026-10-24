@@ -2,7 +2,7 @@ name: disallow-proc-mount-vpol
 version: 1.0.0
 displayName: Disallow procMount in ValidatingPolicy
 description: >-
-  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Note that in order for users to deviate from the `Default` procMount requires setting a feature gate at the API server.
+  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them. The API server accepts a procMount of `Unmasked` only when `spec.hostUsers` is `false`, and only with the `ProcMountType` feature gate, which is on by default from Kubernetes 1.33.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-proc-mount/disallow-proc-mount.yaml
@@ -12,12 +12,12 @@ keywords:
   - Pod Security Standards (Baseline)
   - ValidatingPolicy
 readme: |
-  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Note that in order for users to deviate from the `Default` procMount requires setting a feature gate at the API server.
+  The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them. The API server accepts a procMount of `Unmasked` only when `spec.hostUsers` is `false`, and only with the `ProcMountType` feature gate, which is on by default from Kubernetes 1.33.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: f23d7c55e4727e2846ea770d1f474fd986a44a3919b08a835300e0f2fe953444
+digest: c27a75d029d95adb091223aca3fa6d32c7b640c23eb380df6420fbc5fb8aaf30
 createdAt: "2025-03-13T23:26:58Z"

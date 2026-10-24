@@ -11,11 +11,10 @@ metadata:
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
-      The seccomp profile in the Restricted group must not be explicitly set to Unconfined
-      but additionally must also not allow an unset value. This policy, 
-      requiring Kubernetes v1.30 or later, ensures that seccomp is 
-      set to `RuntimeDefault` or `Localhost`. A known issue prevents a policy such as this
-      using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
+      The Restricted profile requires a seccomp profile of `RuntimeDefault` or `Localhost`.
+      The Pod-level seccomp profile must be unset or set to one of these values. Each container
+      must set one of these values or inherit a valid Pod-level profile, so a Pod with no valid
+      profile at either level is denied. Windows Pods are exempt.
 spec:
   validationActions:
      - Audit
@@ -34,10 +33,27 @@ spec:
       object.spec.containers + 
       object.spec.?initContainers.orValue([]) + 
       object.spec.?ephemeralContainers.orValue([])
+  - name: isWindowsPod
+    expression: "object.spec.?os.?name.orValue('') == 'windows'"
   validations:
-  - expression: >- 
-      object.spec.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost']
-      && variables.allContainers.all(container, 
-      container.?securityContext.?seccompProfile.?type.orValue('RuntimeDefault') in ['RuntimeDefault', 'Localhost'])
+  - expression: >-
+      variables.isWindowsPod ||
+      !object.spec.?securityContext.?seccompProfile.?type.hasValue() ||
+      object.spec.securityContext.seccompProfile.type in ['RuntimeDefault', 'Localhost']
     message: >-
-      seccompProfile.type must be either 'RuntimeDefault' or 'Localhost'.
+      Use of custom Seccomp profiles is disallowed. The field
+      spec.securityContext.seccompProfile.type must be unset or set to `RuntimeDefault` or `Localhost`.
+      Windows Pods are exempt.
+  - expression: >-
+      variables.isWindowsPod ||
+      variables.allContainers.all(container,
+        container.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost'] ||
+        (!container.?securityContext.?seccompProfile.?type.hasValue() &&
+         object.spec.?securityContext.?seccompProfile.?type.orValue('') in ['RuntimeDefault', 'Localhost']))
+    message: >-
+      Use of custom Seccomp profiles is disallowed. The fields
+      spec.containers[*].securityContext.seccompProfile.type,
+      spec.initContainers[*].securityContext.seccompProfile.type, and
+      spec.ephemeralContainers[*].securityContext.seccompProfile.type must be set to
+      `RuntimeDefault` or `Localhost`, or inherited from spec.securityContext.seccompProfile.type.
+      Windows Pods are exempt.

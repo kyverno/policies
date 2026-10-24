@@ -50,6 +50,79 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: gooddeployment02-new
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: net.ipv4.ip_local_reserved_ports
+          value: "8080"
+        - name: net.ipv4.tcp_keepalive_time
+          value: "600"
+        - name: net.ipv4.tcp_fin_timeout
+          value: "30"
+        - name: net.ipv4.tcp_keepalive_intvl
+          value: "30"
+        - name: net.ipv4.tcp_keepalive_probes
+          value: "5"
+        - name: net.ipv4.tcp_rmem
+          value: "4096 87380 6291456"
+        - name: net.ipv4.tcp_wmem
+          value: "4096 16384 4194304"
+        - name: net.ipv4.tcp_slow_start_after_idle
+          value: "0"
+        - name: net.ipv4.tcp_notsent_lowat
+          value: "16384"
+      containers:
+      - name: busybox01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob02-new
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          securityContext:
+            sysctls:
+            - name: net.ipv4.ip_local_reserved_ports
+              value: "8080"
+            - name: net.ipv4.tcp_keepalive_time
+              value: "600"
+            - name: net.ipv4.tcp_fin_timeout
+              value: "30"
+            - name: net.ipv4.tcp_keepalive_intvl
+              value: "30"
+            - name: net.ipv4.tcp_keepalive_probes
+              value: "5"
+            - name: net.ipv4.tcp_rmem
+              value: "4096 87380 6291456"
+            - name: net.ipv4.tcp_wmem
+              value: "4096 16384 4194304"
+            - name: net.ipv4.tcp_slow_start_after_idle
+              value: "0"
+            - name: net.ipv4.tcp_notsent_lowat
+              value: "16384"
+          containers:
+          - name: busybox01
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: gooddeployment01
 spec:
   replicas: 1

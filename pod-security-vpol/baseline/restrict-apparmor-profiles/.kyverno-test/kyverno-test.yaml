@@ -1,0 +1,78 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-apparmor-profiles
+policies:
+- ../restrict-apparmor-profiles.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  - badpod10
+  - badpod11
+  - badpod12
+  - badpod13
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-apparmor-profiles
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-apparmor-profiles
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  - goodpod09
+  - goodpod10
+  result: pass
