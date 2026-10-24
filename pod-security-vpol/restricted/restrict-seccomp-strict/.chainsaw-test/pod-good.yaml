@@ -165,3 +165,14 @@ spec:
     seccompProfile:
       type: RuntimeDefault
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod12
+spec:
+  os:
+    name: windows
+  containers:
+  - name: container01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---

@@ -15,6 +15,9 @@ results:
   - badpod01
   - badpod02
   - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
   result: fail
 - isValidatingPolicy: true
   kind: Pod
