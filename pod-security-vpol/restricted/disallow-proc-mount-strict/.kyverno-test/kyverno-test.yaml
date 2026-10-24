@@ -1,0 +1,88 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-proc-mount-strict
+policies:
+- ../disallow-proc-mount-strict.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-proc-mount-strict
+  resources:
+  - badcronjob01
+  - badcronjob02
+  - badcronjob03
+  - badcronjob04
+  - badcronjob05
+  - badcronjob06
+  - badcronjob07
+  - badcronjob08
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-proc-mount-strict
+  resources:
+  - baddeployment01
+  - baddeployment02
+  - baddeployment03
+  - baddeployment04
+  - baddeployment05
+  - baddeployment06
+  - baddeployment07
+  - baddeployment08
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-proc-mount-strict
+  resources:
+  - badpod01
+  - badpod02
+  - badpod03
+  - badpod04
+  - badpod05
+  - badpod06
+  - badpod07
+  - badpod08
+  - badpod09
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-proc-mount-strict
+  resources:
+  - goodcronjob01
+  - goodcronjob02
+  - goodcronjob03
+  - goodcronjob04
+  - goodcronjob05
+  - goodcronjob06
+  - goodcronjob07
+  - goodcronjob08
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-proc-mount-strict
+  resources:
+  - gooddeployment01
+  - gooddeployment02
+  - gooddeployment03
+  - gooddeployment04
+  - gooddeployment05
+  - gooddeployment06
+  - gooddeployment07
+  - gooddeployment08
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-proc-mount-strict
+  resources:
+  - goodpod01
+  - goodpod02
+  - goodpod03
+  - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
+  - goodpod08
+  result: pass
