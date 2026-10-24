@@ -31,16 +31,19 @@ spec:
       object.spec.containers + 
       (object.spec.?initContainers.orValue([])) + 
       (object.spec.?ephemeralContainers.orValue([]))
+  - name: isWindowsPod
+    expression: "object.spec.?os.?name.orValue('') == 'windows'"
   validations:
   - expression: >-
+      variables.isWindowsPod ||
       variables.allContainers.all(container, 
-      container.?securityContext.?capabilities.?drop.orValue([]).exists_one(capability, capability == 'ALL'))
+      container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability == 'ALL'))
     message: >-
-      Containers must drop `ALL` capabilities.
+      Containers must drop `ALL` capabilities. Windows Pods are exempt.
   - expression: >-
-      variables.allContainers.all(container, 
-        container.?securityContext.?capabilities.?add.orValue([]).size() == 0 || 
-        (container.securityContext.capabilities.add.orValue([]).size() == 1 && 
-        container.securityContext.capabilities.add[0] == 'NET_BIND_SERVICE'))
+      variables.isWindowsPod ||
+      variables.allContainers.all(container,
+        container.?securityContext.?capabilities.?add.orValue([]).all(capability,
+          capability == 'NET_BIND_SERVICE'))
     message: >-
-      Any capabilities added other than NET_BIND_SERVICE are disallowed.
+      Any capabilities added other than NET_BIND_SERVICE are disallowed. Windows Pods are exempt.

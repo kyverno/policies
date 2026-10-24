@@ -129,6 +129,29 @@ spec:
         securityContext:
           allowPrivilegeEscalation: false
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment06
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: windows
+      initContainers:
+      - name: initcontainer01
+        image: ghcr.io/kyverno/test-busybox:1.35
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -244,3 +267,23 @@ spec:
             image: ghcr.io/kyverno/test-busybox:1.35
             securityContext:
               allowPrivilegeEscalation: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob06
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: windows
+          initContainers:
+          - name: initcontainer01
+            image: ghcr.io/kyverno/test-busybox:1.35
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
