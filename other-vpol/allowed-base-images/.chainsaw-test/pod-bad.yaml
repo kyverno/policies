@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: badpod01
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -14,6 +16,8 @@ kind: Pod
 metadata:
   name: badpod02
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
   containers:
   - name: ko
     image: ghcr.io/dlorenc/hello-ko:latest
@@ -25,6 +29,8 @@ kind: Pod
 metadata:
   name: badpod03
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35

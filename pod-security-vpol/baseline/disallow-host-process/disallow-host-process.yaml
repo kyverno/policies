@@ -10,10 +10,9 @@ metadata:
     policies.kyverno.io/minversion: 1.17.0
     kyverno.io/kubernetes-version: "1.30+"
     policies.kyverno.io/description: >-
-      Windows pods offer the ability to run HostProcess containers which enables privileged
-      access to the Windows node. Privileged access to the host is disallowed in the baseline
-      policy. HostProcess pods are an alpha feature as of Kubernetes v1.22. This policy ensures
-      the `hostProcess` field, if present, is set to `false`.
+      Windows Pods can run HostProcess containers, which have privileged access to the
+      Windows node. The Baseline profile disallows this. This policy ensures that the
+      `hostProcess` field is unset or `false` at both the Pod and the container level.
 spec:
   validationActions:
      - Audit
@@ -34,10 +33,13 @@ spec:
           object.spec.?ephemeralContainers.orValue([])
   validations:
     - expression: >-
+        object.spec.?securityContext.?windowsOptions.?hostProcess.orValue(false) == false &&
         variables.allContainers.all(container,
-        container.?securityContext.?windowsOptions.?hostProcess.orValue(false) == false)
+          container.?securityContext.?windowsOptions.?hostProcess.orValue(false) == false)
       message: >-
-        HostProcess containers are disallowed. The field spec.containers[*].securityContext.windowsOptions.hostProcess,
+        HostProcess Pods and containers are disallowed. The fields
+        spec.securityContext.windowsOptions.hostProcess,
+        spec.containers[*].securityContext.windowsOptions.hostProcess,
         spec.initContainers[*].securityContext.windowsOptions.hostProcess, and
         spec.ephemeralContainers[*].securityContext.windowsOptions.hostProcess
-        must either be undefined or set to `false`. 
+        must either be undefined or set to `false`.
