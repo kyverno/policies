@@ -1,0 +1,170 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: ""
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+        host: ""
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+        host: ""
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+          host: ""
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+          host: ""
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    restartPolicy: Always
+    livenessProbe:
+      tcpSocket:
+        port: 8080
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+    startupProbe:
+      tcpSocket:
+        port: 8080
+    lifecycle:
+      postStart:
+        tcpSocket:
+          port: 8080
+      preStop:
+        tcpSocket:
+          port: 8080
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    readinessProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    startupProbe:
+      httpGet:
+        path: /healthz
+        port: 8080
+    lifecycle:
+      postStart:
+        httpGet:
+          path: /healthz
+          port: 8080
+      preStop:
+        httpGet:
+          path: /healthz
+          port: 8080
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    livenessProbe:
+      exec:
+        command:
+        - cat
+        - /tmp/healthy
+    readinessProbe:
+      grpc:
+        port: 8080
+    lifecycle:
+      preStop:
+        exec:
+          command:
+          - sleep
+          - "5"
