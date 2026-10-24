@@ -1,0 +1,112 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod01
+spec:
+  securityContext:
+    appArmorProfile:
+      type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  - name: container02
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  securityContext:
+    appArmorProfile:
+      type: RuntimeDefault
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/container01: unconfined
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/container01: runtime/default
+    container.apparmor.security.beta.kubernetes.io/initcontainer01: unconfined
+spec:
+  initContainers:
+  - name: initcontainer01
+    image: dummyimagename
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod13
+spec:
+  securityContext:
+    appArmorProfile:
+      type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      appArmorProfile:
+        type: RuntimeDefault

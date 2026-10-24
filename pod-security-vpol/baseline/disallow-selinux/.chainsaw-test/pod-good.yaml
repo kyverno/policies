@@ -62,6 +62,41 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: goodpod05-new
+spec:
+  securityContext:
+    seLinuxOptions:
+      type: container_engine_t
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod06-new
+spec:
+  initContainers:
+  - name: busybox01-init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      seLinuxOptions:
+        type: container_engine_t
+  containers:
+  - name: busybox01
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      seLinuxOptions:
+        type: container_kvm_t
+  - name: busybox02
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      seLinuxOptions:
+        type: container_engine_t
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod01
 spec:
   containers:
