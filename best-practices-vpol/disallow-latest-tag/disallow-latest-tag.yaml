@@ -13,7 +13,8 @@ metadata:
       The ':latest' tag is mutable and can lead to unexpected errors if the
       image changes. A best practice is to use an immutable tag that maps to
       a specific version of an application Pod. This policy validates that the image
-      specifies a tag and that it is not called `latest`.
+      specifies a tag and that it is not called `latest`. Checks containers,
+      initContainers, and ephemeralContainers.
 spec:
   validationActions: [Audit]
   evaluation: 
@@ -25,9 +26,11 @@ spec:
             apiVersions: [v1]
             operations: [CREATE, UPDATE]
             resources: [pods]
+  variables:
+          - name: allContainers
+            expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   validations:
-          - expression: "object.spec.containers.all(container, container.image.contains(':'))"
+          - expression: "variables.allContainers.all(container, container.image.contains(':'))"
             message: "An image tag is required."
-          - expression: "object.spec.containers.all(container, !container.image.endsWith(':latest'))"
+          - expression: "variables.allContainers.all(container, !container.image.endsWith(':latest'))"
             message: "Using a mutable image tag e.g. 'latest' is not allowed."
-
