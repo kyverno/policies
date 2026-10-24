@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-proc-mount-strict
+  annotations:
+    policies.kyverno.io/title: Disallow procMount (Strict) in ValidatingPolicy
+    policies.kyverno.io/category: Pod Security Standards (Restricted) in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kyverno-version: 1.17.0
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/description: >-
+      The default /proc masks are set up to reduce attack surface and should be required. This
+      policy ensures nothing but the default procMount can be specified, including for Pods
+      that run in a user namespace. It implements the Restricted procMount check of Pod
+      Security Standards v1.35 and later, which overrides the user namespace exemption in the
+      Baseline `disallow-proc-mount` policy.
+spec:
+  validationActions:
+     - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   [""]
+        apiVersions: ["v1"]
+        operations:  ["CREATE", "UPDATE"]
+        resources:   ["pods"]
+  variables:
+    - name: allContainers
+      expression: >-
+        object.spec.containers +
+          object.spec.?initContainers.orValue([]) +
+          object.spec.?ephemeralContainers.orValue([])
+  validations:
+    # No user namespace exemption. PSA Restricted overrides the relaxed Baseline check.
+    - expression: >-
+        variables.allContainers.all(container,
+          container.?securityContext.?procMount.orValue('Default') == 'Default')
+      message: >-
+        The Restricted profile does not allow a non-default proc mount, even in a user
+        namespace. The field securityContext.procMount must be unset or set to `Default`.

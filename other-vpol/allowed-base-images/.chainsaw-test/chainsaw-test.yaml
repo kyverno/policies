@@ -21,6 +21,10 @@ spec:
           spec:
             validationActions:
              - Deny
+            matchConstraints:
+              namespaceSelector:
+                matchLabels:
+                  kubernetes.io/metadata.name: ($namespace)
     - assert:
         file: chainsaw-step-01-assert-1.yaml
   - name: step-02
@@ -38,10 +42,10 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            "(contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image'))": true
         file: pod-bad.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            "(contains($error, 'denied the request: Policy allowed-base-images failed: Container images must have a base image'))": true
         file: podcontroller-bad.yaml

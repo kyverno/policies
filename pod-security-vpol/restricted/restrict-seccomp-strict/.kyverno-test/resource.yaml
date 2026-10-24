@@ -107,6 +107,74 @@ spec:
   - name: container01
     image: dummyimagename
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod09
+spec:
+  os:
+    name: linux
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod10
+spec:
+  securityContext:
+    seccompProfile:
+      type: Unconfined
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod11
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: Unconfined
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod12
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    securityContext:
+      seccompProfile:
+        type: RuntimeDefault
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
+---
 ###### Pods - Good
 apiVersion: v1
 kind: Pod
@@ -274,6 +342,44 @@ spec:
   securityContext:
     seccompProfile:
       type: RuntimeDefault
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod11
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod12
+spec:
+  os:
+    name: windows
+  containers:
+  - name: container01
+    image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod13
+spec:
+  securityContext:
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+  - name: container01
+    image: dummyimagename
+  ephemeralContainers:
+  - name: ephcontainer01
+    image: dummyimagename
 ---
 ###### Deployments - Bad
 apiVersion: apps/v1
@@ -445,6 +551,68 @@ spec:
       containers:
       - name: container01
         image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment09
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: linux
+      containers:
+      - name: container01
+        image: dummyimagename
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment10
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        seccompProfile:
+          type: Unconfined
+      containers:
+      - name: container01
+        image: dummyimagename
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
 ---
 ###### Deployments - Good
 apiVersion: apps/v1
@@ -704,6 +872,26 @@ spec:
         seccompProfile:
           type: RuntimeDefault
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment11
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      os:
+        name: windows
+      containers:
+      - name: container01
+        image: dummyimagename
+---
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
@@ -853,6 +1041,59 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob09
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: linux
+          containers:
+          - name: container01
+            image: dummyimagename
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob10
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          securityContext:
+            seccompProfile:
+              type: Unconfined
+          containers:
+          - name: container01
+            image: dummyimagename
+            securityContext:
+              seccompProfile:
+                type: RuntimeDefault
 ---
 ###### CronJobs - Good
 apiVersion: batch/v1
@@ -1081,4 +1322,21 @@ spec:
           securityContext:
             seccompProfile:
               type: RuntimeDefault
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob11
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          os:
+            name: windows
+          containers:
+          - name: container01
+            image: dummyimagename
 ---

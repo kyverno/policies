@@ -649,3 +649,44 @@ spec:
           securityContext:
             runAsNonRoot: false
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeployment16
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsNonRoot: true
+      securityContext:
+        runAsNonRoot: false
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob16
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              runAsNonRoot: true
+          securityContext:
+            runAsNonRoot: false
+---
