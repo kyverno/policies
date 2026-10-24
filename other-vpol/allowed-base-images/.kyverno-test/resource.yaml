@@ -138,3 +138,31 @@ spec:
             image: ghcr.io/dlorenc/hello-ko:latest
             imagePullPolicy: IfNotPresent
           restartPolicy: OnFailure
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod04
+spec:
+  containers:
+  - name: c
+    image: registry.example.com/no-manifest-annotations:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod05
+spec:
+  containers:
+  - name: c
+    image: registry.example.com/null-annotations:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  containers:
+  - name: c
+    image: registry.example.com/other-annotation:v1

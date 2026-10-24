@@ -118,6 +118,35 @@ spec:
     - name: net.ipv4.ping_group_range
       value: "1   0"
 ---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod08
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+  securityContext:
+    sysctls:
+    - name: net.ipv4.ip_local_reserved_ports
+      value: "8080"
+    - name: net.ipv4.tcp_keepalive_time
+      value: "600"
+    - name: net.ipv4.tcp_fin_timeout
+      value: "30"
+    - name: net.ipv4.tcp_keepalive_intvl
+      value: "30"
+    - name: net.ipv4.tcp_keepalive_probes
+      value: "5"
+    - name: net.ipv4.tcp_rmem
+      value: "4096 87380 6291456"
+    - name: net.ipv4.tcp_wmem
+      value: "4096 16384 4194304"
+    - name: net.ipv4.tcp_slow_start_after_idle
+      value: "0"
+    - name: net.ipv4.tcp_notsent_lowat
+      value: "16384"
+---
 ###### Deployments - Bad
 apiVersion: apps/v1
 kind: Deployment
@@ -318,6 +347,44 @@ spec:
         - name: net.ipv4.ping_group_range
           value: "1   0"
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment08
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: dummyimagename
+      securityContext:
+        sysctls:
+        - name: net.ipv4.ip_local_reserved_ports
+          value: "8080"
+        - name: net.ipv4.tcp_keepalive_time
+          value: "600"
+        - name: net.ipv4.tcp_fin_timeout
+          value: "30"
+        - name: net.ipv4.tcp_keepalive_intvl
+          value: "30"
+        - name: net.ipv4.tcp_keepalive_probes
+          value: "5"
+        - name: net.ipv4.tcp_rmem
+          value: "4096 87380 6291456"
+        - name: net.ipv4.tcp_wmem
+          value: "4096 16384 4194304"
+        - name: net.ipv4.tcp_slow_start_after_idle
+          value: "0"
+        - name: net.ipv4.tcp_notsent_lowat
+          value: "16384"
+---
 ###### CronJobs - Bad
 apiVersion: batch/v1
 kind: CronJob
@@ -490,3 +557,38 @@ spec:
               value: "2048"
             - name: net.ipv4.ping_group_range
               value: "1   0"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob08
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: dummyimagename
+          securityContext:
+            sysctls:
+            - name: net.ipv4.ip_local_reserved_ports
+              value: "8080"
+            - name: net.ipv4.tcp_keepalive_time
+              value: "600"
+            - name: net.ipv4.tcp_fin_timeout
+              value: "30"
+            - name: net.ipv4.tcp_keepalive_intvl
+              value: "30"
+            - name: net.ipv4.tcp_keepalive_probes
+              value: "5"
+            - name: net.ipv4.tcp_rmem
+              value: "4096 87380 6291456"
+            - name: net.ipv4.tcp_wmem
+              value: "4096 16384 4194304"
+            - name: net.ipv4.tcp_slow_start_after_idle
+              value: "0"
+            - name: net.ipv4.tcp_notsent_lowat
+              value: "16384"
