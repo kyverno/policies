@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: argo-cluster-generation-from-rancher-capi
+spec:
+  steps:
+  - name: step-00
+    try:
+    - assert:
+        file: crd-assert.yaml
+  - name: step-01
+    try:
+    - apply:
+        file: permissions.yaml
+    - apply:
+        file: namespaces.yaml
+    - apply:
+        file: kubeconfig-secrets.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../argo-cluster-generation-from-rancher-capi.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: clusters.yaml
+    - assert:
+        file: secret-generated01.yaml
+    - assert:
+        file: secret-generated02.yaml
+    - error:
+        file: secret-not-generated.yaml
