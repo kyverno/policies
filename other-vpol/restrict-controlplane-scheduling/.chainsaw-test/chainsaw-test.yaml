@@ -31,6 +31,8 @@ spec:
         expect:
         - check:
             ($error != null): true
+            (contains($error || '', 'restrict-controlplane-scheduling')): true
+            (contains($error || '', 'Pods may not use tolerations which schedule on control plane nodes.')): true
         file: pod-bad.yaml
     - apply:
         file: podcontroller-good.yaml
