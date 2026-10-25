@@ -28,7 +28,7 @@ spec:
   validations:
     - expression: >-
         object.spec.containers.all(container, 
-        !container.?resources.?requests.?memory.hasValue() ||
-        container.resources.requests.memory == container.resources.?limits.?memory.orValue('-1'))
+        container.?resources.?requests.?memory ==
+        container.?resources.?limits.?memory)
       message: "resources.requests.memory must be equal to resources.limits.memory"
 

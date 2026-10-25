@@ -26,3 +26,27 @@ results:
   - myapp-pod
   result: fail
 
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - equal-memory
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - limit-only
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - request-only
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources:
+  - no-memory
+  result: pass
