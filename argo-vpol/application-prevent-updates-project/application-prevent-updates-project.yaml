@@ -1,0 +1,29 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: application-prevent-updates-project
+  annotations:
+    policies.kyverno.io/title: Prevent Updates to Project in CEL expressions
+    policies.kyverno.io/category: Argo in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: Application
+    policies.kyverno.io/description: >-
+      This policy prevents updates to the project field after an Application is created.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["argoproj.io"]
+        apiVersions: [v1alpha1]
+        operations: [UPDATE]
+        resources: [applications]
+  validations:
+    - message: "The spec.project cannot be changed once the Application is created."
+      expression: "object.spec.project == oldObject.spec.project"
