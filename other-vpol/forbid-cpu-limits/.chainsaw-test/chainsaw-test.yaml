@@ -12,7 +12,7 @@ spec:
     try:
     - apply:
         file: ../forbid-cpu-limits.yaml
-    - patch:
+    - assert:
         resource:
           apiVersion: policies.kyverno.io/v1
           kind: ValidatingPolicy
@@ -20,7 +20,7 @@ spec:
             name: forbid-cpu-limits
           spec:
             validationActions:
-             - Deny
+            - Deny
     - assert:
         file: policy-ready.yaml
     - sleep: 
@@ -32,13 +32,62 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Containers may not define CPU limits.')): true
         file: pods-bad.yaml
     - apply:
         file: podcontrollers-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Containers may not define CPU limits.')): true
         file: podcontrollers-bad.yaml
 
+  - name: updates
+    try:
+    - patch:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: good01
+            labels:
+              admission-update: allowed
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: good01
+            labels:
+              admission-update: allowed
+    - patch:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: gooddeployment01
+          spec:
+            template:
+              spec:
+                containers:
+                - name: busybox
+                  image: ghcr.io/kyverno/test-busybox:1.35
+                  resources:
+                    limits:
+                      cpu: 500m
+        expect:
+        - check:
+            (contains($error, 'Containers may not define CPU limits.')): true
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: gooddeployment01
+          spec:
+            template:
+              spec:
+                containers:
+                - name: busybox
+                  image: ghcr.io/kyverno/test-busybox:1.35
+                  (contains(keys(resources.limits || `{}`), 'cpu')): false
