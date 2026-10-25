@@ -12,3 +12,17 @@ spec:
         command: ["sleep", "3600"]
       restartPolicy: Never
   backoffLimit: 4
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job04
+spec:
+  ttlSecondsAfterFinished: 900
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job02
+spec:
+  ttlSecondsAfterFinished: 300
