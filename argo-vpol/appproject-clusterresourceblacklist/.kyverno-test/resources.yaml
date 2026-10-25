@@ -76,3 +76,14 @@ spec:
   # clusterResourceBlacklist:
   # - group: ''
   #   kind: 'Pod'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj05
+spec:
+  description: Test Project
+  destinations:
+  - namespace: default
+    server: https://kubernetes.default.svc
+  clusterResourceBlacklist: []

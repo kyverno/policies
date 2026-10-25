@@ -28,8 +28,8 @@ spec:
         operations: [CREATE, UPDATE]
         resources: [appprojects]
   validations:
-    - message: "AppProject must specify clusterResourceBlacklist."
-      expression: "has(object.spec.clusterResourceBlacklist)"
+    - message: "AppProject must specify a non-empty clusterResourceBlacklist."
+      expression: "has(object.spec.clusterResourceBlacklist) && size(object.spec.clusterResourceBlacklist) > 0"
     - message: "Wildcards must be present in group and kind for clusterResourceBlacklist."
       expression: >-
         !has(object.spec.clusterResourceBlacklist) ||

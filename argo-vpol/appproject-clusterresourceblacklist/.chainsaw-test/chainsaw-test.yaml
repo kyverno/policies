@@ -51,3 +51,8 @@ spec:
               - check:
                   ($error != null): true
             file: bad-no-blacklist.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-empty-blacklist.yaml
