@@ -8,6 +8,7 @@ resources:
   - ../.chainsaw-test/bad-application.yaml
   - ../.chainsaw-test/good-application.yaml
   - no-project-application.yaml
+  - ../.chainsaw-test/empty-project-application.yaml
 results:
   - policy: application-prevent-default-project
     rule: default-project
@@ -15,6 +16,7 @@ results:
     resources:
       - badapp
       - noprojectapp
+      - emptyprojectapp
     result: fail
   - policy: application-prevent-default-project
     rule: default-project
