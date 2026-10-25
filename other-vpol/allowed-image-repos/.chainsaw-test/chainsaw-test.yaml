@@ -33,6 +33,8 @@ spec:
         expect:
         - check:
             ($error != null): true
+            (contains($error || '', 'allowed-image-repos')): true
+            (contains($error || '', 'All images in this Pod must come from an authorized repository.')): true
         file: pod-bad.yaml
     - apply:
         expect:
