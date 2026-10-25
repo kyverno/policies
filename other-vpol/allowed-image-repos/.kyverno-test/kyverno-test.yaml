@@ -52,3 +52,26 @@ results:
   - goodcronjob01
   - goodcronjob02
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-image-repos
+  resources:
+  - badpod-digest
+  - badpod-init-digest
+  - badpod-ephemeral-digest
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-image-repos
+  resources:
+  - goodpod-untagged
+  - goodpod-tagged
+  - goodpod-digest
+  - goodpod-tag-digest
+  - goodpod-registry-tagged
+  - goodpod-registry-digest
+  - goodpod-port-digest
+  - goodpod-myknownimage-digest
+  - goodpod-init-digest
+  - goodpod-ephemeral-digest
+  result: pass

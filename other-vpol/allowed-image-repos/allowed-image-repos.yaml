@@ -34,6 +34,6 @@ spec:
         apiVersions: ["v1"]
   validations:
     - messageExpression: |
-        'All images in this Pod must come from an authorized repository. Allowed repositories: ' + variables.allowedRepos.join(', ') + '. Found unauthorized images: ' + variables.allContainers.filter(container, !variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo)).map(container, container.image).join(', ')
+        'All images in this Pod must come from an authorized repository. Allowed repositories: ' + variables.allowedRepos.join(', ') + '. Found unauthorized images: ' + variables.allContainers.filter(container, !variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split('@')[0].split(':')[0] : container.image.split('@')[0].split(':')[0]) == repo)).map(container, container.image).join(', ')
       expression: |
-        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split(':')[0] : container.image.split(':')[0]) == repo))
+        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split('@')[0].split(':')[0] : container.image.split('@')[0].split(':')[0]) == repo))
