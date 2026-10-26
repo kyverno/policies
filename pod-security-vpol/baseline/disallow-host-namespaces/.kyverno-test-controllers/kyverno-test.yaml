@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-namespaces-controllers
+policies:
+- ../disallow-host-namespaces.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-namespaces
+  resources:
+  - unsafe-disallow-host-namespaces-7
+  result: fail

@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-host-path-controllers
+policies:
+- ../disallow-host-path.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-host-path
+  resources:
+  - unsafe-disallow-host-path-7
+  result: fail
