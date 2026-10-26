@@ -14,10 +14,16 @@ keywords:
   - replicaset
 readme: |
   ReplicaSets serve as an intermediate controller for various Pod controllers like Deployments. When a new version of a Deployment is initiated, it generates a new ReplicaSet with the specified number of replicas and scales down the current one to zero. Consequently, numerous empty ReplicaSets may accumulate in the cluster, leading to clutter and potential false positives in policy reports if enabled. This cleanup policy is designed to remove empty ReplicaSets across the cluster within a specified timeframe, for instance, ReplicaSets created one day ago, ensuring the ability to rollback to previous ReplicaSets in case of deployment issues
+  ### PolicyException availability
+
+  The released cleanup controller does not currently consume
+  `PolicyException` resources for the `DeletingPolicy` named `cleanup-empty-replicasets`. Do not rely
+  on an exception to suppress its deletions; this policy behaves the same when
+  PolicyException support is disabled or enabled for the other controllers.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "ReplicaSet"
-digest: 44e9568c407d7525d6a5e6fc6bd0139d8c1fbd1779f8e7e682aa365c245014ee
-
+digest: 39f19bd713340043a398216318c59c4ebe96b7a7ca194ca4d86f036607264505
