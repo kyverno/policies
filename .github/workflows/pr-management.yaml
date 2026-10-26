@@ -1,0 +1,79 @@
+name: PR lifecycle
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+  schedule:
+    - cron: "19 * * * *"
+    - cron: "29 6 * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Lifecycle operation
+        type: choice
+        options: [readiness, stale]
+        default: readiness
+      dry_run:
+        description: Only preview changes (leave enabled during rollout)
+        type: boolean
+        default: true
+
+permissions: {}
+
+jobs:
+  readiness:
+    if: >-
+      github.event_name == 'pull_request_target' ||
+      (github.event_name == 'schedule' && github.event.schedule == '19 * * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'readiness')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: pr-readiness
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      checks: read
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout trusted configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Preview readiness classification
+        uses: kyverno/kyverno/.github/actions/pr-management@ef3224c602da764b2c2fd8b361ae6a28f9b3b0e8
+        with:
+          mode: readiness
+          dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
+
+  stale:
+    if: >-
+      (github.event_name == 'schedule' && github.event.schedule == '29 6 * * *') ||
+      (github.event_name == 'workflow_dispatch' && inputs.mode == 'stale')
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    concurrency:
+      group: pr-stale-author-action
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout trusted configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Preview stale handling and reviewer reminders
+        uses: kyverno/kyverno/.github/actions/pr-management@ef3224c602da764b2c2fd8b361ae6a28f9b3b0e8
+        with:
+          mode: stale
+          dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}
