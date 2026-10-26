@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: velero-exception-pod
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: backup-all-volumes
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'exception-pod' && object.metadata.namespace == 'foo'
