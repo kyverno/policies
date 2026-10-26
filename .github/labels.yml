@@ -1,0 +1,85 @@
+type_cel:
+  color: "1d76db"
+  description: Uses CEL-based Kyverno policy types
+  rules:
+    - changed-files:
+        - any-glob-to-any-file:
+            - "*-vpol/**"
+            - "*-mpol/**"
+            - "*-gpol/**"
+            - "*-dpol/**"
+            - "*-ivpol/**"
+validating-policy:
+  color: "0052cc"
+  description: ValidatingPolicy samples
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["*-vpol/**"]
+mutating-policy:
+  color: "0052cc"
+  description: MutatingPolicy samples
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["*-mpol/**"]
+generating-policy:
+  color: "0052cc"
+  description: GeneratingPolicy samples
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["*-gpol/**"]
+deleting-policy:
+  color: "0052cc"
+  description: DeletingPolicy samples
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["*-dpol/**"]
+image-validating-policy:
+  color: "0052cc"
+  description: ImageValidatingPolicy samples
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["*-ivpol/**"]
+documentation:
+  color: "0075ca"
+  description: Improvements or additions to documentation
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: ["**/*.md"]
+github_actions:
+  color: "000000"
+  description: Pull requests that update GitHub Actions code
+  rules:
+    - changed-files:
+        - any-glob-to-any-file: [".github/workflows/**", ".github/actions/**"]
+tests:
+  color: d81b60
+  description: Policy test manifests and shared test tooling
+  rules:
+    - changed-files:
+        - any-glob-to-any-file:
+            - "**/chainsaw*.yaml"
+            - "**/chainsaw*.yml"
+            - "**/kyverno-test.yaml"
+            - "**/kyverno-test.yml"
+            - ".chainsaw/**"
+            - ".chainsaw.yaml"
+            - "_step-templates/**"
+            - ".hack/**"
+merge-conflicts:
+  color: e65100
+  description: PR has merge conflicts
+needs-author-action:
+  color: b60205
+  description: Failing DCO or CI, merge conflicts, or review threads awaiting the author
+ready-for-review:
+  color: "0e8a16"
+  description: Checks are settled and no author action is outstanding; not a merge approval
+workflow-approval-required:
+  color: fbca04
+  description: Workflows are waiting for a maintainer to approve running them
+stale:
+  color: cfd3d7
+  description: Waiting on the author with no new commit for 7 days
+no-stale:
+  color: c2e0c6
+  description: Exempt from stale marking, automatic closure, and reviewer reminders
