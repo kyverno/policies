@@ -9,5 +9,4 @@ spec:
       image: busybox:1.35
       command: [ "/bin/sh", "-c" ]
       args:
-        - touch /test1.txt
-        - sleep 300
+        - echo expected-cp-content >/test1.txt; sleep 3600

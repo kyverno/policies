@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allow-testuser-delete-goodcm
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: block-cluster-admin-from-ns
+  matchConditions:
+    - name: exact-delete-request
+      expression: request.userInfo.username == 'testuser' && request.operation == 'DELETE' && request.resource.group == '' && request.resource.version == 'v1' && request.resource.resource == 'configmaps' && request.namespace == 'testnamespace' && request.name == 'goodcm01'

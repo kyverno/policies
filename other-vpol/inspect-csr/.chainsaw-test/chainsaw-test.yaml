@@ -6,6 +6,11 @@ metadata:
   name: inspect-csr
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - script:
@@ -56,6 +61,8 @@ spec:
     - create:
         file: ../inspect-csr.yaml
     - create:
+        file: exceptions.yaml
+    - create:
         file: crolb-user.yaml
     - assert:
         file: policy-ready.yaml
@@ -63,6 +70,19 @@ spec:
         content: |
           set -eu
           export KUBECONFIG=./temp
+          # This CSR is matched by the exact PolicyException and must not create an audit result.
+          cat <<EOF | kubectl --context=inspect-csr-user-context apply -f -
+          apiVersion: certificates.k8s.io/v1
+          kind: CertificateSigningRequest
+          metadata:
+            name: legacy-csr
+          spec:
+            request: $(cat inspect-csr-user.csr | base64 | tr -d '\n')
+            signerName: kubernetes.io/kube-apiserver-client
+            usages:
+            - client auth
+          EOF
+          kubectl delete csr legacy-csr
           cat <<EOF | kubectl --context=inspect-csr-user-context apply -f -
           apiVersion: certificates.k8s.io/v1
           kind: CertificateSigningRequest

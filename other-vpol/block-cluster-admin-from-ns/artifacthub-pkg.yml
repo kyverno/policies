@@ -16,6 +16,17 @@ keywords:
 readme: | 
   In some cases, it may be desirable to block operations of certain privileged users (i.e. cluster-admins) in a specific namespace. In this policy, Kyverno will look for all user operations (CREATE, UPDATE, DELETE), on every object kind, in the testnamespace namespace, and for the ClusterRole cluster-admin. The user testuser is also mentioned so it won't include all the cluster-admins in the cluster, but will be flexible enough to apply only for a sub-group of the cluster-admins in the cluster.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-cluster-admin-from-ns` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-cluster-admin-from-ns/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations: 
   kyverno/category: Other

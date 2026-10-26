@@ -6,10 +6,17 @@ metadata:
   name: restrict-pod-controller-serviceaccount-updates
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../restrict-pod-controller-serviceaccount-updates.yaml
+    - apply:
+        file: policy-exception.yaml
     - patch:
         resource:
           apiVersion: policies.kyverno.io/v1
