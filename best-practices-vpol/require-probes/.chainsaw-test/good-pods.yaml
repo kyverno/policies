@@ -47,3 +47,48 @@ spec:
     startupProbe:
       grpc:
         port: 8888
+---
+# Plain init container without a probe: allowed, since Kubernetes forbids probes
+# on init containers that do not set restartPolicy: Always.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: init-setup
+    image: ghcr.io/kyverno/test-busybox:1.35
+    command: ["sh", "-c", "echo setup"]
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
+---
+# Sidecar container (init container with restartPolicy: Always) with a probe.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod05
+  labels:
+    app: myapp
+spec:
+  initContainers:
+  - name: sidecar
+    image: ghcr.io/kyverno/test-busybox:1.35
+    restartPolicy: Always
+    startupProbe:
+      tcpSocket:
+        port: 9090
+      periodSeconds: 10
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    readinessProbe:
+      tcpSocket:
+        port: 8080
+      periodSeconds: 10
