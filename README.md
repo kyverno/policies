@@ -105,16 +105,20 @@ maintainer approval do not make a PR ready.
 PRs needing author action become `stale` after 7 days without a new commit and
 may close after 14 days, but only after at least 7 days of warning. A new commit
 resets the cycle; comments alone do not. Ready PRs receive a reviewer reminder
-after 7 days instead of being closed. Drafts and Dependabot PRs are excluded.
+after 7 days instead of being closed. PRs idle for 30 days or more
+(`backlog_days`) get no reviewer reminder or reviewer ping in stale warnings;
+only the author is notified. Drafts and Dependabot PRs are excluded.
 The labels `no-stale`, `hold`, `hold-redesign`, `blocked`, and `wip` exempt PRs
 from stale handling and reviewer reminders. If no reviewer or assignee is
 available, reminders go to `@kyverno/policies-maintainers`.
 
 Maintainers should first run **Actions > Sync labels** with `dry_run` disabled
-to provision label metadata, including lifecycle labels. Then review **Actions >
-PR Labeler** previews and run it manually with `dry_run` disabled to apply
-path/conflict labels. Do the same for readiness in **Actions > PR lifecycle**. After reviewing the
-results, replace the corresponding job's `dry-run` expression with `"false"`
+to provision label metadata, including lifecycle labels. Path labels are applied
+only by `pull_request_target` events (opened, reopened, synchronize), so existing
+PRs pick them up on their next push; a manual **PR Labeler** run with `dry_run`
+disabled refreshes only `merge-conflicts` labels. Review readiness previews in
+**Actions > PR lifecycle** and run it manually with `dry_run` disabled. After
+reviewing the results, replace the corresponding job's `dry-run` expression with `"false"`
 to enable automatic operation. Enable the stale job separately only after
 reviewing the backlog and exemptions. Definitions live in
 `.github/pr-management.json`, `.github/pr-readiness-checks.yml`, and

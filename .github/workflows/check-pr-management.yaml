@@ -9,6 +9,7 @@ on:
       - ".github/workflows/pr-labelling.yaml"
       - ".github/workflows/pr-management.yaml"
       - ".github/workflows/check-pr-management.yaml"
+      - ".github/workflows/sync-labels.yaml"
   push:
     branches: [main]
     paths:
@@ -18,6 +19,7 @@ on:
       - ".github/workflows/pr-labelling.yaml"
       - ".github/workflows/pr-management.yaml"
       - ".github/workflows/check-pr-management.yaml"
+      - ".github/workflows/sync-labels.yaml"
 
 permissions:
   contents: read

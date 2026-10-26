@@ -8,13 +8,12 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: Only preview labels and conflicts
+        description: Preview only (manual runs refresh merge-conflict labels; path labels apply on PR events)
         type: boolean
         default: true
 
 permissions:
   contents: read
-  issues: write
   pull-requests: write
 
 concurrency:

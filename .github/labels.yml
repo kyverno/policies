@@ -4,41 +4,41 @@ type_cel:
   rules:
     - changed-files:
         - any-glob-to-any-file:
-            - "*-vpol/**"
-            - "*-mpol/**"
-            - "*-gpol/**"
-            - "*-dpol/**"
-            - "*-ivpol/**"
+            - "**/*-vpol/**"
+            - "**/*-mpol/**"
+            - "**/*-gpol/**"
+            - "**/*-dpol/**"
+            - "**/*-ivpol/**"
 validating-policy:
   color: "0052cc"
   description: ValidatingPolicy samples
   rules:
     - changed-files:
-        - any-glob-to-any-file: ["*-vpol/**"]
+        - any-glob-to-any-file: ["**/*-vpol/**"]
 mutating-policy:
   color: "0052cc"
   description: MutatingPolicy samples
   rules:
     - changed-files:
-        - any-glob-to-any-file: ["*-mpol/**"]
+        - any-glob-to-any-file: ["**/*-mpol/**"]
 generating-policy:
   color: "0052cc"
   description: GeneratingPolicy samples
   rules:
     - changed-files:
-        - any-glob-to-any-file: ["*-gpol/**"]
+        - any-glob-to-any-file: ["**/*-gpol/**"]
 deleting-policy:
   color: "0052cc"
   description: DeletingPolicy samples
   rules:
     - changed-files:
-        - any-glob-to-any-file: ["*-dpol/**"]
+        - any-glob-to-any-file: ["**/*-dpol/**"]
 image-validating-policy:
   color: "0052cc"
   description: ImageValidatingPolicy samples
   rules:
     - changed-files:
-        - any-glob-to-any-file: ["*-ivpol/**"]
+        - any-glob-to-any-file: ["**/*-ivpol/**"]
 documentation:
   color: "0075ca"
   description: Improvements or additions to documentation
@@ -57,6 +57,8 @@ tests:
   rules:
     - changed-files:
         - any-glob-to-any-file:
+            - "**/.chainsaw-test/**"
+            - "**/.kyverno-test/**"
             - "**/chainsaw*.yaml"
             - "**/chainsaw*.yml"
             - "**/kyverno-test.yaml"
