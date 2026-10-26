@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: add-privileged-exception-ns
+  labels:
+    color: green
+(contains(keys(metadata.labels || `{}`), 'color') && !contains(keys(metadata.labels || `{}`), 'pod-security.kubernetes.io/enforce')): true

@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-privileged-existing-ns-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-privileged-existing-namespaces
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'add-privileged-exception-ns'
