@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: deny-probe-exceptions}
+policies: [../deny-commands-in-exec-probe.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: deny-commands-in-exec-probe
+  resources: [policy-exceptions/badpod03]
+  result: pass

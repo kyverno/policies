@@ -3,6 +3,11 @@ kind: Pod
 metadata:
   name: badpod01
 spec:
+  initContainers:
+  - name: init-without-port-name
+    image: ghcr.io/kyverno/test-busybox:1.35
+    ports:
+    - containerPort: 8080
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35

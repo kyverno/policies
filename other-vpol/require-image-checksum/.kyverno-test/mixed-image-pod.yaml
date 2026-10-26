@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mixed-image-pod
+  namespace: default
+spec:
+  containers:
+    - name: approved
+      image: nginx
+    - name: unapproved
+      image: busybox:1.36

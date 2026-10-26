@@ -1,0 +1,46 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: emptydir-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-emptydir-requests-and-limits
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-emptydir'
+  - name: target-namespace
+    expression: request.namespace == 'default'
+  allowedValues:
+  - emptyDir:vol
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: emptydir-wrong-token
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-emptydir-requests-and-limits
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-emptydir-wrong-token' && request.namespace == 'default'
+  allowedValues:
+  - emptyDir:other
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: emptydir-sibling-volume
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-emptydir-requests-and-limits
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-emptydir-sibling-volume' && request.namespace == 'default'
+  allowedValues:
+  - emptyDir:vol

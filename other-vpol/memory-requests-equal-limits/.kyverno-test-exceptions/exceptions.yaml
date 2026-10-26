@@ -1,0 +1,26 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: memory-limits-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: memory-requests-equal-limits
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'myapp-pod'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: memory-image-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: memory-requests-equal-limits
+  images: [approved.example/keep:1]
+  matchConditions:
+  - name: partial-resource
+    expression: request.namespace == 'default' && request.name.startsWith('partial-memory')

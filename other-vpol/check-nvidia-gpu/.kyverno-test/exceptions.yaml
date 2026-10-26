@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: check-nvidia-gpu-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: check-nvidia-gpus
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'badpod01' && request.namespace == 'default'
+  allowedValues:
+  - busybox:1.28

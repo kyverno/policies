@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allowed-base-images-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: allowed-base-images
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'badpod01'

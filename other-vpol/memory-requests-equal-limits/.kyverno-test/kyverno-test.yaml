@@ -50,3 +50,13 @@ results:
   resources:
   - no-memory
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources: [canonical-memory]
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: memory-requests-equal-limits
+  resources: [init-memory-mismatch]
+  result: fail

@@ -29,9 +29,8 @@ spec:
       resources:   ["pods"]
   validations:
     - expression: >-
-        object.spec.?securityContext.?supplementalGroups.orValue([]).all(group, group > 0)
+        object.spec.?securityContext.?supplementalGroups.orValue([]).all(group, group > 0 || ('supplementalGroups:' + string(group)) in exceptions.allowedValues)
       message: >-
         Containers cannot run with a root primary or supplementary GID. The field
         spec.securityContext.supplementalGroups must be unset or
         set to a value greater than zero.
-   

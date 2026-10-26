@@ -1,0 +1,27 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: no-secrets-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: no-secrets
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'secret-env-pod' && request.namespace == 'default'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: no-secrets-partial-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: no-secrets
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'partial-secret-pod' && request.namespace == 'default'
+  allowedValues:
+  - secret:mysecret

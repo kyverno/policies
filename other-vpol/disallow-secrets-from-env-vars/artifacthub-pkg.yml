@@ -15,12 +15,25 @@ keywords:
 readme: |
   Secrets used as environment variables containing sensitive information may, if not carefully controlled,  be printed in log output which could be visible to unauthorized people and captured in forwarding applications. This policy disallows using Secrets as environment variables.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `secrets-not-from-env-vars` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `env.secretKeyRef:<name>` or `envFrom.secretRef:<name>` in `spec.allowedValues` to
+  allow a Secret through only the named reference form. `variables.allContainers` checks
+  regular, init, and ephemeral containers. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/disallow-secrets-from-env-vars/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod, Secret"
-digest: 31ce0fbaf392f4f298a874d9c847a4ab66136f08a02c16b265101be25ada8305
+digest: 447a596dea1177c2956a94fe63f48951e0769befac65dd370f642be9097d96c8
 
 
 createdAt: "2025-05-11T17:46:11Z"

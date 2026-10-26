@@ -1,0 +1,28 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-image-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-image-checksum}]
+  images: [nginx]
+  matchConditions:
+  - name: exact-resource
+    expression: "request.name in ['myapp-pod-2', 'mixed-image-pod'] && request.namespace == 'default'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-namespace-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-image-checksum}]
+  images: [busybox]
+  matchConditions:
+  - name: wrong-namespace
+    expression: "request.name == 'hello' && request.namespace == 'team-b'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: whole-resource-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: require-image-checksum}]
+  matchConditions:
+  - name: exact-whole-resource
+    expression: "request.name == 'whole-image-exempt' && request.namespace == 'default'"
