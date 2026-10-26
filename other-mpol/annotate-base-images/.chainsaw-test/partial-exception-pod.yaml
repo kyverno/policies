@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: default
+spec:
+  # Never scheduled: the test only needs admission, and kubelet cannot delete a
+  # Pod until an in-progress image pull finishes, which can outlast cleanup.
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
+  containers:
+  - name: first
+    image: registry.invalid/exempt:1
+  - name: middle
+    image: ghcr.io/kyverno/kyverno:v1.9.0
+  - name: last
+    image: ghcr.io/kyverno/kyverno:v1.9.0

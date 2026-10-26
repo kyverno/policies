@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-capabilities-exceptions}
+policies: [../disallow-capabilities.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-capabilities, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-capabilities, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-capabilities, resources: [exception-whole], result: skip}

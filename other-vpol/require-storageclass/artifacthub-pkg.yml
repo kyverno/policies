@@ -15,12 +15,25 @@ keywords:
 readme: |
   PersistentVolumeClaims (PVCs) and StatefulSets may optionally define a StorageClass to dynamically provision storage. In a multi-tenancy environment where StorageClasses are far more common, it is often better to require storage only be provisioned from these StorageClasses. This policy requires that PVCs and StatefulSets define the storageClassName field with some value.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-storageclass` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use an empty string (`""`) in `spec.allowedValues` to allow missing or empty
+  `storageClassName` on the matched PVC or StatefulSet volume claim templates. CEL
+  consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-storageclass/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other, Multi-Tenancy in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "PersistentVolumeClaim, StatefulSet"
-digest: 0ef95314ceb4b5abd30744be7e757d2e0ccf9d93fa297a594a41145765cf0ff5
+digest: 9e5e8422a1b9cb475b1f4038caa4fa0762d0412e60d8d5031c4e4639af391e7e
 
 
 createdAt: "2025-05-11T17:46:11Z"

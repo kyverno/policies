@@ -1,0 +1,26 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-host-tls-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: ingress-host-match-tls
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'badingress01'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-host-tls-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: ingress-host-match-tls
+  allowedValues: [allowed.example]
+  matchConditions:
+  - name: partial-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name.startsWith('partial-tls')

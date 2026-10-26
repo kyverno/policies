@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Limit hostPath Volumes to Specific Directories in ValidatingPolicy
     policies.kyverno.io/category: Other in Vpol
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Pod
@@ -33,6 +33,5 @@ spec:
     - name: "has-host-path-volume"
       expression: "object.spec.?volumes.orValue([]).exists(volume, has(volume.hostPath))"
   validations:
-    - expression: "object.spec.volumes.all(volume, !has(volume.hostPath) || volume.hostPath.path.split('/')[1] == 'data')"
+    - expression: "object.spec.volumes.all(volume, !has(volume.hostPath) || volume.hostPath.path.split('/')[1] == 'data' || volume.hostPath.path in exceptions.allowedValues)"
       message: hostPath volumes are confined to /data.
-

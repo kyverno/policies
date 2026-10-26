@@ -14,10 +14,23 @@ keywords:
 readme: |
   Sysctls can disable security mechanisms or affect all containers on a host, and should be disallowed except for an allowed "safe" subset. A sysctl is considered safe if it is namespaced in the container or the Pod, and it is isolated from other Pods or processes on the same Node. This policy ensures that only those "safe" subsets can be specified in a Pod.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-sysctls` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact sysctl names in `spec.allowedValues` to permit those additional sysctls;
+  tokens are names, not their configured values. `variables.podSpec` selects the Pod spec
+  directly or from the workload template. CEL reads the tokens through
+  `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/restrict-sysctls/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: c04de70c78e0acad06c34cf30a19b1d613f6882ae360b35bbe0cc1afb2bafd05
+digest: 5a0746856436a283099b9f0a0d40aade8b861632e5a77114c70fc87759a822bb
 createdAt: "2025-03-13T23:26:58Z"

@@ -1,0 +1,26 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-class-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-ingress-classes
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'minimal-ingress-2'
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-class-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-ingress-classes
+  allowedValues: [custom]
+  matchConditions:
+  - name: partial-resource
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name.startsWith('partial-class')

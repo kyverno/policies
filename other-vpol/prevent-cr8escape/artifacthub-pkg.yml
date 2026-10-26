@@ -14,12 +14,24 @@ keywords:
 readme: |
   A vulnerability "cr8escape" (CVE-2022-0811) in CRI-O the container runtime engine underpinning Kubernetes allows attackers to escape from a Kubernetes container and gain root access to the host. The recommended remediation is to disallow sysctl settings with + or = in their value.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `prevent-cr8escape` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact sysctl value strings in `spec.allowedValues` to allow those values containing
+  `+` or `=`; sysctl names are not the tokens. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/prevent-cr8escape/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 854a81cdae0dc16a65505350b4a295a5da4b6d5c7689f2a56e7a7f24d60dac38
+digest: f87afbf7a0191946727b3e435195560f71878b71285c8ca76814702fcdb05618
 
 
 createdAt: "2025-05-11T17:46:12Z"

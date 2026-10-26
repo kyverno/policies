@@ -44,6 +44,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: goodingress02
+  namespace: unique-ingress-paths-ns
 spec:
   rules:
   - host: endpoint01

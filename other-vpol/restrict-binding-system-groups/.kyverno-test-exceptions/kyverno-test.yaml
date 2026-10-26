@@ -1,0 +1,11 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-binding-system-groups-exceptions}
+policies: [../restrict-binding-system-groups.yaml]
+resources:
+- ../.chainsaw-test/crb-bad.yaml
+- ../.chainsaw-test/crb-good.yaml
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: ClusterRoleBinding, policy: restrict-binding-system-groups, resources: [badcrb01], result: pass}
+- {isValidatingPolicy: true, kind: ClusterRoleBinding, policy: restrict-binding-system-groups, resources: [badcrb02], result: fail}

@@ -14,10 +14,23 @@ keywords:
 readme: |
   Privileged mode disables most security mechanisms and must not be allowed. This policy ensures Pods do not call for privileged mode.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-privileged-containers` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use exact image references in `spec.images` to permit privileged mode only for matching
+  containers. `variables.podSpec` selects the Pod spec directly or from the workload
+  template. `variables.allContainers` includes regular, init, and ephemeral containers.
+  CEL reads images through `exceptions.allowedImages`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-privileged-containers/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: cc7246f60220ca668cef9e1b2e9bc67e92185e5765ed9a8d7caed3fb71908e52
+digest: 6f59a347fde2c56a0a8c68cecef2ae43b29c5543bdcebdb388e480f5a6dd688e
 createdAt: "2025-03-13T23:26:58Z"

@@ -6,6 +6,10 @@ policies:
 - ../always-pull-images.yaml
 resources:
 - resource.yaml
+- resource-exception.yaml
+- ../.chainsaw-test/podcontrollers.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource1.yaml
@@ -19,5 +23,61 @@ results:
   policy: always-pull-images
   resources:
   - myapp-pod-2
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource-exception.yaml
+  policy: always-pull-images
+  resources:
+  - image-exception-pod
+  result: pass
+  isMutatingPolicy: true
+- kind: Deployment
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - deployment01
+  result: pass
+  isMutatingPolicy: true
+- kind: CronJob
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - cronjob01
+  result: pass
+  isMutatingPolicy: true
+- kind: DaemonSet
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - daemonset01
+  result: pass
+  isMutatingPolicy: true
+- kind: StatefulSet
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - statefulset01
+  result: pass
+  isMutatingPolicy: true
+- kind: ReplicaSet
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - replicaset01
+  result: pass
+  isMutatingPolicy: true
+- kind: ReplicationController
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - replicationcontroller01
+  result: pass
+  isMutatingPolicy: true
+- kind: Job
+  patchedResources: ../.chainsaw-test/podcontrollers-patched.yaml
+  policy: always-pull-images
+  resources:
+  - job01
   result: pass
   isMutatingPolicy: true

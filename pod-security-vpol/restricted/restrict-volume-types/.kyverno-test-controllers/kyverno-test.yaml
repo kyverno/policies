@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-volume-types-controllers
+policies:
+- ../restrict-volume-types.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-volume-types
+  resources:
+  - unsafe-restrict-volume-types-7
+  result: fail

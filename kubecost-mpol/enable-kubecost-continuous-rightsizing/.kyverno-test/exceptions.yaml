@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: kubecost-deploy03-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: enable-kubecost-continuous-rightsizing
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'deploy03'

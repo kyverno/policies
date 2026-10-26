@@ -15,9 +15,20 @@ keywords:
 readme: |
   If a Pod exists with the annotation `karpenter.sh/do-not-evict: true` on a Node, and a request is made to delete the Node, Karpenter will not drain any Pods from that Node or otherwise try to delete the Node. This is useful for Pods that should run uninterrupted to completion. This policy mutates Jobs and CronJobs so that Pods spawned by them will contain the `karpenter.sh/do-not-evict: true` annotation.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-karpenter-donot-evict` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/karpenter-mpol/add-karpenter-donot-evict/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 0714fffc22f53a8bf8db8e04f078f01a45df2272f04cdeb610ee0ea9c8c12484
+digest: 68d5a30cad8bf440c065261ac4b08b0c2972475ae2cb275987e938d6682959ea

@@ -15,12 +15,23 @@ keywords:
 readme: |
   Wildcards ('*') in resources grants access to all of the resources referenced by the given API group and does not follow the principal of least privilege. As much as possible, avoid such open resources unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the resources list found in any rule.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-wildcard-resources` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-wildcard-resources/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "ClusterRole, Role, RBAC"
-digest: 21e2890dde16db4c9fa1045ca346bd26773bea237eef56eb07992acf0668f550
+digest: 5509fb08df89c43aa27bc2b392769c68d14676d517013a7cd93798b3eda53168
 
 
 createdAt: "2025-05-11T17:46:12Z"

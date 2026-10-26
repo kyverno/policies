@@ -15,10 +15,23 @@ keywords:
 readme: |
   A read-only root file system helps to [Deny] an immutable infrastructure strategy; the container only needs to write on the mounted volume that persists the state. An immutable root filesystem can also prevent malicious binaries from writing to the host system. This policy validates that containers define a securityContext with `readOnlyRootFilesystem: true`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-ro-rootfs` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-ro-rootfs/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: ca9f26b646a34279fb6428630489e6c6569047476cd5a15b687dd6f1473f021e
+digest: f55a343212e3ae130e95e1d18b99941feec8d51eacc85e03d7ab84e1e24bcd4d
 createdAt: "2025-05-05T13:19:12Z"

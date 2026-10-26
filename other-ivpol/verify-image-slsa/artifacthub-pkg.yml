@@ -15,6 +15,21 @@ keywords:
 readme: |
   Provenance is used to identify how an artifact was produced and from where it originated. SLSA provenance is an industry-standard method of representing that provenance. This policy verifies that an image has SLSA provenance and was signed by the expected subject and issuer when produced through GitHub Actions. It requires configuration based upon your own values.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ImageValidatingPolicy` named
+  `verify-slsa-provenance-keyless` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This example skips the entire policy for the matched Pod, not individual images.
+  Its `approved-image-set` match condition requires every regular, init, and
+  ephemeral container image to be approved before granting that full-resource
+  exception. It does not use `spec.images` or provide partial-image bypass.
+  Adding an unapproved image prevents the exception from matching; the request
+  then retains the policy's normal image-reference matching and verification behavior.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-ivpol/verify-image-slsa/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 
 annotations:

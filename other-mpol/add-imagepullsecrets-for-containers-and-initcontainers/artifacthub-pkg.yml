@@ -14,9 +14,23 @@ keywords:
 readme: |
   Images coming from certain registries require authentication in order to pull them, and the kubelet uses this information in the form of an imagePullSecret to pull those images on behalf of your Pod. This policy searches for images coming from a registry called `corp.reg.com` referenced by either one of the containers or one  of the init containers and, if found, will mutate the Pod to add an imagePullSecret called `my-secret`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-imagepullsecrets-for-containers-and-initcontainers` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches are ignored when looking for `corp.reg.com` images in regular
+  or init containers. A non-exempt matching image still triggers the shared
+  `imagePullSecrets` entry for the whole Pod or controller template; the secret
+  cannot be scoped to individual containers and existing entries are not removed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-imagepullsecrets-for-containers-and-initcontainers/.chainsaw-test/partial-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 970ba7ddb72eadc045e412d39f3b0a6394d3e57a08a8d3492705dc1d2d838463
+digest: 3a5e9c5c3fcc4fdbcaef1d971b6981f8d77b085cbe6530633e943fe0d59516f7

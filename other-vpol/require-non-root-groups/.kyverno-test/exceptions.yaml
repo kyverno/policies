@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: non-root-groups-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-non-root-groups
+  - kind: ValidatingPolicy
+    name: check-supplementalgroups
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'supgrp-badpod02'
+  allowedValues:
+  - supplementalGroups:0

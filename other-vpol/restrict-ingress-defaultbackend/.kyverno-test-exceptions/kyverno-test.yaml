@@ -1,0 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: restrict-ingress-defaultbackend-exceptions}
+policies: [../restrict-ingress-defaultbackend.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {kind: Ingress, policy: restrict-ingress-defaultbackend, resources: [default/sample-app-1], result: pass, isValidatingPolicy: true}

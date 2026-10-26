@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-sa-exceptions
+policies:
+- ../check-serviceaccount.yaml
+resources:
+- resource.yaml
+userinfo: ../.kyverno-test/userinfo.yaml
+exceptions:
+- exceptions.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-sa
+  resources:
+  - exception-pod
+  result: pass

@@ -28,3 +28,6 @@ spec:
       imagePullPolicy: IfNotPresent
     - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox02
+  initContainers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: init-busybox

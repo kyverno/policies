@@ -14,9 +14,21 @@ keywords:
 readme: |
   The Kubernetes downward API only has the ability to express so many options as environment variables. The image consumed in a Pod is commonly needed to make the application aware of some logic it must take. This policy takes the value of the `image` field and adds it as an environment variable to Pods.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-image-as-env-var` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip adding or updating `K8S_IMAGE` for that regular or
+  init container; non-exempt containers still receive their current image value.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-image-as-env-var/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.26"
   kyverno/subject: "Pod"
-digest: bbbc788a6ec764c8f5418397b51bfeb7bc5ec9ea51d0a10d154d762f4f991d9f
+digest: 4b25c35fed705cb7b583a1eaeee1095f004d0607bd8163322b613e7d118b0b57

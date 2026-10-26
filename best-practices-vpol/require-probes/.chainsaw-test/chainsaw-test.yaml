@@ -10,6 +10,14 @@ spec:
     try:
     - apply:
         file: ../require-probes.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: require-pod-probes
+          spec:
+            validationActions: [Deny]
     - assert:
         file: policy-ready.yaml
   - name: step-02
@@ -19,18 +27,31 @@ spec:
     - apply:
         file: good-podcontrollers.yaml
     - apply:
+        file: good-cronjob.yaml
+    - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-pod-probes failed')): true
+        file: bad-cronjob.yaml
+    - apply:
+        file: good-replicationcontroller.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy require-pod-probes failed')): true
+        file: bad-replicationcontroller.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy require-pod-probes failed')): true
         file: bad-pod-nothing.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-pod-probes failed')): true
         file: bad-pod-notall.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy require-pod-probes failed')): true
         file: bad-podcontrollers.yaml
-

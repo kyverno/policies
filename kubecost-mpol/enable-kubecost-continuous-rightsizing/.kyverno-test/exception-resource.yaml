@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy03
+  labels:
+    app: busybox
+    env: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: busybox-exception}
+  template:
+    metadata:
+      labels: {app: busybox-exception}
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.35

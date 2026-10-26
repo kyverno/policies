@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-foo-label
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-labels
+    kind: MutatingPolicy
+  allowedValues:
+  - label:foo
+  matchConditions:
+  - name: target-pod
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'label-exception-pod'

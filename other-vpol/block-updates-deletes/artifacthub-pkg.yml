@@ -14,9 +14,21 @@ keywords:
 readme: |
   Kubernetes RBAC allows for controls on kinds of resources or those with specific names. But it does not have the type of granularity often required in more complex environments. This policy restricts updates and deletes to any Service resource that contains the label `protected=true` unless by a cluster-admin.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-updates-deletes` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `protected-service:true` in `spec.allowedValues` to allow the matched update or
+  deletion of a Service whose old object has `protected=true`. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-updates-deletes/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "RBAC"
-digest: 2e18d919329a98692cb62b829f372d16b34ce0d647fc7e665eda74950219214a
+digest: 94c0243d43e1a820dd14a6ec8069133e0d239bcb05876769983a3c7393b90ea3
 createdAt: "2025-12-10T14:28:58Z"

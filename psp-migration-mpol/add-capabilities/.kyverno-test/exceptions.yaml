@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-capabilities-partial-images
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-capabilities
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'add-capabilities' && object.metadata.name == 'pod03'

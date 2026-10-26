@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-rootfs, namespace: default}
+spec:
+  containers: [{name: app, image: ghost}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-rootfs, namespace: team-b}
+spec:
+  containers: [{name: app, image: ghost}]

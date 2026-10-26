@@ -4,6 +4,7 @@ metadata:
   name: enable-kubecost-continuous-rightsizing
   annotations:
     policies.kyverno.io/title: Enable Kubecost Continuous Rightsizing
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/category: Kubecost
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Deployment, Annotation

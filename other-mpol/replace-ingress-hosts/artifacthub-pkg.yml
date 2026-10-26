@@ -14,9 +14,20 @@ keywords:
 readme: |
   An Ingress may specify host names at a variety of locations in the same resource. In some cases, those host names should be modified to, for example, update domain names silently. The replacement must be done in all the fields where a host name can be specified. This policy, illustrating the use of nested foreach loops and operable in Kyverno 1.9+, replaces host names that end with `old.com` with `new.com`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `replace-ingress-hosts` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/replace-ingress-hosts/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Ingress"
-digest: 1b4488ab0902e4f55335f04913744b2120e22f222a959841ef8ed6717e23309f
+digest: 9ccac791beaece09bea202b3b1006cd231e7fcb9b1db966a56ddae346fbaae1e

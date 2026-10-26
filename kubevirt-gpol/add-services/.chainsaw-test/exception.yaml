@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: kubevirt-services-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: k6t-add-services
+    kind: GeneratingPolicy
+  matchConditions:
+  - name: exact-vmi
+    expression: object.metadata.namespace == 'kubevirt-test-ns' && object.metadata.name == 'exception-vmi'

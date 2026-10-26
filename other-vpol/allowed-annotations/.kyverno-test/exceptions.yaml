@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allowed-annotations-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: allowed-annotations
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'badpod01'
+  allowedValues:
+  - fluxcd.io/bat

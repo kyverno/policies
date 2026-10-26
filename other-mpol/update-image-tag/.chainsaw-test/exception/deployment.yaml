@@ -1,0 +1,12 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exception-deployment
+  namespace: default
+  annotations: {vault.hashicorp.com/agent-inject: "true"}
+spec:
+  selector: {matchLabels: {app: exception}}
+  template:
+    metadata: {labels: {app: exception}}
+    spec:
+      containers: [{name: vault-agent, image: vault:old}]

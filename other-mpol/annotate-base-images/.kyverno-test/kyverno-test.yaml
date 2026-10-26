@@ -1,0 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: annotate-base-images-exception-lookup}
+policies: [../annotate-base-images.yaml]
+resources: [resource.yaml]
+exceptions: [exception.yaml]
+context: context.yaml
+results:
+- policy: annotate-base-images
+  kind: Pod
+  resources: [default/partial-exception, default/sibling, other/partial-exception, default/scope-target, other/scope-target]
+  patchedResources: patched.yaml
+  result: pass
+  isMutatingPolicy: true

@@ -6,6 +6,9 @@ policies:
 - ../add-karpenter-daemonset-priority-class.yaml
 resources:
 - daemonset.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: DaemonSet
   patchedResources: daemonset-patched.yaml
@@ -13,4 +16,10 @@ results:
   resources:
   - test/test
   result: pass
+  isMutatingPolicy: true
+- kind: DaemonSet
+  policy: add-karpenter-daemonset-priority-class
+  resources:
+  - exception-daemonset
+  result: skip
   isMutatingPolicy: true

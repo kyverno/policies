@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: badpod02-registry
 spec:
+  automountServiceAccountToken: false
   containers:
   - name: k8s-nginx
     image: registry.k8s.io/nginx:1.7.9
@@ -14,9 +15,9 @@ kind: Pod
 metadata:
   name: badpod03-registry
 spec:
+  automountServiceAccountToken: false
   containers:
   - name: busybox
     image: eu.foo.io/busybox
   - name: k8s-nginx
     image: registry.k8s.io/nginx:1.7.9
-

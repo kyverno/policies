@@ -14,12 +14,25 @@ keywords:
 readme: |
   The verbs `impersonate`, `bind`, and `escalate` may all potentially lead to privilege escalation and should be tightly controlled. This policy prevents use of these verbs in Role or ClusterRole resources.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-escalation-verbs-roles` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `verb:bind`, `verb:escalate`, `verb:impersonate`, or `verb:*` in
+  `spec.allowedValues` to permit the corresponding exact verb; `verb:*` does not exempt
+  other verb tokens. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`;
+  unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-escalation-verbs-roles/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: f1b28bfb693a5eac6783708012ba36264b2214aaaf9e358963e17434eea388aa
+digest: 3ed869ce6dafb50c189ba2bbaf8c659e2e536ae853fff15202e810748c87b4f1
 
 
 createdAt: "2025-05-11T17:46:11Z"

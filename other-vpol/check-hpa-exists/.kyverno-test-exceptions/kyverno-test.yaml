@@ -1,0 +1,19 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-hpa-exists-exception
+policies: [../check-hpa-exists.yaml]
+resources: [../.kyverno-test/resource.yaml]
+context: ../.kyverno-test/context.yaml
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-hpa-exists
+  resources: [default/deployment-without-hpa]
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-hpa-exists
+  resources: [default/deployment-uses-hpa]
+  result: pass

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: block-stale-images-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: block-stale-images
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'redis-bad' && request.namespace == 'default'
+  allowedValues:
+  - docker.io/redis:6.0.0-buster

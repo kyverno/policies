@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: default
+spec:
+  containers:
+  - name: first
+    image: approved.example/keep:1
+  - name: middle
+    image: example/mutate:1
+    resources: {requests: {cpu: 200m}}
+  - name: last
+    image: example/mutate-last:1
+    resources: {limits: {memory: 256Mi}}

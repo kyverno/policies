@@ -1,0 +1,19 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-opa-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: check-env-vars}]
+  allowedValues: [DISABLE_OPA=true]
+  matchConditions:
+  - name: exact-resource
+    expression: "request.name == 'pod-with-opa-enabled' && request.namespace == 'myservice'"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-namespace-opa-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: check-env-vars}]
+  allowedValues: [DISABLE_OPA=true]
+  matchConditions:
+  - name: wrong-namespace
+    expression: "request.name == 'pod-with-opa-disabled' && request.namespace == 'team-b'"

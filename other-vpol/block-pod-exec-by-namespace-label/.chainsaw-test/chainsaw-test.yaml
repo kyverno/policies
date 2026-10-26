@@ -6,6 +6,11 @@ metadata:
   name: block-pod-exec-by-namespace-label
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
@@ -14,6 +19,15 @@ spec:
     try:
     - apply:
         file: ../block-pod-exec-by-namespace-label.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-exec-by-namespace-label
+          spec:
+            validationActions:
+            - Deny
     - assert:
         file: policy-ready.yaml
   - name: step-03
@@ -26,16 +40,42 @@ spec:
         file: podcontrollers.yaml
   - name: step-04
     try:
-    - sleep:
-        duration: 5s
+    - script:
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod --all -n pod-exec-label-ns01 --timeout=120s
+          kubectl wait --for=condition=Ready pod --all -n pod-exec-label-ns02 --timeout=120s
+          kubectl wait --for=condition=Ready pod --all -n pod-exec-label-ns03 --timeout=120s
+          kubectl wait --for=condition=Ready pod --all -n pod-exec-label-ns04 --timeout=120s
+          kubectl wait --for=condition=Available deployment --all -n pod-exec-label-ns01 --timeout=120s
+          kubectl wait --for=condition=Available deployment --all -n pod-exec-label-ns02 --timeout=120s
+          kubectl wait --for=condition=Available deployment --all -n pod-exec-label-ns03 --timeout=120s
+          kubectl wait --for=condition=Available deployment --all -n pod-exec-label-ns04 --timeout=120s
   - name: step-05
     try:
     - script:
-        content: if kubectl exec -n pod-exec-label-ns02 pod02 -- ls; then exit 1;else
-          exit 0; fi
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n pod-exec-label-ns02 pod02 -- ls 2>denied-pod02.err; then exit 1; fi
+            if grep -F 'Exec operations are not allowed in namespace "pod-exec-label-ns02" due to exec=false label' denied-pod02.err; then exit 0; fi
+            cat denied-pod02.err >&2
+            exit 1
+          done
+          exit 1
     - script:
-        content: if kubectl exec -n pod-exec-label-ns02 deploy/deployment02 -- ls;
-          then exit 1;else exit 0; fi
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n pod-exec-label-ns02 deploy/deployment02 -- ls 2>denied-sibling.err; then
+              sleep 1
+              continue
+            fi
+            if grep -F 'Exec operations are not allowed in namespace "pod-exec-label-ns02" due to exec=false label' denied-sibling.err; then exit 0; fi
+            cat denied-sibling.err >&2
+            exit 1
+          done
+          exit 1
     - script:
         content: kubectl exec -n pod-exec-label-ns01 pod01 -- ls
     - script:
@@ -50,6 +90,35 @@ spec:
         content: kubectl exec -n pod-exec-label-ns04 deploy/deployment04 -- ls
   - name: step-99
     try:
+    - apply:
+        file: exception.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n pod-exec-label-ns02 pod02 -- ls 2>exception-pod02.err; then exit 0; fi
+            if grep -F 'Exec operations are not allowed in namespace "pod-exec-label-ns02" due to exec=false label' exception-pod02.err; then sleep 1; continue; fi
+            cat exception-pod02.err >&2
+            exit 1
+          done
+          exit 1
+    - script:
+        content: |
+          set -eu
+          if kubectl exec -n pod-exec-label-ns02 deploy/deployment02 -- ls 2>denied-sibling.err; then exit 1; fi
+          grep -F 'Exec operations are not allowed in namespace "pod-exec-label-ns02" due to exec=false label' denied-sibling.err
+    - delete:
+        file: exception.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n pod-exec-label-ns02 pod02 -- ls 2>denied-after-delete.err; then exit 1; fi
+            if grep -F 'Exec operations are not allowed in namespace "pod-exec-label-ns02" due to exec=false label' denied-after-delete.err; then exit 0; fi
+            cat denied-after-delete.err >&2
+            exit 1
+          done
+          exit 1
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n pod-exec-label-ns01
     - script:

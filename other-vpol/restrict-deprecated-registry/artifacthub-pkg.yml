@@ -15,12 +15,25 @@ keywords:
 readme: |
   Legacy k8s.gcr.io container image registry will be frozen in early April 2023 k8s.gcr.io image registry will be frozen from the 3rd of April 2023.   Images for Kubernetes 1.27 will not be available in the k8s.gcr.io image registry. Please read our announcement for more details. https://kubernetes.io/blog/2023/02/06/k8s-gcr-io-freeze-announcement/     
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-deprecated-registry` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-deprecated-registry/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.27-1.28"
   kyverno/subject: "Pod"
-digest: 615b8a7eea5bd8c1dd345f6fe2c8a1f6409f7efdd5449ccffe4ccd71c3f52199
+digest: 10c197b0833c06587a988966b9de63c202d866cfc2a2ee33e01cc23c758432fb
 
 
 createdAt: "2025-05-11T17:46:11Z"

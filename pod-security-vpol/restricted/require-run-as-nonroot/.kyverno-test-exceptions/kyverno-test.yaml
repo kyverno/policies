@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-run-as-nonroot-exceptions}
+policies: [../require-run-as-nonroot.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: require-run-as-nonroot, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: require-run-as-nonroot, resources: [exception-wrong, exception-sibling], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: require-run-as-nonroot, resources: [exception-whole], result: skip}

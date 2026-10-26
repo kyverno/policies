@@ -17,6 +17,7 @@ spec:
     resourceRules:
       - apiGroups: ["apps"]
         apiVersions: ["v1"]
+        operations: ["DELETE"]
         resources: ["replicasets"]
     namespaceSelector:
       matchExpressions:

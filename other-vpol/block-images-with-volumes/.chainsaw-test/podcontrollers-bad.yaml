@@ -17,9 +17,9 @@ spec:
     spec:
       containers:
       - name: busybox
-        image: busybox:1.35
+        image: ghcr.io/kyverno/test-busybox:1.35
       - name: busybox02
-        image: clover/volume:passbolt
+        image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -33,7 +33,7 @@ spec:
         spec:
           containers:
           - name: busybox
-            image: clover/volume:passbolt
+            image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
           - name: busybox02
             image: ghcr.io/kyverno/test-busybox:1.35
           restartPolicy: OnFailure

@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-linkerd-mesh-injection-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-linkerd-mesh-injection
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'linkerd-exception-ns'

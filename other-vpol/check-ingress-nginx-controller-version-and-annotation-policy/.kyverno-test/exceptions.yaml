@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-controller-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: check-ingress-nginx-controller-version-and-annotation-policy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'bad-pod'
+  images:
+  - registry.k8s.io/ingress-nginx/controller:v1.11.0

@@ -44,3 +44,45 @@ spec:
         file: podcontroller-patched.yaml
     - assert:
         file: pod-others-patched.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        file: exception-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - sleep:
+        duration: 15s
+    - apply:
+        file: exception-pod.yaml
+    - assert:
+        file: exception-assert.yaml
+    - apply:
+        file: exception-sibling.yaml
+    - assert:
+        file: exception-sibling-patched.yaml
+    - apply:
+        file: exception-wrong-namespace.yaml
+    - apply:
+        file: exception-wrong-namespace-pod.yaml
+    - assert:
+        file: exception-wrong-namespace-patched.yaml
+  - name: revoked-exception-restores-mutation
+    try:
+    - delete:
+        ref:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          name: karpenter-limits-exception
+          namespace: policy-exceptions
+    - delete:
+        ref:
+          apiVersion: v1
+          kind: Pod
+          name: exception-limits-pod
+          namespace: test
+    - sleep:
+        duration: 15s
+    - apply:
+        file: exception-pod.yaml
+    - assert:
+        file: revoked-exception-patched.yaml

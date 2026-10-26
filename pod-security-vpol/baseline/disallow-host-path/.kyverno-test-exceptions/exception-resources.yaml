@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec: {volumes: [{name: data, hostPath: {path: /allowed}}], containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong, namespace: default}
+spec: {volumes: [{name: data, hostPath: {path: /wrong}}], containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec: {volumes: [{name: a, hostPath: {path: /allowed}}, {name: b, hostPath: {path: /wrong}}], containers: [{name: app, image: nginx:1.27}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec: {volumes: [{name: data, hostPath: {path: /wrong}}], containers: [{name: app, image: nginx:1.27}]}

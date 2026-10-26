@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: container-port-names-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-container-port-names
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'badpod01'

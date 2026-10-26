@@ -1,0 +1,39 @@
+name: Check PR management configuration
+
+on:
+  pull_request:
+    paths:
+      - ".github/labels.yml"
+      - ".github/pr-management.json"
+      - ".github/pr-readiness-checks.yml"
+      - ".github/workflows/pr-labelling.yaml"
+      - ".github/workflows/pr-management.yaml"
+      - ".github/workflows/check-pr-management.yaml"
+      - ".github/workflows/sync-labels.yaml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/labels.yml"
+      - ".github/pr-management.json"
+      - ".github/pr-readiness-checks.yml"
+      - ".github/workflows/pr-labelling.yaml"
+      - ".github/workflows/pr-management.yaml"
+      - ".github/workflows/check-pr-management.yaml"
+      - ".github/workflows/sync-labels.yaml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout configuration under test
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Validate configuration without API access
+        uses: kyverno/kyverno/.github/actions/pr-management@ef3224c602da764b2c2fd8b361ae6a28f9b3b0e8
+        with:
+          mode: validate

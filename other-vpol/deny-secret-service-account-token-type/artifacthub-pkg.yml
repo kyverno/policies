@@ -22,10 +22,22 @@ readme: |
   is used for legacy ServiceAccount tokens . These legacy Tokens can
   be of security concern and should be audited.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `deny-secret-service-account-token-type` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `kubernetes.io/service-account-token` in `spec.allowedValues` to allow that Secret
+  type only within the exception's resource scope. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/deny-secret-service-account-token-type/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Secret, ServiceAccount"
-digest: da42fed6648a8cd79f31bdce6858e13055689545b0a00b7c6a3e208e3305f794
+digest: d44679eed97f8816c1836f239afb96587d1608ac5d8fe5381492e4a9b1f6373c
 createdAt: "2025-05-11T17:46:12Z"

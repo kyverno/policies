@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: localhost-service-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: no-localhost-service
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'exception-localhost'
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - externalName:localhost

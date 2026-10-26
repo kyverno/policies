@@ -15,9 +15,16 @@ keywords:
 readme: |
   A bare Pod is any Pod created directly and not owned by a controller such as a Deployment or Job. Bare Pods are often create manually by users in an attempt to troubleshoot an issue. If left in the cluster, they create clutter, increase cost, and can be a security risk. Bare Pods can be cleaned up periodically through use of a policy. This policy finds and removes all bare Pods across the cluster.
   
+  ### PolicyException availability
+
+  The released cleanup controller does not currently consume
+  `PolicyException` resources for the `DeletingPolicy` named `clean-bare-pods`. Do not rely
+  on an exception to suppress its deletions; this policy behaves the same when
+  PolicyException support is disabled or enabled for the other controllers.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.27"
   kyverno/subject: "Pod"
-digest: 71f20cd6b4944cc620bab675a388edbf8bf977e9011a136f752c122c461490a4
+digest: 44a667deb677d34a26a475f1e52fd5c0289652d51c25ee202e8f8705c634094b

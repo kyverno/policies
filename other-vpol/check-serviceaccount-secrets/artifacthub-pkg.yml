@@ -24,10 +24,22 @@ readme: |
   field, it is considered an auto-generated legacy token. These legacy Tokens can
   be of security concern and should be audited.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-serviceaccount-secrets` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `serviceaccount-secret:<name>` in `spec.allowedValues` for each allowed entry in the
+  ServiceAccount's `secrets` list; every unlisted Secret still fails. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-serviceaccount-secrets/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Secret,ServiceAccount"
-digest: 8d2f0729c930e419f71f3f8886e670f27168ced60168620a212bbef842fb262f
+digest: 75fe6c78d816248de5b09475cc616e86267bebdd9b66b44dad8f62f71bdce87f
 createdAt: "2025-05-11T17:46:12Z"

@@ -13,10 +13,22 @@ keywords:
   - ValidatingPolicy
 readme: |
   This policy ensures that Deployments, ReplicaSets, StatefulSets, and DaemonSets are only allowed if they have a corresponding Horizontal Pod Autoscaler (HPA) configured in the same namespace. The policy checks for the presence of an HPA that targets the resource and denies the creation or update of the resource if no such HPA exists. This policy helps enforce scaling practices and ensures that resources are managed efficiently.
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-hpa-exists` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact workload names in `spec.allowedValues` to waive the matching-HPA requirement;
+  constrain kind and namespace in `spec.matchConditions`. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-hpa-exists/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Deployment,ReplicaSet,StatefulSet,DaemonSet"
-digest: ec7f50f0dc04c70d4d4e1e07d8d91fb586a6dacb7dd206967b32a2c2bca74019
+digest: b9515f89e75fede3dfbda1511531ee787073fbcd27205dee25dfe22d08cc7bba
 createdAt: "2025-12-12T14:35:08Z"

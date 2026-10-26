@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: nodesproxy-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-clusterrole-nodesproxy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'badcr01' && object.metadata.?namespace.orValue('') == ''
+  allowedValues:
+  - nodes/proxy

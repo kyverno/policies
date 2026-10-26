@@ -14,12 +14,25 @@ keywords:
 readme: |
   Containers may define ports on which they listen. In addition to a port number, a name field may optionally be used. Including a name makes it easier when defining Service resource definitions and others since the name may be referenced allowing the port number to change. This policy requires that for every containerPort defined there is also a name specified.      
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-container-port-names` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  `variables.allContainers` checks regular, init, and ephemeral containers;
+  a matching whole-resource exception skips this policy for the entire Pod.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-container-port-names/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 92dbb0a28cab307e0d640a9a28b712da2500a8d58c41a009d614c2b141d784e4
+digest: 37d2e1f465b9ee1c56d84d49ee816de1209c01d85ae2e6794659ce5fd192843f
 
 
 createdAt: "2025-05-11T17:46:12Z"

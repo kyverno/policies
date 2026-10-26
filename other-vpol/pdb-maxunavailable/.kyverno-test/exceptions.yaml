@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: pdb-zero-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: pdb-maxunavailable
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'exception-pdb-zero'
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'kube-system'
+  allowedValues:
+  - maxUnavailable:0

@@ -33,5 +33,13 @@ spec:
     env:
     - name: COLOR
       value: red
+    - name: K8S_IMAGE
+      value: stale.example/busybox:old
   - name: nginx
     image: yqkbmzydleyds:1.1.0
+    env:
+    - name: K8S_IMAGE
+      value: stale.example/nginx:old
+  initContainers:
+  - name: init
+    image: ghcr.io/init:1.0

@@ -30,13 +30,12 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy restrict-escalation-verbs-roles failed')): true
         file: cr-bad.yaml
     - apply:
         file: role-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy restrict-escalation-verbs-roles failed')): true
         file: role-bad.yaml
-

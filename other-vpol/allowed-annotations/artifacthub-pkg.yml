@@ -14,12 +14,25 @@ keywords:
 readme: |
   Rather than creating a deny list of annotations, it may be more useful to invert that list and create an allow list which then denies any others. This policy demonstrates how to allow two annotations with a specific key name of fluxcd.io/ while denying others that do not meet the pattern.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `allowed-annotations` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact annotation keys such as `fluxcd.io/example` in `spec.allowedValues` to allow
+  those otherwise-disallowed FluxCD keys; annotation values are not the tokens. CEL
+  consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
+  checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/allowed-annotations/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod, Annotation"
-digest: b4fd394675a4091cfa16c4b469758e5f7be6a9d662c62bafa79f853b81a9b8b5
+digest: 7ff971c015eb53fb7335397625ffd720a739ae39e3c166c5d95dcc7a92f236a5
 
 
 createdAt: "2025-05-11T17:46:11Z"

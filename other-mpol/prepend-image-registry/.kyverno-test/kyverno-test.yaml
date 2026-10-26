@@ -8,6 +8,7 @@ resources:
 - resource.yaml
 - resourceFailed.yaml
 - withoutinitcontainer.yaml
+- already-prefixed.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource.yaml
@@ -28,5 +29,12 @@ results:
   policy: prepend-registry
   resources:
   - mypod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: already-prefixed-patched.yaml
+  policy: prepend-registry
+  resources:
+  - already-prefixed
   result: pass
   isMutatingPolicy: true

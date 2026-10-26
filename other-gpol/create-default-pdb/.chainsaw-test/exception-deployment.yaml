@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: exception-deployment
+  namespace: default-pdb-ns
+  labels: {app: exception}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app: exception}
+  template:
+    metadata:
+      labels: {app: exception}
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.36

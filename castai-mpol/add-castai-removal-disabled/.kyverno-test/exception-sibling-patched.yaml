@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: exception-sibling
+spec:
+  template:
+    metadata:
+      labels:
+        autoscaling.cast.ai/removal-disabled: "true"
+    spec:
+      containers:
+      - name: worker
+        image: busybox:1.36
+      restartPolicy: Never

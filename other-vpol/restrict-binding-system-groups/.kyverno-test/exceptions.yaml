@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: system-group-binding-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-binding-system-groups
+  allowedValues: [system:anonymous]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'badcrb01'

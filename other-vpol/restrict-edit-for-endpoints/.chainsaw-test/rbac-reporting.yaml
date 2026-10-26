@@ -1,0 +1,10 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno-policy-test-endpoints-reporting
+  labels:
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+rules:
+- apiGroups: [rbac.authorization.k8s.io]
+  resources: [clusterroles]
+  verbs: [get, list, watch]

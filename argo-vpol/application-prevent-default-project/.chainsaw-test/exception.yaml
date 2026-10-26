@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: application-default-project-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: application-prevent-default-project
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-application
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'exceptionapp'
+  allowedValues:
+  - default

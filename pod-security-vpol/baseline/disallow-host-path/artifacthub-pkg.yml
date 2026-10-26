@@ -14,10 +14,22 @@ keywords:
 readme: |
   HostPath volumes let Pods use host directories and volumes in containers. Using host resources can be used to access shared data or escalate privileges and should not be allowed. This policy ensures no hostPath volumes are in use.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-host-path` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact hostPath path strings in `spec.allowedValues` to permit only those paths, not
+  path prefixes or volume names. `variables.podSpec` selects the Pod spec directly or from
+  the workload template. CEL reads the tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-host-path/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod,Volume"
-digest: 2d87b3fea1aa7d4fc7160a3ec4c31bb6dbc86485f318a55cccb5d7d28f7d99d2
+digest: ba6e6bc99588095ac1442930daf71122f1407dc7796db78943ba568684589562
 createdAt: "2025-03-13T23:26:58Z"

@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-proc-mount-controllers
+policies:
+- ../disallow-proc-mount.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-proc-mount
+  resources:
+  - unsafe-disallow-proc-mount-7
+  result: fail

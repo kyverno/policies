@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: application-default-project-wrong-namespace
+policies:
+- ../application-prevent-default-project.yaml
+resources:
+- ../.kyverno-test-exceptions/wrong-namespace.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+- policy: application-prevent-default-project
+  kind: Application
+  resources: [exceptionapp]
+  result: fail
+  isValidatingPolicy: true

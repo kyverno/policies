@@ -14,12 +14,24 @@ keywords:
 readme: |
   This validation is valuable when annotations are used to define durations, such as to ensure a Pod lifetime annotation does not exceed some site specific max threshold. Pod lifetime annotation can be no greater than 8 hours.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `pod-lifetime` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `pod-duration:<value>` in `spec.allowedValues` for the exact
+  `pod.kubernetes.io/lifetime` annotation string, such as `pod-duration:12h`. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/enforce-pod-duration/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: af25eee1ff65523a44d6eff4774fd3a9859f06d6d134d1f77fa20f2ab98a15b0
+digest: b31d044a7ffaf5a3b264eef29a7ce00c907b201a6e58a74d343691c671339b8d
 
 
 createdAt: "2025-05-11T17:46:11Z"

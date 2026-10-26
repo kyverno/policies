@@ -6,6 +6,9 @@ policies:
 - ../add-runtimeClassName.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource1.yaml
@@ -13,4 +16,10 @@ results:
   resources:
   - pod01
   result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: add-runtimeclassname
+  resources:
+  - exception-pod
+  result: skip
   isMutatingPolicy: true

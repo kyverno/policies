@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: escalation-verb-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-escalation-verbs-roles
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'badrole01'
+  allowedValues:
+  - verb:impersonate
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: escalation-verb-mixed-rule
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-escalation-verbs-roles
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'mixedrole01'
+  allowedValues:
+  - verb:impersonate
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: escalation-verb-multiple-rules
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-escalation-verbs-roles
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'mixedrole02'
+  allowedValues:
+  - verb:impersonate

@@ -1,0 +1,8 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: badingress-empty-tls
+  annotations:
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  tls: []

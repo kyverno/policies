@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: partial, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: disallow-capabilities-strict, kind: ValidatingPolicy}]
+  allowedValues: [SYS_ADMIN]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name in ['exception-partial', 'exception-wrong', 'exception-sibling']"}]
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: whole, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: disallow-capabilities-strict, kind: ValidatingPolicy}]
+  matchConditions: [{name: target, expression: "object.metadata.namespace == 'default' && object.metadata.name == 'exception-whole'"}]

@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Argo in CEL
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.17.0
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.34-1.35"
     policies.kyverno.io/subject: Application
     policies.kyverno.io/description: >-
@@ -24,6 +24,14 @@ spec:
         apiVersions: [v1alpha1]
         operations: [CREATE, UPDATE]
         resources: [applications]
+  variables:
+    - name: canonicalProject
+      expression: >-
+        has(object.spec.project) && object.spec.project != ''
+        ? object.spec.project
+        : 'default'
+    - name: allowedProjects
+      expression: exceptions.allowedValues
   validations:
     - message: "The default project may not be used in an Application."
-      expression: "object.spec.?project.orValue('') != 'default'"
+      expression: "variables.canonicalProject != 'default' || variables.canonicalProject in variables.allowedProjects"

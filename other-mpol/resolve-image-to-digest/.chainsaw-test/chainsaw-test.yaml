@@ -6,6 +6,11 @@ metadata:
   name: resolve-image-to-digest
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -22,3 +27,11 @@ spec:
         file: podcontroller.yaml
     - assert:
         file: podcontroller-patched.yaml
+  - name: step-03-partial-exception
+    try:
+    - apply:
+        file: partial-exception.yaml
+    - apply:
+        file: partial-exception-pod.yaml
+    - assert:
+        file: partial-exception-pod-patched.yaml

@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Require Requests and Limits for emptyDir in ValidatingPolicy
     policies.kyverno.io/category: Other in Vpol 
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.12.1
     kyverno.io/kubernetes-version: "1.30"
@@ -39,9 +40,7 @@ spec:
   validations:
     - expression: >-
         variables.containers.all(container,
-        !container.?volumeMounts.orValue([]).exists(mount, mount.name in variables.emptydirnames) || 
+        !container.?volumeMounts.orValue([]).exists(mount, mount.name in variables.emptydirnames && !exceptions.allowedValues.exists(value, value == 'emptyDir:' + mount.name)) ||
         container.resources.?requests[?'ephemeral-storage'].hasValue() &&
         container.resources.?limits[?'ephemeral-storage'].hasValue())
       message: Containers mounting emptyDir volumes must specify requests and limits for ephemeral-storage.
-
-

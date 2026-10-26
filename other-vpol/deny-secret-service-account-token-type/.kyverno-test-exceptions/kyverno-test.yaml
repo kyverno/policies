@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: deny-secret-service-account-token-type-exceptions
+policies:
+- ../deny-secret-service-account-token-type.yaml
+resources:
+- ../.kyverno-test/resource.yaml
+exceptions:
+- exceptions.yaml
+results:
+- isValidatingPolicy: true
+  kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources: [good-secret]
+  result: pass
+- isValidatingPolicy: true
+  kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources: [bad-secret]
+  result: pass

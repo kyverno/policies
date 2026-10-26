@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: configmap-serviceaccount-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: limit-configmap-for-sa
+  matchConditions:
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'any-namespace'
+  - name: target-name
+    expression: object.metadata.name == 'any-configmap-name-good'
+  allowedValues:
+  - serviceAccount:system:serviceaccount:another-namespace:another-developer

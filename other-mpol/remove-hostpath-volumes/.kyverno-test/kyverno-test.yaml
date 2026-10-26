@@ -6,6 +6,9 @@ policies:
 - ../remove-hostpath-volumes.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource.yaml
@@ -13,4 +16,9 @@ results:
   resources:
   - busybox
   result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: remove-hostpath-volumes
+  resources: [exception-pod]
+  result: skip
   isMutatingPolicy: true

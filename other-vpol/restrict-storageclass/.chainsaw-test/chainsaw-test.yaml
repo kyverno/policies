@@ -30,6 +30,5 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'StorageClass must define a reclaimPolicy of Delete')): true
         file: sc-bad.yaml
-

@@ -14,12 +14,24 @@ keywords:
 readme: |
   Ephemeral containers, enabled by default in Kubernetes 1.23, allow users to use the `kubectl debug` functionality and attach a temporary container to an existing Pod. This may potentially be used to gain access to unauthorized information executing inside one or more containers in that Pod. This policy blocks the use of ephemeral containers.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-ephemeral-containers` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact ephemeral-container names in `spec.allowedValues`; every other ephemeral
+  container remains prohibited. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-ephemeral-containers/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 01563100c555e1bdf4c6e8d12d6c8bfd087240d67b031d162d5bad5c33997e11
+digest: d09f85a410d136954d69324f766600fa24347031aa1c8d19ce9f4ccc57a59b84
 
 
 createdAt: "2025-05-11T17:46:12Z"

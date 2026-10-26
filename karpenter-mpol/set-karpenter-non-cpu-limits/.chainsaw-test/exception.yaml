@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: karpenter-limits-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: set-karpenter-non-cpu-limits
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: object.metadata.namespace == 'test' && object.metadata.name == 'exception-limits-pod'

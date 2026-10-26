@@ -14,12 +14,23 @@ keywords:
 readme: |
   Ingress resources should only allow secure traffic by disabling HTTP and therefore only allowing HTTPS. This policy requires that all Ingress resources set the annotation `kubernetes.io/ingress.allow-http` to `"false"` and specify TLS in the spec.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-ingress-https` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-ingress-https/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Ingress"
-digest: bbb2567963de64c2989a1875c5449a5a43762d194b4b903d92bfa4885abf9ff4
+digest: ad12e8ec6070bb571bf621ebbd45b849cb45ad8c824b849d112e80b111488e7e
 
 
 createdAt: "2025-05-11T17:46:11Z"

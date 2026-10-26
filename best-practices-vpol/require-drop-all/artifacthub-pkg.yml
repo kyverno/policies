@@ -14,10 +14,23 @@ keywords:
 readme: |
   Capabilities permit privileged actions without giving full root access. All capabilities should be dropped from a Pod, with only those required added back. This policy ensures that all containers explicitly specify the `drop: ["ALL"]` ability. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `drop-all-capabilities` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-drop-all/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 72cdada10a0e984c3cdc3820ef496c67d6990872d3a7505d4e2101fa425881d0
+digest: 93e0cfdd016e323bc652f9b5ef8d58ce7748512f69f25c5fd7e19cea0cd11cae
 createdAt: "2025-05-05T13:19:12Z"

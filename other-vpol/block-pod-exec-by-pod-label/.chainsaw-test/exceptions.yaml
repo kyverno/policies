@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: pod-exec-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deny-exec-by-pod-label
+  matchConditions:
+  - name: exact-target
+    expression: request.operation == 'CONNECT' && request.subResource == 'exec' && request.namespace == 'bpe-podlabel-ns' && request.name == 'pod03'
+  allowedValues:
+  - pod.exec:bpe-podlabel-ns:pod03

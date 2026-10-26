@@ -14,9 +14,20 @@ keywords:
 readme: |
   In the earlier Pod Security Policy controller, it was possible to configure a policy to add a Pod's runtimeClassName. This was beneficial in that various container runtimes could be specified according to a policy. This Kyverno policies mutates Pods to add a runtimeClassName of `prodclass`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-runtimeclassname` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/psp-migration-mpol/add-runtimeClassName/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "PSP Migration"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Pod"
-digest: 8c712977f473d2eff14f68ead2de739ddcd201f678fa5eb076fd98803901d979
+digest: 2cd44fe0cf4d76f49fe3376b64de266caba2c3c1e0bc7f3ea95e593161865ea3

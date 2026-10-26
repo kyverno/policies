@@ -6,12 +6,26 @@ policies:
 - ../add-pod-priorityclassname.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Deployment
   patchedResources: patchedResource.yaml
   policy: add-pod-priorityclassname
   resources:
   - blank
+  result: pass
+  isMutatingPolicy: true
+- kind: Deployment
+  policy: add-pod-priorityclassname
+  resources: [team-a/priority-exception]
+  result: skip
+  isMutatingPolicy: true
+- kind: Deployment
+  patchedResources: exception-patched.yaml
+  policy: add-pod-priorityclassname
+  resources: [team-b/priority-exception]
   result: pass
   isMutatingPolicy: true
 variables: values.yaml

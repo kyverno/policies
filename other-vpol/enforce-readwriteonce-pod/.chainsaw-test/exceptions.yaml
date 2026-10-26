@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: readwriteonce-pod-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: readwriteonce-pod
+  matchConditions:
+  - name: exact-pvc
+    expression: object.metadata.namespace == 'rwop-exceptions' && object.metadata.name == 'legacy-pvc'

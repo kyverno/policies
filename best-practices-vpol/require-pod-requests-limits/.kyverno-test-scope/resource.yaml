@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-requests-limits, namespace: default}
+spec:
+  containers: [{name: app, image: nginx}]
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-requests-limits, namespace: team-b}
+spec:
+  containers: [{name: app, image: nginx}]

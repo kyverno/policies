@@ -14,10 +14,26 @@ keywords:
 readme: |
   The seccomp profile must not be explicitly set to Unconfined. This policy, requiring Kubernetes v1.30 or later, ensures that seccomp is unset or  set to `RuntimeDefault` or `Localhost`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-seccomp` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `seccomp.type:<value>` in `spec.allowedValues`, such as `seccomp.type:Unconfined`,
+  for an exact container profile type, or `spec.images` for matching containers.
+  `variables.hasValidSeccompProfile` still enforces the Pod-level profile using
+  `allowedProfileTypes`; neither exception waives it. `variables.podSpec` selects the Pod
+  spec directly or from the workload template. `variables.allContainers` includes regular,
+  init, and ephemeral containers. CEL reads images through `exceptions.allowedImages` and
+  tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/restrict-seccomp/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: de869805d9d4858c4fd4c126a267224127f0fa27b1b6be10285b1627b2f9e2f0
+digest: 2321aaaa3019d7d375a2982f4cc34f9bd8447a2c1952e1a64afe91375be8a463
 createdAt: "2025-03-13T23:50:13Z"

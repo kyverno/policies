@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allow-pod02-exec
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: deny-exec-by-namespace-label
+  allowedValues:
+    - pod.exec:pod-exec-label-ns02:pod02
+  matchConditions:
+    - name: exact-connect-request
+      expression: request.operation == 'CONNECT' && request.subResource == 'exec' && request.namespace == 'pod-exec-label-ns02' && request.name == 'pod02'

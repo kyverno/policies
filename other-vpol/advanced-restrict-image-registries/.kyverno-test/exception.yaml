@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-badpod01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: advanced-restrict-image-registries
+    kind: ValidatingPolicy
+  allowedValues:
+  - ghrc.io/kyverno/test-busybox:1.35
+  matchConditions:
+  - name: exact-pod
+    expression: request.name == 'badpod01' && request.namespace == 'default'

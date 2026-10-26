@@ -9,6 +9,7 @@ metadata:
       annotation.
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/title: Inject CoCo InitData Annotation
   name: inject-coco-initdata
 spec:

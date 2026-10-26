@@ -14,8 +14,19 @@ keywords:
 readme: |
   Deployments to a Kubernetes cluster with multiple availability zones often need to distribute those replicas to align with those zones to ensure site-level failures do not impact availability. This policy matches Deployments with the label `distributed=required` and mutates them to spread Pods across zones.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `spread-pods` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/spread-pods-across-topology/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Deployment, Pod"
-digest: f8ee910385111516ad84b2de53f6f57f0f9efa871942f78989cdd46e4ce600fd
+digest: ae5168ac5ffc382ced9210acde009e4a9a761bbbb2da52d396f71976180c73e7

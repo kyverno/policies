@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-myapp-pod
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-annotations
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: "['myapp-pod', 'mydeploy'].exists(name, object.metadata.name == name) && object.metadata.namespace == 'default'"
+  allowedValues:
+  - fluxcd.io/title
