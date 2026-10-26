@@ -5,7 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Disallow Latest Tag in VPOL
     policies.kyverno.io/category: Best Practices in VPOL
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
@@ -25,9 +25,40 @@ spec:
             apiVersions: [v1]
             operations: [CREATE, UPDATE]
             resources: [pods]
+          - apiGroups: ['apps']
+            apiVersions: [v1]
+            operations: [CREATE, UPDATE]
+            resources: [deployments, statefulsets, daemonsets, replicasets]
+          - apiGroups: ['batch']
+            apiVersions: [v1]
+            operations: [CREATE, UPDATE]
+            resources: [jobs, cronjobs]
+          - apiGroups: ['']
+            apiVersions: [v1]
+            operations: [CREATE, UPDATE]
+            resources: [replicationcontrollers]
+          - apiGroups: ['']
+            apiVersions: [v1]
+            operations: [UPDATE]
+            resources: [pods/ephemeralcontainers]
+  variables:
+    - name: podSpec
+      expression: >-
+        object.kind == 'CronJob' ? object.spec.jobTemplate.spec.template.spec :
+        (has(object.spec.template) ? object.spec.template.spec : object.spec)
+    - name: allContainers
+      expression: >-
+        variables.podSpec.containers + variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
   validations:
-          - expression: "object.spec.containers.all(container, container.image.contains(':'))"
+          - expression: >-
+              variables.allContainers.all(container,
+              (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
+              container.image.substring(container.image.lastIndexOf('/') + 1).contains(':') ||
+              container.image.contains('@'))
             message: "An image tag is required."
-          - expression: "object.spec.containers.all(container, !container.image.endsWith(':latest'))"
+          - expression: >-
+              variables.allContainers.all(container,
+              (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
+              !container.image.endsWith(':latest'))
             message: "Using a mutable image tag e.g. 'latest' is not allowed."
-

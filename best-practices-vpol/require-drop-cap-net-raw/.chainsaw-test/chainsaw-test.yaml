@@ -31,21 +31,27 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
         file: bad-pod-containers.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
         file: bad-pod-initcontainers.yaml
     - apply:
-        expect:
-        - check:
-            ($error != null): true
         file: bad-pod-corner.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
+        file: bad-pod-corner-mixed.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
+        file: bad-pod-corner-init.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
         file: bad-podcontrollers.yaml
-

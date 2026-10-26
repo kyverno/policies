@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: badpod04-registry
 spec:
+  automountServiceAccountToken: false
   containers:
   - name: k8s-nginx
     image: nginx
-

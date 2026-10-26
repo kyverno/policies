@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: rootfs-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-ro-rootfs
+  images: [ghost]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.namespace == 'default' && (object.metadata.name == 'exception-rootfs')

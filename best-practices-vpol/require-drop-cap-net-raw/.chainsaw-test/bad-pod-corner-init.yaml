@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: add-capabilities-good
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - CAP_NET_RAW
+  - name: init-again
+    image: ghcr.io/kyverno/test-busybox:1.35

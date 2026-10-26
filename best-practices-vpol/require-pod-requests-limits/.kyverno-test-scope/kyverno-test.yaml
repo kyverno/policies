@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-pod-requests-limits-exception-namespace-scope}
+policies: [../require-pod-requests-limits.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: require-requests-limits
+  resources: [default/exception-requests-limits]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-requests-limits
+  resources: [team-b/exception-requests-limits]
+  result: fail
+  isValidatingPolicy: true

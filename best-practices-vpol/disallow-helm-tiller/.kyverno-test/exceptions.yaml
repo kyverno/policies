@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: tiller-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: disallow-helm-tiller
+  images: [docker.io/tiller:latest]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.namespace == 'default' && (object.metadata.name in ['exception-tiller', 'exception-tiller-positive'])

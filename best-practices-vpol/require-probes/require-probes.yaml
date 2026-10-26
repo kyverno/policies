@@ -14,7 +14,7 @@ metadata:
       determine when Pods are ready to receive traffic. Startup probes provide additional
       control during container startup. This policy validates that all containers have
       at least one of livenessProbe, readinessProbe, or startupProbe defined.      
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
 spec:
   validationActions: ["Deny"]
   autogen:
@@ -34,19 +34,26 @@ spec:
       apiVersions: ["v1", "v1beta1"]
       resources: ["jobs", "cronjobs"]
       operations: ["CREATE", "UPDATE"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["replicationcontrollers"]
+      operations: ["CREATE", "UPDATE"]
   variables:
   - name: allContainers
     expression: >-
-      has(object.spec.containers) ? 
-        object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]) : 
-        object.spec.template.spec.containers + object.spec.template.spec.?initContainers.orValue([]) + object.spec.template.spec.?ephemeralContainers.orValue([])      
+      has(object.spec.containers) ?
+        object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]) :
+        has(object.spec.template) ?
+          object.spec.template.spec.containers + object.spec.template.spec.?initContainers.orValue([]) + object.spec.template.spec.?ephemeralContainers.orValue([]) :
+          object.spec.jobTemplate.spec.template.spec.containers + object.spec.jobTemplate.spec.template.spec.?initContainers.orValue([]) + object.spec.jobTemplate.spec.template.spec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
-      variables.allContainers.all(container, 
+      variables.allContainers.all(container,
+        (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
         has(container.livenessProbe) || has(container.readinessProbe) || has(container.startupProbe)
       )      
     messageExpression: >-
       'All containers must have at least one probe (livenessProbe, readinessProbe, or startupProbe) defined. Missing probes in containers: ' + 
       variables.allContainers.filter(container, 
         !(has(container.livenessProbe) || has(container.readinessProbe) || has(container.startupProbe))
-      ).map(container, container.name).join(', ')  
+      ).map(container, container.name).join(', ')

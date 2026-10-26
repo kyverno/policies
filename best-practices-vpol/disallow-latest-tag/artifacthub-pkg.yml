@@ -14,10 +14,24 @@ keywords:
 readme: |
   The ':latest' tag is mutable and can lead to unexpected errors if the image changes. A best practice is to use an immutable tag that maps to a specific version of an application Pod. This policy validates that the image specifies a tag and that it is not called `latest`.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-latest-tag` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy accepts exact image references in `spec.images`; only matching
+  images are exempted and all other images remain enforced.
+  CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
+  includes regular, init, and ephemeral containers. `variables.podSpec` selects the Pod
+  spec directly or from its controller template.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-latest-tag/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: fc49a94817297938131fb05f4237aaa3107171a7c4a110aad0b0deca1b7ecba2
+digest: cabf42f219d7c3a8f82a3d4a2515b03a0ecab5957e3f74298071d5c353c30c2b
 createdAt: "2025-05-05T13:19:12Z"

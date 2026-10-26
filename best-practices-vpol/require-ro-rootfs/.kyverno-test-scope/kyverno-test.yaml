@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-ro-rootfs-exception-namespace-scope}
+policies: [../require-ro-rootfs.yaml]
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- kind: Pod
+  policy: require-ro-rootfs
+  resources: [default/exception-rootfs]
+  result: pass
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-ro-rootfs
+  resources: [team-b/exception-rootfs]
+  result: fail
+  isValidatingPolicy: true
