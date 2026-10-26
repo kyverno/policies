@@ -2,7 +2,7 @@ name: require-run-as-non-root-user-vpol
 version: 1.0.0
 displayName: Require Run As Non-Root User in ValidatingPolicy
 description: >-
-  Containers must be required to run as non-root users. This policy ensures `runAsUser` is either unset or set to a number greater than zero. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
+  Containers must be required to run as non-root users. This policy ensures `runAsUser` is either unset or set to a number greater than zero. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/require-run-as-non-root-user/require-run-as-non-root-user.yaml
@@ -12,7 +12,7 @@ keywords:
   - Pod Security Standards (Restricted)
   - ValidatingPolicy
 readme: |
-  Containers must be required to run as non-root users. This policy ensures `runAsUser` is either unset or set to a number greater than zero.
+  Containers must be required to run as non-root users. This policy ensures `runAsUser` is either unset or set to a number greater than zero. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
   
   ### Fine-grained PolicyException use
 
