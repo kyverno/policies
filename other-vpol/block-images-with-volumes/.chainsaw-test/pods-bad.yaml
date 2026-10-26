@@ -6,7 +6,7 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: image-vol
-    image: public.ecr.aws/docker/library/redis@sha256:0b2216cb86345d3ece3696ded9ae59ddf1c65a9e8d48188db1784f1a1f95b448
+    image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
 ---
 apiVersion: v1
 kind: Pod
@@ -18,7 +18,7 @@ spec:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
   - name: image-vol
-    image: public.ecr.aws/docker/library/redis@sha256:0b2216cb86345d3ece3696ded9ae59ddf1c65a9e8d48188db1784f1a1f95b448
+    image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
 ---
 apiVersion: v1
 kind: Pod
@@ -28,6 +28,6 @@ spec:
   automountServiceAccountToken: false
   containers:
   - name: image-vol
-    image: public.ecr.aws/docker/library/redis@sha256:0b2216cb86345d3ece3696ded9ae59ddf1c65a9e8d48188db1784f1a1f95b448
+    image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
