@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: log4shell-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: log4shell-mitigation}]
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'demo-pod01'

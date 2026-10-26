@@ -14,9 +14,23 @@ keywords:
 readme: |
   For use cases like sidecar injection, it is often the case where existing Deployments need the sidecar image updated without destroying the whole Deployment or Pods. This policy updates the image tag on containers named vault-agent for existing Deployments which have the annotation vault.hashicorp.com/agent-inject="true". It may be necessary to grant additional privileges to the Kyverno ServiceAccount, via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `update-image-tag` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  The mutation compares the image of `variables.containers[variables.vaultAgentIndex]`
+  exactly against that list. An approved image skips updating the `vault-agent`
+  container on the matched Deployment; otherwise eligible updates still set
+  `vault:1.5.4`. Other containers are outside this policy's mutation.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/update-image-tag/.chainsaw-test/exception/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Deployment"
-digest: e337de05e4040ba8541dd993c20975558eb83a45e49eb70b6eaffa68e49f2097
+digest: dce83dd8f88ad3f967b8e945dfba53d67b1cb1190690ef074926cda07323f742

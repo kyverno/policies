@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-pod
+  namespace: team-a
+  annotations: {inject-certs: enabled}
+spec:
+  containers:
+  - {name: first, image: registry.example/skip-first:1}
+  - {name: middle, image: registry.example/mutate-middle:1}
+  - {name: last, image: registry.example/skip-last:1}

@@ -14,9 +14,20 @@ keywords:
 readme: |
   Pods which mount hostPath volumes are provided access to the underlying filesystem of the Node on which they run. In most scenarios, this should be forbidden. In others, it may be useful to silently remove those hostPath volumes rather than blocking the Pod. This policy removes all hostPath volumes and their volumeMount references from all containers within a Pod.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `remove-hostpath-volumes` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/remove-hostpath-volumes/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.25"
   kyverno/subject: "Pod,Volume"
-digest: d8427f9cd2da2bf7f73422abd763e3a1b2bdee8cfe20bb82b68cf3b2e1f65f03
+digest: 53b6625855600ebf8f59a4a4da27e5b897ae35d76f1fdacdb9aa263b29fbbe7c

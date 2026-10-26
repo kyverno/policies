@@ -1,0 +1,10 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-mtls-sidecar
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: inject-coco-mtls-sidecar}]
+  matchConditions:
+  - name: exact-target
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'exception-pod'

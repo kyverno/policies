@@ -14,9 +14,22 @@ keywords:
 readme: |
   In response to CVE-2021-44228 referred to as Log4Shell, a RCE vulnerability in the Log4j library, a partial yet incomplete workaround for versions 2.10 to 2.14.1 of the library is to set the environment variable LOG4J_FORMAT_MSG_NO_LOOKUPS to "true". While this does provide some benefit by limiting exposure, there are still code paths which can exploit this vulnerability. It is highly recommended to upgrade log4j as soon as possible. See https://logging.apache.org/log4j/2.x/security.html for more details. This policy will mutate all initContainers and containers in an incoming Pod to add this environment variable automatically.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `log4shell-mitigation` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip adding or replacing `LOG4J_FORMAT_MSG_NO_LOOKUPS`
+  for regular and init containers in Pods or matched controller templates.
+  Non-exempt containers still receive the mitigation variable.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/mitigate-log4shell/.chainsaw-test/partial-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: c75fbadf4da083587cf298885ad097c4f1fb12b9a36f731fe1fb0485f98e9bac
+digest: 00512b9814567152a076a326d0fcd5481063aedd99030a929278ced2b69af946

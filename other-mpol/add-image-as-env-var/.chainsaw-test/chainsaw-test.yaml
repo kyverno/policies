@@ -6,6 +6,11 @@ metadata:
   name: add-image-as-env-var
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -16,6 +21,8 @@ spec:
         file: policy-ready.yaml
   - name: step-02
     try:
+    - apply:
+        file: exception.yaml
     - apply:
         file: kuttlresource.yaml
     - assert:

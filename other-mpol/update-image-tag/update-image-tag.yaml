@@ -3,6 +3,7 @@ kind: MutatingPolicy
 metadata:
   name: update-image-tag
   annotations:
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/title: Update Image Tag
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
@@ -48,6 +49,7 @@ spec:
       jsonPatch:
         expression: >-
           variables.hasVaultAgent &&
+          !exceptions.allowedImages.exists(image, image == variables.containers[variables.vaultAgentIndex].image) &&
           has(object.metadata.annotations) &&
           object.metadata.annotations['vault.hashicorp.com/agent-inject'] == 'true' ?
           [

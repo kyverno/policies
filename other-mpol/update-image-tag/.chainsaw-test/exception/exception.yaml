@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-vault-update
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: update-image-tag}]
+  images: [vault:old]
+  matchConditions:
+  - name: exact-target
+    expression: object.metadata.?namespace.orValue('') == 'default' && object.metadata.name == 'exception-deployment'

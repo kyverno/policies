@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-approved-image
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-image-as-env-var
+    kind: MutatingPolicy
+  matchConditions:
+  - name: target-pod
+    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'pod03'

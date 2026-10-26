@@ -15,8 +15,21 @@ keywords:
 readme: |
   Injects sealed secret configuration environment variables into pods with the coco=enabled label and coco.io/sealed-secret-config annotation. Retrieves configuration from a ConfigMap to enable containers to retrieve secrets from KBS for Confidential Containers.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `inject-sealed-secret-config` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches preserve the existing regular, init, or ephemeral container
+  rather than injecting sealed-secret environment variables. Other containers
+  still receive the configured variables; ConfigMap lookup remains unchanged.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/inject-sealed-secret-config/.chainsaw-test/exception/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: 464d3c932eff95144d60b7292a5b97d06ed2c213613d524c64a48286d07ac272
+digest: a16f5dce0132ff23b2ab8f179819ec7560da0547c6d69e4aeff373dfffce3100

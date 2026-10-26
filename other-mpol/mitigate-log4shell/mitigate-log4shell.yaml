@@ -4,6 +4,7 @@ metadata:
   name: log4shell-mitigation
   annotations:
     policies.kyverno.io/title: Log4Shell Mitigation
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: Sample
     policies.kyverno.io/description: >-
@@ -50,7 +51,7 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          variables.podSpec.containers.map(c,
+          variables.podSpec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
             has(c.env) && c.env.exists(e, e.name == "LOG4J_FORMAT_MSG_NO_LOOKUPS") ?
               JSONPatch{
                 op: "replace",
@@ -70,7 +71,7 @@ spec:
               }
           ) +
           (has(variables.podSpec.initContainers) ?
-            variables.podSpec.initContainers.map(c,
+            variables.podSpec.initContainers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
               has(c.env) && c.env.exists(e, e.name == "LOG4J_FORMAT_MSG_NO_LOOKUPS") ?
                 JSONPatch{
                   op: "replace",

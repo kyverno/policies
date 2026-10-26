@@ -6,6 +6,11 @@ metadata:
   name: mitigate-log4shell
 spec:
   steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - name: step-01
     try:
     - apply:
@@ -28,3 +33,24 @@ spec:
         file: deploy-patched.yaml
     - assert:
         file: cronjob-patched.yaml
+  - name: step-03-partial-exception
+    try:
+    - apply:
+        file: partial-exception.yaml
+    - apply:
+        file: partial-exception-pod.yaml
+    - assert:
+        file: partial-exception-pod-patched.yaml
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: partial-exception
+            namespace: default
+          spec:
+            containers:
+            - name: first
+              env:
+              - name: LOG4J_FORMAT_MSG_NO_LOOKUPS
+                value: "true"

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: replace-registry-ns
+spec:
+  containers:
+  - name: first
+    image: approved.example/keep:1
+  - name: middle
+    image: myregistry.corp.com/example/mutate:1
+  - name: last
+    image: myregistry.corp.com/example/mutate-last:1

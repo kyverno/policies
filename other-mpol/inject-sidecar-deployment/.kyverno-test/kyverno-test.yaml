@@ -6,6 +6,9 @@ policies:
 - ../inject-sidecar-deployment.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Deployment
   patchedResources: patchedResource1.yaml
@@ -13,6 +16,11 @@ results:
   resources:
   - mydeploy-1
   result: pass
+  isMutatingPolicy: true
+- kind: Deployment
+  policy: inject-sidecar
+  resources: [exception-deployment]
+  result: skip
   isMutatingPolicy: true
 - kind: Deployment
   patchedResources: patchedResource2.yaml
