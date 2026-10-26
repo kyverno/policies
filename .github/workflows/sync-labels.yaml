@@ -31,7 +31,7 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
       - name: Sync label metadata
-        uses: kyverno/kyverno/.github/actions/pr-management@3030a2c9327a4f1a28d672c25fa70ac8043950dd
+        uses: kyverno/kyverno/.github/actions/pr-management@ef3224c602da764b2c2fd8b361ae6a28f9b3b0e8
         env:
           GH_TOKEN: ${{ github.token }}
         with:
