@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-ambient-mode-namespace-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-ambient-mode-namespace
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'istio-exception-ns'
