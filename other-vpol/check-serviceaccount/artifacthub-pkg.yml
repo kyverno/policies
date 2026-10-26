@@ -14,10 +14,23 @@ keywords:
 readme: |
   ServiceAccounts with privileges to create Pods may be able to do so and name a ServiceAccount other than the one used to create it. This policy checks the Pod, if created by a ServiceAccount, and ensures the `serviceAccountName` field matches the actual ServiceAccount.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-sa` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `serviceAccount:<namespace>/<name>` in `spec.allowedValues` for the requesting
+  ServiceAccount, not the Pod's target ServiceAccount, to allow an identity mismatch for
+  the matched request. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`;
+  unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-serviceaccount/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod,ServiceAccount"
-digest: cf305fa2c72f2463d9f63ff1dd66230c111b1a57dc659afdeb23cf2380fcf554
+digest: 29c19bcf57806c592670d1d5407f7a0f4f9bf1755fc5c5c63e70b5c1efe5bdf4
 createdAt: "2025-12-15T12:37:33Z"

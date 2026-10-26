@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-bad-pv
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: limit-hostpath-type-pv
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pv
+    expression: "['bad-pv', 'bad-pv-data-other'].exists(name, object.metadata.name == name)"
+  allowedValues:
+  - /etc

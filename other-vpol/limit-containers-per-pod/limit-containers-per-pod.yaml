@@ -20,6 +20,9 @@ spec:
   evaluation:
     background:
       enabled: false
+  variables:
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   matchConstraints:
     resourceRules:
     - apiGroups:   [""]
@@ -27,6 +30,5 @@ spec:
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
   validations:
-    - expression: "size(object.spec.containers) <= 4"
+    - expression: "size(variables.allContainers) <= 4"
       message: "Pods can only have a maximum of 4 containers."
-

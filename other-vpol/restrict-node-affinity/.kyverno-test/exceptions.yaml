@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: node-affinity-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-node-affinity
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'badpod01'

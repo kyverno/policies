@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: empty-podselector-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-networkpolicy-empty-podselector
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.namespace == 'policy-exceptions' && object.metadata.name == 'badnetworkpolicy'
+  allowedValues:
+  - podSelector:empty

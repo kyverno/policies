@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chainsaw-initdata-valid
+  namespace: default
+  labels:
+    coco.io/type: initdata
+data:
+  version: "0.1.0"
+  algorithm: sha384
+  policy.rego: package agent_policy
+  aa.toml: '[token_configs.kbs]'
+  cdh.toml: '[kbc]'
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chainsaw-initdata-invalid
+  namespace: default
+  labels:
+    coco.io/type: initdata
+data:
+  algorithm: sha384

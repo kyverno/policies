@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-edit-for-endpoints
+spec:
+  steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: namespace.yaml
+  - name: policy
+    try:
+    - apply:
+        file: rbac-reporting.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            ready=true
+            for verb in get list watch; do
+              if ! kubectl auth can-i "$verb" clusterroles.rbac.authorization.k8s.io --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+            done
+            if [ "$ready" = true ]; then exit 0; fi
+            sleep 1
+          done
+          echo 'endpoints reporting RBAC aggregation did not become observable for reports-controller'
+          exit 1
+    - apply:
+        file: ../restrict-edit-for-endpoints.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-edit-for-endpoints
+          spec:
+            validationActions: [Deny]
+    - assert:
+        file: policy-ready.yaml
+  - name: partial-exception
+    try:
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: clusterrole-update-only.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'CVE-2021-25740')): true
+        file: clusterrole-update-and-create.yaml
+  - name: cleanup
+    try:
+    - delete:
+        ref:
+          apiVersion: rbac.authorization.k8s.io/v1
+          kind: ClusterRole
+          name: system:aggregate-to-edit
+    - delete:
+        ref:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          name: restrict-edit-for-endpoints

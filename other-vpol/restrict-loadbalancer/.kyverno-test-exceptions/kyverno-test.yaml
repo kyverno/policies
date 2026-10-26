@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: no-loadbalancer-service-exception
+policies: [../restrict-loadbalancer.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Service
+  policy: no-loadbalancer-service
+  resources: [default/my-service-1]
+  result: skip
+- isValidatingPolicy: true
+  kind: Service
+  policy: no-loadbalancer-service
+  resources: [default/my-service-2]
+  result: pass

@@ -6,6 +6,11 @@ metadata:
   name: exclude-namespaces-dynamically
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
@@ -43,3 +48,23 @@ spec:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: pod-bad01.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Pods must have the "foo" label in metadata.labels')): true
+        file: pod-bad02.yaml
+    - delete:
+        file: pod-bad01.yaml
+    - delete:
+        file: exception.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Pods must have the "foo" label in metadata.labels')): true
+        file: pod-bad01.yaml

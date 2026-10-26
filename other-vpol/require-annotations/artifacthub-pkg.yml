@@ -14,12 +14,24 @@ keywords:
 readme: |
   Define and use annotations that identify semantic attributes of your application or Deployment. A common set of annotations allows tools to work collaboratively, describing objects in a common manner that all tools can understand. The recommended annotations describe applications in a way that can be queried. This policy validates that the annotation `corp.org/department` is specified with some value.      
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-annotations` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `missing-annotation:corp.org/department` in `spec.allowedValues` to allow that
+  annotation to be missing or empty. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-annotations/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod, Annotation"
-digest: a5f69da817ecd400908bc21ff3aa7a22b70143239a27553c02eda2631ed80551
+digest: a66b9c484ffee7f33bf16d797bd5f4ec9a7427f6e85a83f56dc3ba46bf1cc1b1
 
 
 createdAt: "2025-05-11T17:46:11Z"

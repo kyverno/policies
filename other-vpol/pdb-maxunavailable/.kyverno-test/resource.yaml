@@ -37,7 +37,17 @@ metadata:
   namespace: kube-system
 spec:
   maxUnavailable: -1
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: exception-pdb-zero
+  namespace: kube-system
+spec:
+  maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: demo
   selector:
     matchLabels:
       app: bad
-

@@ -6,6 +6,8 @@ policies:
 - ../allowed-pod-priorities.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -22,6 +24,7 @@ results:
   - pod-priority-ns/goodpod02
   - default/goodpod03
   - no-priority-ns/goodpod04
+  - pod-priority-ns/exception-priority
   result: pass
 - isValidatingPolicy: true
   kind: Deployment

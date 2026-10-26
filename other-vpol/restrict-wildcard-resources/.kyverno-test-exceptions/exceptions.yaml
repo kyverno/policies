@@ -1,0 +1,17 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-wildcard-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-wildcard-resources}]
+  matchConditions:
+  - name: exact-resource
+    expression: "object.metadata.name == 'badcr01' && object.metadata.?namespace.orValue('') == ''"
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: wrong-namespace-wildcard-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: restrict-wildcard-resources}]
+  matchConditions:
+  - name: wrong-namespace
+    expression: "object.metadata.name == 'badcr02' && object.metadata.?namespace.orValue('') == 'team-b'"

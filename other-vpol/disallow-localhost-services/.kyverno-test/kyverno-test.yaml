@@ -6,6 +6,8 @@ policies:
 - ../disallow-localhost-services.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Service
@@ -18,5 +20,5 @@ results:
   policy: no-localhost-service
   resources:
   - my-np-service
+  - exception-localhost
   result: pass
-

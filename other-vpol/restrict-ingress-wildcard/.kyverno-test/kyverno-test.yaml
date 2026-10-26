@@ -6,6 +6,8 @@ policies:
 - ../restrict-ingress-wildcard.yaml
 resources:
 - resources.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Ingress
@@ -20,5 +22,5 @@ results:
   resources:
   - gooding01
   - gooding02
+  - exception-ingress
   result: pass
-

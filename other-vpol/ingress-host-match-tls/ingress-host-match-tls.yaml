@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
     kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
@@ -35,6 +35,6 @@ spec:
     - expression: >-
         object.spec.rules.all(rule, 
         !has(rule.host) || 
-        variables.tls.exists(tls, tls.?hosts.orValue([]).exists(tlsHost, tlsHost == rule.host)))
+        variables.tls.exists(tls, tls.?hosts.orValue([]).exists(tlsHost, tlsHost == rule.host)) ||
+        rule.host in exceptions.allowedValues.orValue([]))
       message: "The host(s) in spec.rules[].host must match those in spec.tls[].hosts[]."
-

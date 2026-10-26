@@ -30,6 +30,15 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
-        file: svc-bad.yaml
-
+            (contains($error, 'Ports must be between 32000-33000')): true
+        file: svc-bad01.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Ports must be between 32000-33000')): true
+        file: svc-bad02.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Ports must be between 32000-33000')): true
+        file: svc-bad03.yaml

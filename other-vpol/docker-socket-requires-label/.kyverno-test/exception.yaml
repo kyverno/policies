@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-nginx-bad-1
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: docker-socket-check
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-pod
+    expression: "['nginx-bad-1', 'nginx-bad-2'].exists(name, request.name == name) && request.namespace == 'default'"
+  allowedValues:
+  - nginx-bad-1

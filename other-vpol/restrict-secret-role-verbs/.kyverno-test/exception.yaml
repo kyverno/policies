@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-secret-get
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-secret-role-verbs
+    kind: ValidatingPolicy
+  allowedValues:
+  - get
+  matchConditions:
+  - name: exact-role
+    expression: object.metadata.name == 'exception-role' && object.metadata.namespace == 'default'

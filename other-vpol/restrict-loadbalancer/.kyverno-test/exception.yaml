@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-my-service-1
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: no-loadbalancer-service
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-service
+    expression: object.metadata.name == 'my-service-1' && object.metadata.namespace == 'default'

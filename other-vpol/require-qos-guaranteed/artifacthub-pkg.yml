@@ -15,11 +15,25 @@ keywords:
 readme: |
   Pod Quality of Service (QoS) is a mechanism to ensure Pods receive certain priority guarantees based upon the resources they define. When Pods define both requests and limits for both memory and CPU, and the requests and limits are equal to each other, Kubernetes grants the QoS class as guaranteed which allows them to run at a higher priority than others. This policy requires that all containers within a Pod run with this definition resulting in a guaranteed QoS. This policy is provided with the intention that users will need to control its scope by using exclusions, preconditions, and other policy language mechanisms.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-qos-guaranteed` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `qos.class:Burstable` or `qos.class:BestEffort` in `spec.allowedValues` to allow
+  that computed alternative class. `variables.qosContainers` covers regular and init
+  containers; `guaranteed` and `bestEffort` determine `qosClass` from CPU/memory
+  quantities, excluding ephemeral containers. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-qos-guaranteed/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other, Multi-Tenancy in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: de04f13c427f062b34470103c85629ccd1f75ff25b570e34729067cd44542189
+digest: e4c51a60917e07b35dceb35653ad051f13a077f60b486446b52bf8948e0ddf8c
 
 createdAt: "2025-05-11T17:46:11Z"

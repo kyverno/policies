@@ -15,12 +15,24 @@ keywords:
 readme: |
   By default, all pods in a Kubernetes cluster are allowed to communicate with each other, and all network traffic is unencrypted. It is recommended to not use an empty podSelector in order to more closely control the necessary traffic flows. This policy requires that all NetworkPolicies other than that of `default-deny` not use an empty podSelector.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-networkpolicy-empty-podselector` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `podSelector:empty` in `spec.allowedValues` to permit an empty Pod selector on the
+  matched NetworkPolicy. CEL consumes `spec.allowedValues` as `exceptions.allowedValues`;
+  unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-networkpolicy-empty-podselector/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other, Multi-Tenancy in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "NetworkPolicy"
-digest: 322ee491aed257eb2639fb4d1e0844d21b72884e9fab5e3b71804466c5ec0d79
+digest: c91a63d46fd7f5403711e1871751d065b9268988be722259ba91a85558b054a6
 
 
 createdAt: "2025-05-11T17:46:11Z"

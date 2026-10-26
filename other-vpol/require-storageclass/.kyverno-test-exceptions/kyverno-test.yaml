@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-storageclass-exceptions}
+policies: [../require-storageclass.yaml]
+resources: [../.kyverno-test/resource.yaml, partial-resource.yaml, wrong-token-resource.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: PersistentVolumeClaim, policy: require-storageclass, resources: [badpvc], result: pass}
+- {isValidatingPolicy: true, kind: PersistentVolumeClaim, policy: require-storageclass, resources: [badpvc-sibling], result: fail}
+- {isValidatingPolicy: true, kind: PersistentVolumeClaim, policy: require-storageclass, resources: [wrong-token-pvc], result: fail}
+- {isValidatingPolicy: true, kind: PersistentVolumeClaim, policy: require-storageclass, resources: [goodpvc], result: pass}
+- {isValidatingPolicy: true, kind: StatefulSet, policy: require-storageclass, resources: [badss], result: fail}

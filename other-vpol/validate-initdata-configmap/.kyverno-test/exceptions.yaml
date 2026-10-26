@@ -1,0 +1,18 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: initdata-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: validate-initdata-configmap
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'test-initdata-invalid' && object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - missing-key:version
+  - missing-key:algorithm
+  - missing-key:policy.rego
+  - missing-key:aa.toml
+  - missing-key:cdh.toml

@@ -30,12 +30,12 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy limit-hostpath-vols failed')): true
         file: pod-bad.yaml
     - apply:
         file: podcontroller-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy limit-hostpath-vols failed')): true
         file: podcontroller-bad.yaml

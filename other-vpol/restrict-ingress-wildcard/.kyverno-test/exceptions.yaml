@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-host-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-ingress-wildcard
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'exception-ingress'
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - host:*.exception.example

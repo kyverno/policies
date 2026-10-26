@@ -7,7 +7,7 @@ policies:
 resources:
 - resource.yaml
 results:
-- isValidatingPolicy: true 
+- isValidatingPolicy: true
   kind: StorageClass
   policy: restrict-storageclass
   resources:
@@ -19,4 +19,3 @@ results:
   resources:
   - goodstorageclass
   result: pass
-

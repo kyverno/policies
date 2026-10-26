@@ -99,6 +99,23 @@ spec:
       - backend:
           service: 
             name: bar
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: exception-ingress
+spec:
+  rules:
+  - host: '*.exception.example'
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: exception
+            port:
+              number: 80
             port: 
               number: 8082
         path: /
@@ -106,4 +123,3 @@ spec:
   tls:
   - hosts:
     - kuard
-

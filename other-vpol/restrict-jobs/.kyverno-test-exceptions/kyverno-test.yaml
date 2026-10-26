@@ -1,0 +1,37 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-jobs-exceptions
+policies:
+- ../restrict-jobs.yaml
+resources:
+- ../.kyverno-test/resource.yaml
+- partial-resource.yaml
+- wrong-token-resource.yaml
+exceptions:
+- exceptions.yaml
+results:
+- isValidatingPolicy: true
+  policy: restrict-jobs
+  kind: Job
+  resources:
+  - badjob
+  result: pass
+- isValidatingPolicy: true
+  policy: restrict-jobs
+  kind: Job
+  resources:
+  - otherbadjob
+  result: fail
+- isValidatingPolicy: true
+  policy: restrict-jobs
+  kind: Job
+  resources:
+  - wrong-token-job
+  result: fail
+- isValidatingPolicy: true
+  policy: restrict-jobs
+  kind: Job
+  resources:
+  - goodjob
+  result: skip

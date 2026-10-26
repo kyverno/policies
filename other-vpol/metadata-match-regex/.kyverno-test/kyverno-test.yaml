@@ -14,6 +14,7 @@ results:
   isValidatingPolicy: true
   kind: Pod
   resources:
+  - badpod-regex-separator
   - badpod01
   - badpod02
   - badpod03

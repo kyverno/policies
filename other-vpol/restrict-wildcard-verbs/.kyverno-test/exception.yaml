@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-badcr01
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-wildcard-verbs
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-role
+    expression: "['badcr01', 'badcr03'].exists(name, object.metadata.name == name)"
+  allowedValues:
+  - pods:*

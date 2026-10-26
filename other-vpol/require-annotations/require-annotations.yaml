@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Require Annotations in ValidatingPolicy
     policies.kyverno.io/category: Other in Vpol 
     policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/subject: Pod, Annotation
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30"
@@ -28,6 +29,5 @@ spec:
       resources:   ["pods"]
   validations:
     - expression: >-
-        object.metadata.?annotations[?'corp.org/department'].orValue('') != ''
+        object.metadata.?annotations[?'corp.org/department'].orValue('') != '' || 'missing-annotation:corp.org/department' in exceptions.allowedValues
       message: "The annotation `corp.org/department` is required."
-

@@ -6,10 +6,23 @@ metadata:
   name: block-pod-exec-by-pod-name
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: step-01
     try:
     - apply:
         file: ../block-pod-exec-by-pod-name.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: deny-exec-by-pod-name
+          spec:
+            validationActions: [Deny]
     - assert:
         file: policy-ready.yaml
   - name: step-02
@@ -28,14 +41,49 @@ spec:
         duration: 5s
   - name: step-04
     try:
+    - apply:
+        file: exceptions.yaml
     - script:
-        content: if kubectl exec -n bpe-podname-ns myapp-maintenance-01 -- ls; then
-          exit 1;else exit 0; fi
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod/myapp-maintenance-01 -n bpe-podname-ns --timeout=60s
+          for attempt in $(seq 1 30); do
+            if kubectl exec -n bpe-podname-ns myapp-maintenance-01 -- ls >/dev/null 2>exec-allowed.err; then exit 0; fi
+            cat exec-allowed.err >&2
+            sleep 1
+          done
+          exit 1
     - script:
-        content: if kubectl exec -n bpe-podname-ns myapp-maintenance-02 -- ls; then
-          exit 1;else exit 0; fi
+        content: |
+          set -eu
+          kubectl wait --for=condition=Ready pod/myapp-maintenance-02 -n bpe-podname-ns --timeout=60s
+          for attempt in $(seq 1 30); do
+            set +e
+            output=$(kubectl exec -n bpe-podname-ns myapp-maintenance-02 -- ls 2>&1)
+            status=$?
+            set -e
+            if test "$status" -ne 0; then printf '%s' "$output" | grep -F "Exec'ing into Pods called \"myapp-maintenance\" is not allowed." >/dev/null && exit 0; fi
+            sleep 1
+          done
+          printf '%s\n' "$output"
+          exit 1
     - script:
         content: kubectl exec -n bpe-podname-ns not-myapp -- ls
+    - delete:
+        file: exceptions.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            set +e
+            output=$(kubectl exec -n bpe-podname-ns myapp-maintenance-01 -- ls 2>&1)
+            status=$?
+            set -e
+            if test "$status" -ne 0; then printf '%s' "$output" | grep -F "Exec'ing into Pods called \"myapp-maintenance\" is not allowed." >/dev/null && exit 0; fi
+            sleep 1
+          done
+          printf '%s\n' "$output"
+          exit 1
   - name: step-99
     try:
     - script:

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: ingress-default-backend-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-ingress-defaultbackend
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'sample-app-1' && object.metadata.?namespace.orValue('') == 'default'
+  allowedValues:
+  - defaultBackend
