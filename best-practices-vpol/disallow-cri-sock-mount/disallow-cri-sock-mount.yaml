@@ -34,11 +34,14 @@ spec:
             expression: "object.spec.volumes"
           - name: volumesWithHostPath
             expression: "variables.volumes.filter(volume, has(volume.hostPath))"
+          # Normalize away empty and '.' segments so aliases such as /var/run/./docker.sock
+          # or //var/run/docker.sock/ match. The API server already rejects '..' segments.
+          - name: hostPaths
+            expression: "variables.volumesWithHostPath.map(volume, '/' + volume.hostPath.path.split('/').filter(s, s != '' && s != '.').join('/'))"
           - name: forbiddenSockets
             expression: "['/var/run/docker.sock', '/var/run/containerd/containerd.sock', '/var/run/crio/crio.sock', '/var/run/cri-dockerd.sock']"
   validations:
           - expression: >-
-              variables.hasVolumes || variables.volumesWithHostPath.all(volume,
-              volume.hostPath.path in exceptions.allowedValues ||
-              !(volume.hostPath.path in variables.forbiddenSockets))
+              variables.hasVolumes || variables.hostPaths.all(path,
+              path in exceptions.allowedValues || !(path in variables.forbiddenSockets))
             message: "Container runtime Unix socket mounts are not allowed."

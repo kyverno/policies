@@ -14,12 +14,14 @@ results:
   policy: disallow-container-sock-mounts
   resources:
   - pod-with-docker-sock-mount
+  - docker-sock-alias
   result: fail
 - kind: Pod
   isValidatingPolicy: true
   policy: disallow-container-sock-mounts
   resources:
   - exception-docker-sock
+  - exception-docker-sock-alias
   result: pass
 - kind: Pod
   isValidatingPolicy: true

@@ -76,3 +76,34 @@ spec:
   - name: data
     hostPath:
       path: /data
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: docker-sock-alias
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: dot
+    hostPath:
+      path: /var/run/./docker.sock
+  - name: slashes
+    hostPath:
+      path: //var/run//docker.sock/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-docker-sock-alias
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: dot
+    hostPath:
+      path: /var/run/./docker.sock

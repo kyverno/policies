@@ -38,6 +38,16 @@ spec:
         expect:
         - check:
             (contains($error, 'Policy disallow-container-sock-mounts failed')): true
+        file: pod-docker-sock-alias-dot.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy disallow-container-sock-mounts failed')): true
+        file: pod-docker-sock-alias-slashes.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy disallow-container-sock-mounts failed')): true
         file: pod-crio-sock.yaml
     - apply:
         expect:

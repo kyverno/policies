@@ -25,6 +25,9 @@ readme: |
   `variables.forbiddenSockets` lists the four paths checked for exact equality:
   `/var/run/docker.sock`, `/var/run/containerd/containerd.sock`,
   `/var/run/crio/crio.sock`, and `/var/run/cri-dockerd.sock`.
+  hostPath paths are normalized first, so aliases such as `/var/run/./docker.sock`
+  or `//var/run/docker.sock/` are rejected too, and `spec.allowedValues` entries
+  are compared against the normalized path.
   Other forbidden socket paths remain rejected; entries are not patterns.
   See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-cri-sock-mount/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
@@ -35,5 +38,5 @@ annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 3c290b900b92896bb0d6a897c0b7193b5998e1d9877751c7db92dcb2b48e0cca
+digest: 82c6b67c48d5176622d82470f45c8f6626cbcf884438a7b31d154b69a2f71c53
 createdAt: "2025-05-05T13:19:12Z"

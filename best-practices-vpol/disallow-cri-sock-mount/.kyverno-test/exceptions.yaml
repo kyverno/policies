@@ -9,7 +9,7 @@ spec:
     name: disallow-container-sock-mounts
   matchConditions:
   - name: exact-resource
-    expression: object.kind == 'Pod' && object.metadata.name == 'exception-docker-sock' && object.metadata.namespace == 'test'
+    expression: object.kind == 'Pod' && object.metadata.name in ['exception-docker-sock', 'exception-docker-sock-alias'] && object.metadata.namespace == 'test'
   allowedValues:
   - /var/run/docker.sock
 ---
