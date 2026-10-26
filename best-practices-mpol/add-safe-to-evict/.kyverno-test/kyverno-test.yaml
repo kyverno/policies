@@ -6,6 +6,11 @@ policies:
 - ../add-safe-to-evict.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+- exception-sibling-resource.yaml
+- exception-wrong-namespace-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: myapp-pod03-patched.yaml
@@ -32,4 +37,24 @@ results:
   resources:
   - myapp-pod02
   result: skip
+  isMUtatingPolicy: true
+- kind: Pod
+  policy: add-safe-to-evict
+  resources:
+  - default/myapp-cli-exception-pod
+  result: skip
+  isMUtatingPolicy: true
+- kind: Pod
+  patchedResources: exception-sibling-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - myapp-cli-sibling
+  result: pass
+  isMUtatingPolicy: true
+- kind: Pod
+  patchedResources: exception-wrong-namespace-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - other/myapp-cli-exception-pod
+  result: pass
   isMUtatingPolicy: true
