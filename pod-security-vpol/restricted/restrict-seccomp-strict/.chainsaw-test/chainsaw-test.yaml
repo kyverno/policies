@@ -127,7 +127,7 @@ spec:
           code=$?
           set -e
           test "$code" -ne 0
-          printf '%s' "$output" | grep -F "seccompProfile.type must be either"
+          printf '%s' "$output" | grep -F "seccompProfile.type must be set to"
           kubectl apply -f - <<'YAML'
           apiVersion: policies.kyverno.io/v1
           kind: PolicyException
@@ -147,7 +147,7 @@ spec:
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"restrict-seccomp-strict-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"seccompProfile":{"type":"Unconfined"}}}]}}
           JSON
           pod_name='restrict-seccomp-strict-ephemeral-live'
-          replace_ephemeral /tmp/approved.json '/api/v1/namespaces/default/pods/restrict-seccomp-strict-ephemeral-live/ephemeralcontainers' 'seccompProfile.type must be either'
+          replace_ephemeral /tmp/approved.json '/api/v1/namespaces/default/pods/restrict-seccomp-strict-ephemeral-live/ephemeralcontainers' 'seccompProfile.type must be set to'
           cat >/tmp/sibling.json <<'JSON'
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"restrict-seccomp-strict-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"seccompProfile":{"type":"Unconfined"}}},{"name":"unapproved","image":"nginx:1.27","securityContext":{"seccompProfile":{"type":"Unconfined"}}}]}}
           JSON
@@ -158,4 +158,4 @@ spec:
           code=$?
           set -e
           test "$code" -ne 0
-          printf '%s' "$output" | grep -F "seccompProfile.type must be either"
+          printf '%s' "$output" | grep -F "seccompProfile.type must be set to"

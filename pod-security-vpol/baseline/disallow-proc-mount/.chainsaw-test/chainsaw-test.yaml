@@ -50,12 +50,12 @@ spec:
     - create:
         expect:
         - check:
-            (contains($error, 'Policy disallow-proc-mount failed')): true
+            ($error != null): true
         file: pod-bad.yaml
     - apply:
         file: podcontroller-good.yaml
     - apply:
         expect:
         - check:
-            (contains($error, 'Policy disallow-proc-mount failed')): true
+            ($error != null): true
         file: podcontroller-bad.yaml

@@ -4,7 +4,6 @@ kind: Pod
 metadata:
   name: badpod01
 spec:
-  hostUsers: false
   containers:
   - name: container01
     image: dummyimagename
@@ -16,7 +15,6 @@ kind: Pod
 metadata:
   name: badpod02
 spec:
-  hostUsers: false
   containers:
   - name: container01
     image: dummyimagename
@@ -30,7 +28,6 @@ kind: Pod
 metadata:
   name: badpod03
 spec:
-  hostUsers: false
   initContainers:
   - name: initcontainer01
     image: dummyimagename
@@ -45,7 +42,6 @@ kind: Pod
 metadata:
   name: badpod04
 spec:
-  hostUsers: false
   initContainers:
   - name: initcontainer01
     image: dummyimagename
@@ -62,7 +58,6 @@ kind: Pod
 metadata:
   name: badpod05
 spec:
-  hostUsers: false
   initContainers:
   - name: initcontainer01
     image: dummyimagename

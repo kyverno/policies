@@ -13,7 +13,6 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: false
       containers:
       - name: container01
         image: dummyimagename
@@ -34,7 +33,6 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: false
       containers:
       - name: container01
         image: dummyimagename
@@ -57,7 +55,6 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: false
       initContainers:
       - name: initcontainer01
         image: dummyimagename
@@ -81,7 +78,6 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: false
       initContainers:
       - name: initcontainer01
         image: dummyimagename
@@ -107,7 +103,6 @@ spec:
       labels:
         app: app
     spec:
-      hostUsers: false
       initContainers:
       - name: initcontainer01
         image: dummyimagename
@@ -131,7 +126,6 @@ spec:
     spec:
       template:
         spec:
-          hostUsers: false
           restartPolicy: OnFailure
           containers:
           - name: container01
@@ -149,7 +143,6 @@ spec:
     spec:
       template:
         spec:
-          hostUsers: false
           restartPolicy: OnFailure
           containers:
           - name: container01
@@ -169,7 +162,6 @@ spec:
     spec:
       template:
         spec:
-          hostUsers: false
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
@@ -190,7 +182,6 @@ spec:
     spec:
       template:
         spec:
-          hostUsers: false
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
@@ -213,7 +204,6 @@ spec:
     spec:
       template:
         spec:
-          hostUsers: false
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
