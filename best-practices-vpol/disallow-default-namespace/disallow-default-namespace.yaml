@@ -4,7 +4,7 @@ metadata:
   name: disallow-default-namespace
   annotations:
     policies.kyverno.io/title: Disallow Default Namespace in VPOL
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Multi-Tenancy in VPOL
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/severity: medium
@@ -29,6 +29,7 @@ spec:
             operations: [CREATE, UPDATE]
             resources: [pods]
   validations:
-          - expression: "namespaceObject.metadata.name != 'default'"
+          - expression: >-
+              'namespace:default' in exceptions.allowedValues ||
+              namespaceObject.metadata.name != 'default'
             message: "Using 'default' namespace is not allowed."
-       

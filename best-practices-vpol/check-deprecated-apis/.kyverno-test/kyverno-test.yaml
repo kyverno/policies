@@ -6,6 +6,8 @@ policies:
 - ../check-deprecated-apis.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: CronJob
@@ -25,3 +27,9 @@ results:
   resources:
   - bad-flowschema
   result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: check-deprecated-apis
+  resources:
+  - exception-bad-cronjob
+  result: pass

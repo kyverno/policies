@@ -6,17 +6,25 @@ policies:
 - ../disallow-empty-ingress-host.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Ingress
   isValidatingPolicy: true
   policy: disallow-empty-ingress-host
   resources:
   - minimal-ingress
+  - empty-host
   result: fail
+- kind: Ingress
+  isValidatingPolicy: true
+  policy: disallow-empty-ingress-host
+  resources:
+  - exception-empty-host
+  result: pass
 - kind: Ingress
   isValidatingPolicy: true
   policy: disallow-empty-ingress-host
   resources:
   - ingress-wildcard-host
   result: pass
-

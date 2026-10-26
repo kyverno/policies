@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-docker-sock-alias-slashes
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+    command:
+    - /bin/sleep
+    - "300"
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: //var/run//docker.sock/
+

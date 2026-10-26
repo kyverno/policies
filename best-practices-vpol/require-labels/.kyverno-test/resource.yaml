@@ -1,7 +1,18 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-labels
+  namespace: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.12
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: badpod01
+  namespace: test
 spec:
   containers:
   - name: nginx
@@ -11,6 +22,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: badpod02
+  namespace: test
   labels:
     my.io/foo: bar
 spec:
@@ -22,6 +34,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod01
+  namespace: test
   labels:
     app.kubernetes.io/name: nginx
 spec:
@@ -44,6 +57,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: goodpod02
+  namespace: test
   labels:
     foo: bar
     app.kubernetes.io/name: nginx

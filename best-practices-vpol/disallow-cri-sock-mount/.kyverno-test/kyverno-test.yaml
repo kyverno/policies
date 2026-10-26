@@ -6,17 +6,33 @@ policies:
 - ../disallow-cri-sock-mount.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   isValidatingPolicy: true
   policy: disallow-container-sock-mounts
   resources:
   - pod-with-docker-sock-mount
+  - docker-sock-alias
+  result: fail
+- kind: Pod
+  isValidatingPolicy: true
+  policy: disallow-container-sock-mounts
+  resources:
+  - exception-docker-sock
+  - exception-docker-sock-alias
+  result: pass
+- kind: Pod
+  isValidatingPolicy: true
+  policy: disallow-container-sock-mounts
+  resources:
+  - exception-docker-sock-mixed
   result: fail
 - kind: Pod
   isValidatingPolicy: true
   policy: disallow-container-sock-mounts
   resources:
   - goodpod01
+  - docker-sock-lookalike
   result: pass
-

@@ -14,10 +14,24 @@ keywords:
 readme: |
   An ingress resource needs to define an actual host name in order to be valid. This policy ensures that there is a hostname for each rule defined.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-empty-ingress-host` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Put the exact control token `ingress-host` in `spec.allowedValues` to waive
+  this check for all rules of the matched Ingress, not just one host value.
+  Kyverno exposes it as `exceptions.allowedValues`. `variables.rules` reads
+  `object.spec.rules`, defaulting to an empty list when absent. Without the token,
+  every rule must have a non-empty `host` and an `http` field.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-empty-ingress-host/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Ingress"
-digest: c825263b232f2d4f432b994fb486dd1fc71bed03f23279db49f700a9c053a73c
+digest: 254426ae5ad2cc3197cce8aca087124b7745c0a87e084f783fcb964989cc2624
 createdAt: "2025-05-05T13:19:12Z"

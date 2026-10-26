@@ -6,6 +6,8 @@ policies:
 - ../disallow-default-namespace.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Pod
@@ -30,5 +32,11 @@ results:
   policy: disallow-default-namespace
   resources:
   - gooddeployment01
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-default-namespace
+  resources:
+  - exception-default-namespace
   result: pass
 variables: values.yaml

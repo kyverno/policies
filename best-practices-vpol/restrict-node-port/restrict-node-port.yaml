@@ -2,6 +2,7 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   annotations:
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       This policy restricts the creation of Services with type NodePort.
@@ -29,5 +30,7 @@ spec:
   validationActions:
     - Audit
   validations:
-    - expression: object.spec.type != 'NodePort'
+    - expression: >-
+        'service-type:NodePort' in exceptions.allowedValues ||
+        object.spec.type != 'NodePort'
       message: Services of type NodePort are not allowed.
