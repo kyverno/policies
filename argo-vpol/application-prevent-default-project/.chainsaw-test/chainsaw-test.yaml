@@ -7,6 +7,11 @@ metadata:
 spec:
   template: false
   steps:
+    - name: shared-exception-namespace
+      skipDelete: true
+      try:
+      - apply:
+          file: exception-namespace.yaml
     - name: step-01
       try:
         - assert:
@@ -34,5 +39,30 @@ spec:
        - apply:
            expect:
              - check:
-                 ($error != null): true
+                 (contains($error, 'Policy application-prevent-default-project failed') && contains($error, 'The default project may not be used in an Application.')): true
            file: bad-application.yaml
+    - name: exact-exception
+      try:
+      - apply:
+          file: exception.yaml
+      - apply:
+          file: exception-application.yaml
+      - apply:
+          expect:
+            - check:
+                (contains($error, 'Policy application-prevent-default-project failed') && contains($error, 'The default project may not be used in an Application.')): true
+          file: empty-application.yaml
+      - apply:
+          expect:
+            - check:
+                "(contains($error, 'spec.project: Required value'))": true
+          file: missing-project-application.yaml
+      - delete:
+          file: exception.yaml
+      - delete:
+          file: exception-application.yaml
+      - apply:
+          expect:
+            - check:
+                (contains($error, 'Policy application-prevent-default-project failed') && contains($error, 'The default project may not be used in an Application.')): true
+          file: exception-application.yaml
