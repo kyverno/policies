@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-linkerd-policy-annotation-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-linkerd-policy-annotation
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'linkerd-policy-exception-ns'
