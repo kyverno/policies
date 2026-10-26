@@ -18,7 +18,7 @@ readme: |
 
   Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
   `apply-pss-restricted-profile` in `spec.policyRefs`, and narrow the exception with
-  `spec.matchConditions` using the exact request identity.
+  `spec.matchConditions` using the exact request identity (kind, namespace and name).
   Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
   Exact image matches skip the regular container's securityContext mutations
   (`privileged`, `capabilities`, and `allowPrivilegeEscalation`). Non-exempt
