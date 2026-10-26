@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: partial-exception, namespace: default}
+spec:
+  containers:
+  - {name: first, image: registry.invalid/exempt:1}
+  - {name: middle, image: registry.example/mutate:1@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+  - {name: last, image: registry.invalid/exempt:1}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: sibling, namespace: default}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: scope-target, namespace: default}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: scope-target, namespace: other}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: partial-exception, namespace: other}
+spec:
+  containers:
+  - {name: app, image: registry.example/mutate:1@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa}

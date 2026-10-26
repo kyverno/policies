@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-maintenance-exception
+  namespace: bpe-podcontainer-ns
+spec:
+  containers:
+  - name: nginx
+    image: busybox:1.35
+    command: ["sleep", "3600"]

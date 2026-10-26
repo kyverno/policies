@@ -20,6 +20,7 @@ metadata:
   name: mydeploy
   annotations:
     fluxcd.io/title: Annotation for deployment
+    fluxcd.io/owner: Must remain restricted
 spec:
   replicas: 1
   selector:
@@ -51,4 +52,3 @@ spec:
           - name: hello
             image: busybox
           restartPolicy: OnFailure
-

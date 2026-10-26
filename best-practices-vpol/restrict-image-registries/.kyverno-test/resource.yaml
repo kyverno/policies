@@ -1,6 +1,109 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-registries-positive
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: registry.k8s.io/nginx:1.7.9
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-registries
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: registry.k8s.io/nginx:1.7.9
+  - name: sibling
+    image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badcontroller-deployment
+spec:
+  containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: badcontroller-deployment
+spec:
+  selector: {matchLabels: {app: badcontroller-deployment}}
+  template:
+    metadata: {labels: {app: badcontroller-deployment}}
+    spec: {containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: badcontroller-statefulset
+spec:
+  serviceName: badcontroller
+  selector: {matchLabels: {app: badcontroller-statefulset}}
+  template:
+    metadata: {labels: {app: badcontroller-statefulset}}
+    spec: {containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]}
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: badcontroller-daemonset
+spec:
+  selector: {matchLabels: {app: badcontroller-daemonset}}
+  template:
+    metadata: {labels: {app: badcontroller-daemonset}}
+    spec: {containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]}
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: badcontroller-replicaset
+spec:
+  selector: {matchLabels: {app: badcontroller-replicaset}}
+  template:
+    metadata: {labels: {app: badcontroller-replicaset}}
+    spec: {containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: badcontroller-job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcontroller-cronjob
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: badcontroller-replicationcontroller
+spec:
+  selector: {app: badcontroller-replicationcontroller}
+  template:
+    metadata: {labels: {app: badcontroller-replicationcontroller}}
+    spec: {containers: [{name: app, image: registry.k8s.io/nginx:1.7.9}]}
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: badpod01
 spec:
   containers:
@@ -66,4 +169,3 @@ spec:
     image: bar.io/nginx
   - name: busybox
     image: eu.foo.io/busybox
-

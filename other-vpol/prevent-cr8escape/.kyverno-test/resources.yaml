@@ -16,6 +16,22 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: badpod02
+spec:
+  securityContext:
+   sysctls:
+   - name: kernel.shm_rmid_forced
+     value: "1+kernel.core_pattern=|/var/lib/containers/storage/overlay/3ef1281bce79865599f673b476957be73f994d17c15109d2b6a426711cf753e6/diff/malicious.sh #"
+   - name: kernel.msgmax
+     value: "1+kernel.core_pattern=|different"
+  containers:
+  - name: alpine
+    image: alpine:latest
+    command: ["tail", "-f", "/dev/null"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: pod-no-sysctl
 spec:
   containers:
@@ -36,4 +52,3 @@ spec:
   - name: alpine
     image: alpine:latest
     command: ["tail", "-f", "/dev/null"]
-

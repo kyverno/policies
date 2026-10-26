@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod01
+  namespace: bpe-podlabel-ns
+status:
+  (conditions[?type == 'Ready']):
+  - status: "True"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod02
+  namespace: bpe-podlabel-ns
+status:
+  (conditions[?type == 'Ready']):
+  - status: "True"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+  namespace: bpe-podlabel-ns
+status:
+  (conditions[?type == 'Ready']):
+  - status: "True"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod04
+  namespace: bpe-podlabel-ns
+status:
+  (conditions[?type == 'Ready']):
+  - status: "True"

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: already-prefixed
+spec:
+  containers:
+  - name: app
+    image: registry.io/already/app:1.0

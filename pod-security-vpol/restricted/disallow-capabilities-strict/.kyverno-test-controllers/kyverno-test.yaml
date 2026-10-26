@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-capabilities-strict-controllers
+policies:
+- ../disallow-capabilities-strict.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-capabilities-strict
+  resources:
+  - unsafe-disallow-capabilities-strict-7
+  result: fail

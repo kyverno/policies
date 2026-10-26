@@ -15,6 +15,17 @@ keywords:
 readme: |
   Pod Security Admission (PSA) can be controlled via the assignment of labels at the Namespace level which define the Pod Security Standard (PSS) profile in use and the action to take. If not using a cluster-wide configuration via an AdmissionConfiguration file, Namespaces must be explicitly labeled. This policy assigns the labels `pod-security.kubernetes.io/enforce=baseline` and `pod-security.kubernetes.io/warn=restricted` to all new Namespaces if those labels are not included.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-psa-labels` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/psa-mpol/add-psa-labels/.chainsaw-test/policy-exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Admission, EKS Best Practices"

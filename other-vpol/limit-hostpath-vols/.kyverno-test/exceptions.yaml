@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: hostpath-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: limit-hostpath-vols
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'bad-pods-all'
+  allowedValues:
+  - /etc

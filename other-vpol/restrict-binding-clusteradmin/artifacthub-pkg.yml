@@ -14,12 +14,24 @@ keywords:
 readme: |
   The cluster-admin ClusterRole allows any action to be performed on any resource in the cluster and its granting should be heavily restricted. This policy prevents binding to the cluster-admin ClusterRole in RoleBinding or ClusterRoleBinding resources.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-binding-clusteradmin` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `roleRef.name:cluster-admin` in `spec.allowedValues` to allow that role binding
+  within the exception's resource scope. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-binding-clusteradmin/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "RoleBinding, ClusterRoleBinding, RBAC"
-digest: 07c70180c37b0c90afe96c093188aa8ef361b85792619c8c9e9024d97f135fe9
+digest: 3556325f9289e1cd76ca523d1f1ab6d442a3511cdb1f6f46841d1e33a473006b
 
 
 createdAt: "2025-05-11T17:46:11Z"

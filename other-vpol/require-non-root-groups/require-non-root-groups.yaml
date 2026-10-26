@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Require Non-Root Groups in ValidatingPolicy
     policies.kyverno.io/category: Sample, EKS Best Practices in vpol 
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.14.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Pod
@@ -30,13 +30,13 @@ spec:
   validations:
     - expression: >-
         (
-          object.spec.?securityContext.?runAsGroup.orValue(-1) > 0 &&
+          (object.spec.?securityContext.?runAsGroup.orValue(-1) > 0 || ('runAsGroup:' + string(object.spec.?securityContext.?runAsGroup.orValue(-1))) in exceptions.allowedValues) &&
           (object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]))
-          .all(container, container.?securityContext.?runAsGroup.orValue(1) > 0)
+          .all(container, container.?securityContext.?runAsGroup.orValue(1) > 0 || ('runAsGroup:' + string(container.?securityContext.?runAsGroup.orValue(1))) in exceptions.allowedValues)
         ) ||
         (
           (object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]))
-          .all(container, container.?securityContext.?runAsGroup.orValue(-1) > 0)
+          .all(container, container.?securityContext.?runAsGroup.orValue(-1) > 0 || ('runAsGroup:' + string(container.?securityContext.?runAsGroup.orValue(-1))) in exceptions.allowedValues)
         )
       message: >-
         Running with root group IDs is disallowed. The fields
@@ -45,13 +45,13 @@ spec:
         spec.ephemeralContainers[*].securityContext.runAsGroup must be
         set to a value greater than zero.
     - expression: >-
-        object.spec.?securityContext.?supplementalGroups.orValue([]).all(group, group > 0)
+        object.spec.?securityContext.?supplementalGroups.orValue([]).all(group, group > 0 || ('supplementalGroups:' + string(group)) in exceptions.allowedValues)
       message: >-
         Containers cannot run with a root primary or supplementary GID. The field
         spec.securityContext.supplementalGroups must be unset or
         set to a value greater than zero.
     - expression: >-
-        object.spec.?securityContext.?fsGroup.orValue(1) > 0
+        object.spec.?securityContext.?fsGroup.orValue(1) > 0 || ('fsGroup:' + string(object.spec.?securityContext.?fsGroup.orValue(1))) in exceptions.allowedValues
       message: >-
         Containers cannot run with a root primary or supplementary GID. The field
         spec.securityContext.fsGroup must be unset or set to a value greater than zero.

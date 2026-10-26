@@ -15,11 +15,25 @@ keywords:
 readme: |
   Containers should be forbidden from running with a root primary or supplementary GID. This policy ensures the `runAsGroup`, `supplementalGroups`, and `fsGroup` fields are set to a number greater than zero (i.e., non root). A known issue prevents a policy such as this using `anyPattern` from being persisted properly in Kubernetes 1.23.0-1.23.2.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-non-root-groups` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `runAsGroup:<id>`, `supplementalGroups:<id>`, or `fsGroup:<id>` in
+  `spec.allowedValues` for the exact decimal ID and field. `runAsGroup` allowances apply
+  to matching Pod and container values; `runAsGroup:-1` also permits a missing required
+  value. Other fields remain checked. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/require-non-root-groups/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 26ddfa61b70892e91931b282503c53d8e27adb046df2d0714c861c0ec45c0aa5
+digest: eeb06eb4edfec508e109f222750f573ca2b000b7234ae00bde324199ba41bd4a
 
 createdAt: "2025-05-11T17:46:11Z"

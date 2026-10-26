@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Apply PSS Restricted Profile
     policies.kyverno.io/category: Other, PSP Migration
     policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/description: >-
       Pod Security Standards define the fields and their options which
       are allowable for Pods to achieve certain security best practices. While
@@ -98,7 +99,7 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          variables.podSpec.containers.map(c, 
+          variables.podSpec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
             !has(c.securityContext) ?
             JSONPatch{
               op: "add",
@@ -111,7 +112,7 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          variables.podSpec.containers.map(c, 
+          variables.podSpec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
             JSONPatch{
               op: "add",
               path: variables.podSpecPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/securityContext/privileged",
@@ -123,7 +124,7 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          variables.podSpec.containers.map(c, 
+          variables.podSpec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
             JSONPatch{
               op: "add",
               path: variables.podSpecPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/securityContext/capabilities",
@@ -135,7 +136,7 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |
-          variables.podSpec.containers.map(c, 
+          variables.podSpec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
             JSONPatch{
               op: "add",
               path: variables.podSpecPath + "/containers/" + string(variables.podSpec.containers.indexOf(c)) + "/securityContext/allowPrivilegeEscalation",

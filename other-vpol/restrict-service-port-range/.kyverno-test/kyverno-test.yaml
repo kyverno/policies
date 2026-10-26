@@ -11,12 +11,17 @@ results:
   kind: Service
   policy: restrict-service-port-range
   resources:
-  - bad-service
-  result: fail
-- isValidatingPolicy: true 
+  - good-service
+  result: pass
+- isValidatingPolicy: true
   kind: Service
   policy: restrict-service-port-range
   resources:
-  - good-service
-  result: pass
-
+  - bad-service
+  result: fail
+- isValidatingPolicy: true
+  kind: Service
+  policy: restrict-service-port-range
+  resources:
+  - mixed-service
+  result: fail

@@ -34,6 +34,17 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-priority
+  namespace: pod-priority-ns
+spec:
+  priorityClassName: foo
+  containers:
+  - name: pod
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod02
   namespace: pod-priority-ns
 spec:

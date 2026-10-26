@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: controlplane-toleration-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-controlplane-scheduling
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'exception-controlplane'
+  - name: target-namespace
+    expression: request.namespace == 'default'
+  allowedValues:
+  - toleration:node-role.kubernetes.io/master

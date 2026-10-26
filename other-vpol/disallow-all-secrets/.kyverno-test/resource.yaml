@@ -18,6 +18,26 @@ spec:
           name: mysecret
           key: password
   restartPolicy: Never
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-secret-pod
+spec:
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+    env:
+    - name: APPROVED_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: mysecret
+          key: username
+    - name: UNAPPROVED_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: othersecret
+          key: password
 
 ---
 apiVersion: v1
@@ -47,9 +67,28 @@ spec:
   - name: test-container
     image: registry.k8s.io/busybox
     volumeMounts:
-    - name: secret-volume
+  - name: secret-volume
+    readOnly: true
+    mountPath: "/etc/secret-volume"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: projected-secret-pod
+spec:
+  volumes:
+  - name: projected-secret-volume
+    projected:
+      sources:
+      - secret:
+          name: mysecret
+  containers:
+  - name: test-container
+    image: registry.k8s.io/busybox
+    volumeMounts:
+    - name: projected-secret-volume
       readOnly: true
-      mountPath: "/etc/secret-volume"
+      mountPath: "/etc/projected-secret-volume"
 ---
 apiVersion: v1
 kind: Pod

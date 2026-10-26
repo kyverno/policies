@@ -1,0 +1,138 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-restrict-seccomp-strict-1
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: unsafe-restrict-seccomp-strict-2
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unsafe-restrict-seccomp-strict-3
+spec:
+  serviceName: app
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: unsafe-restrict-seccomp-strict-4
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: unsafe-restrict-seccomp-strict-5
+spec:
+  selector:
+    app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unsafe-restrict-seccomp-strict-6
+spec:
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          seccompProfile:
+            type: Unconfined
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unsafe-restrict-seccomp-strict-7
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              seccompProfile:
+                type: Unconfined

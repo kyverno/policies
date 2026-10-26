@@ -7,7 +7,7 @@ metadata:
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     pod-policies.kyverno.io/autogen-controllers: none
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
       A base image used to construct a container image is not accessible
@@ -29,7 +29,9 @@ spec:
   variables:
     - name: imageMetadata
       expression: >-
-        object.spec.containers.map(c, image.GetMetadata(c.image))
+        object.spec.containers.map(c,
+          exceptions.allowedImages.exists(image, image == c.image) ? {} : image.GetMetadata(c.image)
+        )
   mutations:
   # First, ensure annotations exist
   - patchType: JSONPatch
@@ -47,7 +49,9 @@ spec:
   - patchType: JSONPatch
     jsonPatch:
       expression: |
-        variables.imageMetadata.map(img, variables.imageMetadata.indexOf(img)).map(idx,
+        object.spec.containers.map(container, object.spec.containers.indexOf(container)).filter(idx,
+          !exceptions.allowedImages.exists(image, image == object.spec.containers[idx].image)
+        ).map(idx,
           has(variables.imageMetadata[idx].manifest) && 
           has(variables.imageMetadata[idx].manifest.annotations) &&
           "org.opencontainers.image.base.name" in variables.imageMetadata[idx].manifest.annotations ?

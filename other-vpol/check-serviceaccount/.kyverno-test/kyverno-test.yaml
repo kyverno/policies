@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-sa
+policies:
+- ../check-serviceaccount.yaml
+resources:
+- resource.yaml
+userinfo: userinfo.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-sa
+  resources:
+  - bad-pod
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-sa
+  resources:
+  - good-pod
+  result: pass

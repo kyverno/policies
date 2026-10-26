@@ -30,14 +30,14 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Images built more than 6 months ago are prohibited')): true
         file: pods-bad.yaml
     - apply:
         file: podcontrollers-good.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Images built more than 6 months ago are prohibited')): true
         file: podcontrollers-bad.yaml
   - name: step-99
     try:

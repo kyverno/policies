@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-pod
+  namespace: foo
+spec:
+  volumes:
+  - name: task-pv-storage
+    persistentVolumeClaim: {claimName: mypvc}
+  containers:
+  - name: task-pv-container
+    image: nothinghere:123
+    volumeMounts:
+    - mountPath: /data
+      name: task-pv-storage

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-edit-for-endpoints
+status:
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+    - reason: Succeeded
+      status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+    - message: Webhook configured.
+      reason: Succeeded
+      status: "True"
+      type: WebhookConfigured

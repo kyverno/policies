@@ -6,11 +6,27 @@ policies:
 - ../apply-pss-restricted-profile.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+- other-namespace-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   patchedResources: mutatedmypod.yaml
   policy: apply-pss-restricted-profile
   resources:
   - mypod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: exception-patched.yaml
+  policy: apply-pss-restricted-profile
+  resources: [team-a/exception-pod]
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: other-namespace-patched.yaml
+  policy: apply-pss-restricted-profile
+  resources: [team-b/exception-pod]
   result: pass
   isMutatingPolicy: true

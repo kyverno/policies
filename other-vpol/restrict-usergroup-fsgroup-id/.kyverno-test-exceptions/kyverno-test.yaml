@@ -1,0 +1,31 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: validate-userid-groupid-fsgroup-exceptions
+policies:
+- ../restrict-usergroup-fsgroup-id.yaml
+resources:
+- resource.yaml
+exceptions:
+- exceptions.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: validate-userid-groupid-fsgroup
+  resources:
+  - goodpod
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: validate-userid-groupid-fsgroup
+  resources:
+  - badpod01
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: validate-userid-groupid-fsgroup
+  resources:
+  - badpod02
+  - badpod03
+  - badpod04
+  result: fail

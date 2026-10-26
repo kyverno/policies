@@ -15,6 +15,21 @@ keywords:
 readme: |
   Using the Cosign project, OCI images may be signed to ensure supply chain security is maintained. Those signatures can be verified before pulling into a cluster. This policy checks the signature of an image repo called docker.io/mohdcode/kyverno to ensure it has been signed by verifying its signature against the provided public key. This policy serves as an illustration for how to configure a similar rule and will require replacing with your image(s) and keys.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ImageValidatingPolicy` named
+  `verify-image-ivpol` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This example skips the entire policy for the matched Pod, not individual images.
+  Its `approved-image-set` match condition requires every regular, init, and
+  ephemeral container image to be approved before granting that full-resource
+  exception. It does not use `spec.images` or provide partial-image bypass.
+  Adding an unapproved image prevents the exception from matching; the request
+  then retains the policy's normal image-reference matching and verification behavior.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other/verify-image-ivpol/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Software Supply Chain Security, EKS Best Practices"

@@ -39,3 +39,45 @@ spec:
         file: ../.kyverno-test/generatedResourceQuota.yaml
     - assert:
         file: ../.kyverno-test/generatedLimitRange.yaml
+  - name: exception-generation
+    try:
+    - apply:
+        file: exception-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: exception-resource.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-generated-limitrange.yaml
+    - error:
+        file: exception-generated-quota.yaml
+  - name: wrong-allowed-value-preserves-all-children
+    try:
+    - apply:
+        file: wrong-token-exception.yaml
+    - apply:
+        file: wrong-token-resource.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: wrong-token-generated-quota.yaml
+    - assert:
+        file: wrong-token-generated-limitrange.yaml
+  - name: exception-revocation
+    try:
+    - delete:
+        file: exception.yaml
+    - delete:
+        file: exception-resource.yaml
+    - sleep:
+        duration: 5s
+    - apply:
+        file: exception-resource.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-generated-limitrange.yaml
+    - assert:
+        file: exception-generated-quota.yaml

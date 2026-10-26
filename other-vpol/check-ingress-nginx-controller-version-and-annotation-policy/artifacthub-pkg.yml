@@ -13,10 +13,25 @@ keywords:
   - ValidatingPolicy
 readme: |
   This policy ensures that Ingress resources do not have certain disallowed annotations and that the ingress-nginx controller pod is running an appropriate version of the image. It checks for the presence of the `nginx.ingress.kubernetes.io/server-snippet` annotation and disallows its usage, enforces specific values for `auth-tls-verify-client`, and ensures that the ingress-nginx controller image is of the required version.
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `check-ingress-nginx-controller-version-and-annotation-policy` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `spec.images` (`exceptions.allowedImages` in CEL) for exact controller image
+  references. In `spec.allowedValues`, use
+  `annotation:nginx.ingress.kubernetes.io/server-snippet` for that annotation, or
+  `annotation:nginx.ingress.kubernetes.io/auth-tls-verify-client:<value>` for an exact TLS
+  annotation value. Each allowance affects only its corresponding validation. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-ingress-nginx-controller-version-and-annotation-policy/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Deployment,ReplicaSet,StatefulSet,DaemonSet,Ingress"
-digest: 9f99193453c0817542755cdee6396bf94c1d660c0b06e4aeefe4ac0b27c15b87
+digest: da13ec6456d9875f70b76090a6b76b369a6d27f2b4f79364678c1a201fbcd342
 createdAt: "2025-12-12T14:35:08Z"

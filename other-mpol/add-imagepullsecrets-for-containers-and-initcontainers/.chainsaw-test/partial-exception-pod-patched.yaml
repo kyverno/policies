@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-exception
+  namespace: default
+spec:
+  imagePullSecrets: [{name: my-secret}]
+  containers:
+  - name: first
+    image: corp.reg.com/approved:1
+  - name: middle
+    image: corp.reg.com/needs-secret:1
+  - name: last
+    image: example/ordinary:1

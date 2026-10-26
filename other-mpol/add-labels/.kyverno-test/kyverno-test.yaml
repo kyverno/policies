@@ -6,12 +6,22 @@ policies:
 - ../add-labels.yaml
 resources:
 - resource.yaml
+- resource-exception.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource.yaml
   policy: add-labels
   resources:
   - default/myapp-pod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource-exception.yaml
+  policy: add-labels
+  resources:
+  - label-exception-pod
   result: pass
   isMutatingPolicy: true
 - kind: Service

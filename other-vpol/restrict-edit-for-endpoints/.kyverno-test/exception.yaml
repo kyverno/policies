@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-aggregate-edit
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-edit-for-endpoints
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-role
+    expression: object.metadata.name == 'system:aggregate-to-edit'

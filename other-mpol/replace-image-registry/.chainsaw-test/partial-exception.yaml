@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: preserve-registry-image
+  namespace: policy-exceptions
+spec:
+  policyRefs: [{kind: MutatingPolicy, name: replace-image-registry}]
+  images: [approved.example/keep:1]
+  matchConditions:
+  - name: target
+    expression: object.metadata.?namespace.orValue('') == 'replace-registry-ns' && object.metadata.name == 'partial-exception'

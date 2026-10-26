@@ -14,10 +14,24 @@ keywords:
 readme: |
   The default /proc masks are set up to reduce attack surface and should be required. This policy ensures nothing but the default procMount can be specified. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them. The API server accepts a procMount of `Unmasked` only when `spec.hostUsers` is `false`, and only with the `ProcMountType` feature gate, which is on by default from Kubernetes 1.33.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-proc-mount` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `procMount:<value>` in `spec.allowedValues`, such as `procMount:Unmasked`, to allow
+  that exact container setting, or `spec.images` to exempt only matching container images.
+  `variables.podSpec` selects the Pod spec directly or from the workload template.
+  `variables.allContainers` includes regular, init, and ephemeral containers. CEL reads
+  images through `exceptions.allowedImages` and tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-proc-mount/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: c27a75d029d95adb091223aca3fa6d32c7b640c23eb380df6420fbc5fb8aaf30
+digest: 7d8b9a1e9799df179349395c47899030fe7242ca442626ac4864ca8d3c7bac61
 createdAt: "2025-03-13T23:26:58Z"

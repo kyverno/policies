@@ -1,0 +1,32 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-sealed-secret-config-exception
+spec:
+  steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+  - try:
+    - apply: {file: ../../inject-sealed-secret-config.yaml}
+    - assert: {file: ../policy-ready.yaml}
+    - apply: {file: ../configmap.yaml}
+    - apply: {file: exception.yaml}
+    - script:
+        content: |
+          set -eu
+          probe_dir="$(mktemp -d)"
+          trap 'rm -rf "$probe_dir"' EXIT
+          for attempt in $(seq 1 60); do
+            if kubectl create --dry-run=server -f pod.yaml -o json > "$probe_dir/result.json" 2> "$probe_dir/error.log" &&
+              jq -e '.spec.containers[0].env | length == 1' "$probe_dir/result.json" > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat "$probe_dir/error.log" >&2
+          exit 1
+    - apply: {file: pod.yaml}
+    - assert: {file: pod-unchanged.yaml}

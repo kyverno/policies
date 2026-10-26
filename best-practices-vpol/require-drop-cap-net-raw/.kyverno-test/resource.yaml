@@ -1,6 +1,28 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-net-raw-positive
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: gcr.io/google-samples/node-hello:1.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-net-raw
+  namespace: default
+spec:
+  containers:
+  - name: exempt
+    image: gcr.io/google-samples/node-hello:1.0
+  - name: sibling
+    image: other.example/sibling:1.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: drop-good
 spec:
   initContainers:
@@ -42,4 +64,3 @@ spec:
   containers:
   - name: add-capabilities
     image: gcr.io/google-samples/node-hello:1.0
-

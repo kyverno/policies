@@ -1,0 +1,9 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exact-secret-env-exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{kind: ValidatingPolicy, name: secrets-not-from-env-vars}]
+  allowedValues: ['env.secretKeyRef:mysecret']
+  matchConditions:
+  - name: exact-resource
+    expression: "request.name == 'secret-env-pod' && request.namespace == 'default'"

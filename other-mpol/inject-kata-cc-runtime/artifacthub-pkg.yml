@@ -15,8 +15,19 @@ keywords:
 readme: |
   Automatically injects the runtimeClassName kata-cc to pods that have the label coco=enabled for running workloads in confidential containers using Kata Containers. Pods without the coco=enabled label are not modified.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `inject-kata-cc-runtime` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/inject-kata-cc-runtime/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Confidential Computing"
   kyverno/subject: "Pod"
-digest: 58badfd7a9afd37e6f8c49b63d7dd414c3814b78eadf6861db1f4a9fdfe89c83
+digest: c2a40d1450f64bd31a20ef5e654ce55b97c468806b2bc9b93ba79c4afcc74535

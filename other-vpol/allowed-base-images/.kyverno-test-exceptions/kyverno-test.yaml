@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: allowed-base-images-exceptions}
+context: ../.kyverno-test/context.yaml
+policies: [../allowed-base-images.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: allowed-base-images, resources: [badpod01], result: skip}
+- {isValidatingPolicy: true, kind: Pod, policy: allowed-base-images, resources: [badpod02], result: fail}

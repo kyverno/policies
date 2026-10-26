@@ -24,3 +24,17 @@ spec:
         file: patched-ns02.yaml
     - assert:
         file: patched-ns03.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+    - apply:
+        file: policy-exception.yaml
+    - apply:
+        file: exception-assert.yaml
+    - apply:
+        file: exception-sibling.yaml
+    - assert:
+        file: exception-expected.yaml
+    - assert:
+        file: exception-sibling-expected.yaml

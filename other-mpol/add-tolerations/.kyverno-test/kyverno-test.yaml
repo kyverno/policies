@@ -6,6 +6,9 @@ policies:
 - ../add-tolerations.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patched01.yaml
@@ -26,4 +29,15 @@ results:
   resources:
   - skippod01
   result: skip
+  isMutatingPolicy: true
+- kind: Pod
+  policy: add-tolerations
+  resources: [team-a/tolerations-exception]
+  result: skip
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: exception-patched.yaml
+  policy: add-tolerations
+  resources: [team-b/tolerations-exception]
+  result: pass
   isMutatingPolicy: true

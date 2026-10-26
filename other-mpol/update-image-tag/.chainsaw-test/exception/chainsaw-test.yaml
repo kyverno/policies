@@ -1,0 +1,16 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: update-image-tag-exception
+spec:
+  steps:
+  - name: policy-exceptions-namespace
+    skipDelete: true
+    try:
+    - apply:
+        resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
+  - try:
+    - apply: {file: ../../update-image-tag.yaml}
+    - apply: {file: exception.yaml}
+    - apply: {file: deployment.yaml}
+    - assert: {file: deployment-unchanged.yaml}

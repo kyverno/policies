@@ -6,6 +6,9 @@ policies:
 - ../add-pod-proxies.yaml
 resources:
 - resource.yaml
+- resource-exception.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource1.yaml
@@ -19,5 +22,12 @@ results:
   policy: add-pod-proxies
   resources:
   - myapp-pod-2
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource-exception.yaml
+  policy: add-pod-proxies
+  resources:
+  - image-exception-pod
   result: pass
   isMutatingPolicy: true

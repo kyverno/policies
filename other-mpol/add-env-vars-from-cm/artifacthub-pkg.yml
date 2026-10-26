@@ -14,8 +14,21 @@ keywords:
 readme: |
   Instead of defining a common set of environment variables multiple times either in manifests or separate policies, Pods can reference entire collections stored in a ConfigMap. This policy mutates all initContainers (if present) and containers in a Pod with environment variables defined in a ConfigMap named `nsenvvars` that must exist in the destination Namespace.     
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `add-env-vars-from-cm` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Kyverno exposes matching exceptions' `spec.images` as `exceptions.allowedImages`.
+  Exact image matches skip the ConfigMap environment injection for regular and
+  init containers in Pods and the explicitly matched controller templates.
+  Non-exempt containers still receive the `nsenvvars` reference.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-env-vars-from-cm/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/subject: "Pod"
-digest: 2457a919f2cc6d2711c1b48a2f379e74d64a9d107c81d15ed85d3dc1a6a3152b
+digest: 7228d4cdaceec18c650266366d3c75bb826296244ecff94ac77f390978ae0961

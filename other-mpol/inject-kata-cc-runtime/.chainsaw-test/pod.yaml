@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: chainsaw-coco-pod
+  labels: {coco: enabled}
+spec:
+  containers: [{name: app, image: nginx:latest}]

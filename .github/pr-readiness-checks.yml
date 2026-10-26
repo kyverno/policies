@@ -1,0 +1,33 @@
+dco:
+  message: '"fix the DCO"'
+  test: |
+    [.commits.nodes[0].commit.statusCheckRollup.contexts.nodes[]?
+      | select((.name // .context) == "DCO") | (.conclusion // .state)]
+    | any(. == "FAILURE" or . == "ERROR" or . == "TIMED_OUT" or . == "ACTION_REQUIRED" or . == "CANCELLED" or . == "STALE" or . == "STARTUP_FAILURE")
+
+ci:
+  message: |
+    "fix the failing check(s): " + (
+      [.commits.nodes[0].commit.statusCheckRollup.contexts.nodes[]?
+        | select((.name // .context) != "DCO")
+        | select((.conclusion // .state) as $c | ["FAILURE","ERROR","TIMED_OUT","ACTION_REQUIRED","CANCELLED","STALE","STARTUP_FAILURE"] | any(. == $c))
+        | (.name // .context)]
+      | unique | join(", ")
+    )
+  test: |
+    [.commits.nodes[0].commit.statusCheckRollup.contexts.nodes[]?
+      | select((.name // .context) != "DCO") | (.conclusion // .state)]
+    | any(. == "FAILURE" or . == "ERROR" or . == "TIMED_OUT" or . == "ACTION_REQUIRED" or . == "CANCELLED" or . == "STALE" or . == "STARTUP_FAILURE")
+
+conflicts:
+  message: '"fix the merge conflicts"'
+  test: |
+    [.labels.nodes[].name] | any(. == "merge-conflicts")
+
+threads:
+  message: '"resolve review threads, or reply if you need help"'
+  test: |
+    [.reviewThreads.nodes[]
+      | select(.isResolved | not)
+      | select(.comments.nodes[0].author.login != $author)]
+    | length > 0

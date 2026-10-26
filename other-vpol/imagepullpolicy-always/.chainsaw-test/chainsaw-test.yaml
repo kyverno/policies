@@ -34,11 +34,10 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy imagepullpolicy-always failed')): true
         file: pod-bad.yaml
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy imagepullpolicy-always failed')): true
         file: podcontroller-bad.yaml
-

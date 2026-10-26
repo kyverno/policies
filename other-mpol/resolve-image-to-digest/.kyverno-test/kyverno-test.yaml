@@ -1,0 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: resolve-image-to-digest-exception-lookup}
+policies: [../resolve-image-to-digest.yaml]
+resources: [resource.yaml]
+exceptions: [exception.yaml]
+context: context.yaml
+results:
+- policy: resolve-image-to-digest
+  kind: Pod
+  resources: [default/partial-exception, default/sibling, other/partial-exception, default/scope-target, other/scope-target]
+  patchedResources: patched.yaml
+  result: pass
+  isMutatingPolicy: true

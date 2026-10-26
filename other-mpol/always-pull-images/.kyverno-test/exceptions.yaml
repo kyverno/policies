@@ -1,0 +1,15 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: skip-always-pull-images
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: always-pull-images
+    kind: MutatingPolicy
+  images:
+  - registry.example/skip-first:1
+  - registry.example/skip-last:1
+  matchConditions:
+  - name: target-pod
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'image-exception-pod'

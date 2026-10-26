@@ -26,3 +26,101 @@ spec:
         file: cronjob.yaml
     - assert:
         file: cronjob-mutated.yaml
+  - name: step-04-exception
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: priority-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: add-pod-priorityclassname
+              kind: MutatingPolicy
+            matchConditions:
+            - name: exact-deployment
+              expression: object.metadata.namespace == 'add-pod-priorityclassname' && object.metadata.name == 'priority-exception'
+    - sleep: {duration: 15s}
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: priority-exception
+            namespace: add-pod-priorityclassname
+            labels:
+              app: exception
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: exception
+            template:
+              metadata:
+                labels:
+                  app: exception
+              spec:
+                containers:
+                - name: app
+                  image: nginx:latest
+    - apply:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: priority-sibling
+            namespace: add-pod-priorityclassname
+            labels:
+              app: sibling
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: sibling
+            template:
+              metadata:
+                labels:
+                  app: sibling
+              spec:
+                containers:
+                - name: app
+                  image: nginx:latest
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: priority-exception
+            namespace: add-pod-priorityclassname
+          spec:
+            template:
+              spec:
+                containers:
+                - name: app
+                  image: nginx:latest
+    - error:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: priority-exception
+            namespace: add-pod-priorityclassname
+          spec:
+            template:
+              spec:
+                priorityClassName: non-production
+    - assert:
+        resource:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: priority-sibling
+            namespace: add-pod-priorityclassname
+          spec:
+            template:
+              spec:
+                priorityClassName: non-production

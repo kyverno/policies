@@ -4,6 +4,7 @@ metadata:
   name: add-image-as-env-var
   annotations:
     policies.kyverno.io/title: Add Image as Environment Variable
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Other
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
@@ -27,8 +28,14 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: |-
-          object.spec.containers.map(c, 
-            !has(c.env) ? 
+          object.spec.containers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
+            has(c.env) && c.env.exists(e, e.name == "K8S_IMAGE") ?
+            JSONPatch{
+              op: "replace",
+              path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/env/" + string(c.env.map(e, e.name).indexOf("K8S_IMAGE")),
+              value: {"name": "K8S_IMAGE", "value": string(c.image)}
+            } :
+            !has(c.env) ?
             JSONPatch{
               op: "add",
               path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/env",
@@ -39,4 +46,23 @@ spec:
               path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + "/env/-",
               value: {"name": "K8S_IMAGE", "value": string(c.image)}
             }
-          )
+          ) +
+          (has(object.spec.initContainers) ? object.spec.initContainers.filter(c, !exceptions.allowedImages.exists(image, image == c.image)).map(c,
+            has(c.env) && c.env.exists(e, e.name == "K8S_IMAGE") ?
+            JSONPatch{
+              op: "replace",
+              path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + "/env/" + string(c.env.map(e, e.name).indexOf("K8S_IMAGE")),
+              value: {"name": "K8S_IMAGE", "value": string(c.image)}
+            } :
+            !has(c.env) ?
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + "/env",
+              value: [{"name": "K8S_IMAGE", "value": string(c.image)}]
+            } :
+            JSONPatch{
+              op: "add",
+              path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + "/env/-",
+              value: {"name": "K8S_IMAGE", "value": string(c.image)}
+            }
+          ) : [])

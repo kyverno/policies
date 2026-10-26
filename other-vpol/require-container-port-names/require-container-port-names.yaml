@@ -16,7 +16,7 @@ metadata:
       the port number to change. This policy requires that for every containerPort defined
       there is also a name specified.      
 spec:
-  validationActions: 
+  validationActions:
     - Audit
   evaluation:
     background:
@@ -27,7 +27,9 @@ spec:
       apiVersions: ["v1"]
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
+  variables:
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
   validations:
-    - expression: "object.spec.containers.all(container, container.?ports.orValue([]).all(port, has(port.name)))"
+    - expression: "variables.allContainers.all(container, container.?ports.orValue([]).all(port, has(port.name) && port.name != ''))"
       message: Name is required for every containerPort.
-

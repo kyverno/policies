@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: add-sidecar-injection-namespace-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: add-sidecar-injection-namespace
+    kind: MutatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'istio-sidecar-exception-ns'

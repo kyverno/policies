@@ -20,3 +20,76 @@ spec:
         file: kuttlresource.yaml
     - assert:
         file: resource-mutated.yaml
+  - name: step-03-exception
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: tolerations-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: add-tolerations
+              kind: MutatingPolicy
+            matchConditions:
+            - name: exact-pod
+              expression: object.metadata.namespace == 'add-tolerations' && object.metadata.name == 'tolerations-exception'
+    - sleep: {duration: 15s}
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: tolerations-exception
+            namespace: add-tolerations
+          spec:
+            containers:
+            - name: app
+              image: nginx:latest
+            tolerations:
+            - key: org.com/test
+              operator: Exists
+              effect: NoSchedule
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: tolerations-sibling
+            namespace: add-tolerations
+          spec:
+            containers:
+            - name: app
+              image: nginx:latest
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: tolerations-exception
+            namespace: add-tolerations
+          spec:
+            (tolerations[?key == 'org.com/test' && operator == 'Exists' && effect == 'NoSchedule'] | length(@) == `1`): true
+            (tolerations[?key == 'org.com/role'] | length(@) == `0`): true
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: tolerations-exception
+            namespace: add-tolerations
+          spec:
+            (tolerations[?key == 'org.com/role'] | length(@) == `1`): true
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: tolerations-sibling
+            namespace: add-tolerations
+          spec:
+            (tolerations[?key == 'org.com/role' && operator == 'Equal' && value == 'service' && effect == 'NoSchedule'] | length(@) == `1`): true

@@ -1,0 +1,13 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata: {name: badcronjob01, namespace: policy-exceptions}
+spec:
+  schedule: '* * * * *'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - {name: one, image: clover/volume:passbolt}
+          - {name: two, image: ghcr.io/kyverno/test-busybox:1.35}

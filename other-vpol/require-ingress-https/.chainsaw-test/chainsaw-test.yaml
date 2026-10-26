@@ -32,4 +32,8 @@ spec:
         - check:
             ($error != null): true
         file: ingress-bad.yaml
-
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: ingress-empty-tls.yaml

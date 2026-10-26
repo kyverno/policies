@@ -1,0 +1,27 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: probes-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-pod-probes
+  images: [registry.k8s.io/goproxy:0.1]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.namespace == 'default' && (object.metadata.name == 'exception-probes')
+---
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: probes-cronjob-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-pod-probes
+  images: [ghcr.io/kyverno/probe-exception:1]
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'CronJob' && object.metadata.namespace == 'default' && object.metadata.name == 'exception-cronjob'

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: priority-exception
+  namespace: team-a
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: priority-exception
+  template:
+    metadata:
+      labels:
+        app: priority-exception
+    spec:
+      containers:
+      - image: busybox
+        name: busybox
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: priority-exception
+  namespace: team-b
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: priority-exception
+  template:
+    metadata:
+      labels:
+        app: priority-exception
+    spec:
+      containers:
+      - image: busybox
+        name: busybox

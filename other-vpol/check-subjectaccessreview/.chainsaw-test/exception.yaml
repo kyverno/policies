@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1beta1
+kind: PolicyException
+metadata:
+  name: allow-bad-user-cm02
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: check-subjectaccessreview
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: exact-resource
+    expression: object.metadata.name == 'cm02' && object.metadata.namespace == 'subreview-ns'
+  allowedValues:
+  - badsubreviewuser

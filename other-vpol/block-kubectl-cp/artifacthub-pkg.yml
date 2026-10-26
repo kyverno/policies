@@ -16,9 +16,21 @@ keywords:
 readme: |
   The kubectl cp command allows copying files between a local machine and a Pod's container, but it can be misused for unauthorized data transfers. 
   This policy blocks the kubectl cp command for Pods labeled with block-kubectl-cp=true.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `block-kubectl-cp` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-kubectl-cp/.chainsaw-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
 annotations:
   kyverno/category: "Sample"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 798ebbdbdab1249efc709aea3a56866f5c6739c3dc70ebeda422a7bcfa9af0dd
+digest: d91d10c68bef916a70538db37f08082ef0633d84324b3ae196e948153c821c4e
 createdAt: "2025-12-02T13:59:47Z"

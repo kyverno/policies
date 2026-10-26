@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: prevent-cr8escape-exception
+policies: [../prevent-cr8escape.yaml]
+resources: [../.kyverno-test/resources.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: prevent-cr8escape
+  resources: [default/badpod01]
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: prevent-cr8escape
+  resources: [default/badpod02]
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: prevent-cr8escape
+  resources: [default/pod-sysctl-good]
+  result: pass

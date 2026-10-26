@@ -72,10 +72,6 @@ spec:
           set -eu
           export KUBECONFIG=./temp
           kubectl create --context=addrbuser-context -f ns-rb.yaml
-    finally:
-    - script:
-        content: |
-          rm ./temp
   - name: step-05
     try:
     - assert:
@@ -89,3 +85,48 @@ spec:
           apiVersion: v1
           kind: Namespace
           name: addrb-ns
+  - name: exception-isolation
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=addrbuser-context -f exception-namespace.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: exception-generated.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=addrbuser-context -f exception-namespace-sibling.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-generated-sibling.yaml
+  - name: exception-revocation
+    try:
+    - delete:
+        file: exception.yaml
+    - delete:
+        file: exception-namespace.yaml
+    - sleep:
+        duration: 5s
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl create --context=addrbuser-context -f exception-namespace.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-generated.yaml
+    finally:
+    - script:
+        content: |
+          rm -f temp ca.crt addrbuser.key addrbuser.csr addrbuser.crt

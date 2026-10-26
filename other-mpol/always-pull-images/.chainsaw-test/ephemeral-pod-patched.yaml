@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ephemeral-update-pod
+  namespace: default
+spec:
+  containers: [{name: app, image: nginx:latest}]
+  ephemeralContainers:
+  - {name: first, image: registry.example/skip-first:1, imagePullPolicy: IfNotPresent}
+  - {name: middle, image: registry.example/mutate-middle:1, imagePullPolicy: Always}
+  - {name: last, image: registry.example/skip-last:1, imagePullPolicy: IfNotPresent}

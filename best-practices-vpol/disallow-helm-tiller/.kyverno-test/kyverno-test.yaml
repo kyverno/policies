@@ -6,6 +6,8 @@ policies:
 - ../disallow-helm-tiller.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Deployment
@@ -18,6 +20,11 @@ results:
   policy: disallow-helm-tiller
   resources:
   - badpod01
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
   - badpod02
   result: fail
 - isValidatingPolicy: true
@@ -33,4 +40,15 @@ results:
   - goodpod01
   - goodpod02
   result: pass
-
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
+  - exception-tiller
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
+  - exception-tiller-positive
+  result: pass

@@ -6,6 +6,8 @@ policies:
 - ../disallow-latest-tag.yaml
 resources:
 - resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isValidatingPolicy: true
   kind: Deployment
@@ -30,8 +32,23 @@ results:
   kind: Pod
   policy: disallow-latest-tag
   resources:
-  - myapp-pod
+  - exception-latest-pod
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-latest-tag
+  resources:
+  - myapp-pod
+  - registry-port-pod
+  - ipv6-registry-pod
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-latest-tag
+  resources:
+  - init-latest-pod
+  - ephemeral-latest-pod
+  result: fail
 - isValidatingPolicy: true
   kind: Deployment
   policy: disallow-latest-tag
@@ -45,4 +62,33 @@ results:
   - vit-badpod01
   - vit-badpod02
   result: fail
-
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: disallow-latest-tag
+  resources: [badstatefulset01]
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: disallow-latest-tag
+  resources: [baddaemonset01]
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: disallow-latest-tag
+  resources: [badreplicaset01]
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: disallow-latest-tag
+  resources: [badjob01]
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: disallow-latest-tag
+  resources: [badcronjob01]
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: disallow-latest-tag
+  resources: [badreplicationcontroller01]
+  result: fail

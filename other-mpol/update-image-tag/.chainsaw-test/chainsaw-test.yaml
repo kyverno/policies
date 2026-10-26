@@ -38,6 +38,21 @@ spec:
         file: deploy04-not-patched.yaml
     - apply:
         file: policy-update.yaml
+    # Works around a Kyverno background-controller race. The mutate-existing request for a
+    # policy update can be processed with the previously compiled policy (no generation check), which
+    # yields a no-op and completes silently. A second spec change after a short delay triggers a fresh
+    # request that sees the updated policy. Drop once kyverno/kyverno#18290 is fixed.
+    - sleep:
+        duration: 5s
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: MutatingPolicy
+          metadata:
+            name: update-image-tag
+          spec:
+            webhookConfiguration:
+              timeoutSeconds: 15
     - assert:
         file: deploy00-patched-again.yaml
     - assert:

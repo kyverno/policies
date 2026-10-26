@@ -6,6 +6,11 @@ metadata:
   name: restrict-node-label-creation
 spec:
   steps:
+  - name: shared-exception-namespace
+    skipDelete: true
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
   - name: node-label-transitions
     try:
     - script:
@@ -15,6 +20,16 @@ spec:
         duration: 5s
     - apply:
         file: ../restrict-node-label-creation.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-node-label-creation
+          spec:
+            validationActions: [Deny]
+    - apply:
+        file: exceptions.yaml
     - assert:
         file: policy-ready.yaml
     - sleep:
@@ -48,6 +63,33 @@ spec:
           grep -F 'restrict-node-label-creation' "$output_dir/deny"
           grep -F 'Setting the `foo` label on a Node is not allowed.' "$output_dir/deny"
           test -z "$(foo_state)"
+          # The static fixture is exercised by the exact-name branch; this dynamic
+          # exception proves the same narrow contract for the live node name.
+          kubectl apply -f - <<EOF
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: live-node-label-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - kind: ValidatingPolicy
+              name: restrict-node-label-creation
+            matchConditions:
+            - name: exact-node-and-value
+              expression: object.metadata.name == '$node' && object.metadata.labels.?foo.orValue('') == 'exception-approved'
+            allowedValues:
+            - foo:exception-approved
+          EOF
+          kubectl label --overwrite nodes "$node" foo=exception-approved
+          test "$(foo_state)" = 'present:exception-approved'
+          kubectl delete policyexceptions.policies.kyverno.io live-node-label-exception -n policy-exceptions
+          if kubectl label --overwrite nodes "$node" foo=shouldfail > "$output_dir/deny-after-exception" 2>&1; then
+            cat "$output_dir/deny-after-exception"
+            echo "Failure: successfully set label foo after exception removal"
+            exit 1
+          fi
+          test "$(foo_state)" = 'present:exception-approved'
           kubectl label --overwrite nodes "$node" bar=bar
           kubectl label --overwrite nodes "$node" bar=foo
           kubectl label nodes "$node" bar-

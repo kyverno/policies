@@ -1,6 +1,16 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: exception-probes
+  namespace: default
+spec:
+  containers:
+  - name: app
+    image: registry.k8s.io/goproxy:0.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: goodpod01
   labels:
     app: myapp
@@ -108,3 +118,111 @@ spec:
       periodSeconds: 10
   - name: nginx
     image: nginx:latest
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob01
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+            readinessProbe:
+              exec:
+                command: ["true"]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: badcronjob01
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exception-cronjob
+  namespace: default
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: exempt
+            image: ghcr.io/kyverno/probe-exception:1
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+            livenessProbe:
+              exec:
+                command: ["true"]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: exception-cronjob-mixed
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: exempt
+            image: ghcr.io/kyverno/probe-exception:1
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: goodrc01
+spec:
+  replicas: 1
+  selector:
+    app: goodrc01
+  template:
+    metadata:
+      labels:
+        app: goodrc01
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        startupProbe:
+          exec:
+            command: ["true"]
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: badrc01
+spec:
+  replicas: 1
+  selector:
+    app: badrc01
+  template:
+    metadata:
+      labels:
+        app: badrc01
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35

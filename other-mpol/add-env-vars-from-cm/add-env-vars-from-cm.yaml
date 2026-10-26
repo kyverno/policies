@@ -4,7 +4,7 @@ metadata:
   name: add-env-vars-from-cm
   annotations:
     policies.kyverno.io/title: Add Environment Variables from ConfigMap
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/category: Other
     policies.kyverno.io/description: >-
@@ -38,7 +38,7 @@ spec:
         object.kind == "Pod" ?
         (
           (has(object.spec.initContainers) ?
-            object.spec.initContainers.map(container, 
+            object.spec.initContainers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
               object.spec.initContainers.indexOf(container)
             ).map(idx,
               JSONPatch{
@@ -48,7 +48,7 @@ spec:
               }
             ) : []
           ) +
-          object.spec.containers.map(container,
+          object.spec.containers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
             object.spec.containers.indexOf(container)
           ).map(idx,
             JSONPatch{
@@ -66,7 +66,7 @@ spec:
         object.kind in ["Deployment", "DaemonSet", "StatefulSet"] ?
         (
           (has(object.spec.template.spec.initContainers) ?
-            object.spec.template.spec.initContainers.map(container, 
+            object.spec.template.spec.initContainers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
               object.spec.template.spec.initContainers.indexOf(container)
             ).map(idx,
               JSONPatch{
@@ -76,7 +76,7 @@ spec:
               }
             ) : []
           ) +
-          object.spec.template.spec.containers.map(container,
+          object.spec.template.spec.containers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
             object.spec.template.spec.containers.indexOf(container)
           ).map(idx,
             JSONPatch{
@@ -94,7 +94,7 @@ spec:
         object.kind == "Job" ?
         (
           (has(object.spec.template.spec.initContainers) ?
-            object.spec.template.spec.initContainers.map(container, 
+            object.spec.template.spec.initContainers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
               object.spec.template.spec.initContainers.indexOf(container)
             ).map(idx,
               JSONPatch{
@@ -104,7 +104,7 @@ spec:
               }
             ) : []
           ) +
-          object.spec.template.spec.containers.map(container,
+          object.spec.template.spec.containers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
             object.spec.template.spec.containers.indexOf(container)
           ).map(idx,
             JSONPatch{
@@ -122,7 +122,7 @@ spec:
         object.kind == "CronJob" ?
         (
           (has(object.spec.jobTemplate.spec.template.spec.initContainers) ?
-            object.spec.jobTemplate.spec.template.spec.initContainers.map(container, 
+            object.spec.jobTemplate.spec.template.spec.initContainers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
               object.spec.jobTemplate.spec.template.spec.initContainers.indexOf(container)
             ).map(idx,
               JSONPatch{
@@ -132,7 +132,7 @@ spec:
               }
             ) : []
           ) +
-          object.spec.jobTemplate.spec.template.spec.containers.map(container,
+          object.spec.jobTemplate.spec.template.spec.containers.filter(container, !exceptions.allowedImages.exists(image, image == container.image)).map(container,
             object.spec.jobTemplate.spec.template.spec.containers.indexOf(container)
           ).map(idx,
             JSONPatch{

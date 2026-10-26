@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: pod-duration-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: pod-lifetime
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'test-lifetime-fail'
+  allowedValues:
+  - pod-duration:24h

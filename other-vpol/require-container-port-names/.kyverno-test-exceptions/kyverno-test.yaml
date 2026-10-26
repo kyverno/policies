@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-container-port-names-exceptions}
+policies: [../require-container-port-names.yaml]
+resources:
+- ../.chainsaw-test/pod-bad.yaml
+- ../.chainsaw-test/pod-good.yaml
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: require-container-port-names, resources: [badpod01], result: skip}
+- {isValidatingPolicy: true, kind: Pod, policy: require-container-port-names, resources: [badpod02], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: require-container-port-names, resources: [goodpod01], result: pass}

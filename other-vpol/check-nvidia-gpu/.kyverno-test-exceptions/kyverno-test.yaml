@@ -1,0 +1,8 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: check-nvidia-gpus-exceptions}
+policies: [../check-nvidia-gpu.yaml]
+resources: [../.kyverno-test/good01.yaml, ../.kyverno-test/good02.yaml, ../.kyverno-test/good03.yaml, ../.kyverno-test/bad.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {kind: Pod, policy: check-nvidia-gpus, resources: [badpod01], result: pass, isValidatingPolicy: true, rule: check-nvidia-gpus}

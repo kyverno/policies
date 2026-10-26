@@ -14,12 +14,24 @@ keywords:
 readme: |
   Services which are allowed to expose any port number may be able to impact other applications running on the Node which require them, or may make specifying security policy externally more challenging. This policy enforces that only the port range 32000 to 33000 may be used for Service resources.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-service-port-range` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List decimal Service ports as strings in `spec.allowedValues`, such as `"8080"`, to
+  allow only those ports outside 32000–33000. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-service-port-range/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Service"
-digest: 3a4c0ef32eb1717fd8968c44dbf9ca1c821f744a95581505062350b0824ced47
+digest: 1990baff3577deb0b6c8d980288717284737fca0c7b926852d327a2aefc8d1e2
 
 
 createdAt: "2025-05-11T17:46:12Z"

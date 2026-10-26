@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allowed-priority-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: allowed-podpriorities
+  matchConditions:
+  - name: exact-resource
+    expression: request.kind.kind == 'Pod' && object.metadata.name == 'exception-priority'
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'pod-priority-ns'
+  allowedValues:
+  - priorityClass:foo

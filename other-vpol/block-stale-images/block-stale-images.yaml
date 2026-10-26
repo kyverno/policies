@@ -2,6 +2,7 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   annotations:
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       This policy blocks pods that use container images built more than 6 months
@@ -28,6 +29,7 @@ spec:
   validations:
     - expression: >-
         variables.allContainers.all(container,
+        container.image in exceptions.allowedValues ||
         !has(image.GetMetadata(container.image).config.created) ||
         timestamp(image.GetMetadata(container.image).config.created) >=
         variables.cutoffTime)

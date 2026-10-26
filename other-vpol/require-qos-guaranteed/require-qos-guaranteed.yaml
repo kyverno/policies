@@ -5,6 +5,7 @@ metadata:
   annotations:
     policies.kyverno.io/title: Require QoS Guaranteed in ValidatingPolicy
     policies.kyverno.io/category: Other, Multi-Tenancy in vpol 
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: Pod
     kyverno.io/kyverno-version: 1.14.0
@@ -30,15 +31,39 @@ spec:
       apiVersions: ["v1"]
       operations:  ["CREATE", "UPDATE"]
       resources:   ["pods"]
-  validations:
-    - expression: >-
-        object.spec.containers.all(container,
+  variables:
+    - name: qosContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([])"
+    - name: guaranteed
+      expression: >-
+        variables.qosContainers.all(container,
         has(container.resources) &&
         container.resources.?requests.orValue({}).?cpu.hasValue() &&
         container.resources.?requests.orValue({}).?memory.hasValue() &&
         container.resources.?limits.orValue({}).?cpu.hasValue() &&
         container.resources.?limits.orValue({}).?memory.hasValue() &&
-        container.resources.requests.orValue({}).cpu == container.resources.limits.orValue({}).cpu &&
-        container.resources.requests.orValue({}).memory == container.resources.limits.orValue({}).memory)
+        quantity(container.resources.requests.orValue({}).cpu).asApproximateFloat() > 0 &&
+        quantity(container.resources.requests.orValue({}).memory).asApproximateFloat() > 0 &&
+        quantity(container.resources.limits.orValue({}).cpu).asApproximateFloat() > 0 &&
+        quantity(container.resources.limits.orValue({}).memory).asApproximateFloat() > 0 &&
+        quantity(container.resources.requests.orValue({}).cpu) == quantity(container.resources.limits.orValue({}).cpu) &&
+        quantity(container.resources.requests.orValue({}).memory) == quantity(container.resources.limits.orValue({}).memory))
+    - name: bestEffort
+      expression: >-
+        variables.qosContainers.all(container,
+        !has(container.resources) ||
+        !(container.resources.?requests.orValue({}).?cpu.hasValue() ||
+        container.resources.?requests.orValue({}).?memory.hasValue() ||
+        container.resources.?limits.orValue({}).?cpu.hasValue() ||
+        container.resources.?limits.orValue({}).?memory.hasValue()) ||
+        (quantity(container.resources.?requests.orValue({}).?cpu.orValue('0')).asApproximateFloat() == 0.0 &&
+        quantity(container.resources.?requests.orValue({}).?memory.orValue('0')).asApproximateFloat() == 0.0 &&
+        quantity(container.resources.?limits.orValue({}).?cpu.orValue('0')).asApproximateFloat() == 0.0 &&
+        quantity(container.resources.?limits.orValue({}).?memory.orValue('0')).asApproximateFloat() == 0.0))
+    - name: qosClass
+      expression: "variables.guaranteed ? 'Guaranteed' : variables.bestEffort ? 'BestEffort' : 'Burstable'"
+  validations:
+    - expression: >-
+        variables.qosClass == 'Guaranteed' ||
+        exceptions.allowedValues.exists(value, value == 'qos.class:' + variables.qosClass)
       message: "All containers must define memory and CPU requests and limits where they are equal."
-

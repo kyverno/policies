@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-exception-pod
+  namespace: default
+spec:
+  containers:
+  - name: approved-image
+    image: ghcr.io/kyverno/test-verify-image:unsigned
+    imagePullPolicy: Always
+  - name: unapproved-image
+    image: ghcr.io/kyverno/test-verify-image:signed
+    imagePullPolicy: Always

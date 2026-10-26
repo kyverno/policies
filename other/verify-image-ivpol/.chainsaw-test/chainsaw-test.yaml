@@ -24,5 +24,54 @@ spec:
        timeout: 60s
        expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy verify-image-ivpol failed') && contains($error, 'failed the verification')): true
        file: bad.yaml
+  - name: full-resource-exception-and-no-bypass
+    try:
+    - apply:
+        file: exception-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - create:
+        file: exception-mixed-images.yaml
+        timeout: 60s
+        expect:
+        - check:
+            (contains($error, 'Policy verify-image-ivpol failed') && contains($error, 'failed the verification')): true
+    - create:
+        file: exception-pod.yaml
+        timeout: 60s
+    - create:
+        file: exception-sibling-pod.yaml
+        timeout: 60s
+        expect:
+        - check:
+            (contains($error, 'Policy verify-image-ivpol failed') && contains($error, 'failed the verification')): true
+    - apply:
+        file: exception-wrong-namespace.yaml
+    - create:
+        file: exception-wrong-namespace-pod.yaml
+        timeout: 60s
+        expect:
+        - check:
+            (contains($error, 'Policy verify-image-ivpol failed') && contains($error, 'failed the verification')): true
+    - delete:
+        ref:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          name: verify-image-ivpol-exception
+          namespace: policy-exceptions
+    - delete:
+        ref:
+          apiVersion: v1
+          kind: Pod
+          name: unsigned-exception-pod
+          namespace: default
+    - sleep:
+        duration: 5s
+    - create:
+        file: exception-pod.yaml
+        timeout: 60s
+        expect:
+        - check:
+            (contains($error, 'Policy verify-image-ivpol failed') && contains($error, 'failed the verification')): true

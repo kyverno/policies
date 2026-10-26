@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: disallow-latest-tag-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: disallow-latest-tag
+  matchConditions:
+  - name: exact-resource
+    expression: object.kind == 'Pod' && object.metadata.namespace == 'default' && (object.metadata.name == 'exception-latest-pod')
+  images:
+  - nginx:latest

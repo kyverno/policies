@@ -1,0 +1,33 @@
+name: inspect-csr-vpol
+version: 1.0.0
+displayName: Inspect CertificateSigningRequests in ValidatingPolicy
+description: >-
+  Audits CertificateSigningRequests against the requesting identity and approved signer and usages.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/inspect-csr/inspect-csr.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Audits CertificateSigningRequests against the requesting identity and approved signer and usages.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `inspect-csr` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/inspect-csr/.chainsaw-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "CertificateSigningRequest"
+digest: 6115fd3d910f06801b11495e340d5e5e99998e4b40d5f9786c78ff20987238a3
+createdAt: "2026-10-06T00:00:00Z"

@@ -29,5 +29,5 @@ spec:
     - apply:
         expect:
         - check:
-            ($error != null): true
+            (contains($error, 'Policy check-ingress-nginx-controller-version-and-annotation-policy failed')): true
         file: bad-resource.yaml

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: allowed-image-repos-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: allowed-image-repos
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'badpod01' && request.namespace == 'default'
+  allowedValues:
+  - ghcr.io/kyverno/test-busybox:1.35

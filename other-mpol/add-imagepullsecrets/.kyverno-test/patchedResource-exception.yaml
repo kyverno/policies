@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: image-exception-pod
+  namespace: team-a
+spec:
+  containers:
+  - name: first
+    image: corp.reg.com/skip-first:1
+  - name: middle
+    image: corp.reg.com/mutate-middle:1
+  - name: last
+    image: corp.reg.com/skip-last:1
+  imagePullSecrets:
+  - name: my-secret

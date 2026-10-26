@@ -1,0 +1,18 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-secret-role-verbs-exception
+policies: [../restrict-secret-role-verbs.yaml]
+resources: [../.kyverno-test/resource.yaml]
+exceptions: [../.kyverno-test/exception.yaml]
+results:
+- isValidatingPolicy: true
+  kind: Role
+  policy: restrict-secret-role-verbs
+  resources: [default/exception-role]
+  result: pass
+- isValidatingPolicy: true
+  kind: Role
+  policy: restrict-secret-role-verbs
+  resources: [default/sibling-role]
+  result: fail

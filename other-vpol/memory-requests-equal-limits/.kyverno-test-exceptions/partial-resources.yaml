@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-memory-approved
+spec:
+  containers:
+  - name: approved
+    image: approved.example/keep:1
+    resources:
+      requests: {memory: 1Gi}
+      limits: {memory: 2Gi}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: partial-memory-sibling
+spec:
+  containers:
+  - name: approved
+    image: approved.example/keep:1
+    resources:
+      requests: {memory: 1Gi}
+      limits: {memory: 2Gi}
+  - name: protected
+    image: ghcr.io/kyverno/test-busybox:1.35
+    resources:
+      requests: {memory: 1000m}
+      limits: {memory: 1024Mi}

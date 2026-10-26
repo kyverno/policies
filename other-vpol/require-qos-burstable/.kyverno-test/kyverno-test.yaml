@@ -11,8 +11,11 @@ results:
   kind: Pod
   policy: require-qos-burstable
   resources:
-  - badpod01
   - badpod02
+  - guaranteed-pod
+  - zero-resources-pod
+  - zero-exponent-pod
+  - badpod01
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -22,4 +25,3 @@ results:
   - goodpod02
   - goodpod03
   result: pass
-

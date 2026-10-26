@@ -32,3 +32,41 @@ spec:
     try:
     - assert:
         file: generated-svc.yaml
+  - name: exception-isolation
+    try:
+    - apply:
+        file: exception-namespace.yaml
+    - apply:
+        file: exception.yaml
+    - apply:
+        file: exception-vmi.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: exception-service.yaml
+    - apply:
+        file: exception-vmi-sibling.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-service-sibling.yaml
+    - apply:
+        file: exception-wrong-namespace.yaml
+    - apply:
+        file: exception-wrong-namespace-vmi.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-wrong-namespace-service.yaml
+    - delete:
+        file: exception.yaml
+    - delete:
+        file: exception-vmi.yaml
+    - sleep:
+        duration: 5s
+    - apply:
+        file: exception-vmi.yaml
+    - sleep:
+        duration: 15s
+    - assert:
+        file: exception-service.yaml

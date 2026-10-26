@@ -6,6 +6,7 @@ metadata:
     policies.kyverno.io/title: Ensure Valid Ingress NGINX Controller and Annotations
     policies.kyverno.io/category: Ingress, Security
     policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kyverno-version: 1.15.0
     kyverno.io/kubernetes-version: "1.30"
     policies.kyverno.io/subject: Ingress, Pod
@@ -53,10 +54,26 @@ spec:
   validations:
   - reason: Invalid
     messageExpression: "'server-snippet annotation is not allowed in Ingress resources'"
-    expression: "!variables.isIngress || !has(object.metadata.annotations) || !object.metadata.annotations.exists(a, a == 'nginx.ingress.kubernetes.io/server-snippet')"
+    expression: "!variables.isIngress || !has(object.metadata.annotations) || !object.metadata.annotations.exists(a, a == 'nginx.ingress.kubernetes.io/server-snippet') || 'annotation:nginx.ingress.kubernetes.io/server-snippet' in exceptions.allowedValues"
   - reason: Invalid
     messageExpression: "'auth-tls-verify-client annotation must be one of: ' + variables.validAuthTlsValues.join(', ') + ', received: ' + variables.authTlsAnnotation"
-    expression: "!variables.isIngress || variables.authTlsAnnotation == '' || variables.authTlsAnnotation in variables.validAuthTlsValues"
+    expression: "!variables.isIngress || variables.authTlsAnnotation == '' || variables.authTlsAnnotation in variables.validAuthTlsValues || ('annotation:nginx.ingress.kubernetes.io/auth-tls-verify-client:' + variables.authTlsAnnotation) in exceptions.allowedValues"
   - reason: Invalid
     messageExpression: "'controller container must use ingress-nginx version 1.11.2 or higher, excluding v1.11.0 and v1.11.1'"
-    expression: "!variables.isPod || variables.controllerContainers.all(c, c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.0') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.1') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.10.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.9.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.8.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.7.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.6.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.5.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.4.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.3.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.2.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.1.') && !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.0.'))"
+    expression: >-
+      !variables.isPod || variables.controllerContainers.all(c,
+        (has(exceptions.allowedImages) && c.image in exceptions.allowedImages) ||
+        (c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.0') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.11.1') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.10.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.9.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.8.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.7.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.6.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.5.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.4.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.3.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.2.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.1.') &&
+        !c.image.startsWith('registry.k8s.io/ingress-nginx/controller:v1.0.')))

@@ -7,6 +7,9 @@ policies:
 resources:
   - ../.chainsaw-test/bad-application.yaml
   - ../.chainsaw-test/good-application.yaml
+  - ../.chainsaw-test/missing-project-application.yaml
+  - ../.chainsaw-test/empty-application.yaml
+  - ../.chainsaw-test/exception-application.yaml
 results:
   - policy: application-prevent-default-project
     rule: default-project
@@ -20,3 +23,14 @@ results:
     resources:
       - goodapp
     result: pass
+  - policy: application-prevent-default-project
+    rule: default-project
+    kind: Application
+    resources:
+      - missing-project-app
+    result: fail
+  - policy: application-prevent-default-project
+    kind: Application
+    resources: [empty-project-app, exceptionapp]
+    result: fail
+    isValidatingPolicy: true

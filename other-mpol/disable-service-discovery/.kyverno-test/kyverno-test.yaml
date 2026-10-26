@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disable-service-discovery-exception}
+policies: [../disable-service-discovery.yaml]
+resources:
+- baseline-resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
+results:
+- kind: Pod
+  patchedResources: baseline-patched.yaml
+  policy: disable-service-discovery
+  resources: [baseline-pod]
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: disable-service-discovery
+  resources: [exception-pod]
+  result: skip
+  isMutatingPolicy: true

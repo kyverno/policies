@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: controller-serviceaccount-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-pod-controller-serviceaccount-updates
+  matchConditions:
+  - name: target-namespace
+    expression: object.metadata.?namespace.orValue('') == 'restrict-sa-ns'
+  - name: target-name
+    expression: object.metadata.name == 'deployment01'
+  allowedValues:
+  - serviceAccountName

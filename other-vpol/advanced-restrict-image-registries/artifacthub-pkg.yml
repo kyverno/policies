@@ -14,12 +14,24 @@ keywords:
 readme: |
   In instances where a ValidatingPolicy defines all the approved image registries is insufficient, more granular control may be needed to set permitted registries, especially in multi-tenant use cases where some registries may be based on the Namespace. This policy shows an advanced version of the Restrict Image Registries policy which gets a global approved registry from a ConfigMap and, based upon an annotation at the Namespace level, gets the registry approved for that Namespace.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `advanced-restrict-image-registries` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact container image references in `spec.allowedValues` to bypass the registry
+  check for those images, not entire registries. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/advanced-restrict-image-registries/.kyverno-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: f5ff499887e9173aadf69a1781b1b6193e637993704a6f493fc3d5f57cb57e97
+digest: 73d304dd83179947fb72d0bb4c60bda96f7428f9550f233c15e9ab1648a7b149
 
 
 createdAt: "2025-05-11T17:46:11Z"

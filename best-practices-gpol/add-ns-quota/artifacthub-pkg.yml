@@ -15,8 +15,23 @@ keywords:
 readme: |
   To better control the number of resources that can be created in a given Namespace and provide default resource consumption limits for Pods, ResourceQuota and LimitRange resources are recommended. This policy will generate ResourceQuota and LimitRange resources when a new Namespace is created.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `GeneratingPolicy` named
+  `add-ns-quota` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `Kind/name` tokens in `spec.allowedValues` to omit only the named generated
+  child. For example, `ResourceQuota/default-resourcequota` omits the quota while
+  the LimitRange is still generated; this does not exempt individual quota fields.
+  `LimitRange/default-limitrange` omits only the LimitRange. In CEL,
+  `variables.excludedDownstreamResources` filters `variables.downstream` against
+  `exceptions.allowedValues`; `generator.Apply` receives only the remaining children.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-gpol/add-ns-quota/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal generation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Multi-Tenancy, EKS Best Practices"
   kyverno/subject: "ResourceQuota, LimitRange"
-digest: 33aba8d78e4aa24d6ca30301b1165991f20db8c94075bf970c3affeba4e4d25b
+digest: c10eed8253fff5b2c6115891eaed6b4b942c5e376ee07d81fa71bd5d85782de1

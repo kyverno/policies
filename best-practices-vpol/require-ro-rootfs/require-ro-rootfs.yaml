@@ -2,6 +2,7 @@ apiVersion: policies.kyverno.io/v1
 kind: ValidatingPolicy
 metadata:
   annotations:
+    policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Pod Security Standards
     policies.kyverno.io/description: >-
       Containers must have a read-only root filesystem to prevent unauthorized
@@ -30,9 +31,10 @@ spec:
     - Audit
   validations:
     - expression: >-
-        variables.allContainers.all(container, has(container.securityContext) &&
+        variables.allContainers.all(container, (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
+        (has(container.securityContext) &&
         has(container.securityContext.readOnlyRootFilesystem) &&
-        container.securityContext.readOnlyRootFilesystem == true)
+        container.securityContext.readOnlyRootFilesystem == true))
       message: Root filesystem must be read-only.
   variables:
     - expression: >-

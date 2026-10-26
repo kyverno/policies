@@ -22,12 +22,24 @@ readme: |
   be followed if Pods do not need to speak to the API server to function.
   This policy ensures that mounting of these ServiceAccount tokens is blocked.  
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-sa-automount-sa-token` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `automountServiceAccountToken:true` in `spec.allowedValues` to allow true or omitted
+  automount configuration; omission defaults to true for this check. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-sa-automount-sa-token/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "ServiceAccount"
-digest: ebeab19d38f785eb612a4891080f5ea538ad7ec7bf2d9b7df6233540b1a1f816
+digest: ea758d1b801e98bf7bed8c02ca298dc354c709267d3b731ac1702e29932ace96
 
 
 createdAt: "2025-05-11T17:46:12Z"

@@ -6,11 +6,20 @@ policies:
 - ../add-env-vars-from-cm.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource01.yaml
   policy: add-env-vars-from-cm
   resources:
   - mypod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: exception-patched.yaml
+  policy: add-env-vars-from-cm
+  resources: [exception-pod]
   result: pass
   isMutatingPolicy: true

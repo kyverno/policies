@@ -1,0 +1,39 @@
+name: PR Labeler
+
+on:
+  push:
+    branches: [main]
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview only (manual runs refresh merge-conflict labels; path labels apply on PR events)
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: pr-labels-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Checkout trusted configuration
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Preview path labels and merge conflicts
+        uses: kyverno/kyverno/.github/actions/pr-management@ef3224c602da764b2c2fd8b361ae6a28f9b3b0e8
+        with:
+          mode: labels
+          dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}

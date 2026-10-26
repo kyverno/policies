@@ -24,3 +24,88 @@ spec:
         file: podcontroller-patched.yaml
     - assert:
         file: pod-resources-patched.yaml
+  - name: step-04-exception
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        file: ns.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: add-ndots-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: add-ndots
+              kind: MutatingPolicy
+            matchConditions:
+            - name: exact-pod
+              expression: object.metadata.namespace == 'add-ndots' && object.metadata.name == 'ndots-exception'
+    - sleep: {duration: 15s}
+    - apply:
+        file: exception-pod.yaml
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-sibling
+            namespace: add-ndots
+          spec:
+            containers:
+            - name: app
+              image: nginx:latest
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-exception
+            namespace: add-ndots
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "4"
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-sibling
+            namespace: add-ndots
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "1"
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-exception
+            namespace: add-ndots-other
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "4"
+            containers:
+            - name: app
+              image: nginx:latest
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-exception
+            namespace: add-ndots-other
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "1"

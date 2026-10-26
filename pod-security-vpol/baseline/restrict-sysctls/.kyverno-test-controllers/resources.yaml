@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-restrict-sysctls-1
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: unsafe-restrict-sysctls-2
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unsafe-restrict-sysctls-3
+spec:
+  serviceName: app
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: unsafe-restrict-sysctls-4
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: unsafe-restrict-sysctls-5
+spec:
+  selector:
+    app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unsafe-restrict-sysctls-6
+spec:
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      restartPolicy: Never
+      securityContext:
+        sysctls:
+        - name: kernel.unprivileged_bpf_disabled
+          value: "1"
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unsafe-restrict-sysctls-7
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: Never
+          securityContext:
+            sysctls:
+            - name: kernel.unprivileged_bpf_disabled
+              value: "1"
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35

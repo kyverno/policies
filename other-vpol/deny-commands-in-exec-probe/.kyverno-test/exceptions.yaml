@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: deny-probe-command-partial
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: deny-commands-in-exec-probe
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'policy-exceptions' && request.name == 'badpod03'
+  allowedValues:
+  - probe-command:ps -aux | grep cala

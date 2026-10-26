@@ -14,12 +14,24 @@ keywords:
 readme: |
   A PodDisruptionBudget which sets its maxUnavailable value to zero prevents all voluntary evictions including Node drains which may impact maintenance tasks. This policy enforces that if a PodDisruptionBudget specifies the maxUnavailable field it must be greater than zero.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `pdb-maxunavailable` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use `maxUnavailable:<value>` in `spec.allowedValues`, such as `maxUnavailable:0`, to
+  allow that exact numeric value. CEL consumes `spec.allowedValues` as
+  `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/pdb-maxunavailable/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "PodDisruptionBudget"
-digest: cce5c51b7c86affaad655408dab8ec8681ae96f963548d15a1a8e488bd66e7a3
+digest: 05f3a4d4c4e0ff58cba8abfa8e48cb0b26c0133402a8d2bfa7edcc1d3419c2b9
 
 
 createdAt: "2025-05-11T17:46:12Z"

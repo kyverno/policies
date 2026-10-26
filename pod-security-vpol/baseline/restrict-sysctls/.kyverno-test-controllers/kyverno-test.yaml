@@ -1,0 +1,51 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-sysctls-controllers
+policies:
+- ../restrict-sysctls.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-1
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-2
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-3
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-4
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicationController
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-5
+  result: fail
+- isValidatingPolicy: true
+  kind: Job
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-6
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: restrict-sysctls
+  resources:
+  - unsafe-restrict-sysctls-7
+  result: fail

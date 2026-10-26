@@ -14,12 +14,24 @@ keywords:
 readme: |
   It's common where policy lookups need to consider a mapping to many possible values rather than a static mapping. This is a sample which demonstrates how to dynamically look up an allow list of Namespaces from a ConfigMap where the ConfigMap stores an array of strings. This policy validates that any Pods created outside of the list of Namespaces have the label `foo` applied.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `exclude-namespaces-example` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  List exact request namespace names in `spec.allowedValues` to waive the `foo` label
+  requirement within the exception's matched resource scope. CEL consumes
+  `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain checked.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/exclude-namespaces-dynamically/.chainsaw-test/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Namespace, Pod"
-digest: 21cb5757d31a5d25b97a3ef94cfb370b85c1538fb0db0408cf4be817b0d3a8a5
+digest: 9d42a71118f84b2512bddf4d31c8e72f8dbf2dea706dae5dbb2ad57ffc069a5d
 
 
 createdAt: "2025-05-11T17:46:11Z"
