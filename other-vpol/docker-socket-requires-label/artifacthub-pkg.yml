@@ -19,7 +19,8 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `docker-socket-check` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List the exact Pod name in `spec.allowedValues` to permit its Docker socket mount
+  List the exact Pod name in `spec.allowedValues` (for Pod controllers such as
+  Deployments, the controller's own name) to permit its Docker socket mount
   without `allow-docker=true`; also constrain the namespace in `spec.matchConditions`. CEL
   consumes `spec.allowedValues` as `exceptions.allowedValues`; unlisted values remain
   checked.
@@ -32,7 +33,7 @@ annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 6442daf779a89a30731d4d204f3b549139c13ed41da58815c032acc1877d390f
+digest: 8b6f61ca4bd9982cee3ce7c373ffe18a4b398f5ba9e76104c2f24c8d4a756749
 
 
 createdAt: "2025-05-11T17:46:10Z"
