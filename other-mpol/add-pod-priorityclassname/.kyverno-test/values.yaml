@@ -7,3 +7,9 @@ namespaceSelector:
 - labels:
     env: production
   name: production
+- labels:
+    env: team-a
+  name: team-a
+- labels:
+    env: team-b
+  name: team-b

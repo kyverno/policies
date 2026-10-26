@@ -6,11 +6,25 @@ policies:
 - ../add-ndots.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource.yaml
   policy: add-ndots
   resources:
   - default/myapp-pod
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: add-ndots
+  resources: [team-a/ndots-exception]
+  result: skip
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: exception-patched.yaml
+  policy: add-ndots
+  resources: [team-b/ndots-exception]
   result: pass
   isMutatingPolicy: true

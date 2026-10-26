@@ -29,6 +29,8 @@ spec:
     - apply:
         file: policy-exceptions-namespace.yaml
     - apply:
+        file: ns.yaml
+    - apply:
         resource:
           apiVersion: policies.kyverno.io/v1
           kind: PolicyException
@@ -41,7 +43,7 @@ spec:
               kind: MutatingPolicy
             matchConditions:
             - name: exact-pod
-              expression: object.metadata.name == 'ndots-exception'
+              expression: object.metadata.namespace == 'add-ndots' && object.metadata.name == 'ndots-exception'
     - sleep: {duration: 15s}
     - apply:
         file: exception-pod.yaml
@@ -51,6 +53,7 @@ spec:
           kind: Pod
           metadata:
             name: ndots-sibling
+            namespace: add-ndots
           spec:
             containers:
             - name: app
@@ -61,6 +64,7 @@ spec:
           kind: Pod
           metadata:
             name: ndots-exception
+            namespace: add-ndots
           spec:
             dnsConfig:
               options:
@@ -72,6 +76,34 @@ spec:
           kind: Pod
           metadata:
             name: ndots-sibling
+            namespace: add-ndots
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "1"
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-exception
+            namespace: add-ndots-other
+          spec:
+            dnsConfig:
+              options:
+              - name: ndots
+                value: "4"
+            containers:
+            - name: app
+              image: nginx:latest
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: ndots-exception
+            namespace: add-ndots-other
           spec:
             dnsConfig:
               options:

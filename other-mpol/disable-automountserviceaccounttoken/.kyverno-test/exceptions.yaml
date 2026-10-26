@@ -7,4 +7,4 @@ spec:
   policyRefs: [{kind: MutatingPolicy, name: disable-automountserviceaccounttoken}]
   matchConditions:
   - name: exact-resource
-    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'default'
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'default'

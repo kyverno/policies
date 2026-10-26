@@ -7,4 +7,4 @@ spec:
   policyRefs: [{kind: MutatingPolicy, name: add-tolerations}]
   matchConditions:
   - name: exact-resource
-    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'addpod01'
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'tolerations-exception'

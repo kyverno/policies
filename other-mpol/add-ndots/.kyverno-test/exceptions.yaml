@@ -7,4 +7,4 @@ spec:
   policyRefs: [{kind: MutatingPolicy, name: add-ndots}]
   matchConditions:
   - name: exact-resource
-    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'myapp-pod'
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'ndots-exception'

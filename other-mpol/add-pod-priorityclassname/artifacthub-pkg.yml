@@ -18,7 +18,7 @@ readme: |
 
   Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
   `add-pod-priorityclassname` in `spec.policyRefs`, and narrow the exception with
-  `spec.matchConditions` using the exact request identity.
+  `spec.matchConditions` using the exact namespace and name.
   This policy uses a resource-scoped exception, so no `spec.images` or
   `spec.allowedValues` entry is needed.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-mpol/add-pod-priorityclassname/.kyverno-test/exceptions.yaml).

@@ -7,4 +7,4 @@ spec:
   policyRefs: [{kind: MutatingPolicy, name: add-pod-priorityclassname}]
   matchConditions:
   - name: exact-resource
-    expression: object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'blank'
+    expression: object.metadata.namespace == 'team-a' && object.metadata.name == 'priority-exception'
