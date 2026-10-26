@@ -14,10 +14,24 @@ keywords:
 readme: |
   Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
 
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-run-as-nonroot` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use exact image references in `spec.images` to waive the container `runAsNonRoot`
+  requirement only for matching containers; without Pod-level true, every other container
+  must explicitly set true. `variables.podSpec` selects the Pod spec directly or from the
+  workload template. `variables.ctnrs` includes regular, init, and ephemeral containers.
+  CEL reads images through `exceptions.allowedImages`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/restricted/require-run-as-nonroot/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: c7d1d7428a2beff41de4094118e0ecf66428e3625bfcad49141d2456aba381f9
+digest: 48f85e8f09fd41afe159f960cb9d16a193acfa07b8bd9c15a30b69eb9805e727
 createdAt: "2025-03-13T23:26:58Z"

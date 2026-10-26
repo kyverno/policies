@@ -1,0 +1,131 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsafe-require-run-as-non-root-user-1
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: unsafe-require-run-as-non-root-user-2
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unsafe-require-run-as-non-root-user-3
+spec:
+  serviceName: app
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: unsafe-require-run-as-non-root-user-4
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: unsafe-require-run-as-non-root-user-5
+spec:
+  selector:
+    app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unsafe-require-run-as-non-root-user-6
+spec:
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          runAsUser: 0
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unsafe-require-run-as-non-root-user-7
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              runAsUser: 0

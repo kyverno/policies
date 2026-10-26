@@ -1,0 +1,11 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: disallow-selinux-exceptions}
+policies: [../disallow-selinux.yaml]
+resources: [exception-resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-selinux, resources: [exception-partial], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-selinux, resources: [exception-wrong, exception-sibling, exception-user-badrole, exception-baduser-role], result: fail}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-selinux, resources: [exception-both], result: pass}
+- {isValidatingPolicy: true, kind: Pod, policy: disallow-selinux, resources: [exception-whole], result: skip}

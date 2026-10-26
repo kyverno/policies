@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-partial, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seccompProfile: {type: Unconfined}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-wrong, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seccompProfile: {type: Invalid}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-sibling, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seccompProfile: {type: Unconfined}}}, {name: other, image: nginx:1.27, securityContext: {seccompProfile: {type: Invalid}}}]}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: exception-whole, namespace: default}
+spec: {containers: [{name: app, image: nginx:1.27, securityContext: {seccompProfile: {type: Invalid}}}]}
