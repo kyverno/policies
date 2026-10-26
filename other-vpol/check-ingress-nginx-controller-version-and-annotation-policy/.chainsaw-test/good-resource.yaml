@@ -23,6 +23,10 @@ kind: Pod
 metadata:
   name: ingress-nginx-controller-6bbf7f5879-bvh6l
 spec:
+  # Never scheduled: the test only needs admission, and kubelet cannot delete a
+  # Pod until an in-progress image pull finishes, which can outlast cleanup.
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: controller
     image: registry.k8s.io/ingress-nginx/controller:v1.11.2
