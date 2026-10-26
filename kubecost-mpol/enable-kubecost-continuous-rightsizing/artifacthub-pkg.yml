@@ -14,8 +14,19 @@ keywords:
 readme: |
   Kubecost is able to modify container resource requests and limits dynamically based upon observed utilization patterns and recommendations. This provides an easy way to automatically improve allocation of cluster resources by increasing efficiency. This policy will annotate all Deployments which have the label `env=test` with `request.autoscaling.kubecost.com/enabled="true"` if the annotation is not already present. Other annotations may be added according to need and users should see the documentation for a complete list.
   
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `MutatingPolicy` named
+  `enable-kubecost-continuous-rightsizing` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/kubecost-mpol/enable-kubecost-continuous-rightsizing/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal mutation behavior.
+
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Kubecost"
   kyverno/subject: "Deployment,Annotation"
-digest: 2ad78855dca0814057fbcecd81fe22d1480671bba54f5a2dee69a7eeae71c946
+digest: cb23b5106734836b22f659eda7dd8e796ce3a9b4b34261555a5bc346be13e749
