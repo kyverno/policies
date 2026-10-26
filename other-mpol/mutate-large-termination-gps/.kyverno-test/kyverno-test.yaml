@@ -6,6 +6,9 @@ policies:
 - ../mutate-large-termination-gps.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource1.yaml
@@ -13,6 +16,11 @@ results:
   resources:
   - demo-pod01
   result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: mutate-termination-grace-period-seconds
+  resources: [exception-pod]
+  result: skip
   isMutatingPolicy: true
 - kind: Pod
   patchedResources: patchedResource2.yaml

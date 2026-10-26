@@ -6,11 +6,25 @@ policies:
 - ../disable-automountserviceaccounttoken.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - kind: ServiceAccount
   patchedResources: patchedResource.yaml
   policy: disable-automountserviceaccounttoken
   resources:
   - default
+  result: pass
+  isMutatingPolicy: true
+- kind: ServiceAccount
+  policy: disable-automountserviceaccounttoken
+  resources: [team-a/default]
+  result: skip
+  isMutatingPolicy: true
+- kind: ServiceAccount
+  patchedResources: exception-patched.yaml
+  policy: disable-automountserviceaccounttoken
+  resources: [team-b/default]
   result: pass
   isMutatingPolicy: true

@@ -6,6 +6,9 @@ policies:
 - ../add-nodeSelector.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exception.yaml
 results:
 - kind: Pod
   patchedResources: patchedResource.yaml
@@ -13,4 +16,9 @@ results:
   resources:
   - default/myapp-pod
   result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  policy: add-nodeselector
+  resources: [exception-pod]
+  result: skip
   isMutatingPolicy: true

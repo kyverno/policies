@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: team-a
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: team-b

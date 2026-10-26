@@ -1,0 +1,8 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: {name: optional-tls-ingress, namespace: team-a}
+spec:
+  tls:
+  - hosts: [app.new.com, unchanged.example.com]
+  - secretName: app.new.com
+  - {}

@@ -1,0 +1,8 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata: {name: exception, namespace: policy-exceptions}
+spec:
+  policyRefs: [{name: label-nodes-cri, kind: MutatingPolicy}]
+  matchConditions:
+  - name: exact
+    expression: "object.metadata.?namespace.orValue('') == '' && object.metadata.name == 'exception-node'"

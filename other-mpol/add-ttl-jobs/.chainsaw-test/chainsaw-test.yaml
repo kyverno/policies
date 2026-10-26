@@ -22,3 +22,47 @@ spec:
         file: job-patched.yaml
     - error:
         file: job-not-patched.yaml
+  - name: step-04-exception
+    try:
+    - apply:
+        file: policy-exceptions-namespace.yaml
+    - apply:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: PolicyException
+          metadata:
+            name: add-ttl-jobs-exception
+            namespace: policy-exceptions
+          spec:
+            policyRefs:
+            - name: add-ttl-jobs
+              kind: MutatingPolicy
+            allowedValues: [ttlSecondsAfterFinished]
+            matchConditions:
+            - name: exact-job
+              expression: object.metadata.namespace == 'default' && object.metadata.name == 'exception-job'
+    - sleep: {duration: 15s}
+    - apply:
+        resource:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: exception-job
+            namespace: default
+          spec:
+            template:
+              spec:
+                containers: [{name: app, image: nginx:latest}]
+                restartPolicy: Never
+    - assert:
+        resource:
+          apiVersion: batch/v1
+          kind: Job
+          metadata:
+            name: exception-job
+            namespace: default
+          spec:
+            template:
+              spec:
+                containers: [{name: app, image: nginx:latest}]
+                restartPolicy: Never
