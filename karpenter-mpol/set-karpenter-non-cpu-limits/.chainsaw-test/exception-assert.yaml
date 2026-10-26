@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: exception-limits-pod
+  namespace: test
+spec:
+  containers:
+  - name: app
+    resources:
+      requests: {memory: 100Mi}
+      (limits.memory == null): true
