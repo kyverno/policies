@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Sync labels
+
+# Creates or updates label metadata (color/description) from .github/labels.yml,
+# including the lifecycle labels used by PR lifecycle. Run manually with
+# dry_run disabled before enabling readiness or stale mutations.
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Preview label changes without writing them
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: sync-labels
+  cancel-in-progress: false
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout trusted default branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+      - name: Sync label metadata
+        uses: kyverno/kyverno/.github/actions/pr-management@9d35d447e9806a9b178a602e693008cb76c520bd
+        env:
+          GH_TOKEN: ${{ github.token }}
+        with:
+          mode: sync-labels
+          dry-run: ${{ inputs.dry_run && 'true' || 'false' }}

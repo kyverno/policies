@@ -34,7 +34,7 @@ jobs:
           ref: ${{ github.event.repository.default_branch }}
           persist-credentials: false
       - name: Preview path labels and merge conflicts
-        uses: kyverno/kyverno/.github/actions/pr-management@35ca49f83d872bd8c0328dc767a4824a13d8fe04
+        uses: kyverno/kyverno/.github/actions/pr-management@9d35d447e9806a9b178a602e693008cb76c520bd
         with:
           mode: labels
           dry-run: ${{ github.event_name != 'workflow_dispatch' || inputs.dry_run }}

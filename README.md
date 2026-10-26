@@ -110,9 +110,10 @@ The labels `no-stale`, `hold`, `hold-redesign`, `blocked`, and `wip` exempt PRs
 from stale handling and reviewer reminders. If no reviewer or assignee is
 available, reminders go to `@kyverno/policies-maintainers`.
 
-Maintainers should review **Actions > PR Labeler** previews, then run it manually
-with `dry_run` disabled to provision labels and apply path/conflict labels. Do
-the same for readiness in **Actions > PR lifecycle**. After reviewing the
+Maintainers should first run **Actions > Sync labels** with `dry_run` disabled
+to provision label metadata, including lifecycle labels. Then review **Actions >
+PR Labeler** previews and run it manually with `dry_run` disabled to apply
+path/conflict labels. Do the same for readiness in **Actions > PR lifecycle**. After reviewing the
 results, replace the corresponding job's `dry-run` expression with `"false"`
 to enable automatic operation. Enable the stale job separately only after
 reviewing the backlog and exemptions. Definitions live in
