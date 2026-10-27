@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: chainsaw-helm-bad
+  namespace: default
+spec:
+  interval: 1m
+  url: https://charts.myorg.com.evil.example/stable

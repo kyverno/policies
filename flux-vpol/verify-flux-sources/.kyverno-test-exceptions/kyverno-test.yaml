@@ -1,0 +1,31 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-sources-exceptions
+policies:
+  - ../verify-flux-sources.yaml
+resources:
+  - ../.chainsaw-test/exceptions.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - policy: verify-flux-sources
+    kind: GitRepository
+    resources: [git-exception-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: GitRepository
+    resources: [git-exception-sibling, git-exception-prefix-bypass]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: ImageRepository
+    resources: [image-exception-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: ImageRepository
+    resources: [image-exception-dot-segment]
+    result: fail
+    isValidatingPolicy: true

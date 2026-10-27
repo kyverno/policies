@@ -1,0 +1,34 @@
+name: verify-flux-sources
+version: 1.0.0
+displayName: Verify Flux Sources in ValidatingPolicy
+description: Restrict Flux source locations to trusted host and path prefixes.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux-vpol/verify-flux-sources/verify-flux-sources.yaml
+  ```
+keywords:
+  - kyverno
+  - Flux
+  - ValidatingPolicy
+readme: |
+  Restricts GitRepository, Bucket, HelmRepository, OCIRepository, and ImageRepository resources to configurable trusted host and path prefixes. The sample allow-list is in `variables.allowedSourcePrefixes` in the policy; edit its host/path tokens to fit your environment. A path token such as `github.com/myorg` matches that path segment and its descendants, not `myorg-evil`. `*.myorg.com` matches subdomains, not the apex domain.
+
+  GitRepository accepts HTTPS and `ssh://git@host/path` URLs. SCP-style Git URLs (`git@host:org/repo`) are rejected. HTTPS userinfo and ports are not accepted; SSH requires exactly the `git` user. HelmRepository and Bucket accept HTTPS URLs; a bare Bucket endpoint is interpreted as HTTPS. OCIRepository accepts `oci://` URLs. ImageRepository uses Kyverno's `image()` parser. Queries, fragments, encoded path segments, repeated slashes, and dot-segment paths are rejected. Resources in `flux-system` are excluded.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno and reference the `ValidatingPolicy`
+  named `verify-flux-sources` in `spec.policyRefs`. Scope each exception with
+  `spec.matchConditions` to the intended Flux object. Add exact host/path prefix
+  tokens to `spec.allowedValues` (for example, `github.com/otherorg`); the token
+  is parsed with the same host and path-boundary checks as the policy allow-list.
+  The tested exception is limited to named GitRepository resources and does not
+  admit the sibling prefix `otherorg-evil`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Flux in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "GitRepository, Bucket, HelmRepository, OCIRepository, ImageRepository"
+digest: e2aaa97f027a55c5b446dfec5587cfaea20aa22917ef5f72ed9e4389aac0237f
+createdAt: "2026-10-27T12:00:00Z"

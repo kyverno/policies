@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: chainsaw-oci-bad
+  namespace: default
+spec:
+  interval: 1m
+  url: oci://ghcr.io/myorg-evil/charts

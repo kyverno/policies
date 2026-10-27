@@ -1,0 +1,8 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-sibling
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg/repository.git

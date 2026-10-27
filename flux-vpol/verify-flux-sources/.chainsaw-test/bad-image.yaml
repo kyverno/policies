@@ -1,0 +1,44 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-bad
+  namespace: default
+spec:
+  image: ghcr.io/myorg-evil/controller
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-dot-segment
+  namespace: default
+spec:
+  image: ghcr.io/myorg/./fluxcd/flux-cli
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-dotdot-segment
+  namespace: default
+spec:
+  image: ghcr.io/myorg/../fluxcd/flux-cli
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-encoded-dot-segment
+  namespace: default
+spec:
+  image: ghcr.io/myorg/%2e%2e/fluxcd/flux-cli
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-empty-segment
+  namespace: default
+spec:
+  image: ghcr.io/myorg//fluxcd/flux-cli
+  interval: 1m
