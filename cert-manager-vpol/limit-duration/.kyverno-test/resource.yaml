@@ -1,0 +1,86 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: short-duration
+  namespace: default
+spec:
+  secretName: short-duration
+  duration: 2160h
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: max-duration
+  namespace: default
+spec:
+  secretName: max-duration
+  duration: 2400h
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: long-duration
+  namespace: default
+spec:
+  secretName: long-duration
+  duration: 2401h
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: go-duration
+  namespace: default
+spec:
+  secretName: go-duration
+  duration: 3400h0m0s
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: letsencrypt-long
+  namespace: default
+spec:
+  secretName: letsencrypt-long
+  duration: 3400h
+  issuerRef:
+    name: letsencrypt-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: default-duration
+  namespace: default
+spec:
+  secretName: default-duration
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: null-duration
+  namespace: default
+spec:
+  secretName: null-duration
+  duration: null
+  issuerRef:
+    name: acme-prod
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: empty-duration
+  namespace: default
+spec:
+  secretName: empty-duration
+  duration: ""
+  issuerRef:
+    name: acme-prod

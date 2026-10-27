@@ -1,0 +1,36 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: cert-manager-limit-duration
+  annotations:
+    policies.kyverno.io/title: Limit Certificate duration
+    policies.kyverno.io/category: Cert-Manager in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.25+"
+    policies.kyverno.io/subject: Certificate
+    policies.kyverno.io/description: >-
+      Limits non-Let's Encrypt Certificate duration to 2400 hours.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["cert-manager.io"]
+        apiVersions: ["v1"]
+        operations: [CREATE, UPDATE]
+        resources: [certificates]
+  variables:
+    - name: requestedDuration
+      expression: >-
+        has(object.spec.duration) && object.spec.duration != null
+        ? object.spec.duration
+        : '2160h'
+  validations:
+    - expression: >-
+        object.spec.issuerRef.name.contains('letsencrypt') ||
+        variables.requestedDuration == '' ||
+        duration(variables.requestedDuration) <= duration('2400h')
+      message: Certificate duration must not exceed 2400h (100 days).

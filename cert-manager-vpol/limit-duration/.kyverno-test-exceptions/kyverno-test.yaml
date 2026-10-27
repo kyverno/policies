@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-limit-duration-exceptions
+policies:
+  - ../limit-duration.yaml
+resources:
+  - exception-resources.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-duration
+    kind: Certificate
+    resources: [exception-target]
+    result: skip
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-duration
+    kind: Certificate
+    resources: [exception-sibling, exception-wrong-namespace]
+    result: fail

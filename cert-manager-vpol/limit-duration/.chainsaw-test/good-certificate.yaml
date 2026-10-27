@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-manager-limit-duration-good
+  namespace: default
+spec:
+  secretName: duration-good
+  duration: 2160h
+  issuerRef:
+    name: acme
