@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restrict-ingress-paths-exception-sibling
+  namespace: default
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /etc/kubernetes/admin.conf
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 80

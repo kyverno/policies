@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-ingress-paths-exceptions
+policies:
+  - ../restrict-ingress-paths.yaml
+resources:
+  - resources.yaml
+exceptions:
+  - exception.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-ingress-paths
+    resources:
+      - default/path-exception
+    result: skip
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-ingress-paths
+    resources:
+      - default/path-exception-sibling
+    result: fail

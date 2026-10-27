@@ -1,0 +1,40 @@
+name: restrict-ingress-paths-vpol
+version: 1.0.0
+displayName: Restrict Sensitive Ingress Paths in ValidatingPolicy
+description: >-
+  Audit Ingress paths containing sensitive filesystem locations, including
+  /etc, /var/run/secrets, /root, and the Kubernetes service-account path.
+  Violations are reported without blocking by default.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress-vpol/restrict-ingress-paths/restrict-ingress-paths.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - Ingress NGINX
+  - ValidatingPolicy
+readme: |
+  Audit Ingress paths containing `/etc`, `/var/run/secrets`, `/root`, or `/var/run/kubernetes/serviceaccount`. This includes paths such as `/etc/kubernetes/admin.conf`. By default, violations are reported without blocking; set `validationActions` to `Deny` to enforce. The checks preserve the legacy substring behavior and are case-sensitive, consistent with Linux filesystem paths.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-ingress-paths` in `spec.policyRefs`, and use `spec.matchConditions` to
+  match the exact Ingress namespace and name. This is a whole-resource exception, so
+  all path checks are skipped for that Ingress; its siblings remain evaluated and
+  reported under the default Audit action. The Chainsaw test patches the action to
+  Deny to verify enforcement.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/nginx-ingress-vpol/restrict-ingress-paths/.kyverno-test-exceptions/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, Audit behavior
+  applies and violations are reported without blocking.
+
+  This is a path-content guardrail, not an ingress-nginx patch or a complete defense against controller vulnerabilities. See the [ingress-nginx hardening guide](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/hardening-guide.md) and [CVE-2025-1974](https://github.com/kubernetes/kubernetes/issues/131009) for the separate admission-webhook exposure risk.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, Ingress NGINX in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Ingress"
+digest: f2f8a9770e9dd77f236e0c276d1af4ae03ad4ca391dbae7833c446987829429c
+createdAt: "2026-10-27T15:01:14Z"
