@@ -1,0 +1,25 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-networkpolicy-dns-exception-scope
+policies:
+  - ../add-networkpolicy-dns.yaml
+resources:
+  - excluded-resource.yaml
+  - sibling-resource.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - kind: Namespace
+    policy: add-networkpolicy-dns
+    resources:
+      - dns-networkpolicy-excluded
+    result: skip
+    isGeneratingPolicy: true
+  - generatedResource: generatedResource.yaml
+    kind: Namespace
+    policy: add-networkpolicy-dns
+    resources:
+      - dns-networkpolicy-sibling
+    result: pass
+    isGeneratingPolicy: true

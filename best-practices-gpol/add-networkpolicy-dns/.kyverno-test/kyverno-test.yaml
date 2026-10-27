@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-networkpolicy-dns
+policies:
+  - ../add-networkpolicy-dns.yaml
+resources:
+  - resource.yaml
+results:
+  - generatedResource: generatedResource.yaml
+    kind: Namespace
+    policy: add-networkpolicy-dns
+    resources:
+      - dns-networkpolicy-generated
+    result: pass
+    isGeneratingPolicy: true
