@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-csr
+policies:
+- ../restrict-clusterrole-csr.yaml
+resources:
+- resource.yaml
+results:
+- policy: restrict-clusterrole-csr
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - csr-approval-update
+  - csr-approval-patch
+  - csr-approval-star-verb
+  - csr-wildcard-resource
+  - csr-subresource-wildcard
+  - csr-wildcard-api-group
+  - csr-resource-name
+  - csr-signers-approve
+  - csr-signers-wildcard-api-group
+  - csr-signers-wildcard-verb
+  - csr-signers-resource-name
+  - csr-aggregate-empty
+  - csr-exception-update
+  - csr-exception-update-patch
+  - csr-exception-other-name
+  result: fail
+- policy: restrict-clusterrole-csr
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - csr-get-approval
+  - csr-approval-status
+  - csr-wildcard-status
+  - csr-resource-wildcard-subresource
+  - csr-base-resource
+  - csr-other-api-group
+  - csr-unrelated
+  - csr-null-rules
+  - csr-empty-rules
+  - csr-omitted-rules
+  - csr-null-aggregation
+  - csr-nonresource-only
+  result: pass
