@@ -101,29 +101,15 @@ spec:
     - script:
         content: |
           set -eu
-          probe_output=".always-pull-images-update-$$.json"
-          probe_error=".always-pull-images-update-$$.stderr"
-          trap 'rm -f "$probe_output" "$probe_error"' EXIT
-          ready=false
-          for attempt in $(seq 1 60); do
-            if kubectl patch pod ephemeral-update-pod -n default \
-              --subresource=ephemeralcontainers --type=strategic --dry-run=server \
-              --patch='{"spec":{"ephemeralContainers":[{"name":"exception-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"},{"name":"mutation-probe","image":"registry.example/mutate-middle:1","imagePullPolicy":"IfNotPresent"}]}}' \
-              -o json > "$probe_output" 2> "$probe_error" &&
-              jq -e \
-                '([.spec.ephemeralContainers[] | select(.name == "exception-probe") | .imagePullPolicy] == ["IfNotPresent"]) and
-                ([.spec.ephemeralContainers[] | select(.name == "mutation-probe") | .imagePullPolicy] == ["Always"])' \
-                "$probe_output" >/dev/null 2>> "$probe_error"; then
-              ready=true
-              break
-            fi
-            sleep 1
-          done
-          if [ "$ready" != true ]; then
-            printf 'timed out waiting for PolicyException to exempt an ephemeral container; last kubectl/jq stderr:\n' >&2
-            cat "$probe_error" >&2
-            exit 1
-          fi
+          . ../../../.chainsaw/scripts/retry.sh
+          exception_active() {
+            kubectl patch pod ephemeral-update-pod -n default \
+              --subresource=ephemeralcontainers --type=strategic --dry-run=server -o json \
+              --patch='{"spec":{"ephemeralContainers":[{"name":"exception-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"},{"name":"mutation-probe","image":"registry.example/mutate-middle:1","imagePullPolicy":"IfNotPresent"}]}}' |
+              jq -e '([.spec.ephemeralContainers[] | select(.name == "exception-probe") | .imagePullPolicy] == ["IfNotPresent"]) and
+                ([.spec.ephemeralContainers[] | select(.name == "mutation-probe") | .imagePullPolicy] == ["Always"])'
+          }
+          retry exception_active
           kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=first --image=registry.example/skip-first:1 --image-pull-policy=IfNotPresent
           kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=middle --image=registry.example/mutate-middle:1 --image-pull-policy=IfNotPresent
           kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=last --image=registry.example/skip-last:1 --image-pull-policy=IfNotPresent
@@ -140,30 +126,14 @@ spec:
     - script:
         content: |
           set -eu
-          probe_output=".always-pull-images-revocation-$$.json"
-          probe_error=".always-pull-images-revocation-$$.stderr"
-          trap 'rm -f "$probe_output" "$probe_error"' EXIT
-          ready=false
-          for attempt in $(seq 1 60); do
-            if kubectl patch pod ephemeral-update-pod -n default \
-              --subresource=ephemeralcontainers --type=strategic --dry-run=server \
-              --patch='{"spec":{"ephemeralContainers":[{"name":"revocation-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"}]}}' \
-              -o json > "$probe_output" 2> "$probe_error" &&
-              jq -e \
-                '[.spec.ephemeralContainers[] | select(.name == "revocation-probe") | .imagePullPolicy] == ["Always"]' \
-                "$probe_output" >/dev/null 2>> "$probe_error"; then
-              ready=true
-              break
-            fi
-            sleep 1
-          done
-          if [ "$ready" != true ]; then
-            printf 'timed out waiting for deleted PolicyException to stop exempting the ephemeral container; last probe response:\n' >&2
-            cat "$probe_output" >&2
-            printf 'last kubectl/jq stderr:\n' >&2
-            cat "$probe_error" >&2
-            exit 1
-          fi
+          . ../../../.chainsaw/scripts/retry.sh
+          exception_revoked() {
+            kubectl patch pod ephemeral-update-pod -n default \
+              --subresource=ephemeralcontainers --type=strategic --dry-run=server -o json \
+              --patch='{"spec":{"ephemeralContainers":[{"name":"revocation-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"}]}}' |
+              jq -e '[.spec.ephemeralContainers[] | select(.name == "revocation-probe") | .imagePullPolicy] == ["Always"]'
+          }
+          retry exception_revoked
           kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=after-revocation --image=registry.example/skip-first:1 --image-pull-policy=IfNotPresent
     - assert:
         file: ephemeral-pod-revoked-patched.yaml
