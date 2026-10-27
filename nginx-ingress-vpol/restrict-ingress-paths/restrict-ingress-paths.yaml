@@ -1,0 +1,38 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-ingress-paths
+  annotations:
+    policies.kyverno.io/title: Restrict Sensitive Ingress Paths in ValidatingPolicy
+    policies.kyverno.io/category: Security, Ingress NGINX in ValidatingPolicy
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: Ingress
+    policies.kyverno.io/description: >-
+      Reject Ingress paths containing sensitive filesystem locations, including
+      /etc, /var/run/secrets, /root, and the Kubernetes service-account path.
+spec:
+  validationActions:
+    - Deny
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["networking.k8s.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["ingresses"]
+  validations:
+    - expression: >-
+        !has(object.spec.rules) || object.spec.rules == null ||
+        object.spec.rules.all(rule,
+          !has(rule.http) || rule.http == null ||
+          !has(rule.http.paths) || rule.http.paths == null ||
+          rule.http.paths.all(path,
+            !has(path.path) || path.path == null ||
+            !path.path.matches('(?s)^.*(?:/etc|/var/run/secrets|/root|/var/run/kubernetes/serviceaccount).*$')))
+      message: >-
+        Ingress paths must not contain sensitive filesystem paths such as /etc,
+        /var/run/secrets, /root, or /var/run/kubernetes/serviceaccount.
