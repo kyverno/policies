@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   kubernetes-matrix:
-    uses: kyverno/kyverno/.github/workflows/kubernetes-matrix.yaml@6d209dea222a7272948585394e4e8457e80c5f67 # shared Kubernetes matrix
+    uses: kyverno/kyverno/.github/workflows/kubernetes-matrix.yaml@4a55ff8341dbdb7acef70b5b8c25d75e51848cfc # shared Kubernetes matrix
 
   argo-gpol:
     needs: kubernetes-matrix
