@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.28
@@ -12,6 +14,8 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.28
