@@ -68,7 +68,10 @@ spec:
             file=$1
             url=$2
             transient_message=$3
-            for attempt in 1 2 3 4 5; do
+            # Retry for up to about 60s: a new PolicyException takes a few seconds to reach the
+            # admission controller, and the API server can return update conflicts.
+            for attempt in $(seq 1 30); do
+              [ "$attempt" -eq 1 ] || sleep 2
               rv=$(kubectl get pod "$pod_name" -o jsonpath='{.metadata.resourceVersion}')
               jq --arg rv "$rv" '.metadata.resourceVersion=$rv' "$file" >/tmp/ephemeral-rv.json
               set +e
@@ -93,7 +96,7 @@ spec:
               printf '%s\n' "$actual" >&2
               return "$actual_code"
             done
-            echo "ephemeralcontainers update conflicted after 5 attempts" >&2
+            echo "ephemeralcontainers update did not succeed after 30 attempts" >&2
             return 1
           }
           kubectl apply -f - <<'YAML'
