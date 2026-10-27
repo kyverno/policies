@@ -1,0 +1,151 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-label
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/source-label:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-annotation-init
+spec:
+  initContainers:
+    - name: init
+      image: registry.example.com/source-annotation:v1
+  containers:
+    - name: app
+      image: registry.example.com/source-label:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-ephemeral
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/source-label:v1
+  ephemeralContainers:
+    - name: debugger
+      image: registry.example.com/source-annotation:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-digest
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: missing-source
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/kyverno/test-verify-image:unsigned
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: missing-source-init
+spec:
+  initContainers:
+    - name: init
+      image: ghcr.io/kyverno/test-verify-image:unsigned
+  containers:
+    - name: app
+      image: registry.example.com/source-label:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: missing-source-ephemeral
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/source-label:v1
+  ephemeralContainers:
+    - name: debugger
+      image: ghcr.io/kyverno/test-verify-image:unsigned
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: empty-source
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/empty-source:v1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: absent-metadata
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/no-source:v1
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deployment
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/kyverno/test-verify-image:unsigned
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bad-cronjob
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: app
+              image: ghcr.io/kyverno/test-verify-image:unsigned
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: bad-replicationcontroller
+spec:
+  replicas: 0
+  selector:
+    app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/kyverno/test-verify-image:unsigned
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: absent-fields
+spec:
+  containers:
+    - name: app
+      image: registry.example.com/absent-source:v1

@@ -1,0 +1,19 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-image-source-exception
+context: ../.kyverno-test/context.yaml
+policies: [../require-image-source.yaml]
+resources: [resources.yaml]
+exceptions: [exceptions.yaml]
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: require-image-source
+    resources: [default/approved-image]
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: require-image-source
+    resources: [default/unapproved-image]
+    result: fail

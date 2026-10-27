@@ -1,0 +1,53 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  images:
+    - image: registry.example.com/source-label:v1
+      config:
+        config:
+          Labels:
+            org.opencontainers.image.source: https://github.com/example/source-label
+      manifest:
+        annotations: {}
+    - image: registry.example.com/source-annotation:v1
+      config:
+        config:
+          Labels: {}
+      manifest:
+        annotations:
+          org.opencontainers.image.source: https://github.com/example/source-annotation
+    - image: registry.example.com/no-source:v1
+      config:
+        config:
+          Labels: null
+      manifest:
+        annotations: null
+    - image: registry.example.com/empty-source:v1
+      config:
+        config:
+          Labels:
+            org.opencontainers.image.source: "  "
+      manifest:
+        annotations:
+          org.opencontainers.image.source: ""
+    - image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
+      config:
+        config:
+          Labels:
+            org.opencontainers.image.source: https://github.com/kyverno/kyverno-examples
+      manifest:
+        annotations:
+          org.opencontainers.image.source: https://github.com/kyverno/kyverno-examples
+    - image: ghcr.io/kyverno/test-verify-image:unsigned
+      config:
+        architecture: amd64
+        config:
+          Labels: null
+      manifest:
+        annotations: null
+    - image: registry.example.com/absent-source:v1
+      config:
+        config: {}
+      manifest: {}

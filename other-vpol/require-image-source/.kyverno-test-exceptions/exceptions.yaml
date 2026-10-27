@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-image-source-approved-image
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: require-image-source
+  matchConditions:
+    - name: exact-resource
+      expression: request.namespace == 'default' && request.name == 'approved-image'
+  allowedValues:
+    - registry.example.com/exception-only:v1
