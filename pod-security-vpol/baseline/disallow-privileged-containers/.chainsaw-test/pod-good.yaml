@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: goodpod01-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   initContainers:
   - name: busybox01-init
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -21,6 +23,8 @@ kind: Pod
 metadata:
   name: goodpod02-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -32,6 +36,8 @@ kind: Pod
 metadata:
   name: goodpod03-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -47,6 +53,8 @@ kind: Pod
 metadata:
   name: goodpod04-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -56,6 +64,8 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -65,6 +75,8 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -76,6 +88,8 @@ kind: Pod
 metadata:
   name: goodpod03
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -89,6 +103,8 @@ kind: Pod
 metadata:
   name: goodpod04
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   initContainers:
   - name: initcontainer01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -101,6 +117,8 @@ kind: Pod
 metadata:
   name: goodpod05
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   initContainers:
   - name: initcontainer01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -115,6 +133,8 @@ kind: Pod
 metadata:
   name: goodpod06
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   initContainers:
   - name: initcontainer01
     image: ghcr.io/kyverno/test-busybox:1.35
