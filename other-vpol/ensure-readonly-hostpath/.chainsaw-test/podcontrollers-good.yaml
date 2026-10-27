@@ -72,4 +72,31 @@ spec:
             hostPath:
               path: /var/log
           restartPolicy: OnFailure
-
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: goodstatefulset01
+spec:
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        volumeMounts:
+        - mountPath: /some/dir
+          name: foo
+          readOnly: true
+      initContainers:
+      - name: busybox-init
+        image: ghcr.io/kyverno/test-busybox:1.35
+      volumes:
+      - name: foo
+        hostPath:
+          path: /var/log

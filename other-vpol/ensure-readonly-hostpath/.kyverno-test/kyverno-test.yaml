@@ -8,6 +8,7 @@ resources:
 - exception-pod.yaml
 - good-pod-01.yaml
 - bad-pod-01.yaml
+- no-volumemounts-resources.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -29,3 +30,28 @@ results:
   resources:
   - good-pod-01
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: ensure-readonly-hostpath
+  resources:
+  - good-init-no-volumemounts
+  - good-hostpath-not-mounted
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: ensure-readonly-hostpath
+  resources:
+  - bad-init-no-volumemounts
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: ensure-readonly-hostpath
+  resources:
+  - goodstatefulset01
+  result: pass
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: ensure-readonly-hostpath
+  resources:
+  - badstatefulset01
+  result: fail
