@@ -1,0 +1,186 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: verify-flux-images
+spec:
+  template: false
+  steps:
+    - name: install-policy
+      try:
+        - apply:
+            file: ../verify-flux-images.yaml
+        - assert:
+            file: policy-ready.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ImageValidatingPolicy
+              metadata:
+                name: verify-flux-images
+              spec:
+                validationActions: [Deny]
+    - name: verify-current-controller-signature
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              cleanup() {
+                kubectl delete pod flux-source-controller-signed -n "$NAMESPACE" --ignore-not-found --wait=true >/dev/null
+              }
+              cleanup
+              trap cleanup EXIT
+              if output=$(kubectl run flux-source-controller-signed -n "$NAMESPACE" --restart=Never --image-pull-policy=Never --image=ghcr.io/fluxcd/source-controller:v1.10.1 2>&1); then
+                printf '%s\n' "$output"
+              else
+                printf '%s\n' "$output"
+                exit 1
+              fi
+              kubectl delete pod flux-source-controller-signed -n "$NAMESPACE" --wait=true >/dev/null
+    - name: verify-digest-pinned-controller-image
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              cleanup() {
+                kubectl delete pod flux-source-controller-digest -n "$NAMESPACE" --ignore-not-found --wait=true >/dev/null
+              }
+              cleanup
+              trap cleanup EXIT
+              if output=$(kubectl run flux-source-controller-digest -n "$NAMESPACE" --restart=Never --image-pull-policy=Never --image=ghcr.io/fluxcd/source-controller:v1.10.1@sha256:611b6bca3eae95bcff471414d1fb14a4ab83d7f14e609cccef2bd389c121f37e 2>&1); then
+                printf '%s\n' "$output"
+              else
+                printf '%s\n' "$output"
+                exit 1
+              fi
+              kubectl delete pod flux-source-controller-digest -n "$NAMESPACE" --wait=true >/dev/null
+    - name: verify-init-container-and-controller-matching
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              if output=$(kubectl create --dry-run=server -f - -n "$NAMESPACE" -o name 2>&1 <<EOF
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: flux-init-controller-probe
+              spec:
+                selector:
+                  matchLabels:
+                    app: flux-init-controller-probe
+                template:
+                  metadata:
+                    labels:
+                      app: flux-init-controller-probe
+                  spec:
+                    initContainers:
+                      - name: flux-init
+                        image: ghcr.io/fluxcd/source-controller:v1.10.1
+                    containers:
+                      - name: app
+                        image: docker.io/library/busybox:1.36
+              EOF
+              ); then
+                printf '%s\n' "$output"
+              else
+                printf '%s\n' "$output"
+                exit 1
+              fi
+    - name: reject-unverified-init-and-ephemeral-images
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              # This published tag exists in GHCR but has no Cosign artifacts (confirmed with cosign tree).
+              if output=$(kubectl create --dry-run=server -f - -n "$NAMESPACE" -o name 2>&1 <<'EOF'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: flux-init-unsigned-probe
+              spec:
+                initContainers:
+                  - name: flux-init
+                    image: ghcr.io/fluxcd/source-controller:v0.0.14
+                containers:
+                  - name: app
+                    image: docker.io/library/busybox:1.36
+              EOF
+              ); then
+                printf '%s\n' "$output"
+                echo "Expected the unsigned Flux init container to be rejected" >&2
+                exit 1
+              else
+                printf '%s\n' "$output"
+              fi
+              printf '%s\n' "$output" | grep -F 'Policy verify-flux-images failed'
+              printf '%s\n' "$output" | grep -F 'Failed to verify the Flux controller image signature.'
+              kubectl delete pod flux-ephemeral-probe -n "$NAMESPACE" --ignore-not-found --wait=true >/dev/null
+              kubectl create -f - -n "$NAMESPACE" <<'EOF'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: flux-ephemeral-probe
+              spec:
+                containers:
+                  - name: app
+                    image: docker.io/library/busybox:1.36
+                    command: ["sh", "-c", "sleep 3600"]
+              EOF
+              trap 'kubectl delete pod flux-ephemeral-probe -n "$NAMESPACE" --ignore-not-found --wait=true >/dev/null' EXIT
+              if output=$(kubectl patch pod flux-ephemeral-probe -n "$NAMESPACE" --subresource=ephemeralcontainers --type=merge -p '{"spec":{"ephemeralContainers":[{"name":"flux-debugger","image":"ghcr.io/fluxcd/source-controller:v0.0.14"}]}}' 2>&1); then
+                printf '%s\n' "$output"
+                echo "Expected the unsigned Flux ephemeral container to be rejected" >&2
+                exit 1
+              else
+                printf '%s\n' "$output"
+              fi
+              printf '%s\n' "$output" | grep -F 'Policy verify-flux-images failed'
+              printf '%s\n' "$output" | grep -F 'Failed to verify the Flux controller image signature.'
+    - name: fine-grained-exception-and-no-bypass
+      try:
+        - apply:
+            file: exception-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - create:
+            file: exception-pod.yaml
+        - delete:
+            ref:
+              apiVersion: v1
+              kind: Pod
+              name: flux-approved-unsigned
+              namespace: default
+        - create:
+            timeout: 60s
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-flux-images failed') && contains($error, 'Failed to verify the Flux controller image signature.')): true
+            file: exception-sibling-pod.yaml
+        - create:
+            timeout: 60s
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-flux-images failed') && contains($error, 'Failed to verify the Flux controller image signature.')): true
+            file: exception-mixed-images.yaml
+        - script:
+            content: |
+              kubectl delete policyexceptions.policies.kyverno.io verify-flux-images-exception -n policy-exceptions --ignore-not-found --wait=true
+        - create:
+            timeout: 60s
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-flux-images failed') && contains($error, 'Failed to verify the Flux controller image signature.')): true
+            file: exception-pod.yaml
+        - delete:
+            ref:
+              apiVersion: v1
+              kind: Pod
+              name: flux-sibling-unsigned
+              namespace: default

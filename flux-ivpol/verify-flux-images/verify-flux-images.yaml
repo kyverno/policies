@@ -1,0 +1,87 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-flux-images
+  annotations:
+    policies.kyverno.io/title: Verify Flux Images
+    policies.kyverno.io/category: Flux
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Verifies the keyless Cosign signatures of Flux controller images published
+      to GHCR and Docker Hub using their GitHub Actions release workflows.
+spec:
+  validationActions: [Audit]
+  webhookConfiguration:
+    timeoutSeconds: 30
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["UPDATE"]
+        resources: ["pods/ephemeralcontainers"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["statefulsets"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["daemonsets"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["replicasets"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["cronjobs"]
+  matchImageReferences:
+    - glob: "ghcr.io/fluxcd/source-controller:*"
+    - glob: "ghcr.io/fluxcd/kustomize-controller:*"
+    - glob: "ghcr.io/fluxcd/helm-controller:*"
+    - glob: "ghcr.io/fluxcd/notification-controller:*"
+    - glob: "ghcr.io/fluxcd/image-reflector-controller:*"
+    - glob: "ghcr.io/fluxcd/image-automation-controller:*"
+    - glob: "docker.io/fluxcd/source-controller:*"
+    - glob: "docker.io/fluxcd/kustomize-controller:*"
+    - glob: "docker.io/fluxcd/helm-controller:*"
+    - glob: "docker.io/fluxcd/notification-controller:*"
+    - glob: "docker.io/fluxcd/image-reflector-controller:*"
+    - glob: "docker.io/fluxcd/image-automation-controller:*"
+  validationConfigurations:
+    mutateDigest: false
+    required: true
+    verifyDigest: false
+  attestors:
+    - name: fluxcd
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v0\.17\.0$'
+        ctlog:
+          url: https://rekor.sigstore.dev
+  validations:
+    - expression: >-
+        (images.containers + images.initContainers + images.ephemeralContainers)
+        .map(image, verifyImageSignatures(image, [attestors.fluxcd]))
+        .all(result, result > 0)
+      message: Failed to verify the Flux controller image signature.

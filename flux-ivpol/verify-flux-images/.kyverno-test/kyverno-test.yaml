@@ -1,0 +1,54 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-images
+policies:
+  - ../verify-flux-images.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: verify-flux-images
+    resources:
+      - unrelated-image
+      - lookalike-registry
+      - lookalike-repository
+      - lookalike-container-categories
+    result: pass
+  - isValidatingPolicy: true
+    kind: Deployment
+    policy: verify-flux-images
+    resources:
+      - unrelated-controller-image
+    result: pass
+  - isValidatingPolicy: true
+    kind: StatefulSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-statefulset-image
+    result: pass
+  - isValidatingPolicy: true
+    kind: DaemonSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-daemonset-image
+    result: pass
+  - isValidatingPolicy: true
+    kind: ReplicaSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-replicaset-image
+    result: pass
+  - isValidatingPolicy: true
+    kind: Job
+    policy: verify-flux-images
+    resources:
+      - unrelated-job-image
+    result: pass
+  - isValidatingPolicy: true
+    kind: CronJob
+    policy: verify-flux-images
+    resources:
+      - unrelated-cronjob-image
+    result: pass

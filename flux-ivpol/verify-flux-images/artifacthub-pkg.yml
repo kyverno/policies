@@ -1,0 +1,29 @@
+name: verify-flux-images
+version: 1.0.0
+displayName: Verify Flux Images
+createdAt: "2026-10-27T15:00:00Z"
+description: >-
+  Verifies keyless Cosign signatures of Flux controller images published to GHCR and Docker Hub.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux-ivpol/verify-flux-images/verify-flux-images.yaml
+  ```
+keywords:
+  - kyverno
+  - Flux
+  - Software Supply Chain Security
+readme: |
+  Verifies keyless Cosign signatures for Flux source, kustomize, helm, notification, image-reflector, and image-automation controller images on GHCR and Docker Hub. Signatures must use GitHub Actions OIDC and have a Rekor transparency-log entry. The anchored identity regex accepts the reusable `fluxcd/gha-workflows/.github/workflows/controller-release.yaml` workflow at tag `v0.17.0`, which the six controller repositories' release workflows invoke. Update this exact identity when Flux changes that reusable workflow pin. The separate `fluxcd/flux2` release workflow signs the Flux manifests artifact, not these controller images, so it is intentionally not accepted here.
+
+  Image tags and digest handling preserve the legacy policy: this policy neither mutates tags to digests nor requires digest references. Background evaluation is disabled. It verifies matched regular and init containers and additionally checks ephemeral-container updates so an unsigned Flux image cannot be introduced through the `pods/ephemeralcontainers` subresource.
+
+  ### Fine-grained PolicyException use
+
+  A PolicyException can bypass signature verification for a specific Pod only when its `matchConditions` identify that exact request and require every regular, init, and ephemeral container image to equal an explicitly approved image. Do not grant a broad namespace or image-pattern exception. A mixed-image Pod or sibling Pod must not match the exception. See the tested example in `.chainsaw-test/exception.yaml`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Flux, Software Supply Chain Security"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "Pod"
+digest: bdf08d166bea92afb10c371d20de500c6687c38cb9ac7280f989694ece086274
