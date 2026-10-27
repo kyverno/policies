@@ -1,0 +1,219 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-image-source
+spec:
+  catch:
+    - script:
+        content: |
+          set -eu
+          if [ -f .replicaset-resource-filters.json ]; then
+            kubectl -n kyverno patch configmap kyverno --type=merge --patch-file .replicaset-resource-filters.json
+            kubectl -n kyverno rollout restart deployment/kyverno-admission-controller
+            kubectl -n kyverno rollout status deployment/kyverno-admission-controller --timeout=180s
+            rm -f .replicaset-resource-filters.json .replicaset-enabled.json
+          fi
+  steps:
+    - name: scoped-replicaset-admission
+      try:
+        - script:
+            content: |
+              set -eu
+              kubectl -n kyverno get configmap kyverno -o json |
+                jq '{data: {resourceFilters: .data.resourceFilters}}' > .replicaset-resource-filters.json
+              python3 -c 'import json; from pathlib import Path; payload = json.loads(Path(".replicaset-resource-filters.json").read_text()); filters = payload["data"]["resourceFilters"] or ""; payload["data"]["resourceFilters"] = filters.replace("[ReplicaSet,*,*]", "").replace("[ReplicaSet/?*,*,*]", ""); print(json.dumps(payload))' > .replicaset-enabled.json
+              kubectl -n kyverno patch configmap kyverno --type=merge --patch-file .replicaset-enabled.json
+              kubectl -n kyverno rollout restart deployment/kyverno-admission-controller
+              kubectl -n kyverno rollout status deployment/kyverno-admission-controller --timeout=180s
+      cleanup:
+        - script:
+            content: |
+              set -eu
+              if [ -f .replicaset-resource-filters.json ]; then
+                kubectl -n kyverno patch configmap kyverno --type=merge --patch-file .replicaset-resource-filters.json
+                kubectl -n kyverno rollout restart deployment/kyverno-admission-controller
+                kubectl -n kyverno rollout status deployment/kyverno-admission-controller --timeout=180s
+              fi
+              rm -f .replicaset-resource-filters.json .replicaset-enabled.json
+    - name: install-policy
+      try:
+        - apply:
+            file: ephemeral-rbac.yaml
+        - apply:
+            file: sibling-namespace.yaml
+        - apply:
+            file: ../require-image-source.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: require-image-source
+              spec:
+                validationActions: [Deny]
+                matchConstraints:
+                  namespaceSelector:
+                    matchExpressions:
+                      - key: kubernetes.io/metadata.name
+                        operator: In
+                        values:
+                          - ($namespace)
+                          - require-image-source-sibling
+        - assert:
+            file: policy-ready.yaml
+    - name: install-exception
+      try:
+        - apply:
+            file: exception-namespace.yaml
+        - script:
+            content: |
+              set -eu
+              kubectl apply -f - <<EOF
+              apiVersion: policies.kyverno.io/v1
+              kind: PolicyException
+              metadata:
+                name: require-image-source-approved-image
+                namespace: policy-exceptions
+              spec:
+                policyRefs:
+                  - kind: ValidatingPolicy
+                    name: require-image-source
+                matchConditions:
+                  - name: exact-resource
+                    expression: >-
+                      request.namespace == '${NAMESPACE}' &&
+                      object.metadata.namespace == '${NAMESPACE}' &&
+                      request.kind.kind == 'Pod' &&
+                      ((object.metadata.name in ['source-exception', 'source-ephemeral-base'] &&
+                        request.operation == 'CREATE' &&
+                        (!has(request.subResource) || request.subResource == '')) ||
+                       (object.metadata.name == 'source-ephemeral-base' &&
+                        request.operation == 'UPDATE' &&
+                        has(request.subResource) &&
+                        request.subResource == 'ephemeralcontainers'))
+                allowedValues:
+                  - ghcr.io/kyverno/test-verify-image@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5
+              EOF
+              for attempt in $(seq 1 20); do
+                if output=$(kubectl create --dry-run=server --request-timeout=3s \
+                  -n "$NAMESPACE" -f pod-exception.yaml -o name 2>&1); then
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo "$output" >&2
+              echo 'require-image-source PolicyException did not become active' >&2
+              exit 1
+    - name: test-pods
+      try:
+        - apply:
+            file: pod-good.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Container images must include a non-empty org.opencontainers.image.source')): true
+            file: pod-bad.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Container images must include a non-empty org.opencontainers.image.source')): true
+            file: pod-init-bad.yaml
+        - apply:
+            file: pod-exception.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Container images must include a non-empty org.opencontainers.image.source')): true
+            file: pod-exception-sibling.yaml
+        - apply:
+            file: pod-ephemeral-base.yaml
+        - assert:
+            file: pod-running.yaml
+        - script:
+            content: |-
+              set +e
+              output=$(kubectl debug source-ephemeral-base -n "$NAMESPACE" --image=ghcr.io/kyverno/test-verify-image:unsigned --target=app --profile=general --attach=false 2>&1)
+              status=$?
+              printf '%s\n' "$output"
+              if [ "$status" -eq 0 ]; then
+                echo "expected ephemeral-container admission to be denied" >&2
+                exit 1
+              fi
+              printf '%s' "$output" | grep -F 'Container images must include a non-empty org.opencontainers.image.source'
+    - name: test-controllers
+      try:
+        - apply:
+            file: podcontroller-good.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Container images must include a non-empty org.opencontainers.image.source')): true
+            file: podcontroller-bad.yaml
+        - script:
+            content: |
+              set -eu
+              kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f statefulset-good.yaml -o name >/dev/null
+              if output=$(kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f statefulset-bad.yaml -o name 2>&1); then
+                echo "expected StatefulSet with source-less image to be denied" >&2
+                exit 1
+              fi
+              printf '%s\n' "$output" | grep -F \
+                'Container images must include a non-empty org.opencontainers.image.source' >/dev/null || {
+                echo "$output" >&2
+                exit 1
+              }
+        - script:
+            content: |
+              set -eu
+              kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f daemonset-good.yaml -o name >/dev/null
+              if output=$(kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f daemonset-bad.yaml -o name 2>&1); then
+                echo "expected DaemonSet with source-less image to be denied" >&2
+                exit 1
+              fi
+              printf '%s\n' "$output" | grep -F \
+                'Container images must include a non-empty org.opencontainers.image.source' >/dev/null || {
+                echo "$output" >&2
+                exit 1
+              }
+        - script:
+            content: |
+              set -eu
+              kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f replicaset-good.yaml -o name >/dev/null
+              if output=$(kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f replicaset-bad.yaml -o name 2>&1); then
+                echo "expected ReplicaSet with source-less image to be denied" >&2
+                exit 1
+              fi
+              printf '%s\n' "$output" | grep -F \
+                'Container images must include a non-empty org.opencontainers.image.source' >/dev/null || {
+                echo "$output" >&2
+                exit 1
+              }
+        - script:
+            content: |
+              set -eu
+              kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f job-good.yaml -o name >/dev/null
+              if output=$(kubectl create --dry-run=server --request-timeout=15s \
+                -n "$NAMESPACE" -f job-bad.yaml -o name 2>&1); then
+                echo "expected Job with source-less image to be denied" >&2
+                exit 1
+              fi
+              printf '%s\n' "$output" | grep -F \
+                'Container images must include a non-empty org.opencontainers.image.source' >/dev/null || {
+                echo "$output" >&2
+                exit 1
+              }
+    - name: cleanup
+      try:
+        - script:
+            content: kubectl delete pod source-ephemeral-base -n "$NAMESPACE" --ignore-not-found --wait=true --timeout=60s
+        - script:
+            content: kubectl delete namespace require-image-source-sibling --ignore-not-found --wait=true --timeout=60s
