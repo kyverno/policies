@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: token-default
+spec:
+  containers:
+    - name: app
+      image: nginx

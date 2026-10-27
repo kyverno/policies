@@ -1,0 +1,229 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-secrets-by-label
+spec:
+  template: false
+  steps:
+    - name: ephemeral-container-rbac
+      try:
+        - apply:
+            file: ephemeral-rbac.yaml
+        - script:
+            content: |
+              set -eu
+              for attempt in $(seq 1 30); do
+                ready=true
+                for verb in get list watch update; do
+                  if ! kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-admission-controller -n "$NAMESPACE" | grep -qx yes; then
+                    ready=false
+                  fi
+                done
+                if [ "$ready" = true ]; then exit 0; fi
+                sleep 1
+              done
+              echo "ephemeral-container RBAC aggregation did not become observable" >&2
+              exit 1
+    - name: shared-exception-namespace
+      skipDelete: true
+      try:
+        - apply:
+            file: policy-exceptions-namespace.yaml
+    - name: configure-policy
+      try:
+        - apply:
+            file: ../permissions.yaml
+        - apply:
+            file: secrets.yaml
+        - apply:
+            file: preexisting-ephemeral-pod.yaml
+        - apply:
+            file: ../restrict-secrets-by-label.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: restrict-secrets-by-label
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: check-secret-references
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-env-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-envfrom-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-volume-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-projected-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-init-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: missing-secret-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-deployment.yaml
+    - name: check-policy-exception
+      try:
+        - script:
+            content: |
+              set -eu
+              kubectl apply -n policy-exceptions -f - <<YAML
+              apiVersion: policies.kyverno.io/v1
+              kind: PolicyException
+              metadata:
+                name: restrict-secrets-by-label-exception
+                namespace: policy-exceptions
+              spec:
+                policyRefs:
+                  - kind: ValidatingPolicy
+                    name: restrict-secrets-by-label
+                allowedValues:
+                  - env.secretKeyRef:protected
+                  - envFrom.secretRef:protected
+                  - volume.secret:protected
+                  - projected.secret:protected
+                matchConditions:
+                  - name: exact-target
+                    expression: "object.metadata.namespace == '$NAMESPACE' && object.metadata.name == 'secret-exception-target'"
+              YAML
+              for attempt in $(seq 1 30); do
+                set +e
+                output=$(kubectl apply -n "$NAMESPACE" --dry-run=server -f - 2>&1 <<'YAML'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: secret-exception-target
+              spec:
+                containers:
+                  - name: app
+                    image: nginx
+                    env:
+                      - name: TOKEN
+                        valueFrom:
+                          secretKeyRef:
+                            name: protected
+                            key: token
+                    envFrom:
+                      - secretRef:
+                          name: protected
+                volumes:
+                  - name: direct-secret
+                    secret:
+                      secretName: protected
+                  - name: projected-secret
+                    projected:
+                      sources:
+                        - secret:
+                            name: protected
+              YAML
+              )
+                status=$?
+                set -e
+                printf '%s\n' "$output"
+                if [ "$status" -eq 0 ]; then
+                  kubectl apply -n "$NAMESPACE" -f - <<'YAML'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: secret-exception-target
+              spec:
+                containers:
+                  - name: app
+                    image: nginx
+                    env:
+                      - name: TOKEN
+                        valueFrom:
+                          secretKeyRef:
+                            name: protected
+                            key: token
+                    envFrom:
+                      - secretRef:
+                          name: protected
+                volumes:
+                  - name: direct-secret
+                    secret:
+                      secretName: protected
+                  - name: projected-secret
+                    projected:
+                      sources:
+                        - secret:
+                            name: protected
+              YAML
+                  exit 0
+                fi
+                if ! printf '%s' "$output" | grep -F 'Policy restrict-secrets-by-label failed' >/dev/null; then
+                  exit "$status"
+                fi
+                sleep 1
+              done
+              echo "PolicyException did not allow the exact target Pod within 30 seconds" >&2
+              exit 1
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy restrict-secrets-by-label failed')): true
+            file: exception-sibling-pod.yaml
+    - name: check-ephemeral-container-update
+      try:
+        - script:
+            content: |
+              set -eu
+              kubectl wait --for=jsonpath='{.status.phase}'=Running pod/secret-ephemeral-update-target --timeout=120s -n "$NAMESPACE"
+              set +e
+              output=$(kubectl patch pod secret-ephemeral-update-target -n "$NAMESPACE" --subresource=ephemeralcontainers --type=merge -p '{"spec":{"ephemeralContainers":[{"name":"debug","image":"busybox:1.35","targetContainerName":"app","env":[{"name":"TOKEN","valueFrom":{"secretKeyRef":{"name":"protected","key":"token"}}}],"envFrom":[{"secretRef":{"name":"protected"}}]}]}}' 2>&1)
+              status=$?
+              set -e
+              printf '%s\n' "$output"
+              if [ "$status" -eq 0 ]; then
+                echo "expected protected ephemeral-container Secret reference to be denied" >&2
+                exit 1
+              fi
+              printf '%s' "$output" | grep -F 'Policy restrict-secrets-by-label failed'
+    - name: cleanup
+      try:
+        - script:
+            content: kubectl delete policyexceptions.policies.kyverno.io restrict-secrets-by-label-exception -n policy-exceptions --ignore-not-found --wait=true
+        - script:
+            content: kubectl delete pods --all --ignore-not-found --wait=true -n "$NAMESPACE"
+        - delete:
+            ref:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              name: restrict-secrets-by-label
+        - delete:
+            ref:
+              apiVersion: rbac.authorization.k8s.io/v1
+              kind: ClusterRole
+              name: kyverno:restrict-secrets-by-label:secrets:get
+        - delete:
+            ref:
+              apiVersion: rbac.authorization.k8s.io/v1
+              kind: ClusterRole
+              name: kyverno:admission-controller:restrict-secrets-by-label:ephemeralcontainers

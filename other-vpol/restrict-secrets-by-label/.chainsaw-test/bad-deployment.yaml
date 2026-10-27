@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: protected-deployment
+spec:
+  selector:
+    matchLabels:
+      app: protected
+  template:
+    metadata:
+      labels:
+        app: protected
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          envFrom:
+            - secretRef:
+                name: protected

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-automount-sa-token-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: restrict-automount-sa-token
+  allowedValues:
+    - automountServiceAccountToken:true
+  matchConditions:
+    - name: exact-target
+      expression: object.metadata.namespace == 'default' && object.metadata.name == 'automount-exception-target'

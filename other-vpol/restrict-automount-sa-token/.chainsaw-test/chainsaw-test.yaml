@@ -1,0 +1,173 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-automount-sa-token
+spec:
+  template: false
+  steps:
+    - name: ephemeral-container-rbac
+      try:
+        - apply:
+            file: ephemeral-rbac.yaml
+        - script:
+            content: |
+              set -eu
+              for attempt in $(seq 1 30); do
+                ready=true
+                for verb in get list watch update; do
+                  if ! kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-admission-controller -n "$NAMESPACE" | grep -qx yes; then
+                    ready=false
+                  fi
+                done
+                for verb in get list watch; do
+                  if ! kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-reports-controller -n "$NAMESPACE" | grep -qx yes; then
+                    ready=false
+                  fi
+                done
+                if [ "$ready" = true ]; then exit 0; fi
+                sleep 1
+              done
+              echo "ephemeral-container RBAC aggregation did not become observable" >&2
+              exit 1
+    - name: shared-exception-namespace
+      skipDelete: true
+      try:
+        - apply:
+            file: policy-exceptions-namespace.yaml
+    - name: configure-policy
+      try:
+        - apply:
+            file: preexisting-ephemeral-pod.yaml
+        - apply:
+            file: ../restrict-automount-sa-token.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: restrict-automount-sa-token
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: check-pods-and-controllers
+      try:
+        - apply:
+            file: good-resources.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-deployment.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-replicationcontroller.yaml
+    - name: check-policy-exception
+      try:
+        - script:
+            content: |
+              set -eu
+              kubectl apply -n policy-exceptions -f - <<YAML
+              apiVersion: policies.kyverno.io/v1
+              kind: PolicyException
+              metadata:
+                name: restrict-automount-sa-token-exception
+                namespace: policy-exceptions
+              spec:
+                policyRefs:
+                  - kind: ValidatingPolicy
+                    name: restrict-automount-sa-token
+                allowedValues:
+                  - automountServiceAccountToken:true
+                matchConditions:
+                  - name: exact-target
+                    expression: "object.metadata.namespace == '$NAMESPACE' && object.metadata.name == 'automount-exception-target'"
+              YAML
+              for attempt in $(seq 1 30); do
+                set +e
+                output=$(kubectl apply -n "$NAMESPACE" --dry-run=server -f - 2>&1 <<'YAML'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: automount-exception-target
+              spec:
+                automountServiceAccountToken: true
+                containers:
+                  - name: app
+                    image: nginx
+              YAML
+              )
+                status=$?
+                set -e
+                printf '%s\n' "$output"
+                if [ "$status" -eq 0 ]; then
+                  kubectl apply -n "$NAMESPACE" -f - <<'YAML'
+              apiVersion: v1
+              kind: Pod
+              metadata:
+                name: automount-exception-target
+              spec:
+                automountServiceAccountToken: true
+                containers:
+                  - name: app
+                    image: nginx
+              YAML
+                  exit 0
+                fi
+                if ! printf '%s' "$output" | grep -F 'Policy restrict-automount-sa-token failed' >/dev/null; then
+                  exit "$status"
+                fi
+                sleep 1
+              done
+              echo "PolicyException did not allow the exact target Pod within 30 seconds" >&2
+              exit 1
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy restrict-automount-sa-token failed')): true
+            file: exception-sibling-pod.yaml
+    - name: check-ephemeral-container-update
+      try:
+        - script:
+            content: |
+              set -eu
+              kubectl wait --for=jsonpath='{.status.phase}'=Running pod/token-ephemeral-update-target --timeout=120s -n "$NAMESPACE"
+              set +e
+              output=$(kubectl patch pod token-ephemeral-update-target -n "$NAMESPACE" --subresource=ephemeralcontainers --type=merge -p '{"spec":{"ephemeralContainers":[{"name":"debug","image":"busybox:1.35","targetContainerName":"app"}]}}' 2>&1)
+              status=$?
+              set -e
+              printf '%s\n' "$output"
+              if [ "$status" -eq 0 ]; then
+                echo "expected ephemeral container update to be denied" >&2
+                exit 1
+              fi
+              printf '%s' "$output" | grep -F 'Policy restrict-automount-sa-token failed'
+    - name: cleanup
+      try:
+        - script:
+            content: kubectl delete policyexceptions.policies.kyverno.io restrict-automount-sa-token-exception -n policy-exceptions --ignore-not-found --wait=true
+        - script:
+            content: kubectl delete pods --all --ignore-not-found --wait=true -n "$NAMESPACE"
+        - delete:
+            ref:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              name: restrict-automount-sa-token
+        - delete:
+            ref:
+              apiVersion: rbac.authorization.k8s.io/v1
+              kind: ClusterRole
+              name: kyverno:admission-controller:restrict-automount-sa-token:ephemeralcontainers
+        - delete:
+            ref:
+              apiVersion: rbac.authorization.k8s.io/v1
+              kind: ClusterRole
+              name: kyverno:reports-controller:restrict-automount-sa-token:ephemeralcontainers-read

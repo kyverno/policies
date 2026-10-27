@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: token-ephemeral-update-target
+spec:
+  automountServiceAccountToken: true
+  containers:
+    - name: app
+      image: nginx

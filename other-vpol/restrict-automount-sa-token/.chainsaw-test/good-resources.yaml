@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: token-disabled
+spec:
+  automountServiceAccountToken: false
+  containers:
+    - name: app
+      image: nginx
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-reporter-deployment
+spec:
+  selector:
+    matchLabels:
+      app: policy-reporter
+  template:
+    metadata:
+      labels:
+        app: policy-reporter
+        app.kubernetes.io/part-of: policy-reporter
+    spec:
+      automountServiceAccountToken: true
+      containers:
+        - name: app
+          image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: policy-reporter
+  labels:
+    app.kubernetes.io/part-of: policy-reporter
+spec:
+  automountServiceAccountToken: true
+  containers:
+    - name: app
+      image: nginx
+---
