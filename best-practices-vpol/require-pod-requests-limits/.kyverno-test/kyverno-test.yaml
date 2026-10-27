@@ -29,9 +29,28 @@ results:
 - kind: Pod
   policy: require-requests-limits
   resources:
+  - init-missing-requests
+  result: fail
+  isValidatingPolicy: true
+- kind: Pod
+  policy: require-requests-limits
+  resources:
   - goodpod01
   - goodpod02
+  - ephemeral-without-resources
   result: pass
+  isValidatingPolicy: true
+- kind: Deployment
+  policy: require-requests-limits
+  resources:
+  - autogen-missing-limit
+  result: fail
+  isValidatingPolicy: true
+- kind: CronJob
+  policy: require-requests-limits
+  resources:
+  - autogen-init-missing-requests
+  result: fail
   isValidatingPolicy: true
 - kind: Pod
   policy: require-requests-limits
