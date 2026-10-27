@@ -5,6 +5,8 @@ metadata:
   labels:
     app: myapp
 spec:
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox
@@ -22,6 +24,8 @@ metadata:
   labels:
     app: myapp
 spec:
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox
