@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-target
+  namespace: team-a
+spec:
+  secretName: exception-target
+  dnsNames: [one.example.com, two.example.com]
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-sibling
+  namespace: team-a
+spec:
+  secretName: exception-sibling
+  dnsNames: [one.example.com, two.example.com]
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-wrong-namespace
+  namespace: team-b
+spec:
+  secretName: exception-wrong-namespace
+  dnsNames: [one.example.com, two.example.com]
+  issuerRef:
+    name: acme
