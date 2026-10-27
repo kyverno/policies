@@ -121,9 +121,7 @@ spec:
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"require-run-as-non-root-user-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"nginx:1.27","securityContext":{"runAsUser":0}}]}}
           JSON
           set +e
-          rv=$(kubectl get pod require-run-as-non-root-user-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
-          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/denied.json >/tmp/denied-rv.json
-          output=$(kubectl replace --raw /api/v1/namespaces/default/pods/require-run-as-non-root-user-ephemeral-live/ephemeralcontainers -f /tmp/denied-rv.json 2>&1)
+          output=$(kubectl -n default patch pod require-run-as-non-root-user-ephemeral-live --subresource=ephemeralcontainers --type=merge --patch-file=/tmp/denied.json 2>&1)
           code=$?
           set -e
           test "$code" -ne 0
@@ -152,9 +150,7 @@ spec:
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"require-run-as-non-root-user-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"runAsUser":0}},{"name":"unapproved","image":"nginx:1.27","securityContext":{"runAsUser":0}}]}}
           JSON
           set +e
-          rv=$(kubectl get pod require-run-as-non-root-user-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
-          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/sibling.json >/tmp/sibling-rv.json
-          output=$(kubectl replace --raw /api/v1/namespaces/default/pods/require-run-as-non-root-user-ephemeral-live/ephemeralcontainers -f /tmp/sibling-rv.json 2>&1)
+          output=$(kubectl -n default patch pod require-run-as-non-root-user-ephemeral-live --subresource=ephemeralcontainers --type=merge --patch-file=/tmp/sibling.json 2>&1)
           code=$?
           set -e
           test "$code" -ne 0

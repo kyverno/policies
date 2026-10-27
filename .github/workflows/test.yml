@@ -15,12 +15,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  kubernetes-matrix:
+    uses: kyverno/kyverno/.github/workflows/kubernetes-matrix.yaml@6d209dea222a7272948585394e4e8457e80c5f67 # shared Kubernetes matrix
 
   argo-gpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [ v1.30.13, v1.31.9, v1.32.5, v1.33.1 ]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,16 +32,19 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           k8s-version: ${{ matrix.k8s-version }}
+          node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+          kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
           path: argo-gpol
 
   argo-vpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [ v1.30.13, v1.31.9, v1.32.5, v1.33.1 ]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -47,34 +53,40 @@ jobs:
         uses: ./.github/actions/setup-env
         with:
           k8s-version: ${{ matrix.k8s-version }}
+          node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+          kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
       - name: Run Tests
         uses: ./.github/actions/run-tests
         with:
           path: argo-vpol
 
   karpenter-mpol:
-          strategy:
-            fail-fast: false
-            matrix:
-              k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
-          runs-on: ubuntu-latest
-          steps:
-          - name: Checkout
-            uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-          - name: Setup Environment
-            uses: ./.github/actions/setup-env
-            with:
-              k8s-version: ${{ matrix.k8s-version }}
-          - name: Run Tests
-            uses: ./.github/actions/run-tests
-            with:
-              path: karpenter-mpol
-
-  best-practices-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Setup Environment
+        uses: ./.github/actions/setup-env
+        with:
+          k8s-version: ${{ matrix.k8s-version }}
+          node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+          kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+      - name: Run Tests
+        uses: ./.github/actions/run-tests
+        with:
+          path: karpenter-mpol
+
+  best-practices-mpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -83,16 +95,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: best-practices-mpol
 
   best-practices-gpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
         shard-index: [0,1]
     runs-on: ubuntu-latest
     steps:
@@ -102,6 +117,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -110,10 +127,11 @@ jobs:
         shard-count: 2
 
   best-practices-vpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
         shard-index: [0,1]
     runs-on: ubuntu-latest
     steps:
@@ -123,6 +141,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -131,10 +151,11 @@ jobs:
         shard-count: 2
 
   castai-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -143,16 +164,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: castai-mpol
 
   cleanup-dpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -161,16 +185,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: cleanup-dpol
 
   istio-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -179,16 +206,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: istio-mpol
 
   kubecost-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -197,16 +227,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: kubecost-mpol
 
   kubevirt-gpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -215,16 +248,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: kubevirt-gpol
 
   linkerd-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -233,16 +269,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: linkerd-mpol
 
   other:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -251,16 +290,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: other
 
   other-vpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
         shard-index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
     steps:
@@ -270,6 +312,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -278,10 +322,11 @@ jobs:
         shard-count: 9
 
   other-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
         shard-index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
     steps:
@@ -291,6 +336,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -299,10 +346,11 @@ jobs:
         shard-count: 9
 
   other-gpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
         shard-index: [0,1,2,3,4,5,6,7,8]
     runs-on: ubuntu-latest
     steps:
@@ -312,6 +360,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -320,10 +370,11 @@ jobs:
         shard-count: 9
 
   other-ivpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -332,16 +383,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: other-ivpol
 
   pod-security-vpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -350,16 +404,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: pod-security-vpol
 
   psa-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -368,16 +425,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: psa-mpol
 
   psp-migration-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -386,16 +446,19 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
         path: psp-migration-mpol
 
   velero-mpol:
+    needs: kubernetes-matrix
     strategy:
       fail-fast: false
       matrix:
-        k8s-version: [v1.30.13, v1.31.9, v1.32.5, v1.33.1]
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -404,6 +467,8 @@ jobs:
       uses: ./.github/actions/setup-env
       with:
         k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
     - name: Run Tests
       uses: ./.github/actions/run-tests
       with:
@@ -412,6 +477,7 @@ jobs:
   e2e-required-success:
     name: e2e-required
     needs:
+    - kubernetes-matrix
     - argo-gpol
     - argo-vpol
     - karpenter-mpol
@@ -441,6 +507,7 @@ jobs:
   e2e-required-failure:
     name: e2e-required
     needs:
+    - kubernetes-matrix
     - argo-gpol
     - argo-vpol
     - karpenter-mpol
