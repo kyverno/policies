@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: source-good-statefulset
+spec:
+  serviceName: source-good-statefulset
+  replicas: 0
+  selector:
+    matchLabels:
+      app: source-good-statefulset
+  template:
+    metadata:
+      labels:
+        app: source-good-statefulset
+    spec:
+      nodeSelector:
+        kyverno.io/chainsaw-admission-only: "true"
+      containers:
+        - name: app
+          image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11

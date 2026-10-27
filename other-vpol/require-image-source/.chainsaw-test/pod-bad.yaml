@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: source-bad
+spec:
+  nodeSelector:
+    kyverno.io/chainsaw-admission-only: "true"
+  containers:
+    - name: app
+      image: ghcr.io/kyverno/test-verify-image@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5
