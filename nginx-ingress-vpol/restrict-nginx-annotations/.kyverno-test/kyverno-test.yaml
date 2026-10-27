@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-nginx-annotations
+policies:
+  - ../restrict-nginx-annotations.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-nginx-annotations
+    resources:
+      - alias-directive
+      - root-directive
+      - root-after-semicolon
+      - sensitive-etc-path
+      - secrets-path
+      - lua-directive
+      - directive-in-multiline-value
+      - snippet-annotation
+    result: fail
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-nginx-annotations
+    resources:
+      - no-annotations
+      - empty-annotations
+      - null-annotations
+      - safe-annotation
+      - safe-nginx-annotation
+      - alias-prefix-is-not-a-directive
+      - root-prefix-is-not-a-directive
+      - uppercase-values
+    result: pass
