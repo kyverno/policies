@@ -1,0 +1,64 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-image-source
+  annotations:
+    policies.kyverno.io/title: Require Image Source Metadata
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Images can be built from a variety of source control locations and the name does
+      not necessarily indicate this mapping. This policy checks every container image
+      in Pods and their controllers for a non-empty org.opencontainers.image.source OCI
+      config label or manifest annotation.
+spec:
+  failurePolicy: Fail
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods", "replicationcontrollers"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments", "statefulsets", "daemonsets", "replicasets"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs", "cronjobs"]
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["UPDATE"]
+        resources: ["pods/ephemeralcontainers"]
+  variables:
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: allContainers
+      expression: >-
+        variables.podSpec.containers + variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
+    - name: imageMetadata
+      expression: >-
+        variables.allContainers.filter(container,
+          !(container.image in exceptions.allowedValues)).map(container, {
+          "image": container.image,
+          "metadata": image.GetMetadata(container.image)
+        })
+  validations:
+    - expression: >-
+        variables.imageMetadata.all(imageData,
+          imageData.metadata.config.config.?Labels[?"org.opencontainers.image.source"].orValue("").trim() != "" ||
+          imageData.metadata.manifest.?annotations[?"org.opencontainers.image.source"].orValue("").trim() != "")
+      message: >-
+        Container images must include a non-empty org.opencontainers.image.source OCI
+        config label or manifest annotation.

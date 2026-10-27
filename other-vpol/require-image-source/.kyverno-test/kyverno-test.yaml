@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-image-source
+context: context.yaml
+variables: values.yaml
+policies:
+  - ../require-image-source.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: require-image-source
+    resources: [good-label, good-annotation-init, good-ephemeral, good-digest]
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: require-image-source
+    resources: [missing-source, missing-source-init, missing-source-ephemeral, empty-source, absent-metadata, absent-fields]
+    result: fail
+  - isValidatingPolicy: true
+    kind: Deployment
+    policy: require-image-source
+    resources: [bad-deployment]
+    result: fail
+  - isValidatingPolicy: true
+    kind: CronJob
+    policy: require-image-source
+    resources: [bad-cronjob]
+    result: fail
+  - isValidatingPolicy: true
+    kind: ReplicationController
+    policy: require-image-source
+    resources: [bad-replicationcontroller]
+    result: fail

@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-image-source-approved-image
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: require-image-source
+  matchConditions:
+    - name: exact-resource
+      expression: request.name in ['source-exception', 'source-ephemeral-base']
+  allowedValues:
+    - ghcr.io/kyverno/test-verify-image@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5
