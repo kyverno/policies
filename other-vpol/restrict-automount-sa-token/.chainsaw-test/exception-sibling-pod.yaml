@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: automount-exception-sibling
+spec:
+  automountServiceAccountToken: true
+  containers:
+    - name: app
+      image: nginx
