@@ -1,0 +1,36 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-annotations
+  annotations:
+    policies.kyverno.io/title: Restrict NGINX Ingress Annotations in ValidatingPolicy
+    policies.kyverno.io/category: Security, Ingress NGINX in ValidatingPolicy
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: Ingress
+    policies.kyverno.io/description: >-
+      Reject NGINX Ingress snippet annotations and annotation values containing
+      alias or root directives, sensitive filesystem paths, or Lua directives.
+spec:
+  validationActions:
+    - Deny
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["networking.k8s.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["ingresses"]
+  validations:
+    - expression: >-
+        object.metadata.?annotations.orValue({}).all(key, value,
+          !key.matches('^nginx\\.ingress\\.kubernetes\\.io/.*-snippet$') &&
+          !value.matches('(?s)^.*(?:^|[\\s;{}])(?:alias|root)\\s*[^;]*;.*$') &&
+          !value.matches('(?s)^.*(?:/etc/(?:passwd|shadow|group|nginx|ingress-controller)|/var/run/secrets).*$') &&
+          !value.matches('(?s)^.*_by_lua.*$'))
+      message: >-
+        Ingress annotation keys and values must not contain custom snippet annotations,
+        alias/root directives, sensitive filesystem paths, or Lua directives.

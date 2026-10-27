@@ -1,0 +1,44 @@
+name: restrict-annotations-vpol
+version: 1.0.0
+displayName: Restrict NGINX Ingress Annotations in ValidatingPolicy
+description: >-
+  Reject NGINX Ingress snippet annotations and annotation values containing
+  alias or root directives, sensitive filesystem paths, or Lua directives.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress-vpol/restrict-annotations/restrict-annotations.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - Ingress NGINX
+  - ValidatingPolicy
+readme: |
+  Reject all `nginx.ingress.kubernetes.io/*-snippet` annotation keys and annotation values containing `alias` or `root` directives, references to `/etc/passwd`, `/etc/shadow`, `/etc/group`, `/etc/nginx`, `/etc/ingress-controller`, or `/var/run/secrets`, and Lua directives containing `_by_lua`.
+
+  Matching is case-sensitive, consistent with NGINX directive names and Linux filesystem paths. Blocking every `*-snippet` annotation is intentionally stricter than the legacy samples, which only inspected annotation values; the current ingress-nginx documentation warns that enabling snippet annotations trusts Ingress authors with restricted NGINX configuration. The CVEs below are context, not a complete remediation: these checks do not address every annotation-injection issue or the controller admission exposure in CVE-2025-1974. Keep ingress-nginx updated and protect its admission webhook.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-annotations` in `spec.policyRefs`, and use `spec.matchConditions` to match
+  the exact Ingress namespace and name. This is a whole-resource exception, so all
+  annotation checks are skipped for that Ingress; its siblings remain denied.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/nginx-ingress-vpol/restrict-annotations/.kyverno-test-exceptions/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, Deny behavior
+  applies.
+
+  References:
+  - [ingress-nginx annotations](https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/nginx-configuration/annotations.md)
+  - [CVE-2021-25742](https://www.cve.org/CVERecord?id=CVE-2021-25742)
+  - [CVE-2023-5043](https://www.cve.org/CVERecord?id=CVE-2023-5043)
+  - [CVE-2023-5044](https://www.cve.org/CVERecord?id=CVE-2023-5044)
+  - [CVE-2025-1974](https://www.cve.org/CVERecord?id=CVE-2025-1974)
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, Ingress NGINX in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Ingress"
+digest: ea5fd562fafa9d278546991a696c67652c5a7680ef403f38b644ecc9832b5935
+createdAt: "2026-10-27T15:01:14Z"

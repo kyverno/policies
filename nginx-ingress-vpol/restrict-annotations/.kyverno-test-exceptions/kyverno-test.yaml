@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-annotations-exceptions
+policies:
+  - ../restrict-annotations.yaml
+resources:
+  - resources.yaml
+exceptions:
+  - exception.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-annotations
+    resources:
+      - default/annotation-exception
+    result: skip
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-annotations
+    resources:
+      - default/annotation-exception-sibling
+    result: fail

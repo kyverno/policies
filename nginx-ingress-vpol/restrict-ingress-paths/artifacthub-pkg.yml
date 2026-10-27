@@ -1,0 +1,37 @@
+name: restrict-ingress-paths-vpol
+version: 1.0.0
+displayName: Restrict Sensitive Ingress Paths in ValidatingPolicy
+description: >-
+  Reject Ingress paths containing sensitive filesystem locations, including
+  /etc, /var/run/secrets, /root, and the Kubernetes service-account path.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/nginx-ingress-vpol/restrict-ingress-paths/restrict-ingress-paths.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - Ingress NGINX
+  - ValidatingPolicy
+readme: |
+  Reject Ingress paths containing `/etc`, `/var/run/secrets`, `/root`, or `/var/run/kubernetes/serviceaccount`. This includes paths such as `/etc/kubernetes/admin.conf`. The checks preserve the legacy substring behavior and are case-sensitive, consistent with Linux filesystem paths.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-ingress-paths` in `spec.policyRefs`, and use `spec.matchConditions` to
+  match the exact Ingress namespace and name. This is a whole-resource exception, so
+  all path checks are skipped for that Ingress; its siblings remain denied.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/nginx-ingress-vpol/restrict-ingress-paths/.kyverno-test-exceptions/exception.yaml).
+  With PolicyException support disabled, or when no exception matches, Deny behavior
+  applies.
+
+  This is a path-content guardrail, not an ingress-nginx patch or a complete defense against controller vulnerabilities. See the [ingress-nginx hardening guide](https://github.com/kubernetes/ingress-nginx/blob/main/docs/deploy/hardening-guide.md) and [CVE-2025-1974](https://github.com/kubernetes/kubernetes/issues/131009) for the separate admission-webhook exposure risk.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security, Ingress NGINX in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Ingress"
+digest: b53b2c864f70d928530f1388fdf8db9e4bb46efc8077b1a5e57beb34400b61a6
+createdAt: "2026-10-27T15:01:14Z"

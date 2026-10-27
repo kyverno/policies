@@ -1,0 +1,30 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-ingress-paths
+policies:
+  - ../restrict-ingress-paths.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-ingress-paths
+    resources:
+      - etc-path
+      - nested-etc-path
+      - secrets-path
+      - root-path
+      - service-account-path
+      - admin-config-path
+    result: fail
+  - isValidatingPolicy: true
+    kind: Ingress
+    policy: restrict-ingress-paths
+    resources:
+      - safe-paths
+      - no-rules
+      - empty-paths
+      - null-rules
+      - uppercase-path
+    result: pass
