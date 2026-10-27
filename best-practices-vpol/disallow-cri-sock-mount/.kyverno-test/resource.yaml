@@ -107,3 +107,227 @@ spec:
   - name: dot
     hostPath:
       path: /var/run/./docker.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-docker-sock-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/docker.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-containerd-sock-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/containerd/containerd.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-doubled-slash-run-crio-sock-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: //run/crio/crio.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-dot-cri-dockerd-sock-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/./cri-dockerd.sock
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-root-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-run-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/run/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-dot-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/.
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-containerd-dir-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/containerd
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-run-containerd-dir-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/run/containerd/
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-crio-dir-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/crio
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-run-dot-crio-dir-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/run/./crio
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-log-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/log
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-var-runner-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /var/runner
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-run-containerd-data-mount
+  namespace: test
+spec:
+  containers:
+  - name: myshell
+    image: "ubuntu:18.04"
+  volumes:
+  - name: vol
+    hostPath:
+      path: /run/containerd-data

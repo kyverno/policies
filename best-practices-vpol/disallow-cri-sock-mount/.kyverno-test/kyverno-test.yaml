@@ -36,3 +36,29 @@ results:
   - goodpod01
   - docker-sock-lookalike
   result: pass
+- kind: Pod
+  isValidatingPolicy: true
+  policy: disallow-container-sock-mounts
+  resources:
+  - pod-with-run-docker-sock-mount
+  - pod-with-run-containerd-sock-mount
+  - pod-with-doubled-slash-run-crio-sock-mount
+  - pod-with-run-dot-cri-dockerd-sock-mount
+  - pod-with-root-mount
+  - pod-with-var-mount
+  - pod-with-var-run-mount
+  - pod-with-run-mount
+  - pod-with-run-dot-mount
+  - pod-with-run-containerd-dir-mount
+  - pod-with-var-run-containerd-dir-mount
+  - pod-with-run-crio-dir-mount
+  - pod-with-var-run-dot-crio-dir-mount
+  result: fail
+- kind: Pod
+  isValidatingPolicy: true
+  policy: disallow-container-sock-mounts
+  resources:
+  - pod-with-var-log-mount
+  - pod-with-var-runner-mount
+  - pod-with-run-containerd-data-mount
+  result: pass
