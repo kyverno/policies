@@ -1,0 +1,17 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-secrets-by-label-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: restrict-secrets-by-label
+  allowedValues:
+    - env.secretKeyRef:protected
+    - envFrom.secretRef:protected
+    - volume.secret:protected
+    - projected.secret:protected
+  matchConditions:
+    - name: exact-target
+      expression: object.metadata.namespace == 'default' && object.metadata.name == 'secret-exception-target'

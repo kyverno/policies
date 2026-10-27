@@ -1,0 +1,39 @@
+name: restrict-secrets-by-label-vpol
+version: 1.0.0
+displayName: Restrict Protected Secrets in Pods
+description: >-
+  Rejects Pods and pod templates that consume Secrets labeled status=protected through env, envFrom, Secret volumes, or projected Secret volumes.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-secrets-by-label/restrict-secrets-by-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Rejects Pods and supported controller templates that consume a Secret labeled `status: protected` through `env`, `envFrom`, Secret volumes, or projected Secret volumes. It inspects regular, init, and ephemeral container entries and extends the legacy sample's coverage to projected volumes. The policy is distinct from `other-vpol/restrict-secrets-by-name`: that policy allows Secrets by a `safe-` name prefix, while this one evaluates the referenced Secret's `status` label, regardless of its name.
+
+  The policy looks up each referenced Secret at admission time. Its background evaluation is disabled. A referenced Secret must already exist and be readable by the Kyverno admission controller; a missing or unreadable Secret causes an evaluation error and is rejected by the explicit `failurePolicy: Fail`.
+
+  ### Required RBAC
+
+  Before enabling this policy, apply the [Secret read ClusterRole](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-secrets-by-label/permissions.yaml), which grants the admission controller cluster-wide `get` access to Secrets. This also exposes Secret data to Kyverno, so review the permission before installation. Admission updates to `pods/ephemeralcontainers` additionally require `get`, `list`, `watch`, and `update` on that subresource; see the [admission ClusterRole example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-secrets-by-label/.chainsaw-test/ephemeral-rbac.yaml). Background scanning is disabled, so no reports-controller subresource permissions are required.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-secrets-by-label` in `spec.policyRefs`, and restrict `spec.matchConditions`
+  to the exact Pod identity. Use exact source tokens in `spec.allowedValues`:
+  `env.secretKeyRef:<name>`, `envFrom.secretRef:<name>`, `volume.secret:<name>`, or
+  `projected.secret:<name>`. See the [tested exception](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-secrets-by-label/.kyverno-test-exceptions/exceptions.yaml).
+
+  The `env` and `envFrom` fields on ephemeral containers are checked on `pods/ephemeralcontainers` updates.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod, Secret"
+digest: 618a6d39341b74f0219cf9793826a0c3e0d8cf1052aff8b2ea9ea319c6b2c5eb
+createdAt: "2026-10-27T00:00:00Z"

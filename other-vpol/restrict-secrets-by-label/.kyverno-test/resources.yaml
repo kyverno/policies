@@ -1,0 +1,241 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-no-secrets
+spec:
+  containers:
+    - name: app
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-null-lists
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env: null
+      envFrom: null
+  initContainers: null
+  ephemeralContainers: null
+  volumes: null
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-unprotected-env
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: unprotected
+              key: token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-unprotected-projected
+spec:
+  containers:
+    - name: app
+      image: nginx
+  volumes:
+    - name: secrets
+      projected:
+        sources:
+          - secret:
+              name: unprotected
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-unlabeled-secret
+spec:
+  containers:
+    - name: app
+      image: nginx
+      envFrom:
+        - secretRef:
+            name: unlabeled
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-env
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: protected
+              key: token
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-envfrom
+spec:
+  containers:
+    - name: app
+      image: nginx
+      envFrom:
+        - secretRef:
+            name: protected
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-volume
+spec:
+  containers:
+    - name: app
+      image: nginx
+  volumes:
+    - name: secret
+      secret:
+        secretName: protected
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-projected
+spec:
+  containers:
+    - name: app
+      image: nginx
+  volumes:
+    - name: secrets
+      projected:
+        sources:
+          - secret:
+              name: protected
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-init
+spec:
+  initContainers:
+    - name: init
+      image: busybox
+      envFrom:
+        - secretRef:
+            name: protected
+  containers:
+    - name: app
+      image: nginx
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-protected-ephemeral
+spec:
+  containers:
+    - name: app
+      image: nginx
+  ephemeralContainers:
+    - name: debug
+      image: busybox
+      targetContainerName: app
+      envFrom:
+        - secretRef:
+            name: protected
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-ephemeral-no-secrets
+spec:
+  containers:
+    - name: app
+      image: nginx
+  ephemeralContainers:
+    - name: debug
+      image: busybox
+      targetContainerName: app
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-missing-secret
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: missing
+              key: token
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-protected-envfrom
+spec:
+  selector:
+    matchLabels:
+      app: protected
+  template:
+    metadata:
+      labels:
+        app: protected
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          envFrom:
+            - secretRef:
+                name: protected
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: rc-protected-projected
+spec:
+  selector:
+    app: protected
+  template:
+    metadata:
+      labels:
+        app: protected
+    spec:
+      containers:
+        - name: app
+          image: nginx
+      volumes:
+        - name: secrets
+          projected:
+            sources:
+              - secret:
+                  name: protected
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: cronjob-unprotected-env
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: app
+              image: nginx
+              env:
+                - name: TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: unprotected
+                      key: token
+          restartPolicy: Never
