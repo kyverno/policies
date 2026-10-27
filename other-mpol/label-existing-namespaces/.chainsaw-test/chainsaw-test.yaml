@@ -5,9 +5,18 @@ metadata:
   creationTimestamp: null
   name: label-existing-namespaces
 spec:
+  # Restore namespace labels when any step fails; the final step's cleanup covers success.
+  catch:
+  - script:
+      content: |
+        set -eu
+        kubectl delete mutatingpolicy label-existing-namespaces --ignore-not-found --wait=true
+        ../../../.chainsaw/scripts/namespace-labels.sh restore mykey
   steps:
   - name: step-01
     try:
+    - script:
+        content: ../../../.chainsaw/scripts/namespace-labels.sh save mykey
     - apply:
         file: crb.yaml
     - apply:
@@ -36,3 +45,9 @@ spec:
         file: patched-ns02.yaml
     - assert:
         file: patched-ns03.yaml
+    cleanup:
+    - script:
+        content: |
+          set -eu
+          kubectl delete mutatingpolicy label-existing-namespaces --ignore-not-found --wait=true
+          ../../../.chainsaw/scripts/namespace-labels.sh restore mykey
