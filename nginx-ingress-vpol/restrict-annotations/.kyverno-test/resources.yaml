@@ -1,0 +1,125 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: no-annotations
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empty-annotations
+  annotations: {}
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: null-annotations
+  annotations: null
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: safe-annotation
+  annotations:
+    nginx.org/good: "ordinary value"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: safe-nginx-annotation
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uppercase-values
+  annotations:
+    nginx.org/directive: "Alias /srv/site; ROOT /srv/site; /ETC/passwd _BY_LUA"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alias-directive
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: "alias /srv/site;"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: root-directive
+  annotations:
+    nginx.org/extension: "root /srv/site;"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: root-after-semicolon
+  annotations:
+    nginx.org/extension: "proxy_set_header X-Foo bar;root /srv/www;"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sensitive-etc-path
+  annotations:
+    nginx.org/extension: "load /etc/ingress-controller/secret;"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secrets-path
+  annotations:
+    nginx.org/extension: "path /var/run/secrets/kubernetes.io/serviceaccount/token;"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: lua-directive
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: "content_by_lua_block { return 'unsafe' }"
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: directive-in-multiline-value
+  annotations:
+    nginx.org/extension: |-
+      # a user-provided configuration
+      location /private {
+        alias /etc/passwd;
+      }
+spec:
+  rules: []
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: snippet-annotation
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: "more_set_headers X-Frame-Options: DENY;"
+spec:
+  rules: []

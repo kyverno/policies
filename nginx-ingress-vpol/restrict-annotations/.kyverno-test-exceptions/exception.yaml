@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: annotation-exact-ingress
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - name: restrict-annotations
+      kind: ValidatingPolicy
+  matchConditions:
+    - name: exact-ingress
+      expression: object.metadata.namespace == 'default' && object.metadata.name == 'annotation-exception'
+  reportResult: skip
