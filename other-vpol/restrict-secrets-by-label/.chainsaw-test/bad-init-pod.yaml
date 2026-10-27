@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: protected-init
+spec:
+  initContainers:
+    - name: init
+      image: busybox
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: protected
+              key: token
+  containers:
+    - name: app
+      image: nginx
