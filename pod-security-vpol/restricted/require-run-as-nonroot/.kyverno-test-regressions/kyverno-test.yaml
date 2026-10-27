@@ -1,0 +1,38 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-run-as-nonroot-null-lists
+policies:
+- ../require-run-as-nonroot.yaml
+resources:
+- resources.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - null-init-pass
+  - null-ephemeral-pass
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-run-as-nonroot
+  resources:
+  - null-init-root
+  - null-ephemeral-root
+  - default-os-root
+  - linux-root
+  - windows-root
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-run-as-nonroot
+  resources:
+  - deployment-null-init-root
+  result: fail
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: require-run-as-nonroot
+  resources:
+  - cronjob-null-ephemeral-root
+  result: fail
