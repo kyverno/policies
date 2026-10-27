@@ -1,0 +1,13 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: path-exact-ingress
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - name: restrict-ingress-paths
+      kind: ValidatingPolicy
+  matchConditions:
+    - name: exact-ingress
+      expression: object.metadata.namespace == 'default' && object.metadata.name == 'restrict-ingress-paths-exception'
+  reportResult: skip
