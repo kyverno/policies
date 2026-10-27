@@ -1,0 +1,37 @@
+name: add-networkpolicy-dns
+version: 1.0.0
+displayName: Add Network Policy for DNS
+createdAt: "2026-10-27T16:00:00Z"
+description: >-
+  This policy generates an egress-only NetworkPolicy named `allow-dns` when a
+  Namespace is created or updated, allowing UDP/53 traffic to Pods in the
+  `kube-system` Namespace.
+  Pair it with a default-deny egress policy; it allows DNS but does not deny
+  other egress traffic. Generated resources are not synchronized after creation.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-gpol/add-networkpolicy-dns/add-networkpolicy-dns.yaml
+  ```
+keywords:
+  - kyverno
+  - Multi-Tenancy
+  - EKS Best Practices
+readme: |
+  NetworkPolicy resources and a supporting CNI plug-in are needed to restrict Pod communications. This policy generates an egress-only NetworkPolicy named `allow-dns` when a Namespace is created or updated, allowing UDP/53 traffic to Pods in the `kube-system` Namespace. The selector expects that Namespace to carry the `name: kube-system` label; verify it on the target platform. Pair this policy with a default-deny egress policy because it does not deny other egress traffic. Generated resources are not synchronized after creation.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno and reference the `GeneratingPolicy`
+  named `add-networkpolicy-dns` in `spec.policyRefs`. Use `spec.matchConditions`
+  to scope the exception to the exact Namespace trigger; no `spec.allowedValues`
+  entry is needed. The exception skips generation only for matching requests,
+  not for sibling namespaces. See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-gpol/add-networkpolicy-dns/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal generation behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Multi-Tenancy, EKS Best Practices"
+  kyverno/kubernetesVersion: "1.23"
+  kyverno/subject: "NetworkPolicy"
+digest: 2b545fca8bc20cf68d8045c5bbda334f946834280c81a5abfbe5d783ef36704a
