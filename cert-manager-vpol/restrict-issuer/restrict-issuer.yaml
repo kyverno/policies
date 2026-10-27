@@ -1,0 +1,42 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: cert-manager-restrict-issuer
+  annotations:
+    policies.kyverno.io/title: Restrict Certificate issuer for corporate domains
+    policies.kyverno.io/category: Cert-Manager in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.25+"
+    policies.kyverno.io/subject: Certificate
+    policies.kyverno.io/description: >-
+      Requires Certificates for *.corp.com to use the designated corporate ClusterIssuer.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["cert-manager.io"]
+        apiVersions: ["v1"]
+        operations: [CREATE, UPDATE]
+        resources: [certificates]
+  variables:
+    - name: requestsCorpCertificate
+      expression: >-
+        has(object.spec.dnsNames) && object.spec.dnsNames != null
+        ? object.spec.dnsNames.exists(name, name.endsWith('.corp.com'))
+        : false
+  validations:
+    - expression: >-
+        !variables.requestsCorpCertificate ||
+        (
+          has(object.spec.issuerRef.name) &&
+          object.spec.issuerRef.name == 'our-corp-issuer' &&
+          has(object.spec.issuerRef.kind) &&
+          object.spec.issuerRef.kind == 'ClusterIssuer' &&
+          has(object.spec.issuerRef.group) &&
+          object.spec.issuerRef.group == 'cert-manager.io'
+        )
+      message: Certificates for *.corp.com must use our-corp-issuer as a cert-manager.io ClusterIssuer.
