@@ -1,0 +1,41 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-automount-sa-token
+policies:
+  - ../restrict-automount-sa-token.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-automount-sa-token
+    resources:
+      - pod-token-disabled
+      - pod-policy-reporter
+      - deployment-policy-reporter
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-automount-sa-token
+    resources:
+      - pod-token-default
+    result: fail
+  - isValidatingPolicy: true
+    kind: Deployment
+    policy: restrict-automount-sa-token
+    resources:
+      - deployment-token-default
+    result: fail
+  - isValidatingPolicy: true
+    kind: ReplicationController
+    policy: restrict-automount-sa-token
+    resources:
+      - rc-token-default
+    result: fail
+  - isValidatingPolicy: true
+    kind: CronJob
+    policy: restrict-automount-sa-token
+    resources:
+      - cronjob-token-disabled
+    result: pass

@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-automount-sa-token-exceptions
+policies:
+  - ../restrict-automount-sa-token.yaml
+resources:
+  - resources.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-automount-sa-token
+    resources:
+      - default/automount-exception-target
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-automount-sa-token
+    resources:
+      - default/automount-exception-sibling
+    result: fail
