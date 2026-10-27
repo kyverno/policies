@@ -118,9 +118,7 @@ spec:
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"privileged-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"nginx:1.27","securityContext":{"privileged":true}}]}}
           JSON
           set +e
-          rv=$(kubectl get pod privileged-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
-          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/ephemeral-denied.json >/tmp/ephemeral-denied-rv.json
-          denied=$(kubectl replace --raw /api/v1/namespaces/default/pods/privileged-ephemeral-live/ephemeralcontainers -f /tmp/ephemeral-denied-rv.json 2>&1)
+          denied=$(kubectl -n default patch pod privileged-ephemeral-live --subresource=ephemeralcontainers --type=merge --patch-file=/tmp/ephemeral-denied.json 2>&1)
           code=$?
           set -e
           test "$code" -ne 0
@@ -149,9 +147,7 @@ spec:
           {"apiVersion":"v1","kind":"Pod","metadata":{"name":"privileged-ephemeral-live","namespace":"default"},"spec":{"ephemeralContainers":[{"name":"debug","image":"exempt.example/app:1","securityContext":{"privileged":true}},{"name":"unapproved","image":"nginx:1.27","securityContext":{"privileged":true}}]}}
           JSON
           set +e
-          rv=$(kubectl get pod privileged-ephemeral-live -o jsonpath='{.metadata.resourceVersion}')
-          jq --arg rv "$rv" '.metadata.resourceVersion=$rv' /tmp/ephemeral-sibling.json >/tmp/ephemeral-sibling-rv.json
-          sibling=$(kubectl replace --raw /api/v1/namespaces/default/pods/privileged-ephemeral-live/ephemeralcontainers -f /tmp/ephemeral-sibling-rv.json 2>&1)
+          sibling=$(kubectl -n default patch pod privileged-ephemeral-live --subresource=ephemeralcontainers --type=merge --patch-file=/tmp/ephemeral-sibling.json 2>&1)
           code=$?
           set -e
           test "$code" -ne 0
