@@ -4,6 +4,7 @@ metadata:
   name: addcronjob01
 spec:
   schedule: "*/1 * * * *"
+  suspend: true
   jobTemplate:
     spec:
       template:
@@ -11,6 +12,8 @@ spec:
           labels:
             autoscaling.cast.ai/removal-disabled: "true"
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           containers:
           - name: hello
             image: busybox
