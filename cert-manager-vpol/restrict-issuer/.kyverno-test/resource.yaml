@@ -1,0 +1,175 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-good
+  namespace: default
+spec:
+  secretName: corp-good
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: our-corp-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-multi-name-good
+  namespace: default
+spec:
+  secretName: corp-multi-name-good
+  dnsNames: [foo.corp.com, example.net]
+  issuerRef:
+    name: our-corp-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-wrong-name
+  namespace: default
+spec:
+  secretName: corp-wrong-name
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-wrong-kind
+  namespace: default
+spec:
+  secretName: corp-wrong-kind
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: our-corp-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-wrong-group
+  namespace: default
+spec:
+  secretName: corp-wrong-group
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: our-corp-issuer
+    kind: ClusterIssuer
+    group: other.cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: non-corp
+  namespace: default
+spec:
+  secretName: non-corp
+  dnsNames: [example.com]
+  issuerRef:
+    name: other-issuer
+    kind: Issuer
+    group: other.cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: missing-names
+  namespace: default
+spec:
+  secretName: missing-names
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: null-names
+  namespace: default
+spec:
+  secretName: null-names
+  dnsNames: null
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: empty-names
+  namespace: default
+spec:
+  secretName: empty-names
+  dnsNames: []
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-apex
+  namespace: default
+spec:
+  secretName: corp-apex
+  dnsNames: [corp.com]
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: suffix-bypass
+  namespace: default
+spec:
+  secretName: suffix-bypass
+  dnsNames: [foo.notcorp.com]
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: trailing-label-bypass
+  namespace: default
+spec:
+  secretName: trailing-label-bypass
+  dnsNames: [foo.corp.com.attacker.net]
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-exception-target
+  namespace: team-a
+spec:
+  secretName: corp-exception-target
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-exception-sibling
+  namespace: team-a
+spec:
+  secretName: corp-exception-sibling
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: corp-exception-wrong-namespace
+  namespace: team-b
+spec:
+  secretName: corp-exception-wrong-namespace
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer

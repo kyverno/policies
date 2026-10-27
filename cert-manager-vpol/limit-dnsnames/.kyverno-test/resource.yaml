@@ -1,0 +1,53 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: one-name
+  namespace: default
+spec:
+  secretName: one-name
+  dnsNames: [example.com]
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: two-names
+  namespace: default
+spec:
+  secretName: two-names
+  dnsNames: [example.com, www.example.com]
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: missing-names
+  namespace: default
+spec:
+  secretName: missing-names
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: null-names
+  namespace: default
+spec:
+  secretName: null-names
+  dnsNames: null
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: empty-names
+  namespace: default
+spec:
+  secretName: empty-names
+  dnsNames: []
+  issuerRef:
+    name: acme

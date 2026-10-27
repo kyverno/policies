@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: cert-manager-restrict-issuer-bad
+  namespace: default
+spec:
+  secretName: issuer-bad
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer
+    kind: Issuer
+    group: cert-manager.io

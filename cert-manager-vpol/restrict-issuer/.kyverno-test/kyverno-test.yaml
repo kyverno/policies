@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-restrict-issuer
+policies:
+  - ../restrict-issuer.yaml
+resources:
+  - resource.yaml
+results:
+  - isValidatingPolicy: true
+    policy: cert-manager-restrict-issuer
+    kind: Certificate
+    resources: [corp-good, corp-multi-name-good]
+    result: pass
+  - isValidatingPolicy: true
+    policy: cert-manager-restrict-issuer
+    kind: Certificate
+    resources: [corp-wrong-name, corp-wrong-kind, corp-wrong-group]
+    result: fail
+  - isValidatingPolicy: true
+    policy: cert-manager-restrict-issuer
+    kind: Certificate
+    resources: [non-corp, missing-names, null-names, empty-names, corp-apex, suffix-bypass, trailing-label-bypass]
+    result: pass

@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-limit-duration
+spec:
+  template: false
+  steps:
+    - name: shared-exception-namespace
+      skipDelete: true
+      try:
+        - apply:
+            file: exception-namespace.yaml
+    - name: policy
+      try:
+        - apply:
+            file: ../limit-duration.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: cert-manager-limit-duration
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: certificate-validation
+      try:
+        - apply:
+            file: good-certificate.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-certificate.yaml
+    - name: update-validation
+      try:
+        - apply:
+            file: update-good-certificate.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: update-bad-certificate.yaml
+    - name: exact-exception
+      try:
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-certificate.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: exception-sibling-certificate.yaml

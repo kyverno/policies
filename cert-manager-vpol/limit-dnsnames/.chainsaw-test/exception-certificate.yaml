@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dns-exception-target
+  namespace: default
+spec:
+  secretName: dns-exception-target
+  dnsNames: [one.example.com, two.example.com]
+  issuerRef:
+    name: acme

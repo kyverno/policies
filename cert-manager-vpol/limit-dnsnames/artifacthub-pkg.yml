@@ -1,0 +1,34 @@
+name: cert-manager-limit-dnsnames-vpol
+version: 1.0.0
+displayName: Limit Certificate DNS names
+description: >-
+  Restricts each cert-manager Certificate to at most one DNS name.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cert-manager-vpol/limit-dnsnames/limit-dnsnames.yaml
+  ```
+keywords:
+  - kyverno
+  - cert-manager
+  - ValidatingPolicy
+readme: |
+  Some applications do not accept certificates containing multiple names. This policy restricts each cert-manager Certificate to at most one `spec.dnsNames` entry. Missing or empty `dnsNames` lists are allowed.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `cert-manager-limit-dnsnames` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact Certificate namespace and name.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed. See the tested example in
+  [`.kyverno-test-exceptions`](https://github.com/kyverno/policies/blob/main/cert-manager-vpol/limit-dnsnames/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the policy
+  retains its normal validation behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Cert-Manager in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.25+"
+  kyverno/subject: "Certificate"
+digest: 435b930ddd73b00840ad49b903229a85c1fa7013991c9afd537b4faa374d138a
+createdAt: "2026-10-27T19:03:03Z"
