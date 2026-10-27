@@ -18,9 +18,65 @@ runs:
       with:
         go-version: ~1.26.1
     - name: Install latest Kyverno CLI
+      id: install-kyverno-cli
+      uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+      continue-on-error: true
+    - name: Wait before retrying Kyverno CLI
+      if: steps.install-kyverno-cli.outcome == 'failure'
+      shell: bash
+      run: sleep 5
+    - name: Retry Kyverno CLI installation
+      id: retry-kyverno-cli
+      if: steps.install-kyverno-cli.outcome == 'failure'
+      uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
+      continue-on-error: true
+    - name: Wait before final Kyverno CLI retry
+      if: steps.retry-kyverno-cli.outcome == 'failure'
+      shell: bash
+      run: sleep 10
+    - name: Retry Kyverno CLI installation again
+      if: steps.retry-kyverno-cli.outcome == 'failure'
       uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
     - name: Install ORAS
       uses: oras-project/setup-oras@38de303aac69abb66f3e6255b7198bff35f323e3 # v2.0.0
+    - name: Install kind and kubectl
+      id: install-kind-tools
+      uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
+      continue-on-error: true
+      with:
+        version: ${{ inputs.kind-version }}
+        kubectl_version: ${{ inputs.k8s-version }}
+        cluster_name: kind
+        install_only: true
+        ignore_failed_clean: true
+    - name: Wait before retrying kind and kubectl
+      if: steps.install-kind-tools.outcome == 'failure'
+      shell: bash
+      run: sleep 5
+    - name: Retry kind and kubectl installation
+      id: retry-kind-tools
+      if: steps.install-kind-tools.outcome == 'failure'
+      uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
+      continue-on-error: true
+      with:
+        version: ${{ inputs.kind-version }}
+        kubectl_version: ${{ inputs.k8s-version }}
+        cluster_name: kind
+        install_only: true
+        ignore_failed_clean: true
+    - name: Wait before final kind and kubectl retry
+      if: steps.retry-kind-tools.outcome == 'failure'
+      shell: bash
+      run: sleep 10
+    - name: Retry kind and kubectl installation again
+      if: steps.retry-kind-tools.outcome == 'failure'
+      uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
+      with:
+        version: ${{ inputs.kind-version }}
+        kubectl_version: ${{ inputs.k8s-version }}
+        cluster_name: kind
+        install_only: true
+        ignore_failed_clean: true
     - name: Create kind cluster
       uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
       with:
