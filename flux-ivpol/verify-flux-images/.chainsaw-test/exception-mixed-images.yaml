@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: flux-approved-unsigned
+  namespace: default
+spec:
+  containers:
+    - name: approved-image
+      image: ghcr.io/fluxcd/source-controller:v0.0.14
+      imagePullPolicy: Never
+    - name: unapproved-image
+      image: docker.io/library/busybox:1.36
+      imagePullPolicy: Never
