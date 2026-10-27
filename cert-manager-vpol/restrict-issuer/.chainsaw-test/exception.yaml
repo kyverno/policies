@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: exact-certificate
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: cert-manager-restrict-issuer
+  matchConditions:
+    - name: exact-certificate
+      expression: "object.metadata.namespace == 'default' && object.metadata.name == 'issuer-exception-target'"
