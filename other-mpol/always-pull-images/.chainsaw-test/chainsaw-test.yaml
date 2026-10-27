@@ -101,9 +101,18 @@ spec:
     - script:
         content: |
           set -eu
-          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=first --image=registry.example/skip-first:1
-          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=middle --image=registry.example/mutate-middle:1
-          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=last --image=registry.example/skip-last:1
+          . ../../../.chainsaw/scripts/retry.sh
+          exception_active() {
+            kubectl patch pod ephemeral-update-pod -n default \
+              --subresource=ephemeralcontainers --type=strategic --dry-run=server -o json \
+              --patch='{"spec":{"ephemeralContainers":[{"name":"exception-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"},{"name":"mutation-probe","image":"registry.example/mutate-middle:1","imagePullPolicy":"IfNotPresent"}]}}' |
+              jq -e '([.spec.ephemeralContainers[] | select(.name == "exception-probe") | .imagePullPolicy] == ["IfNotPresent"]) and
+                ([.spec.ephemeralContainers[] | select(.name == "mutation-probe") | .imagePullPolicy] == ["Always"])'
+          }
+          retry exception_active
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=first --image=registry.example/skip-first:1 --image-pull-policy=IfNotPresent
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=middle --image=registry.example/mutate-middle:1 --image-pull-policy=IfNotPresent
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=last --image=registry.example/skip-last:1 --image-pull-policy=IfNotPresent
     - assert:
         file: ephemeral-pod-patched.yaml
   - name: step-05-ephemeral-revocation
@@ -117,6 +126,14 @@ spec:
     - script:
         content: |
           set -eu
-          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=after-revocation --image=registry.example/skip-first:1
+          . ../../../.chainsaw/scripts/retry.sh
+          exception_revoked() {
+            kubectl patch pod ephemeral-update-pod -n default \
+              --subresource=ephemeralcontainers --type=strategic --dry-run=server -o json \
+              --patch='{"spec":{"ephemeralContainers":[{"name":"revocation-probe","image":"registry.example/skip-first:1","imagePullPolicy":"IfNotPresent"}]}}' |
+              jq -e '[.spec.ephemeralContainers[] | select(.name == "revocation-probe") | .imagePullPolicy] == ["Always"]'
+          }
+          retry exception_revoked
+          kubectl debug pod/ephemeral-update-pod -n default --attach=false --container=after-revocation --image=registry.example/skip-first:1 --image-pull-policy=IfNotPresent
     - assert:
         file: ephemeral-pod-revoked-patched.yaml
