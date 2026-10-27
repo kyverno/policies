@@ -1,0 +1,56 @@
+apiVersion: cli.kyverno.io/v1alpha1
+context: context.yaml
+kind: Test
+metadata:
+  name: restrict-secrets-by-label
+policies:
+  - ../restrict-secrets-by-label.yaml
+resources:
+  - resources.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-secrets-by-label
+    resources:
+      - pod-no-secrets
+      - pod-null-lists
+      - pod-unprotected-env
+      - pod-unprotected-projected
+      - pod-unlabeled-secret
+      - pod-ephemeral-no-secrets
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-secrets-by-label
+    resources:
+      - pod-protected-env
+      - pod-protected-envfrom
+      - pod-protected-volume
+      - pod-protected-projected
+      - pod-protected-init
+      - pod-protected-ephemeral
+    result: fail
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-secrets-by-label
+    resources:
+      - pod-missing-secret
+    result: error
+  - isValidatingPolicy: true
+    kind: Deployment
+    policy: restrict-secrets-by-label
+    resources:
+      - deployment-protected-envfrom
+    result: fail
+  - isValidatingPolicy: true
+    kind: ReplicationController
+    policy: restrict-secrets-by-label
+    resources:
+      - rc-protected-projected
+    result: fail
+  - isValidatingPolicy: true
+    kind: CronJob
+    policy: restrict-secrets-by-label
+    resources:
+      - cronjob-unprotected-env
+    result: pass

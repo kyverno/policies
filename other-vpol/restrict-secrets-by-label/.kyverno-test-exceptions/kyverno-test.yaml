@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+context: context.yaml
+kind: Test
+metadata:
+  name: restrict-secrets-by-label-exceptions
+policies:
+  - ../restrict-secrets-by-label.yaml
+resources:
+  - resources.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-secrets-by-label
+    resources:
+      - default/secret-exception-target
+    result: pass
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-secrets-by-label
+    resources:
+      - default/secret-exception-sibling
+    result: fail
