@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: issuer-exception-target
+  namespace: default
+spec:
+  secretName: issuer-exception-target
+  dnsNames: [foo.corp.com]
+  issuerRef:
+    name: other-issuer
+    kind: Issuer
+    group: cert-manager.io
