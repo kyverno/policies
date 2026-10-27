@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: verify-git-repositories-git-source
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - name: verify-git-repositories
+      kind: ValidatingPolicy
+  matchConditions:
+    - name: exact-git-repositories
+      expression: object.kind == 'GitRepository' && object.metadata.namespace == 'default' && object.metadata.name in ['git-exception-good', 'git-exception-prefix-bypass']
+  allowedValues:
+    - github.com/otherorg

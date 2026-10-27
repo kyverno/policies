@@ -1,0 +1,33 @@
+name: verify-git-repositories
+version: 1.0.0
+displayName: Verify Flux Git Repositories in ValidatingPolicy
+description: Restrict Flux GitRepository URLs to trusted host and path prefixes.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux-vpol/verify-git-repositories/verify-git-repositories.yaml
+  ```
+keywords:
+  - kyverno
+  - Flux
+  - ValidatingPolicy
+readme: |
+  Restricts Flux GitRepository URLs to configurable trusted host and path prefixes. The sample allow-list is in `variables.allowedSourcePrefixes` in the policy; edit its host/path tokens to fit your environment. A token such as `github.com/myorg` matches that path segment and its descendants, not `myorg-evil`. `*.myorg.com` matches subdomains, not the apex domain.
+
+  HTTPS and `ssh://git@host/path` URLs are accepted. SCP-style Git URLs (`git@host:org/repo`) are rejected. URL scheme and host are parsed; ports, HTTPS userinfo, and SSH users other than `git` are rejected. Query, fragment, encoded path, repeated-slash, and dot-segment paths are rejected. Resources in `flux-system` are excluded.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno and reference the `ValidatingPolicy`
+  named `verify-git-repositories` in `spec.policyRefs`. Scope each exception with
+  `spec.matchConditions` to the intended GitRepository. Add exact host/path prefix
+  tokens to `spec.allowedValues` (for example, `github.com/otherorg`); the token
+  is parsed with the same host and path-boundary checks as the policy allow-list.
+  The tested exception does not admit the sibling prefix `otherorg-evil`.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Flux in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "GitRepository"
+digest: 733acde78e059b9a34d1d51c4f9cb69782ab8b83f1fdbd401dfaa1d940c138fc
+createdAt: "2026-10-27T12:00:00Z"

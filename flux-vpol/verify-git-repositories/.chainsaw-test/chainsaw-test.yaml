@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-git-repositories
+spec:
+  template: false
+  steps:
+    - name: shared-test-namespaces
+      skipDelete: true
+      try:
+        - apply:
+            file: policy-exceptions-namespace.yaml
+        - apply:
+            file: flux-system-namespace.yaml
+    - name: install-policy
+      try:
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: ../verify-git-repositories.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: verify-git-repositories
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: allow-trusted-repositories-and-flux-system-exclusion
+      try:
+        - apply:
+            file: good.yaml
+    - name: reject-untrusted-and-bypass-prefixes
+      try:
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-git-repositories failed') && contains($error, 'spec.url must use an allowed host and path prefix')): true
+            file: bad.yaml
+    - name: exact-exception-token
+      try:
+        - apply:
+            file: exceptions.yaml
+        - script:
+            content: |
+              set -eu
+              for attempt in $(seq 1 30); do
+                if kubectl create --dry-run=server -f git-exception-good.yaml -o name >/dev/null 2>&1; then
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo 'verify-git-repositories PolicyException did not become active' >&2
+              exit 1
+        - apply:
+            file: git-exception-good.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-git-repositories failed') && contains($error, 'spec.url must use an allowed host and path prefix')): true
+            file: git-exception-prefix-bypass.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy verify-git-repositories failed') && contains($error, 'spec.url must use an allowed host and path prefix')): true
+            file: git-exception-sibling.yaml

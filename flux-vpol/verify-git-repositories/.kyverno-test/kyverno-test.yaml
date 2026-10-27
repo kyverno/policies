@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-git-repositories
+policies:
+  - ../verify-git-repositories.yaml
+resources:
+  - ../.chainsaw-test/resources.yaml
+results:
+  - policy: verify-git-repositories
+    kind: GitRepository
+    resources: [git-good-https, git-good-ssh, git-good-case, git-good-v1beta2, git-good-wildcard]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-git-repositories
+    kind: GitRepository
+    resources: [git-bad, git-host-bypass, git-path-bypass, git-wildcard-apex, git-dot-segment, git-repeated-slash, git-userinfo, git-scp-style, git-query, git-wrong-scheme, git-empty, git-exception-good, git-exception-sibling, git-exception-prefix-bypass]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-git-repositories
+    kind: GitRepository
+    resources: [git-system-excluded]
+    result: skip
+    isValidatingPolicy: true
