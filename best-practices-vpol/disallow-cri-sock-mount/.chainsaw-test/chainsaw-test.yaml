@@ -55,6 +55,21 @@ spec:
             (contains($error, 'Policy disallow-container-sock-mounts failed')): true
         file: pod-cri-dockerd-sock.yaml
     - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy disallow-container-sock-mounts failed')): true
+        file: pod-run-docker-sock.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy disallow-container-sock-mounts failed')): true
+        file: pod-root-mount.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy disallow-container-sock-mounts failed')): true
+        file: pod-var-run-mount.yaml
+    - apply:
         file: pod-emptydir-vol.yaml
     - apply:
         file: pod-no-volumes.yaml
