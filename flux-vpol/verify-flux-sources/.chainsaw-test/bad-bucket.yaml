@@ -1,0 +1,9 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: Bucket
+metadata:
+  name: chainsaw-bucket-bad
+  namespace: default
+spec:
+  bucketName: artifacts
+  endpoint: artifacts.myorg.com.evil.example
+  interval: 1m

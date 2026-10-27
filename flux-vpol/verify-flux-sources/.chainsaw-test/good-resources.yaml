@@ -1,0 +1,72 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-git-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-git-ssh-good
+  namespace: default
+spec:
+  interval: 1m
+  url: ssh://git@github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: chainsaw-git-v1beta2-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: Bucket
+metadata:
+  name: chainsaw-bucket-good
+  namespace: default
+spec:
+  bucketName: artifacts
+  endpoint: artifacts.myorg.com
+  interval: 1m
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: chainsaw-helm-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://charts.myorg.com/stable
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: chainsaw-oci-good
+  namespace: default
+spec:
+  interval: 1m
+  url: oci://ghcr.io/myorg/charts
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: chainsaw-image-good
+  namespace: default
+spec:
+  image: ghcr.io/myorg/controller
+  interval: 1m
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-flux-system-excluded
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/untrusted/repository.git
