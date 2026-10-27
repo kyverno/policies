@@ -1,0 +1,40 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-mutating-validating-admission-webhooks
+policies:
+- ../restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+resources:
+- resource.yaml
+results:
+- policy: restrict-clusterrole-mutating-validating-admission-webhooks
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - webhook-mutating-create
+  - webhook-validating-update
+  - webhook-mutating-patch
+  - webhook-wildcard-verb
+  - webhook-wildcard-resource
+  - webhook-wildcard-api-group
+  - webhook-resource-name
+  - webhook-aggregate-empty
+  - webhook-exception-create
+  - webhook-exception-create-patch
+  - webhook-exception-other-name
+  result: fail
+- policy: restrict-clusterrole-mutating-validating-admission-webhooks
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources:
+  - webhook-read-only
+  - webhook-other-api-group
+  - webhook-unrelated-resource
+  - webhook-subresource-only
+  - webhook-admission-policy
+  - webhook-null-rules
+  - webhook-empty-rules
+  - webhook-omitted-rules
+  - webhook-null-aggregation
+  - webhook-nonresource-only
+  result: pass

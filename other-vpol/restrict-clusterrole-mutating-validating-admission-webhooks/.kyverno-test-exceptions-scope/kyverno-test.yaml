@@ -1,0 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-admission-webhooks-exception-scope
+policies:
+- ../restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+resources: [resource.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- policy: restrict-clusterrole-mutating-validating-admission-webhooks
+  isValidatingPolicy: true
+  kind: ClusterRole
+  resources: [webhook-exception-other-name]
+  result: fail
