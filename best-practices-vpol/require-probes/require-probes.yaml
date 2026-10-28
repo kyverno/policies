@@ -19,33 +19,17 @@ spec:
   validationActions: ["Deny"]
   autogen:
     podControllers:
-      controllers: ["Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet", "ReplicationController"]
+      controllers: ["deployments", "statefulsets", "daemonsets", "jobs", "cronjobs", "replicasets"]
   matchConstraints:
     resourceRules:
     - apiGroups: [""]
       apiVersions: ["v1"]
       resources: ["pods"]
       operations: ["CREATE", "UPDATE"]
-    - apiGroups: ["apps"]
-      apiVersions: ["v1"]
-      resources: ["deployments", "statefulsets", "daemonsets", "replicasets"]
-      operations: ["CREATE", "UPDATE"]
-    - apiGroups: ["batch"]
-      apiVersions: ["v1", "v1beta1"]
-      resources: ["jobs", "cronjobs"]
-      operations: ["CREATE", "UPDATE"]
-    - apiGroups: [""]
-      apiVersions: ["v1"]
-      resources: ["replicationcontrollers"]
-      operations: ["CREATE", "UPDATE"]
   variables:
   - name: allContainers
     expression: >-
-      has(object.spec.containers) ?
-        object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([]) :
-        has(object.spec.template) ?
-          object.spec.template.spec.containers + object.spec.template.spec.?initContainers.orValue([]) + object.spec.template.spec.?ephemeralContainers.orValue([]) :
-          object.spec.jobTemplate.spec.template.spec.containers + object.spec.jobTemplate.spec.template.spec.?initContainers.orValue([]) + object.spec.jobTemplate.spec.template.spec.?ephemeralContainers.orValue([])
+      object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])
   validations:
   - expression: >-
       variables.allContainers.all(container,
