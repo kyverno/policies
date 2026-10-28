@@ -54,18 +54,18 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["cronjobs"]
   matchImageReferences:
-    - glob: "ghcr.io/fluxcd/source-controller:*"
-    - glob: "ghcr.io/fluxcd/kustomize-controller:*"
-    - glob: "ghcr.io/fluxcd/helm-controller:*"
-    - glob: "ghcr.io/fluxcd/notification-controller:*"
-    - glob: "ghcr.io/fluxcd/image-reflector-controller:*"
-    - glob: "ghcr.io/fluxcd/image-automation-controller:*"
-    - glob: "docker.io/fluxcd/source-controller:*"
-    - glob: "docker.io/fluxcd/kustomize-controller:*"
-    - glob: "docker.io/fluxcd/helm-controller:*"
-    - glob: "docker.io/fluxcd/notification-controller:*"
-    - glob: "docker.io/fluxcd/image-reflector-controller:*"
-    - glob: "docker.io/fluxcd/image-automation-controller:*"
+    - glob: "ghcr.io/fluxcd/source-controller[:@]*"
+    - glob: "ghcr.io/fluxcd/kustomize-controller[:@]*"
+    - glob: "ghcr.io/fluxcd/helm-controller[:@]*"
+    - glob: "ghcr.io/fluxcd/notification-controller[:@]*"
+    - glob: "ghcr.io/fluxcd/image-reflector-controller[:@]*"
+    - glob: "ghcr.io/fluxcd/image-automation-controller[:@]*"
+    - glob: "docker.io/fluxcd/source-controller[:@]*"
+    - glob: "docker.io/fluxcd/kustomize-controller[:@]*"
+    - glob: "docker.io/fluxcd/helm-controller[:@]*"
+    - glob: "docker.io/fluxcd/notification-controller[:@]*"
+    - glob: "docker.io/fluxcd/image-reflector-controller[:@]*"
+    - glob: "docker.io/fluxcd/image-automation-controller[:@]*"
   validationConfigurations:
     mutateDigest: false
     required: true

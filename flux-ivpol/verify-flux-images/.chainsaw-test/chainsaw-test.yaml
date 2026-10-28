@@ -52,13 +52,27 @@ spec:
               }
               cleanup
               trap cleanup EXIT
-              if output=$(kubectl run flux-source-controller-digest -n "$NAMESPACE" --restart=Never --image-pull-policy=Never --image=ghcr.io/fluxcd/source-controller:v1.10.1@sha256:611b6bca3eae95bcff471414d1fb14a4ab83d7f14e609cccef2bd389c121f37e 2>&1); then
+              if output=$(kubectl run flux-source-controller-digest -n "$NAMESPACE" --restart=Never --image-pull-policy=Never --image=ghcr.io/fluxcd/source-controller@sha256:611b6bca3eae95bcff471414d1fb14a4ab83d7f14e609cccef2bd389c121f37e 2>&1); then
                 printf '%s\n' "$output"
               else
                 printf '%s\n' "$output"
                 exit 1
               fi
               kubectl delete pod flux-source-controller-digest -n "$NAMESPACE" --wait=true >/dev/null
+    - name: reject-unverified-digest-only-image
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              if output=$(kubectl run flux-source-controller-unsigned-digest -n "$NAMESPACE" --restart=Never --dry-run=server --image=ghcr.io/fluxcd/source-controller@sha256:8e7f5ac97c858da6537a8371766d2ca7516baf04ed87bfec2024bc2fc7a2c697 2>&1); then
+                printf '%s\n' "$output"
+                echo "Expected the unsigned digest-only Flux image to be rejected" >&2
+                exit 1
+              else
+                printf '%s\n' "$output"
+              fi
+              printf '%s\n' "$output" | grep -F 'Policy verify-flux-images failed'
+              printf '%s\n' "$output" | grep -F 'Failed to verify the Flux controller image signature.'
     - name: verify-init-container-and-controller-matching
       timeouts:
         exec: 4m
