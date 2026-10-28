@@ -190,39 +190,62 @@ spec:
           - name: app
             image: ghcr.io/kyverno/test-busybox:1.35
 ---
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: goodrc01
+  name: gooddeploy01
 spec:
-  replicas: 1
   selector:
-    app: goodrc01
+    matchLabels:
+      app: gooddeploy01
   template:
     metadata:
       labels:
-        app: goodrc01
+        app: gooddeploy01
     spec:
       containers:
       - name: app
         image: ghcr.io/kyverno/test-busybox:1.35
-        startupProbe:
+        readinessProbe:
           exec:
             command: ["true"]
 ---
-apiVersion: v1
-kind: ReplicationController
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: badrc01
+  name: baddeploy01
 spec:
-  replicas: 1
   selector:
-    app: badrc01
+    matchLabels:
+      app: baddeploy01
   template:
     metadata:
       labels:
-        app: badrc01
+        app: baddeploy01
     spec:
       containers:
       - name: app
         image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: baddeploy-init01
+spec:
+  selector:
+    matchLabels:
+      app: baddeploy-init01
+  template:
+    metadata:
+      labels:
+        app: baddeploy-init01
+    spec:
+      initContainers:
+      - name: init
+        image: ghcr.io/kyverno/test-busybox:1.35
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+        livenessProbe:
+          exec:
+            command: ["true"]

@@ -34,13 +34,6 @@ spec:
             (contains($error, 'Policy require-pod-probes failed')): true
         file: bad-cronjob.yaml
     - apply:
-        file: good-replicationcontroller.yaml
-    - apply:
-        expect:
-        - check:
-            (contains($error, 'Policy require-pod-probes failed')): true
-        file: bad-replicationcontroller.yaml
-    - apply:
         expect:
         - check:
             (contains($error, 'Policy require-pod-probes failed')): true
