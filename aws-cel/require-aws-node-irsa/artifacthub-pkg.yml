@@ -1,0 +1,24 @@
+name: require-aws-node-irsa-vpol
+version: 1.0.0
+displayName: Require aws-node DaemonSet use IRSA in ValidatingPolicy
+description: >-
+  Ensure the aws-node DaemonSet in kube-system does not use the "aws-node" ServiceAccount (migrate to an IRSA-specific SA instead).
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/aws-cel/require-aws-node-irsa/require-aws-node-irsa.yaml
+  ```
+keywords:
+  - kyverno
+  - AWS
+  - EKS Best Practices
+  - ValidatingPolicy
+readme: |
+  Ensure the aws-node DaemonSet in kube-system does not use the "aws-node" ServiceAccount (migrate to an IRSA-specific SA instead).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "AWS, EKS Best Practices"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "DaemonSet"
+digest: bd85a272b68dfa09fe5859ea950dfc93dde9e4420220492257aa573b65853aff
+createdAt: "2025-12-31T00:00:00Z"
