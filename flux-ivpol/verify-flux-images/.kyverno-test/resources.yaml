@@ -1,0 +1,146 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unrelated-image
+spec:
+  containers:
+    - name: app
+      image: docker.io/library/busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lookalike-registry
+spec:
+  containers:
+    - name: app
+      image: ghcr.io/fluxcd-evil/source-controller:v1.2.3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lookalike-repository
+spec:
+  containers:
+    - name: app
+      image: docker.io/fluxcd/source-controller-evil:v1.2.3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lookalike-container-categories
+spec:
+  initContainers:
+    - name: init
+      image: ghcr.io/fluxcd-evil/source-controller:v1.2.3
+  containers:
+    - name: app
+      image: docker.io/library/busybox:1.36
+  ephemeralContainers:
+    - name: debug
+      image: docker.io/fluxcd/source-controller-evil:v1.2.3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unrelated-controller-image
+spec:
+  selector:
+    matchLabels:
+      app: unrelated
+  template:
+    metadata:
+      labels:
+        app: unrelated
+    spec:
+      initContainers:
+        - name: init
+          image: quay.io/example/initializer:v1.0.0
+      containers:
+        - name: app
+          image: docker.io/library/busybox:1.36
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: unrelated-statefulset-image
+spec:
+  serviceName: unrelated
+  selector:
+    matchLabels:
+      app: unrelated
+  template:
+    metadata:
+      labels:
+        app: unrelated
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/busybox:1.36
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: unrelated-daemonset-image
+spec:
+  selector:
+    matchLabels:
+      app: unrelated
+  template:
+    metadata:
+      labels:
+        app: unrelated
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/busybox:1.36
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: unrelated-replicaset-image
+spec:
+  selector:
+    matchLabels:
+      app: unrelated
+  template:
+    metadata:
+      labels:
+        app: unrelated
+    spec:
+      containers:
+        - name: app
+          image: docker.io/library/busybox:1.36
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: unrelated-job-image
+spec:
+  template:
+    metadata:
+      labels:
+        app: unrelated
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: app
+          image: docker.io/library/busybox:1.36
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: unrelated-cronjob-image
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: unrelated
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: app
+              image: docker.io/library/busybox:1.36

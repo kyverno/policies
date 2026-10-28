@@ -1,0 +1,17 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: verify-flux-images-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - name: verify-flux-images
+      kind: ImageValidatingPolicy
+  matchConditions:
+    - name: exact-pod
+      expression: object.metadata.namespace == 'default' && object.metadata.name == 'flux-approved-unsigned'
+    - name: approved-image-set
+      expression: >-
+        object.spec.containers.all(c, c.image == 'ghcr.io/fluxcd/source-controller:v0.0.14') &&
+        object.spec.?initContainers.orValue([]).all(c, c.image == 'ghcr.io/fluxcd/source-controller:v0.0.14') &&
+        object.spec.?ephemeralContainers.orValue([]).all(c, c.image == 'ghcr.io/fluxcd/source-controller:v0.0.14')
