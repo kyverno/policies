@@ -30,6 +30,8 @@ spec:
       verifyImages:
       - imageReferences:
         - "myreg.org/path/repo:*"
+        # Kyverno rejects mutateDigest in Audit mode
+        mutateDigest: false
         attestations:
         - predicateType: https://slsa.dev/provenance/v0.2
           attestors:
