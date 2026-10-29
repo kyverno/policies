@@ -4,9 +4,11 @@ metadata:
   name: restrict-node-label-creation
 status:
   conditionStatus:
+    # Background scanning is disabled for this policy, so Kyverno skips the
+    # reports-controller RBAC check and reports Succeeded (kyverno/kyverno#16490).
     (conditions[?type == 'RBACPermissionsGranted']):
-    - reason: Failed
-      status: "False"
+    - reason: Succeeded
+      status: "True"
     (conditions[?type == 'WebhookConfigured']):
     - message: Webhook configured.
       reason: Succeeded
