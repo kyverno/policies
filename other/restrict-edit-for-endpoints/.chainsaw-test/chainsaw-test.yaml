@@ -23,8 +23,10 @@ spec:
   - name: step-02
     try:
     - apply:
+        dryRun: true
         file: cr-good.yaml
     - apply:
+        dryRun: true
         expect:
         - check:
             ($error != null): true
