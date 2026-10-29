@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+clusterResources:
+- cluster-resources.yaml
+kind: Test
+metadata:
+  name: prevent-duplicate-vpa
+policies:
+- ../prevent-duplicate-vpa.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: VerticalPodAutoscaler
+  policy: prevent-duplicate-vpa
+  resources:
+  - default/bad-kind-cronjob
+  - default/bad-kind-lowercase
+  - default/bad-duplicate-deployment
+  - default/bad-duplicate-statefulset
+  - default/bad-kind-v1beta2
+  - default/bad-duplicate-v1beta2
+  result: fail
+- isValidatingPolicy: true
+  kind: VerticalPodAutoscaler
+  policy: prevent-duplicate-vpa
+  resources:
+  - default/good-deployment
+  - default/good-statefulset
+  - default/good-replicaset
+  - default/good-daemonset-other-namespace
+  - default/good-same-name-other-kind
+  - default/good-v1beta2
+  result: pass
