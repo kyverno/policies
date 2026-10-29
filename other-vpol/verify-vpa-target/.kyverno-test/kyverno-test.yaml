@@ -1,0 +1,37 @@
+apiVersion: cli.kyverno.io/v1alpha1
+context: context.yaml
+kind: Test
+metadata:
+  name: verify-vpa-target
+policies:
+- ../verify-vpa-target.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: VerticalPodAutoscaler
+  policy: verify-vpa-target
+  resources:
+  - bad-unknown-kind
+  - bad-lowercase-kind
+  - bad-no-targetref
+  - bad-missing-deployment
+  - bad-wrong-kind-daemonset
+  - bad-wrong-kind-statefulset
+  - bad-missing-replicaset
+  - bad-other-namespace
+  - bad-null-name
+  - bad-v1beta2-unknown-kind
+  - bad-v1beta2-missing-deployment
+  result: fail
+- isValidatingPolicy: true
+  kind: VerticalPodAutoscaler
+  policy: verify-vpa-target
+  resources:
+  - good-deployment
+  - good-daemonset
+  - good-statefulset
+  - good-replicaset
+  - good-other-namespace
+  - good-v1beta2-deployment
+  result: pass
