@@ -1,0 +1,96 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: cluster-resources
+spec:
+  crds:
+  - vpa-crd.yaml
+  resources:
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: good-deploy
+      updatePolicy:
+        updateMode: "Off"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-sts
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: StatefulSet
+        name: good-sts
+      updatePolicy:
+        updateMode: "Off"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-rs
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: ReplicaSet
+        name: good-rs
+      updatePolicy:
+        updateMode: "Off"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-ds
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: good-ds
+      updatePolicy:
+        updateMode: "Off"
+  # Targets the name of the bad StatefulSet but with the wrong kind, so it does not count.
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-wrong-kind
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: bad-sts
+      updatePolicy:
+        updateMode: "Off"
+  # Targets the bad DaemonSet from another namespace, so it does not count.
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-other-namespace
+      namespace: team-b
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: bad-ds
+      updatePolicy:
+        updateMode: "Off"
+  # Uses a glob as the target name. The VPA controller reads targetRef.name literally,
+  # so this does not count for bad-deploy even though the legacy NotIn treated it as a wildcard.
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-glob-name
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: bad-*
+      updatePolicy:
+        updateMode: "Off"
