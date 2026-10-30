@@ -2,14 +2,34 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  creationTimestamp: null
   name: disallow-secrets-from-env-vars
 spec:
-  # disable templating because it can cause issues with ValidatingPolicy
   template: false
   steps:
   - name: step-01
     try:
+    - apply:
+        file: rbac-ephemeralcontainers.yaml
+    - apply:
+        file: rbac-ephemeralcontainers-reports.yaml
+    - script:
+        content: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            ready=true
+            if ! kubectl auth can-i update pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-admission-controller | grep -qx yes; then
+              ready=false
+            fi
+            for verb in get list watch; do
+              if ! kubectl auth can-i "$verb" pods --subresource=ephemeralcontainers --as=system:serviceaccount:kyverno:kyverno-reports-controller | grep -qx yes; then
+                ready=false
+              fi
+            done
+            if [ "$ready" = true ]; then exit 0; fi
+            sleep 1
+          done
+          echo "ephemeral-container RBAC aggregation did not become observable" >&2
+          exit 1
     - apply:
         file: ../disallow-secrets-from-env-vars.yaml
     - patch:
@@ -19,13 +39,12 @@ spec:
           metadata:
             name: secrets-not-from-env-vars
           spec:
-            validationActions:
-             - Deny
+            validationActions: [Deny]
     - assert:
         file: policy-ready.yaml
-    - sleep: 
-       duration: 10s
-  - name: step-02
+    - sleep:
+        duration: 10s
+  - name: step-02-normal-pods
     try:
     - apply:
         file: pods-good.yaml
@@ -41,4 +60,49 @@ spec:
         - check:
             ($error != null): true
         file: podcontrollers-bad.yaml
+  - name: step-03-ephemeral-subresource
+    try:
+    - apply:
+        file: pods-ephemeral.yaml
+    - script:
+        content: |
+          set -eu
+          ns=secrets-ephemeral-policy-test
+          for pod in secrets-ephemeral-good secrets-ephemeral-env secrets-ephemeral-envfrom; do
+            kubectl wait --for=jsonpath='{.status.phase}'=Running "pod/$pod" -n "$ns" --timeout=120s
+          done
 
+          # Control: a benign ephemeral container is allowed on the actual subresource.
+          kubectl patch pod secrets-ephemeral-good -n "$ns" \
+            --subresource=ephemeralcontainers --type=merge \
+            -p '{"spec":{"ephemeralContainers":[{"name":"debug-ok","image":"ghcr.io/kyverno/test-busybox:1.35","env":[{"name":"MODE","value":"diagnostics"}]}]}}'
+
+          expect_policy_denial() {
+            pod=$1
+            patch=$2
+            set +e
+            output=$(kubectl patch pod "$pod" -n "$ns" --subresource=ephemeralcontainers --type=merge -p "$patch" 2>&1)
+            code=$?
+            set -e
+            if [ "$code" -eq 0 ]; then
+              echo "Expected policy denial for $pod, but ephemeral update succeeded" >&2
+              exit 1
+            fi
+            printf '%s\n' "$output" | grep -F "Policy secrets-not-from-env-vars failed" || {
+              printf 'Unexpected admission failure for %s: %s\n' "$pod" "$output" >&2
+              exit 1
+            }
+          }
+          # Both secretKeyRef and envFrom.secretRef must be rejected on live updates.
+          expect_policy_denial secrets-ephemeral-env \
+            '{"spec":{"ephemeralContainers":[{"name":"debug-env","image":"ghcr.io/kyverno/test-busybox:1.35","env":[{"name":"PASSWORD","valueFrom":{"secretKeyRef":{"name":"foo","key":"pass"}}}]}]}}'
+          expect_policy_denial secrets-ephemeral-envfrom \
+            '{"spec":{"ephemeralContainers":[{"name":"debug-envfrom","image":"ghcr.io/kyverno/test-busybox:1.35","envFrom":[{"secretRef":{"name":"foo"}}]}]}}'
+  - name: step-98-cleanup
+    try:
+    - delete:
+        file: rbac-ephemeralcontainers.yaml
+    - delete:
+        file: rbac-ephemeralcontainers-reports.yaml
+    - script:
+        content: kubectl delete namespace secrets-ephemeral-policy-test --ignore-not-found=true --wait=false
