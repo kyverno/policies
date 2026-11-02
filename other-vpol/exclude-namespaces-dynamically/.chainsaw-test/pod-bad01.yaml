@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: badpod01
+  name: exclude-dynamically-exception-pod
   namespace: default
 spec:
   containers:
