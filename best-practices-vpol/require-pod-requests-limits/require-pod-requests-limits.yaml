@@ -5,8 +5,9 @@ metadata:
     policies.kyverno.io/minversion: 1.19.1
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
-      This policy validates that all containers have CPU and memory resource
-      requests and memory limits defined.
+      This policy validates that regular and init containers have CPU and memory
+      resource requests and memory limits defined. Ephemeral containers are excluded
+      because Kubernetes does not support resource requests or limits for them.
     policies.kyverno.io/severity: medium
     policies.kyverno.io/title: Require Requests and Limits
   name: require-requests-limits
@@ -40,6 +41,5 @@ spec:
         containers.
   variables:
     - expression: >-
-        object.spec.containers + object.spec.?initContainers.orValue([]) +
-        object.spec.?ephemeralContainers.orValue([])
+        object.spec.containers + object.spec.?initContainers.orValue([])
       name: allContainers
