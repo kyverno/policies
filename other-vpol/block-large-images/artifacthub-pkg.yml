@@ -19,9 +19,9 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `block-large-images` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List exact container image references in `spec.allowedValues` to bypass the 2Gi
-  layer-size check only for those images. CEL consumes `spec.allowedValues` as
-  `exceptions.allowedValues`; unlisted values remain checked.
+  List exact container image references in `spec.images` to bypass the 2Gi
+  layer-size check only for those images. CEL consumes `spec.images` as
+  `exceptions.allowedImages`; unlisted images remain checked.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-large-images/.chainsaw-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
