@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: busybox
-  name: baddeployment01
+  name: exclude-dynamically-baddeployment01
 spec:
   replicas: 1
   selector:
@@ -22,7 +22,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: badcronjob01
+  name: exclude-dynamically-badcronjob01
 spec:
   schedule: "* * * * *"
   jobTemplate:

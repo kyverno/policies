@@ -11,4 +11,4 @@ spec:
     - default
   matchConditions:
     - name: exact-create-request
-      expression: request.operation == 'CREATE' && request.kind.kind == 'Pod' && request.name == 'badpod01' && request.namespace == 'default'
+      expression: request.operation == 'CREATE' && request.kind.kind == 'Pod' && request.name == 'exclude-dynamically-exception-pod' && request.namespace == 'default'
