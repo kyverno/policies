@@ -38,7 +38,7 @@ spec:
     - message: "Images which reserve NVIDIA GPUs must be built to use them."
       expression: >
         variables.allContainers.all(container,
-          container.image in exceptions.allowedValues ||
+          (has(exceptions.allowedImages) && exceptions.allowedImages.exists(img, img == container.image)) ||
           !container.?resources.?limits[?'nvidia.com/gpu'].hasValue() ||
           (
             container.resources.limits['nvidia.com/gpu'] > 0
