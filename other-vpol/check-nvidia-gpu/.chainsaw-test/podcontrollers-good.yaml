@@ -16,6 +16,8 @@ spec:
       labels:
         app: busybox
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - image: ghcr.io/kyverno/test-busybox:1.35
         name: busybox02
@@ -26,11 +28,14 @@ metadata:
   name: goodcronjob01
   namespace: nvidia-gpu-ns
 spec:
+  suspend: true
   schedule: "* * * * *"
   jobTemplate:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           containers:
           - image: ghcr.io/kyverno/test-busybox:1.35
             name: busybox
