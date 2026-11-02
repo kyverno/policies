@@ -31,4 +31,4 @@ spec:
         apiVersions: ["v1"]
   validations:
     - message: "images with size greater than 2Gi not allowed"
-      expression: 'variables.allContainers.all(container, container.image in exceptions.allowedValues || image.GetMetadata(container.image).manifest.layers.map(layer, layer.size).sum() <= variables.maxSizeBytes)'
+      expression: 'variables.allContainers.all(container, (has(exceptions.allowedImages) && exceptions.allowedImages.exists(allowed, allowed == container.image)) || image.GetMetadata(container.image).manifest.layers.map(layer, layer.size).sum() <= variables.maxSizeBytes)'
