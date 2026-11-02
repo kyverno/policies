@@ -1,0 +1,15 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: verify-flux-sources-git-source
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+    - name: verify-flux-sources
+      kind: ValidatingPolicy
+  matchConditions:
+    - name: exact-git-repositories
+      expression: (object.kind == 'GitRepository' && object.metadata.namespace == 'default' && object.metadata.name in ['git-exception-good', 'git-exception-prefix-bypass']) || (object.kind == 'ImageRepository' && object.metadata.namespace == 'default' && object.metadata.name in ['image-exception-good', 'image-exception-dot-segment'])
+  allowedValues:
+    - github.com/otherorg
+    - ghcr.io/otherorg

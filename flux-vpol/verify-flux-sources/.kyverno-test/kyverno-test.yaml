@@ -1,0 +1,64 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-sources
+policies:
+  - ../verify-flux-sources.yaml
+resources:
+  - ../.chainsaw-test/resources.yaml
+results:
+  - policy: verify-flux-sources
+    kind: GitRepository
+    resources: [git-good-https, git-good-ssh, git-good-case, git-good-v1beta2]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: GitRepository
+    resources: [git-bad, git-host-bypass, git-path-bypass, git-dot-segment, git-scp-style, git-query, git-wrong-scheme, git-empty, git-exception-good, git-exception-sibling, git-exception-prefix-bypass]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: GitRepository
+    resources: [git-system-excluded]
+    result: skip
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: Bucket
+    resources: [bucket-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: Bucket
+    resources: [bucket-bad, bucket-path-bypass]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: HelmRepository
+    resources: [helm-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: HelmRepository
+    resources: [helm-bad]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: OCIRepository
+    resources: [oci-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: OCIRepository
+    resources: [oci-bad, oci-wrong-scheme]
+    result: fail
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: ImageRepository
+    resources: [image-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-flux-sources
+    kind: ImageRepository
+    resources: [image-path-bypass, image-host-bypass, image-dot-segment, image-dotdot-segment, image-encoded-dot-segment, image-empty-segment]
+    result: fail
+    isValidatingPolicy: true

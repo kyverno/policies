@@ -1,0 +1,84 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: verify-git-repositories
+  annotations:
+    policies.kyverno.io/title: Verify Flux Git Repositories
+    policies.kyverno.io/category: Flux in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.19.1
+    policies.kyverno.io/minversion: 1.19.1
+    policies.kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: GitRepository
+    policies.kyverno.io/description: >-
+      Restricts Flux GitRepository resources to configurable trusted host and path prefixes.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["source.toolkit.fluxcd.io"]
+        apiVersions: ["v1", "v1beta2"]
+        operations: [CREATE, UPDATE]
+        resources: [gitrepositories]
+  matchConditions:
+    - name: exclude-flux-system
+      expression: object.metadata.namespace != 'flux-system'
+  variables:
+    - name: source
+      expression: object.?spec.?url.orValue('')
+    - name: isUrl
+      expression: isURL(variables.source)
+    - name: sourceScheme
+      expression: >-
+        variables.isUrl ? url(variables.source).getScheme().lowerAscii() : ''
+    - name: sourceHost
+      expression: >-
+        variables.isUrl ? url(variables.source).getHostname().lowerAscii() : ''
+    - name: rawAuthority
+      expression: >-
+        variables.isUrl && variables.source.split('/').size() > 2
+        ? variables.source.split('/')[2].lowerAscii()
+        : ''
+    - name: sourcePath
+      expression: >-
+        variables.isUrl && url(variables.source).getEscapedPath() != ''
+        ? url(variables.source).getEscapedPath()
+        : '/'
+    - name: pathSegments
+      expression: variables.sourcePath.split('/').filter(segment, segment != '')
+    - name: canonicalPath
+      expression: >-
+        (variables.sourcePath == '/' + variables.pathSegments.join('/')
+        || variables.sourcePath == '/' + variables.pathSegments.join('/') + '/')
+        && variables.pathSegments.all(segment,
+        segment != '.' && segment != '..' && !segment.contains('%'))
+    - name: allowedSourcePrefixes
+      expression: "['github.com/myorg', '*.myorg.com'] + exceptions.allowedValues"
+    - name: supportedUrl
+      expression: >-
+        variables.isUrl
+        && !variables.source.contains('?')
+        && !variables.source.contains('#')
+        && ((variables.sourceScheme == 'https' && variables.rawAuthority == variables.sourceHost)
+        || (variables.sourceScheme == 'ssh' && variables.rawAuthority == 'git@' + variables.sourceHost))
+    - name: sourceAllowed
+      expression: >-
+        variables.supportedUrl
+        && variables.canonicalPath
+        && variables.allowedSourcePrefixes.exists(token,
+          (token.split('/')[0].startsWith('*.')
+            ? variables.sourceHost.endsWith(token.split('/')[0].substring(1, token.split('/')[0].size()).lowerAscii())
+            : variables.sourceHost == token.split('/')[0].lowerAscii())
+          && (token.split('/').size() == 1
+            || (token.substring(token.split('/')[0].size(), token.size()) != '/'
+              && (variables.sourcePath == token.substring(token.split('/')[0].size(), token.size())
+                || variables.sourcePath.startsWith(token.substring(token.split('/')[0].size(), token.size()) + '/')))))
+  validations:
+    - expression: variables.sourceAllowed
+      message: >-
+        spec.url must use an allowed host and path prefix. HTTPS and ssh://git@ URLs are
+        accepted; scp-style Git URLs are not.

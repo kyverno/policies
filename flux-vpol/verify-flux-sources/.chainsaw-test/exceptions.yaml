@@ -1,0 +1,44 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-sibling
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-prefix-bypass
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg-evil/repository.git
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: image-exception-good
+  namespace: default
+spec:
+  image: ghcr.io/otherorg/controller
+  interval: 1m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: image-exception-dot-segment
+  namespace: default
+spec:
+  image: ghcr.io/otherorg/../fluxcd/flux-cli
+  interval: 1m

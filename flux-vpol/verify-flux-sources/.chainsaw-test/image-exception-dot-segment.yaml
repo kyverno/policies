@@ -1,0 +1,8 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: image-exception-dot-segment
+  namespace: default
+spec:
+  image: ghcr.io/otherorg/../fluxcd/flux-cli
+  interval: 1m

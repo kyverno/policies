@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-git-repositories-exceptions
+policies:
+  - ../verify-git-repositories.yaml
+resources:
+  - ../.chainsaw-test/resources-exceptions.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - policy: verify-git-repositories
+    kind: GitRepository
+    resources: [git-exception-good]
+    result: pass
+    isValidatingPolicy: true
+  - policy: verify-git-repositories
+    kind: GitRepository
+    resources: [git-exception-sibling, git-exception-prefix-bypass]
+    result: fail
+    isValidatingPolicy: true
