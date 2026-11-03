@@ -6,6 +6,7 @@ policies:
 - ../deny-secret-service-account-token-type.yaml
 resources:
 - ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -19,3 +20,9 @@ results:
   policy: deny-secret-service-account-token-type
   resources: [bad-secret]
   result: pass
+- isValidatingPolicy: true
+  kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources:
+  - exception-sibling-ns/bad-secret-sibling
+  result: fail

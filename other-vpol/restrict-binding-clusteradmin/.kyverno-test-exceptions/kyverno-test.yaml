@@ -2,7 +2,9 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: clusteradmin-binding-exceptions}
 policies: [../restrict-binding-clusteradmin.yaml]
-resources: [resource.yaml]
+resources:
+- resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - isValidatingPolicy: true
@@ -10,3 +12,9 @@ results:
   policy: restrict-binding-clusteradmin
   resources: [policy-exceptions/badrb02]
   result: pass
+- isValidatingPolicy: true
+  kind: RoleBinding
+  policy: restrict-binding-clusteradmin
+  resources:
+  - exception-sibling-ns/badrb02-sibling
+  result: fail

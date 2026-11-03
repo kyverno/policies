@@ -2,7 +2,15 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: require-qos-burstable-exceptions}
 policies: [../require-qos-burstable.yaml]
-resources: [../.kyverno-test/resource.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - {kind: Pod, policy: require-qos-burstable, resources: [badpod01], result: pass, isValidatingPolicy: true}
+- kind: Pod
+  policy: require-qos-burstable
+  isValidatingPolicy: true
+  resources:
+  - exception-sibling-ns/badpod01-sibling
+  result: fail

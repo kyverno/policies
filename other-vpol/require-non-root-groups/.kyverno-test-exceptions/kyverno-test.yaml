@@ -2,7 +2,9 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: non-root-groups-exceptions}
 policies: [../require-non-root-groups.yaml, ../.kyverno-test/check-supplementalgroups.yaml]
-resources: [resource.yaml]
+resources:
+- resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - isValidatingPolicy: true
@@ -10,3 +12,9 @@ results:
   policy: check-supplementalgroups
   resources: [policy-exceptions/supgrp-badpod02]
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-supplementalgroups
+  resources:
+  - exception-sibling-ns/supgrp-badpod02-sibling
+  result: fail

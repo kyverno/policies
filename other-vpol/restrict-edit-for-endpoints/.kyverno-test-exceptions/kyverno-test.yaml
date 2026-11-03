@@ -3,7 +3,9 @@ kind: Test
 metadata:
   name: restrict-edit-for-endpoints-exception
 policies: [../restrict-edit-for-endpoints.yaml]
-resources: [../.kyverno-test/resource.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exception.yaml]
 results:
 - isValidatingPolicy: true
@@ -16,3 +18,9 @@ results:
   policy: restrict-edit-for-endpoints
   resources: [system:aggregate-to-edit-safe]
   result: pass
+- isValidatingPolicy: true
+  kind: ClusterRole
+  policy: restrict-edit-for-endpoints
+  resources:
+  - system:aggregate-to-edit-sibling
+  result: fail

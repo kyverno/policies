@@ -1,0 +1,9 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: badnetworkpolicy-sibling
+  namespace: exception-sibling-ns
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress

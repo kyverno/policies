@@ -6,6 +6,7 @@ policies:
 - ../limit-hostpath-vols.yaml
 resources:
 - resource.yaml
+- sibling-resource.yaml
 exceptions:
 - ../.kyverno-test/exceptions.yaml
 results:
@@ -15,3 +16,9 @@ results:
   resources:
   - policy-exceptions/bad-pods-all
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: limit-hostpath-vols
+  resources:
+  - exception-sibling-ns/bad-pods-all-sibling
+  result: fail

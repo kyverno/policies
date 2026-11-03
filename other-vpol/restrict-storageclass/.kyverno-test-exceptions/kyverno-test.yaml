@@ -2,7 +2,15 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: restrict-storageclass-exceptions}
 policies: [../restrict-storageclass.yaml]
-resources: [../.kyverno-test/resource.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - {kind: StorageClass, policy: restrict-storageclass, resources: [badstorageclass], result: pass, isValidatingPolicy: true}
+- kind: StorageClass
+  policy: restrict-storageclass
+  isValidatingPolicy: true
+  resources:
+  - badstorageclass-sibling
+  result: fail

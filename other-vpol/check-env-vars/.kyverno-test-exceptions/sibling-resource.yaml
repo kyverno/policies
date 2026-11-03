@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-opa-enabled-sibling
+  namespace: exception-sibling-ns
+spec:
+  containers:
+  - env:
+    - name: DISABLE_OPA
+      value: 'true'
+    image: quay.io/sdase/sdase-version-collector
+    name: myservice

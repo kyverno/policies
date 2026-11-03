@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pods-all-sibling
+  namespace: exception-sibling-ns
+spec:
+  containers:
+  - name: app
+    image: busybox:1.35
+  volumes:
+  - name: allowed-hostpath
+    hostPath:
+      path: /etc

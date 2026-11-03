@@ -6,6 +6,7 @@ policies:
 - ../enforce-pod-duration.yaml
 resources:
 - resources.yaml
+- sibling-resource.yaml
 exceptions:
 - ../.kyverno-test/exceptions.yaml
 results:
@@ -15,3 +16,9 @@ results:
   resources:
   - policy-exceptions/test-lifetime-fail
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: pod-lifetime
+  resources:
+  - exception-sibling-ns/test-lifetime-fail-sibling
+  result: fail

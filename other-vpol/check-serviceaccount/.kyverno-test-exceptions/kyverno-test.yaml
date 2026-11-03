@@ -6,6 +6,7 @@ policies:
 - ../check-serviceaccount.yaml
 resources:
 - resource.yaml
+- sibling-resource.yaml
 userinfo: ../.kyverno-test/userinfo.yaml
 exceptions:
 - exceptions.yaml
@@ -16,3 +17,9 @@ results:
   resources:
   - exception-pod
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-sa
+  resources:
+  - exception-sibling-ns/exception-pod-sibling
+  result: fail

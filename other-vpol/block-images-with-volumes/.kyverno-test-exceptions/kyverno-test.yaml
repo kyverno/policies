@@ -2,8 +2,11 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
   name: block-images-with-volumes-exceptions
+context: ../.kyverno-test/context.yaml
 policies: [../block-images-with-volumes.yaml]
-resources: [resource.yaml]
+resources:
+- resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - isValidatingPolicy: true
@@ -11,3 +14,9 @@ results:
   policy: block-images-with-volumes
   resources: [policy-exceptions/badcronjob01]
   result: pass
+- isValidatingPolicy: true
+  kind: CronJob
+  policy: block-images-with-volumes
+  resources:
+  - exception-sibling-ns/badcronjob01-sibling
+  result: fail
