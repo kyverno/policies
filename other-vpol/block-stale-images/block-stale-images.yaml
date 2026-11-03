@@ -6,7 +6,8 @@ metadata:
     policies.kyverno.io/category: Best Practices
     policies.kyverno.io/description: >-
       This policy blocks pods that use container images built more than 6 months
-      ago to ensure deployments use recent, maintained images.
+      ago to ensure deployments use recent, maintained images. PolicyException spec.images
+      can exempt exact image references.
     policies.kyverno.io/severity: medium
     policies.kyverno.io/title: Block Stale Images
   name: block-stale-images
@@ -29,7 +30,7 @@ spec:
   validations:
     - expression: >-
         variables.allContainers.all(container,
-        container.image in exceptions.allowedValues ||
+        (has(exceptions.allowedImages) && string(container.image) in exceptions.allowedImages) ||
         !has(image.GetMetadata(container.image).config.created) ||
         timestamp(image.GetMetadata(container.image).config.created) >=
         variables.cutoffTime)
