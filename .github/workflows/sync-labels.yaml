@@ -24,7 +24,7 @@ jobs:
       issues: write
       checks: read
       actions: read
-    uses: kyverno/assistant/.github/workflows/pr-management.yml@d7fdc881c9757201a852a28d99eaa795ce0762bf
+    uses: kyverno/assistant/.github/workflows/pr-management.yml@4560c0ededccc5c3c7fd5a17fcabb90a0d5633a8
     with:
       mode: sync-labels
       dry-run: ${{ inputs.dry_run && 'true' || 'false' }}
