@@ -91,12 +91,13 @@ spec:
 
 ### Pull request automation
 
-PR automation uses the shared action maintained in
-[kyverno/kyverno](https://github.com/kyverno/kyverno/tree/main/.github/actions/pr-management).
-Path labeling, hourly readiness checks, and daily stale handling initially run
-in **preview mode**. They log proposed changes without modifying PRs.
+PR automation calls the shared workflows maintained in
+[kyverno/assistant](https://github.com/kyverno/assistant/tree/main/.github/workflows),
+pinned to a commit SHA. Path labeling, hourly readiness checks, and daily stale
+handling run automatically and modify PRs. Manual runs default to `dry_run`
+enabled, which only logs the proposed changes.
 
-Once enabled, path labels identify CEL policy types and test/documentation
+Path labels identify CEL policy types and test/documentation
 changes. Readiness checks distinguish failing DCO/CI, merge conflicts, and
 review threads awaiting an author response from PRs that are `ready-for-review`.
 Readiness is not merge approval. Pending checks and workflows awaiting
@@ -109,20 +110,19 @@ after 7 days instead of being closed. PRs idle for 30 days or more
 (`backlog_days`) get no reviewer reminder or reviewer ping in stale warnings;
 only the author is notified. Drafts and Dependabot PRs are excluded.
 The labels `no-stale`, `hold`, `hold-redesign`, `blocked`, and `wip` exempt PRs
-from stale handling and reviewer reminders. If no reviewer or assignee is
+from stale handling, reviewer reminders, and readiness labels. If no reviewer or assignee is
 available, reminders go to `@kyverno/policies-maintainers`.
 
-Maintainers should first run **Actions > Sync labels** with `dry_run` disabled
-to provision label metadata, including lifecycle labels. Path labels are applied
-only by `pull_request_target` events (opened, reopened, synchronize), so existing
-PRs pick them up on their next push; a manual **PR Labeler** run with `dry_run`
-disabled refreshes only `merge-conflicts` labels. Review readiness previews in
-**Actions > PR lifecycle** and run it manually with `dry_run` disabled. After
-reviewing the results, replace the corresponding job's `dry-run` expression with `"false"`
-to enable automatic operation. Enable the stale job separately only after
-reviewing the backlog and exemptions. Definitions live in
+Run **Actions > Sync labels** with `dry_run` disabled to provision or update label
+metadata, including lifecycle labels. Path labels are applied only by
+`pull_request_target` events (opened, reopened, synchronize), so existing PRs pick
+them up on their next push; a manual **PR Labeler** run with `dry_run` disabled
+refreshes only `merge-conflicts` labels. To preview changes, run **Actions > PR
+lifecycle** manually with `dry_run` enabled. Definitions live in
 `.github/pr-management.json`, `.github/pr-readiness-checks.yml`, and
-`.github/labels.yml`. Keep shared-action updates pinned to a reviewed commit SHA.
+`.github/labels.yml`. Keep the `kyverno/assistant` pin in the workflow files on a
+reviewed commit SHA; `scripts/adopt-ci.sh --update-pin` in that repository opens
+the update PR.
 
 ### Artifact Hub
 
