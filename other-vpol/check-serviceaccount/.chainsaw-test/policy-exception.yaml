@@ -9,8 +9,8 @@ spec:
     name: check-sa
   matchConditions:
   - name: target-namespace
-    expression: request.namespace == 'restrict-sa-ns'
+    expression: request.namespace == 'check-sa-ns'
   - name: target-name
-    expression: request.name == 'exception-pod'
+    expression: request.name == 'badpod01'
   allowedValues:
-  - serviceAccount:restrict-sa-ns/another-developer
+  - serviceAccount:check-sa-ns/safe

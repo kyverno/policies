@@ -3,7 +3,9 @@ kind: Test
 metadata:
   name: check-hpa-exists-exception
 policies: [../check-hpa-exists.yaml]
-resources: [../.kyverno-test/resource.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 context: ../.kyverno-test/context.yaml
 exceptions: [../.kyverno-test/exception.yaml]
 results:
@@ -17,3 +19,9 @@ results:
   policy: check-hpa-exists
   resources: [default/deployment-uses-hpa]
   result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-hpa-exists
+  resources:
+  - exception-sibling-ns/deployment-without-hpa-sibling
+  result: fail
