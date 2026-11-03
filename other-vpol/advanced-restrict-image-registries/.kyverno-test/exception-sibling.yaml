@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-sibling
+  namespace: default
+spec:
+  containers:
+  - name: busybox
+    image: ghrc.io/kyverno/test-busybox:1.36

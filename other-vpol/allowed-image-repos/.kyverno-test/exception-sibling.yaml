@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-sibling
+  namespace: default
+spec:
+  containers:
+  - name: redis
+    image: docker.io/redis:7

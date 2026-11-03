@@ -13,7 +13,8 @@ metadata:
     policies.kyverno.io/description: >-
       This policy restricts Pod images to approved registries defined globally in a ConfigMap
       as a single string, newline-separated list, or YAML list with hyphens, and optionally
-      at the Namespace level via annotations. Uses contains() for compatibility with Kyverno 1.14.0.
+      at the Namespace level via annotations. PolicyException spec.images can exempt exact image
+      references. Uses contains() for compatibility with Kyverno 1.14.0.
 spec:
   validationActions: 
     - Audit
@@ -42,7 +43,7 @@ spec:
   validations:
     - expression: >-
         variables.allContainers.all(container,
-          (has(exceptions.allowedValues) && string(container.image) in exceptions.allowedValues) ||
+          (has(exceptions.allowedImages) && string(container.image) in exceptions.allowedImages) ||
           (
             variables.cmRegistries.exists(cmRegistry,
               container.image.startsWith(cmRegistry.trim()))

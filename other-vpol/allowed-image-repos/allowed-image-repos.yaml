@@ -15,7 +15,7 @@ metadata:
       and environments it may be required to also restrict which image repositories are used, 
       for example in some restricted Namespaces. This policy ensures that the only allowed
       image repositories present in a given Pod, across any container type, come from the
-      designated list.
+      designated list. PolicyException spec.images can exempt exact image references.
 spec:
   evaluation:
     background:
@@ -36,4 +36,4 @@ spec:
     - messageExpression: |
         'All images in this Pod must come from an authorized repository. Allowed repositories: ' + variables.allowedRepos.join(', ') + '. Found unauthorized images: ' + variables.allContainers.filter(container, !variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split('@')[0].split(':')[0] : container.image.split('@')[0].split(':')[0]) == repo)).map(container, container.image).join(', ')
       expression: |
-        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split('@')[0].split(':')[0] : container.image.split('@')[0].split(':')[0]) == repo) || container.image in exceptions.allowedValues)
+        variables.allContainers.all(container, variables.allowedRepos.exists(repo, (container.image.contains('/') ? container.image.split('/')[container.image.split('/').size() - 1].split('@')[0].split(':')[0] : container.image.split('@')[0].split(':')[0]) == repo) || (has(exceptions.allowedImages) && string(container.image) in exceptions.allowedImages))

@@ -19,9 +19,9 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `advanced-restrict-image-registries` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List exact container image references in `spec.allowedValues` to bypass the registry
-  check for those images, not entire registries. CEL consumes `spec.allowedValues` as
-  `exceptions.allowedValues`; unlisted values remain checked.
+  List exact container image references in `spec.images` to bypass the registry
+  check for those images, not entire registries. CEL consumes `spec.images` as
+  `exceptions.allowedImages`; unlisted images remain checked.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/advanced-restrict-image-registries/.kyverno-test/exception.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -31,7 +31,7 @@ annotations:
   kyverno/category: "Other in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 73d304dd83179947fb72d0bb4c60bda96f7428f9550f233c15e9ab1648a7b149
+digest: 952675696d515e3f3e9e94abbcb76cfa6a640f07c7163204bd76d18344143a56
 
 
 createdAt: "2025-05-11T17:46:11Z"
