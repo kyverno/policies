@@ -3,6 +3,9 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  # The API server normalizes null lists; CLI regressions cover the raw null form.
+  initContainers: null
+  ephemeralContainers: null
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
