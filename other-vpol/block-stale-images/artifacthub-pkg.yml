@@ -19,9 +19,9 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `block-stale-images` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List exact container image references in `spec.allowedValues` to bypass the image-age
-  check only for those images. CEL consumes `spec.allowedValues` as
-  `exceptions.allowedValues`; unlisted values remain checked.
+  List exact container image references in `spec.images` to bypass the image-age
+  check only for those images. CEL consumes `spec.images` as
+  `exceptions.allowedImages`; unlisted images remain checked.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/block-stale-images/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -30,5 +30,5 @@ annotations:
   kyverno/category: "Best Practices"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 5cb98600ba2da5e1d3acbf40aeab3c3dc159f75673eca0821eed8c01576c3746
+digest: cd398f0bada23f9b416de3b5d80648ec6b3d0831933d120eb156340cb57eaa53
 createdAt: "2026-10-06T00:00:00Z"
