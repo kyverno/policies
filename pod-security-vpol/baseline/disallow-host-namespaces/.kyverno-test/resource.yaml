@@ -418,3 +418,159 @@ spec:
           containers:
           - name: container01
             image: dummyimagename
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mixed-pod-network
+spec:
+  hostNetwork: true
+  hostIPC: false
+  hostPID: false
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mixed-pod-ipc
+spec:
+  hostNetwork: false
+  hostIPC: true
+  hostPID: false
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mixed-pod-omit-pid
+spec:
+  hostNetwork: false
+  hostIPC: false
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mixed-deploy-pid
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostNetwork: false
+      hostIPC: false
+      hostPID: true
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mixed-deploy-network-pid
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostNetwork: true
+      hostIPC: false
+      hostPID: true
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mixed-deploy-omit-ipc
+spec:
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      hostNetwork: false
+      hostPID: false
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mixed-cron-ipc-pid
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: OnFailure
+          hostNetwork: false
+          hostIPC: true
+          hostPID: true
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mixed-cron-network-ipc
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: OnFailure
+          hostNetwork: true
+          hostIPC: true
+          hostPID: false
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mixed-cron-omit-network
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: app
+        spec:
+          restartPolicy: OnFailure
+          hostIPC: false
+          hostPID: false
+          containers:
+          - name: app
+            image: ghcr.io/kyverno/test-busybox:1.35

@@ -15,6 +15,8 @@ results:
   - badcronjob02
   - badcronjob03
   - badcronjob04
+  - mixed-cron-ipc-pid
+  - mixed-cron-network-ipc
   result: fail
 - isValidatingPolicy: true
   kind: Deployment
@@ -24,6 +26,8 @@ results:
   - baddeployment02
   - baddeployment03
   - baddeployment04
+  - mixed-deploy-pid
+  - mixed-deploy-network-pid
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -33,6 +37,8 @@ results:
   - badpod02
   - badpod03
   - badpod04
+  - mixed-pod-network
+  - mixed-pod-ipc
   result: fail
 - isValidatingPolicy: true
   kind: CronJob
@@ -43,6 +49,7 @@ results:
   - goodcronjob03
   - goodcronjob04
   - goodcronjob05
+  - mixed-cron-omit-network
   result: pass
 - isValidatingPolicy: true
   kind: Deployment
@@ -53,6 +60,7 @@ results:
   - gooddeployment03
   - gooddeployment04
   - gooddeployment05
+  - mixed-deploy-omit-ipc
   result: pass
 - isValidatingPolicy: true
   kind: Pod
@@ -63,4 +71,5 @@ results:
   - goodpod03
   - goodpod04
   - goodpod05
+  - mixed-pod-omit-pid
   result: pass
