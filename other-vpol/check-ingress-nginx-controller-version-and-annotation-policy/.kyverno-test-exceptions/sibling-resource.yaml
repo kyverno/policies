@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-sibling
+  namespace: exception-sibling-ns
+spec:
+  containers:
+  - name: controller
+    image: registry.k8s.io/ingress-nginx/controller:v1.11.0

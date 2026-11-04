@@ -11,6 +11,16 @@ spec:
         resource: {apiVersion: v1, kind: Namespace, metadata: {name: policy-exceptions}}
   - try:
     - apply: {file: ../../update-image-tag.yaml}
+    - assert: {file: ../policy-ready.yaml}
     - apply: {file: exception.yaml}
+    - script:
+        content: |
+          set -eu
+          . ../../../../.chainsaw/scripts/retry.sh
+          exception_active() {
+            kubectl create --dry-run=server -f deployment.yaml -o json |
+              jq -e '[.spec.template.spec.containers[] | select(.name == "vault-agent") | .image] == ["vault:old"]'
+          }
+          retry exception_active
     - apply: {file: deployment.yaml}
     - assert: {file: deployment-unchanged.yaml}

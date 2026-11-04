@@ -19,3 +19,15 @@ results:
   resources:
   - good-secret
   result: pass
+- isValidatingPolicy: true
+  kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources:
+  - default-type-secret
+  result: pass
+- isValidatingPolicy: true
+  kind: Secret
+  policy: deny-secret-service-account-token-type
+  resources:
+  - null-type-secret
+  result: pass

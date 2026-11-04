@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: goodpod01-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   securityContext:
     sysctls:
     - name: kernel.shm_rmid_forced
@@ -20,6 +22,8 @@ kind: Pod
 metadata:
   name: goodpod02-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -29,6 +33,8 @@ kind: Pod
 metadata:
   name: goodpod03-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   securityContext:
     sysctls:
     - name: net.ipv4.ping_group_range
@@ -42,6 +48,8 @@ kind: Pod
 metadata:
   name: goodpod04-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   securityContext:
     sysctls:
     - name: net.ipv4.ip_local_reserved_ports
@@ -71,6 +79,8 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -80,6 +90,8 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -93,6 +105,8 @@ kind: Pod
 metadata:
   name: goodpod03
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -106,6 +120,8 @@ kind: Pod
 metadata:
   name: goodpod04
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -119,6 +135,8 @@ kind: Pod
 metadata:
   name: goodpod05
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -132,6 +150,8 @@ kind: Pod
 metadata:
   name: goodpod06
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -145,6 +165,8 @@ kind: Pod
 metadata:
   name: goodpod07
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
