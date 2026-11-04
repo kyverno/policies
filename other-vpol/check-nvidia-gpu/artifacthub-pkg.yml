@@ -19,9 +19,9 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `check-nvidia-gpus` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List exact container image references in `spec.allowedValues` to bypass the NVIDIA GPU
-  image check for those images. CEL consumes `spec.allowedValues` as
-  `exceptions.allowedValues`; unlisted values remain checked.
+  List exact container image references in `spec.images` to bypass the NVIDIA GPU
+  image check for those images. CEL consumes `spec.images` as
+  `exceptions.allowedImages`; unlisted images remain checked.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/check-nvidia-gpu/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -31,5 +31,5 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 4d312b170351cf9d9f5861b37c507e1766cec9ac905b4e1225328c6abe5fe469
+digest: da007f27c66400ce1a5b6546dc30c07592f524d0d7b40885c5a1a4d1bf5e5463
 createdAt: "2025-12-15T12:37:33Z"
