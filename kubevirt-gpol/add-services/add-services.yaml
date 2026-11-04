@@ -23,7 +23,7 @@ spec:
     resourceRules:
       - apiGroups: ["kubevirt.io"]
         apiVersions: ["v1"]
-        operations: ["CREATE"]
+        operations: ["CREATE", "UPDATE"]
         resources: ["virtualmachineinstances"]
   variables:
     - name: targetNs
