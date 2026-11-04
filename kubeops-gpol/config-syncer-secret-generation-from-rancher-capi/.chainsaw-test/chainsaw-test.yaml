@@ -19,25 +19,23 @@ spec:
     - apply:
         file: chainsaw-step-01-apply-2.yaml
     - apply:
-        file: chainsaw-step-01-apply-3.yaml
-    - apply:
         file: chainsaw-step-01-apply-4.yaml
-    - apply:
-        file: chainsaw-step-01-apply-5.yaml
   - name: step-02
     try:
     - apply:
         file: ../config-syncer-secret-generation-from-rancher-capi.yaml
     - assert:
         file: policy-ready.yaml
-    - assert:
-        file: secret-generated01.yaml
   - name: step-03
     try:
     - apply:
-        file: chainsaw-step-03-apply-1.yaml
+        file: chainsaw-step-01-apply-5.yaml
+    - assert:
+        file: secret-generated01.yaml
   - name: step-04
     try:
+    - apply:
+        file: chainsaw-step-03-apply-1.yaml
     - apply:
         file: cluster.yaml
     - assert:
