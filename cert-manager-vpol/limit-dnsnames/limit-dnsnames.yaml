@@ -1,0 +1,33 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: cert-manager-limit-dnsnames
+  annotations:
+    policies.kyverno.io/title: Limit Certificate DNS names
+    policies.kyverno.io/category: Cert-Manager in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.25+"
+    policies.kyverno.io/subject: Certificate
+    policies.kyverno.io/description: >-
+      Restricts each cert-manager Certificate to at most one DNS name.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["cert-manager.io"]
+        apiVersions: ["v1"]
+        operations: [CREATE, UPDATE]
+        resources: [certificates]
+  variables:
+    - name: dnsNameCount
+      expression: >-
+        !has(object.spec.dnsNames) || object.spec.dnsNames == null
+        ? 0
+        : object.spec.dnsNames.size()
+  validations:
+    - expression: 'variables.dnsNameCount <= 1'
+      message: Only one dnsNames entry is allowed per Certificate.
