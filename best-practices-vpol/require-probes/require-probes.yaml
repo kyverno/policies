@@ -17,9 +17,6 @@ metadata:
     policies.kyverno.io/minversion: 1.19.1
 spec:
   validationActions: ["Deny"]
-  autogen:
-    podControllers:
-      controllers: ["Deployment", "StatefulSet", "DaemonSet", "Job", "CronJob", "ReplicaSet", "ReplicationController"]
   matchConstraints:
     resourceRules:
     - apiGroups: [""]
