@@ -58,3 +58,46 @@ spec:
     - name: test4
       image: test/test:latest
       resources: {}
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: test-rs
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-rs
+  template:
+    metadata:
+      labels:
+        app: test-rs
+    spec:
+      containers:
+        - name: test-rs
+          image: test/test:latest
+          resources:
+            requests:
+              memory: "1Gi"
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: test-rc
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    app: test-rc
+  template:
+    metadata:
+      labels:
+        app: test-rc
+    spec:
+      containers:
+        - name: test-rc
+          image: test/test:latest
+          resources:
+            requests:
+              memory: "1Gi"

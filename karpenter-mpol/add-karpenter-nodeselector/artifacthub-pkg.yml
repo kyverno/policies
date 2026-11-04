@@ -30,5 +30,5 @@ readme: |
 annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
   kyverno/kubernetesVersion: "1.23"
-  kyverno/subject: "Pod"
-digest: 98b98e1fec7aefdccbe5274c3ca57e53bc4fd806a1547e395e8cad1507349f06
+  kyverno/subject: "Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob, ReplicaSet, ReplicationController"
+digest: 5dc32196db9fbb00b34e6168278fa6d12870d0165590945b099117036dd1bf38

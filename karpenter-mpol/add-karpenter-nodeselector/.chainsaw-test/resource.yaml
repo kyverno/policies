@@ -74,3 +74,41 @@ spec:
   containers:
     - name: busybox
       image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: kp-med-ns
+  name: deploy-med01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: med01
+  template:
+    metadata:
+      labels:
+        app: med01
+    spec:
+      containers:
+        - name: busybox
+          image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: kp-small-ns
+  name: deploy-sm01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sm01
+  template:
+    metadata:
+      labels:
+        app: sm01
+    spec:
+      containers:
+        - name: busybox
+          image: ghcr.io/kyverno/test-busybox:1.35
