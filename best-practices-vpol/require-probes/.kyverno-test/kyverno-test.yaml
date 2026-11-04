@@ -18,6 +18,7 @@ results:
   policy: require-pod-probes
   resources:
   - badpod02
+  - badpod03
   result: fail
 - kind: Pod
   policy: require-pod-probes
@@ -26,6 +27,9 @@ results:
   - goodpod02
   - goodpod03
   - goodpod04
+  - goodpod05
+  - goodpod06
+  - goodpod07
   result: pass
 - kind: Pod
   policy: require-pod-probes
