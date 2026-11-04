@@ -1,0 +1,11 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-pre-existing
+  namespace: kubevirt-test-ns
+  labels:
+    kubevirt.io/domain: vmi-pre-existing
+    updated: "true"
+spec:
+  domain:
+    devices: {}

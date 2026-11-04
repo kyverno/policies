@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vmi-pre-existing
+  namespace: kubevirt-test-ns
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachineInstance
+    name: vmi-pre-existing
+spec:
+  ports:
+  - protocol: TCP
+    port: 22
+  selector:
+    kubevirt.io/domain: "vmi-pre-existing"
+  type: ClusterIP
