@@ -1,0 +1,155 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-deployment
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: redis
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-statefulset
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: circleci
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-replicaset
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: ReplicaSet
+    name: frontend
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-daemonset-other-namespace
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: DaemonSet
+    name: fluentd
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-same-name-other-kind
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-kind-cronjob
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: batch/v1
+    kind: CronJob
+    name: report
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-kind-lowercase
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: deployment
+    name: redis
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-duplicate-deployment
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: busybox
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-duplicate-statefulset
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: nginx
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1beta2
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-v1beta2
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: web
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1beta2
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-kind-v1beta2
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: batch/v1
+    kind: CronJob
+    name: report
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1beta2
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad-duplicate-v1beta2
+  namespace: default
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: busybox
+  updatePolicy:
+    updateMode: Auto

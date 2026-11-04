@@ -1,0 +1,44 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: existing-vpas
+spec:
+  crds:
+  - vpa-crd.yaml
+  resources:
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: exist01
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: busybox
+      updatePolicy:
+        updateMode: Auto
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: exist02
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: StatefulSet
+        name: nginx
+      updatePolicy:
+        updateMode: Auto
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: exist03
+      namespace: other
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: fluentd
+      updatePolicy:
+        updateMode: Auto

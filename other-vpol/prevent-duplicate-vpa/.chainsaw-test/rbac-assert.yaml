@@ -1,0 +1,5 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:admission-controller
+(contains(rules[?apiGroups && contains(apiGroups, 'autoscaling.k8s.io') && contains(verbs, 'list')].resources[], 'verticalpodautoscalers')): true
