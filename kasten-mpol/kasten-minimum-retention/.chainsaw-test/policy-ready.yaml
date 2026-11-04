@@ -1,0 +1,4 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: kasten-minimum-retention

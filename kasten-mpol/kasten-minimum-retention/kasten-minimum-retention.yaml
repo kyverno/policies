@@ -1,0 +1,43 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: kasten-minimum-retention
+  annotations:
+    policies.kyverno.io/title: Set Kasten Policy Minimum Backup Retention
+    policies.kyverno.io/category: Veeam Kasten
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.24-1.30"
+    policies.kyverno.io/subject: Policy
+    policies.kyverno.io/description: >-
+      Example Kyverno policy to enforce common compliance retention standards by modifying Kasten Policy backup retention settings. Based on regulation/compliance standard requirements, uncomment (1) of the desired GFS retention schedules to mutate existing and future Kasten Policies. Alternatively, this policy can be used to reduce retention lengths to enforce cost optimization. NOTE: This example only applies to Kasten Policies with an '@hourly' frequency. Refer to Kasten documentation for Policy API specification if modifications are necessary: https://docs.kasten.io/latest/api/policies.html#policy-api-type
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["config.kio.kasten.io"]
+        apiVersions: ["v1alpha1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["policies"]
+  matchConditions:
+    - name: check-hourly-frequency
+      expression: "object.spec.?frequency.orValue('') == '@hourly'"
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: |
+          [
+            JSONPatch{
+              op: has(object.spec.retention) ? "replace" : "add",
+              path: "/spec/retention",
+              value: {
+                "hourly": 24,
+                "daily": 30,
+                "weekly": 4,
+                "monthly": 3
+              }
+            }
+          ]
