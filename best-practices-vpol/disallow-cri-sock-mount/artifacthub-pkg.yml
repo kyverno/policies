@@ -2,7 +2,7 @@ name: disallow-cri-sock-mount-VPOL
 version: 1.0.0
 displayName: Disallow CRI socket mounts in VPOL
 description: >-
-  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition to or replacement of this policy, preventing users from mounting the parent directories (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used., whether they are referenced under /var/run or under /run (/var/run is normally a symlink to /run). It also blocks mounting the parent directories (/, /var, /var/run and /run) and the containerd and CRI-O socket directories, which would expose the same sockets.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-cri-sock-mount/disallow-cri-sock-mount.yaml
@@ -13,7 +13,7 @@ keywords:
   - EKS Best Practices
   - VPOL
 readme: |
-  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition to or replacement of this policy, preventing users from mounting the parent directories (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+  Container daemon socket bind mounts allows access to the container engine on the node. This access can be used for privilege escalation and to manage containers outside of Kubernetes, and hence should not be allowed. This policy validates that the sockets used for CRI engines Docker, Containerd, and CRI-O are not used., whether they are referenced under /var/run or under /run (/var/run is normally a symlink to /run). It also blocks mounting the parent directories (/, /var, /var/run and /run) and the containerd and CRI-O socket directories, which would expose the same sockets.
   
   ### Fine-grained PolicyException use
 
@@ -38,5 +38,5 @@ annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 82c6b67c48d5176622d82470f45c8f6626cbcf884438a7b31d154b69a2f71c53
+digest: 52311a9d83acbd5f97592f11cff9f30054066829549d0a084550a02027623066
 createdAt: "2025-05-05T13:19:12Z"

@@ -13,9 +13,10 @@ metadata:
       Container daemon socket bind mounts allows access to the container engine on the
       node. This access can be used for privilege escalation and to manage containers
       outside of Kubernetes, and hence should not be allowed. This policy validates that
-      the sockets used for CRI engines Docker, Containerd, and CRI-O are not used. In addition
-      to or replacement of this policy, preventing users from mounting the parent directories
-      (/var/run and /var) may be necessary to completely prevent socket bind mounts.
+      the sockets used for CRI engines Docker, Containerd, and CRI-O are not used, whether they
+      are referenced under /var/run or under /run (/var/run is normally a symlink to /run). It
+      also blocks mounting the parent directories (/, /var, /var/run and /run) and the
+      containerd and CRI-O socket directories, which would expose the same sockets.
 spec:
   validationActions: [Audit]
   evaluation:
@@ -39,9 +40,13 @@ spec:
           - name: hostPaths
             expression: "variables.volumesWithHostPath.map(volume, '/' + volume.hostPath.path.split('/').filter(s, s != '' && s != '.').join('/'))"
           - name: forbiddenSockets
-            expression: "['/var/run/docker.sock', '/var/run/containerd/containerd.sock', '/var/run/crio/crio.sock', '/var/run/cri-dockerd.sock']"
+            expression: "['/var/run/docker.sock', '/var/run/containerd/containerd.sock', '/var/run/crio/crio.sock', '/var/run/cri-dockerd.sock', '/run/docker.sock', '/run/containerd/containerd.sock', '/run/crio/crio.sock', '/run/cri-dockerd.sock']"
+          # Mounting these directories exposes the sockets above as much as mounting the sockets does.
+          - name: forbiddenDirectories
+            expression: "['/', '/var', '/var/run', '/var/run/containerd', '/var/run/crio', '/run', '/run/containerd', '/run/crio']"
   validations:
           - expression: >-
               variables.hasVolumes || variables.hostPaths.all(path,
-              path in exceptions.allowedValues || !(path in variables.forbiddenSockets))
-            message: "Container runtime Unix socket mounts are not allowed."
+              path in exceptions.allowedValues ||
+              !(path in variables.forbiddenSockets || path in variables.forbiddenDirectories))
+            message: "Container runtime Unix socket mounts, and mounts of the directories that contain them, are not allowed."
