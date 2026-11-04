@@ -2,7 +2,6 @@ apiVersion: policies.kyverno.io/v1
 kind: MutatingPolicy
 metadata:
   name: add-volume
-  namespace: kyverno
   annotations:
     policies.kyverno.io/title: Add Volume to Deployment
     policies.kyverno.io/category: Sample
