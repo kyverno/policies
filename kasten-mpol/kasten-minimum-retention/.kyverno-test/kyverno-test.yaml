@@ -1,0 +1,31 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kasten-minimum-retention-test
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../kasten-minimum-retention.yaml
+resources:
+- kasten-hourly-policy.yaml
+- kasten-skipped-policies.yaml
+results:
+- isMutatingPolicy: true
+  kind: Policy
+  patchedResources: patched.yaml
+  policy: kasten-minimum-retention
+  resources:
+  - kasten-io/hourly-policy
+  result: pass
+- isMutatingPolicy: true
+  kind: Policy
+  policy: kasten-minimum-retention
+  resources:
+  - kasten-io/ondemand-policy
+  result: skip
+- isMutatingPolicy: true
+  kind: Policy
+  policy: kasten-minimum-retention
+  resources:
+  - kasten-io/preset-policy
+  result: skip
