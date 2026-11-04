@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restrict-annotations-good
+  annotations:
+    nginx.ingress.kubernetes.io/configuration-snippet: "more_set_headers X-Frame-Options: DENY;"
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 80
