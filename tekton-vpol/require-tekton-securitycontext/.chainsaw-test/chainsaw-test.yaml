@@ -26,3 +26,18 @@ spec:
                 validationActions: [Deny]
         - assert:
             file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-taskrun.yaml
+        - patch:
+            subresource: status
+            file: good-taskrun.yaml
+        - apply:
+            file: bad-taskrun.yaml
+        - patch:
+            subresource: status
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-taskrun.yaml

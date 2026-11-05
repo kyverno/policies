@@ -29,7 +29,6 @@ spec:
           - CREATE
           - UPDATE
         resources:
-          - taskruns
           - taskruns/status
   validations:
     - expression: >-

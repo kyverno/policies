@@ -7,6 +7,7 @@ policies:
 resources:
   - ../.chainsaw-test/good-taskrun.yaml
   - ../.chainsaw-test/bad-taskrun.yaml
+variables: values.yaml
 results:
   - policy: require-tekton-securitycontext
     kind: TaskRun
