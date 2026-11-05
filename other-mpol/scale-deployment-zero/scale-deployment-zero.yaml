@@ -1,0 +1,61 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: scale-deployment-zero
+  annotations:
+    policies.kyverno.io/title: Scale Deployment to Zero
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/minversion: 1.19.1
+    policies.kyverno.io/description: >-
+      If a Deployment's Pods are seen crashing multiple times it usually indicates
+      there is an issue that must be manually resolved. Removing the failing Pods and
+      marking the Deployment is often a useful troubleshooting step. This policy watches
+      existing Pods and if any are observed to have restarted more than
+      once, indicating a potential crashloop, Kyverno scales its parent deployment to zero
+      and writes an annotation signaling to an SRE team that troubleshooting is needed.
+      It may be necessary to grant additional privileges to the Kyverno ServiceAccount,
+      via one of the existing ClusterRoleBindings or a new one, so it can modify Deployments.
+      This policy scales down deployments with frequently restarting pods by monitoring `Pod.status` 
+      for `restartCount` updates, which are performed by the kubelet. No `resourceFilter` modifications
+      are needed if matching on `Pod` and `Pod.status`.
+      Note: For this policy to work, you must modify Kyverno's ConfigMap to remove or change the line 
+      `excludeGroups: system:nodes` since version 1.10.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/status"]
+  matchConditions:
+  - name: has-restarting-containers
+    expression: >-
+      has(object.status) && has(object.status.containerStatuses) &&
+      (object.status.containerStatuses.exists(c, has(c.restartCount) && c.restartCount > 1) ||
+       object.status.containerStatuses.filter(c, has(c.restartCount) && c.restartCount >= 1).size() > 1)
+  variables:
+  - name: rsName
+    expression: "has(object.metadata.ownerReferences) && size(object.metadata.ownerReferences) > 0 ? object.metadata.ownerReferences[0].name : ''"
+  - name: rs
+    expression: "variables.rsName != '' ? resource.Get('apps/v1', 'replicasets', object.metadata.namespace, variables.rsName) : {}"
+  - name: deploymentName
+    expression: "'metadata' in variables.rs && 'ownerReferences' in variables.rs.metadata && size(variables.rs.metadata.ownerReferences) > 0 ? variables.rs.metadata.ownerReferences[0].name : ''"
+  targetMatchConstraints:
+    expression: "variables.deploymentName != '' ? resource.Get('apps/v1', 'deployments', object.metadata.namespace, variables.deploymentName) : {}"
+  mutations:
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        (!has(object.metadata) ?
+          [JSONPatch{op: "add", path: "/metadata", value: {"annotations": {"sre.corp.org/troubleshooting-needed": "true"}}}] :
+        has(object.metadata.annotations) ?
+          [JSONPatch{op: "add", path: "/metadata/annotations/" + jsonpatch.escapeKey("sre.corp.org/troubleshooting-needed"), value: "true"}] :
+          [JSONPatch{op: "add", path: "/metadata/annotations", value: {"sre.corp.org/troubleshooting-needed": "true"}}]) +
+        [JSONPatch{op: "replace", path: "/spec/replicas", value: 0}]
