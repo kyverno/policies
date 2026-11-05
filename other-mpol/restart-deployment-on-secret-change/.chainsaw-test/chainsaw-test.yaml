@@ -38,6 +38,6 @@ spec:
             echo "Deployment restart triggered.";
             exit 0;
           else
-            echo "Deployment annotation not matching $annotation != $version.";
+            echo "Deployment annotation not matching $annotation != $(cat resource-version.txt)."
             exit 1;
           fi

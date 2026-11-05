@@ -46,6 +46,8 @@ spec:
   targetMatchConditions:
   - name: mounts-configmap-volume
     expression: >-
+      has(object.metadata.namespace) &&
+      object.metadata.namespace == request.namespace &&
       has(object.spec.volumes) &&
       object.spec.volumes.exists(v,
         has(v.configMap) && has(v.configMap.name) &&

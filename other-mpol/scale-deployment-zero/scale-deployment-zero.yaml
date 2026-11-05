@@ -58,4 +58,4 @@ spec:
         has(object.metadata.annotations) ?
           [JSONPatch{op: "add", path: "/metadata/annotations/" + jsonpatch.escapeKey("sre.corp.org/troubleshooting-needed"), value: "true"}] :
           [JSONPatch{op: "add", path: "/metadata/annotations", value: {"sre.corp.org/troubleshooting-needed": "true"}}]) +
-        [JSONPatch{op: "replace", path: "/spec/replicas", value: 0}]
+        [JSONPatch{op: "add", path: "/spec/replicas", value: 0}]

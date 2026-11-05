@@ -45,6 +45,8 @@ spec:
   targetMatchConditions:
   - name: references-secret-in-env
     expression: >-
+      has(object.metadata.namespace) &&
+      object.metadata.namespace == request.namespace &&
       has(object.spec.template.spec.containers) &&
       object.spec.template.spec.containers.exists(c,
         has(c.env) && c.env.exists(e,
