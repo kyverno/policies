@@ -42,9 +42,9 @@ spec:
        object.status.containerStatuses.filter(c, has(c.restartCount) && c.restartCount >= 1).size() > 1)
   variables:
   - name: rsName
-    expression: "has(object.metadata) && has(object.metadata.ownerReferences) && size(object.metadata.ownerReferences) > 0 && object.metadata.ownerReferences[0].kind == 'ReplicaSet' ? object.metadata.ownerReferences[0].name : ''"
+    expression: "has(request.object.metadata) && has(request.object.metadata.ownerReferences) && size(request.object.metadata.ownerReferences) > 0 && request.object.metadata.ownerReferences[0].kind == 'ReplicaSet' ? request.object.metadata.ownerReferences[0].name : ''"
   - name: rs
-    expression: "variables.rsName != '' && has(object.metadata.namespace) ? resource.Get('apps/v1', 'replicasets', object.metadata.namespace, variables.rsName) : {}"
+    expression: "variables.rsName != '' && request.namespace != '' ? resource.Get('apps/v1', 'replicasets', request.namespace, variables.rsName) : {}"
   - name: deploymentName
     expression: "has(variables.rs) && has(variables.rs.metadata) && has(variables.rs.metadata.ownerReferences) && size(variables.rs.metadata.ownerReferences) > 0 && variables.rs.metadata.ownerReferences[0].kind == 'Deployment' ? variables.rs.metadata.ownerReferences[0].name : ''"
   targetMatchConstraints:

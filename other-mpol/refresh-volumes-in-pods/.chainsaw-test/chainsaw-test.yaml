@@ -77,7 +77,14 @@ spec:
           if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
     - script:
         content: |
-          val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo)
-          if [ "$val" = "bar" ]; then exit 0; else exit 1; fi
+          for i in $(seq 1 45); do
+            val=$(kubectl exec pod04 -n refresh-vols-ns -- cat /mnt/foo/foo 2>/dev/null || true)
+            if [ "$val" = "bar" ]; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Timeout waiting for pod04 ConfigMap volume to propagate 'bar'."
+          exit 1
     - script:
         content: kubectl delete all --all --force --grace-period=0 -n refresh-vols-ns

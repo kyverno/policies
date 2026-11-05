@@ -17,6 +17,10 @@ spec:
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:nodes/system\:thisisjunk/g' | kubectl apply -f -
     - sleep:
         duration: 5s
+    cleanup:
+    - script:
+        content: |
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:thisisjunk/system\:nodes/g' | kubectl apply -f -
   - name: step-02
     try:
     - apply:
@@ -41,10 +45,3 @@ spec:
         file: deploy02-not-patched.yaml
     - error:
         file: deploy05-not-patched.yaml
-  - name: step-05
-    try:
-    - script:
-        content: |
-          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/system\:thisisjunk/system\:nodes/g' | kubectl apply -f -
-    - sleep:
-        duration: 5s

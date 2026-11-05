@@ -35,7 +35,7 @@ spec:
     expression: "has(object.metadata.labels) && object.metadata.labels['kyverno.io/watch'] == 'true'"
   variables:
   - name: secretName
-    expression: "object.metadata.name"
+    expression: "request.name"
   targetMatchConstraints:
     resourceRules:
     - apiGroups: ["apps"]

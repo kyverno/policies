@@ -15,6 +15,10 @@ spec:
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[Binding,\*,\*\]//g' | sed 's/\[Pod\/binding,\*,\*\]//g' | sed 's/\[Node\/\*,\*,\*\]//g' | sed 's/\[Node,\*,\*\]//g' | kubectl apply -f -
     - sleep:
         duration: 5s
+    cleanup:
+    - script:
+        content: |
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[SelfSubjectAccessReview,\*,\*\]/\[SelfSubjectAccessReview,\*,\*\] \[Binding,\*,\*\] \[Pod\/binding,\*,\*\]/g' | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' | kubectl apply -f -
   - name: step-02
     try:
     - script:
@@ -34,8 +38,3 @@ spec:
         file: pod-patched01.yaml
     - assert:
         file: pod-patched02.yaml
-  - name: step-05
-    try:
-    - script:
-        content: |
-          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[SelfSubjectAccessReview,\*,\*\]/\[SelfSubjectAccessReview,\*,\*\] \[Binding,\*,\*\] \[Pod\/binding,\*,\*\]/g' | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' | kubectl apply -f -
