@@ -33,8 +33,12 @@ spec:
         file: deploy01-patched.yaml
     - assert:
         file: deploy03-patched.yaml
+    - assert:
+        file: deploy04-patched.yaml
     - error:
         file: deploy02-not-patched.yaml
+    - error:
+        file: deploy05-not-patched.yaml
   - name: step-05
     try:
     - script:
