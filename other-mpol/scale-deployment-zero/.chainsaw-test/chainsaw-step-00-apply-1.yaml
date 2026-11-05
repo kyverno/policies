@@ -13,3 +13,11 @@ rules:
   - deployments
   verbs:
   - update
+- apiGroups:
+  - apps
+  resources:
+  - replicasets
+  verbs:
+  - get
+  - list
+  - watch

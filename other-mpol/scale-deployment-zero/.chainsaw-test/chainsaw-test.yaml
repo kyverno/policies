@@ -29,6 +29,8 @@ spec:
         file: deploy.yaml
   - name: step-04
     try:
+    - sleep:
+        duration: 15s
     - assert:
         file: deploy01-patched.yaml
     - assert:
