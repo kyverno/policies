@@ -38,18 +38,14 @@ spec:
         variables.dayOfWeek >= 1 && variables.dayOfWeek <= 5 &&
         variables.hour >= 9 && variables.hour < 17
   mutations:
-    - patchType: JSONPatch
-      jsonPatch:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
         expression: |
-          [
-            JSONPatch{
-              op: "add",
-              path: "/spec/hard/cpu",
-              value: variables.isBusinessHours ? "20" : "10"
-            },
-            JSONPatch{
-              op: "add",
-              path: "/spec/hard/memory",
-              value: variables.isBusinessHours ? "40Gi" : "20Gi"
+          Object{
+            spec: Object.spec{
+              hard: {
+                "cpu": variables.isBusinessHours ? "20" : "10",
+                "memory": variables.isBusinessHours ? "40Gi" : "20Gi"
+              }
             }
-          ]
+          }

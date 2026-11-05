@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: create-authorizationpolicy
+policies:
+  - ../create-authorizationpolicy.yaml
+resources:
+  - resource.yaml
+results:
+  - generatedResource: generatedResource.yaml
+    kind: Namespace
+    policy: create-authorizationpolicy
+    resources:
+      - istio-cr-authpol-ns
+    result: pass
+    isGeneratingPolicy: true
