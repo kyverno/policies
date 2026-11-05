@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: goodpipelinerun01
+spec:
+  pipelineRef:
+    name: mypipeline
+    bundle: docker.io/foo/bar
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: goodpipelinerun02-resolver
+spec:
+  pipelineRef:
+    resolver: bundles
+    params:
+      - name: bundle
+        value: docker.io/foo/bar:v1.0
+      - name: name
+        value: mypipeline

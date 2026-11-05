@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: good-step-secure
+  namespace: default
+status:
+  taskSpec:
+    steps:
+      - name: step-1
+        securityContext:
+          privileged: false
+          allowPrivilegeEscalation: false
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: good-digest-exempt
+  namespace: default
+status:
+  taskSpec:
+    steps:
+      - name: digest-to-results
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: good-no-taskspec
+  namespace: default
+status:
+  completionTime: "2024-01-01T00:00:00Z"

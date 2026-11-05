@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: bad-step-privileged
+  namespace: default
+status:
+  taskSpec:
+    steps:
+      - name: step-priv
+        securityContext:
+          privileged: true
+          allowPrivilegeEscalation: false
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: bad-step-no-sec-context
+  namespace: default
+status:
+  taskSpec:
+    steps:
+      - name: step-insecure
