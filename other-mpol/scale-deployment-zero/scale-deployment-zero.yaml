@@ -42,11 +42,11 @@ spec:
        object.status.containerStatuses.filter(c, has(c.restartCount) && c.restartCount >= 1).size() > 1)
   variables:
   - name: rsName
-    expression: "has(object.metadata) && has(object.metadata.ownerReferences) && object.metadata.ownerReferences.exists(o, o.kind == 'ReplicaSet') ? object.metadata.ownerReferences.filter(o, o.kind == 'ReplicaSet')[0].name : ''"
+    expression: "has(object.metadata) && has(object.metadata.ownerReferences) && size(object.metadata.ownerReferences) > 0 && object.metadata.ownerReferences[0].kind == 'ReplicaSet' ? object.metadata.ownerReferences[0].name : ''"
   - name: rs
     expression: "variables.rsName != '' && has(object.metadata.namespace) ? resource.Get('apps/v1', 'replicasets', object.metadata.namespace, variables.rsName) : {}"
   - name: deploymentName
-    expression: "has(variables.rs) && has(variables.rs.metadata) && has(variables.rs.metadata.ownerReferences) && variables.rs.metadata.ownerReferences.exists(o, o.kind == 'Deployment') ? variables.rs.metadata.ownerReferences.filter(o, o.kind == 'Deployment')[0].name : ''"
+    expression: "has(variables.rs) && has(variables.rs.metadata) && has(variables.rs.metadata.ownerReferences) && size(variables.rs.metadata.ownerReferences) > 0 && variables.rs.metadata.ownerReferences[0].kind == 'Deployment' ? variables.rs.metadata.ownerReferences[0].name : ''"
   targetMatchConstraints:
     resourceRules:
     - apiGroups: ["apps"]
