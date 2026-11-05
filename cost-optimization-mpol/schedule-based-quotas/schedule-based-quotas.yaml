@@ -26,7 +26,9 @@ spec:
       expression: "resource.Get('v1', 'configmaps', 'default', 'time-mock')"
     - name: currentTime
       expression: >-
-        has(variables.mockConfigMap.data) && 'time' in variables.mockConfigMap.data ?
+        variables.mockConfigMap != null &&
+        has(variables.mockConfigMap.data) &&
+        'time' in variables.mockConfigMap.data ?
         timestamp(variables.mockConfigMap.data.time) :
         time.now()
     - name: hour

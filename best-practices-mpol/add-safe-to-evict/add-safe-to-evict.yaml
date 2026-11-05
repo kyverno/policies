@@ -21,7 +21,7 @@ spec:
       - apiGroups: ["apps"]
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
-        resources: ["deployments", "daemonsets", "statefulsets"]
+        resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
       - apiGroups: ["batch"]
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
@@ -30,7 +30,7 @@ spec:
     - name: podSpec
       expression: >-
         object.kind == "Pod" ? object.spec :
-        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ? object.spec.template.spec :
+        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet"] ? object.spec.template.spec :
         object.kind == "CronJob" ? object.spec.jobTemplate.spec.template.spec :
         null
   matchConditions:
@@ -44,7 +44,7 @@ spec:
         object.kind == "Pod" ?
           (!has(object.metadata.annotations) || 
            !object.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
-        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ?
+        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet"] ?
           (!has(object.spec.template.metadata.annotations) || 
            !object.spec.template.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
         object.kind == "CronJob" ?
@@ -63,7 +63,7 @@ spec:
               }
             }
           } :
-          object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ?
+          object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet"] ?
           Object{
             spec: Object.spec{
               template: Object.spec.template{

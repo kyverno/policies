@@ -2,18 +2,18 @@
 apiVersion: chainsaw.kyverno.io/v1alpha1
 kind: Test
 metadata:
-  name: business-hours
+  name: weekend
 spec:
   template: false
   steps:
   - name: setup
     try:
     - apply:
-        file: rbac.yaml
+        file: ../rbac.yaml
     - apply:
-        file: ../schedule-based-quotas.yaml
+        file: ../../schedule-based-quotas.yaml
     - assert:
-        file: policy-ready.yaml
+        file: ../policy-ready.yaml
     - apply:
         resource:
           apiVersion: v1
@@ -22,15 +22,15 @@ spec:
             name: time-mock
             namespace: default
           data:
-            time: "2024-03-20T14:00:00-07:00"
-  - name: test-quota-business-hours
+            time: "2024-03-23T14:00:00-07:00"
+  - name: test-quota-weekend
     try:
     - apply:
         resource:
           apiVersion: v1
           kind: ResourceQuota
           metadata:
-            name: test-quota-business
+            name: test-quota-weekend
             namespace: default
           spec:
             hard:
@@ -41,9 +41,9 @@ spec:
           apiVersion: v1
           kind: ResourceQuota
           metadata:
-            name: test-quota-business
+            name: test-quota-weekend
             namespace: default
           spec:
             hard:
-              cpu: "20"
-              memory: "40Gi"
+              cpu: "10"
+              memory: "20Gi"

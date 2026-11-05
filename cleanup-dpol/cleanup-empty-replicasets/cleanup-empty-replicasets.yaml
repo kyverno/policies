@@ -29,5 +29,5 @@ spec:
     - name: is-empty
       expression: "object.spec.replicas == 0"
     - name: older-than-30-seconds
-      expression: "time.now() - object.metadata.creationTimestamp > duration('30s')"
+      expression: "time.now() - timestamp(object.metadata.creationTimestamp) > duration('30s')"
   schedule: "* * * * *"

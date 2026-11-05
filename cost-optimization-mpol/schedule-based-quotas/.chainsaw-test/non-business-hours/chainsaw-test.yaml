@@ -9,11 +9,11 @@ spec:
   - name: setup
     try:
     - apply:
-        file: rbac.yaml
+        file: ../rbac.yaml
     - apply:
-        file: ../schedule-based-quotas.yaml
+        file: ../../schedule-based-quotas.yaml
     - assert:
-        file: policy-ready.yaml
+        file: ../policy-ready.yaml
     - apply:
         resource:
           apiVersion: v1
