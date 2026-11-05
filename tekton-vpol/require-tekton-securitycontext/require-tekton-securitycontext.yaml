@@ -32,9 +32,12 @@ spec:
           - taskruns/status
   validations:
     - expression: >-
-        object.?status.?taskSpec.?steps.orValue([]).all(step,
-          step.?securityContext.?allowPrivilegeEscalation.orValue(true) == false &&
-          step.?securityContext.?readOnlyRootFilesystem.orValue(false) == true &&
-          step.?securityContext.?runAsNonRoot.orValue(false) == true
-        )
-      message: "TaskRun containers must configure a secure securityContext (runAsNonRoot=true, readOnlyRootFilesystem=true, allowPrivilegeEscalation=false)."
+        !has(object.status) || !has(object.status.taskSpec) ||
+        (has(object.status.taskSpec.steps) && size(object.status.taskSpec.steps) > 0 &&
+         object.status.taskSpec.steps.all(step,
+           step.name == 'digest-to-results' ||
+           (has(step.securityContext) &&
+            step.securityContext.?privileged.orValue(true) == false &&
+            step.securityContext.?allowPrivilegeEscalation.orValue(true) == false)
+         ))
+      message: "A securityContext is required with privileged and allowPrivilegeEscalation set to false on each TaskRun step except digest-to-results."

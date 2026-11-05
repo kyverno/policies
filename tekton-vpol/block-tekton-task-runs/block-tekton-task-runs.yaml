@@ -11,13 +11,13 @@ metadata:
     policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
-      Standalone TaskRuns are not allowed; Tasks must be executed through a PipelineRun.
+      Restrict creation and update of TaskRun resources to the Tekton pipelines controller.
 spec:
   validationActions:
     - Audit
   evaluation:
     background:
-      enabled: true
+      enabled: false
   matchConstraints:
     resourceRules:
       - apiGroups:
@@ -27,11 +27,9 @@ spec:
           - v1
         operations:
           - CREATE
+          - UPDATE
         resources:
           - taskruns
-  matchConditions:
-    - name: check-not-managed
-      expression: "!has(object.metadata.ownerReferences) || !object.metadata.ownerReferences.exists(o, o.kind == 'PipelineRun')"
   validations:
-    - expression: "false"
-      message: "Standalone TaskRuns are forbidden. Execute Tasks through a PipelineRun."
+    - expression: "request.userInfo.username == 'system:serviceaccount:tekton-pipelines:tekton-pipelines-controller'"
+      message: "Creating or updating a TaskRun is only allowed for the Tekton pipelines controller."

@@ -33,14 +33,24 @@ spec:
         - script:
             content: |
               set -eu
-              kubectl patch taskrun good-taskrun --subresource=status --type=merge --patch-file=good-taskrun.yaml
+              kubectl patch taskrun good-step-secure -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-1","securityContext":{"privileged":false,"allowPrivilegeEscalation":false}}]}}}'
+              kubectl patch taskrun good-digest-exempt -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"digest-to-results"}]}}}'
+              kubectl patch taskrun good-no-taskspec -n default --subresource=status --type=merge -p '{"status":{"completionTime":"2024-01-01T00:00:00Z"}}'
         - apply:
             file: bad-taskrun.yaml
         - script:
             content: |
               set -eu
               set +e
-              output=$(kubectl patch taskrun bad-taskrun --subresource=status --type=merge --patch-file=bad-taskrun.yaml 2>&1)
-              code=$?
+              out1=$(kubectl patch taskrun bad-step-privileged -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-priv","securityContext":{"privileged":true,"allowPrivilegeEscalation":false}}]}}}' 2>&1)
+              code1=$?
               set -e
-              test "$code" -ne 0
+              test "$code1" -ne 0
+              echo "$out1" | grep -Ei "require-tekton-securitycontext|denied the request"
+
+              set +e
+              out2=$(kubectl patch taskrun bad-step-no-sec-context -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-insecure"}]}}}' 2>&1)
+              code2=$?
+              set -e
+              test "$code2" -ne 0
+              echo "$out2" | grep -Ei "require-tekton-securitycontext|denied the request"
