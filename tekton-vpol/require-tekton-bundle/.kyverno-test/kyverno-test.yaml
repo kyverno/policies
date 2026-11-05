@@ -15,19 +15,23 @@ results:
     resources:
       - badpipelinerun01
       - badpipelinerun02
+      - badpipelinerun03-cross-kind
     result: fail
   - policy: require-tekton-bundle
     kind: TaskRun
     resources:
       - badtaskrun01
+      - badtaskrun02-cross-kind
     result: fail
   - policy: require-tekton-bundle
     kind: PipelineRun
     resources:
       - goodpipelinerun01
+      - goodpipelinerun02-resolver
     result: pass
   - policy: require-tekton-bundle
     kind: TaskRun
     resources:
       - goodtaskrun01
+      - goodtaskrun02-resolver
     result: pass

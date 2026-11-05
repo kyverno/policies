@@ -3,21 +3,21 @@ kind: ValidatingPolicy
 metadata:
   name: block-tekton-task-runs
   annotations:
-    policies.kyverno.io/title: Block Tekton TaskRun
+    policies.kyverno.io/title: Block Tekton TaskRuns
     policies.kyverno.io/category: Tekton
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: TaskRun
-    kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.14.0
-    kyverno.io/kubernetes-version: "1.26"
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
-      Restrict creation of TaskRun resources to the Tekton pipelines controller.
+      Standalone TaskRuns are not allowed; Tasks must be executed through a PipelineRun.
 spec:
   validationActions:
     - Audit
   evaluation:
     background:
-      enabled: false
+      enabled: true
   matchConstraints:
     resourceRules:
       - apiGroups:
@@ -27,13 +27,11 @@ spec:
           - v1
         operations:
           - CREATE
-          - UPDATE
         resources:
           - taskruns
   matchConditions:
-    - name: exclude-tekton-controller
-      expression: >-
-        request.?userInfo.?username.orValue('') != 'system:serviceaccount:tekton-pipelines:tekton-pipelines-controller'
+    - name: check-not-managed
+      expression: "!has(object.metadata.ownerReferences) || !object.metadata.ownerReferences.exists(o, o.kind == 'PipelineRun')"
   validations:
     - expression: "false"
-      message: "Creating a TaskRun is not allowed."
+      message: "Standalone TaskRuns are forbidden. Execute Tasks through a PipelineRun."

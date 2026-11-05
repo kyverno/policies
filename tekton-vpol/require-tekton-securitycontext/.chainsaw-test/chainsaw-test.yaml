@@ -30,14 +30,17 @@ spec:
       try:
         - apply:
             file: good-taskrun.yaml
-        - patch:
-            subresource: status
-            file: good-taskrun.yaml
+        - script:
+            content: |
+              set -eu
+              kubectl patch taskrun good-taskrun --subresource=status --type=merge --patch-file=good-taskrun.yaml
         - apply:
             file: bad-taskrun.yaml
-        - patch:
-            subresource: status
-            expect:
-              - check:
-                  ($error != null): true
-            file: bad-taskrun.yaml
+        - script:
+            content: |
+              set -eu
+              set +e
+              output=$(kubectl patch taskrun bad-taskrun --subresource=status --type=merge --patch-file=bad-taskrun.yaml 2>&1)
+              code=$?
+              set -e
+              test "$code" -ne 0

@@ -6,3 +6,16 @@ spec:
   taskRef:
     name: echo-task
     bundle: docker.io/foo/bar
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: goodtaskrun02-resolver
+spec:
+  taskRef:
+    resolver: bundles
+    params:
+      - name: bundle
+        value: docker.io/foo/bar:v1.0
+      - name: name
+        value: echo-task

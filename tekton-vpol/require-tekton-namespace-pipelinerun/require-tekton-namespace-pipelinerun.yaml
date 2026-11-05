@@ -3,15 +3,15 @@ kind: ValidatingPolicy
 metadata:
   name: require-tekton-namespace-pipelinerun
   annotations:
-    policies.kyverno.io/title: Require Namespace for Tekton PipelineRun
+    policies.kyverno.io/title: Require Tekton Namespace PipelineRun
     policies.kyverno.io/category: Tekton
     policies.kyverno.io/severity: medium
     policies.kyverno.io/subject: PipelineRun
-    kyverno.io/kyverno-version: 1.14.0
-    policies.kyverno.io/minversion: 1.14.0
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
     policies.kyverno.io/kubernetes-version: "1.26"
     policies.kyverno.io/description: >-
-      A Namespace is required for a PipelineRun and may not be set to `default`.
+      PipelineRuns must run in an authorized namespace.
 spec:
   validationActions:
     - Audit
@@ -30,5 +30,5 @@ spec:
         resources:
           - pipelineruns
   validations:
-    - expression: "object.metadata.namespace != 'default'"
-      message: "A namespace is required and may not be set to default."
+    - expression: "object.metadata.?namespace.orValue('') != 'default'"
+      message: "PipelineRuns must not be run in the default namespace."

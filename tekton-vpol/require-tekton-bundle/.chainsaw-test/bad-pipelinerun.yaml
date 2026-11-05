@@ -16,3 +16,12 @@ spec:
       - name: task1
         taskRef:
           name: mytask
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: badpipelinerun03-cross-kind
+spec:
+  taskRef:
+    name: echo-task
+    bundle: docker.io/foo/bar

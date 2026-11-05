@@ -5,3 +5,12 @@ metadata:
 spec:
   taskRef:
     name: read-task
+---
+apiVersion: tekton.dev/v1
+kind: TaskRun
+metadata:
+  name: badtaskrun02-cross-kind
+spec:
+  pipelineRef:
+    name: mypipeline
+    bundle: docker.io/foo/bar
