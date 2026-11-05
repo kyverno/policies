@@ -72,10 +72,10 @@ spec:
           else
               env_one=$(kubectl exec -n refresh-env-var-ns $pod_one -- printenv ENV_SECRET)
           fi
-          if [ "$env_one" = "foo" ]; then
-              exit 1;
-          else
+          if [ "$env_one" = "bar" ]; then
               exit 0;
+          else
+              exit 1;
           fi
     - sleep:
         duration: 5s
@@ -89,10 +89,10 @@ spec:
           else
               env_one=$(kubectl exec -n refresh-env-var-ns $pod_one -- printenv ENV_SECRET)
           fi
-          if [ "$env_one" = "foo" ]; then
-              exit 1;
-          else
+          if [ "$env_one" = "bar" ]; then
               exit 0;
+          else
+              exit 1;
           fi
     - sleep:
         duration: 5s
