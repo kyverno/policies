@@ -30,8 +30,10 @@ spec:
     - name: podSpec
       expression: >-
         object.kind == "Pod" ? object.spec :
-        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet", "ReplicationController"] ? object.spec.template.spec :
-        object.kind == "CronJob" ? object.spec.jobTemplate.spec.template.spec :
+        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet", "ReplicationController"] ?
+          (has(object.spec.template) && has(object.spec.template.spec) ? object.spec.template.spec : null) :
+        object.kind == "CronJob" ?
+          (has(object.spec.jobTemplate) && has(object.spec.jobTemplate.spec) && has(object.spec.jobTemplate.spec.template) && has(object.spec.jobTemplate.spec.template.spec) ? object.spec.jobTemplate.spec.template.spec : null) :
         null
   matchConditions:
     - name: has-emptydir-or-hostpath
@@ -45,11 +47,15 @@ spec:
           (!has(object.metadata.annotations) || 
            !object.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
         object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job", "ReplicaSet", "ReplicationController"] ?
-          (!has(object.spec.template.metadata) ||
+          (!has(object.spec.template) ||
+           !has(object.spec.template.metadata) ||
            !has(object.spec.template.metadata.annotations) || 
            !object.spec.template.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
         object.kind == "CronJob" ?
-          (!has(object.spec.jobTemplate.spec.template.metadata) ||
+          (!has(object.spec.jobTemplate) ||
+           !has(object.spec.jobTemplate.spec) ||
+           !has(object.spec.jobTemplate.spec.template) ||
+           !has(object.spec.jobTemplate.spec.template.metadata) ||
            !has(object.spec.jobTemplate.spec.template.metadata.annotations) || 
            !object.spec.jobTemplate.spec.template.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
         false
