@@ -2,6 +2,7 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata:
   name: block-tekton-task-runs
+userinfo: userinfo.yaml
 policies:
   - ../block-tekton-task-runs.yaml
 resources:
@@ -12,3 +13,4 @@ results:
     resources:
       - taskrun01
     result: fail
+    isValidatingPolicy: true
