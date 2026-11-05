@@ -1,0 +1,80 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: generate-flux-multi-tenant-resources
+  annotations:
+    policies.kyverno.io/title: Generate Flux Multi-Tenant Resources
+    policies.kyverno.io/category: Flux
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/subject: ServiceAccount, RoleBinding
+    policies.kyverno.io/description: >-
+      As part of the tenant provisioning process, Flux needs to generate RBAC resources. This policy
+      will create a ServiceAccount and RoleBinding when a new Namespace is created with the label
+      `toolkit.fluxcd.io/tenant`.
+spec:
+  evaluation:
+    synchronize:
+      enabled: false
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["namespaces"]
+  matchConditions:
+    - name: has-tenant-label
+      expression: >-
+        has(object.metadata.labels) &&
+        'toolkit.fluxcd.io/tenant' in object.metadata.labels &&
+        object.metadata.labels['toolkit.fluxcd.io/tenant'] != ''
+  variables:
+    - name: targetNs
+      expression: "object.metadata.name"
+    - name: tenant
+      expression: "object.metadata.labels['toolkit.fluxcd.io/tenant']"
+  generate:
+    - expression: >-
+        generator.Apply(variables.targetNs, [
+          dyn({
+            "apiVersion": dyn("v1"),
+            "kind": dyn("ServiceAccount"),
+            "metadata": dyn({
+              "name": dyn(variables.tenant),
+              "namespace": dyn(variables.targetNs),
+              "labels": dyn({
+                "toolkit.fluxcd.io/tenant": dyn(variables.tenant)
+              })
+            })
+          }),
+          dyn({
+            "apiVersion": dyn("rbac.authorization.k8s.io/v1"),
+            "kind": dyn("RoleBinding"),
+            "metadata": dyn({
+              "name": dyn(variables.tenant),
+              "namespace": dyn(variables.targetNs),
+              "labels": dyn({
+                "toolkit.fluxcd.io/tenant": dyn(variables.tenant)
+              })
+            }),
+            "roleRef": dyn({
+              "apiGroup": dyn("rbac.authorization.k8s.io"),
+              "kind": dyn("ClusterRole"),
+              "name": dyn("cluster-admin")
+            }),
+            "subjects": dyn([
+              dyn({
+                "kind": dyn("User"),
+                "name": dyn("flux:" + variables.targetNs + ":" + variables.tenant)
+              }),
+              dyn({
+                "kind": dyn("ServiceAccount"),
+                "name": dyn(variables.tenant),
+                "namespace": dyn(variables.targetNs)
+              })
+            ])
+          })
+        ])

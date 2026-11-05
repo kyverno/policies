@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: create-authorizationpolicy
+  annotations:
+    policies.kyverno.io/title: Create Istio Deny AuthorizationPolicy
+    policies.kyverno.io/category: Istio
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/subject: AuthorizationPolicy
+    policies.kyverno.io/description: >-
+      An AuthorizationPolicy enables access controls on workloads in the mesh. It supports per-Namespace controls
+      which can be a union of different behaviors. This policy creates a default deny AuthorizationPolicy
+      for all new Namespaces.
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["namespaces"]
+  variables:
+    - name: targetNs
+      expression: "object.metadata.name"
+  generate:
+    - expression: >-
+        generator.Apply(variables.targetNs, [
+          dyn({
+            "apiVersion": dyn("security.istio.io/v1beta1"),
+            "kind": dyn("AuthorizationPolicy"),
+            "metadata": dyn({
+              "name": dyn("default-deny"),
+              "namespace": dyn(variables.targetNs)
+            }),
+            "spec": dyn({})
+          })
+        ])

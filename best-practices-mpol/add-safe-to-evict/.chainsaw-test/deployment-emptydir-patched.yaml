@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: deploy-emptydir
+    namespace: default
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: myapp
+    template:
+        metadata:
+            annotations:
+                cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+            labels:
+                app: myapp
+        spec:
+            containers:
+                - image: busybox
+                  name: app
+            volumes:
+                - emptyDir: {}
+                  name: cache
