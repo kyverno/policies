@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: business-hours
+spec:
+  template: false
+  steps:
+  - name: setup
+    try:
+    - apply:
+        file: rbac.yaml
+    - apply:
+        file: ../schedule-based-quotas.yaml
+    - assert:
+        file: policy-ready.yaml
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: time-mock
+            namespace: default
+          data:
+            time: "2024-03-20T14:00:00-07:00"
+  - name: test-quota-business-hours
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            name: test-quota-business
+            namespace: default
+          spec:
+            hard:
+              cpu: "15"
+              memory: "30Gi"
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ResourceQuota
+          metadata:
+            name: test-quota-business
+            namespace: default
+          spec:
+            hard:
+              cpu: "20"
+              memory: "40Gi"

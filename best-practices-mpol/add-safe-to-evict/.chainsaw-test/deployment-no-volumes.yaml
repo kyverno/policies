@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-no-volumes
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp2
+  template:
+    metadata:
+      labels:
+        app: myapp2
+    spec:
+      containers:
+        - name: app
+          image: busybox

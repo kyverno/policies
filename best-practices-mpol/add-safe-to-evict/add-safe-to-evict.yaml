@@ -18,23 +18,76 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["pods"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments", "daemonsets", "statefulsets"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs", "cronjobs"]
+  variables:
+    - name: podSpec
+      expression: >-
+        object.kind == "Pod" ? object.spec :
+        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ? object.spec.template.spec :
+        object.kind == "CronJob" ? object.spec.jobTemplate.spec.template.spec :
+        null
   matchConditions:
     - name: has-emptydir-or-hostpath
       expression: |
-        has(object.spec.volumes) && 
-        object.spec.volumes.exists(v, has(v.emptyDir) || has(v.hostPath))
+        variables.podSpec != null &&
+        has(variables.podSpec.volumes) && 
+        variables.podSpec.volumes.exists(v, has(v.emptyDir) || has(v.hostPath))
     - name: annotation-not-present
       expression: |
-        !has(object.metadata.annotations) || 
-        !object.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')
+        object.kind == "Pod" ?
+          (!has(object.metadata.annotations) || 
+           !object.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
+        object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ?
+          (!has(object.spec.template.metadata.annotations) || 
+           !object.spec.template.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
+        object.kind == "CronJob" ?
+          (!has(object.spec.jobTemplate.spec.template.metadata.annotations) || 
+           !object.spec.jobTemplate.spec.template.metadata.annotations.exists(k, k == 'cluster-autoscaler.kubernetes.io/safe-to-evict')) :
+        false
   mutations:
     - patchType: ApplyConfiguration
       applyConfiguration:
         expression: |
+          object.kind == "Pod" ?
           Object{
             metadata: Object.metadata{
               annotations: {
                 "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
               }
             }
-          }
+          } :
+          object.kind in ["Deployment", "DaemonSet", "StatefulSet", "Job"] ?
+          Object{
+            spec: Object.spec{
+              template: Object.spec.template{
+                metadata: Object.spec.template.metadata{
+                  annotations: {
+                    "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+                  }
+                }
+              }
+            }
+          } :
+          object.kind == "CronJob" ?
+          Object{
+            spec: Object.spec{
+              jobTemplate: Object.spec.jobTemplate{
+                spec: Object.spec.jobTemplate.spec{
+                  template: Object.spec.jobTemplate.spec.template{
+                    metadata: Object.spec.jobTemplate.spec.template.metadata{
+                      annotations: {
+                        "cluster-autoscaler.kubernetes.io/safe-to-evict": "true"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } : Object{}

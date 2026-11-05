@@ -1,0 +1,30 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-flux-multi-tenant-resources
+spec:
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: pre-existing-ns.yaml
+    - apply:
+        file: rbac.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ../generate-flux-multi-tenant-resources.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: new-ns.yaml
+  - name: step-04
+    try:
+    - assert:
+        file: generatedResources.yaml
+    - error:
+        file: notGeneratedResource.yaml

@@ -1,0 +1,11 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ftenant
+  namespace: old-flux-tenant-namespace
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: ftenant
+  namespace: old-flux-tenant-namespace
