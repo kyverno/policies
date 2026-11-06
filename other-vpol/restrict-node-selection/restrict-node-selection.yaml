@@ -1,0 +1,35 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-node-selection
+  annotations:
+    policies.kyverno.io/title: Restrict Node Selection in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Scheduling Pods to specific nodes using nodeSelector or nodeName
+      bypasses normal scheduler decisions and can overload or drain specific
+      nodes. This policy audits Pods that specify either spec.nodeSelector or
+      spec.nodeName on creation.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE"]
+      resources:   ["pods"]
+  validations:
+  - expression: "!has(object.spec.nodeSelector) || object.spec.nodeSelector == {}"
+    message: "Specifying a nodeSelector is not allowed."
+  - expression: "!has(object.spec.nodeName) || object.spec.nodeName == ''"
+    message: "Specifying a nodeName is not allowed."
+
