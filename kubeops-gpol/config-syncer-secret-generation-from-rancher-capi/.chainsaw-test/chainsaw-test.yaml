@@ -38,5 +38,14 @@ spec:
         file: chainsaw-step-03-apply-1.yaml
     - apply:
         file: cluster.yaml
+    - patch:
+        resource:
+          apiVersion: provisioning.cattle.io/v1
+          kind: Cluster
+          metadata:
+            name: rancher-cluster
+            namespace: kubeops-cluster-ns
+            labels:
+              sync: "true"
     - assert:
         file: secret-generated02.yaml

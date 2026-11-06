@@ -22,7 +22,6 @@ metadata:
   name: kyverno:kasten:manage
   labels:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
-    rbac.kyverno.io/aggregate-to-admission-controller: "true"
 rules:
 - apiGroups:
   - config.kio.kasten.io
