@@ -24,11 +24,14 @@ spec:
       expression: "resource.Get('v1', 'namespaces', '', object.metadata.namespace)"
     - name: nsLabels
       expression: "has(variables.ns.metadata) && has(variables.ns.metadata.labels) ? variables.ns.metadata.labels : {}"
+    - name: ownerValue
+      expression: "'owner' in variables.nsLabels ? variables.nsLabels['owner'] : 'empty'"
     - name: copiedKeys
-      expression: "variables.nsLabels.filter(k, k != 'kubernetes.io/metadata.name')"
+      expression: "variables.nsLabels.filter(k, k != 'kubernetes.io/metadata.name' && k != 'owner')"
   mutations:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
           (!has(object.metadata.labels) ? [JSONPatch{op: "add", path: "/metadata/labels", value: {}}] : []) +
+          [JSONPatch{op: "add", path: "/metadata/labels/owner", value: variables.ownerValue}] +
           variables.copiedKeys.map(k, JSONPatch{op: "add", path: "/metadata/labels/" + jsonpatch.escapeKey(k), value: variables.nsLabels[k]})

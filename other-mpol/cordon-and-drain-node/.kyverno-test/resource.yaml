@@ -4,6 +4,8 @@ metadata:
   name: node-1
   labels:
     testing: drain
+  annotations:
+    test.kyverno.io/time: "2026-01-01T00:00:00Z"
 spec: {}
 ---
 apiVersion: v1

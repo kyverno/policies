@@ -27,3 +27,7 @@ spec:
             namespace: within-ns
             labels:
               kubernetes.io/metadata.name: "within-ns"
+    finally:
+    - script:
+        content: |
+          kubectl delete ns within-ns --ignore-not-found

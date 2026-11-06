@@ -38,9 +38,11 @@ spec:
         file: pod-patched01.yaml
     - assert:
         file: pod-patched02.yaml
-  - name: step-05
-    try:
+    finally:
     - script:
         content: |
-          kubectl label nodes --all foo-
+          kubectl label nodes --all foo- 2>/dev/null || true
           kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[SelfSubjectAccessReview,\*,\*\]/\[SelfSubjectAccessReview,\*,\*\] \[Binding,\*,\*\] \[Pod\/binding,\*,\*\]/g' | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' | kubectl apply -f -
+          kubectl delete -f pod.yaml --ignore-not-found
+          kubectl delete -f clusterroles.yaml --ignore-not-found
+          kubectl delete -f permissions.yaml --ignore-not-found

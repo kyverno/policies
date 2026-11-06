@@ -34,8 +34,8 @@ spec:
   variables:
     - name: keyone
       expression: >-
-        has(object.data) && has(object.data.keyone) ? object.data.keyone :
-        (has(request.object) && has(request.object.data) && has(request.object.data.keyone) ? request.object.data.keyone : "")
+        has(request.object) && has(request.object.data) && has(request.object.data.keyone) ? request.object.data.keyone :
+        (has(object.data) && has(object.data.keyone) ? object.data.keyone : "")
   mutations:
     - patchType: JSONPatch
       jsonPatch:
