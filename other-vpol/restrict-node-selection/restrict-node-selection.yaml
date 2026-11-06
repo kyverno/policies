@@ -28,8 +28,8 @@ spec:
       operations:  ["CREATE"]
       resources:   ["pods"]
   validations:
-  - expression: "!has(object.spec.nodeSelector) || object.spec.nodeSelector == {}"
+  - expression: "!has(object.spec.nodeSelector)"
     message: "Specifying a nodeSelector is not allowed."
-  - expression: "!has(object.spec.nodeName) || object.spec.nodeName == ''"
+  - expression: "!has(object.spec.nodeName)"
     message: "Specifying a nodeName is not allowed."
 

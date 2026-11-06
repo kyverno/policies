@@ -6,15 +6,31 @@ metadata:
   name: protect-node-taints
 spec:
   template: false
+  catch:
+  - script:
+      content: |
+        if test -f node-resource-filters-before.json; then
+          kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-before.json
+          rm -f node-resource-filters-before.json node-resource-filters-test.json
+        fi
+        kubectl delete clusterrolebinding nodetaint-binding --ignore-not-found
+        kubectl delete clusterrole nodetaint-role --ignore-not-found
+        kubectl delete serviceaccount nodetaintuser -n default --ignore-not-found
   steps:
   - name: step-01-remove-node-filter
     try:
     - script:
         content: |
-          kubectl get configmap kyverno -n kyverno -o yaml \
-            | sed 's/\[Node\/\*,\*,\*\]//g' \
-            | sed 's/\[Node,\*,\*\]//g' \
-            | kubectl apply -f -
+          set -eu
+          kubectl get configmap kyverno -n kyverno -o json | jq '{data: {resourceFilters: .data.resourceFilters}}' > node-resource-filters-before.json
+          jq '.data.resourceFilters |= gsub("\\[Node(/\\??\\*)?,\\*,\\*\\]"; "")' node-resource-filters-before.json > node-resource-filters-test.json
+          kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-test.json
+          for attempt in $(seq 1 30); do
+            if kubectl get configmap kyverno -n kyverno -o json | jq -e '.data.resourceFilters | test("\\[Node(/\\??\\*)?,\\*,\\*\\]") | not' >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          echo 'Node resource filters did not become test-enabled'
+          exit 1
     - sleep:
         duration: 5s
     - apply:
@@ -50,13 +66,15 @@ spec:
           NODE=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
           kubectl taint nodes "$NODE" test=val:NoSchedule --overwrite
           kubectl taint nodes "$NODE" test-
-    finally:
+  - name: step-05-restore-filters
+    try:
     - script:
         content: |
-          kubectl get configmap -n kyverno kyverno -o yaml \
-            | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' \
-            | kubectl apply -f -
+          set -eu
+          if test -f node-resource-filters-before.json; then
+            kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-before.json
+            rm -f node-resource-filters-before.json node-resource-filters-test.json
+          fi
           kubectl delete clusterrolebinding nodetaint-binding --ignore-not-found
           kubectl delete clusterrole nodetaint-role --ignore-not-found
           kubectl delete serviceaccount nodetaintuser -n default --ignore-not-found
-
