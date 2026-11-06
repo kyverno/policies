@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kasten-generate-example-backup-policy-test
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../kasten-generate-example-backup-policy.yaml
+resources:
+- test-resource.yaml
+results:
+- generatedResource: generatedResource.yaml
+  isGeneratingPolicy: true
+  kind: Deployment
+  policy: kasten-generate-example-backup-policy
+  resources:
+  - test-namespace/test-deployment
+  result: pass
+- isGeneratingPolicy: true
+  kind: Deployment
+  policy: kasten-generate-example-backup-policy
+  resources:
+  - skip-namespace/skip-deployment
+  result: pass

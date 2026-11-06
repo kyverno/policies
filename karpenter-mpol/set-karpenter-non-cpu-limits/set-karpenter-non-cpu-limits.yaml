@@ -4,7 +4,7 @@ metadata:
   name: set-karpenter-non-cpu-limits
   annotations:
     policies.kyverno.io/title: Set non-CPU limits for pods to work well with Karpenter.
-    policies.kyverno.io/subject: Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob
+    policies.kyverno.io/subject: Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob, ReplicaSet, ReplicationController
     policies.kyverno.io/category: Karpenter, EKS Best Practices
     policies.kyverno.io/severity: medium
     policies.kyverno.io/minversion: 1.17.0
@@ -23,11 +23,11 @@ spec:
     - apiGroups: [""]
       apiVersions: ["v1"]
       operations: ["CREATE", "UPDATE"]
-      resources: ["pods"]
+      resources: ["pods", "replicationcontrollers"]
     - apiGroups: ["apps"]
       apiVersions: ["v1"]
       operations: ["CREATE", "UPDATE"]
-      resources: ["deployments", "daemonsets", "statefulsets"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
     - apiGroups: ["batch"]
       apiVersions: ["v1"]
       operations: ["CREATE", "UPDATE"]
