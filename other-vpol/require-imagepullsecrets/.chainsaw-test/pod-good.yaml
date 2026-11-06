@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod01
+spec:
+  imagePullSecrets:
+  - name: my-registry-secret
+  containers:
+  - name: myapp
+    image: docker.io/myrepo/myimage:1.0
+
