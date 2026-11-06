@@ -1,0 +1,27 @@
+name: restrict-pod-count-per-node
+version: 1.0.0
+displayName: Restrict Pod Count per Node
+createdAt: "2026-11-06T13:53:45Z"
+description: >-
+  Sometimes Kubernetes Nodes may have a maximum number of Pods they can accommodate due to
+  resources outside CPU and memory such as licensing, or in some development cases. This
+  policy restricts the Pod count on a Node named `minikube` to be no more than 10.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-pod-count-per-node/restrict-pod-count-per-node.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  Sometimes Kubernetes Nodes may have a maximum number of Pods they can accommodate due to
+  resources outside CPU and memory such as licensing, or in some development cases. This
+  policy restricts the Pod count on a Node named `minikube` to be no more than 10.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: Sample
+  kyverno/subject: Pod
+  kyverno/version: "1.30"
+digest: 4e35d851e5a00e6d80734bf88cf5c6ad051abc42b763291b20fdc8e7f7d9b445
