@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-minimum-tls-version
+policies:
+- ../require-minimum-tls-version.yaml
+resources:
+- resource.yaml
+results:
+- kind: Ingress
+  policy: require-minimum-tls-version
+  resources:
+  - good-ingress
+  result: pass
+  rule: require-tls-min-version
+- kind: Ingress
+  policy: require-minimum-tls-version
+  resources:
+  - bad-ingress-tls11
+  result: fail
+  rule: require-tls-min-version
+- kind: Ingress
+  policy: require-minimum-tls-version
+  resources:
+  - bad-ingress-tls10
+  result: fail
+  rule: require-tls-min-version

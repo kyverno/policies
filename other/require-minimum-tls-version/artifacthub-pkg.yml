@@ -1,0 +1,33 @@
+name: require-minimum-tls-version
+version: 1.0.0
+displayName: Require Minimum TLS Version
+createdAt: "2026-06-12T00:00:00.000Z"
+description: >-
+  TLS 1.0 and 1.1 are deprecated and contain known vulnerabilities. TLS 1.3
+  is required as a prerequisite for post-quantum cryptography (PQC) key exchange
+  as mandated by NIST IR 8547 and NSA CNSA 2.0. This policy ensures that Ingress
+  resources do not permit deprecated TLS protocol versions via the nginx ingress
+  annotation.
+install: |-
+```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/require-minimum-tls-version/require-minimum-tls-version.yaml
+```
+keywords:
+  - kyverno
+  - Security
+  - TLS
+  - PQC
+  - NIST
+readme: |
+  TLS 1.0 and 1.1 are deprecated and contain known vulnerabilities. TLS 1.3
+  is required as a prerequisite for post-quantum cryptography (PQC) key exchange
+  as mandated by NIST IR 8547 and NSA CNSA 2.0. This policy ensures that Ingress
+  resources do not permit deprecated TLS protocol versions via the nginx ingress
+  ssl-protocols annotation.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.26"
+  kyverno/subject: "Ingress"
+digest: ""
