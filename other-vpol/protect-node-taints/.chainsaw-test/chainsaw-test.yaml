@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: protect-node-taints
+spec:
+  template: false
+  catch:
+  - script:
+      content: |
+        if test -f node-resource-filters-before.json; then
+          kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-before.json
+          rm -f node-resource-filters-before.json node-resource-filters-test.json
+        fi
+        kubectl delete clusterrolebinding nodetaint-binding --ignore-not-found
+        kubectl delete clusterrole nodetaint-role --ignore-not-found
+        kubectl delete serviceaccount nodetaintuser -n default --ignore-not-found
+  steps:
+  - name: step-01-remove-node-filter
+    try:
+    - script:
+        content: |
+          set -eu
+          kubectl get configmap kyverno -n kyverno -o json | jq '{data: {resourceFilters: .data.resourceFilters}}' > node-resource-filters-before.json
+          jq '.data.resourceFilters |= gsub("\\[Node(/\\??\\*)?,\\*,\\*\\]"; "")' node-resource-filters-before.json > node-resource-filters-test.json
+          kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-test.json
+          for attempt in $(seq 1 30); do
+            if kubectl get configmap kyverno -n kyverno -o json | jq -e '.data.resourceFilters | test("\\[Node(/\\??\\*)?,\\*,\\*\\]") | not' >/dev/null; then exit 0; fi
+            sleep 1
+          done
+          echo 'Node resource filters did not become test-enabled'
+          exit 1
+    - sleep:
+        duration: 5s
+    - apply:
+        file: ../protect-node-taints.yaml
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02-create-user
+    try:
+    - script:
+        content: |
+          kubectl create serviceaccount nodetaintuser -n default || true
+          kubectl create clusterrole nodetaint-role \
+            --verb=get,patch --resource=nodes || true
+          kubectl create clusterrolebinding nodetaint-binding \
+            --clusterrole=nodetaint-role \
+            --serviceaccount=default:nodetaintuser || true
+  - name: step-03-verify-deny
+    try:
+    - script:
+        content: |
+          NODE=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          TOKEN=$(kubectl create token nodetaintuser -n default)
+          if kubectl --token=$TOKEN taint nodes "$NODE" test=val:NoSchedule; then
+            echo "ERROR: taint should have been denied"
+            exit 1
+          fi
+  - name: step-04-verify-allow
+    try:
+    - script:
+        content: |
+          NODE=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          kubectl taint nodes "$NODE" test=val:NoSchedule --overwrite
+          kubectl taint nodes "$NODE" test-
+  - name: step-05-restore-filters
+    try:
+    - script:
+        content: |
+          set -eu
+          if test -f node-resource-filters-before.json; then
+            kubectl patch configmap kyverno -n kyverno --type=merge --patch-file=node-resource-filters-before.json
+            rm -f node-resource-filters-before.json node-resource-filters-test.json
+          fi
+          kubectl delete clusterrolebinding nodetaint-binding --ignore-not-found
+          kubectl delete clusterrole nodetaint-role --ignore-not-found
+          kubectl delete serviceaccount nodetaintuser -n default --ignore-not-found

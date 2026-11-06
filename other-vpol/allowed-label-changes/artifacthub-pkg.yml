@@ -1,0 +1,23 @@
+name: allowed-label-changes-vpol
+version: 1.0.0
+displayName: Allowed Label Changes in ValidatingPolicy
+description: >-
+  Labels are often used for service discovery and routing. This policy blocks any label change on Pods, Deployments, StatefulSets, DaemonSets, Jobs, and CronJobs unless the only difference is the breakglass label, which is reserved for emergency access. Missing labels are treated as an empty map.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/allowed-label-changes/allowed-label-changes.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Labels are often used for service discovery and routing. This policy blocks any label change on Pods, Deployments, StatefulSets, DaemonSets, Jobs, and CronJobs unless the only difference is the breakglass label, which is reserved for emergency access. Missing labels are treated as an empty map.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob"
+digest: 9a6f5e909660d33f5dcd5e8883c565494296983b736d9d062657bf29e3a32164
+createdAt: "2026-11-06T08:33:09Z"
