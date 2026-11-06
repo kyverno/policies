@@ -31,6 +31,8 @@ results:
   resources:
   - goodpod01
   - goodpod02
+  - goodpod03
+  - goodpod04
   result: pass
   isValidatingPolicy: true
 - kind: Pod
