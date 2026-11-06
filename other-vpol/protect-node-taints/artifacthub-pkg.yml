@@ -1,0 +1,23 @@
+name: protect-node-taints-vpol
+version: 1.0.0
+displayName: Protect Node Taints in ValidatingPolicy
+description: >-
+  Node taints control Pod scheduling and must only be modified by cluster administrators. This policy blocks Node taint changes by users who are not members of the system:masters group or any group containing cluster-admin. Requires removal of [Node,*,*] from the Kyverno resource filters.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/protect-node-taints/protect-node-taints.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Node taints control Pod scheduling and must only be modified by cluster administrators. This policy blocks Node taint changes by users who are not members of the system:masters group or any group containing cluster-admin. Requires removal of [Node,*,*] from the Kyverno resource filters.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Node"
+digest: a25af293f10d0db25d03354e10fa065a31b812486d2445f037134886573019eb
+createdAt: ""

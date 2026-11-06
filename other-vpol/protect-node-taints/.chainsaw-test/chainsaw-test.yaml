@@ -1,0 +1,62 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: protect-node-taints
+spec:
+  template: false
+  steps:
+  - name: step-01-remove-node-filter
+    try:
+    - script:
+        content: |
+          kubectl get configmap kyverno -n kyverno -o yaml \
+            | sed 's/\[Node\/\*,\*,\*\]//g' \
+            | sed 's/\[Node,\*,\*\]//g' \
+            | kubectl apply -f -
+    - sleep:
+        duration: 5s
+    - apply:
+        file: ../protect-node-taints.yaml
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02-create-user
+    try:
+    - script:
+        content: |
+          kubectl create serviceaccount nodetaintuser -n default || true
+          kubectl create clusterrole nodetaint-role \
+            --verb=get,patch --resource=nodes || true
+          kubectl create clusterrolebinding nodetaint-binding \
+            --clusterrole=nodetaint-role \
+            --serviceaccount=default:nodetaintuser || true
+  - name: step-03-verify-deny
+    try:
+    - script:
+        content: |
+          NODE=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          TOKEN=$(kubectl create token nodetaintuser -n default)
+          if kubectl --token=$TOKEN taint nodes "$NODE" test=val:NoSchedule; then
+            echo "ERROR: taint should have been denied"
+            exit 1
+          fi
+  - name: step-04-verify-allow
+    try:
+    - script:
+        content: |
+          NODE=$(kubectl get nodes --no-headers | awk 'NR==1{print $1}')
+          kubectl taint nodes "$NODE" test=val:NoSchedule --overwrite
+          kubectl taint nodes "$NODE" test-
+    finally:
+    - script:
+        content: |
+          kubectl get configmap -n kyverno kyverno -o yaml \
+            | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' \
+            | kubectl apply -f -
+          kubectl delete clusterrolebinding nodetaint-binding --ignore-not-found
+          kubectl delete clusterrole nodetaint-role --ignore-not-found
+          kubectl delete serviceaccount nodetaintuser -n default --ignore-not-found
+
