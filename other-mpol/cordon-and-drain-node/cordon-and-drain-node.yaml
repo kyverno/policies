@@ -27,6 +27,11 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["nodes"]
+  variables:
+    - name: timeAdded
+      expression: >-
+        has(object.metadata.annotations) && 'test.kyverno.io/time' in object.metadata.annotations ?
+        object.metadata.annotations['test.kyverno.io/time'] : string(time.now())
   mutations:
     - patchType: JSONPatch
       jsonPatch:
@@ -36,13 +41,15 @@ spec:
           (!has(object.spec.taints) ?
             [JSONPatch{op: "add", path: "/spec/taints", value: [dyn({
               "effect": dyn("NoExecute"),
-              "key": dyn("kyverno-evicted")
+              "key": dyn("kyverno-evicted"),
+              "timeAdded": dyn(variables.timeAdded)
             })]}]
           :
             (object.spec.taints.exists(t, t.key == 'kyverno-evicted') ? [] :
               [JSONPatch{op: "add", path: "/spec/taints/-", value: dyn({
                 "effect": dyn("NoExecute"),
-                "key": dyn("kyverno-evicted")
+                "key": dyn("kyverno-evicted"),
+                "timeAdded": dyn(variables.timeAdded)
               })}]
             )
           )
