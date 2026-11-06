@@ -40,12 +40,12 @@ spec:
       resources:   ["jobs", "cronjobs"]
   variables:
   - name: newLabels
-    expression: >-
-      object.metadata.?labels.orValue({}).filter(k, k != 'breakglass')
+    expression: object.metadata.?labels.orValue({})
   - name: oldLabels
-    expression: >-
-      oldObject.metadata.?labels.orValue({}).filter(k, k != 'breakglass')
+    expression: oldObject.metadata.?labels.orValue({})
   validations:
-  - expression: "variables.newLabels == variables.oldLabels"
+  - expression: >-
+      variables.newLabels.all(k, k == 'breakglass' || (k in variables.oldLabels && variables.newLabels[k] == variables.oldLabels[k])) &&
+      variables.oldLabels.all(k, k == 'breakglass' || (k in variables.newLabels && variables.oldLabels[k] == variables.newLabels[k]))
     message: "Label changes are not allowed except for the breakglass label."
 

@@ -2,10 +2,10 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pvc-good
-spec:
-  storageClassName: nfs-client
   annotations:
     nfs.io/storage-path: "/data/myapp"
+spec:
+  storageClassName: nfs-client
   accessModes: [ReadWriteOnce]
   resources:
     requests:
