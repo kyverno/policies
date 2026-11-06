@@ -1,0 +1,34 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: copy-namespace-labels
+  annotations:
+    policies.kyverno.io/title: Copy Namespace Labels
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Deployment, Label, Namespace
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      It is common for Namespaced resources to need access to labels which have been assigned
+      to the Namespace in which they reside. This policy assigns Namespace labels to a Deployment
+      upon creation, copying all labels except for kubernetes.io/metadata.name.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["deployments"]
+  variables:
+    - name: ns
+      expression: "resource.Get('v1', 'namespaces', '', object.metadata.namespace)"
+    - name: nsLabels
+      expression: "has(variables.ns.metadata) && has(variables.ns.metadata.labels) ? variables.ns.metadata.labels : {}"
+    - name: copiedKeys
+      expression: "variables.nsLabels.filter(k, k != 'kubernetes.io/metadata.name')"
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          (!has(object.metadata.labels) ? [JSONPatch{op: "add", path: "/metadata/labels", value: {}}] : []) +
+          variables.copiedKeys.map(k, JSONPatch{op: "add", path: "/metadata/labels/" + jsonpatch.escapeKey(k), value: variables.nsLabels[k]})

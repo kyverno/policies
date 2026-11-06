@@ -1,0 +1,47 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: add-node-labels-pod
+  annotations:
+    policies.kyverno.io/title: Add scheduled Node's labels to a Pod
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      Containers running in Pods may sometimes need access to node-specific information on
+      which the Pod has been scheduled. A common use case is node topology labels to ensure
+      pods are spread across failure zones in racks or in the cloud. This policy watches for
+      Pod binding events when the pod is scheduled and then mutates the existing Pod to add the labels.
+spec:
+  evaluation:
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods/binding"]
+  targetMatchConstraints:
+    expression: resource.Get("v1", "pods", object.metadata.namespace, object.metadata.name)
+  variables:
+    - name: nodeName
+      expression: >-
+        has(object.target) && has(object.target.name) ? object.target.name :
+        (has(request.object) && has(request.object.target) && has(request.object.target.name) ? request.object.target.name : "")
+    - name: node
+      expression: >-
+        variables.nodeName != "" ? resource.Get("v1", "nodes", "", variables.nodeName) : {}
+    - name: fooLabel
+      expression: >-
+        has(variables.node.metadata) && has(variables.node.metadata.labels) && has(variables.node.metadata.labels.foo) ?
+        variables.node.metadata.labels.foo : ""
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          variables.fooLabel != "" ?
+            (!has(object.metadata.labels) ? [JSONPatch{op: "add", path: "/metadata/labels", value: {}}] : []) +
+            [JSONPatch{op: "add", path: "/metadata/labels/foo", value: variables.fooLabel}]
+          : []

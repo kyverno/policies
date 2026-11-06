@@ -1,0 +1,46 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: replace-image-registry-with-harbor
+  annotations:
+    policies.kyverno.io/title: Replace Image Registry With Harbor
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      Some registries like Harbor offer pull-through caches for images from certain registries.
+      Images can be re-written to be pulled from the redirected registry instead of the original and
+      the registry will proxy pull the image, adding it to its internal cache.
+      This policy rewrites init and regular container images from registry index.docker.io to
+      harbor.example.com/k8s/<repository>:<identifier>.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: >-
+          Object{
+            spec: Object.spec{
+              containers: object.spec.containers.map(c,
+                isImage(c.image) && image(c.image).registry() == 'index.docker.io' ?
+                  Object.spec.containers{
+                    name: c.name,
+                    image: 'harbor.example.com/k8s/' + image(c.image).repository() + image(c.image).identifierWithSeparator()
+                  } : c
+              ),
+              initContainers: has(object.spec.initContainers) ?
+                object.spec.initContainers.map(c,
+                  isImage(c.image) && image(c.image).registry() == 'index.docker.io' ?
+                    Object.spec.initContainers{
+                      name: c.name,
+                      image: 'harbor.example.com/k8s/' + image(c.image).repository() + image(c.image).identifierWithSeparator()
+                    } : c
+                ) : []
+            }
+          }

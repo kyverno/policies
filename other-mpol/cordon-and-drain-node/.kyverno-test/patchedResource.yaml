@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: node-1
+  labels:
+    testing: drain
+spec:
+  unschedulable: true
+  taints:
+  - effect: NoExecute
+    key: kyverno-evicted

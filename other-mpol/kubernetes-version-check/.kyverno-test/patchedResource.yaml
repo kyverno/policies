@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+  namespace: default
+  labels:
+    apiminorversion: "30"
+data:
+  key: bGFiZWw=
