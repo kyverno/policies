@@ -26,9 +26,12 @@ spec:
         operations: ["CREATE"]
         resources: ["pods"]
   variables:
+    - name: podList
+      expression: >-
+        resource.List("v1", "pods", "").items
     - name: minikubePods
       expression: >-
-        resource.List("v1", "pods", "").items.orValue([]).filter(p, p.?spec.nodeName.orValue("") == "minikube")
+        dyn(variables.podList).filter(p, dyn(p).?spec.?nodeName.orValue("") == "minikube")
   validations:
     - expression: "variables.minikubePods.size() <= 10"
       message: "A maximum of 10 Pods are allowed on the Node `minikube`"

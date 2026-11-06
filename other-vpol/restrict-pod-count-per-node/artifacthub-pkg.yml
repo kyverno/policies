@@ -23,5 +23,5 @@ readme: |
 annotations:
   kyverno/category: Sample
   kyverno/subject: Pod
-  kyverno/version: "1.30"
-digest: 4e35d851e5a00e6d80734bf88cf5c6ad051abc42b763291b20fdc8e7f7d9b445
+  kyverno/kubernetesVersion: "1.30"
+digest: b575d9ff7f514e2e44fb1504df51651b4e10475995a7da09e3195c7ebbe3fc86

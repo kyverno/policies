@@ -1,5 +1,6 @@
 # Mocks resource.List("v1", "pods", "") for the CLI: 10 Pods on `minikube`
-# (the limit boundary) plus 2 Pods on other Nodes, which must not count.
+# (the limit boundary) plus 2 Pods on other Nodes and 1 pending Pod without a
+# spec.nodeName, none of which must count.
 # NOTE: mocked Pods must NOT set metadata.namespace because the CLI's fake
 # context provider buckets resources by namespace, and the policy lists Pods
 # with an empty namespace (all Namespaces).
@@ -114,6 +115,16 @@ spec:
         name: pod12
       spec:
         nodeName: other-node
+        containers:
+          - image: nginx
+            name: nginx
+    # A pending Pod which has not been scheduled yet, so it has no spec.nodeName.
+    # It must be ignored by the policy rather than causing an evaluation error.
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod13
+      spec:
         containers:
           - image: nginx
             name: nginx
