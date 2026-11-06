@@ -1,0 +1,51 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: allowed-label-changes
+  annotations:
+    policies.kyverno.io/title: Allowed Label Changes in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob
+    policies.kyverno.io/description: >-
+      Labels are often used for service discovery and routing. This policy blocks any
+      label change on Pods, Deployments, StatefulSets, DaemonSets, Jobs, and CronJobs
+      unless the only difference is the breakglass label, which is reserved for emergency
+      access. Missing labels are treated as an empty map.
+spec:
+  validationActions:
+    - Deny
+  autogen:
+    podControllers:
+      controllers: []
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["UPDATE"]
+      resources:   ["pods"]
+    - apiGroups:   ["apps"]
+      apiVersions: ["v1"]
+      operations:  ["UPDATE"]
+      resources:   ["deployments", "statefulsets", "daemonsets"]
+    - apiGroups:   ["batch"]
+      apiVersions: ["v1"]
+      operations:  ["UPDATE"]
+      resources:   ["jobs", "cronjobs"]
+  variables:
+  - name: newLabels
+    expression: >-
+      object.metadata.?labels.orValue({}).filter(k, k != 'breakglass')
+  - name: oldLabels
+    expression: >-
+      oldObject.metadata.?labels.orValue({}).filter(k, k != 'breakglass')
+  validations:
+  - expression: "variables.newLabels == variables.oldLabels"
+    message: "Label changes are not allowed except for the breakglass label."
+
