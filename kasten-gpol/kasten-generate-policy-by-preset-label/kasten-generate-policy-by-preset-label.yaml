@@ -9,6 +9,7 @@
 #   labels:
 #     rbac.kyverno.io/aggregate-to-background-controller: "true"
 #     rbac.kyverno.io/aggregate-to-admission-controller: "true"
+#     rbac.kyverno.io/aggregate-to-reports-controller: "true"
 # rules:
 # - apiGroups:
 #   - config.kio.kasten.io
@@ -18,6 +19,9 @@
 #   - create
 #   - update
 #   - delete
+#   - get
+#   - list
+#   - watch
 #
 apiVersion: policies.kyverno.io/v1
 kind: GeneratingPolicy
@@ -54,7 +58,7 @@ spec:
   variables:
     - name: existingPolicies
       expression: >-
-        resource.List('config.kio.kasten.io/v1alpha1', 'policies', 'kasten-io').items.orValue([])
+        dyn(resource.List('config.kio.kasten.io/v1alpha1', 'policies', 'kasten-io').items)
     - name: policyAlreadyExists
       expression: >-
         variables.existingPolicies.exists(p,
