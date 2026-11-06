@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    foo: rab
+  labels:
+    app: busybox
+    foo: bar
+  name: pod02
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35

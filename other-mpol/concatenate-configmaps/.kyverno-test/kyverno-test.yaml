@@ -1,0 +1,20 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: concatenate-configmaps
+policies:
+  - ../concatenate-configmaps.yaml
+resources:
+  - trigger.yaml
+clusterResources:
+  - cluster-resources.yaml
+targetResources:
+  - target.yaml
+results:
+  - isMutatingPolicy: true
+    kind: ConfigMap
+    patchedResources: patched-target.yaml
+    policy: concatenate-configmaps
+    resources:
+      - bar/cmtwo
+    result: pass

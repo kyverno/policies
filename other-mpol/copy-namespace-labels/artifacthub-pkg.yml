@@ -1,0 +1,22 @@
+name: copy-namespace-labels
+version: 1.0.0
+displayName: Copy Namespace Labels
+createdAt: "2023-12-18T21:30:03.000Z"
+description: >-
+  It is common for Namespaced resources to need access to labels which have been assigned to the Namespace in which they reside. This policy assigns Namespace labels to a Deployment upon creation, copying all labels except for kubernetes.io/metadata.name.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-mpol/copy-namespace-labels/copy-namespace-labels.yaml
+  ```
+keywords:
+  - kyverno
+  - other
+readme: |
+  It is common for Namespaced resources to need access to labels which have been assigned to the Namespace in which they reside. This policy assigns Namespace labels to a Deployment upon creation, copying all labels except for kubernetes.io/metadata.name.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "other"
+  kyverno/kubernetesVersion: "1.27"
+  kyverno/subject: "Label, Deployment, Namespace"
+digest: 4dfc7b6a5ca5469ee5a6eac636b6859d2cb72d06db66dd8ed5bd2fc553b6bf06

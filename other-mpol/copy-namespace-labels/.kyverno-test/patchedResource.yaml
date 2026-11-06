@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-1
+  namespace: within-ns
+  labels:
+    app: good-app
+    owner: "any-corp"
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-app
+  template:
+    metadata:
+      labels:
+        app: good-app
+    spec:
+      containers:
+      - name: good-app-deploy
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-3
+  namespace: within-ns
+  labels:
+    owner: "any-corp"
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app03
+  template:
+    metadata:
+      labels:
+        app: my-app03
+    spec:
+      containers:
+      - name: my-app03-deploy
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-4
+  namespace: within-ns
+  labels:
+    owner: "any-corp"
+    env: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app04
+  template:
+    metadata:
+      labels:
+        app: my-app04
+    spec:
+      containers:
+      - name: my-app04-deploy
+        image: ghcr.io/kyverno/test-busybox:1.35

@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: test-node-cordon
+spec:
+  unschedulable: true
+  (taints[?key == 'kyverno-evicted']):
+  - effect: NoExecute
+    key: kyverno-evicted
