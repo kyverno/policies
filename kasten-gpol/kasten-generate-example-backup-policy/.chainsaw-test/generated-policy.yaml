@@ -15,7 +15,8 @@ spec:
   - action: backup
   - action: export
     exportParameters:
-      exportData: true
+      exportData:
+        enabled: true
       frequency: '@daily'
       profile:
         name: test
