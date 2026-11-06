@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Node
+spec:
+  unschedulable: true
+  (taints[?key == 'kyverno-evicted']):
+  - effect: NoExecute
+    key: kyverno-evicted

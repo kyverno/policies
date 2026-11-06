@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: node-1
+  labels:
+    testing: drain
+spec: {}
+---
+apiVersion: v1
+kind: Node
+metadata:
+  name: node-2
+  labels:
+    foo: bar
+spec: {}

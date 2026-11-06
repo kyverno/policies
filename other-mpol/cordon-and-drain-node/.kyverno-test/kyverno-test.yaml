@@ -1,0 +1,22 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cordon-and-drain-node
+policies:
+  - ../cordon-and-drain-node.yaml
+resources:
+  - resource.yaml
+results:
+  - isMutatingPolicy: true
+    kind: Node
+    patchedResources: patchedResource.yaml
+    policy: cordon-and-drain-node
+    resources:
+      - node-1
+    result: pass
+  - isMutatingPolicy: true
+    kind: Node
+    policy: cordon-and-drain-node
+    resources:
+      - node-2
+    result: pass

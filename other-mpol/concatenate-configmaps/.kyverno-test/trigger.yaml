@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cmone
+  namespace: foo
+data:
+  keyone: bar

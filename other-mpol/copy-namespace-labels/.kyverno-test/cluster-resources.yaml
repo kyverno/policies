@@ -1,0 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: cluster-resources
+spec:
+  resources:
+    - apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: within-ns
+        labels:
+          owner: any-corp
+          env: dev
+          kubernetes.io/metadata.name: within-ns
