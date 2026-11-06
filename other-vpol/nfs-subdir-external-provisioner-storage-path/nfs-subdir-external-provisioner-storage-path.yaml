@@ -1,0 +1,37 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: nfs-subdir-external-provisioner-storage-path
+  annotations:
+    policies.kyverno.io/title: NFS Subdir External Provisioner Storage Path in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: PersistentVolumeClaim
+    policies.kyverno.io/description: >-
+      The NFS Subdir External Provisioner uses the annotation nfs.io/storage-path to
+      set the directory path on the NFS server. When specified, it must not be empty.
+      This policy audits PersistentVolumeClaims using the nfs-client StorageClass where
+      the annotation is present but empty.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["persistentvolumeclaims"]
+  matchConditions:
+  - name: is-nfs-client
+    expression: "object.spec.?storageClassName.orValue('') == 'nfs-client'"
+  validations:
+  - expression: >-
+      !('nfs.io/storage-path' in object.metadata.?annotations.orValue({})) ||
+      object.metadata.annotations['nfs.io/storage-path'] != ''
+    message: "The nfs.io/storage-path annotation must not be empty."
