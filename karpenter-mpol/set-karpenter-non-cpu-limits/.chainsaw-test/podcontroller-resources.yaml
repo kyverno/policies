@@ -82,30 +82,6 @@ spec:
                 ephemeral-storage: "500Mi"
           restartPolicy: OnFailure
 ---
-apiVersion: apps/v1
-kind: ReplicaSet
-metadata:
-  labels:
-    app: busybox-rs
-  name: test-replicaset
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: busybox-rs
-  template:
-    metadata:
-      labels:
-        app: busybox-rs
-    spec:
-      containers:
-      - name: bb-rs
-        image: ghcr.io/kyverno/test-busybox:1.35
-        resources:
-          requests:
-            cpu: "1"
-            memory: "1Gi"
----
 apiVersion: v1
 kind: ReplicationController
 metadata:
