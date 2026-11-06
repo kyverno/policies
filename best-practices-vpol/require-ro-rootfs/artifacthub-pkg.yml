@@ -23,7 +23,7 @@ readme: |
   This policy accepts exact image references in `spec.images`; only matching
   images are exempted and all other images remain enforced.
   CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
-  includes regular, init, and ephemeral containers.
+  includes only regular containers (`spec.containers`).
   See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-ro-rootfs/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
