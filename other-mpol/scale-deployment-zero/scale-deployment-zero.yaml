@@ -53,6 +53,10 @@ spec:
       apiVersions: ["v1"]
       operations: ["UPDATE"]
       resources: ["deployments"]
+    expression: >-
+      variables.deploymentName != '' ?
+      resource.Get('apps/v1', 'deployments', request.namespace, variables.deploymentName) :
+      {"items": []}
   targetMatchConditions:
   - name: is-parent-deployment
     expression: >-

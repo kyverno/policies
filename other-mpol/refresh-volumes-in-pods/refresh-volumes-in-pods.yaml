@@ -33,7 +33,7 @@ spec:
       resources: ["configmaps"]
   matchConditions:
   - name: watched-configmap
-    expression: "has(object.metadata.labels) && object.metadata.labels['kyverno.io/watch'] == 'true'"
+    expression: "has(object.metadata.labels) && 'kyverno.io/watch' in object.metadata.labels && object.metadata.labels['kyverno.io/watch'] == 'true'"
   variables:
   - name: cmName
     expression: "request.name"
@@ -43,6 +43,7 @@ spec:
       apiVersions: ["v1"]
       operations: ["UPDATE"]
       resources: ["pods"]
+    expression: "resource.List('v1', 'pods', request.namespace)"
   targetMatchConditions:
   - name: mounts-configmap-volume
     expression: >-

@@ -32,7 +32,7 @@ spec:
       resources: ["secrets"]
   matchConditions:
   - name: watched-secret
-    expression: "has(object.metadata.labels) && object.metadata.labels['kyverno.io/watch'] == 'true'"
+    expression: "has(object.metadata.labels) && 'kyverno.io/watch' in object.metadata.labels && object.metadata.labels['kyverno.io/watch'] == 'true'"
   variables:
   - name: secretName
     expression: "request.name"
@@ -42,6 +42,7 @@ spec:
       apiVersions: ["v1"]
       operations: ["UPDATE"]
       resources: ["deployments"]
+    expression: "resource.List('apps/v1', 'deployments', request.namespace)"
   targetMatchConditions:
   - name: references-secret-in-env
     expression: >-
