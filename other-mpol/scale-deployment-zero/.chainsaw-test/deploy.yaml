@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment01
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    sre.corp.org/troubleshooting-needed: "false"
+    foo.cop.org/bar: bar
+  labels:
+    app: busybox
+  name: deployment03
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox
+  name: deployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox
+        command: ["sleep","3600"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox-multi-restart
+  name: deployment04
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-multi-restart
+  template:
+    metadata:
+      labels:
+        app: busybox-multi-restart
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox1
+      - image: busybox:1.35
+        name: busybox2
+      restartPolicy: Always
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox-multi-healthy
+  name: deployment05
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox-multi-healthy
+  template:
+    metadata:
+      labels:
+        app: busybox-multi-healthy
+    spec:
+      containers:
+      - image: busybox:1.35
+        name: busybox1
+        command: ["sleep", "3600"]
+      - image: busybox:1.35
+        name: busybox2
+        command: ["sleep", "3600"]
+      restartPolicy: Always
