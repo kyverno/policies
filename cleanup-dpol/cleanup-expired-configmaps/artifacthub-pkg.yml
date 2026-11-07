@@ -11,6 +11,7 @@ description: >-
   list, watch, get, and delete permissions using the accompanying RBAC.
 install: |-
   ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-expired-configmaps/rbac.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-expired-configmaps/cleanup-expired-configmaps.yaml
   ```
 keywords:

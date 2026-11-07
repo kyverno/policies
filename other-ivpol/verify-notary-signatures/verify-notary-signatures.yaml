@@ -15,7 +15,7 @@ metadata:
       and image glob before use. Audit mode reports failures without blocking workloads.
 spec:
   validationActions: [Audit]
-  failurePolicy: Fail
+  failurePolicy: Ignore
   webhookConfiguration:
     timeoutSeconds: 30
   matchConstraints:

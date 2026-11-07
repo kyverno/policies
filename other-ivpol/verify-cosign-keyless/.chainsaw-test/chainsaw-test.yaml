@@ -27,6 +27,16 @@ spec:
             containers:
             - name: app
               image: ghcr.io/kyverno/test-images/cosign:unsigned
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: audit-missing-image
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-images/cosign:missing-audit-test
   - name: enforce-signatures
     try:
     - patch:
@@ -37,6 +47,7 @@ spec:
             name: verify-cosign-keyless
           spec:
             validationActions: [Deny]
+            failurePolicy: Fail
     - create:
         resource:
           apiVersion: v1

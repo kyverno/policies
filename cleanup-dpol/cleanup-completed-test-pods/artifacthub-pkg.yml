@@ -10,6 +10,7 @@ description: >-
   using the accompanying RBAC.
 install: |-
   ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-completed-test-pods/rbac.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-completed-test-pods/cleanup-completed-test-pods.yaml
   ```
 keywords:

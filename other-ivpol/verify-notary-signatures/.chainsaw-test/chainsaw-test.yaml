@@ -16,6 +16,7 @@ spec:
             name: verify-notary-signatures
           spec:
             validationActions: [Deny]
+            failurePolicy: Fail
     - assert:
         resource:
           apiVersion: policies.kyverno.io/v1

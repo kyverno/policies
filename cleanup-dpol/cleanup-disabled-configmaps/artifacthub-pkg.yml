@@ -11,6 +11,7 @@ description: >-
   Grant the cleanup controller ConfigMap permissions using the accompanying RBAC.
 install: |-
   ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-disabled-configmaps/rbac.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/cleanup-dpol/cleanup-disabled-configmaps/cleanup-disabled-configmaps.yaml
   ```
 keywords:
