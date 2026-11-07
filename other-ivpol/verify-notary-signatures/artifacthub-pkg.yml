@@ -1,0 +1,32 @@
+name: verify-notary-signatures
+version: 1.0.0
+displayName: Verify Notary Signatures
+createdAt: "2026-11-03T00:00:00Z"
+description: >-
+  Verify Notary image signatures using an embedded X.509 trust certificate
+  and pin matching container images to digests. The certificate is a public
+  upstream test fixture, not a production trust root. Replace the certificate
+  and image glob before use. Audit mode reports failures without blocking workloads.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-ivpol/verify-notary-signatures/verify-notary-signatures.yaml
+  ```
+keywords:
+- kyverno
+- Software Supply Chain Security
+readme: |
+  Verify Notary image signatures using an embedded X.509 trust certificate
+  and pin matching container images to digests. The certificate is a public
+  upstream test fixture, not a production trust root. Replace the certificate
+  and image glob before use. Audit mode reports failures without blocking workloads.
+
+  Requires Kyverno 1.20 (main). Tests access public GHCR images over the network.
+  The sample certificate expires in May 2033. Chainsaw tests switch to Deny,
+  check digest mutation, and reject an unsigned image from the same repository.
+  Verification applies only to images selected by the glob.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: Software Supply Chain Security
+  kyverno/subject: Pod
+digest: d6580474ef83f9a7bb6a2af5fcc5645b9240383f0042af0a95df6f895b65b9e4

@@ -1,0 +1,63 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-slsa-build-type
+  annotations:
+    policies.kyverno.io/title: Verify SLSA Build Type
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.20.0
+    policies.kyverno.io/description: >-
+      Verify a signed SLSA v1 provenance attestation using Cosign keyless
+      verification, then require the attested build type to be GitHub Actions.
+      A valid signature alone is not sufficient. Replace the sample repository,
+      signer identity, and build type to match your supply chain. Audit mode
+      reports failures without blocking workloads.
+spec:
+  validationActions: [Audit]
+  failurePolicy: Fail
+  webhookConfiguration:
+    timeoutSeconds: 30
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  matchImageReferences:
+  - glob: ghcr.io/kyverno/test-images/cosign:*
+  validationConfigurations:
+    mutateDigest: true
+    verifyDigest: false
+    required: true
+  attestors:
+  - name: github
+    cosign:
+      keyless:
+        identities:
+        - issuer: https://token.actions.githubusercontent.com
+          subject: https://github.com/kyverno/test-images/.github/workflows/cosign.yml@refs/heads/main
+      ctlog:
+        url: https://rekor.sigstore.dev
+  attestations:
+  - name: provenance
+    intoto:
+      type: https://slsa.dev/provenance/v1
+  variables:
+  - name: allImages
+    expression: >-
+      images.?containers.orValue([]) + images.?initContainers.orValue([]) +
+      images.?ephemeralContainers.orValue([])
+  validations:
+  - expression: >-
+      variables.allImages.map(image,
+        verifyAttestationSignatures(image, attestations.provenance, [attestors.github])
+      ).all(count, count > 0)
+    message: A signed SLSA v1 provenance attestation is required.
+  - expression: >-
+      variables.allImages.map(image,
+        extractPayload(image, attestations.provenance).predicate.buildDefinition.buildType ==
+        'https://actions.github.io/buildtypes/workflow/v1'
+      ).all(valid, valid)
+    message: The attested build type must be GitHub Actions.

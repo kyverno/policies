@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tenant-config
+  labels:
+    platform.example.com/managed: "true"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: unmanaged-config
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: platform-system
+  labels:
+    platform.example.com/managed: "true"

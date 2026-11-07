@@ -1,0 +1,32 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-completed-test-pods
+policies:
+- ../cleanup-completed-test-pods.yaml
+resources:
+- resources.yaml
+results:
+- isDeletingPolicy: true
+  kind: Pod
+  policy: cleanup-completed-test-pods
+  resources:
+  - cleanup-test/running
+  - cleanup-test/owned
+  - cleanup-test/no-status
+  - production/completed
+  result: fail
+- isDeletingPolicy: true
+  kind: Pod
+  policy: cleanup-completed-test-pods
+  resources:
+  - cleanup-test/completed
+  - cleanup-test/failed
+  result: pass
+- isDeletingPolicy: true
+  kind: Pod
+  policy: cleanup-completed-test-pods
+  resources:
+  - cleanup-test/not-opted-in
+  result: skip
+variables: values.yaml

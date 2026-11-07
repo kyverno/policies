@@ -1,0 +1,100 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-disabled-configmaps
+spec:
+  steps:
+  - name: create-settings-and-candidates
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: cleanup-enabled
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: cleanup-disabled
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: cleanup-missing
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: cleanup-settings
+            namespace: cleanup-disabled
+          data:
+            enabled: "false"
+    - apply:
+        file: ../.kyverno-test/resources.yaml
+    - apply:
+        file: ../rbac.yaml
+    - apply:
+        file: ../cleanup-disabled-configmaps.yaml
+  - name: delete-only-when-switch-is-enabled
+    try:
+    - error:
+        timeout: 2m
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: temporary
+            namespace: cleanup-enabled
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: temporary
+            namespace: cleanup-disabled
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: cleanup-settings
+            namespace: cleanup-enabled
+          data:
+            enabled: "true"
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: permanent
+            namespace: cleanup-enabled
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: temporary
+            namespace: cleanup-missing
+  - name: enable-switch-and-delete-on-next-schedule
+    try:
+    - patch:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: cleanup-settings
+            namespace: cleanup-disabled
+          data:
+            enabled: "true"
+    - error:
+        timeout: 2m
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: temporary
+            namespace: cleanup-disabled

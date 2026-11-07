@@ -1,0 +1,62 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-notary-signatures
+spec:
+  steps:
+  - name: install-and-enforce-policy
+    try:
+    - apply:
+        file: ../verify-notary-signatures.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ImageValidatingPolicy
+          metadata:
+            name: verify-notary-signatures
+          spec:
+            validationActions: [Deny]
+    - assert:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ImageValidatingPolicy
+          metadata:
+            name: verify-notary-signatures
+          status:
+            conditionStatus:
+              ready: true
+  - name: accept-signed-image-and-pin-digest
+    try:
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: notary-signed
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-verify-image:signed
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: notary-signed
+          spec:
+            (starts_with(containers[0].image, 'ghcr.io/kyverno/test-verify-image:signed@sha256:')): true
+  - name: reject-unsigned-image
+    try:
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: notary-unsigned
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-verify-image:unsigned
+        expect:
+        - check:
+            (contains($error, 'Images must have a valid Notary signature from the trusted certificate.')): true

@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: network-policy-targets
+  namespace: platform-system
+data:
+  namespaces: " tenant-a, tenant-b, ,"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: network-policy-targets
+  namespace: untrusted
+data:
+  namespaces: tenant-a
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: missing-targets
+  namespace: platform-system

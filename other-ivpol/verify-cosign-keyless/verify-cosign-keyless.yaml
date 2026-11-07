@@ -1,0 +1,51 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-cosign-keyless
+  annotations:
+    policies.kyverno.io/title: Verify Cosign Keyless Signatures
+    policies.kyverno.io/category: Software Supply Chain Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.20.0
+    policies.kyverno.io/description: >-
+      Verify Cosign keyless signatures against an exact GitHub Actions identity
+      and OIDC issuer, including transparency log verification. Matching container
+      images are pinned to digests. This sample trusts the Kyverno test-images
+      workflow; replace the image glob and identity with your own before use.
+      Audit mode reports failures without blocking workloads.
+spec:
+  validationActions: [Audit]
+  failurePolicy: Fail
+  webhookConfiguration:
+    timeoutSeconds: 30
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods"]
+  matchImageReferences:
+  - glob: ghcr.io/kyverno/test-images/cosign:*
+  validationConfigurations:
+    mutateDigest: true
+    verifyDigest: false
+    required: true
+  attestors:
+  - name: github
+    cosign:
+      keyless:
+        identities:
+        - issuer: https://token.actions.githubusercontent.com
+          subject: https://github.com/kyverno/test-images/.github/workflows/cosign.yml@refs/heads/main
+      ctlog:
+        url: https://rekor.sigstore.dev
+  variables:
+  - name: allImages
+    expression: >-
+      images.?containers.orValue([]) + images.?initContainers.orValue([]) +
+      images.?ephemeralContainers.orValue([])
+  validations:
+  - expression: >-
+      variables.allImages.map(image, verifyImageSignatures(image, [attestors.github])).all(count, count > 0)
+    message: Images must be signed by the trusted GitHub Actions workflow.
