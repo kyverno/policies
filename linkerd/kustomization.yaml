@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./add-linkerd-mesh-injection/add-linkerd-mesh-injection.yaml
+  - ./add-linkerd-policy-annotation/add-linkerd-policy-annotation.yaml
+  - ./check-linkerd-authorizationpolicy/check-linkerd-authorizationpolicy.yaml
+  - ./prevent-linkerd-pod-injection-override/prevent-linkerd-pod-injection-override.yaml
+  - ./prevent-linkerd-port-skipping/prevent-linkerd-port-skipping.yaml
+  - ./require-linkerd-mesh-injection/require-linkerd-mesh-injection.yaml
+  - ./require-linkerd-server/require-linkerd-server.yaml

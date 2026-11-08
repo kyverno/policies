@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./enable-kubecost-continuous-rightsizing/enable-kubecost-continuous-rightsizing.yaml
+  - ./kubecost-proactive-cost-control/kubecost-proactive-cost-control.yaml
+  - ./require-kubecost-labels/require-kubecost-labels.yaml

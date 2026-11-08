@@ -1,0 +1,9 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ./k10-data-protection-by-label/k10-data-protection-by-label.yaml
+  - ./k10-hourly-rpo/k10-hourly-rpo.yaml
+  - ./k10-validate-ns-by-preset-label/k10-validate-ns-by-preset-label.yaml
