@@ -15,17 +15,17 @@ metadata:
       with additional upstream security checks. This policy validates that any new Services
       do not use the `NodePort` type.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: validate-nodeport
-    match:
-      any:
-      - resources:
-          kinds:
-          - Service
-    validate:
-      message: "Services of type NodePort are not allowed."
-      pattern:
-        spec:
-          =(type): "!NodePort"
+    - name: validate-nodeport
+      match:
+        any:
+          - resources:
+              kinds:
+                - Service
+      validate:
+        failureAction: Audit
+        message: "Services of type NodePort are not allowed."
+        pattern:
+          spec:
+            =(type): "!NodePort"

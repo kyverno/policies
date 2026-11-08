@@ -16,22 +16,22 @@ metadata:
       unintended running states or Pods which may not come online. This policy restricts the runtimeClass
       field to the values `prodclass` or `expclass`.
 spec:
-  validationFailureAction: Enforce
   background: false
   rules:
-  - name: prodclass-or-expclass
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    preconditions:
-      all:
-      - key: "{{request.operation || 'BACKGROUND'}}"
-        operator: Equals
-        value: CREATE
-    validate:
-      message: Only the runtime classes prodclass or expclass may be used.
-      pattern:
-        =(spec):
-          =(runtimeClassName): "prodclass | expclass"
+    - name: prodclass-or-expclass
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      preconditions:
+        all:
+          - key: "{{request.operation || 'BACKGROUND'}}"
+            operator: Equals
+            value: CREATE
+      validate:
+        failureAction: Enforce
+        message: Only the runtime classes prodclass or expclass may be used.
+        pattern:
+          =(spec):
+            =(runtimeClassName): "prodclass | expclass"

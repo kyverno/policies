@@ -14,20 +14,20 @@ metadata:
       See: https://github.com/kyverno/kyverno/issues/1367. This policy validates
       that the `externalIPs` field is not set on a Service.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: check-ips
-    match:
-      any:
-      - resources:
-          kinds:
-          - Service
-    validate:
-      message: "externalIPs are not allowed."
-      pattern:
-        spec:
-          # restrict external IP addresses
-          # you can alternatively restrict to a known set of addresses using:
-          #     =(externalIPs): ["37.10.11.53", "153.10.20.1"]
-          X(externalIPs): "null"
+    - name: check-ips
+      match:
+        any:
+          - resources:
+              kinds:
+                - Service
+      validate:
+        failureAction: Audit
+        message: "externalIPs are not allowed."
+        pattern:
+          spec:
+            # restrict external IP addresses
+            # you can alternatively restrict to a known set of addresses using:
+            #     =(externalIPs): ["37.10.11.53", "153.10.20.1"]
+            X(externalIPs): "null"

@@ -6,36 +6,74 @@ metadata:
   name: disallow-latest-tag
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-latest-tag.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-latest-tag
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-latest-fail-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-latest-success-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-no-tag.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-latest-tag.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-latest-tag
+              spec:
+                rules:
+                  - name: require-image-tag
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "An image tag is required."
+                      foreach:
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "*:*"
+                        - list: "request.object.spec.initContainers"
+                          pattern:
+                            image: "*:*"
+                        - list: "request.object.spec.ephemeralContainers"
+                          pattern:
+                            image: "*:*"
+                  - name: validate-image-tag
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Using a mutable image tag e.g. 'latest' is not allowed."
+                      foreach:
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "!*:latest"
+                        - list: "request.object.spec.initContainers"
+                          pattern:
+                            image: "!*:latest"
+                        - list: "request.object.spec.ephemeralContainers"
+                          pattern:
+                            image: "!*:latest"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-latest-fail-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-latest-success-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-no-tag.yaml
