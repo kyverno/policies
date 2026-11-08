@@ -5,6 +5,7 @@ metadata:
   labels:
     app: myapp
 spec:
+  terminationGracePeriodSeconds: 0
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox
@@ -22,6 +23,7 @@ metadata:
   labels:
     app: myapp
 spec:
+  terminationGracePeriodSeconds: 0
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox
