@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  resources:
+    # The policy lists Services with resource.List("v1", "services", "").
+    # The CLI fake context provider buckets resources by namespace, so these
+    # context Services must not set metadata.namespace or resource.List("")
+    # will not see them.
+    - apiVersion: v1
+      kind: Service
+      metadata:
+        name: existing-svc
+        annotations:
+          external-dns.alpha.kubernetes.io/hostname: test.external-dns-test.my-org.com
+      spec:
+        type: ClusterIP
+        ports:
+          - port: 80
+            targetPort: 80
+        selector:
+          app: test

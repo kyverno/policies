@@ -1,0 +1,38 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: unique-external-dns
+policies:
+  - ../require-unique-external-dns.yaml
+resources:
+  - resource.yaml
+context: context.yaml
+# Self-exclusion (same Namespace and name) is covered by the Chainsaw test.
+# The CLI assigns namespaced resources to "default", while the fake context
+# provider stores namespaceless resources under ""; a self-update cannot be
+# represented faithfully in this CLI fixture.
+results:
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - bad-svc
+    result: fail
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - good-svc
+    result: pass
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - no-annotation-svc
+    result: pass
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - empty-annotation-svc
+    result: pass

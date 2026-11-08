@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: unique-external-dns
+  annotations:
+    policies.kyverno.io/title: Require Unique External DNS Services
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Service
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      ExternalDNS, part of Kubernetes SIGs, triggers the creation of external DNS records in supported
+      providers when the annotation `external-dns.alpha.kubernetes.io/hostname` is present. Like with
+      internal DNS, duplicates must be avoided. This policy requires every such Service have a cluster-unique
+      hostname present in the value of the annotation.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["services"]
+  variables:
+    - name: hostname
+      expression: >-
+        object.metadata.?annotations[?'external-dns.alpha.kubernetes.io/hostname'].orValue('')
+    - name: conflictingServices
+      expression: >-
+        dyn(resource.List("v1", "services", "").items).filter(s,
+          (dyn(s).metadata.?namespace.orValue('') != object.metadata.?namespace.orValue('') ||
+           dyn(s).metadata.name != object.metadata.name) &&
+          dyn(s).metadata.?annotations[?'external-dns.alpha.kubernetes.io/hostname'].orValue('') == variables.hostname
+        )
+  validations:
+    - expression: >-
+        variables.hostname == '' || variables.conflictingServices.size() == 0
+      messageExpression: >-
+        'External DNS entry "' + variables.hostname + '" is already taken by another service in the cluster.'
