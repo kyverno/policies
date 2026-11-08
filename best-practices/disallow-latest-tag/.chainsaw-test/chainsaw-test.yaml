@@ -26,11 +26,17 @@ spec:
                               - Pod
                     validate:
                       failureAction: Enforce
-                      message: "Container images must have a tag specified"
-                      pattern:
-                        spec:
-                          containers:
-                            - image: "!*:latest"
+                      message: "An image tag is required."
+                      foreach:
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "*:*"
+                        - list: "request.object.spec.initContainers"
+                          pattern:
+                            image: "*:*"
+                        - list: "request.object.spec.ephemeralContainers"
+                          pattern:
+                            image: "*:*"
                   - name: validate-image-tag
                     match:
                       any:
@@ -39,11 +45,17 @@ spec:
                               - Pod
                     validate:
                       failureAction: Enforce
-                      message: "Images must have a specific tag"
-                      pattern:
-                        spec:
-                          containers:
-                            - image: "!*:latest"
+                      message: "Using a mutable image tag e.g. 'latest' is not allowed."
+                      foreach:
+                        - list: "request.object.spec.containers"
+                          pattern:
+                            image: "!*:latest"
+                        - list: "request.object.spec.initContainers"
+                          pattern:
+                            image: "!*:latest"
+                        - list: "request.object.spec.ephemeralContainers"
+                          pattern:
+                            image: "!*:latest"
         - assert:
             file: policy-ready.yaml
     - name: step-02

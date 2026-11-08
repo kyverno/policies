@@ -24,10 +24,15 @@ spec:
                         - resources:
                             kinds:
                               - Pod
+                    preconditions:
+                      all:
+                        - key: "{{ request.operation || 'BACKGROUND' }}"
+                          operator: NotEquals
+                          value: DELETE
                     validate:
                       failureAction: Enforce
                       message: >-
-                        Containers must drop `ALL` capabillities.
+                        Containers must drop `ALL` capabilities.
                       foreach:
                         - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
                           deny:

@@ -31,7 +31,10 @@ spec:
                         - list: "request.object.spec.containers"
                           pattern:
                             image: "!*tiller*"
-                        - list: "request.object.spec.containers"
+                        - list: "request.object.spec.initContainers"
+                          pattern:
+                            image: "!*tiller*"
+                        - list: "request.object.spec.ephemeralContainers"
                           pattern:
                             image: "!*tiller*"
         - assert:

@@ -24,9 +24,14 @@ spec:
                         - resources:
                             kinds:
                               - Pod
+                    preconditions:
+                      all:
+                        - key: "{{request.operation || 'BACKGROUND'}}"
+                          operator: Equals
+                          value: CREATE
                     validate:
                       failureAction: Enforce
-                      message: "Only the runtime classes prodclass or expclass may be used. "
+                      message: "Only the runtime classes prodclass or expclass may be used."
                       pattern:
                         =(spec):
                           =(runtimeClassName): "prodclass | expclass"
