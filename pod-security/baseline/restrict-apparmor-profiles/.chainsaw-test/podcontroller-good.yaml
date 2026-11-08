@@ -146,3 +146,83 @@ spec:
           containers:
           - name: container01
             image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment-native-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      securityContext:
+        appArmorProfile:
+          type: RuntimeDefault
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gooddeployment-native-container
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: container01
+        image: ghcr.io/kyverno/test-busybox:1.35
+        securityContext:
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: foo
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob-native-pod
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          securityContext:
+            appArmorProfile:
+              type: RuntimeDefault
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: goodcronjob-native-container
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: container01
+            image: ghcr.io/kyverno/test-busybox:1.35
+            securityContext:
+              appArmorProfile:
+                type: Localhost
+                localhostProfile: foo
