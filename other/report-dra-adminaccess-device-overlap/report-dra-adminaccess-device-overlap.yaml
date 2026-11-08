@@ -1,0 +1,76 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: report-dra-adminaccess-device-overlap
+  annotations:
+    policies.kyverno.io/title: Report DRA AdminAccess Device Overlap
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.18.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.37"
+    policies.kyverno.io/subject: ResourceClaim
+    policies.kyverno.io/description: >-
+      DRA's adminAccess intentionally ignores ordinary claims' exclusivity when allocating a
+      device -- working as designed, not a bug (see kubernetes/kubernetes#141293). That means two
+      ResourceClaims from completely unrelated namespaces can end up allocated to the exact same
+      physical device at the same time, and nothing today surfaces that it happened. This policy
+      runs in background mode and periodically correlates every ResourceClaim's allocated devices
+      against every other claim's: whenever an adminAccess-allocated device (driver/pool/device)
+      also appears in a different claim's allocation without adminAccess, it reports the claim.
+      It intentionally never blocks anything -- adminAccess device sharing is expected behavior;
+      the point is giving cluster operators a standing signal for when it is actually happening,
+      the same way PolicyReport-based access reviews already track other security-relevant
+      conditions.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: flag-adminaccess-device-overlap
+    match:
+      any:
+      - resources:
+          kinds:
+            - ResourceClaim
+    context:
+    - name: myAdminDeviceKeys
+      variable:
+        jmesPath: >-
+          request.object.status.allocation.devices.results[?adminAccess ==
+          `true`].join('/', [driver, pool, device])
+        default: []
+    - name: otherClaims
+      apiCall:
+        urlPath: "/apis/resource.k8s.io/v1/resourceclaims"
+        jmesPath: >-
+          items[?metadata.uid != '{{ request.object.metadata.uid }}' &&
+          status.allocation.devices.results[?adminAccess != `true`]][]
+    - name: otherDeviceKeys
+      variable:
+        jmesPath: >-
+          otherClaims[].status.allocation.devices.results[?adminAccess !=
+          `true`].join('/', [driver, pool, device])[]
+        default: []
+    - name: overlapKeys
+      variable:
+        jmesPath: "myAdminDeviceKeys[?contains(`{{ otherDeviceKeys }}`, @)]"
+        default: []
+    preconditions:
+      all:
+      - key: "{{ myAdminDeviceKeys | length(@) }}"
+        operator: GreaterThan
+        value: 0
+    validate:
+      message: >-
+        This ResourceClaim has at least one adminAccess-allocated device also currently
+        allocated, without adminAccess, to a different ResourceClaim: {{ overlapKeys }}.
+        adminAccess intentionally bypasses ordinary device exclusivity (see
+        kubernetes/kubernetes#141293) -- this is expected, working-as-designed behavior, not
+        something to block. This report exists purely for operator visibility into when device
+        sharing is actually happening.
+      deny:
+        conditions:
+          any:
+          - key: "{{ overlapKeys | length(@) }}"
+            operator: GreaterThan
+            value: 0
