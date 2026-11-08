@@ -1,0 +1,29 @@
+## Test Resources for require-workload-serviceaccount-irsa
+
+---
+# PASS: ServiceAccount with aws-access label AND correct IRSA annotation
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-with-irsa
+  namespace: default
+  labels:
+    aws-access: "true"
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/my-app-role
+---
+# FAIL: ServiceAccount with aws-access label but NO IRSA annotation
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-without-irsa
+  namespace: default
+  labels:
+    aws-access: "true"
+---
+# PASS: ServiceAccount without aws-access label — not subject to this policy
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: app-no-aws
+  namespace: default
