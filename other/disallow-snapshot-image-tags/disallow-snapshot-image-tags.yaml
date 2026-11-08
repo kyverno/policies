@@ -1,0 +1,61 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: disallow-snapshot-image-tags
+  annotations:
+    policies.kyverno.io/title: Disallow Snapshot Image Tags
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.19.1
+    policies.kyverno.io/minversion: 1.10.0
+    kyverno.io/kubernetes-version: "1.30-1.33"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Build systems commonly publish unstable, pre-release images under tags that contain
+      the word "snapshot" (for example `1.4.0-SNAPSHOT` or `snapshot-20260101`). Such tags are
+      mutable and are routinely overwritten, so a workload that references one can silently
+      change from one restart to the next. This policy reports any Pod whose containers,
+      init containers, or ephemeral containers reference an image whose tag segment contains
+      "snapshot" in any letter case. Only the tag segment is inspected: a registry or repository
+      path that contains the word "snapshot" is not flagged. An image reference that carries
+      both a snapshot tag and a digest (`repo:1.0-SNAPSHOT@sha256:...`) is still flagged, because
+      the tag still signals an unstable build even though the digest pins the bytes. Images
+      with no tag, or with a digest only, are not flagged by this policy; see the
+      `disallow-latest-tag` policy for tag presence and the `require-image-checksum` policy for
+      digest pinning.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+  - name: disallow-snapshot-image-tags
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: >-
+        One or more container images use a snapshot tag (a tag containing "snapshot").
+        Snapshot tags identify unstable, mutable builds and are not allowed; use a release tag.
+      foreach:
+      - list: request.object.spec.containers
+        deny:
+          conditions:
+            all:
+            - key: "{{ regex_match('(?i):[^/:]*snapshot[^/:]*$', split(element.image, '@')[0]) }}"
+              operator: Equals
+              value: true
+      - list: request.object.spec.initContainers
+        deny:
+          conditions:
+            all:
+            - key: "{{ regex_match('(?i):[^/:]*snapshot[^/:]*$', split(element.image, '@')[0]) }}"
+              operator: Equals
+              value: true
+      - list: request.object.spec.ephemeralContainers
+        deny:
+          conditions:
+            all:
+            - key: "{{ regex_match('(?i):[^/:]*snapshot[^/:]*$', split(element.image, '@')[0]) }}"
+              operator: Equals
+              value: true

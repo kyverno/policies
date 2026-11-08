@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-bad-snapshot-tag
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0-SNAPSHOT

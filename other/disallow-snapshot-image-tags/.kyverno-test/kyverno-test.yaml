@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-snapshot-image-tags
+policies:
+- ../disallow-snapshot-image-tags.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  policy: disallow-snapshot-image-tags
+  rule: disallow-snapshot-image-tags
+  resources:
+  - pod-release-tag
+  - pod-digest-only
+  - pod-snapshot-in-path-clean-tag
+  - pod-no-tag
+  result: pass
+- kind: Pod
+  policy: disallow-snapshot-image-tags
+  rule: disallow-snapshot-image-tags
+  resources:
+  - pod-snapshot-tag
+  - pod-snapshot-tag-lowercase
+  - pod-snapshot-tag-with-digest
+  - pod-snapshot-init-container
+  - pod-snapshot-ephemeral-container
+  result: fail
+- kind: Deployment
+  policy: disallow-snapshot-image-tags
+  rule: disallow-snapshot-image-tags
+  resources:
+  - deployment-release-tag
+  result: pass
+- kind: Deployment
+  policy: disallow-snapshot-image-tags
+  rule: disallow-snapshot-image-tags
+  resources:
+  - deployment-snapshot-tag
+  result: fail
+- kind: CronJob
+  policy: disallow-snapshot-image-tags
+  rule: disallow-snapshot-image-tags
+  resources:
+  - cronjob-snapshot-tag
+  result: fail

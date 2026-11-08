@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-good-release-tag
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.27.0
+  initContainers:
+  - name: init
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-good-snapshot-in-path
+spec:
+  containers:
+  - name: app
+    image: registry.example.com/snapshot-tools/app:1.2.3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-good-digest-only
+spec:
+  containers:
+  - name: app
+    image: registry.example.com/team/app@sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
