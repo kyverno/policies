@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bad-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: test.external-dns-test.my-org.com
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: good-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: goodsvc.external-dns-test.my-org.com
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: no-annotation-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: empty-annotation-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: ""
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+# foo.wild.example.com does NOT match *.wild.example.com (exact match only).
+apiVersion: v1
+kind: Service
+metadata:
+  name: wildcard-pass-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: foo.wild.example.com
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+# Exact duplicate of *.wild.example.com -> denied.
+apiVersion: v1
+kind: Service
+metadata:
+  name: wildcard-fail-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: "*.wild.example.com"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
+---
+# Duplicate empty "" values are allowed (behavior change from legacy AnyIn).
+apiVersion: v1
+kind: Service
+metadata:
+  name: empty-duplicate-svc
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: ""
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: test
