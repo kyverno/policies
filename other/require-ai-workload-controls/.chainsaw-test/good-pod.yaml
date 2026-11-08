@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-ai-workload
+  labels:
+    ai.workload/type: model-serving
+  annotations:
+    ai.workload/audit-logging: enabled
+spec:
+  containers:
+  - name: inference-server
+    image: pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+    env:
+    - name: OPENAI_API_KEY
+      valueFrom:
+        secretKeyRef:
+          name: ai-credentials
+          key: openai-api-key
+    - name: MODEL_NAME
+      value: gpt-4o
+    - name: MAX_TOKENS
+      value: "2048"
