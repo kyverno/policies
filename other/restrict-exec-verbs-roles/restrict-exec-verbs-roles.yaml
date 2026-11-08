@@ -1,0 +1,47 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-exec-verbs-roles
+  annotations:
+    policies.kyverno.io/title: Restrict Exec Verbs in Roles
+    policies.kyverno.io/category: Security
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Role, ClusterRole, RBAC
+    kyverno.io/kyverno-version: 1.11.0
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.27"
+    policies.kyverno.io/description: >-
+      A Role or ClusterRole granting create or get on pods/exec, pods/attach,
+      or pods/portforward hands out standing interactive access to workloads -
+      equivalent to code execution inside every reachable container. Existing
+      policies block exec requests at admission time (PodExecOptions); this
+      policy prevents the RBAC grant itself from being created, which is the
+      durable control. Interactive access should be granted through an audited
+      break-glass role instead of a standing permission.
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: exec-verbs
+      match:
+        any:
+        - resources:
+            kinds:
+              - Role
+              - ClusterRole
+      validate:
+        message: >-
+          Granting create/get on pods/exec, pods/attach, or pods/portforward
+          in a Role or ClusterRole is not allowed.
+        deny:
+          conditions:
+            any:
+            - key: ["create", "get"]
+              operator: AnyIn
+              value: "{{ request.object.rules[?resources.contains(@,'pods/exec')].verbs[] }}"
+            - key: ["create", "get"]
+              operator: AnyIn
+              value: "{{ request.object.rules[?resources.contains(@,'pods/attach')].verbs[] }}"
+            - key: ["create", "get"]
+              operator: AnyIn
+              value: "{{ request.object.rules[?resources.contains(@,'pods/portforward')].verbs[] }}"
