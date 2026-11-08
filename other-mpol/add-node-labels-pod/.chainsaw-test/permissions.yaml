@@ -18,6 +18,15 @@ rules:
 - apiGroups:
   - ''
   resources:
+  - pods/binding
+  - bindings
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ''
+  resources:
   - pods
   verbs:
   - update
