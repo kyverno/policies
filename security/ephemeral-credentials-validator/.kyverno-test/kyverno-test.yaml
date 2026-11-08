@@ -1,0 +1,85 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: TestCase
+metadata:
+  name: simple-ttl-validator
+policies:
+  - ../simple-policy.yaml
+resources:
+  - ../test-compliant-secret.yaml
+  - ../test-non-compliant-secret.yaml
+  - ../test-partial-compliance-secret.yaml
+results:
+  - policy: simple-ttl-validator
+    rule: require-ttl-annotation
+    resource: test-secret-with-ttl
+    kind: Secret
+    result: pass
+  - policy: simple-ttl-validator
+    rule: require-ttl-annotation
+    resource: test-secret-no-ttl
+    kind: Secret
+    result: fail
+  - policy: simple-ttl-validator
+    rule: require-ttl-annotation
+    resource: test-secret-invalid-ttl
+    kind: Secret
+    result: pass # It has the annotation, even though the format is invalid
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: simple-ttl-validator
+spec:
+  validationFailureAction: Audit
+  background: true
+  rules:
+    - name: require-ttl-annotation
+      match:
+        any:
+        - resources:
+            kinds:
+              - Secret
+      exclude:
+        any:
+        - resources:
+            namespaces:
+              - kube-system
+              - kube-public
+      validate:
+        message: "Secret must have a TTL annotation."
+        pattern:
+          metadata:
+            annotations:
+              "secrets.kubernetes.io/ttl": "?*"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret-with-ttl
+  annotations:
+    secrets.kubernetes.io/ttl: "24h"
+type: Opaque
+data:
+  username: YWRtaW4=  # admin
+  password: cGFzc3dvcmQxMjM=  # password123
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret-no-ttl
+  # No TTL annotation present
+type: Opaque
+data:
+  username: YWRtaW4=  # admin
+  password: cGFzc3dvcmQxMjM=  # password123
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: test-secret-invalid-ttl
+  annotations:
+    secrets.kubernetes.io/ttl: "invalid-format"  # Invalid format, should be a duration
+type: Opaque
+data:
+  username: YWRtaW4=  # admin
+  password: cGFzc3dvcmQxMjM=  # password123 
