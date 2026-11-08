@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: region-config
+  namespace: default
+data:
+  endpoint: https://s3.ap-south-1.amazonaws.com
+  note: keep-me
+  multi: region=ap-south-1;backup=ap-south-1

@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: replace-configmap-region-string
+policies:
+- ../replace-configmap-region-string.yaml
+resources:
+- resource.yaml
+results:
+- kind: ConfigMap
+  patchedResources: patchedResource.yaml
+  policy: replace-configmap-region-string
+  resources:
+  - default/region-config
+  result: pass
+  rule: replace-region-in-configmap-data
