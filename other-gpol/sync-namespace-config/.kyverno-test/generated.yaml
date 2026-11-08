@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: namespace-defaults
+  namespace: tenant-config
+data:
+  log-level: info

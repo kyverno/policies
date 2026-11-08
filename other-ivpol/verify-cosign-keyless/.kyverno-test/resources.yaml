@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:v2-keyless
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:unsigned
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-init
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-images/cosign:v2-keyless
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:v2-keyless
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-init
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-images/cosign:unsigned
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:v2-keyless

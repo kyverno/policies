@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-cosign-keyless
+policies:
+- ../verify-cosign-keyless.yaml
+resources:
+- resources.yaml
+results:
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-cosign-keyless
+  resources:
+  - unsigned
+  - unsigned-init
+  result: fail
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-cosign-keyless
+  resources:
+  - signed
+  - signed-init
+  result: pass

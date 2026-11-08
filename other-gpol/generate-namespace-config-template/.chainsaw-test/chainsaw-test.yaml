@@ -1,0 +1,74 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-namespace-config-template
+spec:
+  steps:
+  - name: create-trigger-before-policy
+    try:
+    - apply:
+        file: ../.kyverno-test/resources.yaml
+    - error:
+        file: ../.kyverno-test/generated.yaml
+  - name: generate-for-existing-namespace
+    try:
+    - apply:
+        file: ../generate-namespace-config-template.yaml
+    - assert:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: GeneratingPolicy
+          metadata:
+            name: generate-namespace-config-template
+          status:
+            conditionStatus:
+              ready: true
+    - assert:
+        file: ../.kyverno-test/generated.yaml
+    - error:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: environment-config
+            namespace: template-unmanaged
+  - name: update-interpolated-value
+    try:
+    - patch:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: template-tenant
+            labels:
+              platform.example.com/environment: production
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: environment-config
+            namespace: template-tenant
+          data:
+            environment: production
+            namespace: template-tenant
+  - name: generate-for-future-namespace
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: template-new
+            labels:
+              platform.example.com/environment: development
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: environment-config
+            namespace: template-new
+          data:
+            environment: development
+            namespace: template-new
