@@ -1,0 +1,66 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: require-ai-agent-action-boundary
+  annotations:
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/title: Require AI Agent Action Boundary
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kubernetes-version: "1.26"
+    kyverno.io/kyverno-version: 1.10.0
+    policies.kyverno.io/description: >-
+      Autonomous AI agent worker pods and LLM microservices execute tool invocations that may mutate
+      cluster or cloud state. This policy enforces zero-trust Gate/Prove ActionBoundary governance by
+      requiring that pods labeled as AI agents (`app.kubernetes.io/component: ai-agent` or `ai-agent: "true"`)
+      configure the mandatory `AAG_PROVE_TOKEN` environment variable and run with unprivileged container contexts.
+spec:
+  validationFailureAction: Enforce
+  background: true
+  rules:
+    - name: require-prove-token
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  app.kubernetes.io/component: ai-agent
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  ai-agent: "true"
+      validate:
+        message: "AI agent containers must configure the AAG_PROVE_TOKEN ActionBoundary environment variable."
+        pattern:
+          spec:
+            containers:
+              - name: "*"
+                env:
+                  - name: AAG_PROVE_TOKEN
+    - name: disallow-privileged-agent
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  app.kubernetes.io/component: ai-agent
+          - resources:
+              kinds:
+                - Pod
+              selector:
+                matchLabels:
+                  ai-agent: "true"
+      validate:
+        message: "AI agent containers must not run in privileged mode."
+        pattern:
+          spec:
+            containers:
+              - name: "*"
+                =(securityContext):
+                  =(privileged): "!true"

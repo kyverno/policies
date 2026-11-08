@@ -1,0 +1,39 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-ai-agent-action-boundary
+policies:
+  - ../require-ai-agent-action-boundary.yaml
+resources:
+  - resource.yaml
+results:
+  - kind: Pod
+    policy: require-ai-agent-action-boundary
+    resources:
+      - secured-agent-worker
+    result: pass
+    rule: require-prove-token
+  - kind: Pod
+    policy: require-ai-agent-action-boundary
+    resources:
+      - secured-agent-worker
+    result: pass
+    rule: disallow-privileged-agent
+  - kind: Pod
+    policy: require-ai-agent-action-boundary
+    resources:
+      - un-gated-agent-worker
+    result: fail
+    rule: require-prove-token
+  - kind: Pod
+    policy: require-ai-agent-action-boundary
+    resources:
+      - un-gated-agent-worker
+    result: fail
+    rule: disallow-privileged-agent
+  - kind: Pod
+    policy: require-ai-agent-action-boundary
+    resources:
+      - standard-web-pod
+    result: skip
+    rule: require-prove-token
