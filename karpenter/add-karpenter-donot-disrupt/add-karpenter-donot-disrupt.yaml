@@ -12,23 +12,23 @@ metadata:
     kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/description: >-
       This policy assists in migrating from Karpenter 0.x to 1.x by adding the
-      karpenter.sh/do-not-disrupt label to pods that have the deprecated
-      karpenter.sh/do-not-evict label set to true. This ensures smooth upgrades and
+      karpenter.sh/do-not-disrupt annotation to pods that have the deprecated
+      karpenter.sh/do-not-evict annotation set to true. This ensures smooth upgrades and
       maintains the intended protection against pod disruption.
 spec:
   rules:
-    - name: add-donot-disrupt-label
+    - name: add-donot-disrupt-annotation
       match:
         resources:
           kinds:
             - Pod
       preconditions:
         all:
-          - key: '{{ request.object.metadata.labels."karpenter.sh/do-not-evict" || '''' }}'
+          - key: '{{ request.object.metadata.annotations."karpenter.sh/do-not-evict" || '''' }}'
             operator: Equals
             value: "true"
       mutate:
         patchStrategicMerge:
           metadata:
-            labels:
+            annotations:
               karpenter.sh/do-not-disrupt: "true"

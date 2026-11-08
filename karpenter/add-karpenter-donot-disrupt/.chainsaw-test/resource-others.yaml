@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: test-pod-1
-  labels:
+  annotations:
     karpenter.sh/do-not-evict: "true"
 spec:
   containers:
@@ -13,7 +13,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: test-pod-2
-  labels:
+  annotations:
     karpenter.sh/do-not-evict: "false"
 spec:
   containers:

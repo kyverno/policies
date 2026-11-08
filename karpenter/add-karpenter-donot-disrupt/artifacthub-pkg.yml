@@ -1,11 +1,11 @@
 name: add-karpenter-donot-disrupt
 version: 1.0.0
-displayName: Add Karpenter Do Not Disrupt Label
+displayName: Add Karpenter Do Not Disrupt
 createdAt: "2024-12-17T00:00:00Z"
 description: |
   This policy assists in migrating from Karpenter 0.x to 1.x by adding the
-  karpenter.sh/do-not-disrupt label to pods that have the deprecated
-  karpenter.sh/do-not-evict label set to true. This ensures smooth upgrades and
+  karpenter.sh/do-not-disrupt annotation to pods that have the deprecated
+  karpenter.sh/do-not-evict annotation set to true. This ensures smooth upgrades and
   maintains the intended protection against pod disruption during Karpenter
   node termination.
 install: |-
@@ -16,19 +16,19 @@ keywords:
   - kyverno
   - karpenter
 readme: |
-  # Add Karpenter Do Not Disrupt Label
+  # Add Karpenter Do Not Disrupt
 
   This policy facilitates the migration from Karpenter 0.x to 1.x by automatically
-  adding the new karpenter.sh/do-not-disrupt label to pods that use the deprecated
-  karpenter.sh/do-not-evict label set to true.
+  adding the new karpenter.sh/do-not-disrupt annotation to pods that use the deprecated
+  karpenter.sh/do-not-evict annotation set to true.
 
-  When a pod is created with the old karpenter.sh/do-not-evict label set to true, this policy
-  automatically adds the new karpenter.sh/do-not-disrupt label to ensure the pod
+  When a pod is created with the old karpenter.sh/do-not-evict annotation set to true, this policy
+  automatically adds the new karpenter.sh/do-not-disrupt annotation to ensure the pod
   remains protected during node termination operations in Karpenter 1.x.
 
-  Reference for this change: https://karpenter.sh/v1.0/upgrading/v1beta1-migration/
+  Reference for this change: https://karpenter.sh/v1.0/upgrading/v1-migration/
 annotations:
   kyverno/category: "Karpenter, EKS Best Practices"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 9e823012a9bf3fa3a0796f66e03791d7a3d7df9d6a111b74c5392d11c2a8807d
+digest: 31dc39420e31c6c56e7858647fa462abb192308d7d3f29b6df81d268c57b5ccb
