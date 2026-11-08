@@ -1,0 +1,22 @@
+name: add-daemonset-tolerations
+version: 1.0.0
+displayName: Add DaemonSet Tolerations
+description: >-
+  DaemonSet Pods are meant to run on every eligible node, but if a DaemonSet's Pod template sets no tolerations at all, it silently fails to schedule on any tainted node — with no error pointing at the missing toleration as the cause. This policy adds a broad `operator: Exists` toleration as a safety net to any DaemonSet whose Pod template declares no tolerations at all. It only fills a true gap — a DaemonSet with any tolerations already set, even a narrow one, is left untouched.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/add-daemonset-tolerations/add-daemonset-tolerations.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+readme: |
+  DaemonSet Pods are meant to run on every eligible node, but if a DaemonSet's Pod template sets no tolerations at all, it silently fails to schedule on any tainted node — with no error pointing at the missing toleration as the cause.
+
+  This gap has been found as a real, recurring issue across multiple widely-used Kubernetes operators — each one hardcodes tolerations on most of its DaemonSets but missed it on one, causing that specific DaemonSet to silently fail to schedule on exactly the tainted nodes it needed to run on. This policy adds a broad `operator: Exists` toleration as a safety net to any DaemonSet with no tolerations at all, without touching DaemonSets that already have any tolerations configured (even a narrow one).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.26"
+  kyverno/subject: "DaemonSet"
