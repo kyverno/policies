@@ -1,0 +1,25 @@
+name: restrict-dra-adminaccess-claims
+version: 1.0.0
+displayName: Restrict DRA AdminAccess Claims via SubjectAccessReview
+description: >-
+  Kubernetes' DRA adminAccess authorization only checks whether the claim's namespace carries the `resource.kubernetes.io/admin-access` label — it never checks the identity of the principal creating the claim, so every authorized claim-creator in a labeled namespace gets this capability, not just a specifically-trusted one. This policy closes that gap by performing a SubjectAccessReview for a dedicated, synthetic permission (`resourceclaims/adminaccess`, verb create) before allowing any ResourceClaim or ResourceClaimTemplate that requests `adminAccess: true` — re-implementing, via policy, the same kind of RBAC-backed check Kubernetes already uses natively for the resourceclaims/binding and resourceclaims/driver subresources.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-dra-adminaccess-claims/restrict-dra-adminaccess-claims.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Dynamic Resource Allocation
+readme: |
+  Kubernetes' DRA adminAccess authorization (`AuthorizedForAdmin` in `pkg/registry/resource/utils.go`) only checks whether the claim's namespace carries the `resource.kubernetes.io/admin-access` label — it never checks the identity of the principal creating the claim, so *every* authorized claim-creator in a labeled namespace gets this capability, not just a specifically-trusted one. See [kubernetes/kubernetes#141293](https://github.com/kubernetes/kubernetes/issues/141293), including the live-verified finding that a completely uninvolved bystander in the same namespace inherits it automatically.
+
+  This policy closes that gap by performing a SubjectAccessReview for a dedicated, synthetic permission (`resourceclaims/adminaccess` / `resourceclaimtemplates/adminaccess`, verb `create`) before allowing any ResourceClaim or ResourceClaimTemplate that requests `adminAccess: true` — re-implementing, via policy, the same kind of RBAC-backed check Kubernetes already uses natively for the `resourceclaims/binding` and `resourceclaims/driver` subresources.
+
+  Grant `resourceclaims/adminaccess` to specific trusted ServiceAccounts (e.g. a monitoring/management workload) via a dedicated ClusterRole and RoleBinding — see `grant-dra-adminaccess-role.yaml` in this folder for an example.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.36"
+  kyverno/subject: "ResourceClaim, ResourceClaimTemplate"

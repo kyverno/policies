@@ -1,0 +1,50 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: restrict-dra-adminaccess-label
+  annotations:
+    policies.kyverno.io/title: Restrict DRA AdminAccess Namespace Label
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.18.2
+    policies.kyverno.io/minversion: 1.6.0
+    kyverno.io/kubernetes-version: "1.36"
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      Kubernetes' Dynamic Resource Allocation (DRA) grants a device access-mode
+      bypass ("adminAccess") to any ResourceClaim or ResourceClaimTemplate created
+      in a namespace labeled resource.kubernetes.io/admin-access=true. That
+      authorization check (AuthorizedForAdmin in pkg/registry/resource/utils.go)
+      only inspects the namespace label -- it never checks the RBAC permissions of
+      whoever sets the label. An ordinary, common self-service permission (edit
+      rights scoped to just one's own Namespace object) is sufficient for a
+      non-admin user to grant this capability to themselves, and to every other
+      claim-creator who shares that namespace -- see
+      kubernetes/kubernetes#141293 for the live-verified finding this policy
+      mitigates. This policy ensures that only trusted principals (cluster-admin by
+      default; adjust the excluded clusterRoles/subjects to match your own
+      environment) may add or change this label on a Namespace.
+spec:
+  validationFailureAction: Audit
+  background: false
+  rules:
+  - name: check-admin-access-label
+    match:
+      any:
+      - resources:
+          kinds:
+            - Namespace
+          selector:
+            matchLabels:
+              resource.kubernetes.io/admin-access: "true"
+    exclude:
+      any:
+      - clusterRoles:
+        - cluster-admin
+    validate:
+      message: >-
+        Only cluster-admins may label a Namespace
+        resource.kubernetes.io/admin-access=true. This label grants every DRA
+        claim-creator in the namespace an "adminAccess" device access-mode bypass,
+        cluster-wide in effect -- see kubernetes/kubernetes#141293.
+      deny: {}

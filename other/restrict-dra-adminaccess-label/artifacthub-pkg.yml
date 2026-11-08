@@ -1,0 +1,25 @@
+name: restrict-dra-adminaccess-label
+version: 1.0.0
+displayName: Restrict DRA AdminAccess Namespace Label
+description: >-
+  Kubernetes' Dynamic Resource Allocation (DRA) grants a device access-mode bypass ("adminAccess") to any ResourceClaim or ResourceClaimTemplate created in a namespace labeled `resource.kubernetes.io/admin-access=true`. That authorization check only inspects the namespace label — it never checks the RBAC permissions of whoever sets the label, so an ordinary, common self-service permission (edit rights scoped to just one's own Namespace object) is sufficient for a non-admin user to grant this capability to themselves and to every other claim-creator who shares that namespace. This policy ensures that only trusted principals (cluster-admin by default) may add or change this label on a Namespace.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other/restrict-dra-adminaccess-label/restrict-dra-adminaccess-label.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - Dynamic Resource Allocation
+readme: |
+  Kubernetes' Dynamic Resource Allocation (DRA) grants a device access-mode bypass ("adminAccess") to any ResourceClaim or ResourceClaimTemplate created in a namespace labeled `resource.kubernetes.io/admin-access=true`.
+
+  That authorization check (`AuthorizedForAdmin` in `pkg/registry/resource/utils.go`) only inspects the namespace label — it never checks the RBAC permissions of whoever sets the label. An ordinary, common self-service permission (edit rights scoped to just one's own Namespace object) is sufficient for a non-admin user to grant this capability to themselves, and to every other claim-creator who shares that namespace — see [kubernetes/kubernetes#141293](https://github.com/kubernetes/kubernetes/issues/141293) for the live-verified finding this policy mitigates.
+
+  This policy ensures that only trusted principals (cluster-admin by default; adjust the excluded clusterRoles/subjects to match your own environment) may add or change this label on a Namespace.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other"
+  kyverno/kubernetesVersion: "1.36"
+  kyverno/subject: "Namespace"
