@@ -24,12 +24,21 @@ spec:
         operations: ["CREATE"]
         resources: ["pods/binding"]
   targetMatchConstraints:
-    expression: resource.Get("v1", "pods", object.metadata.namespace, object.metadata.name)
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+  targetMatchConditions:
+    - name: check-target-pod
+      expression: >-
+        has(request.name) && request.name != "" ? object.metadata.name == request.name : true
   variables:
     - name: nodeName
       expression: >-
-        has(object.target) && has(object.target.name) ? object.target.name :
-        (has(request.object) && has(request.object.target) && has(request.object.target.name) ? request.object.target.name : "")
+        has(request.object) && has(request.object.target) && has(request.object.target.name) ? request.object.target.name :
+        (has(object.spec.nodeName) && object.spec.nodeName != "" ? object.spec.nodeName :
+        (has(object.target) && has(object.target.name) ? object.target.name : ""))
     - name: node
       expression: >-
         variables.nodeName != "" ? resource.Get("v1", "nodes", "", variables.nodeName) : {}

@@ -24,23 +24,18 @@ spec:
   variables:
     - name: caCm
       expression: >-
-        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt") != null ?
-        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt") :
-        resource.Get("v1", "configmaps", "default", "kube-root-ca.crt")
+        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt")
     - name: caCert
       expression: >-
-        variables.caCm != null && has(variables.caCm.data) && has(variables.caCm.data["ca.crt"]) ?
+        size(variables.caCm) > 0 && "data" in variables.caCm && "ca.crt" in variables.caCm.data ?
         string(variables.caCm.data["ca.crt"]) : ""
     - name: versionInfo
       expression: >-
         http.Client(variables.caCert).Get("https://kubernetes.default.svc/version")
-    - name: rawMinor
+    - name: minorVersion
       expression: >-
         has(variables.versionInfo.minor) ? string(variables.versionInfo.minor) :
         (has(variables.versionInfo.body) && has(variables.versionInfo.body.minor) ? string(variables.versionInfo.body.minor) : "")
-    - name: minorVersion
-      expression: >-
-        regex.replace(variables.rawMinor, "[^0-9]", "")
   mutations:
     - patchType: JSONPatch
       jsonPatch:
