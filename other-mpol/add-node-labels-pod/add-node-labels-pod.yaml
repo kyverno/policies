@@ -32,8 +32,17 @@ spec:
   targetMatchConditions:
     - name: check-target-pod
       expression: >-
-        has(request.name) && request.name != "" ? object.metadata.name == request.name : true
+        variables.triggerPod != "" && object.metadata.name == variables.triggerPod &&
+        (variables.triggerNamespace == "" || object.metadata.namespace == variables.triggerNamespace)
   variables:
+    - name: triggerPod
+      expression: >-
+        has(request.name) && request.name != "" ? request.name :
+        (has(request.object) && has(request.object.metadata) && has(request.object.metadata.name) ? request.object.metadata.name : "")
+    - name: triggerNamespace
+      expression: >-
+        has(request.namespace) && request.namespace != "" ? request.namespace :
+        (has(request.object) && has(request.object.metadata) && has(request.object.metadata.namespace) ? request.object.metadata.namespace : "")
     - name: nodeName
       expression: >-
         has(request.object) && has(request.object.target) && has(request.object.target.name) ? request.object.target.name :

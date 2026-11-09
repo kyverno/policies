@@ -13,10 +13,14 @@ keywords:
   - Other
 readme: |
   It is often needed to make decisions for resources based upon the version of the Kubernetes API server in the cluster. This policy serves as an example for how to retrieve the minor version of the Kubernetes API server and subsequently use in a policy behavior. It will mutate a Secret upon its creation with a label called `apiminorversion` the value of which is the minor version of the API server.
+
+  ### Configuration / CA Requirement
+
+  Querying the in-cluster API server endpoint (`https://kubernetes.default.svc/version`) via HTTPS requires the Kyverno controller to trust the cluster root CA. Ensure `SSL_CERT_FILE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt` is configured in the Kyverno admission controller deployment environment (e.g., via Helm `extraEnvVars`), or provide the cluster root CA. The policy sets `failurePolicy: Ignore` so that TLS or connectivity failures do not block Secret creation.
   
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Secret"
-digest: 0b1d34be7ff95070dcb438d964eff4861a3adfb0639bb2c47fb238fa3bd9576b
+digest: 4b7b926bb895ba1189d3957018da9931fbf2db3480743a8ba21a89065074da93
