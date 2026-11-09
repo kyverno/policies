@@ -5,7 +5,7 @@ inputs:
     description: "Kubernetes version"
     required: true
   kyverno-version:
-    description: "Kyverno release tag to install. Leave empty to resolve the latest v1.19.x release."
+    description: "Kyverno version to install. Leave empty for the latest kyverno/kyverno release-1.19 branch build, use `release` for the latest v1.19.x release, or set an explicit release tag (e.g. v1.19.1)."
     required: false
     default: ""
 runs:
@@ -49,6 +49,32 @@ runs:
         # ClusterPolicy resources that are still supported on 1.19.
         VERSION="${{ inputs.kyverno-version }}"
         if [ -z "$VERSION" ]; then
+          # Default: the latest build of kyverno/kyverno's release-1.19 branch, so merged
+          # backports are tested without waiting for a patch release. The floating
+          # `release-1.19` image tag records its source commit in an OCI annotation; pin
+          # the manifest and all images to that commit so they always match.
+          TOKEN=$(curl -fsSL "https://ghcr.io/token?scope=repository:kyverno/kyverno:pull" | jq -r .token)
+          SHA=$(curl -fsSL -H "Authorization: Bearer ${TOKEN}" \
+            -H 'Accept: application/vnd.oci.image.index.v1+json' \
+            https://ghcr.io/v2/kyverno/kyverno/manifests/release-1.19 \
+            | jq -r '.annotations["org.opencontainers.image.source"] // ""' | awk -F/ '{print $NF}')
+          if ! echo "$SHA" | grep -qE '^[0-9a-f]{40}$'; then
+            echo "Unable to resolve the kyverno/kyverno release-1.19 build commit" >&2
+            exit 1
+          fi
+          echo "Installing Kyverno release-1.19 branch build ${SHA}"
+          curl -fsSL "https://raw.githubusercontent.com/kyverno/kyverno/${SHA}/config/install-latest-testing.yaml" \
+            | sed -E "s#image: \"?reg\.kyverno\.io/kyverno/([a-z-]+):latest\"?#image: \"ghcr.io/kyverno/\1:${SHA}\"#" \
+            > /tmp/kyverno-install.yaml
+          if grep -qE 'image: "?reg\.kyverno\.io/kyverno/[a-z-]+:latest' /tmp/kyverno-install.yaml; then
+            echo "Failed to pin all Kyverno images to ${SHA}" >&2
+            exit 1
+          fi
+          grep -E '^\s+image: ' /tmp/kyverno-install.yaml
+          kubectl create -f /tmp/kyverno-install.yaml
+          exit 0
+        fi
+        if [ "$VERSION" = "release" ]; then
           VERSION=$(git ls-remote --tags --refs https://github.com/kyverno/kyverno.git 'v1.19.*' \
             | awk -F/ '{print $NF}' | grep -vE -- '-rc' | sort -V | tail -1)
         fi
