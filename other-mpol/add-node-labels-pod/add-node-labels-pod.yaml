@@ -41,7 +41,8 @@ spec:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
-          variables.fooLabel != "" ?
-            (!has(object.metadata.labels) ? [JSONPatch{op: "add", path: "/metadata/labels", value: {}}] : []) +
+          has(object.metadata.labels) ?
             [JSONPatch{op: "add", path: "/metadata/labels/foo", value: variables.fooLabel}]
-          : []
+          :
+            [JSONPatch{op: "add", path: "/metadata/labels", value: {}},
+             JSONPatch{op: "add", path: "/metadata/labels/foo", value: variables.fooLabel}]

@@ -22,18 +22,33 @@ spec:
         operations: ["CREATE"]
         resources: ["secrets"]
   variables:
+    - name: caCm
+      expression: >-
+        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt") != null ?
+        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt") :
+        resource.Get("v1", "configmaps", "default", "kube-root-ca.crt")
+    - name: caCert
+      expression: >-
+        variables.caCm != null && has(variables.caCm.data) && has(variables.caCm.data["ca.crt"]) ?
+        string(variables.caCm.data["ca.crt"]) : ""
     - name: versionInfo
       expression: >-
-        http.Get("https://kubernetes.default.svc/version")
-    - name: minorVersion
+        http.Client(variables.caCert).Get("https://kubernetes.default.svc/version")
+    - name: rawMinor
       expression: >-
         has(variables.versionInfo.minor) ? string(variables.versionInfo.minor) :
         (has(variables.versionInfo.body) && has(variables.versionInfo.body.minor) ? string(variables.versionInfo.body.minor) : "")
+    - name: minorVersion
+      expression: >-
+        regex.replace(variables.rawMinor, "[^0-9]", "")
   mutations:
     - patchType: JSONPatch
       jsonPatch:
         expression: >-
-          variables.minorVersion != "" ?
-            (!has(object.metadata.labels) ? [JSONPatch{op: "add", path: "/metadata/labels", value: {}}] : []) +
-            [JSONPatch{op: "add", path: "/metadata/labels/apiminorversion", value: variables.minorVersion}]
-          : []
+          variables.minorVersion != "" ? (
+            has(object.metadata.labels) ?
+              [JSONPatch{op: "add", path: "/metadata/labels/apiminorversion", value: variables.minorVersion}]
+            :
+              [JSONPatch{op: "add", path: "/metadata/labels", value: {}},
+               JSONPatch{op: "add", path: "/metadata/labels/apiminorversion", value: variables.minorVersion}]
+          ) : []
