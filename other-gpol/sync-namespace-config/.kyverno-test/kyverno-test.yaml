@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: sync-namespace-config
+policies:
+- ../sync-namespace-config.yaml
+resources:
+- resources.yaml
+context: context.yaml
+results:
+- policy: sync-namespace-config
+  kind: Namespace
+  resources: [tenant-config]
+  result: pass
+  isGeneratingPolicy: true
+  generatedResource: generated.yaml
+- policy: sync-namespace-config
+  kind: Namespace
+  resources: [unmanaged-config, platform-system]
+  result: skip
+  isGeneratingPolicy: true
