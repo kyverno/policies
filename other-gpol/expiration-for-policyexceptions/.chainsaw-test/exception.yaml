@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: test-exception
+  namespace: polex-test-ns
+spec:
+  policyRefs:
+  - name: dummy-policy
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: test
+    expression: "true"

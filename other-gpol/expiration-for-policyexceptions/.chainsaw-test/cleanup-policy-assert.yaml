@@ -1,0 +1,15 @@
+apiVersion: kyverno.io/v2beta1
+kind: ClusterCleanupPolicy
+metadata:
+  labels:
+    kyverno.io/automated: "true"
+spec:
+  match:
+    any:
+    - resources:
+        kinds:
+        - PolicyException
+        names:
+        - test-exception
+        namespaces:
+        - polex-test-ns

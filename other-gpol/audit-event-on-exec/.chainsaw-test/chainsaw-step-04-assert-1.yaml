@@ -1,0 +1,13 @@
+apiVersion: v1
+involvedObject:
+  apiVersion: v1
+  kind: Pod
+  name: execevent-pod
+  namespace: exec-event-ns
+kind: Event
+metadata:
+  namespace: exec-event-ns
+reason: Exec
+source:
+  component: kyverno
+type: Warning

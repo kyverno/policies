@@ -1,0 +1,14 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: sync-secrets-context
+spec:
+  resources:
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: regcred
+      namespace: default
+    type: Opaque
+    data:
+      password: MWYyZDFlMmU2N2Rm

@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: sync-secrets
+policies:
+- ../sync-secrets.yaml
+resources:
+- resources.yaml
+context: context.yaml
+results:
+- policy: sync-secrets
+  kind: Namespace
+  resources: [hello-world-namespace]
+  result: pass
+  isGeneratingPolicy: true
+  generatedResource: generated.yaml
+- policy: sync-secrets
+  kind: Namespace
+  resources: [default]
+  result: skip
+  isGeneratingPolicy: true

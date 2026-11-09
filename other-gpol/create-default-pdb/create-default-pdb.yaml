@@ -19,7 +19,7 @@ spec:
     resourceRules:
       - apiGroups: ["apps"]
         apiVersions: ["v1"]
-        operations: ["CREATE"]
+        operations: ["CREATE", "UPDATE"]
         resources: ["deployments"]
   variables:
     - name: targetNs

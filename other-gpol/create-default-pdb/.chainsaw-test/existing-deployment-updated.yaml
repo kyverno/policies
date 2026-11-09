@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: default-pdb-ns
+  labels:
+    app: pre-existing
+    foo: updated
+  name: deployment02
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pre-existing
+  template:
+    metadata:
+      labels:
+        app: pre-existing
+    spec:
+      containers:
+      - image: ghcr.io/kyverno/test-busybox:1.35
+        name: busybox
+        resources: {}
