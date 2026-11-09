@@ -22,16 +22,9 @@ spec:
         operations: ["CREATE"]
         resources: ["secrets"]
   variables:
-    - name: caCm
-      expression: >-
-        resource.Get("v1", "configmaps", "kube-system", "kube-root-ca.crt")
-    - name: caCert
-      expression: >-
-        size(variables.caCm) > 0 && "data" in variables.caCm && "ca.crt" in variables.caCm.data ?
-        string(variables.caCm.data["ca.crt"]) : ""
     - name: versionInfo
       expression: >-
-        http.Client(variables.caCert).Get("https://kubernetes.default.svc/version")
+        http.Get("https://kubernetes.default.svc/version")
     - name: minorVersion
       expression: >-
         has(variables.versionInfo.minor) ? string(variables.versionInfo.minor) :
