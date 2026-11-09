@@ -3,9 +3,8 @@ version: 1.0.0
 displayName: Label Nodes with Node Selector
 createdAt: "2026-05-15T00:00:00Z"
 description: >-
-  Label Nodes with Node Selector so only well-known labels can be applied during node bootstrapping.
-  This policy reads the `NodeType` label on a Node and writes a corresponding
-  `node-role.kubernetes.io/<NodeType>` label to that Node. The Node resource filter should
+  Label Nodes with Node Selector so the NodeType label is copied to the
+  `eks.amazonaws.com/nodegroup` label. The Node resource filter should
   be removed and users may need to grant the Kyverno ServiceAccount permission to update Nodes.
 install: |-
   ```shell
@@ -15,9 +14,8 @@ keywords:
   - kyverno
   - Other
 readme: |
-  Label Nodes with Node Selector so only well-known labels can be applied during node bootstrapping.
-  This policy reads the `NodeType` label on a Node and writes a corresponding
-  `node-role.kubernetes.io/<NodeType>` label to that Node. The Node resource filter should
+  Label Nodes with Node Selector so the NodeType label is copied to the
+  `eks.amazonaws.com/nodegroup` label. The Node resource filter should
   be removed and users may need to grant the Kyverno ServiceAccount permission to update Nodes.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
@@ -25,4 +23,4 @@ annotations:
   kyverno/category: "Other"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Node, Label"
-digest: ed3161cabec4528727c8e466b94c7242651923c9106d5cba9967eb28e8186617
+digest: 203f23f754b79e3cf90a2b03913ffa4ba4c1167cf844210d54d5fdf1de49faf8
