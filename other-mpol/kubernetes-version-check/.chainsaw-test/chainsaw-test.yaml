@@ -12,6 +12,12 @@ spec:
         file: permissions.yaml
     - script:
         content: |
+          orig=$(kubectl get deployment/kyverno-admission-controller -n kyverno -o jsonpath='{.spec.template.spec.containers[*].env[?(@.name=="SSL_CERT_FILE")].value}')
+          if [ -n "$orig" ]; then
+            kubectl annotate deployment/kyverno-admission-controller -n kyverno test-orig-ssl-cert-file="$orig" --overwrite
+          else
+            kubectl annotate deployment/kyverno-admission-controller -n kyverno test-orig-ssl-cert-file="__UNSET__" --overwrite
+          fi
           kubectl set env deployment/kyverno-admission-controller -n kyverno SSL_CERT_FILE=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           kubectl rollout status deployment/kyverno-admission-controller -n kyverno --timeout=90s
   - name: step-01
@@ -42,7 +48,14 @@ spec:
     finally:
     - script:
         content: |
-          kubectl set env deployment/kyverno-admission-controller -n kyverno SSL_CERT_FILE-
-          kubectl rollout status deployment/kyverno-admission-controller -n kyverno --timeout=90s
+          orig=$(kubectl get deployment/kyverno-admission-controller -n kyverno -o jsonpath='{.metadata.annotations.test-orig-ssl-cert-file}' 2>/dev/null || true)
+          if [ "$orig" = "__UNSET__" ]; then
+            kubectl set env deployment/kyverno-admission-controller -n kyverno SSL_CERT_FILE-
+            kubectl rollout status deployment/kyverno-admission-controller -n kyverno --timeout=90s
+          elif [ -n "$orig" ]; then
+            kubectl set env deployment/kyverno-admission-controller -n kyverno SSL_CERT_FILE="$orig"
+            kubectl rollout status deployment/kyverno-admission-controller -n kyverno --timeout=90s
+          fi
+          kubectl annotate deployment/kyverno-admission-controller -n kyverno test-orig-ssl-cert-file- 2>/dev/null || true
           kubectl delete namespace kubversion-ns --ignore-not-found
           kubectl delete -f permissions.yaml --ignore-not-found
