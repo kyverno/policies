@@ -19,3 +19,45 @@ rules:
   - get
   - list
   - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: cleanup-controller
+    app.kubernetes.io/instance: kyverno
+    app.kubernetes.io/part-of: kyverno
+    rbac.kyverno.io/aggregate-to-cleanup-controller: "true"
+  name: kyverno:cleanup-controller:policyexceptions
+rules:
+- apiGroups:
+  - "kyverno.io"
+  - "policies.kyverno.io"
+  resources:
+  - policyexceptions
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/component: reports-controller
+    app.kubernetes.io/instance: kyverno
+    app.kubernetes.io/part-of: kyverno
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+  name: kyverno:policyexceptions:view
+rules:
+- apiGroups:
+  - "kyverno.io"
+  - "policies.kyverno.io"
+  resources:
+  - policyexceptions
+  verbs:
+  - get
+  - list
+  - watch

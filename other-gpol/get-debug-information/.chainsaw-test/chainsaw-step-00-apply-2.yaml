@@ -15,9 +15,12 @@ kind: ClusterRoleBinding
 metadata:
   name: read-pods-rolebinding
 subjects:
-- kind: Group
-  name: system:serviceaccounts
-  apiGroup: rbac.authorization.k8s.io
+- kind: ServiceAccount
+  name: get-debug-data-sa
+  namespace: default
+- kind: ServiceAccount
+  name: get-debug-data-sa
+  namespace: abc
 roleRef:
   kind: ClusterRole
   name: pod-reader

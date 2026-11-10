@@ -29,7 +29,7 @@ spec:
     - name: no-deleteme-label
       expression: "!('deleteme' in object.metadata.?labels.orValue({}))"
     - name: no-existing-debug-pod
-      expression: "size(resource.List('v1', 'pods', object.metadata.namespace, {'requestpdname': 'pod-' + object.metadata.name}).items) == 0"
+      expression: "size(resource.List('v1', 'pods', object.metadata.namespace).items.filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == 'pod-' + object.metadata.name)) == 0"
   variables:
     - name: targetNs
       expression: "object.metadata.namespace"
@@ -61,7 +61,7 @@ spec:
                 }),
                 "spec": dyn({
                   "restartPolicy": dyn("OnFailure"),
-                  "serviceAccount": dyn("default"),
+                  "serviceAccountName": dyn("get-debug-data-sa"),
                   "containers": dyn([
                     {
                       "name": dyn("my-container"),

@@ -43,7 +43,7 @@ spec:
     - name: user
       expression: "request.userInfo.username"
     - name: commands
-      expression: "string(request.object.command)"
+      expression: "request.object.command.join(' ')"
     - name: message
       expression: "'An exec was performed by ' + variables.user + ' running commands ' + variables.commands"
   generate:
