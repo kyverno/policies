@@ -31,14 +31,18 @@ spec:
     - name: no-deleteme-label
       expression: "!('deleteme' in object.metadata.?labels.orValue({}))"
     - name: no-existing-debug-pod
-      expression: "size(dyn(resource.List('v1', 'pods', object.metadata.namespace).items).filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == 'pod-' + object.metadata.name)) == 0"
+      expression: "size(dyn(resource.List('v1', 'pods', object.metadata.namespace).items).filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == (object.metadata.name.size() > 50 ? 'pod-' + object.metadata.name.substring(0, 45) + '-dbg' : 'pod-' + object.metadata.name))) == 0"
   variables:
     - name: targetNs
       expression: "object.metadata.namespace"
     - name: podName
       expression: "object.metadata.name"
+    - name: podSlug
+      expression: "variables.podName.size() > 40 ? variables.podName.substring(0, 40) : variables.podName"
     - name: jobName
-      expression: "'get-debug-data-' + variables.podName + '-' + random('[0-9a-z]{8}')"
+      expression: "'debug-' + variables.podSlug + '-' + random('[0-9a-z]{8}')"
+    - name: podLabel
+      expression: "variables.podName.size() > 50 ? 'pod-' + variables.podName.substring(0, 45) + '-dbg' : 'pod-' + variables.podName"
   generate:
     - expression: >-
         generator.Apply(variables.targetNs, [
@@ -58,7 +62,7 @@ spec:
                   "labels": dyn({
                     "app": dyn("my-app"),
                     "deleteme": dyn("allow"),
-                    "requestpdname": dyn("pod-" + variables.podName)
+                    "requestpdname": dyn(variables.podLabel)
                   })
                 }),
                 "spec": dyn({

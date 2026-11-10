@@ -34,8 +34,10 @@ spec:
       expression: "object.metadata.namespace"
     - name: exceptionName
       expression: "object.metadata.name"
+    - name: polexUID
+      expression: "object.metadata.?uid.orValue('')"
     - name: cleanupName
-      expression: "'polex-' + variables.targetNs + '-' + variables.exceptionName + '-' + random('[0-9a-z]{8}')"
+      expression: "'polex-' + random('[0-9a-z]{8}')"
     - name: cronSchedule
       expression: "time.toCron(time.now() + duration('4h'))"
   generate:
@@ -64,7 +66,7 @@ spec:
               "conditions": dyn([
                 {
                   "name": "match-target",
-                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "'"
+                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "'" + (variables.polexUID != '' ? " && object.metadata.uid == '" + variables.polexUID + "'" : "")
                 }
               ])
             })
