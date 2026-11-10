@@ -1,0 +1,60 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: appproject-restrict-source-namespaces
+policies:
+- ../appproject-restrict-source-namespaces.yaml
+resources:
+- ../.chainsaw-test/good.yaml
+- ../.chainsaw-test/good-no-source-namespaces.yaml
+- ../.chainsaw-test/bad-exact.yaml
+- ../.chainsaw-test/bad-wildcard.yaml
+- ../.chainsaw-test/bad-glob-prefix.yaml
+- ../.chainsaw-test/bad-glob-single-char.yaml
+- ../.chainsaw-test/bad-glob-class.yaml
+- ../.chainsaw-test/bad-glob-alternatives.yaml
+- ../.chainsaw-test/bad-regex.yaml
+- ../.chainsaw-test/bad-default-project.yaml
+- resources.yaml
+results:
+- kind: AppProject
+  policy: appproject-restrict-source-namespaces
+  resources:
+  - badappproj-exact
+  - badappproj-wildcard
+  - badappproj-glob-prefix
+  - badappproj-glob-single-char
+  - badappproj-glob-class
+  - badappproj-glob-alternatives
+  - badappproj-regex
+  # The default AppProject must not set sourceNamespaces.
+  - default
+  # Entries that Argo CD matches against argocd.
+  - edge-bad-backslash
+  - edge-bad-negated-class
+  - edge-bad-double-star
+  - edge-bad-leading-question
+  - edge-bad-nested-braces
+  - edge-bad-anchored-regex
+  # Argo CD doesn't match this entry against argocd. The policy rejects it
+  # because commas become alternatives in entries with braces.
+  - edge-conservative-comma-with-braces
+  result: fail
+- kind: AppProject
+  policy: appproject-restrict-source-namespaces
+  resources:
+  - goodappproj
+  - goodappproj-no-source-namespaces
+  # Entries that Argo CD doesn't match against argocd.
+  - edge-good-literal-dot
+  - edge-good-negated-class
+  - edge-good-uppercase
+  - edge-good-literal-comma
+  - edge-good-regex-no-match
+  result: pass
+# RE2 can't compile a lookahead, so the policy returns an error.
+- kind: AppProject
+  policy: appproject-restrict-source-namespaces
+  resources:
+  - edge-error-lookahead
+  result: error
