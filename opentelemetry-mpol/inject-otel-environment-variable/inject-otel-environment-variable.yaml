@@ -1,0 +1,70 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: inject-otel-environment-variable
+  annotations:
+    policies.kyverno.io/title: Inject OpenTelemetry Environment Variable
+    policies.kyverno.io/category: OpenTelemetry
+    policies.kyverno.io/subject: Namespace, Pod
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30+"
+    # Mutating controller templates would show as drift in GitOps tools; Pods are mutated at creation instead.
+    pod-policies.kyverno.io/autogen-controllers: none
+    policies.kyverno.io/description: >-
+      Injects the OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers` of new Pods.
+      Injection can be disabled with the `otel.corp.org/inject-env-var: "false"` annotation on the Pod or its Namespace;
+      the Pod annotation takes precedence. The value defaults to `http://opentelemetry-collector.opentelemetry-collector:4317`
+      and can be overridden per Pod or Namespace with the `otel.corp.org/otlp-endpoint` annotation.
+      Containers that already declare `OTEL_EXPORTER_OTLP_ENDPOINT` are left untouched.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods"]
+  variables:
+  - name: inject
+    expression: >-
+      object.metadata.?annotations[?'otel.corp.org/inject-env-var'].orValue(
+        namespaceObject.metadata.?annotations[?'otel.corp.org/inject-env-var'].orValue('true')
+      ) != 'false'
+  - name: envVar
+    expression: >-
+      {
+        "name": "OTEL_EXPORTER_OTLP_ENDPOINT",
+        "value": string(object.metadata.?annotations[?'otel.corp.org/otlp-endpoint'].orValue(
+          namespaceObject.metadata.?annotations[?'otel.corp.org/otlp-endpoint'].orValue(
+            'http://opentelemetry-collector.opentelemetry-collector:4317'
+          )
+        ))
+      }
+  matchConditions:
+  - name: injection-enabled
+    expression: variables.inject
+  mutations:
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: >-
+        object.spec.?initContainers.orValue([])
+          .filter(c, !c.?env.orValue([]).exists(e, e.name == 'OTEL_EXPORTER_OTLP_ENDPOINT'))
+          .map(c, JSONPatch{
+            op: "add",
+            path: "/spec/initContainers/" + string(object.spec.initContainers.indexOf(c)) + (has(c.env) ? "/env/0" : "/env"),
+            value: has(c.env) ? dyn(variables.envVar) : dyn([variables.envVar])
+          })
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: >-
+        object.spec.containers
+          .filter(c, !c.?env.orValue([]).exists(e, e.name == 'OTEL_EXPORTER_OTLP_ENDPOINT'))
+          .map(c, JSONPatch{
+            op: "add",
+            path: "/spec/containers/" + string(object.spec.containers.indexOf(c)) + (has(c.env) ? "/env/0" : "/env"),
+            value: has(c.env) ? dyn(variables.envVar) : dyn([variables.envVar])
+          })
