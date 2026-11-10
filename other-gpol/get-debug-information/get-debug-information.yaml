@@ -29,7 +29,7 @@ spec:
     - name: no-deleteme-label
       expression: "!('deleteme' in object.metadata.?labels.orValue({}))"
     - name: no-existing-debug-pod
-      expression: "size(resource.List('v1', 'pods', object.metadata.namespace).items.filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == 'pod-' + object.metadata.name)) == 0"
+      expression: "size(dyn(resource.List('v1', 'pods', object.metadata.namespace).items).filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == 'pod-' + object.metadata.name)) == 0"
   variables:
     - name: targetNs
       expression: "object.metadata.namespace"
