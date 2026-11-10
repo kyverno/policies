@@ -36,9 +36,7 @@ spec:
         - CREATE
         - UPDATE
     validate:
-      message: >-
-        Liveness probe timeoutSeconds ({{element.livenessProbe.timeoutSeconds || `1`}})
-        must be less than periodSeconds ({{element.livenessProbe.periodSeconds || `10`}}).
+      message: Liveness probe timeoutSeconds must be less than periodSeconds.
       foreach:
       - list: request.object.spec.containers[]
         preconditions:
@@ -52,6 +50,10 @@ spec:
             - key: "{{ element.livenessProbe.timeoutSeconds || `1` }}"
               operator: GreaterThanOrEquals
               value: "{{ element.livenessProbe.periodSeconds || `10` }}"
+              message: >-
+                Container {{ element.name }} has liveness probe timeoutSeconds
+                ({{ element.livenessProbe.timeoutSeconds || `1` }}) greater than or equal to
+                periodSeconds ({{ element.livenessProbe.periodSeconds || `10` }}).
   - name: validate-readiness-probe-timeout
     match:
       any:
@@ -66,9 +68,7 @@ spec:
         - CREATE
         - UPDATE
     validate:
-      message: >-
-        Readiness probe timeoutSeconds ({{element.readinessProbe.timeoutSeconds || `1`}})
-        must be less than periodSeconds ({{element.readinessProbe.periodSeconds || `10`}}).
+      message: Readiness probe timeoutSeconds must be less than periodSeconds.
       foreach:
       - list: request.object.spec.containers[]
         preconditions:
@@ -82,6 +82,10 @@ spec:
             - key: "{{ element.readinessProbe.timeoutSeconds || `1` }}"
               operator: GreaterThanOrEquals
               value: "{{ element.readinessProbe.periodSeconds || `10` }}"
+              message: >-
+                Container {{ element.name }} has readiness probe timeoutSeconds
+                ({{ element.readinessProbe.timeoutSeconds || `1` }}) greater than or equal to
+                periodSeconds ({{ element.readinessProbe.periodSeconds || `10` }}).
   - name: validate-startup-probe-timeout
     match:
       any:
@@ -96,9 +100,7 @@ spec:
         - CREATE
         - UPDATE
     validate:
-      message: >-
-        Startup probe timeoutSeconds ({{element.startupProbe.timeoutSeconds || `1`}})
-        must be less than periodSeconds ({{element.startupProbe.periodSeconds || `10`}}).
+      message: Startup probe timeoutSeconds must be less than periodSeconds.
       foreach:
       - list: request.object.spec.containers[]
         preconditions:
@@ -112,3 +114,7 @@ spec:
             - key: "{{ element.startupProbe.timeoutSeconds || `1` }}"
               operator: GreaterThanOrEquals
               value: "{{ element.startupProbe.periodSeconds || `10` }}"
+              message: >-
+                Container {{ element.name }} has startup probe timeoutSeconds
+                ({{ element.startupProbe.timeoutSeconds || `1` }}) greater than or equal to
+                periodSeconds ({{ element.startupProbe.periodSeconds || `10` }}).
