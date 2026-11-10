@@ -14,7 +14,7 @@ metadata:
       temporary basis, there must be a way to remove the PolicyException once the
       expiration time has been reached. After the exception is removed, the rule(s)
       for which the exception is granted go back into full effect. This policy generates
-      a ClusterCleanupPolicy with a four hour expiration time after which the PolicyException
+      a DeletingPolicy with a four hour expiration time after which the PolicyException
       is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller
       ServiceAccounts additional permissions to operate this policy.
 spec:
@@ -42,8 +42,8 @@ spec:
     - expression: >-
         generator.Apply("", [
           dyn({
-            "apiVersion": dyn("kyverno.io/v2beta1"),
-            "kind": dyn("ClusterCleanupPolicy"),
+            "apiVersion": dyn("policies.kyverno.io/v1"),
+            "kind": dyn("DeletingPolicy"),
             "metadata": dyn({
               "name": dyn(variables.cleanupName),
               "labels": dyn({
@@ -52,17 +52,21 @@ spec:
             }),
             "spec": dyn({
               "schedule": dyn(variables.cronSchedule),
-              "match": dyn({
-                "any": dyn([
+              "matchConstraints": dyn({
+                "resourceRules": dyn([
                   {
-                    "resources": {
-                      "kinds": ["PolicyException"],
-                      "namespaces": [variables.targetNs],
-                      "names": [variables.exceptionName]
-                    }
+                    "apiGroups": ["kyverno.io", "policies.kyverno.io"],
+                    "apiVersions": ["*"],
+                    "resources": ["policyexceptions"]
                   }
                 ])
-              })
+              }),
+              "conditions": dyn([
+                {
+                  "name": "match-target",
+                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "'"
+                }
+              ])
             })
           })
         ])

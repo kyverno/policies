@@ -26,6 +26,8 @@ spec:
   matchConditions:
     - name: three-restarts
       expression: "object.status.?containerStatuses.orValue([]).map(c, c.?restartCount.orValue(0)).sum() == 3"
+    - name: crashloopbackoff
+      expression: "object.status.?containerStatuses.orValue([]).exists(c, c.?state.?waiting.?reason.orValue('') == 'CrashLoopBackOff')"
     - name: no-deleteme-label
       expression: "!('deleteme' in object.metadata.?labels.orValue({}))"
     - name: no-existing-debug-pod

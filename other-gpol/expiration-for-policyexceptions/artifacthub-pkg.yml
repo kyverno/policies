@@ -3,7 +3,7 @@ version: 1.0.0
 displayName: Expiration for PolicyExceptions
 createdAt: "2023-04-10T20:30:04.000Z"
 description: >-
-  In situations where Ops/Platform teams want to allow exceptions on a temporary basis, there must be a way to remove the PolicyException once the expiration time has been reached. After the exception is removed, the rule(s) for which the exception is granted go back into full effect. This policy generates a ClusterCleanupPolicy with a four hour expiration time after which the PolicyException is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller ServiceAccounts additional permissions to operate this policy.
+  In situations where Ops/Platform teams want to allow exceptions on a temporary basis, there must be a way to remove the PolicyException once the expiration time has been reached. After the exception is removed, the rule(s) for which the exception is granted go back into full effect. This policy generates a DeletingPolicy with a four hour expiration time after which the PolicyException is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller ServiceAccounts additional permissions to operate this policy.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-gpol/expiration-for-policyexceptions/rbac.yaml
@@ -13,10 +13,10 @@ keywords:
   - kyverno
   - Other
 readme: |
-  In situations where Ops/Platform teams want to allow exceptions on a temporary basis, there must be a way to remove the PolicyException once the expiration time has been reached. After the exception is removed, the rule(s) for which the exception is granted go back into full effect. This policy generates a ClusterCleanupPolicy with a four hour expiration time after which the PolicyException is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller ServiceAccounts additional permissions to operate this policy.
+  In situations where Ops/Platform teams want to allow exceptions on a temporary basis, there must be a way to remove the PolicyException once the expiration time has been reached. After the exception is removed, the rule(s) for which the exception is granted go back into full effect. This policy generates a DeletingPolicy with a four hour expiration time after which the PolicyException is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller ServiceAccounts additional permissions to operate this policy.
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
 annotations:
   kyverno/category: "Other"
   kyverno/subject: "PolicyException"
-digest: 14604f066ffc02f2548a4ef77adb0e8048359b9762308f4f6dbdde93697d3149
+digest: 58c323d5b782ce59ba6e3d3ee55f5b02e01688f3e791f4a5a583af4f149b2722

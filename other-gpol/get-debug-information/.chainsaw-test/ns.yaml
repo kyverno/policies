@@ -8,3 +8,17 @@ kind: ServiceAccount
 metadata:
   name: get-debug-data-sa
   namespace: abc
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: read-pods-rolebinding
+  namespace: abc
+subjects:
+- kind: ServiceAccount
+  name: get-debug-data-sa
+  namespace: abc
+roleRef:
+  kind: ClusterRole
+  name: pod-reader
+  apiGroup: rbac.authorization.k8s.io
