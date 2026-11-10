@@ -13,7 +13,9 @@ metadata:
       are down simultaneously from voluntary disruptions. For example, a quorum-based
       application would like to ensure that the number of replicas running is never brought
       below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB)
-      for each application. This policy will create a PDB resource whenever a Deployment is created or updated.
+      for each application. This policy creates or reconciles a default PDB resource whenever a Deployment
+      is created or updated. Note that updating an existing Deployment will also reconcile its default PDB,
+      which may overwrite manual customizations on the PDB.
 spec:
   matchConstraints:
     resourceRules:

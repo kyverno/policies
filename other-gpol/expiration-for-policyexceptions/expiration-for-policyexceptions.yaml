@@ -15,12 +15,14 @@ metadata:
       expiration time has been reached. After the exception is removed, the rule(s)
       for which the exception is granted go back into full effect. This policy generates
       a DeletingPolicy with a four hour expiration time after which the PolicyException
-      is deleted. It may be necessary to grant both the Kyverno as well as cleanup controller
+      is deleted. Synchronization is enabled so that once the PolicyException expires
+      and is removed, the generated DeletingPolicy is automatically cleaned up.
+      It may be necessary to grant both the Kyverno as well as cleanup controller
       ServiceAccounts additional permissions to operate this policy.
 spec:
   evaluation:
     synchronize:
-      enabled: false
+      enabled: true
     generateExisting:
       enabled: false
   matchConstraints:
