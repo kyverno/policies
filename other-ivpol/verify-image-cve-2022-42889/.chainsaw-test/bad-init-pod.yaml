@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-init-pod
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-verify-image:unsigned
+  containers:
+  - name: app
+    image: nginx:latest
