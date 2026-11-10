@@ -11,6 +11,7 @@ results:
   policy: validate-probe-timeout-period
   resources:
   - bad-liveness-timeout
+  - bad-liveness-equal
   result: fail
   rule: validate-liveness-probe-timeout
 - kind: Pod
@@ -25,27 +26,26 @@ results:
   - bad-startup-timeout
   result: fail
   rule: validate-startup-probe-timeout
-- kind: Pod
-  policy: validate-probe-timeout-period
-  resources:
-  - bad-liveness-equal
-  result: fail
-  rule: validate-liveness-probe-timeout
+# A rule reports "skip" when every container is filtered out by the foreach
+# precondition because the container does not declare that probe type.
 - kind: Pod
   policy: validate-probe-timeout-period
   resources:
   - good-pod-defaults
   - good-pod-explicit
-  - good-pod-startup
   - good-pod-all-probes
   result: pass
   rule: validate-liveness-probe-timeout
 - kind: Pod
   policy: validate-probe-timeout-period
   resources:
-  - good-pod-defaults
-  - good-pod-explicit
   - good-pod-startup
+  result: skip
+  rule: validate-liveness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - good-pod-explicit
   - good-pod-all-probes
   result: pass
   rule: validate-readiness-probe-timeout
@@ -53,8 +53,20 @@ results:
   policy: validate-probe-timeout-period
   resources:
   - good-pod-defaults
-  - good-pod-explicit
+  - good-pod-startup
+  result: skip
+  rule: validate-readiness-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
   - good-pod-startup
   - good-pod-all-probes
   result: pass
+  rule: validate-startup-probe-timeout
+- kind: Pod
+  policy: validate-probe-timeout-period
+  resources:
+  - good-pod-defaults
+  - good-pod-explicit
+  result: skip
   rule: validate-startup-probe-timeout
