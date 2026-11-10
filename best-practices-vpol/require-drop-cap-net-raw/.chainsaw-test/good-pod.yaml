@@ -39,3 +39,23 @@ spec:
          capabilities:
            drop:
              - NET_RAW
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-all-good
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+  containers:
+  - name: drop-all
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - ALL

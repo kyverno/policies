@@ -64,3 +64,43 @@ spec:
   containers:
   - name: add-capabilities
     image: gcr.io/google-samples/node-hello:1.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-all-good
+spec:
+  initContainers:
+  - name: init
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["all"]
+  containers:
+  - name: drop-all
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["ALL"]
+  - name: drop-net-raw
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["NET_RAW"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod03
+spec:
+  containers:
+  - name: drop-all
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["ALL"]
+  - name: drop-chown
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["CAP_CHOWN"]

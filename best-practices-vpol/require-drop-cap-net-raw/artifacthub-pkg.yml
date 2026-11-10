@@ -2,7 +2,7 @@ name: require-drop-cap-net-raw-VPOL
 version: 1.0.0
 displayName: Drop CAP_NET_RAW in VPOL
 description: >-
-  Capabilities permit privileged actions without giving full root access. The CAP_NET_RAW capability, enabled by default, allows processes in a container to forge packets and bind to any interface potentially leading to MitM attacks. This policy ensures that all containers explicitly drop the CAP_NET_RAW ability. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
+  Capabilities permit privileged actions without giving full root access. The CAP_NET_RAW capability, enabled by default, allows processes in a container to forge packets and bind to any interface potentially leading to MitM attacks. This policy ensures that all containers explicitly drop the CAP_NET_RAW ability, either by name or by dropping `ALL` capabilities. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/require-drop-cap-net-raw/require-drop-cap-net-raw.yaml
@@ -12,7 +12,7 @@ keywords:
   - Best Practices
   - VPOL
 readme: |
-  Capabilities permit privileged actions without giving full root access. The CAP_NET_RAW capability, enabled by default, allows processes in a container to forge packets and bind to any interface potentially leading to MitM attacks. This policy ensures that all containers explicitly drop the CAP_NET_RAW ability. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
+  Capabilities permit privileged actions without giving full root access. The CAP_NET_RAW capability, enabled by default, allows processes in a container to forge packets and bind to any interface potentially leading to MitM attacks. This policy ensures that all containers explicitly drop the CAP_NET_RAW ability, either by name or by dropping `ALL` capabilities. Note that this policy also illustrates how to cover drop entries in any case although this may not strictly conform to the Pod Security Standards.
   
   ### Fine-grained PolicyException use
 
@@ -32,5 +32,5 @@ annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 9ea119c576e53b013d6eeff24603a99e2f0d3fcb9c96088401780824238f3e34
+digest: 8dae30f64e500f654c2c041bb706a72840f2dde5a2c65d28942b5296599587f4
 createdAt: "2025-05-05T13:19:12Z"
