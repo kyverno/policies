@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: appproject-restrict-destinations-exception
+policies:
+- ../appproject-restrict-destinations.yaml
+resources:
+- ../.chainsaw-test/exception-appproject.yaml
+- ../.chainsaw-test/bad-exact.yaml
+- ../.chainsaw-test/good.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts the admin AppProject, so it's skipped.
+- policy: appproject-restrict-destinations
+  kind: AppProject
+  resources: [argocd-admin]
+  result: skip
+  isValidatingPolicy: true
+- policy: appproject-restrict-destinations
+  kind: AppProject
+  resources: [goodappproj]
+  result: pass
+  isValidatingPolicy: true
+- policy: appproject-restrict-destinations
+  kind: AppProject
+  resources: [badappproj-exact]
+  result: fail
+  isValidatingPolicy: true

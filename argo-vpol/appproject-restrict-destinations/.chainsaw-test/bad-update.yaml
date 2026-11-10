@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: goodappproj
+spec:
+  description: Test Project
+  destinations:
+  - namespace: team-one
+    server: https://kubernetes.default.svc
+  - namespace: 'team-*'
+    server: '*'
+  - namespace: argocd
+    server: https://kubernetes.default.svc

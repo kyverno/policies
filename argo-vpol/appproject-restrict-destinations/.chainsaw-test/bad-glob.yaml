@@ -1,0 +1,9 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj-glob
+spec:
+  description: Test Project
+  destinations:
+  - namespace: 'argo*'
+    server: 'https://kubernetes.*'

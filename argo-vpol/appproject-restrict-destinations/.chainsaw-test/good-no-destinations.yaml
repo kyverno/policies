@@ -1,0 +1,6 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: goodappproj-no-destinations
+spec:
+  description: Test Project

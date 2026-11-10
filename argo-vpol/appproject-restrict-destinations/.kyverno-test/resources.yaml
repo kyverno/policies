@@ -1,0 +1,128 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-server-deny-veto
+spec:
+  destinations:
+  - namespace: '*'
+    server: '*'
+  - namespace: '*'
+    server: '!https://kubernetes.default.svc'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-name-deny-veto
+spec:
+  destinations:
+  - namespace: '*'
+    server: '*'
+  - namespace: '*'
+    name: '!in-cluster'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-negated-class
+spec:
+  destinations:
+  - namespace: '[!a]rgocd'
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-uppercase
+spec:
+  destinations:
+  - namespace: ARGOCD
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-literal-dot
+spec:
+  destinations:
+  - namespace: a.gocd
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-empty-list
+spec:
+  destinations: []
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-other-cluster-name
+spec:
+  destinations:
+  - namespace: argocd
+    name: remote
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-question
+spec:
+  destinations:
+  - namespace: '?rgocd'
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-braces
+spec:
+  destinations:
+  - namespace: '{team-one,argocd}'
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-class
+spec:
+  destinations:
+  - namespace: '[a-c]rgocd'
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-server-glob
+spec:
+  destinations:
+  - namespace: argocd
+    server: 'https://*.svc'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-name-glob
+spec:
+  destinations:
+  - namespace: argocd
+    name: 'in-*'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-server-deny-other
+spec:
+  destinations:
+  - namespace: argocd
+    server: '!https://remote.example.com'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-backslash
+spec:
+  destinations:
+  - namespace: \argocd
+    server: https://kubernetes.default.svc

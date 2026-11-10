@@ -1,0 +1,9 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: goodappproj-remote-cluster
+spec:
+  description: Test Project
+  destinations:
+  - namespace: argocd
+    server: https://remote.example.com

@@ -1,0 +1,9 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj-cluster-name
+spec:
+  description: Test Project
+  destinations:
+  - namespace: argocd
+    name: in-cluster

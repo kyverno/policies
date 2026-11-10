@@ -1,0 +1,60 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: appproject-restrict-destinations
+policies:
+- ../appproject-restrict-destinations.yaml
+resources:
+- ../.chainsaw-test/good.yaml
+- ../.chainsaw-test/good-deny-entry.yaml
+- ../.chainsaw-test/good-remote-cluster.yaml
+- ../.chainsaw-test/good-no-destinations.yaml
+- ../.chainsaw-test/good-default-project.yaml
+- ../.chainsaw-test/bad-exact.yaml
+- ../.chainsaw-test/bad-wildcard.yaml
+- ../.chainsaw-test/bad-glob.yaml
+- ../.chainsaw-test/bad-cluster-name.yaml
+- ../.chainsaw-test/bad-deny-other.yaml
+- ../.chainsaw-test/bad-multiple.yaml
+- resources.yaml
+results:
+- kind: AppProject
+  policy: appproject-restrict-destinations
+  resources:
+  - badappproj-exact
+  - badappproj-wildcard
+  - badappproj-glob
+  - badappproj-cluster-name
+  - badappproj-deny-other
+  - badappproj-multiple
+  # Argo CD allows these AppProjects to deploy to argocd on the control-plane cluster.
+  - edge-bad-question
+  - edge-bad-braces
+  - edge-bad-class
+  - edge-bad-server-glob
+  - edge-bad-name-glob
+  - edge-bad-server-deny-other
+  - edge-bad-backslash
+  result: fail
+- kind: AppProject
+  policy: appproject-restrict-destinations
+  resources:
+  - goodappproj
+  - goodappproj-deny-entry
+  - goodappproj-remote-cluster
+  - goodappproj-no-destinations
+  # Argo CD doesn't allow these AppProjects to deploy to argocd on the control-plane cluster.
+  - edge-good-server-deny-veto
+  - edge-good-name-deny-veto
+  - edge-good-negated-class
+  - edge-good-uppercase
+  - edge-good-literal-dot
+  - edge-good-empty-list
+  - edge-good-other-cluster-name
+  result: pass
+# The default AppProject is excluded by a match condition.
+- kind: AppProject
+  policy: appproject-restrict-destinations
+  resources:
+  - default
+  result: skip

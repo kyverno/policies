@@ -1,0 +1,56 @@
+name: appproject-restrict-destinations-vpol
+version: 1.0.0
+displayName: Restrict AppProject Destinations in CEL expressions
+description: >-
+  Argo CD's documentation warns that a project whose destinations allow deploying to the Argo CD namespace grants admin-level access. See https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#projects. This policy flags AppProjects whose spec.destinations let Applications deploy to the control-plane namespace (argocd) on the control-plane cluster (https://kubernetes.default.svc, named in-cluster), including through globs such as * or argo*. Deny entries such as !argocd are honored. The default AppProject is skipped. Use a PolicyException for intended admin projects. If Argo CD runs elsewhere, change the controlPlane variables.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-vpol/appproject-restrict-destinations/appproject-restrict-destinations.yaml
+  ```
+keywords:
+  - kyverno
+  - Argo
+  - CEL Expressions
+readme: |
+  Argo CD's documentation warns that a project whose destinations allow deploying to the Argo CD namespace grants admin-level access. See https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#projects. This policy flags AppProjects whose spec.destinations let Applications deploy to the control-plane namespace (argocd) on the control-plane cluster (https://kubernetes.default.svc, named in-cluster), including through globs such as * or argo*. Deny entries such as !argocd are honored. The default AppProject is skipped. Use a PolicyException for intended admin projects. If Argo CD runs elsewhere, change the controlPlane variables.
+
+  ### Exempting an admin project
+
+  Some projects need to deploy to the Argo CD namespace, for example a project
+  that manages Argo CD itself. Create a Kyverno `PolicyException` that
+  references this policy in `spec.policyRefs` and matches only that AppProject
+  in `spec.matchConditions`. See the
+  [tested example](https://github.com/kyverno/policies/blob/main/argo-vpol/appproject-restrict-destinations/.chainsaw-test/exception.yaml).
+
+  ### Matching behavior
+
+  - The policy evaluates each destination the way Argo CD's
+    `isDestinationMatched` does, including `!` deny entries. For example,
+    `namespace: '*'` together with `namespace: '!argocd'` is allowed.
+  - Only the control-plane cluster counts: server
+    `https://kubernetes.default.svc` or cluster name `in-cluster`. If you
+    registered that cluster under another URL or name, change the
+    `controlPlaneServer` or `controlPlaneClusterName` variable.
+  - Backslashes in globs are ignored, so an escaped glob character such as
+    `argo\*` counts as a wildcard. In entries with braces, every comma counts
+    as an alternative. Both can flag an entry that Argo CD wouldn't match.
+
+  ### What the policy doesn't cover
+
+  - The `default` AppProject is skipped, because Argo CD creates and manages
+    it. Use `application-prevent-default-project` to stop Applications from
+    using it.
+  - The policy can't see cluster Secrets, so it ignores
+    `permitOnlyProjectScopedClusters`. A project that sets it may be flagged
+    even if Argo CD would refuse the control-plane cluster.
+  - The policy checks one server URL and one cluster name for the
+    control-plane cluster. If that cluster is also registered under another
+    URL or name, a destination that uses the alias isn't flagged.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "AppProject"
+digest: 54835c15d46cf802a1fe073beb9e400b0513246d524134dbf494749323310f67
+createdAt: "2026-11-10T18:07:17Z"
