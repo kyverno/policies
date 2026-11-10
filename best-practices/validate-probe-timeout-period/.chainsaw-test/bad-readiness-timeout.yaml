@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-readiness-timeout
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      timeoutSeconds: 10
+      periodSeconds: 10
