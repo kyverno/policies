@@ -1,0 +1,87 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: inject-otel-environment-variable
+policies:
+- ../inject-otel-environment-variable.yaml
+resources:
+- resource.yaml
+results:
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-before-preexisting-env.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/inject-before-preexisting-env
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-custom-endpoint-pod.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/inject-custom-endpoint-pod
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-default.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/inject-default
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-empty-env.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/inject-empty-env
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-init-containers.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/inject-init-containers
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/keep-declared-endpoint.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - default/keep-declared-endpoint
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-custom-endpoint-ns.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - ns-w-custom-endpoint/inject-custom-endpoint-ns
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-custom-endpoint-pod-over-ns.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - ns-w-custom-endpoint/inject-custom-endpoint-pod-over-ns
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-pod-over-ns.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - ns-w-inject-false/inject-pod-over-ns
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: expected/inject-ns.yaml
+  policy: inject-otel-environment-variable
+  resources:
+  - ns-w-inject-true/inject-ns
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  policy: inject-otel-environment-variable
+  resources:
+  - default/no-inject-pod
+  - ns-w-inject-false/no-inject-ns
+  result: skip
+variables: values.yaml

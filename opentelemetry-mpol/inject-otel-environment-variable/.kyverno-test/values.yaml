@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Value
+metadata:
+  name: values
+namespaces:
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: default
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: ns-w-inject-true
+    annotations:
+      otel.corp.org/inject-env-var: "true"
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: ns-w-inject-false
+    annotations:
+      otel.corp.org/inject-env-var: "false"
+- apiVersion: v1
+  kind: Namespace
+  metadata:
+    name: ns-w-custom-endpoint
+    annotations:
+      otel.corp.org/otlp-endpoint: http://http-collector:4318
