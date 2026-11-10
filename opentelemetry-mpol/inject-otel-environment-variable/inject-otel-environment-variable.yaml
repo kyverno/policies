@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Inject OpenTelemetry Environment Variable
     policies.kyverno.io/category: OpenTelemetry
     policies.kyverno.io/subject: Namespace, Pod
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30+"
     # Mutating controller templates would show as drift in GitOps tools; Pods are mutated at creation instead.
     pod-policies.kyverno.io/autogen-controllers: none
