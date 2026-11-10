@@ -35,6 +35,9 @@ results:
   - edge-bad-name-glob
   - edge-bad-server-deny-other
   - edge-bad-backslash
+  # Argo CD v3.6.1 and earlier let the allowed identifier win over the deny one.
+  - edge-bad-name-deny-server-allow
+  - edge-bad-server-deny-name-allow
   result: fail
 - kind: AppProject
   policy: appproject-restrict-destinations
@@ -51,6 +54,9 @@ results:
   - edge-good-literal-dot
   - edge-good-empty-list
   - edge-good-other-cluster-name
+  # An omitted field matches only an empty value, not every value.
+  - edge-good-no-namespace
+  - edge-good-no-cluster
   result: pass
 # The default AppProject is excluded by a match condition.
 - kind: AppProject

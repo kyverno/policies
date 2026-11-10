@@ -126,3 +126,39 @@ spec:
   destinations:
   - namespace: \argocd
     server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-name-deny-server-allow
+spec:
+  destinations:
+  - namespace: '*'
+    server: https://kubernetes.default.svc
+    name: '!in-cluster'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-server-deny-name-allow
+spec:
+  destinations:
+  - namespace: '*'
+    server: '!https://kubernetes.default.svc'
+    name: in-cluster
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-no-namespace
+spec:
+  destinations:
+  - server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-no-cluster
+spec:
+  destinations:
+  - namespace: argocd

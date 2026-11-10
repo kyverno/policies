@@ -44,7 +44,7 @@ spec:
       expression: "'https://kubernetes.default.svc'"
     - name: controlPlaneClusterName
       expression: "'in-cluster'"
-    # For each destination, mirror Argo CD's isDestinationMatched for the
+    # For each destination, mirror Argo CD v3.6.1's isDestinationMatched for the
     # control-plane target. Each field is a glob; a leading ! makes it a deny
     # entry. f holds [isDeny, globMatchesTarget] for namespace, server, name.
     # The result is [label, 'grant' or '', 'block' or ''].
@@ -81,7 +81,6 @@ spec:
                   ? 'server ' + string(d.?server.orValue(''))
                   : 'cluster ' + string(d.?name.orValue(''))),
               matched ? 'grant' : '',
-              (ns && ((f[2][0] && f[2][1]) || (f[1][0] && f[1][1]))) ||
               (!matched && (
                 (((!name && f[2][0]) || (!server && f[1][0])) && ns) ||
                 (!ns && f[0][0] && server)))
