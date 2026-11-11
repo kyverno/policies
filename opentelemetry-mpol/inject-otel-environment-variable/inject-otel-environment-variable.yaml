@@ -8,8 +8,6 @@ metadata:
     policies.kyverno.io/subject: Namespace, Pod
     policies.kyverno.io/minversion: 1.19.1
     kyverno.io/kubernetes-version: "1.30+"
-    # Mutating controller templates would show as drift in GitOps tools; Pods are mutated at creation instead.
-    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >-
       Injects the OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers` of new Pods.
       Injection can be disabled with the `otel.corp.org/inject-env-var: "false"` annotation on the Pod or its Namespace;
@@ -17,6 +15,11 @@ metadata:
       and can be overridden per Pod or Namespace with the `otel.corp.org/otlp-endpoint` annotation.
       Containers that already declare `OTEL_EXPORTER_OTLP_ENDPOINT` are left untouched.
 spec:
+  # Pods are mutated at creation: patching controller templates would show as drift in GitOps tools.
+  # MutatingPolicy ignores the autogen-controllers annotation; an empty list disables autogen.
+  autogen:
+    podControllers:
+      controllers: []
   evaluation:
     admission:
       enabled: true
