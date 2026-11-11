@@ -1,0 +1,69 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-authorizationpolicy-host-port-variant
+policies:
+- ../require-authorizationpolicy-host-port-variant.yaml
+resources:
+- ../.chainsaw-test/good-deny-variant.yaml
+- ../.chainsaw-test/good-allow-hosts.yaml
+- ../.chainsaw-test/good-allow-nothosts-variant.yaml
+- ../.chainsaw-test/good-custom-variant.yaml
+- ../.chainsaw-test/good-wildcard.yaml
+- ../.chainsaw-test/bad-deny-hosts.yaml
+- ../.chainsaw-test/bad-allow-nothosts.yaml
+- ../.chainsaw-test/bad-custom-hosts.yaml
+- ../.chainsaw-test/bad-mixed.yaml
+- resources.yaml
+results:
+- kind: AuthorizationPolicy
+  policy: require-authorizationpolicy-host-port-variant
+  resources:
+  - bad-deny-hosts
+  - bad-allow-nothosts
+  - bad-custom-hosts
+  - bad-mixed
+  - edge-bad-v1beta1
+  - edge-bad-explicit-allow
+  # A null action means ALLOW.
+  - edge-bad-null-action
+  - edge-bad-uppercase
+  # The variant must be in the same list.
+  - edge-bad-variant-in-other-rule
+  - edge-bad-variant-in-nothosts
+  # A specific port doesn't cover other ports.
+  - edge-bad-specific-port-only
+  - edge-bad-custom-second-to
+  # Malformed entries are skipped; later valid entries are still checked.
+  - edge-bad-after-malformed
+  result: fail
+- kind: AuthorizationPolicy
+  policy: require-authorizationpolicy-host-port-variant
+  resources:
+  - good-deny-variant
+  - good-allow-hosts
+  - good-allow-nothosts-variant
+  - good-custom-variant
+  - good-wildcard
+  - edge-good-no-spec
+  - edge-good-empty-rules
+  - edge-good-no-to
+  # ALLOW hosts fail closed.
+  - edge-good-allow-hosts
+  - edge-good-absent-action-hosts
+  # DENY and CUSTOM notHosts fail closed.
+  - edge-good-deny-nothosts
+  - edge-good-custom-nothosts
+  # AUDIT doesn't affect access.
+  - edge-good-audit-hosts
+  # Wildcards and entries with a port aren't exact hosts.
+  - edge-good-wildcards
+  - edge-good-specific-port
+  # The comparison ignores case.
+  - edge-good-case-variant
+  - edge-good-variant-first
+  - edge-good-malformed
+  - edge-good-rules-not-list
+  # An unknown action isn't checked.
+  - edge-good-non-string-action
+  result: pass

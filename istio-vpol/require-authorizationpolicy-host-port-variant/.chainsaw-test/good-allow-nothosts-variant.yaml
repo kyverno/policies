@@ -1,0 +1,12 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: good-allow-nothosts-variant
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  rules:
+  - to:
+    - operation:
+        notHosts: ["admin.example.com", "admin.example.com:*"]
