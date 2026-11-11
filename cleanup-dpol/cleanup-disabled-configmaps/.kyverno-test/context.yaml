@@ -1,0 +1,20 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: cleanup-settings
+spec:
+  resources:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: cleanup-settings
+      namespace: cleanup-enabled
+    data:
+      enabled: "true"
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: cleanup-settings
+      namespace: cleanup-disabled
+    data:
+      enabled: "false"

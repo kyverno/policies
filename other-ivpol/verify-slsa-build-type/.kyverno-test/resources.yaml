@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: provenance
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:github-attestation
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-provenance
+spec:
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/test-images/cosign:v2-keyless

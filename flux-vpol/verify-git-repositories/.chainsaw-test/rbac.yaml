@@ -1,0 +1,21 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:aggregate-to-admission-controller:flux-verify-git-repositories
+  labels:
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    resources: [gitrepositories]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:aggregate-to-reports-controller:flux-verify-git-repositories
+  labels:
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+rules:
+  - apiGroups: [source.toolkit.fluxcd.io]
+    resources: [gitrepositories]
+    verbs: [get, list, watch]

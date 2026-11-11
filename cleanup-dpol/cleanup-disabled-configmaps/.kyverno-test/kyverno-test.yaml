@@ -1,0 +1,35 @@
+apiVersion: cli.kyverno.io/v1alpha1
+context: context.yaml
+kind: Test
+metadata:
+  name: cleanup-disabled-configmaps
+policies:
+- ../cleanup-disabled-configmaps.yaml
+resources:
+- resources.yaml
+results:
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-disabled-configmaps
+  resources:
+  - cleanup-missing/temporary
+  result: error
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-disabled-configmaps
+  resources:
+  - cleanup-disabled/temporary
+  - cleanup-enabled/cleanup-settings
+  result: fail
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-disabled-configmaps
+  resources:
+  - cleanup-enabled/temporary
+  result: pass
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-disabled-configmaps
+  resources:
+  - cleanup-enabled/permanent
+  result: skip

@@ -1,0 +1,20 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-networkpolicy-targets
+policies:
+- ../generate-networkpolicy-targets.yaml
+resources:
+- resources.yaml
+results:
+- policy: generate-networkpolicy-targets
+  kind: ConfigMap
+  resources: [platform-system/network-policy-targets]
+  result: pass
+  isGeneratingPolicy: true
+  generatedResource: generated.yaml
+- policy: generate-networkpolicy-targets
+  kind: ConfigMap
+  resources: [untrusted/network-policy-targets, platform-system/missing-targets]
+  result: skip
+  isGeneratingPolicy: true

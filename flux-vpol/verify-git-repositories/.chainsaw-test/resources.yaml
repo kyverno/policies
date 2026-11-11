@@ -1,0 +1,179 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-good-https
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-good-ssh
+  namespace: default
+spec:
+  interval: 1m
+  url: ssh://git@github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-good-case
+  namespace: default
+spec:
+  interval: 1m
+  url: https://GITHUB.COM/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: git-good-v1beta2
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-good-wildcard
+  namespace: default
+spec:
+  interval: 1m
+  url: https://repo.myorg.com/team/project.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-bad
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/untrusted/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-host-bypass
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com.evil.example/myorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-path-bypass
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg-evil/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-wildcard-apex
+  namespace: default
+spec:
+  interval: 1m
+  url: https://myorg.com/team/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-dot-segment
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/../untrusted.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-repeated-slash
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg//untrusted.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-userinfo
+  namespace: default
+spec:
+  interval: 1m
+  url: https://attacker@github.com/myorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-scp-style
+  namespace: default
+spec:
+  interval: 1m
+  url: git@github.com:myorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-query
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/repository.git?redirect=untrusted
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-wrong-scheme
+  namespace: default
+spec:
+  interval: 1m
+  url: http://github.com/myorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-empty
+  namespace: default
+spec:
+  interval: 1m
+  url: ""
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-sibling
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-exception-prefix-bypass
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/otherorg-evil/repository.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: git-system-excluded
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/untrusted/repository.git

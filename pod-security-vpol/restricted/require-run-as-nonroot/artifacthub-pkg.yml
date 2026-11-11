@@ -2,7 +2,7 @@ name: require-run-as-nonroot-vpol
 version: 1.0.0
 displayName: Require runAsNonRoot in ValidatingPolicy
 description: >-
-  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
+  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`. Missing or null init and ephemeral container lists are treated as empty. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/restricted/require-run-as-nonroot/require-run-as-nonroot.yaml
@@ -12,7 +12,7 @@ keywords:
   - Pod Security Standards (Restricted)
   - ValidatingPolicy
 readme: |
-  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
+  Containers must run as non-root users. This policy ensures that every container sets `runAsNonRoot` to `true` or inherits it from the Pod, and that neither sets it to `false`. Missing or null init and ephemeral container lists are treated as empty. Pods that set `spec.hostUsers: false` are exempt, as in Pod Security Standards v1.35 and later. Pod Security Admission on earlier Kubernetes versions does not exempt them.
 
   ### Fine-grained PolicyException use
 
@@ -22,7 +22,7 @@ readme: |
   Use exact image references in `spec.images` to waive the container `runAsNonRoot`
   requirement only for matching containers; without Pod-level true, every other container
   must explicitly set true. `variables.podSpec` selects the Pod spec directly or from the
-  workload template. `variables.ctnrs` includes regular, init, and ephemeral containers.
+  workload template.   `variables.ctnrs` includes regular, init, and ephemeral containers, treating missing or null init and ephemeral container lists as empty.
   CEL reads images through `exceptions.allowedImages`.
   See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/restricted/require-run-as-nonroot/.kyverno-test-exceptions/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
@@ -33,5 +33,5 @@ annotations:
   kyverno/category: "Pod Security Standards (Restricted)"
   kyverno/kubernetesVersion: "1.30+"
   kyverno/subject: "Pod"
-digest: 48f85e8f09fd41afe159f960cb9d16a193acfa07b8bd9c15a30b69eb9805e727
+digest: 5276cb3c4f3d782604334d40cb40e659ee5d9ffefb190b9d52ab880e74bbb3b8
 createdAt: "2025-03-13T23:26:58Z"

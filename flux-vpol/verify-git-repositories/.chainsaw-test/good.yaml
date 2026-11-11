@@ -1,0 +1,44 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-git-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-git-ssh-good
+  namespace: default
+spec:
+  interval: 1m
+  url: ssh://git@github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: chainsaw-git-v1beta2-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://github.com/myorg/flux-config.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-git-wildcard-good
+  namespace: default
+spec:
+  interval: 1m
+  url: https://repo.myorg.com/team/project.git
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: chainsaw-flux-system-excluded
+  namespace: flux-system
+spec:
+  interval: 1m
+  url: https://github.com/untrusted/repository.git

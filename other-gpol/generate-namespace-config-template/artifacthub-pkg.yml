@@ -1,0 +1,30 @@
+name: generate-namespace-config-template
+version: 1.0.0
+displayName: Generate Namespace Configuration from a Template
+createdAt: "2026-11-03T00:00:00Z"
+description: >-
+  Generate a ConfigMap using a YAML template with CEL interpolation for
+  namespaces labeled platform.example.com/environment. Process existing
+  namespaces on policy installation as well as future namespace admissions.
+  Synchronize the generated environment value when the namespace label changes.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-gpol/generate-namespace-config-template/generate-namespace-config-template.yaml
+  ```
+keywords:
+- kyverno
+- Other
+readme: |
+  Generate a ConfigMap using a YAML template with CEL interpolation for
+  namespaces labeled platform.example.com/environment. Process existing
+  namespaces on policy installation as well as future namespace admissions.
+  Synchronize the generated environment value when the namespace label changes.
+
+  Requires Kyverno 1.20 (main). Chainsaw creates the namespace before the policy
+  to test generateExisting, then checks label updates and future namespaces.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: Other
+  kyverno/subject: Namespace, ConfigMap
+digest: 0f5d9486a8ba088cecd5b25f1ec8d12606a55fcbc3407a436b4b9396e82a836b

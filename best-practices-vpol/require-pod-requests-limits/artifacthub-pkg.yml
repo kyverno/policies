@@ -2,7 +2,7 @@ name: require-pod-requests-limits-VPOL
 version: 1.0.0
 displayName: Require Limits and Requests in VPOL
 description: >-
-  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that all containers have something specified for memory and CPU requests and memory limits.
+  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that regular and init containers have memory and CPU requests and memory limits. Ephemeral containers are excluded because Kubernetes does not support resource requests or limits for them.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/require-pod-requests-limits/require-pod-requests-limits.yaml
@@ -13,7 +13,7 @@ keywords:
   - EKS Best Practices
   - VPOL
 readme: |
-  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that all containers have something specified for memory and CPU requests and memory limits.
+  As application workloads share cluster resources, it is important to limit resources requested and consumed by each Pod. It is recommended to require resource requests and limits per Pod, especially for memory and CPU. If a Namespace level request or limit is specified, defaults will automatically be applied to each Pod based on the LimitRange configuration. This policy validates that regular and init containers have memory and CPU requests and memory limits. Ephemeral containers are excluded because Kubernetes does not support resource requests or limits for them.
   
   ### Fine-grained PolicyException use
 
@@ -23,7 +23,8 @@ readme: |
   This policy accepts exact image references in `spec.images`; only matching
   images are exempted and all other images remain enforced.
   CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
-  includes regular, init, and ephemeral containers.
+  includes regular and init containers. Ephemeral containers are excluded because Kubernetes
+  does not support resource requests or limits for them.
   See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-pod-requests-limits/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -33,5 +34,5 @@ annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 499f6171267d08054e284fa90b0df91368dcd5cce0173dfbf4ed608f038bc0f8
+digest: afbbb3dcd6c04774e3d9e8e1aa94633b6cf9bf11d6a24f3da71b188e1073c2b6
 createdAt: "2025-05-05T13:19:12Z"

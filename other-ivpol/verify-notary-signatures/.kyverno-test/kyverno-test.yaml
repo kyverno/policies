@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-notary-signatures
+policies:
+- ../verify-notary-signatures.yaml
+resources:
+- resources.yaml
+results:
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-notary-signatures
+  resources:
+  - notary-unsigned
+  result: fail
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-notary-signatures
+  resources:
+  - notary-signed
+  result: pass
