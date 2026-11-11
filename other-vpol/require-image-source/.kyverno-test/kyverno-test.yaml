@@ -8,11 +8,12 @@ policies:
   - ../require-image-source.yaml
 resources:
   - resources.yaml
+  - null-lists.yaml
 results:
   - isValidatingPolicy: true
     kind: Pod
     policy: require-image-source
-    resources: [good-label, good-annotation-init, good-ephemeral, good-digest]
+    resources: [good-label, good-annotation-init, good-ephemeral, good-digest, good-null-init, good-null-ephemeral]
     result: pass
   - isValidatingPolicy: true
     kind: Pod
@@ -22,7 +23,7 @@ results:
   - isValidatingPolicy: true
     kind: Deployment
     policy: require-image-source
-    resources: [bad-deployment]
+    resources: [bad-deployment, bad-null-lists]
     result: fail
   - isValidatingPolicy: true
     kind: CronJob
