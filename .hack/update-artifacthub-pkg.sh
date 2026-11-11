@@ -15,6 +15,9 @@ do
     POLICY_FILE="$FOLDER/$POLICY.yaml"
     echo "Processing policy $POLICY ($POLICY_FILE) ..."
     INSTALL="kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/${POLICY_FILE/.\//}"
+    if [[ -f "$FOLDER/rbac.yaml" ]]; then
+        INSTALL="kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/${FOLDER/.\//}/rbac.yaml\n  $INSTALL"
+    fi
     $SED -i -z "s#install:.*\`\`\`#install: |-\n  \`\`\`shell\n  $INSTALL\n  \`\`\`#" $FILE
     DIGEST=$(shasum -U -a 256 "$POLICY_FILE" | cut -d" " -f 1)
     echo "  Digest: $DIGEST"

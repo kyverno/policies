@@ -1,0 +1,128 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: verify-flux-sources
+  annotations:
+    policies.kyverno.io/title: Verify Flux Sources
+    policies.kyverno.io/category: Flux in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.19.1
+    policies.kyverno.io/minversion: 1.19.1
+    policies.kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: GitRepository, Bucket, HelmRepository, OCIRepository, ImageRepository
+    policies.kyverno.io/description: >-
+      Restricts Flux source resources to configurable trusted host and path prefixes.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["source.toolkit.fluxcd.io"]
+        apiVersions: ["v1", "v1beta2"]
+        operations: [CREATE, UPDATE]
+        resources: [gitrepositories, buckets, helmrepositories, ocirepositories]
+      - apiGroups: ["image.toolkit.fluxcd.io"]
+        apiVersions: ["v1", "v1beta2"]
+        operations: [CREATE, UPDATE]
+        resources: [imagerepositories]
+  matchConditions:
+    - name: exclude-flux-system
+      expression: object.metadata.namespace != 'flux-system'
+  variables:
+    - name: source
+      expression: >-
+        object.kind == 'Bucket' ? object.?spec.?endpoint.orValue('') :
+        object.kind == 'ImageRepository' ? object.?spec.?image.orValue('') :
+        object.?spec.?url.orValue('')
+    - name: sourceUrl
+      expression: >-
+        object.kind == 'Bucket' && variables.source != '' && !variables.source.contains('://')
+        ? 'https://' + variables.source
+        : variables.source
+    - name: isImageReference
+      expression: object.kind == 'ImageRepository' && isImage(variables.source)
+    - name: isUrl
+      expression: isURL(variables.sourceUrl)
+    - name: sourceScheme
+      expression: >-
+        variables.isUrl ? url(variables.sourceUrl).getScheme().lowerAscii() : ''
+    - name: sourceHost
+      expression: >-
+        object.kind == 'ImageRepository'
+        ? (variables.isImageReference ? image(variables.source).registry().lowerAscii() : '')
+        : (variables.isUrl ? url(variables.sourceUrl).getHostname().lowerAscii() : '')
+    - name: rawAuthority
+      expression: >-
+        variables.isUrl && variables.sourceUrl.split('/').size() > 2
+        ? variables.sourceUrl.split('/')[2].lowerAscii()
+        : ''
+    - name: sourcePath
+      expression: >-
+        object.kind == 'ImageRepository'
+        ? (variables.isImageReference ? '/' + image(variables.source).repository() : '/')
+        : (variables.isUrl && url(variables.sourceUrl).getEscapedPath() != ''
+          ? url(variables.sourceUrl).getEscapedPath()
+          : '/')
+    - name: imageRepositorySegments
+      expression: >-
+        variables.isImageReference ? image(variables.source).repository().split('/') : []
+    - name: pathSegments
+      expression: variables.sourcePath.split('/').filter(segment, segment != '')
+    - name: canonicalPath
+      expression: >-
+        (variables.pathSegments.size() == 0
+        ? variables.sourcePath == '/'
+        : (variables.sourcePath == '/' + variables.pathSegments.join('/')
+          || variables.sourcePath == '/' + variables.pathSegments.join('/') + '/'))
+        && variables.pathSegments.all(segment,
+        segment != '.' && segment != '..' && !segment.contains('%'))
+        && (object.kind != 'ImageRepository'
+        || variables.imageRepositorySegments.all(segment,
+        segment != '' && segment != '.' && segment != '..' && !segment.contains('%')))
+    - name: allowedSourcePrefixes
+      expression: >-
+        (object.kind == 'GitRepository' ? ['github.com/myorg', '*.myorg.com'] :
+        object.kind == 'Bucket' ? ['*.myorg.com'] :
+        object.kind == 'HelmRepository' ? ['*.myorg.com'] :
+        object.kind == 'OCIRepository' ? ['ghcr.io/myorg'] :
+        object.kind == 'ImageRepository' ? ['ghcr.io/myorg'] : [])
+        + exceptions.allowedValues
+    - name: supportedUrl
+      expression: >-
+        variables.isUrl
+        && !variables.sourceUrl.contains('?')
+        && !variables.sourceUrl.contains('#')
+        && (
+          (object.kind == 'GitRepository'
+          && ((variables.sourceScheme == 'https' && variables.rawAuthority == variables.sourceHost)
+          || (variables.sourceScheme == 'ssh' && variables.rawAuthority == 'git@' + variables.sourceHost)))
+          || (object.kind == 'Bucket' && variables.sourceScheme == 'https'
+          && variables.rawAuthority == variables.sourceHost)
+          || (object.kind == 'HelmRepository' && variables.sourceScheme == 'https'
+          && variables.rawAuthority == variables.sourceHost)
+          || (object.kind == 'OCIRepository' && variables.sourceScheme == 'oci'
+          && variables.rawAuthority == variables.sourceHost)
+        )
+    - name: validSource
+      expression: >-
+        object.kind == 'ImageRepository' ? variables.isImageReference : variables.supportedUrl
+    - name: sourceAllowed
+      expression: >-
+        variables.validSource
+        && variables.canonicalPath
+        && variables.allowedSourcePrefixes.exists(token,
+          (token.split('/')[0].startsWith('*.')
+            ? variables.sourceHost.endsWith(token.split('/')[0].substring(1, token.split('/')[0].size()).lowerAscii())
+            : variables.sourceHost == token.split('/')[0].lowerAscii())
+          && (token.split('/').size() == 1
+            || (token.substring(token.split('/')[0].size(), token.size()) != '/'
+              && (variables.sourcePath + '/').startsWith(token.substring(token.split('/')[0].size(), token.size()) + '/'))))
+  validations:
+    - expression: variables.sourceAllowed
+      messageExpression: >-
+        'spec.' + (object.kind == 'Bucket' ? 'endpoint' :
+        object.kind == 'ImageRepository' ? 'image' : 'url')
+        + ' must use an allowed host and path prefix. Git scp-style URLs are not accepted.'

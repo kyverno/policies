@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: generate-networkpolicy-targets
+  annotations:
+    policies.kyverno.io/title: Generate Network Policies for Multiple Namespaces
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: ConfigMap, NetworkPolicy
+    policies.kyverno.io/minversion: 1.20.0
+    policies.kyverno.io/description: >-
+      A ConfigMap named network-policy-targets in platform-system supplies a
+      comma-separated namespaces key. Generate a default-deny ingress
+      NetworkPolicy in each listed namespace using a CEL loop. Whitespace and
+      empty entries are ignored. Target namespaces must
+      already exist. Only trusted administrators should edit this ConfigMap.
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["configmaps"]
+  matchConditions:
+  - name: trusted-target-list
+    expression: >-
+      object.metadata.namespace == 'platform-system' &&
+      object.metadata.name == 'network-policy-targets' &&
+      has(object.data) && 'namespaces' in object.data
+  variables:
+  - name: targets
+    expression: >-
+      object.data.namespaces.split(',').map(ns, ns.trim()).filter(ns, ns != '')
+  - name: networkPolicy
+    expression: >-
+      [{
+        "apiVersion": dyn("networking.k8s.io/v1"),
+        "kind": dyn("NetworkPolicy"),
+        "metadata": dyn({"name": "default-deny-ingress"}),
+        "spec": dyn({"podSelector": dyn({}), "policyTypes": ["Ingress"]})
+      }]
+  generate:
+  - expression: variables.targets.all(ns, generator.Apply(ns, variables.networkPolicy))

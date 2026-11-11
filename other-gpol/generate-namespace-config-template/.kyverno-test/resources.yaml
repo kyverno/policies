@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: template-tenant
+  labels:
+    platform.example.com/environment: staging
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: template-unmanaged

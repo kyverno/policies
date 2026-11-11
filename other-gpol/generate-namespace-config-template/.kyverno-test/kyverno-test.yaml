@@ -1,0 +1,20 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-namespace-config-template
+policies:
+- ../generate-namespace-config-template.yaml
+resources:
+- resources.yaml
+results:
+- policy: generate-namespace-config-template
+  kind: Namespace
+  resources: [template-tenant]
+  result: pass
+  isGeneratingPolicy: true
+  generatedResource: generated.yaml
+- policy: generate-namespace-config-template
+  kind: Namespace
+  resources: [template-unmanaged]
+  result: skip
+  isGeneratingPolicy: true

@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: expired
+  labels:
+    cleanup.example.com/enabled: "true"
+  annotations:
+    cleanup.example.com/expires-at: "2000-01-01T00:00:00Z"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: invalid-expiration
+  labels:
+    cleanup.example.com/enabled: "true"
+  annotations:
+    cleanup.example.com/expires-at: not-a-timestamp
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: future
+  labels:
+    cleanup.example.com/enabled: "true"
+  annotations:
+    cleanup.example.com/expires-at: "2999-01-01T00:00:00Z"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: no-expiration
+  labels:
+    cleanup.example.com/enabled: "true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: not-opted-in
+  annotations:
+    cleanup.example.com/expires-at: "2000-01-01T00:00:00Z"

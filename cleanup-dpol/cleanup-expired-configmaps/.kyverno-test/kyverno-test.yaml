@@ -1,0 +1,34 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-expired-configmaps
+policies:
+- ../cleanup-expired-configmaps.yaml
+resources:
+- resources.yaml
+results:
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-expired-configmaps
+  resources:
+  - invalid-expiration
+  result: error
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-expired-configmaps
+  resources:
+  - future
+  - no-expiration
+  result: fail
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-expired-configmaps
+  resources:
+  - expired
+  result: pass
+- isDeletingPolicy: true
+  kind: ConfigMap
+  policy: cleanup-expired-configmaps
+  resources:
+  - not-opted-in
+  result: skip

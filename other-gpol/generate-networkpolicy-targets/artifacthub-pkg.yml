@@ -1,0 +1,32 @@
+name: generate-networkpolicy-targets
+version: 1.0.0
+displayName: Generate Network Policies for Multiple Namespaces
+createdAt: "2026-11-03T00:00:00Z"
+description: >-
+  A ConfigMap named network-policy-targets in platform-system supplies a
+  comma-separated namespaces key. Generate a default-deny ingress
+  NetworkPolicy in each listed namespace using a CEL loop. Whitespace and
+  empty entries are ignored. Target namespaces must
+  already exist. Only trusted administrators should edit this ConfigMap.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-gpol/generate-networkpolicy-targets/generate-networkpolicy-targets.yaml
+  ```
+keywords:
+- kyverno
+- Other
+readme: |
+  A ConfigMap named network-policy-targets in platform-system supplies a
+  comma-separated namespaces key. Generate a default-deny ingress
+  NetworkPolicy in each listed namespace using a CEL loop. Whitespace and
+  empty entries are ignored. Target namespaces must
+  already exist. Only trusted administrators should edit this ConfigMap.
+
+  Requires Kyverno 1.20 (main). A NetworkPolicy-capable CNI is needed to enforce
+  the generated rules; the tests check resource generation, not network isolation.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: Other
+  kyverno/subject: ConfigMap, NetworkPolicy
+digest: 83b97f98a243f3b51d80314f15f97fc193fd1964f0d30fc47bc6b1b82d056b0e
