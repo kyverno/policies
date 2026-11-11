@@ -1,0 +1,72 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-requestauthentication-jwksuri
+  annotations:
+    policies.kyverno.io/title: Restrict RequestAuthentication JWKS URI in CEL expressions
+    policies.kyverno.io/category: Istio in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: RequestAuthentication
+    policies.kyverno.io/description: >-
+      Istio fetches the JSON Web Key Set (JWKS) that verifies JWTs from
+      jwksUri, or through OpenID discovery from the issuer. Over plain http,
+      an attacker on the network path can replace the keys and forge tokens.
+      This policy requires https for these URLs and rejects IP addresses and
+      localhost, which catches test leftovers and mistakes. To restrict JWKS
+      fetches to your identity providers, list their host names in the
+      allowedHosts variable.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [security.istio.io]
+        apiVersions: [v1, v1beta1]
+        operations: [CREATE, UPDATE]
+        resources: [requestauthentications]
+  variables:
+    # Keep this variable first; the Chainsaw test patches it by index and
+    # checks its name. An empty list allows any DNS host name.
+    - name: allowedHosts
+      expression: "dyn([])"
+    # Each entry is [path, url] for a URL that Istio fetches. An inline jwks
+    # means no fetch. Without a JWKS URI, Istio uses OpenID discovery on the
+    # issuer. Istio also accepts the legacy jwks_uri field name.
+    - name: fetchedUrls
+      expression: >-
+        cel.bind(rules, object.spec.?jwtRules.orValue([]),
+          lists.range(size(rules))
+            .filter(i, rules[i].?jwks.orValue('') == '')
+            .map(i, cel.bind(p, 'spec.jwtRules[' + string(i) + ']',
+              rules[i].?jwksUri.orValue('') != '' ?
+                [[p + '.jwksUri', string(rules[i].jwksUri)]] :
+              rules[i].?jwks_uri.orValue('') != '' ?
+                [[p + '.jwks_uri', string(rules[i].jwks_uri)]] :
+              rules[i].?issuer.orValue('').contains('://') ?
+                [[p + '.issuer', string(rules[i].issuer)]] :
+                []))
+            .flatten())
+    # A DNS host name ends in a label that starts with a letter, so IPv4 and
+    # IPv6 addresses, including numeric forms such as 2130706433, don't match.
+    - name: badUrls
+      expression: >-
+        variables.fetchedUrls.filter(e, !(isURL(e[1]) &&
+          cel.bind(u, url(e[1]), cel.bind(h, u.getHostname().lowerAscii(),
+            u.getScheme().lowerAscii() == 'https' &&
+            h.matches('^([a-z0-9]([-a-z0-9]*[a-z0-9])?\\.)*[a-z]([-a-z0-9]*[a-z0-9])?\\.?$') &&
+            !h.matches('^(.*\\.)?localhost\\.?$') &&
+            (size(variables.allowedHosts) == 0 ||
+              h in variables.allowedHosts.map(a, string(a).lowerAscii()))))))
+  validations:
+    - expression: size(variables.badUrls) == 0
+      messageExpression: >-
+        'JWKS and OpenID discovery URLs must use https and a DNS host name, not
+        an IP address or localhost' + (size(variables.allowedHosts) == 0 ? '' :
+        ', and the host must be one of: ' + variables.allowedHosts.join(', ')) +
+        '. Update these fields: ' + variables.badUrls.map(e, e[0] + ' = ' + e[1]).join(', ')

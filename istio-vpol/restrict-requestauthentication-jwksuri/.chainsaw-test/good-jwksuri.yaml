@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: good-jwksuri
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://idp.example.com
+    jwksUri: https://idp.example.com/.well-known/jwks.json

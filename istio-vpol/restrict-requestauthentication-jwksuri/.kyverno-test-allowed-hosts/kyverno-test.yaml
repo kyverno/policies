@@ -1,0 +1,39 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-requestauthentication-jwksuri-allowed-hosts
+# policy.yaml is a copy of the policy with allowedHosts set to
+# ['IDP.Example.com']. The mixed case checks that entries are compared
+# without case. Regenerate it whenever the policy changes.
+policies:
+- policy.yaml
+resources:
+- ../.chainsaw-test/good-jwksuri.yaml
+- ../.chainsaw-test/good-issuer-discovery.yaml
+- ../.chainsaw-test/bad-http.yaml
+- ../.chainsaw-test/other-host.yaml
+- ../.chainsaw-test/good-google.yaml
+- ../.kyverno-test/resources.yaml
+results:
+- kind: RequestAuthentication
+  policy: restrict-requestauthentication-jwksuri
+  resources:
+  - good-jwksuri
+  # Host names are compared without case.
+  - edge-good-uppercase
+  - edge-good-port
+  result: pass
+- kind: RequestAuthentication
+  policy: restrict-requestauthentication-jwksuri
+  resources:
+  # The https and host name checks still apply to listed hosts.
+  - bad-http
+  # Hosts that aren't listed fail, including for OpenID discovery.
+  - other-host
+  - good-issuer-discovery
+  # Public identity providers fail too unless they're listed.
+  - good-google
+  - edge-good-cluster-dns
+  # The allowlist stops names that resolve to private addresses.
+  - edge-good-dns-to-private-ip
+  result: fail

@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: bad-http
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://idp.example.com
+    jwksUri: http://idp.example.com/jwks

@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-requestauthentication-jwksuri-exception
+policies:
+- ../restrict-requestauthentication-jwksuri.yaml
+resources:
+- ../.chainsaw-test/exception-ra.yaml
+- ../.chainsaw-test/exception-ra-tenant.yaml
+- ../.chainsaw-test/good-jwksuri.yaml
+- ../.chainsaw-test/bad-http.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts auth/keycloak-internal, so it's skipped.
+- policy: restrict-requestauthentication-jwksuri
+  kind: RequestAuthentication
+  resources: [auth/keycloak-internal]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: restrict-requestauthentication-jwksuri
+  kind: RequestAuthentication
+  resources: [default/keycloak-internal]
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-requestauthentication-jwksuri
+  kind: RequestAuthentication
+  resources: [good-jwksuri]
+  result: pass
+  isValidatingPolicy: true
+- policy: restrict-requestauthentication-jwksuri
+  kind: RequestAuthentication
+  resources: [bad-http]
+  result: fail
+  isValidatingPolicy: true

@@ -1,0 +1,12 @@
+# A public identity provider over https.
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: good-google
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://accounts.google.com
+    jwksUri: https://www.googleapis.com/oauth2/v3/certs

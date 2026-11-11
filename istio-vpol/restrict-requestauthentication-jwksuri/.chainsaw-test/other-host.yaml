@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: other-host
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://other.example.com
+    jwksUri: https://other.example.com/jwks
