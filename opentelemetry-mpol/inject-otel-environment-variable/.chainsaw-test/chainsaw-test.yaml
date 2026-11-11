@@ -22,3 +22,11 @@ spec:
         file: pod-patched.yaml
     - error:
         file: pod-not-patched.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: controllers.yaml
+    - error:
+        file: controllers-not-patched.yaml
+    - assert:
+        file: job-pod-patched.yaml
