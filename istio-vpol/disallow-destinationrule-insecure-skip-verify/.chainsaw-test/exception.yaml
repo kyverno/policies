@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: disallow-destinationrule-insecure-skip-verify-dev
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: disallow-destinationrule-insecure-skip-verify
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: self-signed-dev-backend
+    expression: object.metadata.namespace == 'dev-backends' && object.metadata.name == 'self-signed-backend'

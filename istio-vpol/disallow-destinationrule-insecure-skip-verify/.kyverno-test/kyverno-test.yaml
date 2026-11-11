@@ -1,0 +1,50 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-destinationrule-insecure-skip-verify
+policies:
+- ../disallow-destinationrule-insecure-skip-verify.yaml
+resources:
+- ../.chainsaw-test/good-verified.yaml
+- ../.chainsaw-test/good-skip-false.yaml
+- ../.chainsaw-test/good-no-tls.yaml
+- ../.chainsaw-test/bad-top-level.yaml
+- ../.chainsaw-test/bad-port-level.yaml
+- ../.chainsaw-test/bad-subset.yaml
+- ../.chainsaw-test/bad-subset-port-level.yaml
+- ../.chainsaw-test/bad-mixed.yaml
+- resources.yaml
+results:
+- kind: DestinationRule
+  policy: disallow-destinationrule-insecure-skip-verify
+  resources:
+  - bad-top-level
+  - bad-port-level
+  - bad-subset
+  - bad-subset-port-level
+  - bad-mixed
+  - edge-bad-v1
+  - edge-bad-v1alpha3
+  # Without a mode, the policy still flags the field.
+  - edge-bad-no-mode
+  # The port-level DISABLE entry is skipped; the top-level one is flagged.
+  - edge-bad-port-disable-top-simple
+  # Malformed entries are skipped; later valid entries are still checked.
+  - edge-bad-after-malformed
+  result: fail
+- kind: DestinationRule
+  policy: disallow-destinationrule-insecure-skip-verify
+  resources:
+  - good-verified
+  - good-skip-false
+  - good-no-tls
+  - edge-good-host-only
+  - edge-good-no-spec
+  - edge-good-null-skip
+  - edge-good-empty-lists
+  - edge-good-malformed
+  # insecureSkipVerify outside a tls block isn't a TLS setting.
+  - edge-good-other-fields
+  # An explicit DISABLE mode originates no TLS.
+  - edge-good-disable-mode
+  result: pass

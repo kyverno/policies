@@ -1,0 +1,7 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: PolicyReport
+scope:
+  kind: DestinationRule
+  name: existing-insecure
+(results[?policy == 'disallow-destinationrule-insecure-skip-verify']):
+- result: fail

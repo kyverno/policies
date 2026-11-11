@@ -115,6 +115,17 @@ spec:
     singular: destinationrule
   scope: Namespaced
   versions:
+  # Istio 1.22 and later serve v1. Its schema is left open to keep this
+  # file small.
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: false
+    subresources:
+      status: {}
   - additionalPrinterColumns:
     - description: The name of a service from the service registry
       jsonPath: .spec.host

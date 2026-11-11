@@ -1,0 +1,24 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: good-verified
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      credentialName: api-example-ca
+      sni: api.example.com
+    portLevelSettings:
+    - port:
+        number: 8443
+      tls:
+        mode: SIMPLE
+        caCertificates: /etc/certs/ca.pem
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      tls:
+        mode: ISTIO_MUTUAL
