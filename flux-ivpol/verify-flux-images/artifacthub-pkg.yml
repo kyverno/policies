@@ -15,7 +15,7 @@ keywords:
 readme: |
   Verifies keyless Cosign signatures for Flux source, kustomize, helm, notification, image-reflector, and image-automation controller images on GHCR and Docker Hub. Signatures must use GitHub Actions OIDC and have a Rekor transparency-log entry. The anchored identity regex accepts the reusable `fluxcd/gha-workflows/.github/workflows/controller-release.yaml` workflow at tag `v0.17.0`, which the six controller repositories' release workflows invoke. Update this exact identity when Flux changes that reusable workflow pin. The separate `fluxcd/flux2` release workflow signs the Flux manifests artifact, not these controller images, so it is intentionally not accepted here.
 
-  By default, signature violations are reported in Audit mode and are not blocked. Set `spec.validationActions` to `[Deny]` to enforce verification.
+  By default, signature violations are reported in Audit mode and are not blocked. Webhook failures are ignored to keep temporary registry or transparency-log outages from blocking admission. Set `spec.validationActions` to `[Deny]` and `spec.failurePolicy` to `Fail` for fail-closed enforcement.
 
   Image tags and digest handling preserve the legacy policy: this policy neither mutates tags to digests nor requires digest references. Background evaluation is disabled. It verifies matched regular and init containers in Pods and built-in pod-controller templates, including ReplicationControllers. Ephemeral containers are checked on Pod updates to the `pods/ephemeralcontainers` subresource.
 
@@ -28,4 +28,4 @@ annotations:
   kyverno/category: "Flux, Software Supply Chain Security"
   kyverno/kubernetesVersion: "1.23"
   kyverno/subject: "Pod"
-digest: 3fdc34f2ff521b6152a1ea26098bea92853d473c25083eaa63c6bf46e07f5ffd
+digest: 5496ba1b770b82b70e34b0e31e8bde34cd7f81dd689c1508726daf5bd76321e6

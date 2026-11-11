@@ -21,6 +21,7 @@ spec:
                 name: verify-flux-images
               spec:
                 validationActions: [Deny]
+                failurePolicy: Fail
     - name: verify-current-controller-signature
       timeouts:
         exec: 4m

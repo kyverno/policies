@@ -14,6 +14,7 @@ metadata:
       to GHCR and Docker Hub using their GitHub Actions release workflows.
 spec:
   validationActions: [Audit]
+  failurePolicy: Ignore
   webhookConfiguration:
     timeoutSeconds: 30
   evaluation:

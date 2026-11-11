@@ -7,7 +7,7 @@ policies:
 resources:
   - resources.yaml
 results:
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: Pod
     policy: verify-flux-images
     resources:
@@ -16,85 +16,85 @@ results:
       - lookalike-repository
       - lookalike-container-categories
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: Pod
     policy: verify-flux-images
     resources:
       - unsigned-digest-only-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: Deployment
     policy: verify-flux-images
     resources:
       - unrelated-controller-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: ReplicationController
     policy: verify-flux-images
     resources:
       - unrelated-replication-controller-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: ReplicationController
     policy: verify-flux-images
     resources:
       - unsigned-replication-controller-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: StatefulSet
     policy: verify-flux-images
     resources:
       - unrelated-statefulset-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: StatefulSet
     policy: verify-flux-images
     resources:
       - unsigned-statefulset-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: DaemonSet
     policy: verify-flux-images
     resources:
       - unrelated-daemonset-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: DaemonSet
     policy: verify-flux-images
     resources:
       - unsigned-daemonset-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: ReplicaSet
     policy: verify-flux-images
     resources:
       - unrelated-replicaset-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: ReplicaSet
     policy: verify-flux-images
     resources:
       - unsigned-replicaset-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: Job
     policy: verify-flux-images
     resources:
       - unrelated-job-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: Job
     policy: verify-flux-images
     resources:
       - unsigned-job-image
     result: fail
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: CronJob
     policy: verify-flux-images
     resources:
       - unrelated-cronjob-image
     result: pass
-  - isValidatingPolicy: true
+  - isImageValidatingPolicy: true
     kind: CronJob
     policy: verify-flux-images
     resources:
