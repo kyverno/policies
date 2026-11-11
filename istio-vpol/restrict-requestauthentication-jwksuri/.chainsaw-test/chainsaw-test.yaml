@@ -7,6 +7,17 @@ metadata:
 spec:
   template: false
   steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
     # existing-private-ip is created before the policy exists.
     - name: step-01
       try:
