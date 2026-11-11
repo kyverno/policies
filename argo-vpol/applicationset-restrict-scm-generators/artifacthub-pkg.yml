@@ -77,8 +77,9 @@ readme: |
   To trust more namespaces, add them to the `trustedNamespaces` variable, for
   example `['argocd', 'argocd-platform']`. To exempt a single ApplicationSet,
   create a Kyverno `PolicyException` that references this policy in
-  `spec.policyRefs` and matches only that ApplicationSet in
-  `spec.matchConditions`. See the
+  `spec.policyRefs` and matches that ApplicationSet's namespace and name in
+  `spec.matchConditions`. Matching on the name alone would exempt the same
+  name in every namespace. See the
   [tested example](https://github.com/kyverno/policies/blob/main/argo-vpol/applicationset-restrict-scm-generators/.chainsaw-test/exception.yaml).
 
   Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/

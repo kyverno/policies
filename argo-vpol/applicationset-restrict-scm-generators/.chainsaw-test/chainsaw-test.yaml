@@ -75,14 +75,22 @@ spec:
               - check:
                   "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[1].scmProvider'))": true
             file: bad-update.yaml
-    # The PolicyException allows platform-scm; without it, the same
-    # ApplicationSet is blocked.
+    # The PolicyException allows platform-scm in platform-team only. An
+    # ApplicationSet with the same name in another namespace is still blocked,
+    # and so is platform-scm once the exception is removed.
     - name: step-05
       try:
+        - apply:
+            file: platform-namespace.yaml
         - apply:
             file: exception.yaml
         - apply:
             file: exception-appset.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].scmProvider'))": true
+            file: exception-appset-tenant.yaml
         - delete:
             file: exception-appset.yaml
         - delete:

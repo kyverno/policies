@@ -9,4 +9,4 @@ spec:
     kind: ValidatingPolicy
   matchConditions:
   - name: platform-applicationset
-    expression: object.metadata.name == 'platform-scm'
+    expression: object.metadata.namespace == 'platform-team' && object.metadata.name == 'platform-scm'

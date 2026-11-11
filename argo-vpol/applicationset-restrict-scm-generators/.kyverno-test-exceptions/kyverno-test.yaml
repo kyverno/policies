@@ -6,16 +6,23 @@ policies:
 - ../applicationset-restrict-scm-generators.yaml
 resources:
 - ../.chainsaw-test/exception-appset.yaml
+- ../.chainsaw-test/exception-appset-tenant.yaml
 - ../.chainsaw-test/bad-scm-provider.yaml
 - ../.chainsaw-test/good-list.yaml
 exceptions:
 - ../.chainsaw-test/exception.yaml
 results:
-# The PolicyException exempts the platform ApplicationSet, so it's skipped.
+# The PolicyException exempts platform-team/platform-scm, so it's skipped.
 - policy: applicationset-restrict-scm-generators
   kind: ApplicationSet
-  resources: [platform-scm]
+  resources: [platform-team/platform-scm]
   result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: applicationset-restrict-scm-generators
+  kind: ApplicationSet
+  resources: [default/platform-scm]
+  result: fail
   isValidatingPolicy: true
 - policy: applicationset-restrict-scm-generators
   kind: ApplicationSet
