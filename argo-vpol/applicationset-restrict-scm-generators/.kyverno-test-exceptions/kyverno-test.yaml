@@ -1,0 +1,29 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: applicationset-restrict-scm-generators-exception
+policies:
+- ../applicationset-restrict-scm-generators.yaml
+resources:
+- ../.chainsaw-test/exception-appset.yaml
+- ../.chainsaw-test/bad-scm-provider.yaml
+- ../.chainsaw-test/good-list.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts the platform ApplicationSet, so it's skipped.
+- policy: applicationset-restrict-scm-generators
+  kind: ApplicationSet
+  resources: [platform-scm]
+  result: skip
+  isValidatingPolicy: true
+- policy: applicationset-restrict-scm-generators
+  kind: ApplicationSet
+  resources: [good-list]
+  result: pass
+  isValidatingPolicy: true
+- policy: applicationset-restrict-scm-generators
+  kind: ApplicationSet
+  resources: [bad-scm-provider]
+  result: fail
+  isValidatingPolicy: true

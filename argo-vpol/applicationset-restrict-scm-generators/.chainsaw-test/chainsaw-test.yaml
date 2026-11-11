@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: applicationset-restrict-scm-generators
+spec:
+  template: false
+  steps:
+    # existing-scm-provider is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: existing-scm-provider.yaml
+    # A background scan reports the existing ApplicationSet in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../applicationset-restrict-scm-generators.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: applicationset-restrict-scm-generators
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    # The test namespace isn't a trusted namespace.
+    - name: step-03
+      try:
+        - apply:
+            file: good-list.yaml
+        - apply:
+            file: good-git-matrix.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].scmProvider'))": true
+            file: bad-scm-provider.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].pullRequest'))": true
+            file: bad-pull-request.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].matrix.generators[1].scmProvider'))": true
+            file: bad-matrix.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].merge.generators[1].matrix.generators[1].pullRequest'))": true
+            file: bad-nested.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[1].pullRequest, spec.generators[2].matrix.generators[0].scmProvider'))": true
+            file: bad-mixed.yaml
+    # Adding an scmProvider generator to the existing good-list is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[1].scmProvider'))": true
+            file: bad-update.yaml
+    # The PolicyException allows platform-scm; without it, the same
+    # ApplicationSet is blocked.
+    - name: step-05
+      try:
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-appset.yaml
+        - delete:
+            file: exception-appset.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy applicationset-restrict-scm-generators failed') && contains($error, 'spec.generators[0].scmProvider'))": true
+            file: exception-appset.yaml
+    # Add the test namespace to trustedNamespaces, wait until Kyverno accepts
+    # the generators there, then create and update ApplicationSets that use them.
+    - name: step-06
+      try:
+        - script:
+            content: |
+              set -eu
+              patch=$(printf '[{"op":"test","path":"/spec/variables/0/name","value":"trustedNamespaces"},{"op":"replace","path":"/spec/variables/0/expression","value":"[%s, %s]"}]' "'argocd'" "'$NAMESPACE'")
+              kubectl patch validatingpolicy applicationset-restrict-scm-generators --type json -p "$patch"
+        - script:
+            content: |
+              set -eu
+              for attempt in $(seq 1 30); do
+                if kubectl create --dry-run=server -n "$NAMESPACE" -f trusted-scm-provider.yaml >/dev/null 2>&1; then exit 0; fi
+                sleep 1
+              done
+              echo 'Kyverno did not accept scmProvider generators in the trusted test namespace'
+              exit 1
+        - apply:
+            file: trusted-scm-provider.yaml
+        - apply:
+            file: bad-update.yaml

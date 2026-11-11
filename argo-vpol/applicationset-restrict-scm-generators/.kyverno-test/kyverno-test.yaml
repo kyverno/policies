@@ -1,0 +1,43 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: applicationset-restrict-scm-generators
+policies:
+- ../applicationset-restrict-scm-generators.yaml
+resources:
+- ../.chainsaw-test/good-list.yaml
+- ../.chainsaw-test/good-git-matrix.yaml
+- ../.chainsaw-test/bad-scm-provider.yaml
+- ../.chainsaw-test/bad-pull-request.yaml
+- ../.chainsaw-test/bad-matrix.yaml
+- ../.chainsaw-test/bad-nested.yaml
+- ../.chainsaw-test/bad-mixed.yaml
+- resources.yaml
+results:
+- kind: ApplicationSet
+  policy: applicationset-restrict-scm-generators
+  resources:
+  - bad-scm-provider
+  - bad-pull-request
+  - bad-matrix
+  - bad-nested
+  - bad-mixed
+  # Only an exact match of the trusted namespace is allowed.
+  - edge-bad-similar-namespace
+  - edge-bad-merge-in-matrix
+  - edge-bad-merge-top
+  - edge-bad-both-nested
+  result: fail
+- kind: ApplicationSet
+  policy: applicationset-restrict-scm-generators
+  resources:
+  - good-list
+  - good-git-matrix
+  # The trusted namespace may use these generators at any level.
+  - edge-good-trusted
+  - edge-good-trusted-nested
+  - edge-good-empty-generators
+  - edge-good-git-clusters
+  # Argo CD ignores a matrix or merge at the terminal level.
+  - edge-good-terminal-matrix-ignored
+  result: pass

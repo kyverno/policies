@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: applicationset-restrict-scm-generators-platform
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: applicationset-restrict-scm-generators
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: platform-applicationset
+    expression: object.metadata.name == 'platform-scm'

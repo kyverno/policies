@@ -1,0 +1,285 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-good-trusted
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - pullRequest:
+      github:
+        owner: example
+        repo: apps
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-good-trusted-nested
+  namespace: argocd
+spec:
+  generators:
+  - merge:
+      mergeKeys: [name]
+      generators:
+      - list:
+          elements:
+          - name: one
+      - matrix:
+          generators:
+          - git:
+              repoURL: https://github.com/example/apps.git
+              revision: HEAD
+              directories:
+              - path: apps/*
+          - pullRequest:
+              github:
+                owner: example
+                repo: apps
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-good-empty-generators
+  namespace: team-one
+spec:
+  generators: []
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-good-git-clusters
+  namespace: team-one
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/example/apps.git
+      revision: HEAD
+      directories:
+      - path: apps/*
+  - clusters: {}
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-good-terminal-matrix-ignored
+  namespace: team-one
+spec:
+  generators:
+  - matrix:
+      generators:
+      - matrix:
+          generators:
+          - list:
+              elements:
+              - name: one
+          - matrix:
+              generators:
+              - scmProvider:
+                  github:
+                    organization: example
+              - git:
+                  repoURL: https://github.com/example/apps.git
+                  revision: HEAD
+                  directories:
+                  - path: apps/*
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-bad-similar-namespace
+  namespace: argocd-apps
+spec:
+  generators:
+  - scmProvider:
+      github:
+        organization: example
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-bad-merge-in-matrix
+  namespace: team-one
+spec:
+  generators:
+  - matrix:
+      generators:
+      - list:
+          elements:
+          - name: one
+      - merge:
+          mergeKeys: [name]
+          generators:
+          - pullRequest:
+              github:
+                owner: example
+                repo: apps
+          - git:
+              repoURL: https://github.com/example/apps.git
+              revision: HEAD
+              directories:
+              - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-bad-merge-top
+  namespace: team-one
+spec:
+  generators:
+  - merge:
+      mergeKeys: [name]
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - list:
+          elements:
+          - name: one
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: edge-bad-both-nested
+  namespace: team-one
+spec:
+  generators:
+  - matrix:
+      generators:
+      - matrix:
+          generators:
+          - scmProvider:
+              github:
+                organization: example
+          - pullRequest:
+              github:
+                owner: example
+                repo: apps
+      - list:
+          elements:
+          - name: one
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
