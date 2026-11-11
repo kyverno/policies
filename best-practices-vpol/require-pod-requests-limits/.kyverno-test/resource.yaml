@@ -94,3 +94,83 @@ spec:
         cpu: "0.5"
       limits:
         memory: "256Mi"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ephemeral-without-resources
+spec:
+  containers:
+  - name: app
+    image: nginx:1.27
+    resources:
+      requests: {cpu: "100m", memory: "64Mi"}
+      limits: {memory: "128Mi"}
+  initContainers:
+  - name: init
+    image: busybox:1.36
+    resources:
+      requests: {cpu: "100m", memory: "64Mi"}
+      limits: {memory: "128Mi"}
+  ephemeralContainers:
+  - name: debugger
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-missing-requests
+spec:
+  containers:
+  - name: app
+    image: nginx:1.27
+    resources:
+      requests: {cpu: "100m", memory: "64Mi"}
+      limits: {memory: "128Mi"}
+  initContainers:
+  - name: init
+    image: busybox:1.36
+    resources:
+      limits: {memory: "128Mi"}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: autogen-missing-limit
+spec:
+  selector:
+    matchLabels:
+      app: test
+  template:
+    metadata:
+      labels:
+        app: test
+    spec:
+      containers:
+      - name: app
+        image: nginx:1.27
+        resources:
+          requests: {cpu: "100m", memory: "64Mi"}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: autogen-init-missing-requests
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: app
+            image: nginx:1.27
+            resources:
+              requests: {cpu: "100m", memory: "64Mi"}
+              limits: {memory: "128Mi"}
+          initContainers:
+          - name: init
+            image: busybox:1.36
+            resources:
+              limits: {memory: "128Mi"}
+          restartPolicy: OnFailure
