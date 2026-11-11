@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: check-requests-within-vpa-bounds
+spec:
+  template: false
+  steps:
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: ../check-requests-within-vpa-bounds.yaml
+        # Enforce the policy, but only in the test namespace so that workloads
+        # elsewhere in the cluster are not blocked while the test runs.
+        - patch:
+            template: true
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: check-requests-within-vpa-bounds
+              spec:
+                validationActions: [Deny]
+                matchConstraints:
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ($namespace)
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: vpas.yaml
+        # The recommender writes recommendations through the status subresource, so the test
+        # does the same. vpa-pending-deploy is left without a recommendation on purpose.
+        - script:
+            content: |
+              set -e
+              for vpa in vpa-good-deploy vpa-over-deploy vpa-under-sts vpa-missing-ds; do
+                kubectl -n "$NAMESPACE" patch verticalpodautoscaler "$vpa" --subresource=status --type=merge -p '{
+                  "status": {"recommendation": {"containerRecommendations": [{
+                    "containerName": "app",
+                    "lowerBound": {"cpu": "100m", "memory": "134217728"},
+                    "target": {"cpu": "250m", "memory": "262144k"},
+                    "upperBound": {"cpu": "500m", "memory": "536870912"}
+                  }]}}}'
+              done
+    - name: step-04
+      try:
+        - apply:
+            file: good-resources.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-resources.yaml
+    - name: step-05
+      try:
+        # Raising a request above the upper bound on an existing workload is rejected,
+        # and the message names the container, the resource, and the recommended range.
+        - patch:
+            expect:
+              - check:
+                  (contains($error, 'memory request 1Gi is not within 128Mi to 512Mi')): true
+            resource:
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: good-deploy
+              spec:
+                template:
+                  spec:
+                    # A merge patch replaces the whole containers list, so the full container is given.
+                    containers:
+                      - name: app
+                        image: ghcr.io/kyverno/test-busybox:latest
+                        command: [sleep, "3600"]
+                        resources:
+                          requests:
+                            cpu: 250m
+                            memory: 1Gi

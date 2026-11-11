@@ -1,0 +1,59 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-good-deploy
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: good-deploy
+  updatePolicy:
+    updateMode: "Off"
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-over-deploy
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: over-deploy
+  updatePolicy:
+    updateMode: "Off"
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-pending-deploy
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: pending-deploy
+  updatePolicy:
+    updateMode: "Off"
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-under-sts
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: StatefulSet
+    name: under-sts
+  updatePolicy:
+    updateMode: "Off"
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: vpa-missing-ds
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: DaemonSet
+    name: missing-ds
+  updatePolicy:
+    updateMode: "Off"

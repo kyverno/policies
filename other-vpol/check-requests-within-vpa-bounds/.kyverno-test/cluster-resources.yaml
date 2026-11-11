@@ -1,0 +1,245 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: cluster-resources
+spec:
+  crds:
+  - vpa-crd.yaml
+  resources:
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: good-deploy
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-edge-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: edge-deploy
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-over-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: over-deploy
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-pending-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: pending-deploy
+      updatePolicy:
+        updateMode: "Off"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-name-clash
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: StatefulSet
+        name: name-clash
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 10m
+            memory: "1048576"
+          target:
+            cpu: 10m
+            memory: "1048576"
+          upperBound:
+            cpu: 10m
+            memory: "1048576"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-terminating-deploy
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: terminating-deploy
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 10m
+            memory: "1048576"
+          target:
+            cpu: 10m
+            memory: "1048576"
+          upperBound:
+            cpu: 10m
+            memory: "1048576"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-sts
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: StatefulSet
+        name: good-sts
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-under-sts
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: StatefulSet
+        name: under-sts
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-good-ds
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: good-ds
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 500m
+            memory: "500M"
+          target:
+            cpu: 1
+            memory: "1G"
+          upperBound:
+            cpu: "2"
+            memory: "2G"
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: vpa-missing-ds
+      namespace: default
+    spec:
+      targetRef:
+        apiVersion: apps/v1
+        kind: DaemonSet
+        name: missing-ds
+      updatePolicy:
+        updateMode: "Off"
+    status:
+      recommendation:
+        containerRecommendations:
+        - containerName: app
+          lowerBound:
+            cpu: 100m
+            memory: "134217728"
+          target:
+            cpu: 250m
+            memory: "262144k"
+          upperBound:
+            cpu: 500m
+            memory: "536870912"

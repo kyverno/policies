@@ -1,0 +1,85 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: check-requests-within-vpa-bounds
+  annotations:
+    policies.kyverno.io/title: Check Resource Requests Against VPA Recommendations in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.37"
+    policies.kyverno.io/subject: Deployment, StatefulSet, DaemonSet, VerticalPodAutoscaler
+    policies.kyverno.io/description: >-
+      The VerticalPodAutoscaler (VPA) recommender watches how much CPU and memory each container
+      really uses and publishes a recommended range for it, from a lower bound to an upper bound.
+      A request below the lower bound means the container is likely starved, and a request above
+      the upper bound means capacity is being reserved and wasted. This policy finds the VPA that
+      targets a Deployment, StatefulSet, or DaemonSet and reports every container whose CPU or
+      memory request is missing or falls outside the recommended range. Workloads without a VPA,
+      and VPAs that have no recommendation yet, are not checked. Background scanning is enabled
+      so that reports are refreshed as the recommendations change over time.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [apps]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [deployments, statefulsets, daemonsets]
+  matchConditions:
+    - name: skip-objects-being-deleted
+      expression: "!has(object.metadata.deletionTimestamp)"
+  variables:
+    # VPAs in the namespace whose targetRef points at this workload.
+    - name: vpas
+      expression: >-
+        dyn(resource.List('autoscaling.k8s.io/v1', 'verticalpodautoscalers', object.metadata.namespace).?items.orValue([])
+          .filter(vpa,
+            vpa.?spec.?targetRef.?kind.orValue('') == object.kind &&
+            vpa.?spec.?targetRef.?name.orValue('') == object.metadata.name))
+    - name: recommendations
+      expression: >-
+        size(variables.vpas) == 0 ? [] :
+        variables.vpas[0].?status.?recommendation.?containerRecommendations.orValue([])
+    # One entry per container and resource that the VPA has a lower and upper bound for.
+    - name: checks
+      expression: >-
+        object.spec.template.spec.containers.map(c,
+          variables.recommendations.filter(r, r.?containerName.orValue('') == c.name).map(r,
+            ['cpu', 'memory'].filter(res, r.?lowerBound[?res].hasValue() && r.?upperBound[?res].hasValue()).map(res, {
+              'container': string(c.name),
+              'resource': res,
+              'request': string(c.?resources.?requests[?res].orValue('')),
+              'lower': string(r.lowerBound[res]),
+              'upper': string(r.upperBound[res])
+            })
+          ).flatten()
+        ).flatten()
+    - name: violations
+      expression: >-
+        variables.checks.filter(x,
+          x.request == '' ||
+          quantity(x.request).isLessThan(quantity(x.lower)) ||
+          quantity(x.request).isGreaterThan(quantity(x.upper)))
+  validations:
+    # VPA reports memory in bytes, so the message shows it in Mi. The lower bound is rounded up
+    # and the upper bound down, which keeps the range shown inside the range actually checked.
+    - expression: size(variables.violations) == 0
+      message: "Container resource requests must be within the range recommended by the VerticalPodAutoscaler (VPA)."
+      messageExpression: >-
+        object.kind + " '" + object.metadata.name +
+        "' has resource requests outside the range recommended by its VerticalPodAutoscaler (VPA): " +
+        variables.violations.map(x, cel.bind(range,
+          x.resource == 'memory' ?
+            string((quantity(x.lower).asInteger() + 1048575) / 1048576) + "Mi to " +
+              string(quantity(x.upper).asInteger() / 1048576) + "Mi" :
+            x.lower + " to " + x.upper,
+          x.request == '' ?
+            "container '" + x.container + "' has no " + x.resource + " request, recommended " + range :
+            "container '" + x.container + "' " + x.resource + " request " + x.request + " is not within " + range
+        )).join("; ")
