@@ -45,18 +45,25 @@ spec:
     - name: controlPlaneClusterName
       expression: "'in-cluster'"
     # For each destination, mirror Argo CD v3.6.1's isDestinationMatched for the
-    # control-plane target. Each field is a glob; a leading ! makes it a deny
-    # entry. f holds [isDeny, globMatchesTarget] for namespace, server, name.
-    # The result is [label, 'grant' or '', 'block' or ''].
+    # control-plane target. The names follow Argo CD's code:
+    # - <field>Deny is isDenyPattern: the glob starts with !.
+    # - <field>Matched is globMatch: the glob matches the target, negated for
+    #   a deny entry. An omitted field matches only an empty value.
+    # - The result is [label, 'grant' or '', 'block' or ''], where 'grant' is
+    #   Argo CD's matched case and 'block' its return-false cases.
     - name: evaluations
       expression: >-
-        object.spec.?destinations.orValue([]).map(d, cel.bind(f,
-          [[string(d.?namespace.orValue('')), variables.controlPlaneNamespace],
-           [string(d.?server.orValue('')), variables.controlPlaneServer],
-           [string(d.?name.orValue('')), variables.controlPlaneClusterName]].map(pt,
-            cel.bind(deny, pt[0].startsWith('!'),
+        object.spec.?destinations.orValue([]).map(d,
+          cel.bind(nsGlob, string(d.?namespace.orValue('')),
+          cel.bind(serverGlob, string(d.?server.orValue('')),
+          cel.bind(nameGlob, string(d.?name.orValue('')),
+          cel.bind(f,
+            [[nsGlob, variables.controlPlaneNamespace],
+             [serverGlob, variables.controlPlaneServer],
+             [nameGlob, variables.controlPlaneClusterName]].map(pt,
+              cel.bind(deny, pt[0].startsWith('!'),
               cel.bind(glob, deny ? pt[0].substring(1) : pt[0],
-                [deny, pt[1].matches('^(?:' + glob
+                [deny, deny != pt[1].matches('^(?:' + glob
                   .replace('\\', '')
                   .replace('.', '\\.')
                   .replace('+', '\\+')
@@ -71,21 +78,22 @@ spec:
                   .replace('{', '(?:')
                   .replace('}', ')')
                   .replace(',', glob.contains('{') ? '|' : ',') + ')$')]))),
-          cel.bind(ns, f[0][0] != f[0][1],
-          cel.bind(server, f[1][0] != f[1][1],
-          cel.bind(name, f[2][0] != f[2][1],
-          cel.bind(matched, (server || name) && ns,
+          cel.bind(nsDeny, f[0][0],
+          cel.bind(serverDeny, f[1][0],
+          cel.bind(nameDeny, f[2][0],
+          cel.bind(nsMatched, f[0][1],
+          cel.bind(serverMatched, f[1][1],
+          cel.bind(nameMatched, f[2][1],
+          cel.bind(matched, (serverMatched || nameMatched) && nsMatched,
             [
-              'namespace ' + string(d.?namespace.orValue('')) + ' on ' +
-                (string(d.?server.orValue('')) != ''
-                  ? 'server ' + string(d.?server.orValue(''))
-                  : 'cluster ' + string(d.?name.orValue(''))),
+              'namespace ' + nsGlob + ' on ' +
+                (serverGlob != '' ? 'server ' + serverGlob : 'cluster ' + nameGlob),
               matched ? 'grant' : '',
-              (!matched && (
-                (((!name && f[2][0]) || (!server && f[1][0])) && ns) ||
-                (!ns && f[0][0] && server)))
+              !matched && (
+                (((!nameMatched && nameDeny) || (!serverMatched && serverDeny)) && nsMatched) ||
+                (!nsMatched && nsDeny && serverMatched))
                 ? 'block' : ''
-            ]))))))
+            ]))))))))))))
     - name: grantingEntries
       expression: "variables.evaluations.filter(e, e[1] == 'grant').map(e, e[0])"
     - name: blocked
