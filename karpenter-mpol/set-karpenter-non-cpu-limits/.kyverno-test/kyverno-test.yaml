@@ -56,3 +56,17 @@ results:
   - test/test4
   result: skip
   isMutatingPolicy: true
+- kind: ReplicaSet
+  patchedResources: replicaset-memory-patched.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test-rs
+  result: pass
+  isMutatingPolicy: true
+- kind: ReplicationController
+  patchedResources: replicationcontroller-memory-patched.yaml
+  policy: set-karpenter-non-cpu-limits
+  resources:
+  - test/test-rc
+  result: pass
+  isMutatingPolicy: true

@@ -6,8 +6,9 @@ metadata:
     policies.kyverno.io/title: Add Karpenter nodeSelector
     policies.kyverno.io/category: Karpenter, EKS Best Practices
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/subject: Pod, Deployment, StatefulSet, DaemonSet, Job, CronJob, ReplicaSet, ReplicationController
     policies.kyverno.io/minversion: 1.17.0
+    pod-policies.kyverno.io/autogen-controllers: none
     policies.kyverno.io/description: >- 
       Selecting the correct Node(s) provisioned by Karpenter is a way to specify
       the appropriate resource landing zone for a workload. This policy injects a
@@ -21,7 +22,15 @@ spec:
     - apiGroups: [""]
       apiVersions: ["v1"]
       operations: ["CREATE", "UPDATE"]
-      resources: ["pods"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
     namespaceSelector:
       matchExpressions:
       - key: type
@@ -32,16 +41,26 @@ spec:
       expression: "resource.Get('v1', 'namespaces', '', object.metadata.namespace).metadata.labels"
     - name: capacityType
       expression: "variables.namespaceLabels.type == 'large' ? 'on-demand' : 'spot'"
+    - name: nodeSelectorPath
+      expression: >-
+        object.kind == "Pod" ? "/spec/nodeSelector" :
+        object.kind == "CronJob" ? "/spec/jobTemplate/spec/template/spec/nodeSelector" :
+        "/spec/template/spec/nodeSelector"
+    - name: hasNodeSelector
+      expression: >-
+        object.kind == "Pod" ? has(object.spec.nodeSelector) :
+        object.kind == "CronJob" ? has(object.spec.jobTemplate.spec.template.spec.nodeSelector) :
+        has(object.spec.template.spec.nodeSelector)
   mutations:
   # Ensure nodeSelector exists
   - patchType: JSONPatch
     jsonPatch:
       expression: |
-        !has(object.spec.nodeSelector) ?
+        !variables.hasNodeSelector ?
         [
           JSONPatch{
             op: "add",
-            path: "/spec/nodeSelector",
+            path: variables.nodeSelectorPath,
             value: {}
           }
         ] : []
@@ -52,7 +71,7 @@ spec:
         [
           JSONPatch{
             op: "add",
-            path: "/spec/nodeSelector/" + jsonpatch.escapeKey("karpenter.sh/capacity-type"),
+            path: variables.nodeSelectorPath + "/" + jsonpatch.escapeKey("karpenter.sh/capacity-type"),
             value: variables.capacityType
           }
         ]
@@ -63,7 +82,7 @@ spec:
         [
           JSONPatch{
             op: "add",
-            path: "/spec/nodeSelector/" + jsonpatch.escapeKey("kubernetes.io/arch"),
+            path: variables.nodeSelectorPath + "/" + jsonpatch.escapeKey("kubernetes.io/arch"),
             value: "amd64"
           }
         ]

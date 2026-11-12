@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: config-syncer-secret-generation-from-rancher-capi-test
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../config-syncer-secret-generation-from-rancher-capi.yaml
+resources:
+- test-resource.yaml
+results:
+- generatedResource: generatedResource.yaml
+  isGeneratingPolicy: true
+  kind: Cluster
+  policy: config-syncer-secret-generation-from-rancher-capi
+  resources:
+  - kubeops-cluster-ns/rancher-cluster
+  result: pass
+- isGeneratingPolicy: true
+  kind: Cluster
+  policy: config-syncer-secret-generation-from-rancher-capi
+  resources:
+  - fleet-local/sample-cluster
+  result: skip
