@@ -23,6 +23,7 @@ resources:
 results:
 - kind: Pod
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - good-pod
   - good-pod-other-annotations
@@ -39,6 +40,7 @@ results:
   result: pass
 - kind: Pod
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - bad-pod-skip-subnets
   - bad-pod-proxy-uid-gid
@@ -53,65 +55,77 @@ results:
   result: fail
 - kind: Deployment
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - good-deployment
   - edge-good-deployment-no-template-metadata
   result: pass
 - kind: Deployment
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - bad-deployment-annotation
   - bad-deployment-uid
   result: fail
 - kind: CronJob
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - good-cronjob
   result: pass
 - kind: CronJob
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - bad-cronjob-annotation
   - bad-cronjob-uid
   result: fail
 - kind: Job
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-good-job
   result: pass
 - kind: Job
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-bad-job
   result: fail
 - kind: StatefulSet
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-bad-statefulset
   result: fail
 - kind: DaemonSet
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-bad-daemonset
   result: fail
 - kind: ReplicaSet
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-bad-replicaset
   result: fail
 - kind: ReplicationController
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - edge-bad-replicationcontroller
   result: fail
 - kind: Namespace
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - linkerd-vpol-good-ns
   - edge-good-namespace
   result: pass
 - kind: Namespace
   policy: restrict-linkerd-proxy-bypass-annotations
+  isValidatingPolicy: true
   resources:
   - linkerd-vpol-bad-ns
   - edge-bad-namespace
