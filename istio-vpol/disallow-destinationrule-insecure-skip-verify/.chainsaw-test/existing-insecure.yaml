@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: existing-insecure
+spec:
+  host: legacy.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: true

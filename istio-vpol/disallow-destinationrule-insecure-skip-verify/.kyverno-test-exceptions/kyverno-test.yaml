@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: disallow-destinationrule-insecure-skip-verify-exception
+policies:
+- ../disallow-destinationrule-insecure-skip-verify.yaml
+resources:
+- ../.chainsaw-test/exception-dr.yaml
+- ../.chainsaw-test/exception-dr-tenant.yaml
+- ../.chainsaw-test/bad-top-level.yaml
+- ../.chainsaw-test/good-verified.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts dev-backends/self-signed-backend, so it's skipped.
+- policy: disallow-destinationrule-insecure-skip-verify
+  kind: DestinationRule
+  resources: [dev-backends/self-signed-backend]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: disallow-destinationrule-insecure-skip-verify
+  kind: DestinationRule
+  resources: [default/self-signed-backend]
+  result: fail
+  isValidatingPolicy: true
+- policy: disallow-destinationrule-insecure-skip-verify
+  kind: DestinationRule
+  resources: [good-verified]
+  result: pass
+  isValidatingPolicy: true
+- policy: disallow-destinationrule-insecure-skip-verify
+  kind: DestinationRule
+  resources: [bad-top-level]
+  result: fail
+  isValidatingPolicy: true

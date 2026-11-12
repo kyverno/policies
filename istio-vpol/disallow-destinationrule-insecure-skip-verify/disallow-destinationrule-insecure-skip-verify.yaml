@@ -1,0 +1,69 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-destinationrule-insecure-skip-verify
+  annotations:
+    policies.kyverno.io/title: Disallow DestinationRule insecureSkipVerify in CEL expressions
+    policies.kyverno.io/category: Istio in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: DestinationRule
+    policies.kyverno.io/description: >-
+      When an Istio DestinationRule sets tls.insecureSkipVerify to true, the
+      proxy that originates TLS doesn't verify the server certificate's CA
+      signature or subject alternative names. It then accepts any certificate,
+      which allows a man-in-the-middle attack. Istio's validation accepts this
+      setting. This policy flags DestinationRules that set insecureSkipVerify
+      to true in the top-level traffic policy, in a subset's traffic policy,
+      or in the port-level settings of either.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["networking.istio.io"]
+        apiVersions: [v1, v1beta1, v1alpha3]
+        operations: [CREATE, UPDATE]
+        resources: [destinationrules]
+  variables:
+    # Each entry is [path, trafficPolicy]: the top-level policy, then each
+    # subset's policy.
+    - name: trafficPolicies
+      expression: >-
+        cel.bind(tp, object.?spec.?trafficPolicy.orValue(null),
+          type(tp) == map ? [[dyn('spec.trafficPolicy'), tp]] : []) +
+        cel.bind(subsets, object.?spec.?subsets.orValue([]),
+          type(subsets) != list ? [] : lists.range(size(subsets))
+            .filter(i, type(subsets[i]) == map &&
+              type(subsets[i].?trafficPolicy.orValue(null)) == map)
+            .map(i, [dyn('spec.subsets[' + string(i) + '].trafficPolicy'), subsets[i].trafficPolicy]))
+    # Each entry is [path, tls]: the policy-level tls, then each
+    # portLevelSettings tls.
+    - name: tlsSettings
+      expression: >-
+        variables.trafficPolicies.map(e,
+          (type(e[1][?'tls'].orValue(null)) == map ? [[dyn(string(e[0]) + '.tls'), e[1].tls]] : []) +
+          cel.bind(ports, e[1][?'portLevelSettings'].orValue([]),
+            type(ports) != list ? [] : lists.range(size(ports))
+              .filter(j, type(ports[j]) == map &&
+                type(ports[j][?'tls'].orValue(null)) == map)
+              .map(j, [dyn(string(e[0]) + '.portLevelSettings[' + string(j) + '].tls'), ports[j].tls]))).flatten()
+    # Paths of every insecureSkipVerify set to true. An explicit DISABLE mode
+    # originates no TLS, so the setting has no effect there.
+    - name: insecurePaths
+      expression: >-
+        variables.tlsSettings
+          .filter(e, e[1][?'mode'].orValue('') != 'DISABLE' &&
+            e[1][?'insecureSkipVerify'].orValue(false) == true)
+          .map(e, string(e[0]) + '.insecureSkipVerify')
+  validations:
+    - expression: size(variables.insecurePaths) == 0
+      messageExpression: >-
+        'insecureSkipVerify must not be true, because the proxy then skips
+        verifying the server certificate. Remove it or set it to false in: ' +
+        variables.insecurePaths.join(', ')

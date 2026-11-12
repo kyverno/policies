@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: bad-top-level
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: true

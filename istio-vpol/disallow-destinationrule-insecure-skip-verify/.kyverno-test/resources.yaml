@@ -1,0 +1,148 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-bad-v1
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: true
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: edge-bad-v1alpha3
+spec:
+  host: api.example.com
+  subsets:
+  - name: v1
+    labels:
+      version: v1
+    trafficPolicy:
+      portLevelSettings:
+      - port:
+          number: 8443
+        tls:
+          mode: SIMPLE
+          insecureSkipVerify: true
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-bad-no-mode
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      insecureSkipVerify: true
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-bad-port-disable-top-simple
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: true
+    portLevelSettings:
+    - port:
+        number: 8080
+      tls:
+        mode: DISABLE
+        insecureSkipVerify: true
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-disable-mode
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: DISABLE
+      insecureSkipVerify: true
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-bad-after-malformed
+spec:
+  host: api.example.com
+  trafficPolicy:
+    portLevelSettings:
+    - not-a-map
+    - port:
+        number: 8443
+      tls: not-a-map
+    - port:
+        number: 9443
+      tls:
+        mode: SIMPLE
+        insecureSkipVerify: true
+  subsets:
+  - not-a-map
+  - name: v2
+    trafficPolicy: not-a-map
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-host-only
+spec:
+  host: api.example.com
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-no-spec
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-null-skip
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: null
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-empty-lists
+spec:
+  host: api.example.com
+  trafficPolicy:
+    portLevelSettings: []
+  subsets: []
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-malformed
+spec:
+  host: api.example.com
+  trafficPolicy:
+    tls: [insecureSkipVerify]
+    portLevelSettings: not-a-list
+  subsets: not-a-list
+---
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: edge-good-other-fields
+spec:
+  host: api.example.com
+  trafficPolicy:
+    insecureSkipVerify: true
+    connectionPool:
+      tcp:
+        maxConnections: 100
+    tunnel:
+      protocol: CONNECT
+      targetHost: proxy.example.com
+      targetPort: 8080
