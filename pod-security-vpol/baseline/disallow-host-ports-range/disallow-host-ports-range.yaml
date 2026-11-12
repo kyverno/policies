@@ -1,0 +1,62 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: disallow-host-ports-range
+  annotations:
+    policies.kyverno.io/title: Disallow hostPorts Range (Alternate) in ValidatingPolicy
+    policies.kyverno.io/category: Pod Security Standards (Baseline) in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/description: >-
+      Access to host ports allows potential snooping of network traffic and should not be
+      allowed by requiring host ports be undefined (recommended) or at minimum restricted to a known list.
+      This policy ensures the `hostPort` field, if defined, is set to either a port in the specified range
+      or to a value of zero. This policy is mutually exclusive of the disallow-host-ports policy.
+      Note that Kubernetes Pod Security Admission does not support the host port range rule.
+spec:
+  validationActions:
+     - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["pods", "replicationcontrollers"]
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["deployments", "daemonsets", "statefulsets", "replicasets"]
+    - apiGroups: ["batch"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["jobs", "cronjobs"]
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["pods/ephemeralcontainers"]
+  variables:
+    - name: podSpec
+      expression: >-
+        object.spec.?jobTemplate.?spec.?template.?spec.orValue(
+        object.spec.?template.?spec.orValue(object.spec))
+    - name: allContainers
+      expression: >-
+        variables.podSpec.containers +
+        variables.podSpec.?initContainers.orValue([]) +
+        variables.podSpec.?ephemeralContainers.orValue([])
+  validations:
+    - expression: >-
+        variables.allContainers.all(container,
+          container.?ports.orValue([]).all(port,
+          container.image in exceptions.allowedImages ||
+          port.?hostPort.orValue(0) == 0 ||
+          (port.hostPort >= 5000 && port.hostPort <= 6000) ||
+          string(port.hostPort) in exceptions.allowedValues))
+      message: >-
+        The only permitted hostPorts are in the range 5000-6000. The field
+        spec.containers[*].ports[*].hostPort must be unset, set to `0`, or within that range.
