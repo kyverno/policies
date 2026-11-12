@@ -17,6 +17,7 @@ resources:
 results:
 - kind: DestinationRule
   policy: disallow-destinationrule-insecure-skip-verify
+  isValidatingPolicy: true
   resources:
   - bad-top-level
   - bad-port-level
@@ -34,6 +35,7 @@ results:
   result: fail
 - kind: DestinationRule
   policy: disallow-destinationrule-insecure-skip-verify
+  isValidatingPolicy: true
   resources:
   - good-verified
   - good-skip-false
