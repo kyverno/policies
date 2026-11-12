@@ -66,3 +66,31 @@ spec:
     image: nginx
     securityContext:
       readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+spec:
+  initContainers:
+  - name: init
+    image: busybox
+  containers:
+  - name: ghost
+    image: ghost
+    securityContext:
+      readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+spec:
+  containers:
+  - name: ghost
+    image: ghost
+    securityContext:
+      readOnlyRootFilesystem: true
+  ephemeralContainers:
+  - name: debugger
+    image: busybox
