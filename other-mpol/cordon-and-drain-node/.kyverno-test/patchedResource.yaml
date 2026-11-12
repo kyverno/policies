@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Node
+metadata:
+  name: node-1
+  labels:
+    testing: drain
+  annotations:
+    test.kyverno.io/time: "2026-01-01T00:00:00Z"
+spec:
+  unschedulable: true
+  taints:
+  - effect: NoExecute
+    key: kyverno-evicted
+    timeAdded: "2026-01-01T00:00:00Z"

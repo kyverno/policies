@@ -1,0 +1,24 @@
+apiCallResponses:
+  - method: GET
+    url: https://kubernetes.default.svc/version
+    response:
+      statusCode: 200
+      body:
+        major: "1"
+        minor: "30"
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kubernetes-version-check
+policies:
+  - ../kubernetes-version-check.yaml
+resources:
+  - resource.yaml
+results:
+  - isMutatingPolicy: true
+    kind: Secret
+    patchedResources: patchedResource.yaml
+    policy: kubernetes-version-check
+    resources:
+      - default/my-secret
+    result: pass

@@ -1,0 +1,51 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cordon-and-drain-node
+spec:
+  steps:
+  - name: step-00
+    try:
+    - apply:
+        file: permissions.yaml
+  - name: step-01
+    try:
+    - script:
+        content: |
+          kubectl get configmap kyverno -n kyverno -o yaml | sed 's/\[Node\/\*,\*,\*\]//g' | sed 's/\[Node,\*,\*\]//g' | kubectl apply -f -
+    - sleep:
+        duration: 3s
+  - name: step-02
+    try:
+    - apply:
+        file: ../cordon-and-drain-node.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-03
+    try:
+    - apply:
+        file: node.yaml
+    - script:
+        content: |
+          kubectl label node test-node-cordon testing=drain --overwrite
+    - assert:
+        file: node-assert.yaml
+    - script:
+        content: |
+          for node in $(kubectl get nodes -l '!testing' -o jsonpath='{.items[*].metadata.name}'); do
+            tainted=$(kubectl get node $node -o jsonpath='{.spec.taints[?(@.key=="kyverno-evicted")].key}')
+            if [ -n "$tainted" ]; then
+              echo "Node $node should not have kyverno-evicted taint"
+              exit 1
+            fi
+          done
+    finally:
+    - script:
+        content: |
+          kubectl delete node test-node-cordon --ignore-not-found
+          kubectl get configmap -n kyverno kyverno -o yaml | sed 's/\[APIService,\*,\*\]/\[Node,\*,\*\] \[Node\/\*,\*,\*\] \[APIService,\*,\*\]/g' | kubectl apply -f -
+          for n in $(kubectl get nodes -o jsonpath='{.items[*].metadata.name}'); do
+            kubectl taint node $n kyverno-evicted:NoExecute- 2>/dev/null || true
+            kubectl uncordon $n 2>/dev/null || true
+          done

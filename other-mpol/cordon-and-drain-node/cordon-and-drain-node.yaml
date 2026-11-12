@@ -1,0 +1,55 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: cordon-and-drain-node
+  annotations:
+    policies.kyverno.io/title: Cordon and Drain Node
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Node
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      There are cases where either an operations or security incident may occur and Nodes
+      should be evacuated and placed in an unused state for further analysis. For example,
+      a Node is found to be running a vulnerable version of a CRI engine or kernel and to
+      minimize chances of a compromise may need to be decommissioned so another can be built.
+      This policy shows how to use Kyverno to both cordon and drain a given Node and uses a
+      hypothetical label being written to it called `testing=drain` to illustrate the point.
+      For production use, the match block should be modified to trigger on the appropriate
+      condition.
+spec:
+  matchConstraints:
+    objectSelector:
+      matchLabels:
+        testing: drain
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["nodes"]
+  variables:
+    - name: timeAdded
+      expression: >-
+        has(object.metadata.annotations) && 'test.kyverno.io/time' in object.metadata.annotations ?
+        object.metadata.annotations['test.kyverno.io/time'] : string(time.now())
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          (!has(object.spec) ? [JSONPatch{op: "add", path: "/spec", value: {}}] : []) +
+          [JSONPatch{op: "add", path: "/spec/unschedulable", value: true}] +
+          (!has(object.spec.taints) ?
+            [JSONPatch{op: "add", path: "/spec/taints", value: [dyn({
+              "effect": dyn("NoExecute"),
+              "key": dyn("kyverno-evicted"),
+              "timeAdded": dyn(variables.timeAdded)
+            })]}]
+          :
+            (object.spec.taints.exists(t, t.key == 'kyverno-evicted') ? [] :
+              [JSONPatch{op: "add", path: "/spec/taints/-", value: dyn({
+                "effect": dyn("NoExecute"),
+                "key": dyn("kyverno-evicted"),
+                "timeAdded": dyn(variables.timeAdded)
+              })}]
+            )
+          )

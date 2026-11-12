@@ -1,0 +1,20 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-node-labels-pod
+policies:
+  - ../add-node-labels-pod.yaml
+resources:
+  - trigger.yaml
+clusterResources:
+  - cluster-resources.yaml
+targetResources:
+  - target.yaml
+results:
+  - isMutatingPolicy: true
+    kind: Pod
+    patchedResources: patched-target.yaml
+    policy: add-node-labels-pod
+    resources:
+      - default/pod01
+    result: pass

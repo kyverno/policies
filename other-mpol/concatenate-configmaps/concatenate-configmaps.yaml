@@ -1,0 +1,45 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: concatenate-configmaps
+  annotations:
+    policies.kyverno.io/title: Concatenate ConfigMaps
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ConfigMap
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      In some cases, an update to an existing resource should have downstream effects
+      on a different resource in another Namespace. Rather than overwriting the target,
+      the current state of the source can be concatenated to the target.
+      This policy, triggered by an update to a source ConfigMap, concatenates
+      that value to a target ConfigMap in a different Namespace.
+spec:
+  evaluation:
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["configmaps"]
+  matchConditions:
+    - name: check-cmone
+      expression: >-
+        object.metadata.name == 'cmone' && object.metadata.namespace == 'foo' &&
+        has(object.data) && has(object.data.keyone)
+  targetMatchConstraints:
+    expression: resource.Get("v1", "configmaps", "bar", "cmtwo")
+  variables:
+    - name: keyone
+      expression: >-
+        has(request.object) && has(request.object.data) && has(request.object.data.keyone) ? request.object.data.keyone :
+        (has(object.data) && has(object.data.keyone) ? object.data.keyone : "")
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          has(object.data) && has(object.data.keytwo) && variables.keyone != "" ?
+            [JSONPatch{op: "replace", path: "/data/keytwo", value: string(object.data['keytwo']) + " plus " + string(variables.keyone)}]
+          : []
