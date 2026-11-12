@@ -20,7 +20,7 @@ spec:
     securityContext:
       runAsUser: 65534
   - name: linkerd-proxy
-    image: busybox:1.37
+    image: cr.l5d.io/linkerd/proxy:edge-26.11.1
     restartPolicy: Always
     securityContext:
       runAsUser: 2102
@@ -28,17 +28,18 @@ spec:
   - name: app
     image: busybox:1.37
 ---
-# linkerd-debug sets no UID, so it inherits the Pod-level one.
+# linkerd-debug sets no UID, so it inherits the Pod-level proxy UID and its
+# traffic skips the proxy.
 apiVersion: v1
 kind: Pod
 metadata:
-  name: edge-good-debug-sidecar
+  name: edge-bad-debug-sidecar
 spec:
   securityContext:
     runAsUser: 2102
   containers:
   - name: linkerd-proxy
-    image: busybox:1.37
+    image: cr.l5d.io/linkerd/proxy:edge-26.11.1
     securityContext:
       runAsUser: 2102
   - name: linkerd-debug
@@ -274,3 +275,42 @@ spec:
       containers:
       - name: app
         image: busybox:1.37
+---
+# The name linkerd-proxy alone doesn't exempt a container.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-spoofed-proxy-name
+spec:
+  containers:
+  - name: linkerd-proxy
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 2102
+---
+# A proxy image with its own command can run any binary.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-proxy-image-command
+spec:
+  containers:
+  - name: linkerd-proxy
+    image: cr.l5d.io/linkerd/proxy@sha256:0000000000000000000000000000000000000000000000000000000000000000
+    command: [/shared/app]
+    securityContext:
+      runAsUser: 2102
+---
+# A digest reference to the proxy image is accepted.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-proxy-digest
+spec:
+  containers:
+  - name: linkerd-proxy
+    image: cr.l5d.io/linkerd/proxy@sha256:0000000000000000000000000000000000000000000000000000000000000000
+    securityContext:
+      runAsUser: 2102
+  - name: app
+    image: busybox:1.37

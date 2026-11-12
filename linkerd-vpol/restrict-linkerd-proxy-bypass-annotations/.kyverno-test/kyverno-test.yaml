@@ -32,7 +32,7 @@ results:
   - good-pod-container-override
   - edge-good-null-annotations
   - edge-good-native-sidecar-proxy
-  - edge-good-debug-sidecar
+  - edge-good-proxy-digest
   - edge-good-null-run-as-user
   - edge-good-malformed
   # Similar keys with a different name or prefix aren't checked.
@@ -52,6 +52,9 @@ results:
   - edge-bad-ephemeral
   - edge-bad-empty-security-context
   - edge-bad-after-malformed
+  - edge-bad-debug-sidecar
+  - edge-bad-spoofed-proxy-name
+  - edge-bad-proxy-image-command
   result: fail
 - kind: Deployment
   policy: restrict-linkerd-proxy-bypass-annotations

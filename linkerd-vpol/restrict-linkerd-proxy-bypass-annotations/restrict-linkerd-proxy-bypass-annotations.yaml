@@ -47,6 +47,10 @@ spec:
     # with a different proxy.uid.
     - name: proxyUID
       expression: "2102"
+    # Images of the linkerd-proxy container, without a tag. Add your mirror if
+    # you pull the proxy from another registry.
+    - name: proxyImages
+      expression: "['cr.l5d.io/linkerd/proxy']"
     - name: bypassKeys
       expression: >-
         ['config.linkerd.io/skip-subnets', 'config.linkerd.io/proxy-uid',
@@ -88,11 +92,16 @@ spec:
               .filter(c, type(c) == map &&
                 (f != 'initContainers' || c[?'restartPolicy'].orValue('') == 'Always'))
               .map(c, [dyn(f), dyn(type(c[?'name'].orValue(null)) == string ? c.name : ''), c]))).flatten()
-    # Containers that run as the proxy UID, other than Linkerd's own.
+    # Containers that run as the proxy UID, other than Linkerd's proxy. The
+    # name alone isn't trusted: the proxy must use a proxy image and keep the
+    # image's entrypoint.
     - name: proxyUIDContainers
       expression: >-
         variables.containers
-          .filter(e, !(e[1] in ['linkerd-proxy', 'linkerd-debug']) &&
+          .filter(e, !(e[1] == 'linkerd-proxy' &&
+              cel.bind(img, e[2][?'image'].orValue(''), type(img) == string &&
+                variables.proxyImages.exists(p, img.startsWith(p + ':') || img.startsWith(p + '@'))) &&
+              !('command' in e[2]) && !('args' in e[2])) &&
             cel.bind(sc, e[2][?'securityContext'].orValue(null),
               (type(sc) == map && sc[?'runAsUser'].orValue(null) != null ?
                 sc.runAsUser : variables.podUID) == variables.proxyUID))

@@ -44,9 +44,8 @@ spec:
       runAsUser: 65534
   containers:
   - name: linkerd-proxy
-    image: busybox:1.37
+    image: cr.l5d.io/linkerd/proxy:edge-26.11.1
     imagePullPolicy: IfNotPresent
-    command: [sleep, "3600"]
     securityContext:
       runAsUser: 2102
   - name: app

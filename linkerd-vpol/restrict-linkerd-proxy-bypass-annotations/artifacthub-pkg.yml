@@ -30,7 +30,7 @@ readme: |
     - `spec.template.metadata.annotations` of Deployments, StatefulSets, DaemonSets, ReplicaSets, ReplicationControllers, and Jobs.
     - `spec.jobTemplate.spec.template.metadata.annotations` of CronJobs.
   - It also fails when a container runs as the proxy UID. A container runs as the UID in its own `securityContext.runAsUser`, or in the Pod's `securityContext.runAsUser` when it doesn't set its own. It checks containers, ephemeral containers, and sidecar init containers (`restartPolicy: Always`), because these run next to the proxy.
-  - It skips Linkerd's own `linkerd-proxy` and `linkerd-debug` containers.
+  - It skips Linkerd's proxy container: a container named `linkerd-proxy` that uses an image from the `proxyImages` variable and doesn't set `command` or `args`. The name alone doesn't exempt a container, because anyone can choose it. It doesn't skip `linkerd-debug`, which runs as the proxy UID only when the Pod sets that UID, and then bypasses the proxy too.
   - The messages list each key or container with its path, for example `spec.template.metadata.annotations` or `spec.initContainers[log-shipper]`.
   - It checks creates and updates, and reports existing resources through background scans. It defaults to `Audit`; switch to `Deny` to block.
   - In `Deny` mode, flagged resources that already exist keep working, but updates to them are blocked until you remove the annotation. Deleting them still works. Use the `Audit` reports to find them before you switch.
@@ -49,6 +49,8 @@ readme: |
         - name: proxyUID
           expression: "2103"
 
+  If you pull the proxy from a mirror, add the mirror's repository, without a tag, to the `proxyImages` variable. It defaults to `['cr.l5d.io/linkerd/proxy']`.
+
   ### Init containers
 
   The policy doesn't check regular init containers. They finish before the app starts, and the proxy doesn't run yet, except in native sidecar mode. When you use the Linkerd CNI plugin, init containers have no network access, and the [CNI docs](https://linkerd.io/2.19/features/cni/) suggest that you run such an init container as the proxy UID. Its traffic then isn't meshed. If you don't want to allow this, add an `initContainers` check to the policy.
@@ -65,7 +67,7 @@ readme: |
   - It detects an app UID that equals the proxy UID only through the `proxyUID` variable. It doesn't detect a match with a custom `proxy-uid` annotation, which it flags anyway, or with a custom Helm `proxy.uid`, unless you change the variable.
   - It doesn't check `runAsGroup` against the proxy GID. Linkerd sets no proxy GID by default.
   - It can't see the user in a container image. A container that doesn't set `runAsUser` might still run as the proxy UID.
-  - It identifies Linkerd's containers by name. A container that you name `linkerd-proxy` or `linkerd-debug` isn't checked for the proxy UID.
+  - It trusts a `linkerd-proxy` container that uses a proxy image and keeps the image's entrypoint. Such a container can still run another binary through a lifecycle hook, or through a volume mounted over the image's files, so review who can create Pods with these fields.
   - It doesn't check annotations on the Pod controller's own `metadata`, because they don't reach the Pods.
   - The policy matches the `pods/ephemeralcontainers` subresource, so that it checks `kubectl debug` containers at admission. Admission checks work on a default install, but the policy's `RBACPermissionsGranted` condition stays `False` until you grant `get`, `list`, and `watch` on `pods/ephemeralcontainers` to the admission and reports controllers. Use `ClusterRole`s labeled `rbac.kyverno.io/aggregate-to-admission-controller: "true"` and `rbac.kyverno.io/aggregate-to-reports-controller: "true"`. The condition updates the next time the policy changes.
 
@@ -95,5 +97,5 @@ annotations:
   kyverno/category: "Linkerd in CEL"
   kyverno/kubernetesVersion: "1.34-1.35"
   kyverno/subject: "Pod, Namespace"
-digest: db2b86f77523679db42863fb4b41587e3ca75f207edd6fd7a270872c5f8e860e
+digest: 7ca78b28271c33a6e6bc2a462cb6a56ef45fb4eb531847afae9a0c93d55b8c27
 createdAt: "2026-11-12T00:00:00Z"
