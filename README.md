@@ -180,8 +180,8 @@ metadata, including lifecycle labels. Path labels are applied only by
 them up on their next push; a manual **PR Labeler** run with `dry_run` disabled
 refreshes only `merge-conflicts` labels. To preview changes, run **Actions > PR
 lifecycle** manually with `dry_run` enabled. Definitions live in
-`.github/pr-management.json`, `.github/pr-readiness-checks.yml`, and
-`.github/labels.yml`. Keep the `kyverno/assistant` pin in the workflow files on a
+`.github/pr-management.json` and `.github/labels.yml`; readiness uses the shared action's built-in
+checks, which an optional `.github/pr-readiness-checks.yml` can change. Keep the `kyverno/assistant` pin in the workflow files on a
 reviewed commit SHA; `scripts/adopt-ci.sh --update-pin` in that repository opens
 the update PR.
 
