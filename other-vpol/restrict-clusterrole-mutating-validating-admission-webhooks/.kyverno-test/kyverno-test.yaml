@@ -19,9 +19,6 @@ results:
   - webhook-wildcard-api-group
   - webhook-resource-name
   - webhook-aggregate-empty
-  - webhook-exception-create
-  - webhook-exception-create-patch
-  - webhook-exception-other-name
   result: fail
 - policy: restrict-clusterrole-mutating-validating-admission-webhooks
   isValidatingPolicy: true

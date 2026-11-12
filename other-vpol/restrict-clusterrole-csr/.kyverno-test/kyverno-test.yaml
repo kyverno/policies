@@ -23,9 +23,6 @@ results:
   - csr-signers-wildcard-verb
   - csr-signers-resource-name
   - csr-aggregate-empty
-  - csr-exception-update
-  - csr-exception-update-patch
-  - csr-exception-other-name
   result: fail
 - policy: restrict-clusterrole-csr
   isValidatingPolicy: true
