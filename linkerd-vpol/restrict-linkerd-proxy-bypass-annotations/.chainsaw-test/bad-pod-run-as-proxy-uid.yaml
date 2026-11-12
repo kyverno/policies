@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-run-as-proxy-uid
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+    securityContext:
+      runAsUser: 2102

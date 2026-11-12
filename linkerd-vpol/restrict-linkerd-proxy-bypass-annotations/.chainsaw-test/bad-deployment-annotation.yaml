@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deployment-annotation
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deployment-annotation
+  template:
+    metadata:
+      labels:
+        app: bad-deployment-annotation
+      annotations:
+        linkerd.io/inject: enabled
+        config.linkerd.io/skip-subnets: 0.0.0.0/0
+        config.linkerd.io/proxy-uid: "1000"
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+        imagePullPolicy: IfNotPresent
+        command: [sleep, "3600"]

@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-linkerd-proxy-bypass-annotations-legacy
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-linkerd-proxy-bypass-annotations
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: legacy-egress-client
+    expression: object.metadata.namespace == 'legacy-egress' && object.metadata.name == 'egress-client'

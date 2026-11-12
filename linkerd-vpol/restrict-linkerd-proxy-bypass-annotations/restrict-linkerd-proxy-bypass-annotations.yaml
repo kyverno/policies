@@ -1,0 +1,111 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-linkerd-proxy-bypass-annotations
+  annotations:
+    policies.kyverno.io/title: Restrict Linkerd Proxy Bypass Annotations in CEL expressions
+    policies.kyverno.io/category: Linkerd in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: Pod, Namespace
+    policies.kyverno.io/description: >-
+      Linkerd's iptables rules send traffic past the proxy for each subnet in
+      the config.linkerd.io/skip-subnets annotation, and for traffic owned by
+      the UID or GID in config.linkerd.io/proxy-uid or config.linkerd.io/proxy-gid.
+      Traffic that skips the proxy loses mTLS and isn't checked by Server and
+      AuthorizationPolicy resources. This policy flags Pods, Pod controllers,
+      and Namespaces that set these annotations, and app containers that run
+      as the proxy UID.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods, replicationcontrollers, namespaces]
+      - apiGroups: [apps]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [deployments, daemonsets, statefulsets, replicasets]
+      - apiGroups: [batch]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [jobs, cronjobs]
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [UPDATE]
+        resources: [pods/ephemeralcontainers]
+  variables:
+    # UID of the linkerd-proxy container. Change it if you install Linkerd
+    # with a different proxy.uid.
+    - name: proxyUID
+      expression: "2102"
+    - name: bypassKeys
+      expression: >-
+        ['config.linkerd.io/skip-subnets', 'config.linkerd.io/proxy-uid',
+        'config.linkerd.io/proxy-gid']
+    # Path to the Pod template, or '' for Pods and Namespaces.
+    - name: prefix
+      expression: >-
+        object.kind == 'CronJob' ? 'spec.jobTemplate.spec.template.' :
+        object.kind in ['Pod', 'Namespace'] ? '' : 'spec.template.'
+    - name: podMeta
+      expression: >-
+        object.kind == 'CronJob' ? object.?spec.?jobTemplate.?spec.?template.?metadata.orValue(null) :
+        object.kind in ['Pod', 'Namespace'] ? object.?metadata.orValue(null) :
+        object.?spec.?template.?metadata.orValue(null)
+    - name: podSpec
+      expression: >-
+        object.kind == 'Namespace' ? null :
+        object.kind == 'CronJob' ? object.?spec.?jobTemplate.?spec.?template.?spec.orValue(null) :
+        object.kind == 'Pod' ? object.?spec.orValue(null) :
+        object.?spec.?template.?spec.orValue(null)
+    - name: foundKeys
+      expression: >-
+        cel.bind(ann, type(variables.podMeta) == map ? variables.podMeta[?'annotations'].orValue(null) : null,
+          type(ann) != map ? [] : variables.bypassKeys.filter(k, k in ann))
+    - name: podUID
+      expression: >-
+        type(variables.podSpec) == map &&
+        type(variables.podSpec[?'securityContext'].orValue(null)) == map ?
+        variables.podSpec.securityContext[?'runAsUser'].orValue(null) : null
+    # Each entry is [field, name, container] for containers that run
+    # alongside the proxy: containers, ephemeral containers, and sidecar init
+    # containers.
+    - name: containers
+      expression: >-
+        type(variables.podSpec) != map ? [] :
+        ['containers', 'initContainers', 'ephemeralContainers'].map(f,
+          cel.bind(cs, variables.podSpec[?f].orValue([]),
+            type(cs) != list ? [] : cs
+              .filter(c, type(c) == map &&
+                (f != 'initContainers' || c[?'restartPolicy'].orValue('') == 'Always'))
+              .map(c, [dyn(f), dyn(type(c[?'name'].orValue(null)) == string ? c.name : ''), c]))).flatten()
+    # Containers that run as the proxy UID, other than Linkerd's own.
+    - name: proxyUIDContainers
+      expression: >-
+        variables.containers
+          .filter(e, !(e[1] in ['linkerd-proxy', 'linkerd-debug']) &&
+            cel.bind(sc, e[2][?'securityContext'].orValue(null),
+              (type(sc) == map && sc[?'runAsUser'].orValue(null) != null ?
+                sc.runAsUser : variables.podUID) == variables.proxyUID))
+          .map(e, variables.prefix + 'spec.' + string(e[0]) + '[' + string(e[1]) + ']')
+  validations:
+    - expression: size(variables.foundKeys) == 0
+      messageExpression: >-
+        'Linkerd proxy bypass annotations are not allowed, because they send
+        traffic past the proxy. Remove ' + variables.foundKeys.join(', ') +
+        ' from ' + variables.prefix + 'metadata.annotations'
+    - expression: size(variables.proxyUIDContainers) == 0
+      messageExpression: >-
+        'Containers must not run as the Linkerd proxy UID ' +
+        string(variables.proxyUID) + ', because their outbound traffic skips
+        the proxy. Change runAsUser for: ' +
+        variables.proxyUIDContainers.join(', ')

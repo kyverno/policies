@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: bad-cronjob-annotation
+spec:
+  schedule: "0 0 1 1 *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            config.linkerd.io/proxy-gid: "1000"
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: app
+            image: busybox:1.37
+            imagePullPolicy: IfNotPresent
+            command: ["true"]

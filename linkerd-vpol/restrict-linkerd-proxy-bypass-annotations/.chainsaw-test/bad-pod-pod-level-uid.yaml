@@ -1,0 +1,19 @@
+# The Pod-level runAsUser applies to app; sidecar sets its own UID.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-pod-level-uid
+spec:
+  securityContext:
+    runAsUser: 2102
+  containers:
+  - name: sidecar
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+    securityContext:
+      runAsUser: 1000
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]

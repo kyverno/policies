@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: good-deployment
+  # Annotations on the Deployment itself don't reach its Pods.
+  annotations:
+    config.linkerd.io/skip-subnets: 10.0.0.0/8
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-deployment
+  template:
+    metadata:
+      labels:
+        app: good-deployment
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+        imagePullPolicy: IfNotPresent
+        command: [sleep, "3600"]
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: good-cronjob
+spec:
+  schedule: "0 0 1 1 *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            linkerd.io/inject: enabled
+        spec:
+          restartPolicy: Never
+          securityContext:
+            runAsUser: 1000
+          containers:
+          - name: app
+            image: busybox:1.37
+            imagePullPolicy: IfNotPresent
+            command: ["true"]

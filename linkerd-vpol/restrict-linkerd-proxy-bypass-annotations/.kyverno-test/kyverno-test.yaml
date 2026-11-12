@@ -1,0 +1,118 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-linkerd-proxy-bypass-annotations
+policies:
+- ../restrict-linkerd-proxy-bypass-annotations.yaml
+resources:
+- ../.chainsaw-test/pod-good.yaml
+- ../.chainsaw-test/bad-pod-skip-subnets.yaml
+- ../.chainsaw-test/bad-pod-proxy-uid-gid.yaml
+- ../.chainsaw-test/bad-pod-run-as-proxy-uid.yaml
+- ../.chainsaw-test/bad-pod-pod-level-uid.yaml
+- ../.chainsaw-test/bad-pod-sidecar-init.yaml
+- ../.chainsaw-test/existing-bypass.yaml
+- ../.chainsaw-test/podcontroller-good.yaml
+- ../.chainsaw-test/bad-deployment-annotation.yaml
+- ../.chainsaw-test/bad-deployment-uid.yaml
+- ../.chainsaw-test/bad-cronjob-annotation.yaml
+- ../.chainsaw-test/bad-cronjob-uid.yaml
+- ../.chainsaw-test/namespace-good.yaml
+- ../.chainsaw-test/namespace-bad.yaml
+- resources.yaml
+results:
+- kind: Pod
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - good-pod
+  - good-pod-other-annotations
+  - good-pod-injected
+  - good-pod-init-proxy-uid
+  - good-pod-container-override
+  - edge-good-null-annotations
+  - edge-good-native-sidecar-proxy
+  - edge-good-debug-sidecar
+  - edge-good-null-run-as-user
+  - edge-good-malformed
+  # Similar keys with a different name or prefix aren't checked.
+  - edge-good-other-uid-annotation
+  result: pass
+- kind: Pod
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - bad-pod-skip-subnets
+  - bad-pod-proxy-uid-gid
+  - bad-pod-run-as-proxy-uid
+  - bad-pod-pod-level-uid
+  - bad-pod-sidecar-init
+  - existing-bypass
+  - edge-bad-empty-value
+  - edge-bad-ephemeral
+  - edge-bad-empty-security-context
+  - edge-bad-after-malformed
+  result: fail
+- kind: Deployment
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - good-deployment
+  - edge-good-deployment-no-template-metadata
+  result: pass
+- kind: Deployment
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - bad-deployment-annotation
+  - bad-deployment-uid
+  result: fail
+- kind: CronJob
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - good-cronjob
+  result: pass
+- kind: CronJob
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - bad-cronjob-annotation
+  - bad-cronjob-uid
+  result: fail
+- kind: Job
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-good-job
+  result: pass
+- kind: Job
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-bad-job
+  result: fail
+- kind: StatefulSet
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-bad-statefulset
+  result: fail
+- kind: DaemonSet
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-bad-daemonset
+  result: fail
+- kind: ReplicaSet
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-bad-replicaset
+  result: fail
+- kind: ReplicationController
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - edge-bad-replicationcontroller
+  result: fail
+- kind: Namespace
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - linkerd-vpol-good-ns
+  - edge-good-namespace
+  result: pass
+- kind: Namespace
+  policy: restrict-linkerd-proxy-bypass-annotations
+  resources:
+  - linkerd-vpol-bad-ns
+  - edge-bad-namespace
+  result: fail

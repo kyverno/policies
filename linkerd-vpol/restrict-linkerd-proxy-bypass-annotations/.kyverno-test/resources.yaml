@@ -1,0 +1,276 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-null-annotations
+  annotations: null
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+---
+# Native sidecar mode puts linkerd-proxy in initContainers.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-native-sidecar-proxy
+spec:
+  initContainers:
+  - name: linkerd-init
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 65534
+  - name: linkerd-proxy
+    image: busybox:1.37
+    restartPolicy: Always
+    securityContext:
+      runAsUser: 2102
+  containers:
+  - name: app
+    image: busybox:1.37
+---
+# linkerd-debug sets no UID, so it inherits the Pod-level one.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-debug-sidecar
+spec:
+  securityContext:
+    runAsUser: 2102
+  containers:
+  - name: linkerd-proxy
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 2102
+  - name: linkerd-debug
+    image: busybox:1.37
+  - name: app
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 1000
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-null-run-as-user
+spec:
+  securityContext:
+    runAsUser: 1000
+  containers:
+  - name: app
+    image: busybox:1.37
+    securityContext:
+      runAsUser: null
+---
+# Malformed fields are skipped instead of causing errors.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-malformed
+  annotations: not-a-map
+spec:
+  securityContext: not-a-map
+  initContainers: not-a-list
+  containers:
+  - not-a-map
+  - name: app
+    image: busybox:1.37
+    securityContext: not-a-map
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-good-other-uid-annotation
+  annotations:
+    config.linkerd.io/proxy-uid-extra: "1000"
+    linkerd.io/skip-subnets: 0.0.0.0/0
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+---
+# Any value counts, even an empty one.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-empty-value
+  annotations:
+    config.linkerd.io/skip-subnets: ""
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-ephemeral
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+  ephemeralContainers:
+  - name: debugger
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 2102
+---
+# An empty securityContext falls back to the Pod-level UID.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-empty-security-context
+spec:
+  securityContext:
+    runAsUser: 2102
+  containers:
+  - name: app
+    image: busybox:1.37
+    securityContext: {}
+---
+# A malformed entry is skipped; the next container is still checked.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: edge-bad-after-malformed
+spec:
+  containers:
+  - not-a-map
+  - name: app
+    image: busybox:1.37
+    securityContext:
+      runAsUser: 2102
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: edge-good-namespace
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: edge-bad-namespace
+  annotations:
+    config.linkerd.io/proxy-uid: "1000"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: edge-bad-statefulset
+spec:
+  serviceName: edge
+  selector:
+    matchLabels:
+      app: edge
+  template:
+    metadata:
+      labels:
+        app: edge
+      annotations:
+        config.linkerd.io/skip-subnets: 10.0.0.0/8
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: edge-bad-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: edge
+  template:
+    metadata:
+      labels:
+        app: edge
+    spec:
+      securityContext:
+        runAsUser: 2102
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: edge-bad-replicaset
+spec:
+  selector:
+    matchLabels:
+      app: edge
+  template:
+    metadata:
+      labels:
+        app: edge
+      annotations:
+        config.linkerd.io/proxy-gid: "1000"
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: edge-bad-job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      initContainers:
+      - name: proxy-helper
+        image: busybox:1.37
+        restartPolicy: Always
+        securityContext:
+          runAsUser: 2102
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: edge-good-job
+spec:
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: edge-bad-replicationcontroller
+spec:
+  selector:
+    app: edge
+  template:
+    metadata:
+      labels:
+        app: edge
+      annotations:
+        config.linkerd.io/skip-subnets: 0.0.0.0/0
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-good-deployment-no-template-metadata
+spec:
+  selector:
+    matchLabels:
+      app: edge
+  template:
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37

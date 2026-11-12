@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deployment-uid
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deployment-uid
+  template:
+    metadata:
+      labels:
+        app: bad-deployment-uid
+    spec:
+      containers:
+      - name: app
+        image: busybox:1.37
+        imagePullPolicy: IfNotPresent
+        command: [sleep, "3600"]
+        securityContext:
+          runAsUser: 2102

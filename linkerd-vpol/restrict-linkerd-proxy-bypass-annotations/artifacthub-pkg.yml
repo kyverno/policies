@@ -1,0 +1,99 @@
+name: restrict-linkerd-proxy-bypass-annotations-vpol
+version: 1.0.0
+displayName: Restrict Linkerd Proxy Bypass Annotations in CEL expressions
+description: >-
+  Linkerd's iptables rules send traffic past the proxy for each subnet in the config.linkerd.io/skip-subnets annotation, and for traffic owned by the UID or GID in config.linkerd.io/proxy-uid or config.linkerd.io/proxy-gid. Traffic that skips the proxy loses mTLS and isn't checked by Server and AuthorizationPolicy resources. This policy flags Pods, Pod controllers, and Namespaces that set these annotations, and app containers that run as the proxy UID.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-vpol/restrict-linkerd-proxy-bypass-annotations/restrict-linkerd-proxy-bypass-annotations.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  Linkerd redirects a meshed Pod's traffic through its proxy with iptables rules. Some proxy configuration annotations add `RETURN` rules that send traffic past the proxy:
+
+  - `config.linkerd.io/skip-subnets`: each CIDR becomes a `RETURN` rule in the inbound redirect chain. With `0.0.0.0/0`, all inbound traffic skips the proxy, so no Server or AuthorizationPolicy applies to the workload.
+  - `config.linkerd.io/proxy-uid` and `config.linkerd.io/proxy-gid`: outbound traffic owned by this UID or GID skips the proxy. If you set them to the app's own UID or GID, the app's outbound traffic leaves without mTLS and without egress policy.
+
+  An app container that runs as the proxy UID, which is `2102` by default, gets the same outbound bypass. See [iptables](https://linkerd.io/2.19/reference/iptables/) and [proxy configuration](https://linkerd.io/2.19/reference/proxy-configuration/) in the Linkerd docs.
+
+  ### What the policy checks
+
+  - The policy fails when one of these keys is in the annotations, whatever its value, even an empty one:
+    - `config.linkerd.io/skip-subnets`
+    - `config.linkerd.io/proxy-uid`
+    - `config.linkerd.io/proxy-gid`
+  - It checks these annotations:
+    - `metadata.annotations` of Pods and Namespaces.
+    - `spec.template.metadata.annotations` of Deployments, StatefulSets, DaemonSets, ReplicaSets, ReplicationControllers, and Jobs.
+    - `spec.jobTemplate.spec.template.metadata.annotations` of CronJobs.
+  - It also fails when a container runs as the proxy UID. A container runs as the UID in its own `securityContext.runAsUser`, or in the Pod's `securityContext.runAsUser` when it doesn't set its own. It checks containers, ephemeral containers, and sidecar init containers (`restartPolicy: Always`), because these run next to the proxy.
+  - It skips Linkerd's own `linkerd-proxy` and `linkerd-debug` containers.
+  - The messages list each key or container with its path, for example `spec.template.metadata.annotations` or `spec.initContainers[log-shipper]`.
+  - It checks creates and updates, and reports existing resources through background scans. It defaults to `Audit`; switch to `Deny` to block.
+  - In `Deny` mode, flagged resources that already exist keep working, but updates to them are blocked until you remove the annotation. Deleting them still works. Use the `Audit` reports to find them before you switch.
+
+  ### Why the policy checks Namespaces
+
+  These annotations act as defaults when you set them on a Namespace. When the proxy injector injects a Pod, it copies each proxy configuration annotation from the Namespace onto the Pod, unless the Pod sets its own (`AppendNamespaceAnnotations` in the linkerd2 `pkg/inject` package). The Linkerd CNI plugin also reads `skip-subnets`, `proxy-uid`, and `proxy-gid` from the Pod, then from its Namespace.
+
+  Because the injector copies the Namespace annotation onto each injected Pod, the policy also flags those Pods. To allow an annotated Namespace, exempt both the Namespace and its Pods.
+
+  ### Choosing the proxy UID
+
+  The policy compares UIDs with the `proxyUID` variable, which is `2102`. If you install Linkerd with a different `proxy.uid` Helm value, change the variable to match:
+
+      variables:
+        - name: proxyUID
+          expression: "2103"
+
+  ### Init containers
+
+  The policy doesn't check regular init containers. They finish before the app starts, and the proxy doesn't run yet, except in native sidecar mode. When you use the Linkerd CNI plugin, init containers have no network access, and the [CNI docs](https://linkerd.io/2.19/features/cni/) suggest that you run such an init container as the proxy UID. Its traffic then isn't meshed. If you don't want to allow this, add an `initContainers` check to the policy.
+
+  ### Cluster-wide settings
+
+  You set the cluster-wide defaults with Helm values, such as `proxyInit.skipSubnets`, `proxy.uid`, and `proxy.gid`. The proxy injector applies these values directly and doesn't write them to Pods as annotations, so injected Pods aren't flagged for them. This policy only governs per-workload and per-Namespace overrides; it doesn't check your Helm values. The `linkerd inject` command writes `proxy-uid` and `proxy-gid` annotations when you pass `--proxy-uid` or `--proxy-gid`, and the policy flags these.
+
+  ### Limitations
+
+  - Some workloads need these annotations. For example, `skip-subnets` lets a Pod reach a service that must not go through the proxy. Use a PolicyException for them.
+  - On OpenShift, some users set `proxy-uid` to fit the UID range of a security context constraint. This is an assumption that we haven't verified. If you do this, use a PolicyException or set the UID cluster-wide through Helm.
+  - It doesn't check cluster-wide Helm values.
+  - It detects an app UID that equals the proxy UID only through the `proxyUID` variable. It doesn't detect a match with a custom `proxy-uid` annotation, which it flags anyway, or with a custom Helm `proxy.uid`, unless you change the variable.
+  - It doesn't check `runAsGroup` against the proxy GID. Linkerd sets no proxy GID by default.
+  - It can't see the user in a container image. A container that doesn't set `runAsUser` might still run as the proxy UID.
+  - It identifies Linkerd's containers by name. A container that you name `linkerd-proxy` or `linkerd-debug` isn't checked for the proxy UID.
+  - It doesn't check annotations on the Pod controller's own `metadata`, because they don't reach the Pods.
+  - The policy matches the `pods/ephemeralcontainers` subresource, so that it checks `kubectl debug` containers at admission. Admission checks work on a default install, but the policy's `RBACPermissionsGranted` condition stays `False` until you grant `get`, `list`, and `watch` on `pods/ephemeralcontainers` to the admission and reports controllers. Use `ClusterRole`s labeled `rbac.kyverno.io/aggregate-to-admission-controller: "true"` and `rbac.kyverno.io/aggregate-to-reports-controller: "true"`. The condition updates the next time the policy changes.
+
+  ### Exempting a workload
+
+  To exempt a single Pod, create a Kyverno `PolicyException` that references this policy in `spec.policyRefs` and matches both the namespace and the name of that Pod in `spec.matchConditions`. If you match on the name alone, you exempt the same name in every namespace. The following tested example exempts `legacy-egress/egress-client`:
+
+      apiVersion: policies.kyverno.io/v1
+      kind: PolicyException
+      metadata:
+        name: restrict-linkerd-proxy-bypass-annotations-legacy
+        namespace: policy-exceptions
+      spec:
+        policyRefs:
+        - name: restrict-linkerd-proxy-bypass-annotations
+          kind: ValidatingPolicy
+        matchConditions:
+        - name: legacy-egress-client
+          expression: object.metadata.namespace == 'legacy-egress' && object.metadata.name == 'egress-client'
+
+  Pods that a controller creates get generated names. To exempt them, match on the namespace and a label, and exempt the controller too.
+
+  Kyverno reads PolicyExceptions only when you enable them, and only from the namespaces that you allow. This example uses the `policy-exceptions` namespace.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "Pod, Namespace"
+digest: db2b86f77523679db42863fb4b41587e3ca75f207edd6fd7a270872c5f8e860e
+createdAt: "2026-11-12T00:00:00Z"

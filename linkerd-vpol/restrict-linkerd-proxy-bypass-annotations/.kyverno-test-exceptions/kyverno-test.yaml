@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-linkerd-proxy-bypass-annotations-exception
+policies:
+- ../restrict-linkerd-proxy-bypass-annotations.yaml
+resources:
+- ../.chainsaw-test/exception-pod.yaml
+- ../.chainsaw-test/exception-pod-other-namespace.yaml
+- ../.chainsaw-test/bad-pod-skip-subnets.yaml
+- ../.chainsaw-test/pod-good.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts legacy-egress/egress-client, so it's skipped.
+- policy: restrict-linkerd-proxy-bypass-annotations
+  kind: Pod
+  resources: [legacy-egress/egress-client]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: restrict-linkerd-proxy-bypass-annotations
+  kind: Pod
+  resources: [default/egress-client]
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-linkerd-proxy-bypass-annotations
+  kind: Pod
+  resources: [bad-pod-skip-subnets]
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-linkerd-proxy-bypass-annotations
+  kind: Pod
+  resources: [good-pod]
+  result: pass
+  isValidatingPolicy: true

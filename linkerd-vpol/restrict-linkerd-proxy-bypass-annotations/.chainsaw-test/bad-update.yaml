@@ -1,0 +1,7 @@
+# Only metadata, so the patch doesn't touch the Pod's immutable spec.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+  annotations:
+    config.linkerd.io/skip-subnets: 10.96.0.0/12

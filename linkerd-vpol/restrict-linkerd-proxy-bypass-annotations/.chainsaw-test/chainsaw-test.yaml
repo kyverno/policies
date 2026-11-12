@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-linkerd-proxy-bypass-annotations
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-bypass is created before the policy exists.
+    - name: step-01
+      try:
+        - apply:
+            file: ephemeral-rbac.yaml
+        - apply:
+            file: existing-bypass.yaml
+    # A background scan reports the existing Pod in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../restrict-linkerd-proxy-bypass-annotations.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: restrict-linkerd-proxy-bypass-annotations
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: pod-good.yaml
+        - apply:
+            file: podcontroller-good.yaml
+        - apply:
+            file: namespace-good.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Remove config.linkerd.io/skip-subnets from metadata.annotations'))": true
+            file: bad-pod-skip-subnets.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Remove config.linkerd.io/proxy-uid, config.linkerd.io/proxy-gid from metadata.annotations'))": true
+            file: bad-pod-proxy-uid-gid.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Change runAsUser for: spec.containers[app]'))": true
+            file: bad-pod-run-as-proxy-uid.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Change runAsUser for: spec.containers[app]'))": true
+            file: bad-pod-pod-level-uid.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Change runAsUser for: spec.initContainers[log-shipper]'))": true
+            file: bad-pod-sidecar-init.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Remove config.linkerd.io/skip-subnets, config.linkerd.io/proxy-uid from spec.template.metadata.annotations'))": true
+            file: bad-deployment-annotation.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Change runAsUser for: spec.template.spec.containers[app]'))": true
+            file: bad-deployment-uid.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Remove config.linkerd.io/proxy-gid from spec.jobTemplate.spec.template.metadata.annotations'))": true
+            file: bad-cronjob-annotation.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Change runAsUser for: spec.jobTemplate.spec.template.spec.containers[app]'))": true
+            file: bad-cronjob-uid.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'Remove config.linkerd.io/skip-subnets from metadata.annotations'))": true
+            file: namespace-bad.yaml
+    # Adding a bypass annotation to an existing Pod or Namespace is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'config.linkerd.io/skip-subnets'))": true
+            file: bad-update.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'config.linkerd.io/proxy-gid'))": true
+            file: bad-update-namespace.yaml
+    # An ephemeral container that runs as the proxy UID is blocked; one that
+    # doesn't is allowed.
+    - name: step-05
+      try:
+        - script:
+            content: kubectl -n "$NAMESPACE" debug good-pod --image=busybox:1.37 --image-pull-policy=IfNotPresent --container=debug-ok -- true
+        - script:
+            content: kubectl -n "$NAMESPACE" debug good-pod --image=busybox:1.37 --image-pull-policy=IfNotPresent --container=debug-proxy-uid --custom=ephemeral-profile.json -- true
+            check:
+              ($error != null): true
+              (contains($stderr, 'Policy restrict-linkerd-proxy-bypass-annotations failed')): true
+              (contains($stderr, 'spec.ephemeralContainers[debug-proxy-uid]')): true
+    # The PolicyException allows egress-client in legacy-egress only. A Pod
+    # with the same name in another namespace is still blocked, and so is
+    # egress-client once the exception is removed.
+    - name: step-06
+      try:
+        - apply:
+            file: exception-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-pod.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'config.linkerd.io/skip-subnets'))": true
+            file: exception-pod-other-namespace.yaml
+        - delete:
+            file: exception-pod.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-linkerd-proxy-bypass-annotations failed') && contains($error, 'config.linkerd.io/skip-subnets'))": true
+            file: exception-pod.yaml
