@@ -1,0 +1,25 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: secrets
+spec:
+  resources:
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: protected
+        namespace: default
+        labels:
+          status: protected
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: unprotected
+        namespace: default
+        labels:
+          status: approved
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: unlabeled
+        namespace: default
