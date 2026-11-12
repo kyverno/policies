@@ -30,7 +30,7 @@ spec:
         resources: ["roles", "clusterroles"]
   validations:
     - expression: >-
-        object.rules == null || !object.rules.exists(rule,
-        '*' in rule.verbs && rule.resources.exists(resource,
+        object.?rules.orValue([]) == null || !object.?rules.orValue([]).exists(rule,
+        '*' in rule.?verbs.orValue([]) && rule.?resources.orValue([]).exists(resource,
         !(has(exceptions.allowedValues) && resource + ':*' in exceptions.allowedValues)))
       message: "Use of a wildcard ('*') in any verbs is forbidden."

@@ -27,6 +27,7 @@ results:
   - goodclusterrole01
   - goodclusterrole02
   - default-rules
+  - nonresource-rule
   result: pass
 - isValidatingPolicy: true
   kind: Role
