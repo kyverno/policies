@@ -1,0 +1,55 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: verify-vpa-target
+  annotations:
+    policies.kyverno.io/title: Verify VerticalPodAutoscaler Target in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: VerticalPodAutoscaler
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.37"
+    policies.kyverno.io/description: >-
+      VerticalPodAutoscaler (VPA) is useful to automatically adjust the resources assigned to Pods.
+      It requires defining a specific target resource by kind and name. There are no built-in
+      validation checks by the VPA controller to ensure that the target resource exists or that the target
+      kind is specified correctly. This policy has two checks. The first verifies that the
+      kind is specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet, which helps avoid typos.
+      The second verifies that the target resource exists in the same namespace before allowing the VPA to be created.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["autoscaling.k8s.io"]
+        apiVersions: ["*"]
+        operations: [CREATE]
+        resources: [verticalpodautoscalers]
+  variables:
+    - name: pluralByKind
+      expression: >-
+        {'Deployment': 'deployments', 'StatefulSet': 'statefulsets', 'ReplicaSet': 'replicasets', 'DaemonSet': 'daemonsets'}
+    - name: targetKind
+      expression: "object.?spec.?targetRef.?kind.orValue('')"
+    - name: targetName
+      expression: "object.?spec.?targetRef.?name.optMap(n, type(n) == string ? n : '').orValue('')"
+    - name: kindAllowed
+      expression: "variables.targetKind in variables.pluralByKind"
+    - name: workloadNames
+      expression: >-
+        variables.kindAllowed ?
+        dyn(resource.List('apps/v1', variables.pluralByKind[variables.targetKind], request.namespace).items)
+          .map(w, w.metadata.name) :
+        []
+  validations:
+    - message: >-
+        The target kind must be specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet.
+      expression: "variables.kindAllowed"
+    - messageExpression: >-
+        'The target ' + variables.targetKind + ' named ' + variables.targetName +
+        ' does not exist in the ' + request.namespace + ' namespace.'
+      expression: "!variables.kindAllowed || variables.targetName in variables.workloadNames"
