@@ -1,0 +1,7 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-sbom-cyclonedx
+status:
+  conditionStatus:
+    ready: true
