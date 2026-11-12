@@ -1,0 +1,37 @@
+name: check-requests-within-vpa-bounds-vpol
+version: 1.0.0
+displayName: Check Resource Requests Against VPA Recommendations in ValidatingPolicy
+description: >-
+  The VerticalPodAutoscaler (VPA) recommender watches how much CPU and memory each container
+  really uses and publishes a recommended range for it, from a lower bound to an upper bound.
+  A request below the lower bound means the container is likely starved, and a request above
+  the upper bound means capacity is being reserved and wasted. This policy finds the VPA that
+  targets a Deployment, StatefulSet, or DaemonSet and reports every container whose CPU or
+  memory request is missing or falls outside the recommended range. Workloads without a VPA,
+  and VPAs that have no recommendation yet, are not checked. Background scanning is enabled
+  so that reports are refreshed as the recommendations change over time.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/check-requests-within-vpa-bounds/check-requests-within-vpa-bounds.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  The VerticalPodAutoscaler (VPA) recommender watches how much CPU and memory each container
+  really uses and publishes a recommended range for it, from a lower bound to an upper bound.
+  A request below the lower bound means the container is likely starved, and a request above
+  the upper bound means capacity is being reserved and wasted. This policy finds the VPA that
+  targets a Deployment, StatefulSet, or DaemonSet and reports every container whose CPU or
+  memory request is missing or falls outside the recommended range. Workloads without a VPA,
+  and VPAs that have no recommendation yet, are not checked. Background scanning is enabled
+  so that reports are refreshed as the recommendations change over time.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.34-1.37"
+  kyverno/subject: "Deployment, StatefulSet, DaemonSet, VerticalPodAutoscaler"
+digest: c9b1a30724c6aade8ad2af811e454fa4c1475edb3ceb3aa78ad4068769f0ffc6
+createdAt: "2026-11-11T18:44:11Z"

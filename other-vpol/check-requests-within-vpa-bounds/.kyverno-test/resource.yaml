@@ -1,0 +1,268 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: good-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-deploy
+  template:
+    metadata:
+      labels:
+        app: good-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: edge-deploy
+  template:
+    metadata:
+      labels:
+        app: edge-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: over-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: over-deploy
+  template:
+    metadata:
+      labels:
+        app: over-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: "2"
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: no-vpa-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: no-vpa-deploy
+  template:
+    metadata:
+      labels:
+        app: no-vpa-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 4
+            memory: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pending-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pending-deploy
+  template:
+    metadata:
+      labels:
+        app: pending-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 4
+            memory: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: name-clash
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: name-clash
+  template:
+    metadata:
+      labels:
+        app: name-clash
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 4
+            memory: 8Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminating-deploy
+  namespace: default
+  deletionTimestamp: "2026-01-01T00:00:00Z"
+  finalizers:
+  - foregroundDeletion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terminating-deploy
+  template:
+    metadata:
+      labels:
+        app: terminating-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 4
+            memory: 8Gi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: good-sts
+  namespace: default
+spec:
+  serviceName: good-sts
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-sts
+  template:
+    metadata:
+      labels:
+        app: good-sts
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 250m
+            memory: 256Mi
+      - name: sidecar
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: under-sts
+  namespace: default
+spec:
+  serviceName: under-sts
+  replicas: 1
+  selector:
+    matchLabels:
+      app: under-sts
+  template:
+    metadata:
+      labels:
+        app: under-sts
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      - name: sidecar
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: good-ds
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: good-ds
+  template:
+    metadata:
+      labels:
+        app: good-ds
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 1
+            memory: 1Gi
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: missing-ds
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: missing-ds
+  template:
+    metadata:
+      labels:
+        app: missing-ds
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]

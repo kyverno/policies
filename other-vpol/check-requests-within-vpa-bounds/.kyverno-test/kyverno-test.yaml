@@ -1,0 +1,92 @@
+apiVersion: cli.kyverno.io/v1alpha1
+clusterResources:
+- cluster-resources.yaml
+kind: Test
+metadata:
+  name: check-requests-within-vpa-bounds
+policies:
+- ../check-requests-within-vpa-bounds.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - missing-ds
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - over-deploy
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - over-deploy
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - under-sts
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - good-ds
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - edge-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - good-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - good-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - name-clash
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - no-vpa-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - pending-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - good-sts
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-requests-within-vpa-bounds
+  resources:
+  - terminating-deploy
+  result: skip

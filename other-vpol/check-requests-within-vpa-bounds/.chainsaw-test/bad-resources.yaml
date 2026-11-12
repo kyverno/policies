@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: over-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: over-deploy
+  template:
+    metadata:
+      labels:
+        app: over-deploy
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: "2"
+            memory: 256Mi
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: under-sts
+spec:
+  serviceName: under-sts
+  replicas: 1
+  selector:
+    matchLabels:
+      app: under-sts
+  template:
+    metadata:
+      labels:
+        app: under-sts
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+        resources:
+          requests:
+            cpu: 250m
+            memory: 64Mi
+      - name: sidecar
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: missing-ds
+spec:
+  selector:
+    matchLabels:
+      app: missing-ds
+  template:
+    metadata:
+      labels:
+        app: missing-ds
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-busybox:latest
+        command: [sleep, "3600"]
+
