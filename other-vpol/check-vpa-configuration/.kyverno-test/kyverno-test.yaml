@@ -1,0 +1,80 @@
+apiVersion: cli.kyverno.io/v1alpha1
+clusterResources:
+- cluster-resources.yaml
+kind: Test
+metadata:
+  name: check-vpa-configuration
+policies:
+- ../check-vpa-configuration.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: check-vpa-configuration
+  resources:
+  - bad-ds
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-vpa-configuration
+  resources:
+  - bad-deploy
+  result: fail
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-vpa-configuration
+  resources:
+  - bad-deploy
+  result: fail
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: check-vpa-configuration
+  resources:
+  - bad-rs
+  result: fail
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: check-vpa-configuration
+  resources:
+  - bad-sts
+  result: fail
+- isValidatingPolicy: true
+  kind: DaemonSet
+  policy: check-vpa-configuration
+  resources:
+  - good-ds
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: check-vpa-configuration
+  resources:
+  - good-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-vpa-configuration
+  resources:
+  - good-deploy
+  result: pass
+- isValidatingPolicy: true
+  kind: ReplicaSet
+  policy: check-vpa-configuration
+  resources:
+  - good-rs
+  result: pass
+- isValidatingPolicy: true
+  kind: StatefulSet
+  policy: check-vpa-configuration
+  resources:
+  - good-sts
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  operation: UPDATE
+  policy: check-vpa-configuration
+  resources:
+  - terminating-deploy
+  result: skip
