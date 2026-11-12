@@ -1,0 +1,12 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  resources:
+  - apiVersion: config.openshift.io/v1
+    kind: Infrastructure
+    metadata:
+      name: cluster
+    status:
+      infrastructureName: my-infra-xyz

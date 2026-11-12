@@ -30,9 +30,11 @@ spec:
     try:
     - assert:
         file: patched-ns01.yaml
+    - assert:
+        file: patched-ns02.yaml
     - error:
         file: not-patched-ns03.yaml
-  - name: step-04
+  - name: step-05
     try:
     - sleep:
         duration: 3s

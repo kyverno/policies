@@ -1,0 +1,10 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-no-pvc
+  namespace: backup-velero-yes
+spec:
+  template:
+    metadata:
+      annotations:
+        backup.velero.io/backup-volumes: task-pv-storage

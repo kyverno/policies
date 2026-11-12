@@ -34,3 +34,11 @@ spec:
         file: cronjob-patched.yaml
     - error:
         file: pod-not-patched02.yaml
+  - name: step-04
+    try:
+    - apply:
+        file: deploy-no-pvc.yaml
+    - apply:
+        file: deploy-add-pvc.yaml
+    - error:
+        file: deploy-not-patched.yaml

@@ -1,0 +1,17 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: record-creation-details
+policies:
+- ../record-creation-details.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Pod
+  operation: UPDATE
+  policy: record-creation-details
+  resources:
+  - pod01
+  - pod02
+  result: pass

@@ -1,0 +1,19 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: clusterresources
+spec:
+  crds:
+  - ../../../.chainsaw/crds/infrastructure.yaml
+  - ../../../.chainsaw/crds/machineset.yaml
+  resources:
+  - apiVersion: v1
+    kind: Namespace
+    metadata:
+      name: openshift-machine-api
+  - apiVersion: config.openshift.io/v1
+    kind: Infrastructure
+    metadata:
+      name: cluster
+    status:
+      infrastructureName: my-infra-xyz

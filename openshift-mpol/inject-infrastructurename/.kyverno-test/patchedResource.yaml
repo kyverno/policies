@@ -1,0 +1,49 @@
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: my-infra-xyz-worker-us-east-1a
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: my-infra-xyz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: my-infra-xyz
+      machine.openshift.io/cluster-api-machineset: my-infra-xyz-worker-us-east-1a
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: my-infra-xyz
+        machine.openshift.io/cluster-api-machineset: my-infra-xyz-worker-us-east-1a
+    spec:
+      providerSpec:
+        value:
+          clusterID: my-infra-xyz
+          userDataSecret:
+            name: worker-user-data
+---
+apiVersion: machine.openshift.io/v1beta1
+kind: MachineSet
+metadata:
+  name: static-worker-us-east-1a
+  namespace: openshift-machine-api
+  labels:
+    machine.openshift.io/cluster-api-cluster: static-cluster
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      machine.openshift.io/cluster-api-cluster: static-cluster
+      machine.openshift.io/cluster-api-machineset: static-worker-us-east-1a
+  template:
+    metadata:
+      labels:
+        machine.openshift.io/cluster-api-cluster: static-cluster
+        machine.openshift.io/cluster-api-machineset: static-worker-us-east-1a
+    spec:
+      providerSpec:
+        value:
+          clusterID: static-cluster
+          userDataSecret:
+            name: worker-user-data

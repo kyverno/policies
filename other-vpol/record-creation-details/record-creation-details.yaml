@@ -1,0 +1,37 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: record-creation-details
+  annotations:
+    policies.kyverno.io/title: Record Creation Details
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Annotation
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      Kubernetes by default does not make a record of who or what
+      created a resource in that resource itself. It must be retrieved from
+      an audit log, if enabled, which can make it difficult for cluster
+      operators to know who was responsible for an object's creation.
+      This policy writes an annotation with the key `kyverno.io/created-by`
+      having all the userInfo fields present in the AdmissionReview request
+      for any object being created. It then protects this annotation from
+      tampering or removal making it immutable. Although this policy matches on
+      all kinds ("*") it is highly recommended to more narrowly scope it to only
+      the resources which should be labeled.
+spec:
+  validationActions: [Deny]
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["*"]
+      apiVersions: ["*"]
+      operations: ["UPDATE"]
+      resources: ["*"]
+  variables:
+  - name: oldCreator
+    expression: "oldObject.metadata.?annotations['kyverno.io/created-by'].orValue('')"
+  - name: newCreator
+    expression: "object.metadata.?annotations['kyverno.io/created-by'].orValue('')"
+  validations:
+  - expression: "variables.oldCreator != '' ? variables.newCreator == variables.oldCreator : !('kyverno.io/created-by' in object.metadata.?annotations.orValue({}))"
+    message: The annotation kyverno.io/created-by is protected and may not be altered or removed.
