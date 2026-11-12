@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busybox-multi-restart
+  annotations:
+    sre.corp.org/troubleshooting-needed: "true"
+  name: deployment04
+spec:
+  replicas: 0
+

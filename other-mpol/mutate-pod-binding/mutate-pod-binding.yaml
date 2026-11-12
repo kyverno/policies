@@ -1,0 +1,44 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: mutate-pod-binding
+  annotations:
+    policies.kyverno.io/title: Mutate Pod Binding
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.19.1
+    policies.kyverno.io/description: >-
+      Containers running in Pods may sometimes need access to node-specific information
+      on which the Pod has been scheduled. Scheduling decisions are made by kube-scheduler after
+      the Pod has been persisted and so only at that time may the Node to which the Pod is bound
+      can be fetched. The Kubernetes API allows specifically the projection of annotations from these
+      Binding resources to the Pods which are their subject. This policy watches for then mutates
+      the /binding subresource of a Pod to add an annotation named `foo` the value of which comes
+      from the bound Node's label also called `foo`. Use of this policy may require removal of the
+      Binding resourceFilter in Kyverno's ConfigMap.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["CREATE"]
+      resources: ["pods/binding"]
+  variables:
+  - name: nodeName
+    expression: "has(object.target) && has(object.target.name) ? object.target.name : ''"
+  - name: node
+    expression: "variables.nodeName != '' ? resource.Get('v1', 'nodes', '', variables.nodeName) : {}"
+  - name: fooLabel
+    expression: "'metadata' in variables.node && 'labels' in variables.node.metadata && 'foo' in variables.node.metadata.labels ? variables.node.metadata.labels['foo'] : 'empty'"
+  mutations:
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        !has(object.metadata) ?
+          [JSONPatch{op: "add", path: "/metadata", value: {"annotations": {"foo": variables.fooLabel}}}] :
+        has(object.metadata.annotations) ?
+          [JSONPatch{op: "add", path: "/metadata/annotations/" + jsonpatch.escapeKey("foo"), value: variables.fooLabel}] :
+          [JSONPatch{op: "add", path: "/metadata/annotations", value: {"foo": variables.fooLabel}}]
