@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bad-pod-proxy-uid-gid
+  annotations:
+    config.linkerd.io/proxy-uid: "1000"
+    config.linkerd.io/proxy-gid: "1000"
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]

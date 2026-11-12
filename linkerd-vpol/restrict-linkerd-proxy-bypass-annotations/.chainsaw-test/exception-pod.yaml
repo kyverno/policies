@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: egress-client
+  namespace: legacy-egress
+  annotations:
+    config.linkerd.io/skip-subnets: 203.0.113.0/24
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]

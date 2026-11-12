@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: existing-bypass
+  annotations:
+    config.linkerd.io/skip-subnets: 10.0.0.0/8
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]

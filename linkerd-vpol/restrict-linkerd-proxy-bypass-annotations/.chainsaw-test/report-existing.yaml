@@ -1,0 +1,7 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: PolicyReport
+scope:
+  kind: Pod
+  name: existing-bypass
+(results[?policy == 'restrict-linkerd-proxy-bypass-annotations']):
+- result: fail

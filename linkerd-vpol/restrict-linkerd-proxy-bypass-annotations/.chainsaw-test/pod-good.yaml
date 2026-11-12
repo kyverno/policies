@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+---
+# Other Linkerd annotations, such as port skipping, aren't checked here.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-other-annotations
+  annotations:
+    linkerd.io/inject: enabled
+    config.linkerd.io/skip-outbound-ports: "4567"
+    config.linkerd.io/default-inbound-policy: deny
+spec:
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+---
+# Shaped like an injected Pod: linkerd-proxy runs as the proxy UID, and
+# linkerd-init runs as 65534.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-injected
+  annotations:
+    linkerd.io/inject: enabled
+    linkerd.io/proxy-version: edge-26.11.1
+spec:
+  initContainers:
+  - name: linkerd-init
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: ["true"]
+    securityContext:
+      runAsUser: 65534
+  containers:
+  - name: linkerd-proxy
+    image: cr.l5d.io/linkerd/proxy:edge-26.11.1
+    imagePullPolicy: IfNotPresent
+    securityContext:
+      runAsUser: 2102
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+    securityContext:
+      runAsUser: 1000
+---
+# A regular init container finishes before the app starts. Linkerd's CNI docs
+# run such containers as the proxy UID to reach the network.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-init-proxy-uid
+spec:
+  initContainers:
+  - name: fetch
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: ["true"]
+    securityContext:
+      runAsUser: 2102
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+---
+# The container's own runAsUser overrides the Pod-level proxy UID.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-pod-container-override
+spec:
+  securityContext:
+    runAsUser: 2102
+  containers:
+  - name: app
+    image: busybox:1.37
+    imagePullPolicy: IfNotPresent
+    command: [sleep, "3600"]
+    securityContext:
+      runAsUser: 1000
