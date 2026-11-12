@@ -1,0 +1,250 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb01
+spec:
+  minAvailable: 1%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb02
+spec:
+  minAvailable: 10%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb03
+spec:
+  minAvailable: 25%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb04
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb05
+spec:
+  maxUnavailable: 50%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-minAvailable-pdb06
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb01
+spec:
+  maxUnavailable: 50%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb02
+spec:
+  maxUnavailable: 75%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb03
+spec:
+  maxUnavailable: 100%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb04
+spec:
+  minAvailable: 50%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb05
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb06
+spec:
+  maxUnavailable: 60%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: good-maxUnavailable-pdb07
+spec:
+  maxUnavailable: 80%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb01
+spec:
+  minAvailable: 0%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb02
+spec:
+  minAvailable: 51%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb03
+spec:
+  minAvailable: 60%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb04
+spec:
+  minAvailable: 75%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb05
+spec:
+  minAvailable: 90%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-minAvailable-pdb06
+spec:
+  minAvailable: 100%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb01
+spec:
+  maxUnavailable: 1%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb02
+spec:
+  maxUnavailable: 10%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb03
+spec:
+  maxUnavailable: 25%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb04
+spec:
+  maxUnavailable: 49%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb05
+spec:
+  maxUnavailable: 0%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: bad-maxUnavailable-pdb06
+spec:
+  maxUnavailable: 30%
+  selector:
+    matchLabels:
+      app: demo
+

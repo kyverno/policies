@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: resource-creation-updating-denied
+spec:
+  template: false
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../resource-creation-updating-denied.yaml
+    - script:
+        content: |
+          HOUR=$(date -u +%H | sed 's/^0//')
+          kubectl patch validatingpolicies.policies.kyverno.io resource-creation-updating-denied \
+            --type=json \
+            -p="[{\"op\":\"replace\",\"path\":\"/spec/variables/1/expression\",\"value\":\"${HOUR}\"},
+                 {\"op\":\"replace\",\"path\":\"/spec/variables/2/expression\",\"value\":\"${HOUR}\"},
+                 {\"op\":\"replace\",\"path\":\"/spec/validationActions/0\",\"value\":\"Deny\"}]"
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02
+    try:
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: resource.yaml
+  - name: step-03
+    try:
+    - script:
+        content: |
+          AHEAD=$(( ($(date -u +%H | sed 's/^0//') + 2) % 24 ))
+          kubectl patch validatingpolicies.policies.kyverno.io resource-creation-updating-denied \
+            --type=json \
+            -p="[{\"op\":\"replace\",\"path\":\"/spec/variables/1/expression\",\"value\":\"${AHEAD}\"},
+                 {\"op\":\"replace\",\"path\":\"/spec/variables/2/expression\",\"value\":\"${AHEAD}\"}]"
+    - sleep:
+        duration: 5s
+    - apply:
+        file: resource2.yaml
+
