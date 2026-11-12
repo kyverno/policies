@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: myapp
+  name: myapp-pod-good
+spec:
+  nodeName: minikube
+  containers:
+    - image: nginx
+      name: myapp-pod-good
