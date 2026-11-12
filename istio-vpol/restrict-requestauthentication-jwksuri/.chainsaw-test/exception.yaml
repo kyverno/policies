@@ -1,0 +1,15 @@
+# Exempts one RequestAuthentication that uses an in-cluster identity provider
+# over http. Match the namespace and the name, so the same name in another
+# namespace isn't exempt.
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-requestauthentication-jwksuri-keycloak
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-requestauthentication-jwksuri
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: keycloak-internal
+    expression: object.metadata.namespace == 'auth' && object.metadata.name == 'keycloak-internal'

@@ -1,0 +1,11 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: keycloak-internal
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: http://keycloak.auth.svc.cluster.local:8080/realms/mesh
+    jwksUri: http://keycloak.auth.svc.cluster.local:8080/realms/mesh/protocol/openid-connect/certs

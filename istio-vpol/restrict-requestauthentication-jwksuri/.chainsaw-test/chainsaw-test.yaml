@@ -1,0 +1,148 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-requestauthentication-jwksuri
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-private-ip is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: existing-private-ip.yaml
+    # A background scan reports the existing RequestAuthentication in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../restrict-requestauthentication-jwksuri.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: restrict-requestauthentication-jwksuri
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-jwksuri.yaml
+        - apply:
+            file: good-issuer-discovery.yaml
+        - apply:
+            file: good-inline-jwks.yaml
+        - apply:
+            file: good-google.yaml
+        - apply:
+            file: good-v1beta1.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = http://idp.example.com/jwks'))": true
+            file: bad-v1beta1.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = http://idp.example.com/jwks'))": true
+            file: bad-http.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = https://10.0.0.5/jwks'))": true
+            file: bad-private-ip.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = https://localhost:8080/jwks'))": true
+            file: bad-localhost.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].issuer = http://keycloak.auth.svc:8080/realms/mesh'))": true
+            file: bad-issuer-discovery.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[1].jwksUri = https://127.0.0.1/jwks'))": true
+            file: bad-second-rule.yaml
+    # Changing good-jwksuri to a loopback address is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = https://[::1]/jwks'))": true
+            file: bad-update.yaml
+    # The PolicyException allows keycloak-internal in auth only. The same name
+    # in another namespace is still blocked, and so is keycloak-internal once
+    # the exception is removed.
+    - name: step-05
+      try:
+        - apply:
+            file: exception-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-ra.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = http://keycloak.auth.svc.cluster.local:8080'))": true
+            file: exception-ra-tenant.yaml
+        - delete:
+            file: exception-ra.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-requestauthentication-jwksuri failed') && contains($error, 'spec.jwtRules[0].jwksUri = http://keycloak.auth.svc.cluster.local:8080'))": true
+            file: exception-ra.yaml
+    # Set allowedHosts, wait until Kyverno rejects other hosts, then check that
+    # the listed host is still allowed.
+    - name: step-06
+      try:
+        - script:
+            content: |
+              set -eu
+              patch='[{"op":"test","path":"/spec/variables/0/name","value":"allowedHosts"},{"op":"replace","path":"/spec/variables/0/expression","value":"['"'"'idp.example.com'"'"']"}]'
+              kubectl patch validatingpolicy restrict-requestauthentication-jwksuri --type json -p "$patch"
+        - script:
+            content: |
+              set -eu
+              for attempt in $(seq 1 30); do
+                if kubectl create --dry-run=server -n "$NAMESPACE" -f other-host.yaml 2>&1 | grep -q 'the host must be one of'; then exit 0; fi
+                sleep 1
+              done
+              echo 'Kyverno did not reject a host outside allowedHosts'
+              exit 1
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'the host must be one of: idp.example.com') && contains($error, 'spec.jwtRules[0].jwksUri = https://other.example.com/jwks'))": true
+            file: other-host.yaml
+        - apply:
+            file: good-jwksuri.yaml

@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: bad-second-rule
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://idp.example.com
+    jwksUri: https://idp.example.com/.well-known/jwks.json
+  - issuer: https://internal.example.com
+    jwksUri: https://127.0.0.1/jwks

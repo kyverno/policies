@@ -1,0 +1,7 @@
+apiVersion: wgpolicyk8s.io/v1alpha2
+kind: PolicyReport
+scope:
+  kind: RequestAuthentication
+  name: existing-private-ip
+(results[?policy == 'restrict-requestauthentication-jwksuri']):
+- result: fail

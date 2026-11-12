@@ -1,0 +1,10 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: bad-issuer-discovery
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: http://keycloak.auth.svc:8080/realms/mesh

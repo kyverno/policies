@@ -1,0 +1,59 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-requestauthentication-jwksuri
+policies:
+- ../restrict-requestauthentication-jwksuri.yaml
+resources:
+- ../.chainsaw-test/good-jwksuri.yaml
+- ../.chainsaw-test/good-issuer-discovery.yaml
+- ../.chainsaw-test/good-inline-jwks.yaml
+- ../.chainsaw-test/good-google.yaml
+- ../.chainsaw-test/bad-http.yaml
+- ../.chainsaw-test/bad-private-ip.yaml
+- ../.chainsaw-test/bad-localhost.yaml
+- ../.chainsaw-test/bad-issuer-discovery.yaml
+- ../.chainsaw-test/bad-second-rule.yaml
+- resources.yaml
+results:
+- kind: RequestAuthentication
+  policy: restrict-requestauthentication-jwksuri
+  isValidatingPolicy: true
+  resources:
+  - bad-http
+  - bad-private-ip
+  - bad-localhost
+  - bad-issuer-discovery
+  - bad-second-rule
+  - edge-bad-metadata-ip
+  - edge-bad-ipv6-loopback
+  # Numeric host names that some resolvers treat as IP addresses.
+  - edge-bad-decimal-ip
+  - edge-bad-octal-ip
+  - edge-bad-localhost-subdomain
+  - edge-bad-localhost-trailing-dot
+  - edge-bad-legacy-field
+  - edge-bad-issuer-ip
+  - edge-bad-not-a-url
+  - edge-bad-v1beta1
+  result: fail
+- kind: RequestAuthentication
+  policy: restrict-requestauthentication-jwksuri
+  isValidatingPolicy: true
+  resources:
+  - good-jwksuri
+  - good-issuer-discovery
+  # Inline keys aren't fetched, so the issuer isn't checked.
+  - good-inline-jwks
+  - good-google
+  - edge-good-uppercase
+  - edge-good-port
+  # An issuer that isn't a URL isn't used for OpenID discovery.
+  - edge-good-email-issuer
+  - edge-good-cluster-dns
+  # Known limit: DNS names aren't resolved, so a name that resolves to a
+  # private address passes.
+  - edge-good-dns-to-private-ip
+  - edge-good-no-rules
+  - edge-good-v1beta1
+  result: pass

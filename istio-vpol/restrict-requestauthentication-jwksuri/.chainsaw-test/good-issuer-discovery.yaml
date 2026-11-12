@@ -1,0 +1,10 @@
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: good-issuer-discovery
+spec:
+  selector:
+    matchLabels:
+      app: httpbin
+  jwtRules:
+  - issuer: https://accounts.example.com
