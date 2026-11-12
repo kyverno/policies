@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-vm-secondary-network-namespace
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-bad-vm is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: dev-namespaces.yaml
+        - apply:
+            file: existing-bad-vm.yaml
+    # A background scan reports the existing VM in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../restrict-vm-secondary-network-namespace.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: restrict-vm-secondary-network-namespace
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-vm-local-name.yaml
+        - apply:
+            file: good-vm-default-namespace.yaml
+        - apply:
+            file: good-vm-own-namespace.yaml
+        - apply:
+            file: good-vm-pod-only.yaml
+        - apply:
+            file: good-vmi.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[1].multus.networkName=finance/finance-vlan'))": true
+            file: bad-vm-secondary.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[0].multus.networkName=infra/infra-bridge'))": true
+            file: bad-vm-default-multus.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[2].multus.networkName=finance/finance-vlan, spec.template.spec.networks[3].multus.networkName=infra/sriov-net'))": true
+            file: bad-vm-mixed.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.networks[1].multus.networkName=finance/finance-vlan'))": true
+            file: bad-vmi.yaml
+    # Pointing the existing good-vm-local-name at another namespace is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[1].multus.networkName=finance/finance-vlan'))": true
+            file: bad-update.yaml
+    # Updates to existing-bad-vm work unless they add a network name. Its
+    # finalizer can be removed after deletion, as virt-controller does.
+    - name: step-04-existing
+      try:
+        - script:
+            content: kubectl -n "$NAMESPACE" label vm existing-bad-vm reviewed=true
+        - script:
+            content: >-
+              kubectl -n "$NAMESPACE" patch vm existing-bad-vm --type json -p
+              '[{"op":"add","path":"/spec/template/spec/networks/-","value":{"name":"hr-net","multus":{"networkName":"hr/hr-vlan"}}},
+              {"op":"add","path":"/spec/template/spec/domain/devices/interfaces/-","value":{"name":"hr-net","bridge":{}}}]'
+            check:
+              ($error != null): true
+              (contains($stderr, 'spec.template.spec.networks[2].multus.networkName=hr/hr-vlan')): true
+              (contains($stderr, 'finance/finance-vlan')): false
+        - script:
+            content: kubectl -n "$NAMESPACE" patch vm existing-bad-vm --type merge -p '{"metadata":{"finalizers":["example.com/test"]}}'
+        - script:
+            content: kubectl -n "$NAMESPACE" delete vm existing-bad-vm --wait=false
+        - script:
+            content: kubectl -n "$NAMESPACE" patch vm existing-bad-vm --type json -p '[{"op":"remove","path":"/metadata/finalizers"}]'
+        - error:
+            resource:
+              apiVersion: kubevirt.io/v1
+              kind: VirtualMachine
+              metadata:
+                name: existing-bad-vm
+    # The PolicyException allows lab-vm in kubevirt-net-lab only. A VM with
+    # the same name in another namespace is still blocked, and so is lab-vm
+    # once the exception is removed.
+    - name: step-05
+      try:
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-vm.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[1].multus.networkName=finance/finance-vlan'))": true
+            file: exception-vm-other-namespace.yaml
+        - delete:
+            file: exception-vm.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy restrict-vm-secondary-network-namespace failed') && contains($error, 'spec.template.spec.networks[1].multus.networkName=finance/finance-vlan'))": true
+            file: exception-vm.yaml

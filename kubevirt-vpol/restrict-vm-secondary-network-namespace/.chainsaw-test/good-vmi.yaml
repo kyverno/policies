@@ -1,0 +1,21 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: good-vmi
+spec:
+  domain:
+    devices:
+      interfaces:
+      - name: default
+        masquerade: {}
+      - name: extra-net
+        bridge: {}
+    resources:
+      requests:
+        memory: 128Mi
+  networks:
+  - name: default
+    pod: {}
+  - name: extra-net
+    multus:
+      networkName: tenant-bridge

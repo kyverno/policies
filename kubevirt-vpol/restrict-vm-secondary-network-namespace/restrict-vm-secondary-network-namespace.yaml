@@ -1,0 +1,116 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-vm-secondary-network-namespace
+  annotations:
+    policies.kyverno.io/title: Restrict VM Secondary Network Namespace in CEL expressions
+    policies.kyverno.io/category: KubeVirt in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: VirtualMachine, VirtualMachineInstance
+    policies.kyverno.io/description: >-
+      A KubeVirt Multus network can name a NetworkAttachmentDefinition in
+      another namespace with the form namespace/name. KubeVirt reads that
+      NetworkAttachmentDefinition with its own cluster-wide permissions, and
+      Multus doesn't isolate namespaces by default. Anyone who can create a
+      VM in one namespace can then attach it to another team's bridge, VLAN,
+      or SR-IOV network. This policy requires that each Multus networkName
+      in a VirtualMachine, VirtualMachineInstance,
+      VirtualMachineInstanceReplicaSet, or VirtualMachinePool refers to the
+      object's own namespace or to a namespace in an allowed list.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [kubevirt.io]
+        apiVersions: [v1, v1alpha3]
+        operations: [CREATE, UPDATE]
+        resources:
+          - virtualmachines
+          - virtualmachineinstances
+          - virtualmachineinstancereplicasets
+      - apiGroups: [pool.kubevirt.io]
+        apiVersions: [v1beta1, v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [virtualmachinepools]
+  variables:
+    # Namespaces that any VM may use, in addition to its own. Multus treats
+    # default as a global namespace.
+    - name: allowedNetworkNamespaces
+      expression: "['default']"
+    # Users whose controller-owned objects are skipped. This is the
+    # virt-controller service account in a default KubeVirt install.
+    - name: controllerUsernames
+      expression: "['system:serviceaccount:kubevirt:kubevirt-controller']"
+    # Use the request namespace if the object has none. The API server
+    # normally fills it in before admission, so this is a safeguard.
+    - name: objectNamespace
+      expression: >-
+        cel.bind(ns, object.?metadata.?namespace.orValue(''),
+          type(ns) == string && ns != '' ? ns : request.?namespace.orValue(''))
+    - name: permittedNamespaces
+      expression: >-
+        (variables.objectNamespace != '' ? [variables.objectNamespace] : []) +
+        variables.allowedNetworkNamespaces
+    - name: kind
+      expression: object.?kind.orValue('')
+    - name: networksPath
+      expression: >-
+        variables.kind == 'VirtualMachineInstance' ? 'spec.networks' :
+        variables.kind == 'VirtualMachinePool' ? 'spec.virtualMachineTemplate.spec.template.spec.networks' :
+        'spec.template.spec.networks'
+    # The object, then the old object on UPDATE.
+    - name: objects
+      expression: >-
+        oldObject != null && type(oldObject) == map && size(oldObject) > 0 ?
+          [object, oldObject] : [object]
+    # For each object, its disallowed Multus networks as [index, networkName].
+    # KubeVirt treats the part before the first slash as the namespace.
+    - name: disallowed
+      expression: >-
+        variables.objects.map(o, cel.bind(nets,
+          variables.kind == 'VirtualMachineInstance' ? o.?spec.?networks.orValue([]) :
+          variables.kind == 'VirtualMachinePool' ? o.?spec.?virtualMachineTemplate.?spec.?template.?spec.?networks.orValue([]) :
+          o.?spec.?template.?spec.?networks.orValue([]),
+          type(nets) != list ? [] :
+          lists.range(size(nets))
+            .filter(i, type(nets[i]) == map &&
+              type(nets[i].?multus.orValue(null)) == map &&
+              type(nets[i].multus.?networkName.orValue(null)) == string)
+            .map(i, [dyn(i), dyn(nets[i].multus.networkName)])
+            .filter(e, string(e[1]).contains('/') &&
+              !(string(e[1]).split('/')[0] in variables.permittedNamespaces))))
+    # An UPDATE fails only on network names that the old object didn't have,
+    # so existing VMs can still be stopped, scaled, and deleted.
+    - name: violations
+      expression: >-
+        cel.bind(old, size(variables.disallowed) > 1 ?
+            variables.disallowed[1].map(e, string(e[1])) : [],
+          variables.disallowed[0]
+            .filter(e, !(string(e[1]) in old))
+            .map(e, variables.networksPath + '[' + string(e[0]) + '].multus.networkName=' + string(e[1])))
+    # virt-controller creates VMIs from VMs and VMIRSs, and VMs from pools.
+    # The parent was already checked, so skip the child.
+    - name: createdByController
+      expression: >-
+        request.?userInfo.?username.orValue('') in variables.controllerUsernames &&
+        cel.bind(refs, object.?metadata.?ownerReferences.orValue([]),
+          type(refs) == list && refs.exists(r, type(r) == map &&
+            r.?controller.orValue(false) == true &&
+            cel.bind(api, r.?apiVersion.orValue(''), cel.bind(k, r.?kind.orValue(''),
+              type(api) == string && type(k) == string &&
+              ((api.startsWith('kubevirt.io/') && k in ['VirtualMachine', 'VirtualMachineInstanceReplicaSet']) ||
+                (api.startsWith('pool.kubevirt.io/') && k == 'VirtualMachinePool'))))))
+  validations:
+    - expression: variables.createdByController || size(variables.violations) == 0
+      messageExpression: >-
+        'Multus networkName must refer to a NetworkAttachmentDefinition in
+        namespace ' + variables.objectNamespace + ' or in an allowed
+        namespace (' + variables.allowedNetworkNamespaces.join(', ') + '). Use
+        a name without a namespace, or change: ' + variables.violations.join(', ')

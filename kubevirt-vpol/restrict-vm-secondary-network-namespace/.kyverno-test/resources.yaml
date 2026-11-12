@@ -1,0 +1,250 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-own-namespace
+  namespace: team-a
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: team-net
+        multus:
+          networkName: team-a/team-bridge
+---
+# KubeVirt uses only the part before the first slash as the namespace.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-default-extra-slash
+  namespace: team-a
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: shared-net
+        multus:
+          networkName: default/shared/vlan
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-no-spec
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-no-networks
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices: {}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-malformed
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - not-a-map
+      - name: string-multus
+        multus: other/net
+      - name: number-name
+        multus:
+          networkName: 42
+      - name: no-name
+        multus: {}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-networks-not-list
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks: other/net
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-bad-other-namespace
+  namespace: team-a
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: team-net
+        multus:
+          networkName: team-a/team-bridge
+      - name: other-net
+        multus:
+          networkName: team-b/team-bridge
+---
+# An empty namespace part isn't the object's namespace.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-bad-leading-slash
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: odd-net
+        multus:
+          networkName: /odd-net
+---
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  name: edge-bad-v1alpha3
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: finance-net
+        multus:
+          networkName: finance/finance-vlan
+---
+# Malformed entries are skipped; later valid entries are still checked.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-bad-after-malformed
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - not-a-map
+      - name: string-multus
+        multus: other/net
+      - name: finance-net
+        multus:
+          networkName: finance/finance-vlan
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: edge-good-vmi-own-namespace
+  namespace: team-a
+spec:
+  networks:
+  - name: team-net
+    multus:
+      networkName: team-a/team-bridge
+---
+# Without the controller's identity, an owner reference doesn't skip the check.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: edge-bad-vmi-owned-by-vm
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    name: edge-bad-vmi-owned-by-vm
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-1f1f1f1f1f1f
+    controller: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: edge-good-vmirs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      networks:
+      - name: shared-net
+        multus:
+          networkName: default/shared-vlan
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstanceReplicaSet
+metadata:
+  name: edge-bad-vmirs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      networks:
+      - name: finance-net
+        multus:
+          networkName: finance/finance-vlan
+---
+apiVersion: pool.kubevirt.io/v1beta1
+kind: VirtualMachinePool
+metadata:
+  name: edge-good-pool
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pool
+  virtualMachineTemplate:
+    metadata:
+      labels:
+        app: pool
+    spec:
+      runStrategy: Halted
+      template:
+        metadata:
+          labels:
+            app: pool
+        spec:
+          networks:
+          - name: tenant-net
+            multus:
+              networkName: tenant-bridge
+---
+apiVersion: pool.kubevirt.io/v1beta1
+kind: VirtualMachinePool
+metadata:
+  name: edge-bad-pool
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: pool
+  virtualMachineTemplate:
+    metadata:
+      labels:
+        app: pool
+    spec:
+      runStrategy: Halted
+      template:
+        metadata:
+          labels:
+            app: pool
+        spec:
+          networks:
+          - name: primary
+            multus:
+              default: true
+              networkName: infra/infra-bridge

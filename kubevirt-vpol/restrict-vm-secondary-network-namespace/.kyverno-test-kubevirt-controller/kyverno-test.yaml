@@ -1,0 +1,43 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-vm-secondary-network-namespace-kubevirt-controller
+policies:
+- ../restrict-vm-secondary-network-namespace.yaml
+resources:
+- resources.yaml
+- ../.chainsaw-test/good-vm-local-name.yaml
+# Each request in this test comes from the virt-controller service account.
+userinfo: userinfo.yaml
+results:
+# Objects that virt-controller creates for a KubeVirt owner are skipped,
+# because the owner was already checked.
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachineInstance
+  resources:
+  - vmi-from-vm
+  - vmi-from-vmirs
+  result: pass
+  isValidatingPolicy: true
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources:
+  - vm-from-pool
+  - good-vm-local-name
+  result: pass
+  isValidatingPolicy: true
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources:
+  - vm-not-owned
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachineInstance
+  resources:
+  - vmi-owner-not-controller
+  - vmi-owned-by-other-kind
+  - vmi-owned-by-other-group
+  - vmi-malformed-owner
+  result: fail
+  isValidatingPolicy: true

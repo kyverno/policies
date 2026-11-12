@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-vm-secondary-network-namespace-exception
+policies:
+- ../restrict-vm-secondary-network-namespace.yaml
+resources:
+- ../.chainsaw-test/exception-vm.yaml
+- ../.chainsaw-test/exception-vm-other-namespace.yaml
+- ../.chainsaw-test/bad-vm-secondary.yaml
+- ../.chainsaw-test/good-vm-local-name.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts kubevirt-net-lab/lab-vm, so it's skipped.
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources: [kubevirt-net-lab/lab-vm]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources: [default/lab-vm]
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources: [bad-vm-secondary]
+  result: fail
+  isValidatingPolicy: true
+- policy: restrict-vm-secondary-network-namespace
+  kind: VirtualMachine
+  resources: [good-vm-local-name]
+  result: pass
+  isValidatingPolicy: true

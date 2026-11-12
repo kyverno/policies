@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubevirt-net-team-a
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kubevirt-net-lab
