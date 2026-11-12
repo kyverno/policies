@@ -1,0 +1,78 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: applicationset-restrict-scm-generators
+  annotations:
+    policies.kyverno.io/title: Restrict ApplicationSet SCM Generators in CEL expressions
+    policies.kyverno.io/category: Argo in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: ApplicationSet
+    policies.kyverno.io/description: >-
+      Argo CD's documentation warns that, with ApplicationSets in any namespace,
+      scmProvider and pullRequest generators can be used to exfiltrate Secrets.
+      Argo CD requires an SCM URL allowlist in that setup, but the allowlist
+      covers only custom API URLs. This policy flags ApplicationSets outside
+      the trusted Argo CD namespaces (argocd by default) that use these
+      generators, including inside matrix and merge generators. To trust other
+      namespaces, change the trustedNamespaces variable.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["argoproj.io"]
+        apiVersions: [v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [applicationsets]
+  variables:
+    # Keep this variable first; the Chainsaw test patches it by index and
+    # checks its name.
+    - name: trustedNamespaces
+      expression: "['argocd']"
+    # Each entry is [path, generator]. Argo CD nests matrix and merge
+    # generators at most two levels deep; the third level is terminal and
+    # can't hold another matrix or merge.
+    - name: topGenerators
+      expression: >-
+        cel.bind(gens, object.spec.?generators.orValue([]),
+          lists.range(size(gens))
+            .filter(i, type(gens[i]) == map)
+            .map(i, [dyn('spec.generators[' + string(i) + ']'), gens[i]]))
+    - name: nestedGenerators
+      expression: >-
+        variables.topGenerators.map(e, ['matrix', 'merge']
+          .filter(c, type(e[1][?c].orValue(null)) == map)
+          .map(c, cel.bind(gens, e[1][c].?generators.orValue([]),
+            type(gens) != list ? [] : lists.range(size(gens))
+              .filter(i, type(gens[i]) == map)
+              .map(i, [dyn(e[0] + '.' + c + '.generators[' + string(i) + ']'), gens[i]])))).flatten(2)
+    - name: terminalGenerators
+      expression: >-
+        variables.nestedGenerators.map(e, ['matrix', 'merge']
+          .filter(c, type(e[1][?c].orValue(null)) == map)
+          .map(c, cel.bind(gens, e[1][c].?generators.orValue([]),
+            type(gens) != list ? [] : lists.range(size(gens))
+              .filter(i, type(gens[i]) == map)
+              .map(i, [dyn(e[0] + '.' + c + '.generators[' + string(i) + ']'), gens[i]])))).flatten(2)
+    # Paths of every scmProvider or pullRequest generator, at any level.
+    - name: scmGenerators
+      expression: >-
+        (variables.topGenerators + variables.nestedGenerators + variables.terminalGenerators)
+          .map(e, ['scmProvider', 'pullRequest']
+            .filter(t, e[1][?t].orValue(null) != null)
+            .map(t, string(e[0]) + '.' + t)).flatten()
+  validations:
+    - expression: >-
+        object.metadata.namespace in variables.trustedNamespaces ||
+        size(variables.scmGenerators) == 0
+      messageExpression: >-
+        'scmProvider and pullRequest generators are allowed only in these
+        trusted namespaces: ' + variables.trustedNamespaces.join(', ') + '.
+        Move the ApplicationSet to a trusted namespace or remove these
+        generators: ' + variables.scmGenerators.join(', ')
