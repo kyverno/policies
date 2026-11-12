@@ -1,0 +1,56 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-tekton-securitycontext
+spec:
+  template: false
+  steps:
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: ../require-tekton-securitycontext.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: require-tekton-securitycontext
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-taskrun.yaml
+        - script:
+            content: |
+              set -eu
+              kubectl patch taskrun good-step-secure -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-1","securityContext":{"privileged":false,"allowPrivilegeEscalation":false}}]}}}'
+              kubectl patch taskrun good-digest-exempt -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"digest-to-results"}]}}}'
+              kubectl patch taskrun good-no-taskspec -n default --subresource=status --type=merge -p '{"status":{"completionTime":"2024-01-01T00:00:00Z"}}'
+        - apply:
+            file: bad-taskrun.yaml
+        - script:
+            content: |
+              set -eu
+              set +e
+              out1=$(kubectl patch taskrun bad-step-privileged -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-priv","securityContext":{"privileged":true,"allowPrivilegeEscalation":false}}]}}}' 2>&1)
+              code1=$?
+              set -e
+              test "$code1" -ne 0
+              echo "$out1" | grep -Ei "require-tekton-securitycontext|denied the request"
+
+              set +e
+              out2=$(kubectl patch taskrun bad-step-no-sec-context -n default --subresource=status --type=merge -p '{"status":{"taskSpec":{"steps":[{"name":"step-insecure"}]}}}' 2>&1)
+              code2=$?
+              set -e
+              test "$code2" -ne 0
+              echo "$out2" | grep -Ei "require-tekton-securitycontext|denied the request"
