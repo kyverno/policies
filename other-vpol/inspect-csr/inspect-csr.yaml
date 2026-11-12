@@ -24,6 +24,7 @@ spec:
           - v1
         operations:
           - CREATE
+          - UPDATE
         resources:
           - certificatesigningrequests
   validationActions:
@@ -35,7 +36,10 @@ spec:
         groups=' + variables.groups.join(',') + ' | Permissions: ClusterRoles=['
         + variables.clusterRoles.join(',') + '], Roles=[' +
         variables.roles.join(',') + '] | CSR Content: signerName=' +
-        variables.signerName + ', usages=[' + variables.usages.join(',') + ']'
+        variables.signerName + ', usages=[' + variables.usages.join(',') +
+        '], CommonName=' + variables.csrRequest.Subject.?CommonName.orValue('') +
+        ', Organization=[' +
+        variables.csrRequest.Subject.?Organization.orValue([]).join(',') + ']'
   variables:
     - expression: request.userInfo.username
       name: username
@@ -60,7 +64,7 @@ spec:
         variables.groups))).map(rb, dyn(rb).metadata.namespace + '/' +
         dyn(rb).roleRef.name)
       name: roles
-    - expression: object.spec.request
+    - expression: x509.decode(string(base64.decode(object.spec.request)))
       name: csrRequest
     - expression: object.spec.?signerName.orValue('unknown')
       name: signerName

@@ -10,15 +10,6 @@ spec:
     try:
     - apply:
         file: ../require-pod-priorityclassname.yaml
-    - patch:
-        resource:
-          apiVersion: policies.kyverno.io/v1
-          kind: ValidatingPolicy
-          metadata:
-            name: require-pod-priorityclassname
-          spec:
-            validationActions:
-             - Deny
     - apply:
         file: pc.yaml
     - assert:

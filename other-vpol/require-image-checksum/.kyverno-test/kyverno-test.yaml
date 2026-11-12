@@ -31,3 +31,21 @@ results:
   resources:
   - myapp-pod-1
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-image-checksum
+  resources:
+  - init-no-digest-pod
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: require-image-checksum
+  resources:
+  - init-digest-pod
+  result: pass
+- isValidatingPolicy: true
+  kind: Deployment
+  policy: require-image-checksum
+  resources:
+  - init-no-digest-deploy
+  result: fail
