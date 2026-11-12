@@ -1,0 +1,136 @@
+# virt-controller creates this VMI from a VM.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-from-vm
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    name: vmi-from-vm
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000001
+    controller: true
+    blockOwnerDeletion: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+# virt-controller creates this VMI from a VMIRS.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-from-vmirs
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachineInstanceReplicaSet
+    name: web
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000002
+    controller: true
+    blockOwnerDeletion: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+# The pool controller creates this VM.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-from-pool
+  ownerReferences:
+  - apiVersion: pool.kubevirt.io/v1beta1
+    kind: VirtualMachinePool
+    name: pool
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000003
+    controller: true
+    blockOwnerDeletion: true
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: finance-net
+        multus:
+          networkName: finance/finance-vlan
+---
+# Without an owner reference, the controller's request is still checked.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-not-owned
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      networks:
+      - name: finance-net
+        multus:
+          networkName: finance/finance-vlan
+---
+# The owner reference isn't the controller.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-owner-not-controller
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    name: vmi-owner-not-controller
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000004
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+# A controller owner of another kind doesn't skip the check.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-owned-by-other-kind
+  ownerReferences:
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    name: other
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000005
+    controller: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+# A VirtualMachine kind from another API group doesn't skip the check.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-owned-by-other-group
+  ownerReferences:
+  - apiVersion: example.com/v1
+    kind: VirtualMachine
+    name: other
+    uid: 4b0c1e8e-6f1a-4b8e-9a51-000000000006
+    controller: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan
+---
+# Malformed owner references are ignored.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachineInstance
+metadata:
+  name: vmi-malformed-owner
+  ownerReferences:
+  - not-a-map
+  - apiVersion: 42
+    kind: VirtualMachine
+    controller: true
+spec:
+  networks:
+  - name: finance-net
+    multus:
+      networkName: finance/finance-vlan

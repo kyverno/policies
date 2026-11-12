@@ -1,0 +1,84 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-vm-secondary-network-namespace
+policies:
+- ../restrict-vm-secondary-network-namespace.yaml
+resources:
+- ../.chainsaw-test/good-vm-local-name.yaml
+- ../.chainsaw-test/good-vm-default-namespace.yaml
+- ../.chainsaw-test/good-vm-own-namespace.yaml
+- ../.chainsaw-test/good-vm-pod-only.yaml
+- ../.chainsaw-test/good-vmi.yaml
+- ../.chainsaw-test/bad-vm-secondary.yaml
+- ../.chainsaw-test/bad-vm-default-multus.yaml
+- ../.chainsaw-test/bad-vm-mixed.yaml
+- ../.chainsaw-test/bad-vmi.yaml
+- resources.yaml
+results:
+- kind: VirtualMachine
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - bad-vm-secondary
+  # multus.default: true selects the pod's primary network.
+  - bad-vm-default-multus
+  - bad-vm-mixed
+  - team-a/edge-bad-other-namespace
+  - edge-bad-leading-slash
+  - edge-bad-v1alpha3
+  - edge-bad-after-malformed
+  result: fail
+- kind: VirtualMachine
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - good-vm-local-name
+  - good-vm-default-namespace
+  - kubevirt-net-team-a/good-vm-own-namespace
+  - good-vm-pod-only
+  - team-a/edge-good-own-namespace
+  - team-a/edge-good-default-extra-slash
+  - edge-good-no-spec
+  - edge-good-no-networks
+  - edge-good-malformed
+  - edge-good-networks-not-list
+  result: pass
+- kind: VirtualMachineInstance
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - bad-vmi
+  - edge-bad-vmi-owned-by-vm
+  result: fail
+- kind: VirtualMachineInstance
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - good-vmi
+  - team-a/edge-good-vmi-own-namespace
+  result: pass
+- kind: VirtualMachineInstanceReplicaSet
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - edge-bad-vmirs
+  result: fail
+- kind: VirtualMachineInstanceReplicaSet
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - edge-good-vmirs
+  result: pass
+- kind: VirtualMachinePool
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - edge-bad-pool
+  result: fail
+- kind: VirtualMachinePool
+  policy: restrict-vm-secondary-network-namespace
+  isValidatingPolicy: true
+  resources:
+  - edge-good-pool
+  result: pass

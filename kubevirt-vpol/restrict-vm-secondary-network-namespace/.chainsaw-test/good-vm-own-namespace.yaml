@@ -1,0 +1,25 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: good-vm-own-namespace
+  namespace: kubevirt-net-team-a
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: team-net
+            bridge: {}
+        resources:
+          requests:
+            memory: 128Mi
+      networks:
+      - name: default
+        pod: {}
+      - name: team-net
+        multus:
+          networkName: kubevirt-net-team-a/team-bridge

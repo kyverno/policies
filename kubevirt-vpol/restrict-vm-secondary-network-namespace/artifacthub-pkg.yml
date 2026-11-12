@@ -1,0 +1,108 @@
+name: restrict-vm-secondary-network-namespace-vpol
+version: 1.0.0
+displayName: Restrict VM Secondary Network Namespace in CEL expressions
+description: >-
+  A KubeVirt Multus network can name a NetworkAttachmentDefinition in another namespace with the form namespace/name. KubeVirt reads that NetworkAttachmentDefinition with its own cluster-wide permissions, and Multus doesn't isolate namespaces by default. Anyone who can create a VM in one namespace can then attach it to another team's bridge, VLAN, or SR-IOV network. This policy requires that each Multus networkName in a VirtualMachine, VirtualMachineInstance, VirtualMachineInstanceReplicaSet, or VirtualMachinePool refers to the object's own namespace or to a namespace in an allowed list.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kubevirt-vpol/restrict-vm-secondary-network-namespace/restrict-vm-secondary-network-namespace.yaml
+  ```
+keywords:
+  - kyverno
+  - KubeVirt
+  - CEL Expressions
+readme: |
+  A KubeVirt VM connects to a secondary network through a Multus `networkName`, which names a NetworkAttachmentDefinition. The name can include a namespace, in the form `namespace/name`. KubeVirt reads the NetworkAttachmentDefinition from that namespace with its own cluster-wide permissions, and it doesn't check whether the VM's owner can read it. Multus `namespaceIsolation` is off by default, so Multus doesn't check either.
+
+  KubeVirt adds its `kubevirt.io:edit` ClusterRole to the built-in `edit` role, so anyone who can edit a namespace can create VMs there. Such a user can attach a VM to another team's bridge, VLAN, or SR-IOV network and reach that network at layer 2. Unless the network's CNI turns on MAC spoof checking, the VM can also send traffic from any source MAC address, and its guest can set any IP address.
+
+  For example, the following VM in the `team-a` namespace uses the `finance-vlan` network of the `finance` namespace:
+
+      apiVersion: kubevirt.io/v1
+      kind: VirtualMachine
+      metadata:
+        name: vm1
+        namespace: team-a
+      spec:
+        runStrategy: Halted
+        template:
+          spec:
+            domain:
+              devices:
+                interfaces:
+                - name: finance-net
+                  bridge: {}
+            networks:
+            - name: finance-net
+              multus:
+                networkName: finance/finance-vlan
+
+  The policy reports this VM with the following message:
+
+      Multus networkName must refer to a NetworkAttachmentDefinition in namespace team-a or in an allowed namespace (default). Use a name without a namespace, or change: spec.template.spec.networks[0].multus.networkName=finance/finance-vlan
+
+  ### What the policy checks
+
+  - The policy checks each Multus network in these places:
+    - `spec.template.spec.networks[]` in a VirtualMachine (`kubevirt.io/v1` and `v1alpha3`)
+    - `spec.networks[]` in a VirtualMachineInstance (`kubevirt.io/v1` and `v1alpha3`)
+    - `spec.template.spec.networks[]` in a VirtualMachineInstanceReplicaSet (`kubevirt.io/v1` and `v1alpha3`)
+    - `spec.virtualMachineTemplate.spec.template.spec.networks[]` in a VirtualMachinePool (`pool.kubevirt.io/v1beta1` and `v1alpha1`)
+  - It checks secondary networks and the Multus default network that `multus.default: true` selects.
+  - A `networkName` without a slash always passes, because KubeVirt reads it from the object's own namespace.
+  - A `networkName` with a slash passes only when the part before the first slash is the object's own namespace or a namespace in `allowedNetworkNamespaces`. KubeVirt also uses the part before the first slash, so `/name` fails, and `default/a/b` passes.
+  - The message lists each offending field by path, with its value.
+  - The policy uses `metadata.namespace` as the object's namespace. The API server fills in that field from the request before admission, even when your manifest leaves it out. If it is ever empty, the policy uses the namespace of the admission request instead.
+  - It checks creates and updates, and reports existing objects through background scans. It defaults to `Audit`; switch to `Deny` to block.
+  - An update fails only when it adds a `networkName` that the old object didn't have. As a result, you can still stop, scale, relabel, and delete objects that existed before you applied the policy, and virt-controller can remove their finalizers. Without this, deleting such a VirtualMachine in `Deny` mode never finishes. Use the `Audit` reports to find these objects.
+  - Kyverno needs permission to read these KubeVirt resources. For example, create ClusterRoles with the `rbac.kyverno.io/aggregate-to-admission-controller: "true"` and `rbac.kyverno.io/aggregate-to-reports-controller: "true"` labels that grant `get`, `list`, and `watch` on them.
+
+  ### Objects that KubeVirt creates
+
+  KubeVirt's virt-controller creates a VirtualMachineInstance for each running VirtualMachine and for each VirtualMachineInstanceReplicaSet replica. It also creates the VirtualMachines of a VirtualMachinePool. Each child copies its networks from the parent.
+
+  The policy checks these children too, because their parent might predate the policy or have been admitted in `Audit` mode. In `Deny` mode, a VirtualMachine that uses another namespace's network can't start until you fix it, but you can still stop and delete it. A PolicyException for a VirtualMachine also covers its VirtualMachineInstance, which has the same name. For a VirtualMachineInstanceReplicaSet or a VirtualMachinePool, also match the children, for example by a label from the template.
+
+  ### Limitations
+
+  - Clusters that turn on Multus `namespaceIsolation` already get this protection from Multus, for every pod. You can still use this policy to report and block the problem when you create a VM, instead of when its pod starts.
+  - The policy doesn't check Pods. A Pod with the `k8s.v1.cni.cncf.io/networks` annotation can name a network in another namespace in the same way. KubeVirt itself writes that annotation on the virt-launcher Pod of each VM, from the VM's networks, so a Pod check would also need to tell those Pods apart from the user's own. Use a separate Pod policy, or Multus `namespaceIsolation`, for Pods.
+  - The policy doesn't check whether the NetworkAttachmentDefinition exists or who can read it.
+  - The policy doesn't check templates in other resources, such as OpenShift Templates or VirtualMachineSnapshots.
+
+  ### Allowing other namespaces
+
+  The `allowedNetworkNamespaces` variable lists the namespaces that any VM can use, in addition to its own. It defaults to `['default']`, the namespace that Multus allows from every namespace when you turn on `namespaceIsolation` without `globalNamespaces`. To allow a shared namespace for networks, edit the variable in the policy:
+
+      variables:
+        - name: allowedNetworkNamespaces
+          expression: "['default', 'shared-networks']"
+
+  To allow only each VM's own namespace, set the expression to `[]`.
+
+  ### Exempting a VM
+
+  To exempt a single VM, create a Kyverno `PolicyException` that references this policy in `spec.policyRefs` and matches both the namespace and the name of that VM in `spec.matchConditions`. If you match on the name alone, you exempt the same name in every namespace. A VirtualMachineInstance has the same name as the VirtualMachine that creates it, so this exception covers both. The following tested example exempts `kubevirt-net-lab/lab-vm`:
+
+      apiVersion: policies.kyverno.io/v1
+      kind: PolicyException
+      metadata:
+        name: restrict-vm-secondary-network-namespace-lab
+        namespace: policy-exceptions
+      spec:
+        policyRefs:
+        - name: restrict-vm-secondary-network-namespace
+          kind: ValidatingPolicy
+        matchConditions:
+        - name: lab-vm
+          expression: object.metadata.namespace == 'kubevirt-net-lab' && object.metadata.name == 'lab-vm'
+
+  Kyverno reads PolicyExceptions only when you enable them, and only from the namespaces that you allow. This example uses the `policy-exceptions` namespace.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "KubeVirt in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "VirtualMachine, VirtualMachineInstance"
+digest: 2287dd6fd2e3e09fafde971797431f4b05e964ad0a9a8547dc2d13dc99b79277
+createdAt: "2026-11-11T21:05:52Z"

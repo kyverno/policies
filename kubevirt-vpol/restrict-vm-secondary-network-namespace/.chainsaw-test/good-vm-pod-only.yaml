@@ -1,0 +1,19 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: good-vm-pod-only
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+        resources:
+          requests:
+            memory: 128Mi
+      networks:
+      - name: default
+        pod: {}

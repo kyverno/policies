@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: restrict-vm-secondary-network-namespace-lab
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: restrict-vm-secondary-network-namespace
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: lab-vm
+    expression: object.metadata.namespace == 'kubevirt-net-lab' && object.metadata.name == 'lab-vm'

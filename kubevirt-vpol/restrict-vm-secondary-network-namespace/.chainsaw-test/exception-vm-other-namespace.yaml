@@ -1,0 +1,24 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: lab-vm
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: shared-net
+            bridge: {}
+        resources:
+          requests:
+            memory: 128Mi
+      networks:
+      - name: default
+        pod: {}
+      - name: shared-net
+        multus:
+          networkName: finance/finance-vlan

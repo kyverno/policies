@@ -1,0 +1,24 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: good-vm-local-name
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: default
+            masquerade: {}
+          - name: tenant-net
+            bridge: {}
+        resources:
+          requests:
+            memory: 128Mi
+      networks:
+      - name: default
+        pod: {}
+      - name: tenant-net
+        multus:
+          networkName: tenant-bridge

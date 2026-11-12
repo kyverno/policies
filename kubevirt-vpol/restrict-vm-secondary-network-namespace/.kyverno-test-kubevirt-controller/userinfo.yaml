@@ -1,0 +1,6 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: UserInfo
+metadata:
+  name: kubevirt-controller
+userInfo:
+  username: system:serviceaccount:kubevirt:kubevirt-controller

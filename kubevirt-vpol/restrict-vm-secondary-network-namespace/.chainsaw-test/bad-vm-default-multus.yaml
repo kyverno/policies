@@ -1,0 +1,21 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: bad-vm-default-multus
+spec:
+  runStrategy: Halted
+  template:
+    spec:
+      domain:
+        devices:
+          interfaces:
+          - name: primary
+            bridge: {}
+        resources:
+          requests:
+            memory: 128Mi
+      networks:
+      - name: primary
+        multus:
+          default: true
+          networkName: infra/infra-bridge
