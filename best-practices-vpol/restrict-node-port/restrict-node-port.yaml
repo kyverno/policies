@@ -32,5 +32,5 @@ spec:
   validations:
     - expression: >-
         'service-type:NodePort' in exceptions.allowedValues ||
-        object.spec.type != 'NodePort'
+        object.spec.?type.orValue('ClusterIP') != 'NodePort'
       message: Services of type NodePort are not allowed.
