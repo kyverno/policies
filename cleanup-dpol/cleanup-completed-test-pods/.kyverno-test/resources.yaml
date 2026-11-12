@@ -1,0 +1,98 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: completed
+  namespace: cleanup-test
+  labels:
+    cleanup.example.com/enabled: "true"
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Succeeded
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: no-status
+  namespace: cleanup-test
+  labels:
+    cleanup.example.com/enabled: "true"
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: failed
+  namespace: cleanup-test
+  labels:
+    cleanup.example.com/enabled: "true"
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Failed
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: running
+  namespace: cleanup-test
+  labels:
+    cleanup.example.com/enabled: "true"
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Running
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: owned
+  namespace: cleanup-test
+  labels:
+    cleanup.example.com/enabled: "true"
+  ownerReferences:
+  - apiVersion: batch/v1
+    kind: Job
+    name: test-job
+    uid: 00000000-0000-0000-0000-000000000001
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Succeeded
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: completed
+  namespace: production
+  labels:
+    cleanup.example.com/enabled: "true"
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Succeeded
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: not-opted-in
+  namespace: cleanup-test
+spec:
+  containers:
+  - name: task
+    image: busybox:1.36
+status:
+  phase: Succeeded

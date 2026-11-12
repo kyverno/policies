@@ -1,0 +1,59 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-networkpolicy-targets
+spec:
+  steps:
+  - name: create-targets-and-policy
+    try:
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: platform-system
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: tenant-a
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: tenant-b
+    - apply:
+        resource:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: untrusted
+    - apply:
+        file: ../generate-networkpolicy-targets.yaml
+    - assert:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: GeneratingPolicy
+          metadata:
+            name: generate-networkpolicy-targets
+          status:
+            conditionStatus:
+              ready: true
+  - name: generate-all-targets
+    try:
+    - apply:
+        file: ../.kyverno-test/resources.yaml
+    - assert:
+        file: ../.kyverno-test/generated.yaml
+  - name: restore-deleted-generated-policy
+    try:
+    - delete:
+        ref:
+          apiVersion: networking.k8s.io/v1
+          kind: NetworkPolicy
+          name: default-deny-ingress
+          namespace: tenant-a
+    - assert:
+        file: ../.kyverno-test/generated.yaml

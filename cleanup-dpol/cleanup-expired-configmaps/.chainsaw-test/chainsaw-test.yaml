@@ -1,0 +1,47 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cleanup-expired-configmaps
+spec:
+  steps:
+  - name: install-with-rbac
+    try:
+    - apply:
+        file: ../rbac.yaml
+    - apply:
+        file: ../cleanup-expired-configmaps.yaml
+    - apply:
+        file: ../.kyverno-test/resources.yaml
+  - name: wait-for-scheduled-cleanup
+    try:
+    - error:
+        timeout: 2m
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: expired
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: future
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: no-expiration
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: not-opted-in
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: ConfigMap
+          metadata:
+            name: invalid-expiration

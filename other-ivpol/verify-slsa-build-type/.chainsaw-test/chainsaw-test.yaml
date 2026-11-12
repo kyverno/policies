@@ -1,0 +1,97 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-slsa-build-type
+spec:
+  steps:
+  - name: install-and-enforce-policy
+    try:
+    - apply:
+        file: ../verify-slsa-build-type.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ImageValidatingPolicy
+          metadata:
+            name: verify-slsa-build-type
+          spec:
+            validationActions: [Deny]
+            failurePolicy: Fail
+    - assert:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ImageValidatingPolicy
+          metadata:
+            name: verify-slsa-build-type
+          status:
+            conditionStatus:
+              ready: true
+  - name: accept-attested-image-and-pin-digest
+    try:
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: provenance
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-images/cosign:github-attestation
+    - assert:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: provenance
+          spec:
+            (starts_with(containers[0].image, 'ghcr.io/kyverno/test-images/cosign:github-attestation@sha256:')): true
+  - name: reject-signed-image-without-provenance
+    try:
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: no-provenance
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-images/cosign:v2-keyless
+        expect:
+        - check:
+            (contains($error, 'A signed SLSA v1 provenance attestation is required.')): true
+  - name: reject-valid-attestation-with-unapproved-build-type
+    try:
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ImageValidatingPolicy
+          metadata:
+            name: verify-slsa-build-type
+          spec:
+            validations:
+            - expression: >-
+                variables.allImages.map(image,
+                  verifyAttestationSignatures(image, attestations.provenance, [attestors.github])
+                ).all(count, count > 0)
+              message: A signed SLSA v1 provenance attestation is required.
+            - expression: >-
+                variables.allImages.map(image,
+                  extractPayload(image, attestations.provenance).predicate.buildDefinition.buildType ==
+                  'https://example.com/unapproved-builder'
+                ).all(valid, valid)
+              message: The attested build type must be GitHub Actions.
+    - create:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: wrong-build-type
+          spec:
+            containers:
+            - name: app
+              image: ghcr.io/kyverno/test-images/cosign:github-attestation
+        expect:
+        - check:
+            (contains($error, 'The attested build type must be GitHub Actions.')): true

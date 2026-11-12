@@ -1,0 +1,34 @@
+name: verify-slsa-build-type
+version: 1.0.0
+displayName: Verify SLSA Build Type
+createdAt: "2026-11-03T00:00:00Z"
+description: >-
+  Verify a signed SLSA v1 provenance attestation using Cosign keyless
+  verification, then require the attested build type to be GitHub Actions.
+  A valid signature alone is not sufficient. Replace the sample repository,
+  signer identity, and build type to match your supply chain. Audit mode
+  reports failures without blocking workloads.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-ivpol/verify-slsa-build-type/verify-slsa-build-type.yaml
+  ```
+keywords:
+- kyverno
+- Software Supply Chain Security
+readme: |
+  Verify a signed SLSA v1 provenance attestation using Cosign keyless
+  verification, then require the attested build type to be GitHub Actions.
+  A valid signature alone is not sufficient. Replace the sample repository,
+  signer identity, and build type to match your supply chain. Audit mode
+  reports failures without blocking workloads.
+
+  Requires Kyverno 1.20 (main). Tests access GHCR and Sigstore over the network.
+  Chainsaw verifies a real attestation, rejects a signed image without provenance,
+  and rejects a valid attestation when its build type does not match the requirement.
+  Verification applies only to images selected by the glob.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: Software Supply Chain Security
+  kyverno/subject: Pod
+digest: 057cc14d31caca96075c01c4f153a528eead0ae5f88639c2be324580ec54e022

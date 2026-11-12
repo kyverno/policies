@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-slsa-build-type
+policies:
+- ../verify-slsa-build-type.yaml
+resources:
+- resources.yaml
+results:
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-slsa-build-type
+  resources:
+  - no-provenance
+  result: fail
+- isImageValidatingPolicy: true
+  kind: Pod
+  policy: verify-slsa-build-type
+  resources:
+  - provenance
+  result: pass

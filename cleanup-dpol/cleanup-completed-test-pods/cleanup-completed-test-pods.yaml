@@ -1,0 +1,39 @@
+apiVersion: policies.kyverno.io/v1
+kind: DeletingPolicy
+metadata:
+  name: cleanup-completed-test-pods
+  annotations:
+    policies.kyverno.io/title: Cleanup Completed Test Pods
+    policies.kyverno.io/category: Cleanup
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.20.0
+    policies.kyverno.io/description: >-
+      Delete terminal, controllerless Pods every minute, but only when both the
+      Pod and its namespace opt in with cleanup.example.com/enabled=true.
+      Running Pods and Pods managed by a Job or another owner are preserved.
+      Grant the cleanup controller Pod list, watch, get, and delete permissions
+      using the accompanying RBAC.
+spec:
+  schedule: "* * * * *"
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      resources: ["pods"]
+    objectSelector:
+      matchLabels:
+        cleanup.example.com/enabled: "true"
+  conditions:
+  - name: namespace-opt-in
+    expression: >-
+      has(namespaceObject.metadata.labels) &&
+      'cleanup.example.com/enabled' in namespaceObject.metadata.labels &&
+      namespaceObject.metadata.labels['cleanup.example.com/enabled'] == 'true'
+  - name: terminal
+    expression: >-
+      has(object.status) && has(object.status.phase) &&
+      object.status.phase in ['Succeeded', 'Failed']
+  - name: controllerless
+    expression: >-
+      !has(object.metadata.ownerReferences) || object.metadata.ownerReferences.size() == 0

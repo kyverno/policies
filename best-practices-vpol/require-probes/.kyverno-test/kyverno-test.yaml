@@ -44,13 +44,14 @@ results:
   - badcronjob01
   - exception-cronjob-mixed
   result: fail
-- kind: ReplicationController
+- kind: Deployment
   policy: require-pod-probes
   resources:
-  - goodrc01
+  - gooddeploy01
   result: pass
-- kind: ReplicationController
+- kind: Deployment
   policy: require-pod-probes
   resources:
-  - badrc01
+  - baddeploy01
+  - baddeploy-init01
   result: fail
