@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodsvc01
+  namespace: unique-external-dns-ns
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: dns.k8s.io
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    run: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodsvc02
+  namespace: unique-external-dns-ns
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: dns.foo.bar
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    run: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: goodsvc03
+  namespace: unique-external-dns-ns
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    run: nginx
