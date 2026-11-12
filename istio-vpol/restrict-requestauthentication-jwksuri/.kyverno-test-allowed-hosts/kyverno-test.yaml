@@ -17,6 +17,7 @@ resources:
 results:
 - kind: RequestAuthentication
   policy: restrict-requestauthentication-jwksuri
+  isValidatingPolicy: true
   resources:
   - good-jwksuri
   # Host names are compared without case.
@@ -25,6 +26,7 @@ results:
   result: pass
 - kind: RequestAuthentication
   policy: restrict-requestauthentication-jwksuri
+  isValidatingPolicy: true
   resources:
   # The https and host name checks still apply to listed hosts.
   - bad-http
