@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: controller-pvc
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: https://images.example.com/fedora.qcow2
+    cdi.kubevirt.io/storage.import.source: http
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

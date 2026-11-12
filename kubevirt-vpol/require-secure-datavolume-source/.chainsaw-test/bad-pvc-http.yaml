@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: bad-pvc-http
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: http://images.example.com/fedora.qcow2
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

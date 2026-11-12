@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-secure-datavolume-source
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-insecure is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: existing-insecure.yaml
+    # A background scan reports the existing DataVolume in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../require-secure-datavolume-source.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: require-secure-datavolume-source
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-dv.yaml
+        - apply:
+            file: good-dv-skip-false.yaml
+        - apply:
+            file: good-vm.yaml
+        - apply:
+            file: good-vis.yaml
+        - apply:
+            file: good-pvc.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: spec.source.http.insecureSkipVerify'))": true
+            file: bad-dv-insecure.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: spec.source.http.url'))": true
+            file: bad-dv-http.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: metadata.annotations[cdi.kubevirt.io/storage.import.insecureSkipVerify]'))": true
+            file: bad-dv-annotation.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: spec.dataVolumeTemplates[1].spec.source.http.url, spec.dataVolumeTemplates[1].metadata.annotations[cdi.kubevirt.io/storage.import.insecureSkipVerify]'))": true
+            file: bad-vm.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: spec.source.http.insecureSkipVerify'))": true
+            file: bad-vis.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: metadata.annotations[cdi.kubevirt.io/storage.import.endpoint]'))": true
+            file: bad-pvc-http.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: metadata.annotations[cdi.kubevirt.io/storage.import.insecureSkipVerify]'))": true
+            file: bad-pvc-insecure.yaml
+    # Switching a template of the existing good-vm to http:// is blocked. An
+    # update that leaves the import source as it was still works, even on
+    # existing-insecure.
+    - name: step-04
+      try:
+        - patch:
+            resource:
+              apiVersion: cdi.kubevirt.io/v1beta1
+              kind: DataVolume
+              metadata:
+                name: existing-insecure
+                labels:
+                  team: images
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'Fix: spec.dataVolumeTemplates[0].spec.source.http.url'))": true
+            file: bad-update.yaml
+    # The CDI controller can create PVCs, and the KubeVirt controller can
+    # create DataVolumes, because they copy objects that the policy already
+    # checked. Other users, and each controller for the other kind, can't.
+    - name: step-05
+      try:
+        - apply:
+            file: controller-rbac.yaml
+        - script:
+            content: |
+              set -e
+              err=$(mktemp)
+              kubectl create -n "$NAMESPACE" -f controller-pvc.yaml --as=system:serviceaccount:cdi:cdi-sa
+              kubectl create -n "$NAMESPACE" -f controller-dv.yaml --as=system:serviceaccount:kubevirt:kubevirt-controller
+              for args in \
+                "bad-pvc-insecure.yaml system:serviceaccount:tenant:cdi-sa" \
+                "bad-pvc-http.yaml system:serviceaccount:kubevirt:kubevirt-controller" \
+                "bad-dv-insecure.yaml system:serviceaccount:cdi:cdi-sa"; do
+                set -- $args
+                if kubectl create -n "$NAMESPACE" -f "$1" --as="$2" 2>"$err"; then
+                  echo "$1 was allowed for $2"; exit 1
+                fi
+                grep -q 'Policy require-secure-datavolume-source failed' "$err" || { cat "$err"; exit 1; }
+              done
+              rm -f "$err"
+    # The PolicyException allows self-signed-mirror in dev-images only. A
+    # DataVolume with the same name in another namespace is still blocked,
+    # and so is self-signed-mirror once the exception is removed.
+    - name: step-06
+      try:
+        - apply:
+            file: dev-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-dv.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'spec.source.http.insecureSkipVerify'))": true
+            file: exception-dv-tenant.yaml
+        - delete:
+            file: exception-dv.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-secure-datavolume-source failed') && contains($error, 'spec.source.http.insecureSkipVerify'))": true
+            file: exception-dv.yaml

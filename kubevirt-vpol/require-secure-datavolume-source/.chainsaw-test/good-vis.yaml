@@ -1,0 +1,8 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: VolumeImportSource
+metadata:
+  name: good-vis
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2

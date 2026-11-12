@@ -1,0 +1,9 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: VolumeImportSource
+metadata:
+  name: bad-vis
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2
+      insecureSkipVerify: true

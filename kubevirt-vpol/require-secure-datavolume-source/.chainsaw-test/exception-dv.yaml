@@ -1,0 +1,14 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: self-signed-mirror
+  namespace: dev-images
+spec:
+  source:
+    http:
+      url: https://mirror.dev-images.svc/fedora.qcow2
+      insecureSkipVerify: true
+  storage:
+    resources:
+      requests:
+        storage: 1Gi

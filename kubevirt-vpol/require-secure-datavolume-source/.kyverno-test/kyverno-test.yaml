@@ -1,0 +1,123 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-secure-datavolume-source
+policies:
+- ../require-secure-datavolume-source.yaml
+resources:
+- ../.chainsaw-test/good-dv.yaml
+- ../.chainsaw-test/good-dv-skip-false.yaml
+- ../.chainsaw-test/good-vm.yaml
+- ../.chainsaw-test/good-vis.yaml
+- ../.chainsaw-test/good-pvc.yaml
+- ../.chainsaw-test/bad-dv-insecure.yaml
+- ../.chainsaw-test/bad-dv-http.yaml
+- ../.chainsaw-test/bad-dv-annotation.yaml
+- ../.chainsaw-test/bad-vm.yaml
+- ../.chainsaw-test/bad-vis.yaml
+- ../.chainsaw-test/bad-pvc-http.yaml
+- ../.chainsaw-test/bad-pvc-insecure.yaml
+- resources.yaml
+results:
+- kind: DataVolume
+  policy: require-secure-datavolume-source
+  resources: [bad-dv-insecure, bad-dv-http, bad-dv-annotation]
+  result: fail
+  isValidatingPolicy: true
+- kind: VirtualMachine
+  policy: require-secure-datavolume-source
+  resources: [bad-vm]
+  result: fail
+  isValidatingPolicy: true
+- kind: VolumeImportSource
+  policy: require-secure-datavolume-source
+  resources: [bad-vis]
+  result: fail
+  isValidatingPolicy: true
+- kind: PersistentVolumeClaim
+  policy: require-secure-datavolume-source
+  resources: [bad-pvc-http, bad-pvc-insecure]
+  result: fail
+  isValidatingPolicy: true
+- kind: DataVolume
+  policy: require-secure-datavolume-source
+  resources: [good-dv, good-dv-skip-false]
+  result: pass
+  isValidatingPolicy: true
+- kind: VirtualMachine
+  policy: require-secure-datavolume-source
+  resources: [good-vm]
+  result: pass
+  isValidatingPolicy: true
+- kind: VolumeImportSource
+  policy: require-secure-datavolume-source
+  resources: [good-vis]
+  result: pass
+  isValidatingPolicy: true
+- kind: PersistentVolumeClaim
+  policy: require-secure-datavolume-source
+  resources: [good-pvc]
+  result: pass
+  isValidatingPolicy: true
+- kind: DataVolume
+  policy: require-secure-datavolume-source
+  resources:
+  - edge-good-registry
+  - edge-good-no-spec
+  - edge-good-malformed-source
+  - edge-good-malformed-http
+  - edge-good-malformed-url
+  - edge-good-mixed-case
+  - edge-good-annotation-not-true
+  - edge-good-annotation-registry
+  result: pass
+  isValidatingPolicy: true
+- kind: DataVolume
+  policy: require-secure-datavolume-source
+  resources: [edge-bad-ftp, edge-bad-all, edge-bad-non-controller-owner]
+  result: fail
+  isValidatingPolicy: true
+- kind: DataVolume
+  policy: require-secure-datavolume-source
+  resources: [edge-skip-owned-copy]
+  result: skip
+  isValidatingPolicy: true
+- kind: VirtualMachine
+  policy: require-secure-datavolume-source
+  resources:
+  - edge-good-no-templates
+  - edge-good-malformed-templates
+  - edge-good-templates-not-list
+  - edge-good-registry-template
+  result: pass
+  isValidatingPolicy: true
+- kind: VirtualMachine
+  policy: require-secure-datavolume-source
+  resources: [edge-bad-template-annotation, edge-bad-after-malformed]
+  result: fail
+  isValidatingPolicy: true
+- kind: PersistentVolumeClaim
+  policy: require-secure-datavolume-source
+  resources: [edge-good-pvc-registry, edge-good-pvc-insecure-no-source]
+  result: pass
+  isValidatingPolicy: true
+- kind: PersistentVolumeClaim
+  policy: require-secure-datavolume-source
+  resources: [edge-skip-no-import, edge-skip-pvc-owned-copy]
+  result: skip
+  isValidatingPolicy: true
+- kind: PersistentVolumeClaim
+  policy: require-secure-datavolume-source
+  resources: [edge-bad-pvc-unknown-source]
+  result: fail
+  isValidatingPolicy: true
+- kind: VolumeImportSource
+  policy: require-secure-datavolume-source
+  resources: [edge-bad-vis-http]
+  result: fail
+  isValidatingPolicy: true
+- kind: VolumeImportSource
+  policy: require-secure-datavolume-source
+  resources: [edge-good-vis-registry]
+  result: pass
+  isValidatingPolicy: true

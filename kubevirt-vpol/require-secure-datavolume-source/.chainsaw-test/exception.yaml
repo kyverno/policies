@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-secure-datavolume-source-dev
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: require-secure-datavolume-source
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: self-signed-dev-mirror
+    expression: object.metadata.namespace == 'dev-images' && object.metadata.name == 'self-signed-mirror'
