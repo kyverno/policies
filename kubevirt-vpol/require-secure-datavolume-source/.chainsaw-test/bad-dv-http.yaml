@@ -1,0 +1,12 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: bad-dv-http
+spec:
+  source:
+    http:
+      url: http://images.example.com/fedora.qcow2
+  storage:
+    resources:
+      requests:
+        storage: 1Gi

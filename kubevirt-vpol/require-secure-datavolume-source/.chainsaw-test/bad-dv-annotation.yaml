@@ -1,0 +1,14 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: bad-dv-annotation
+  annotations:
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2
+  storage:
+    resources:
+      requests:
+        storage: 1Gi

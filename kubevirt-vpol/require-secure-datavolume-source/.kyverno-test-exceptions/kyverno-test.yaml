@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-secure-datavolume-source-exception
+policies:
+- ../require-secure-datavolume-source.yaml
+resources:
+- ../.chainsaw-test/exception-dv.yaml
+- ../.chainsaw-test/exception-dv-tenant.yaml
+- ../.chainsaw-test/bad-dv-insecure.yaml
+- ../.chainsaw-test/good-dv.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts dev-images/self-signed-mirror, so it's skipped.
+- policy: require-secure-datavolume-source
+  kind: DataVolume
+  resources: [dev-images/self-signed-mirror]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: require-secure-datavolume-source
+  kind: DataVolume
+  resources: [default/self-signed-mirror]
+  result: fail
+  isValidatingPolicy: true
+- policy: require-secure-datavolume-source
+  kind: DataVolume
+  resources: [good-dv]
+  result: pass
+  isValidatingPolicy: true
+- policy: require-secure-datavolume-source
+  kind: DataVolume
+  resources: [bad-dv-insecure]
+  result: fail
+  isValidatingPolicy: true

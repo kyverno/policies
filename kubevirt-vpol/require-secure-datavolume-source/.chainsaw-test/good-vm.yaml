@@ -1,0 +1,49 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: good-vm
+spec:
+  runStrategy: Halted
+  dataVolumeTemplates:
+  - metadata:
+      name: good-vm-root
+    spec:
+      source:
+        http:
+          url: https://images.example.com/fedora.qcow2
+      storage:
+        resources:
+          requests:
+            storage: 1Gi
+  - metadata:
+      name: good-vm-data
+    spec:
+      source:
+        http:
+          url: https://images.example.com/data.raw
+          certConfigMap: images-ca
+      storage:
+        resources:
+          requests:
+            storage: 1Gi
+  template:
+    spec:
+      domain:
+        devices:
+          disks:
+          - name: root
+            disk:
+              bus: virtio
+          - name: data
+            disk:
+              bus: virtio
+        resources:
+          requests:
+            memory: 1Gi
+      volumes:
+      - name: root
+        dataVolume:
+          name: good-vm-root
+      - name: data
+        dataVolume:
+          name: good-vm-data

@@ -1,0 +1,290 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-registry
+spec:
+  source:
+    registry:
+      url: docker://quay.io/containerdisks/fedora:latest
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-no-spec
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-malformed-source
+spec:
+  source: http://images.example.com/fedora.qcow2
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-malformed-http
+spec:
+  source:
+    http: http://images.example.com/fedora.qcow2
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-malformed-url
+spec:
+  source:
+    http:
+      url: 42
+      insecureSkipVerify: "true"
+---
+# The scheme check ignores case.
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-mixed-case
+spec:
+  source:
+    http:
+      url: HtTpS://images.example.com/fedora.qcow2
+---
+# CDI honors only the exact value "true".
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-annotation-not-true
+  annotations:
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "True"
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2
+---
+# The annotation matters only for an HTTP source.
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-good-annotation-registry
+  annotations:
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  source:
+    registry:
+      url: docker://quay.io/containerdisks/fedora:latest
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-bad-ftp
+spec:
+  source:
+    http:
+      url: ftp://images.example.com/fedora.qcow2
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-bad-all
+  annotations:
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  source:
+    http:
+      url: http://images.example.com/fedora.qcow2
+      insecureSkipVerify: true
+---
+# An owner reference without controller set isn't a controller copy.
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-bad-non-controller-owner
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    name: vm
+    uid: 2a6d6c5e-6c0b-4a5e-9a51-6f2b6b7f0b11
+spec:
+  source:
+    http:
+      url: http://images.example.com/fedora.qcow2
+---
+# A copy that a VirtualMachine controls. Background scans skip it.
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: edge-skip-owned-copy
+  ownerReferences:
+  - apiVersion: kubevirt.io/v1
+    kind: VirtualMachine
+    name: vm
+    uid: 2a6d6c5e-6c0b-4a5e-9a51-6f2b6b7f0b11
+    controller: true
+spec:
+  source:
+    http:
+      url: http://images.example.com/fedora.qcow2
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-no-templates
+spec:
+  runStrategy: Halted
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-malformed-templates
+spec:
+  dataVolumeTemplates:
+  - not-a-template
+  - metadata: not-a-map
+    spec: not-a-map
+  - spec:
+      source: not-a-map
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-templates-not-list
+spec:
+  dataVolumeTemplates: not-a-list
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-good-registry-template
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      name: root
+    spec:
+      source:
+        registry:
+          url: docker://quay.io/containerdisks/fedora:latest
+---
+# KubeVirt copies template annotations to the DataVolume.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-bad-template-annotation
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      name: root
+      annotations:
+        cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+    spec:
+      source:
+        http:
+          url: https://images.example.com/fedora.qcow2
+---
+# Malformed templates are skipped; later templates are still checked.
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: edge-bad-after-malformed
+spec:
+  dataVolumeTemplates:
+  - not-a-template
+  - metadata:
+      name: data
+    spec:
+      source:
+        http:
+          url: https://images.example.com/data.raw
+          insecureSkipVerify: true
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-skip-no-import
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-good-pvc-registry
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: docker://quay.io/containerdisks/fedora:latest
+    cdi.kubevirt.io/storage.import.source: registry
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# CDI honors the annotation only when the source annotation is http.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-good-pvc-insecure-no-source
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: https://images.example.com/fedora.qcow2
+    cdi.kubevirt.io/storage.import.insecureSkipVerify: "true"
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# CDI treats an unknown source as http.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-bad-pvc-unknown-source
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: http://images.example.com/fedora.qcow2
+    cdi.kubevirt.io/storage.import.source: HTTP
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+# A copy that a DataVolume controls. Background scans skip it.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: edge-skip-pvc-owned-copy
+  annotations:
+    cdi.kubevirt.io/storage.import.endpoint: http://images.example.com/fedora.qcow2
+    cdi.kubevirt.io/storage.import.source: http
+  ownerReferences:
+  - apiVersion: cdi.kubevirt.io/v1beta1
+    kind: DataVolume
+    name: dv
+    uid: 7d4b3f0e-1c2a-4f5b-8e6d-9a0b1c2d3e4f
+    controller: true
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: VolumeImportSource
+metadata:
+  name: edge-bad-vis-http
+spec:
+  source:
+    http:
+      url: http://images.example.com/fedora.qcow2
+---
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: VolumeImportSource
+metadata:
+  name: edge-good-vis-registry
+spec:
+  source:
+    registry:
+      url: docker://quay.io/containerdisks/fedora:latest

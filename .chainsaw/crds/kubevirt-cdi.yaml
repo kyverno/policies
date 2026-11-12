@@ -1,0 +1,51 @@
+# Minimal CDI CRDs for tests. The schemas are open to keep this file small;
+# names, scope, and versions match the upstream CRDs. kubevirt-vm.yaml defines
+# the VirtualMachine CRD.
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: datavolumes.cdi.kubevirt.io
+spec:
+  group: cdi.kubevirt.io
+  names:
+    categories:
+    - all
+    kind: DataVolume
+    listKind: DataVolumeList
+    plural: datavolumes
+    shortNames:
+    - dv
+    - dvs
+    singular: datavolume
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    subresources:
+      status: {}
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: volumeimportsources.cdi.kubevirt.io
+spec:
+  group: cdi.kubevirt.io
+  names:
+    kind: VolumeImportSource
+    listKind: VolumeImportSourceList
+    plural: volumeimportsources
+    singular: volumeimportsource
+  scope: Namespaced
+  versions:
+  - name: v1beta1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true

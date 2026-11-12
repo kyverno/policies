@@ -1,0 +1,106 @@
+name: require-secure-datavolume-source-vpol
+version: 1.0.0
+displayName: Require Secure DataVolume Source in CEL expressions
+description: >-
+  KubeVirt's Containerized Data Importer (CDI) downloads virtual machine disk images from HTTP sources. It accepts plain http:// URLs, and since CDI v1.66.0 an HTTP source can set insecureSkipVerify to turn off TLS certificate verification, without any approval from the cluster administrator. In both cases, an attacker on the network path can replace the disk image, and the virtual machine boots the attacker's code. This policy requires every HTTP import source in DataVolumes, VirtualMachine dataVolumeTemplates, VolumeImportSources, and import PersistentVolumeClaims to use an https:// URL with certificate verification turned on.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kubevirt-vpol/require-secure-datavolume-source/require-secure-datavolume-source.yaml
+  ```
+keywords:
+  - kyverno
+  - KubeVirt
+  - CEL Expressions
+readme: |
+  KubeVirt's Containerized Data Importer (CDI) imports virtual machine disk images from HTTP sources. Two settings let an attacker on the network path replace the image, so that the virtual machine boots the attacker's code:
+
+  - A plain `http://` URL. CDI accepts it.
+  - `insecureSkipVerify: true` on an HTTP source, added in CDI v1.66.0. CDI then accepts any server certificate. It doesn't ask the cluster administrator: the `insecureRegistries` list in `CDIConfig` applies only to registry sources.
+
+  Anyone who can edit a namespace can use both settings, because the `kubevirt.io:edit` and `cdi.kubevirt.io:edit` ClusterRoles aggregate to the built-in `edit` role. Pod and image policies don't see the URL, because the importer pod receives it through environment variables.
+
+  ### What the policy checks
+
+  The policy fails an import source when its URL doesn't start with `https://` (in any case), or when it skips certificate verification. It checks these places:
+
+  - DataVolume: `spec.source.http.url`, `spec.source.http.insecureSkipVerify`, and the `cdi.kubevirt.io/storage.import.insecureSkipVerify` annotation. CDI copies DataVolume annotations to the PersistentVolumeClaim (PVC) that it imports into, so the annotation turns off verification too.
+  - VirtualMachine: the same fields in each entry of `spec.dataVolumeTemplates`, including the template annotations. KubeVirt creates a DataVolume from each template, so the policy fails the VirtualMachine when you create it, instead of leaving you with a VirtualMachine whose disk can't be created.
+  - VolumeImportSource: `spec.source.http.url` and `spec.source.http.insecureSkipVerify`. You can use it directly with a PVC through `spec.dataSourceRef`.
+  - PersistentVolumeClaim: the `cdi.kubevirt.io/storage.import.endpoint` and `cdi.kubevirt.io/storage.import.insecureSkipVerify` annotations. CDI still imports into any PVC that has these annotations, even one that you create without a DataVolume. The policy checks only PVCs that have the endpoint or source annotation, and it follows CDI's rules: a missing or unknown source annotation means `http`, and the skip annotation counts only with the `http` source.
+
+  The message lists each offending field by path, for example `spec.dataVolumeTemplates[1].spec.source.http.url`.
+
+  The policy checks creates and updates, and reports existing objects through background scans. It defaults to `Audit`; switch to `Deny` to block. An update fails only when it adds a finding that the old object didn't have. As a result, objects that existed before you applied the policy keep working, and controllers can still update them and remove their finalizers. Use the `Audit` reports to find these objects.
+
+  ### Objects that controllers create
+
+  The CDI and KubeVirt controllers copy import sources from objects that the policy has already checked, so the policy trusts these requests:
+
+  - From `system:serviceaccount:cdi:cdi-sa`: PersistentVolumeClaims and VolumeImportSources that CDI creates for a DataVolume.
+  - From `system:serviceaccount:kubevirt:kubevirt-controller`: DataVolumes that KubeVirt creates from a VirtualMachine template.
+
+  This lets a PolicyException for a DataVolume or a VirtualMachine also cover the objects that the controllers create from it. If you install CDI or KubeVirt in other namespaces, for example `openshift-cnv`, edit the user names in the `skip-cdi-controller` and `skip-kubevirt-controller` match conditions. Keep the namespace in each name; a namespace editor can create a service account named `cdi-sa` in their own namespace.
+
+  Background scans don't have a user. In background scans, the policy skips DataVolumes, PVCs, and VolumeImportSources that have a controller owner reference, so that each problem shows up once, on the object that you created. Anyone can set an owner reference, so a forged one can hide an object from background scan results. Admission requests still check it.
+
+  ### Limitations
+
+  - The policy checks only HTTP sources. It doesn't check registry, S3, GCS, ImageIO, or VDDK sources. ImageIO sources have their own `insecureSkipVerify` field.
+  - It doesn't check `DataImportCron`. CDI accepts only registry and PVC sources in its template.
+  - It doesn't check VirtualMachinePools or other objects that create VirtualMachines. The VirtualMachine that they create fails instead.
+  - KubeVirt v1.9.1 builds the VirtualMachine schema from CDI API v1.64.0, so the API server drops `insecureSkipVerify` from `spec.dataVolumeTemplates`. The policy still checks the field for later versions. The `http://` URL and the template annotations work on all versions.
+  - It doesn't require a `checksum`. CDI calls the checksum optional but recommended for production. Add one, such as `checksum: sha256:<hash>`, to `spec.source.http` so that CDI verifies the image that it downloads.
+  - Images on a server with a self-signed certificate need a PolicyException, unless you give CDI the CA as shown next.
+
+  ### Verifying a server with a private CA
+
+  Instead of skipping verification, give CDI the CA that signed the server's certificate. Put the PEM-encoded CA certificate in a ConfigMap in the namespace of the DataVolume, and reference it in `certConfigMap`:
+
+      apiVersion: cdi.kubevirt.io/v1beta1
+      kind: DataVolume
+      metadata:
+        name: fedora
+        namespace: team-one
+      spec:
+        source:
+          http:
+            url: https://images.internal.example.com/fedora.qcow2
+            certConfigMap: images-ca
+            checksum: sha256:e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0
+        storage:
+          resources:
+            requests:
+              storage: 10Gi
+
+  Create the ConfigMap with `kubectl create configmap images-ca -n team-one --from-file=ca.pem`. See [DataVolumes](https://github.com/kubevirt/containerized-data-importer/blob/main/doc/datavolumes.md) in the CDI documentation.
+
+  ### Exempting a DataVolume
+
+  To exempt a single DataVolume or VirtualMachine, create a Kyverno `PolicyException` that references this policy in `spec.policyRefs` and matches both the namespace and the name in `spec.matchConditions`. If you match on the name alone, you exempt the same name in every namespace. The following tested example exempts `dev-images/self-signed-mirror`:
+
+      apiVersion: policies.kyverno.io/v1
+      kind: PolicyException
+      metadata:
+        name: require-secure-datavolume-source-dev
+        namespace: policy-exceptions
+      spec:
+        policyRefs:
+        - name: require-secure-datavolume-source
+          kind: ValidatingPolicy
+        matchConditions:
+        - name: self-signed-dev-mirror
+          expression: object.metadata.namespace == 'dev-images' && object.metadata.name == 'self-signed-mirror'
+
+  Kyverno reads PolicyExceptions only when you enable them, and only from the namespaces that you allow. This example uses the `policy-exceptions` namespace.
+
+  ### Permissions
+
+  For background scans and admission checks of these custom resources, Kyverno needs permission to read them. Give the Kyverno admission and reports controllers `get`, `list`, and `watch` on `datavolumes` and `volumeimportsources` in `cdi.kubevirt.io`, and on `virtualmachines` in `kubevirt.io`, through ClusterRoles with the `rbac.kyverno.io/aggregate-to-admission-controller` and `rbac.kyverno.io/aggregate-to-reports-controller` labels. The test's `rbac.yaml` has an example.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "KubeVirt in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "DataVolume, VirtualMachine, VolumeImportSource, PersistentVolumeClaim"
+digest: ee20fe41a75063ac09472a4c4bbcde164c8156a71ded53d2e54bc2bcccf015ca
+createdAt: "2026-11-11T21:18:48Z"

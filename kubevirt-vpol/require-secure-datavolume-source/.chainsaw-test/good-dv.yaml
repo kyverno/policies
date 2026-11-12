@@ -1,0 +1,14 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: good-dv
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2
+      checksum: sha256:e3c1b309d9203604922d6e255c2c5d098a309c2d46215d8fc026954f3c5c27a0
+      certConfigMap: images-ca
+  storage:
+    resources:
+      requests:
+        storage: 1Gi

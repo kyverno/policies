@@ -1,0 +1,13 @@
+apiVersion: cdi.kubevirt.io/v1beta1
+kind: DataVolume
+metadata:
+  name: controller-dv
+spec:
+  source:
+    http:
+      url: https://images.example.com/fedora.qcow2
+      insecureSkipVerify: true
+  storage:
+    resources:
+      requests:
+        storage: 1Gi
