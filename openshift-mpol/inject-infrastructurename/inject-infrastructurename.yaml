@@ -14,6 +14,9 @@ metadata:
       MachineSet created. This policy fetches the value of the infrastructure name from the
       Cluster resource and replaces all instances of TEMPLATE in a MachineSet with that name.
 spec:
+  evaluation:
+    background:
+      enabled: false
   matchConstraints:
     resourceRules:
       - apiGroups: ["machine.openshift.io"]

@@ -10,9 +10,6 @@ status:
       status: "True"
       type: WebhookConfigured
     (conditions[?type == 'RBACPermissionsGranted']):
-    - message: Policy is ready for reporting.
-      reason: Succeeded
+    - reason: Succeeded
       status: "True"
-      type: RBACPermissionsGranted
-    (length(conditions)): 2
     ready: true

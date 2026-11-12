@@ -20,6 +20,9 @@ metadata:
       all kinds ("*") it is highly recommended to more narrowly scope it to only
       the resources which should be labeled.
 spec:
+  evaluation:
+    background:
+      enabled: false
   matchConstraints:
     resourceRules:
     - apiGroups: ["*"]
