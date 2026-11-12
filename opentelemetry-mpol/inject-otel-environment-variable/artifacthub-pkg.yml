@@ -1,0 +1,30 @@
+name: inject-otel-environment-variable
+version: 1.0.0
+displayName: Inject OpenTelemetry Environment Variable
+createdAt: "2024-12-27T00:00:00.000Z"
+description: >-
+  Injects the OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers` of new Pods.
+  Injection can be disabled with the `otel.corp.org/inject-env-var: "false"` annotation on the Pod or its Namespace;
+  the Pod annotation takes precedence. The value defaults to `http://opentelemetry-collector.opentelemetry-collector:4317`
+  and can be overridden per Pod or Namespace with the `otel.corp.org/otlp-endpoint` annotation.
+  Containers that already declare `OTEL_EXPORTER_OTLP_ENDPOINT` are left untouched.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/opentelemetry-mpol/inject-otel-environment-variable/inject-otel-environment-variable.yaml
+  ```
+keywords:
+  - kyverno
+  - OpenTelemetry
+readme: |
+  Injects the OpenTelemetry `OTEL_EXPORTER_OTLP_ENDPOINT` env var in `containers` and `initContainers` of new Pods.
+  Injection can be disabled with the `otel.corp.org/inject-env-var: "false"` annotation on the Pod or its Namespace;
+  the Pod annotation takes precedence. The value defaults to `http://opentelemetry-collector.opentelemetry-collector:4317`
+  and can be overridden per Pod or Namespace with the `otel.corp.org/otlp-endpoint` annotation.
+  Containers that already declare `OTEL_EXPORTER_OTLP_ENDPOINT` are left untouched.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "OpenTelemetry"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Namespace, Pod"
+digest: bdf6c15385a39b8f9bd36e0d263aa5f5d13895af7dda9ed3f51d88757a0da237

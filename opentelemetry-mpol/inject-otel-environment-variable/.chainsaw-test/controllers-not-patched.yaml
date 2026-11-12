@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: otel-job
+  namespace: otel-inject-default
+spec:
+  template:
+    spec:
+      containers:
+      - name: main
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: otel-cronjob
+  namespace: otel-inject-default
+spec:
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: main
+            env:
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-deployment
+  namespace: otel-inject-default
+spec:
+  template:
+    spec:
+      containers:
+      - name: main
+        env:
+        - name: OTEL_EXPORTER_OTLP_ENDPOINT
