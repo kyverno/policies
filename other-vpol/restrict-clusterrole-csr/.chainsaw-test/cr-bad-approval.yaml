@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csr-chainsaw-bad-approval
+rules:
+- apiGroups: ["certificates.k8s.io"]
+  resources: ["certificatesigningrequests/approval"]
+  verbs: ["update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csr-chainsaw-bad-subresource-wildcard
+rules:
+- apiGroups: ["certificates.k8s.io"]
+  resources: ["*/approval"]
+  verbs: ["update"]
