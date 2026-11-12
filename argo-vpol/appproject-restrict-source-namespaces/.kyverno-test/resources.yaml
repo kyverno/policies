@@ -1,0 +1,104 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-literal-dot
+spec:
+  sourceNamespaces:
+  - a.gocd
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-negated-class
+spec:
+  sourceNamespaces:
+  - '[!a]rgocd'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-uppercase
+spec:
+  sourceNamespaces:
+  - ARGOCD
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-literal-comma
+spec:
+  sourceNamespaces:
+  - argocd,team-one
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-good-regex-no-match
+spec:
+  sourceNamespaces:
+  - /^argocd-x$/
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-backslash
+spec:
+  sourceNamespaces:
+  - '\argocd'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-negated-class
+spec:
+  sourceNamespaces:
+  - '[!b]rgocd'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-double-star
+spec:
+  sourceNamespaces:
+  - 'argo**'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-leading-question
+spec:
+  sourceNamespaces:
+  - '?rgocd'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-nested-braces
+spec:
+  sourceNamespaces:
+  - '{team-one,{argocd,team-two}}'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-bad-anchored-regex
+spec:
+  sourceNamespaces:
+  - /^argocd$/
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-conservative-comma-with-braces
+spec:
+  sourceNamespaces:
+  - '{team-one,team-two},argocd'
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: edge-error-lookahead
+spec:
+  sourceNamespaces:
+  - /(?=a)rgocd/

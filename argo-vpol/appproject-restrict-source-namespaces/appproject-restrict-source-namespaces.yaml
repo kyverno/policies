@@ -1,0 +1,78 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: appproject-restrict-source-namespaces
+  annotations:
+    policies.kyverno.io/title: Restrict AppProject Source Namespaces in CEL expressions
+    policies.kyverno.io/category: Argo in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: AppProject
+    policies.kyverno.io/description: >-
+      Argo CD's documentation says an AppProject must never grant access to the
+      control-plane namespace (argocd) through spec.sourceNamespaces, and that
+      privileged projects such as default must not list user-controlled
+      namespaces. This policy rejects any entry that Argo CD would match
+      against argocd, including * and patterns such as argo* or /^argo/, and
+      any spec.sourceNamespaces on the default AppProject. The field matters
+      only when Applications in any namespace is enabled. See
+      https://argo-cd.readthedocs.io/en/stable/operator-manual/app-any-namespace/.
+      If Argo CD runs in another namespace, change the controlPlaneNamespace
+      variable.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["argoproj.io"]
+        apiVersions: [v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [appprojects]
+  variables:
+    - name: controlPlaneNamespace
+      expression: "'argocd'"
+    - name: sourceNamespaces
+      expression: "object.spec.?sourceNamespaces.orValue([])"
+    # Entries wrapped in slashes are regular expressions. Other entries are
+    # globs, converted to anchored regular expressions. Backslashes are
+    # dropped, so escaped glob characters count as wildcards. Commas become
+    # alternatives only in entries with braces; elsewhere they are literal.
+    - name: matchingEntries
+      expression: >-
+        variables.sourceNamespaces.filter(entry,
+          entry.size() > 2 && entry.startsWith('/') && entry.endsWith('/')
+          ? variables.controlPlaneNamespace.matches(entry.substring(1, entry.size() - 1))
+          : variables.controlPlaneNamespace.matches('^(?:' + entry
+              .replace('\\', '')
+              .replace('.', '\\.')
+              .replace('+', '\\+')
+              .replace('(', '\\(')
+              .replace(')', '\\)')
+              .replace('|', '\\|')
+              .replace('^', '\\^')
+              .replace('$', '\\$')
+              .replace('[!', '[^')
+              .replace('*', '.*')
+              .replace('?', '.')
+              .replace('{', '(?:')
+              .replace('}', ')')
+              .replace(',', entry.contains('{') ? '|' : ',') + ')$'))
+  validations:
+    - expression: "size(variables.matchingEntries) == 0"
+      messageExpression: >-
+        'spec.sourceNamespaces must not grant access to the Argo CD
+        control-plane namespace "' + variables.controlPlaneNamespace +
+        '". Remove or narrow these entries: ' +
+        variables.matchingEntries.join(', ')
+    - expression: >-
+        object.metadata.name != 'default' ||
+        size(variables.sourceNamespaces) == 0
+      message: >-
+        The default AppProject must not set spec.sourceNamespaces. Create a
+        dedicated AppProject for Applications outside the control-plane
+        namespace.
