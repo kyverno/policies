@@ -44,10 +44,6 @@ spec:
     # default as a global namespace.
     - name: allowedNetworkNamespaces
       expression: "['default']"
-    # Users whose controller-owned objects are skipped. This is the
-    # virt-controller service account in a default KubeVirt install.
-    - name: controllerUsernames
-      expression: "['system:serviceaccount:kubevirt:kubevirt-controller']"
     # Use the request namespace if the object has none. The API server
     # normally fills it in before admission, so this is a safeguard.
     - name: objectNamespace
@@ -95,20 +91,8 @@ spec:
           variables.disallowed[0]
             .filter(e, !(string(e[1]) in old))
             .map(e, variables.networksPath + '[' + string(e[0]) + '].multus.networkName=' + string(e[1])))
-    # virt-controller creates VMIs from VMs and VMIRSs, and VMs from pools.
-    # The parent was already checked, so skip the child.
-    - name: createdByController
-      expression: >-
-        request.?userInfo.?username.orValue('') in variables.controllerUsernames &&
-        cel.bind(refs, object.?metadata.?ownerReferences.orValue([]),
-          type(refs) == list && refs.exists(r, type(r) == map &&
-            r.?controller.orValue(false) == true &&
-            cel.bind(api, r.?apiVersion.orValue(''), cel.bind(k, r.?kind.orValue(''),
-              type(api) == string && type(k) == string &&
-              ((api.startsWith('kubevirt.io/') && k in ['VirtualMachine', 'VirtualMachineInstanceReplicaSet']) ||
-                (api.startsWith('pool.kubevirt.io/') && k == 'VirtualMachinePool'))))))
   validations:
-    - expression: variables.createdByController || size(variables.violations) == 0
+    - expression: size(variables.violations) == 0
       messageExpression: >-
         'Multus networkName must refer to a NetworkAttachmentDefinition in
         namespace ' + variables.objectNamespace + ' or in an allowed

@@ -10,31 +10,26 @@ resources:
 # Each request in this test comes from the virt-controller service account.
 userinfo: userinfo.yaml
 results:
-# Objects that virt-controller creates for a KubeVirt owner are skipped,
-# because the owner was already checked.
-- policy: restrict-vm-secondary-network-namespace
-  kind: VirtualMachineInstance
-  resources:
-  - vmi-from-vm
-  - vmi-from-vmirs
-  result: pass
-  isValidatingPolicy: true
+# Objects that virt-controller creates are checked too, because their parent
+# might predate the policy or have been admitted in Audit mode.
 - policy: restrict-vm-secondary-network-namespace
   kind: VirtualMachine
   resources:
-  - vm-from-pool
   - good-vm-local-name
   result: pass
   isValidatingPolicy: true
 - policy: restrict-vm-secondary-network-namespace
   kind: VirtualMachine
   resources:
+  - vm-from-pool
   - vm-not-owned
   result: fail
   isValidatingPolicy: true
 - policy: restrict-vm-secondary-network-namespace
   kind: VirtualMachineInstance
   resources:
+  - vmi-from-vm
+  - vmi-from-vmirs
   - vmi-owner-not-controller
   - vmi-owned-by-other-kind
   - vmi-owned-by-other-group

@@ -59,14 +59,9 @@ readme: |
 
   ### Objects that KubeVirt creates
 
-  KubeVirt's virt-controller creates a VirtualMachineInstance for each running VirtualMachine and for each VirtualMachineInstanceReplicaSet replica. It also creates the VirtualMachines of a VirtualMachinePool. Each child copies its networks from the parent, and has a controller owner reference to it. If you exempt a parent with a PolicyException, a check of the child blocks it anyway.
+  KubeVirt's virt-controller creates a VirtualMachineInstance for each running VirtualMachine and for each VirtualMachineInstanceReplicaSet replica. It also creates the VirtualMachines of a VirtualMachinePool. Each child copies its networks from the parent.
 
-  The policy therefore skips an object when both of the following are true:
-
-  - The request comes from a user in `controllerUsernames`. By default, this is `system:serviceaccount:kubevirt:kubevirt-controller`, the virt-controller service account in the `kubevirt` namespace.
-  - The object has an owner reference with `controller: true` to a `kubevirt.io` VirtualMachine or VirtualMachineInstanceReplicaSet, or to a `pool.kubevirt.io` VirtualMachinePool.
-
-  The policy doesn't trust the owner reference alone, because any user can set one. If you install KubeVirt in another namespace, change `controllerUsernames` to match. Background scans have no requesting user, so they check and report these child objects too.
+  The policy checks these children too, because their parent might predate the policy or have been admitted in `Audit` mode. In `Deny` mode, a VirtualMachine that uses another namespace's network can't start until you fix it, but you can still stop and delete it. A PolicyException for a VirtualMachine also covers its VirtualMachineInstance, which has the same name. For a VirtualMachineInstanceReplicaSet or a VirtualMachinePool, also match the children, for example by a label from the template.
 
   ### Limitations
 
@@ -109,5 +104,5 @@ annotations:
   kyverno/category: "KubeVirt in CEL"
   kyverno/kubernetesVersion: "1.34-1.35"
   kyverno/subject: "VirtualMachine, VirtualMachineInstance"
-digest: ae1b965e0ecaf594460d0475d1eed8a8ad34a3157077bc3b9e99285403798086
+digest: 2287dd6fd2e3e09fafde971797431f4b05e964ad0a9a8547dc2d13dc99b79277
 createdAt: "2026-11-11T21:05:52Z"
