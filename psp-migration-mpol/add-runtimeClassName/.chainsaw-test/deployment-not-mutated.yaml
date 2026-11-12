@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment01
+  namespace: add-runtimeclassname
+spec:
+  template:
+    spec:
+      (runtimeClassName == null): true
