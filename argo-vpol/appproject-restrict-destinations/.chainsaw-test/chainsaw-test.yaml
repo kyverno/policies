@@ -1,0 +1,93 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: appproject-restrict-destinations
+spec:
+  template: false
+  steps:
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: ../appproject-restrict-destinations.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: appproject-restrict-destinations
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good.yaml
+        - apply:
+            file: good-deny-entry.yaml
+        - apply:
+            file: good-remote-cluster.yaml
+        - apply:
+            file: good-no-destinations.yaml
+        - apply:
+            file: good-default-project.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace team-one') == `false` && contains($error, 'namespace argocd on server https://kubernetes.default.svc'))": true
+            file: bad-exact.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace * on server *'))": true
+            file: bad-wildcard.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace argo* on server https://kubernetes.*'))": true
+            file: bad-glob.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace argocd on cluster in-cluster'))": true
+            file: bad-cluster-name.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace * on server *'))": true
+            file: bad-deny-other.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace * on server *; namespace argocd on server https://kubernetes.default.svc'))": true
+            file: bad-multiple.yaml
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace argocd on server https://kubernetes.default.svc'))": true
+            file: bad-update.yaml
+    - name: step-05
+      try:
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-appproject.yaml
+        - delete:
+            file: exception-appproject.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy appproject-restrict-destinations failed') && contains($error, 'namespace argocd on server https://kubernetes.default.svc'))": true
+            file: exception-appproject.yaml

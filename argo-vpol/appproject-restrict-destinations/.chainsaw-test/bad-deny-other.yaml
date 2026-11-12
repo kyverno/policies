@@ -1,0 +1,11 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: badappproj-deny-other
+spec:
+  description: Test Project
+  destinations:
+  - namespace: '*'
+    server: '*'
+  - namespace: '!kube-system'
+    server: '*'

@@ -1,0 +1,108 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: appproject-restrict-destinations
+  annotations:
+    policies.kyverno.io/title: Restrict AppProject Destinations in CEL expressions
+    policies.kyverno.io/category: Argo in CEL
+    policies.kyverno.io/severity: high
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: AppProject
+    policies.kyverno.io/description: >-
+      Argo CD's documentation warns that a project whose destinations allow
+      deploying to the Argo CD namespace grants admin-level access. See
+      https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#projects.
+      This policy flags AppProjects whose spec.destinations let Applications
+      deploy to the control-plane namespace (argocd) on the control-plane
+      cluster (https://kubernetes.default.svc, named in-cluster), including
+      through globs such as * or argo*. Deny entries such as !argocd are
+      honored. The default AppProject is skipped. Use a PolicyException for
+      intended admin projects. If Argo CD runs elsewhere, change the
+      controlPlane variables.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["argoproj.io"]
+        apiVersions: [v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [appprojects]
+  matchConditions:
+    # Argo CD creates and owns the default project; application-prevent-default-project covers its use.
+    - name: skip-default-project
+      expression: "object.metadata.name != 'default'"
+  variables:
+    - name: controlPlaneNamespace
+      expression: "'argocd'"
+    - name: controlPlaneServer
+      expression: "'https://kubernetes.default.svc'"
+    - name: controlPlaneClusterName
+      expression: "'in-cluster'"
+    # For each destination, mirror Argo CD v3.6.1's isDestinationMatched for the
+    # control-plane target. The names follow Argo CD's code:
+    # - <field>Deny is isDenyPattern: the glob starts with !.
+    # - <field>Matched is globMatch: the glob matches the target, negated for
+    #   a deny entry. An omitted field matches only an empty value.
+    # - The result is [label, 'grant' or '', 'block' or ''], where 'grant' is
+    #   Argo CD's matched case and 'block' its return-false cases.
+    - name: evaluations
+      expression: >-
+        object.spec.?destinations.orValue([]).map(d,
+          cel.bind(nsGlob, string(d.?namespace.orValue('')),
+          cel.bind(serverGlob, string(d.?server.orValue('')),
+          cel.bind(nameGlob, string(d.?name.orValue('')),
+          cel.bind(f,
+            [[nsGlob, variables.controlPlaneNamespace],
+             [serverGlob, variables.controlPlaneServer],
+             [nameGlob, variables.controlPlaneClusterName]].map(pt,
+              cel.bind(deny, pt[0].startsWith('!'),
+              cel.bind(glob, deny ? pt[0].substring(1) : pt[0],
+                [deny, deny != pt[1].matches('^(?:' + glob
+                  .replace('\\', '')
+                  .replace('.', '\\.')
+                  .replace('+', '\\+')
+                  .replace('(', '\\(')
+                  .replace(')', '\\)')
+                  .replace('|', '\\|')
+                  .replace('^', '\\^')
+                  .replace('$', '\\$')
+                  .replace('[!', '[^')
+                  .replace('*', '.*')
+                  .replace('?', '.')
+                  .replace('{', '(?:')
+                  .replace('}', ')')
+                  .replace(',', glob.contains('{') ? '|' : ',') + ')$')]))),
+          cel.bind(nsDeny, f[0][0],
+          cel.bind(serverDeny, f[1][0],
+          cel.bind(nameDeny, f[2][0],
+          cel.bind(nsMatched, f[0][1],
+          cel.bind(serverMatched, f[1][1],
+          cel.bind(nameMatched, f[2][1],
+          cel.bind(matched, (serverMatched || nameMatched) && nsMatched,
+            [
+              'namespace ' + nsGlob + ' on ' +
+                (serverGlob != '' ? 'server ' + serverGlob : 'cluster ' + nameGlob),
+              matched ? 'grant' : '',
+              !matched && (
+                (((!nameMatched && nameDeny) || (!serverMatched && serverDeny)) && nsMatched) ||
+                (!nsMatched && nsDeny && serverMatched))
+                ? 'block' : ''
+            ]))))))))))))
+    - name: grantingEntries
+      expression: "variables.evaluations.filter(e, e[1] == 'grant').map(e, e[0])"
+    - name: blocked
+      expression: "variables.evaluations.exists(e, e[2] == 'block')"
+  validations:
+    - expression: "size(variables.grantingEntries) == 0 || variables.blocked"
+      messageExpression: >-
+        'spec.destinations allows deploying to the Argo CD control-plane
+        namespace "' + variables.controlPlaneNamespace + '" on the
+        control-plane cluster. Narrow these entries or add a deny entry such
+        as "!' + variables.controlPlaneNamespace + '": ' +
+        variables.grantingEntries.join('; ')

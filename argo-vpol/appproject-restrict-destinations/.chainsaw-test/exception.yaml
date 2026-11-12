@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: appproject-restrict-destinations-admin
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: appproject-restrict-destinations
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: admin-appproject
+    expression: object.metadata.namespace == 'default' && object.metadata.name == 'argocd-admin'
