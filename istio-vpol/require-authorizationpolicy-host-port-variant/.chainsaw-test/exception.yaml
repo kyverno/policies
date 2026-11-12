@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-authorizationpolicy-host-port-variant-legacy
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - name: require-authorizationpolicy-host-port-variant
+    kind: ValidatingPolicy
+  matchConditions:
+  - name: legacy-deny-policy
+    expression: object.metadata.namespace == 'legacy-gateways' && object.metadata.name == 'legacy-deny'

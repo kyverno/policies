@@ -1,0 +1,18 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: bad-mixed
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["Api.Example.com", "a.example.com", "API.EXAMPLE.COM:*"]
+  - to:
+    - operation:
+        paths: ["/admin"]
+    - operation:
+        hosts: ["b.example.com", "c.example.com:443"]
