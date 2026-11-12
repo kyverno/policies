@@ -18,6 +18,7 @@ resources:
 results:
 - kind: AuthorizationPolicy
   policy: require-authorizationpolicy-host-port-variant
+  isValidatingPolicy: true
   resources:
   - bad-deny-hosts
   - bad-allow-nothosts
@@ -39,6 +40,7 @@ results:
   result: fail
 - kind: AuthorizationPolicy
   policy: require-authorizationpolicy-host-port-variant
+  isValidatingPolicy: true
   resources:
   - good-deny-variant
   - good-allow-hosts
