@@ -6,6 +6,7 @@ policies:
 - ../restrict-sa-automount-sa-token.yaml
 resources:
 - ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -21,3 +22,9 @@ results:
   resources:
   - good-svc
   result: pass
+- isValidatingPolicy: true
+  kind: ServiceAccount
+  policy: restrict-sa-automount-sa-token
+  resources:
+  - exception-sibling-ns/bad-svc-sibling
+  result: fail

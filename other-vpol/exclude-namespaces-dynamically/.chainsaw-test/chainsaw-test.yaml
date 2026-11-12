@@ -30,31 +30,41 @@ spec:
              - Deny
     - assert:
         file: policy-ready.yaml
-    - sleep: 
-       duration: 10s
+    - script:
+        content: |
+          . ../../../.chainsaw/scripts/retry.sh
+          policy_enforced() {
+            kubectl create --dry-run=server -f pod-good.yaml &&
+              kubectl create --dry-run=server -f pod-bad.yaml 2>&1 | grep -F 'Pods must have the "foo" label in metadata.labels'
+          }
+          retry policy_enforced
   - name: step-02
     try:
-    - apply:
+    - create:
         file: pod-good.yaml
-    - apply:
+    - create:
         file: podcontroller-good.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
         file: pod-bad.yaml
-    - apply:
+    - create:
         expect:
         - check:
             ($error != null): true
         file: podcontroller-bad.yaml
   - name: step-03
     try:
-    - apply:
+    - create:
         file: exception.yaml
-    - apply:
+    - script:
+        content: |
+          . ../../../.chainsaw/scripts/retry.sh
+          retry kubectl create --dry-run=server -f pod-bad01.yaml
+    - create:
         file: pod-bad01.yaml
-    - apply:
+    - create:
         expect:
         - check:
             (contains($error, 'Pods must have the "foo" label in metadata.labels')): true
@@ -63,7 +73,15 @@ spec:
         file: pod-bad01.yaml
     - delete:
         file: exception.yaml
-    - apply:
+    - script:
+        content: |
+          . ../../../.chainsaw/scripts/retry.sh
+          exception_revoked() {
+            ! kubectl get pod -n default exclude-dynamically-exception-pod &&
+              kubectl create --dry-run=server -f pod-bad01.yaml 2>&1 | grep -F 'Pods must have the "foo" label in metadata.labels'
+          }
+          retry exception_revoked
+    - create:
         expect:
         - check:
             (contains($error, 'Pods must have the "foo" label in metadata.labels')): true

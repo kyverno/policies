@@ -14,4 +14,14 @@ type: kubernetes.io/basic-auth
 stringData:
   username: admin 
   password: t0p-Secret 
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: default-type-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: null-type-secret
+type: null

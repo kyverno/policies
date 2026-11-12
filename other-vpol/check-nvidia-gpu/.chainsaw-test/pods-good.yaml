@@ -6,6 +6,8 @@ metadata:
   name: goodpod01
   namespace: nvidia-gpu-ns
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
     - name: cuda
       image: nvidia/cuda:12.2.0-devel-ubi8
@@ -19,6 +21,8 @@ metadata:
   name: goodpod02
   namespace: nvidia-gpu-ns
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
     - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox

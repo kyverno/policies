@@ -4,6 +4,8 @@ metadata:
   name: badpod01
 spec:
   automountServiceAccountToken: false
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: image-vol
     image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340
@@ -14,6 +16,8 @@ metadata:
   name: badpod02
 spec:
   automountServiceAccountToken: false
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -26,6 +30,8 @@ metadata:
   name: badpod03
 spec:
   automountServiceAccountToken: false
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: image-vol
     image: ghcr.io/linuxserver/nginx@sha256:ed84137217161f6a830fb1b883fcc70f0eaeef717c16ac2d796662b8c66f4340

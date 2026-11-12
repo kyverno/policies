@@ -16,26 +16,11 @@ spec:
     - script:
         content: |
           set -eu
-          probe_output=".update-image-tag-exception-$$.json"
-          probe_error=".update-image-tag-exception-$$.stderr"
-          trap 'rm -f "$probe_output" "$probe_error"' EXIT
-          ready=false
-          for attempt in $(seq 1 60); do
-            if kubectl create --dry-run=server -f deployment.yaml -o json > "$probe_output" 2> "$probe_error" &&
-              jq -e \
-                '[.spec.template.spec.containers[] | select(.name == "vault-agent") | .image] == ["vault:old"]' \
-                "$probe_output" >/dev/null 2>> "$probe_error"; then
-              ready=true
-              break
-            fi
-            sleep 1
-          done
-          if [ "$ready" != true ]; then
-            printf 'timed out waiting for PolicyException to preserve the vault-agent image; last probe response:\n' >&2
-            cat "$probe_output" >&2
-            printf 'last kubectl/jq stderr:\n' >&2
-            cat "$probe_error" >&2
-            exit 1
-          fi
+          . ../../../../.chainsaw/scripts/retry.sh
+          exception_active() {
+            kubectl create --dry-run=server -f deployment.yaml -o json |
+              jq -e '[.spec.template.spec.containers[] | select(.name == "vault-agent") | .image] == ["vault:old"]'
+          }
+          retry exception_active
     - apply: {file: deployment.yaml}
     - assert: {file: deployment-unchanged.yaml}

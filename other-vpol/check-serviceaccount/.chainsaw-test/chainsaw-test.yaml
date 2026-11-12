@@ -57,7 +57,8 @@ spec:
           # Applying Manifests
           kubectl config use-context safe-context
           kubectl apply -f pod-good.yaml
-          if kubectl apply -f pod-bad.yaml; then exit 1; else echo "badpod01 failed to create"; fi
+          kubectl apply -f pod-bad.yaml
+          if kubectl apply -f pod-bad-sibling.yaml; then exit 1; else echo "badpod-sibling failed to create"; fi
           kubectl apply -f podcontroller-good.yaml
           if kubectl apply -f podcontroller-bad.yaml; then exit 1; else echo "badpodcontrollers failed to create"; fi
     finally:
@@ -69,6 +70,10 @@ spec:
         content: |
           set -e
           kubectl delete -f pod-bad.yaml --ignore-not-found
+    - script:
+        content: |
+          set -e
+          kubectl delete -f pod-bad-sibling.yaml --ignore-not-found
     - script:
         content: |
           set -e

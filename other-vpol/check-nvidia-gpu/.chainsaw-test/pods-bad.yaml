@@ -6,6 +6,8 @@ metadata:
   name: badpod01
   namespace: nvidia-gpu-ns
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
     - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
@@ -22,6 +24,8 @@ metadata:
   name: badpod02
   namespace: nvidia-gpu-ns
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
     - image: ghcr.io/kyverno/test-busybox:1.35
       name: busybox
