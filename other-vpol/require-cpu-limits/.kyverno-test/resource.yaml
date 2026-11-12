@@ -83,6 +83,21 @@ spec:
         cpu: "500m"
   - name: container02
     image: dummyimagename    
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod-ephemeral
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename
+    resources:
+      limits:
+        cpu: "500m"
+  ephemeralContainers:
+  - name: ephemeral01
+    image: dummyimagename
 ---    
 ###### Pods - Good
 ---
@@ -179,6 +194,24 @@ spec:
       limits:
         cpu: "500m"
   - name: container02
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod-ephemeral
+spec:
+  containers:
+  - name: container01
+    image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
+    resources:
+      limits:
+        cpu: "500m"
+  ephemeralContainers:
+  - name: ephemeral01
     image: dummyimagename@sha256:af21f7f62c57958b7e5f31c334e37fd5e4c4710aeb1e83b7b235a8d9a7d097b7
     resources:
       limits:
