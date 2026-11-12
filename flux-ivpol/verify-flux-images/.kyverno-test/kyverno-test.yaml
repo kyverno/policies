@@ -15,19 +15,45 @@ results:
       - lookalike-registry
       - lookalike-repository
       - lookalike-container-categories
+      - lookalike-short-repository
+      - lookalike-docker-alias
+      - signed-source-controller
+      - signed-kustomize-controller
+      - signed-helm-controller
+      - signed-notification-controller
+      - signed-image-reflector-controller
+      - signed-image-automation-controller
+      - signed-previous-release
+      - signed-short-reference
+      - signed-docker-alias
     result: pass
   - isImageValidatingPolicy: true
     kind: Pod
     policy: verify-flux-images
     resources:
       - unsigned-digest-only-image
+      - unsigned-short-reference
+      - unsigned-docker-alias
+      - unsigned-docker-reference
     result: fail
+  - isImageValidatingPolicy: true
+    kind: Pod
+    policy: verify-flux-images
+    resources:
+      - bare-controller-reference
+    result: error
   - isImageValidatingPolicy: true
     kind: Deployment
     policy: verify-flux-images
     resources:
       - unrelated-controller-image
     result: pass
+  - isImageValidatingPolicy: true
+    kind: Deployment
+    policy: verify-flux-images
+    resources:
+      - unsigned-controller-image
+    result: fail
   - isImageValidatingPolicy: true
     kind: ReplicationController
     policy: verify-flux-images

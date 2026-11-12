@@ -43,6 +43,158 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: signed-source-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/source-controller:v1.10.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-kustomize-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/kustomize-controller:v1.10.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-helm-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/helm-controller:v1.7.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-notification-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/notification-controller:v1.10.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-image-reflector-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/image-reflector-controller:v1.3.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-image-automation-controller
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/image-automation-controller:v1.3.0
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-previous-release
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/source-controller:v1.9.6
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-short-reference
+spec:
+  containers:
+    - name: flux
+      image: fluxcd/source-controller:v1.10.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: signed-docker-alias
+spec:
+  containers:
+    - name: flux
+      image: index.docker.io/fluxcd/source-controller:v1.10.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bare-controller-reference
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/source-controller
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-short-reference
+spec:
+  containers:
+    - name: flux
+      image: fluxcd/source-controller:v0.0.14
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-docker-alias
+spec:
+  containers:
+    - name: flux
+      image: index.docker.io/fluxcd/source-controller:v0.0.14
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-docker-reference
+spec:
+  containers:
+    - name: flux
+      image: docker.io/fluxcd/source-controller:v0.0.14
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lookalike-short-repository
+spec:
+  containers:
+    - name: app
+      image: fluxcd/source-controller-evil:v1.2.3
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: lookalike-docker-alias
+spec:
+  containers:
+    - name: app
+      image: index.docker.io/fluxcd-evil/source-controller:v1.2.3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unsigned-controller-image
+spec:
+  selector:
+    matchLabels:
+      app: unsigned-controller
+  template:
+    metadata:
+      labels:
+        app: unsigned-controller
+    spec:
+      containers:
+        - name: flux
+          image: fluxcd/source-controller:v0.0.14
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: unsigned-digest-only-image
 spec:
   containers:

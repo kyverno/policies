@@ -41,6 +41,68 @@ spec:
                 exit 1
               fi
               kubectl delete pod flux-source-controller-signed -n "$NAMESPACE" --wait=true >/dev/null
+    - name: verify-previous-release-and-docker-aliases
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              for image in ghcr.io/fluxcd/source-controller:v1.9.6 fluxcd/source-controller:v1.10.1 index.docker.io/fluxcd/source-controller:v1.10.1; do
+                kubectl run flux-signed-alias --dry-run=server -n "$NAMESPACE" --restart=Never --image="$image" -o name
+              done
+    - name: reject-wrong-signing-repository
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              restore() {
+                kubectl patch imagevalidatingpolicy verify-flux-images --type=json -p '[{"op":"replace","path":"/spec/attestors/0/cosign/keyless/additionalExtensions/githubWorkflowRepository","value":"fluxcd/source-controller"}]'
+              }
+              trap restore EXIT
+              kubectl patch imagevalidatingpolicy verify-flux-images --type=json -p '[{"op":"replace","path":"/spec/attestors/0/cosign/keyless/additionalExtensions/githubWorkflowRepository","value":"fluxcd/kustomize-controller"}]'
+              denied=false
+              for attempt in $(seq 1 30); do
+                if output=$(kubectl run flux-wrong-signer --dry-run=server -n "$NAMESPACE" --restart=Never --image=ghcr.io/fluxcd/source-controller:v1.10.1 -o name 2>&1); then
+                  sleep 1
+                else
+                  printf '%s\n' "$output"
+                  printf '%s\n' "$output" | grep -F 'Policy verify-flux-images failed'
+                  printf '%s\n' "$output" | grep -F 'Failed to verify the Flux controller image signature.'
+                  denied=true
+                  break
+                fi
+              done
+              test "$denied" = true
+              restore
+              trap - EXIT
+              for attempt in $(seq 1 30); do
+                if kubectl run flux-correct-signer --dry-run=server -n "$NAMESPACE" --restart=Never --image=ghcr.io/fluxcd/source-controller:v1.10.1 -o name; then
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo 'The correct signing repository did not become active' >&2
+              exit 1
+    - name: reject-unsigned-docker-aliases
+      timeouts:
+        exec: 4m
+      try:
+        - script:
+            content: |
+              set -euo pipefail
+              for image in fluxcd/source-controller:v0.0.14 docker.io/fluxcd/source-controller:v0.0.14 index.docker.io/fluxcd/source-controller:v0.0.14; do
+                if output=$(kubectl run flux-unsigned-alias --dry-run=server -n "$NAMESPACE" --restart=Never --image="$image" -o name 2>&1); then
+                  printf '%s\n' "$output"
+                  echo "Expected unsigned $image to be rejected" >&2
+                  exit 1
+                fi
+                printf '%s\n' "$output"
+                printf '%s\n' "$output" | grep -F 'Policy verify-flux-images failed'
+                printf '%s\n' "$output" | grep -F 'Failed to verify the Flux controller image signature.'
+              done
     - name: verify-digest-pinned-controller-image
       timeouts:
         exec: 4m

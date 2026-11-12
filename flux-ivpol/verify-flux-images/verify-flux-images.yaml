@@ -6,7 +6,7 @@ metadata:
     policies.kyverno.io/title: Verify Flux Images
     policies.kyverno.io/category: Flux
     policies.kyverno.io/severity: medium
-    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/minversion: 1.19.2
     policies.kyverno.io/kubernetes-version: "1.23"
     policies.kyverno.io/subject: Pod
     policies.kyverno.io/description: >-
@@ -59,54 +59,12 @@ spec:
         operations: ["CREATE", "UPDATE"]
         resources: ["cronjobs"]
   matchImageReferences:
-    - glob: "ghcr.io/fluxcd/source-controller"
-    - glob: "ghcr.io/fluxcd/source-controller:*"
-    - glob: "ghcr.io/fluxcd/source-controller@*"
-    - glob: "ghcr.io/fluxcd/source-controller:*@*"
-    - glob: "ghcr.io/fluxcd/kustomize-controller"
-    - glob: "ghcr.io/fluxcd/kustomize-controller:*"
-    - glob: "ghcr.io/fluxcd/kustomize-controller@*"
-    - glob: "ghcr.io/fluxcd/kustomize-controller:*@*"
-    - glob: "ghcr.io/fluxcd/helm-controller"
-    - glob: "ghcr.io/fluxcd/helm-controller:*"
-    - glob: "ghcr.io/fluxcd/helm-controller@*"
-    - glob: "ghcr.io/fluxcd/helm-controller:*@*"
-    - glob: "ghcr.io/fluxcd/notification-controller"
-    - glob: "ghcr.io/fluxcd/notification-controller:*"
-    - glob: "ghcr.io/fluxcd/notification-controller@*"
-    - glob: "ghcr.io/fluxcd/notification-controller:*@*"
-    - glob: "ghcr.io/fluxcd/image-reflector-controller"
-    - glob: "ghcr.io/fluxcd/image-reflector-controller:*"
-    - glob: "ghcr.io/fluxcd/image-reflector-controller@*"
-    - glob: "ghcr.io/fluxcd/image-reflector-controller:*@*"
-    - glob: "ghcr.io/fluxcd/image-automation-controller"
-    - glob: "ghcr.io/fluxcd/image-automation-controller:*"
-    - glob: "ghcr.io/fluxcd/image-automation-controller@*"
-    - glob: "ghcr.io/fluxcd/image-automation-controller:*@*"
-    - glob: "docker.io/fluxcd/source-controller"
-    - glob: "docker.io/fluxcd/source-controller:*"
-    - glob: "docker.io/fluxcd/source-controller@*"
-    - glob: "docker.io/fluxcd/source-controller:*@*"
-    - glob: "docker.io/fluxcd/kustomize-controller"
-    - glob: "docker.io/fluxcd/kustomize-controller:*"
-    - glob: "docker.io/fluxcd/kustomize-controller@*"
-    - glob: "docker.io/fluxcd/kustomize-controller:*@*"
-    - glob: "docker.io/fluxcd/helm-controller"
-    - glob: "docker.io/fluxcd/helm-controller:*"
-    - glob: "docker.io/fluxcd/helm-controller@*"
-    - glob: "docker.io/fluxcd/helm-controller:*@*"
-    - glob: "docker.io/fluxcd/notification-controller"
-    - glob: "docker.io/fluxcd/notification-controller:*"
-    - glob: "docker.io/fluxcd/notification-controller@*"
-    - glob: "docker.io/fluxcd/notification-controller:*@*"
-    - glob: "docker.io/fluxcd/image-reflector-controller"
-    - glob: "docker.io/fluxcd/image-reflector-controller:*"
-    - glob: "docker.io/fluxcd/image-reflector-controller@*"
-    - glob: "docker.io/fluxcd/image-reflector-controller:*@*"
-    - glob: "docker.io/fluxcd/image-automation-controller"
-    - glob: "docker.io/fluxcd/image-automation-controller:*"
-    - glob: "docker.io/fluxcd/image-automation-controller@*"
-    - glob: "docker.io/fluxcd/image-automation-controller:*@*"
+    - expression: >-
+        parseImageReference(ref).registry() in ['ghcr.io', 'index.docker.io'] &&
+        parseImageReference(ref).repository() in [
+          'fluxcd/source-controller', 'fluxcd/kustomize-controller', 'fluxcd/helm-controller',
+          'fluxcd/notification-controller', 'fluxcd/image-reflector-controller',
+          'fluxcd/image-automation-controller']
   images:
     - name: replicationControllerImages
       expression: >-
@@ -120,18 +78,71 @@ spec:
     required: true
     verifyDigest: false
   attestors:
-    - name: fluxcd
+    - name: fluxcd/source-controller
       cosign:
         keyless:
           identities:
             - issuer: https://token.actions.githubusercontent.com
-              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v0\.17\.0$'
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/source-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/kustomize-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/kustomize-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/helm-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/helm-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/notification-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/notification-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/image-reflector-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/image-reflector-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/image-automation-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/image-automation-controller
         ctlog:
           url: https://rekor.sigstore.dev
   validations:
     - expression: >-
         (images.?containers.orValue([]) + images.?initContainers.orValue([])
         + images.?ephemeralContainers.orValue([]) + images.?replicationControllerImages.orValue([]))
-        .map(image, verifyImageSignatures(image, [attestors.fluxcd]))
+        .map(image, verifyImageSignatures(image,
+          [attestors[?parseImageReference(image).repository()].orValue(attestors['fluxcd/source-controller'])]))
         .all(result, result > 0)
       message: Failed to verify the Flux controller image signature.
