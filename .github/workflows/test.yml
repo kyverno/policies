@@ -495,6 +495,90 @@ jobs:
       with:
         path: flux-vpol
 
+  external-secret-operator-mpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: external-secret-operator-mpol
+
+  cost-optimization-mpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: cost-optimization-mpol
+
+  istio-gpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: istio-gpol
+
+  flux-gpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: flux-gpol
+
   e2e-required-success:
     name: e2e-required
     needs:
@@ -521,6 +605,10 @@ jobs:
     - psp-migration-mpol
     - velero-mpol
     - flux-vpol
+    - external-secret-operator-mpol
+    - cost-optimization-mpol
+    - istio-gpol
+    - flux-gpol
     runs-on: ubuntu-latest
     if: ${{ success() }}
     steps:
@@ -552,6 +640,10 @@ jobs:
     - psp-migration-mpol
     - velero-mpol
     - flux-vpol
+    - external-secret-operator-mpol
+    - cost-optimization-mpol
+    - istio-gpol
+    - flux-gpol
     runs-on: ubuntu-latest
     if: ${{ failure() || cancelled() }}
     steps:

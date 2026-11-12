@@ -1,0 +1,23 @@
+name: generate-flux-multi-tenant-resources-gpol
+version: 1.0.0
+displayName: Generate Flux Multi-Tenant Resources in CEL expressions
+description: >-
+  This policy generates a ServiceAccount and RoleBinding when a Namespace is created with toolkit.fluxcd.io/tenant.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/flux-gpol/generate-flux-multi-tenant-resources/generate-flux-multi-tenant-resources.yaml
+  ```
+keywords:
+  - kyverno
+  - Flux
+  - CEL Expressions
+readme: |
+  This policy generates a ServiceAccount and RoleBinding when a Namespace is created with toolkit.fluxcd.io/tenant.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Flux in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "ServiceAccount, RoleBinding"
+digest: 0e2aad885c18420ccf2875b00f40f6805f15bc2059eabe341611e57120f2082f
+createdAt: "2026-11-05T11:00:00Z"
