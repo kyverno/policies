@@ -4,6 +4,8 @@ metadata:
   name: exception-large-image
   namespace: default
 spec:
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: approved-large-image
     image: nvcr.io/nvidia/cuda@sha256:fbb1580c300b57365c4df0f64b20c6ee80dca0ee9c592311e38567240a334c12
