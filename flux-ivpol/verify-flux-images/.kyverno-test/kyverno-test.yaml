@@ -1,0 +1,128 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: verify-flux-images
+policies:
+  - ../verify-flux-images.yaml
+resources:
+  - resources.yaml
+results:
+  - isImageValidatingPolicy: true
+    kind: Pod
+    policy: verify-flux-images
+    resources:
+      - unrelated-image
+      - lookalike-registry
+      - lookalike-repository
+      - lookalike-container-categories
+      - lookalike-short-repository
+      - lookalike-docker-alias
+      - signed-source-controller
+      - signed-kustomize-controller
+      - signed-helm-controller
+      - signed-notification-controller
+      - signed-image-reflector-controller
+      - signed-image-automation-controller
+      - signed-previous-release
+      - signed-short-reference
+      - signed-docker-alias
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: Pod
+    policy: verify-flux-images
+    resources:
+      - unsigned-digest-only-image
+      - unsigned-short-reference
+      - unsigned-docker-alias
+      - unsigned-docker-reference
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: Pod
+    policy: verify-flux-images
+    resources:
+      - bare-controller-reference
+    result: error
+  - isImageValidatingPolicy: true
+    kind: Deployment
+    policy: verify-flux-images
+    resources:
+      - unrelated-controller-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: Deployment
+    policy: verify-flux-images
+    resources:
+      - unsigned-controller-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: ReplicationController
+    policy: verify-flux-images
+    resources:
+      - unrelated-replication-controller-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: ReplicationController
+    policy: verify-flux-images
+    resources:
+      - unsigned-replication-controller-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: StatefulSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-statefulset-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: StatefulSet
+    policy: verify-flux-images
+    resources:
+      - unsigned-statefulset-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: DaemonSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-daemonset-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: DaemonSet
+    policy: verify-flux-images
+    resources:
+      - unsigned-daemonset-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: ReplicaSet
+    policy: verify-flux-images
+    resources:
+      - unrelated-replicaset-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: ReplicaSet
+    policy: verify-flux-images
+    resources:
+      - unsigned-replicaset-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: Job
+    policy: verify-flux-images
+    resources:
+      - unrelated-job-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: Job
+    policy: verify-flux-images
+    resources:
+      - unsigned-job-image
+    result: fail
+  - isImageValidatingPolicy: true
+    kind: CronJob
+    policy: verify-flux-images
+    resources:
+      - unrelated-cronjob-image
+    result: pass
+  - isImageValidatingPolicy: true
+    kind: CronJob
+    policy: verify-flux-images
+    resources:
+      - unsigned-cronjob-image
+    result: fail

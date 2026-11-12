@@ -1,0 +1,148 @@
+apiVersion: policies.kyverno.io/v1
+kind: ImageValidatingPolicy
+metadata:
+  name: verify-flux-images
+  annotations:
+    policies.kyverno.io/title: Verify Flux Images
+    policies.kyverno.io/category: Flux
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.2
+    policies.kyverno.io/kubernetes-version: "1.23"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Verifies the keyless Cosign signatures of Flux controller images published
+      to GHCR and Docker Hub using their GitHub Actions release workflows.
+spec:
+  validationActions: [Audit]
+  failurePolicy: Ignore
+  webhookConfiguration:
+    timeoutSeconds: 30
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["pods"]
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["replicationcontrollers"]
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["UPDATE"]
+        resources: ["pods/ephemeralcontainers"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["deployments"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["statefulsets"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["daemonsets"]
+      - apiGroups: ["apps"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["replicasets"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["jobs"]
+      - apiGroups: ["batch"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["cronjobs"]
+  matchImageReferences:
+    - expression: >-
+        parseImageReference(ref).registry() in ['ghcr.io', 'index.docker.io'] &&
+        parseImageReference(ref).repository() in [
+          'fluxcd/source-controller', 'fluxcd/kustomize-controller', 'fluxcd/helm-controller',
+          'fluxcd/notification-controller', 'fluxcd/image-reflector-controller',
+          'fluxcd/image-automation-controller']
+  images:
+    - name: replicationControllerImages
+      expression: >-
+        object.kind == 'ReplicationController'
+        ? object.spec.template.spec.?containers.orValue([]).map(container, container.image)
+          + object.spec.template.spec.?initContainers.orValue([]).map(container, container.image)
+          + object.spec.template.spec.?ephemeralContainers.orValue([]).map(container, container.image)
+        : []
+  validationConfigurations:
+    mutateDigest: false
+    required: true
+    verifyDigest: false
+  attestors:
+    - name: fluxcd/source-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/source-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/kustomize-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/kustomize-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/helm-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/helm-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/notification-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/notification-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/image-reflector-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/image-reflector-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+    - name: fluxcd/image-automation-controller
+      cosign:
+        keyless:
+          identities:
+            - issuer: https://token.actions.githubusercontent.com
+              subjectRegExp: '^https://github\.com/fluxcd/gha-workflows/\.github/workflows/controller-release\.yaml@refs/tags/v[0-9]+\.[0-9]+\.[0-9]+$'
+          additionalExtensions:
+            githubWorkflowRepository: fluxcd/image-automation-controller
+        ctlog:
+          url: https://rekor.sigstore.dev
+  validations:
+    - expression: >-
+        (images.?containers.orValue([]) + images.?initContainers.orValue([])
+        + images.?ephemeralContainers.orValue([]) + images.?replicationControllerImages.orValue([]))
+        .map(image, verifyImageSignatures(image,
+          [attestors[?parseImageReference(image).repository()].orValue(attestors['fluxcd/source-controller'])]))
+        .all(result, result > 0)
+      message: Failed to verify the Flux controller image signature.
