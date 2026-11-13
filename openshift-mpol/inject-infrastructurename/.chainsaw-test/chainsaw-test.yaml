@@ -13,6 +13,8 @@ spec:
     - apply:
         file: ../../../.chainsaw/crds/machineset.yaml
     - apply:
+        file: permissions.yaml
+    - apply:
         resource:
           apiVersion: v1
           kind: Namespace
