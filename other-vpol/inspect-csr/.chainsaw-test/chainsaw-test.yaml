@@ -97,8 +97,24 @@ spec:
     - assert:
         file: chainsaw-step-03-assert-1.yaml
     - script:
-        content: kubectl delete csr inspect-csr-user
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          # Delete existing report owned by inspect-csr-user so we can verify UPDATE generates a report
+          for name in $(kubectl get clusterpolicyreport -o json | jq -r '.items[] | select(.metadata.ownerReferences[]?.name == "inspect-csr-user") | .metadata.name'); do
+            kubectl delete clusterpolicyreport "$name"
+          done
+          # Perform UPDATE on the CSR
+          kubectl --context=inspect-csr-user-context get csr inspect-csr-user -o json | jq '.metadata.annotations["test-update"] = "true"' | kubectl --context=inspect-csr-user-context replace -f -
+    - assert:
+        file: chainsaw-step-03-assert-1.yaml
+    - script:
+        content: |
+          set -eu
+          export KUBECONFIG=./temp
+          kubectl delete csr inspect-csr-user
     finally:
     - script:
         content: |
-          rm ./temp
+          kubectl delete csr inspect-csr-user --ignore-not-found
+          rm -f ./temp

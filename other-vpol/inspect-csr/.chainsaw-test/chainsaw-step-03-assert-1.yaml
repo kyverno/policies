@@ -10,7 +10,7 @@ results:
   message: 'CSR Audit Report - User Identity: username=inspect-csr-user, groups=testorg,system:authenticated
     | Permissions: ClusterRoles=[csr-manager,system:basic-user,system:discovery,system:public-info-viewer],
     Roles=[] | CSR Content: signerName=kubernetes.io/kube-apiserver-client, usages=[client
-    auth]'
+    auth], CommonName=inspect-csr-user, Organization=[testorg]'
   policy: inspect-csr
   properties:
     process: admission review
