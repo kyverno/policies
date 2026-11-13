@@ -1,0 +1,78 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: expiration-for-policyexceptions
+  annotations:
+    policies.kyverno.io/title: Expiration for PolicyExceptions
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: PolicyException
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      In situations where Ops/Platform teams want to allow exceptions on a
+      temporary basis, there must be a way to remove the PolicyException once the
+      expiration time has been reached. After the exception is removed, the rule(s)
+      for which the exception is granted go back into full effect. This policy generates
+      a DeletingPolicy with a four hour expiration time after which the PolicyException
+      is deleted. Synchronization is enabled so that once the PolicyException expires
+      and is removed, the generated DeletingPolicy is automatically cleaned up.
+      It may be necessary to grant both the Kyverno as well as cleanup controller
+      ServiceAccounts additional permissions to operate this policy.
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+    generateExisting:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["kyverno.io", "policies.kyverno.io"]
+        apiVersions: ["*"]
+        operations: ["CREATE"]
+        resources: ["policyexceptions"]
+  variables:
+    - name: targetNs
+      expression: "object.metadata.namespace"
+    - name: exceptionName
+      expression: "object.metadata.name"
+    - name: targetGroup
+      expression: "object.apiVersion.split('/')[0]"
+    - name: polexUID
+      expression: "object.metadata.?uid.orValue('')"
+    - name: cleanupName
+      expression: "'polex-' + random('[0-9a-z]{8}')"
+    - name: cronSchedule
+      expression: "time.toCron(time.now() + duration('4h'))"
+  generate:
+    - expression: >-
+        generator.Apply("", [
+          dyn({
+            "apiVersion": dyn("policies.kyverno.io/v1"),
+            "kind": dyn("DeletingPolicy"),
+            "metadata": dyn({
+              "name": dyn(variables.cleanupName),
+              "labels": dyn({
+                "kyverno.io/automated": "true"
+              })
+            }),
+            "spec": dyn({
+              "schedule": dyn(variables.cronSchedule),
+              "matchConstraints": dyn({
+                "resourceRules": dyn([
+                  {
+                    "apiGroups": dyn([variables.targetGroup]),
+                    "apiVersions": dyn(["*"]),
+                    "resources": dyn(["policyexceptions"])
+                  }
+                ])
+              }),
+              "conditions": dyn([
+                {
+                  "name": "match-target",
+                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "' && object.apiVersion.startsWith('" + variables.targetGroup + "/')" + (variables.polexUID != '' ? " && object.metadata.uid == '" + variables.polexUID + "'" : "")
+                }
+              ])
+            })
+          })
+        ])

@@ -1,0 +1,25 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+  name: kyverno:background-controller-generate-debug-job
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create", "get", "list", "watch", "update", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.kyverno.io/aggregate-to-admission-controller: "true"
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+  name: kyverno:get-debug-information:pods-view
+rules:
+- apiGroups: [""]
+  resources:
+  - pods
+  - pods/status
+  verbs: ["get", "list", "watch"]

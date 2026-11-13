@@ -1,0 +1,123 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: get-debug-information
+  annotations:
+    policies.kyverno.io/title: Collect Debug Information for Pods in CrashLoopBackOff
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      This policy generates a job which gathers troubleshooting data (including logs, kubectl describe output and events from the namespace) from pods that are in CrashLoopBackOff and have 3 restarts. This data can further be used to automatically create a Jira issue using some kind of automation or another Kyverno policy. For more information on the image used in this policy in addition to the necessary RBAC resources required in order for this policy to operate, see the documentation at https://github.com/nirmata/SRE-Operational-Usecases/tree/main/get-troubleshooting-data/get-debug-data.
+spec:
+  evaluation:
+    synchronize:
+      enabled: false
+    generateExisting:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["UPDATE"]
+        resources: ["pods/status"]
+  matchConditions:
+    - name: three-restarts
+      expression: "object.status.?containerStatuses.orValue([]).map(c, c.?restartCount.orValue(0)).sum() == 3"
+    - name: crashloopbackoff
+      expression: "object.status.?containerStatuses.orValue([]).exists(c, c.?state.?waiting.?reason.orValue('') == 'CrashLoopBackOff')"
+    - name: no-deleteme-label
+      expression: "!('deleteme' in object.metadata.?labels.orValue({}))"
+    - name: no-existing-debug-pod
+      expression: "size(dyn(resource.List('v1', 'pods', object.metadata.namespace).items).filter(p, p.metadata.?labels[?'requestpdname'].orValue('') == (object.metadata.name.size() > 50 ? 'pod-' + object.metadata.name.substring(0, 45) + '-dbg' : 'pod-' + object.metadata.name))) == 0"
+  variables:
+    - name: targetNs
+      expression: "object.metadata.namespace"
+    - name: podName
+      expression: "object.metadata.name"
+    - name: podSlug
+      expression: "variables.podName.size() > 40 ? variables.podName.substring(0, 40) : variables.podName"
+    - name: jobName
+      expression: "'debug-' + variables.podSlug + '-' + random('[0-9a-z]{8}')"
+    - name: podLabel
+      expression: "variables.podName.size() > 50 ? 'pod-' + variables.podName.substring(0, 45) + '-dbg' : 'pod-' + variables.podName"
+  generate:
+    - expression: >-
+        generator.Apply(variables.targetNs, [
+          dyn({
+            "apiVersion": dyn("batch/v1"),
+            "kind": dyn("Job"),
+            "metadata": dyn({
+              "name": dyn(variables.jobName),
+              "namespace": dyn(variables.targetNs),
+              "labels": dyn({
+                "deleteme": dyn("allow")
+              })
+            }),
+            "spec": dyn({
+              "template": dyn({
+                "metadata": dyn({
+                  "labels": dyn({
+                    "app": dyn("my-app"),
+                    "deleteme": dyn("allow"),
+                    "requestpdname": dyn(variables.podLabel)
+                  })
+                }),
+                "spec": dyn({
+                  "restartPolicy": dyn("OnFailure"),
+                  "serviceAccountName": dyn("get-debug-data-sa"),
+                  "containers": dyn([
+                    {
+                      "name": dyn("my-container"),
+                      "image": dyn("sagarkundral/my-python-app:v52"),
+                      "ports": dyn([
+                        {"containerPort": dyn(8080)}
+                      ]),
+                      "volumeMounts": dyn([
+                        {
+                          "mountPath": dyn("/var/run/secrets/kubernetes.io/serviceaccount"),
+                          "name": dyn("token"),
+                          "readOnly": dyn(true)
+                        }
+                      ]),
+                      "args": dyn([
+                        dyn("/app/get-debug-jira-v2.sh"),
+                        dyn(variables.targetNs),
+                        dyn(variables.podName)
+                      ])
+                    }
+                  ]),
+                  "volumes": dyn([
+                    {
+                      "name": dyn("token"),
+                      "projected": dyn({
+                        "defaultMode": dyn(420),
+                        "sources": dyn([
+                          {
+                            "serviceAccountToken": dyn({
+                              "expirationSeconds": dyn(3607),
+                              "path": dyn("token")
+                            })
+                          },
+                          {
+                            "configMap": dyn({
+                              "items": dyn([
+                                {
+                                  "key": dyn("ca.crt"),
+                                  "path": dyn("ca.crt")
+                                }
+                              ]),
+                              "name": dyn("kube-root-ca.crt")
+                            })
+                          }
+                        ])
+                      })
+                    }
+                  ])
+                })
+              })
+            })
+          })
+        ])

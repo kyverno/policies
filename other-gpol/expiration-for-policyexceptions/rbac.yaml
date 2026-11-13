@@ -1,0 +1,54 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+  name: kyverno:background-controller:deleting-policy
+rules:
+- apiGroups:
+  - "policies.kyverno.io"
+  resources:
+  - deletingpolicies
+  verbs:
+  - create
+  - update
+  - delete
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.kyverno.io/aggregate-to-cleanup-controller: "true"
+  name: kyverno:cleanup-controller:policyexceptions
+rules:
+- apiGroups:
+  - "kyverno.io"
+  - "policies.kyverno.io"
+  resources:
+  - policyexceptions
+  verbs:
+  - get
+  - list
+  - watch
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+    rbac.kyverno.io/aggregate-to-reports-controller: "true"
+  name: kyverno:policyexceptions:view
+rules:
+- apiGroups:
+  - "kyverno.io"
+  - "policies.kyverno.io"
+  resources:
+  - policyexceptions
+  verbs:
+  - get
+  - list
+  - watch

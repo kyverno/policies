@@ -3,7 +3,7 @@ version: 1.0.1
 displayName: Add Pod Disruption Budget
 createdAt: "2023-04-10T20:30:03.000Z"
 description: >-
-  A PodDisruptionBudget limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions. For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB) for each application. This policy will create a PDB resource whenever a new Deployment is created.
+  A PodDisruptionBudget limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions. For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB) for each application. This policy creates or reconciles a default PDB resource whenever a Deployment is created or updated. Note that updating an existing Deployment will also reconcile its default PDB, which may overwrite manual customizations on the PDB.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-gpol/create-default-pdb/create-default-pdb.yaml
@@ -12,7 +12,7 @@ keywords:
   - kyverno
   - Sample
 readme: |
-  A PodDisruptionBudget limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions. For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB) for each application. This policy will create a PDB resource whenever a new Deployment is created.
+  A PodDisruptionBudget limits the number of Pods of a replicated application that are down simultaneously from voluntary disruptions. For example, a quorum-based application would like to ensure that the number of replicas running is never brought below the number needed for a quorum. As an application owner, you can create a PodDisruptionBudget (PDB) for each application. This policy creates or reconciles a default PDB resource whenever a Deployment is created or updated. Note that updating an existing Deployment will also reconcile its default PDB, which may overwrite manual customizations on the PDB.
 
   ### Fine-grained PolicyException use
 
@@ -28,4 +28,4 @@ readme: |
 annotations:
   kyverno/category: "Sample"
   kyverno/subject: "Deployment"
-digest: b27274ce39934e9f529801fc697e602a2a9330b48d283367e7ae5cc1c49f7244
+digest: 309c1358b8b1a7e6fa0bdf42e287593d22f14b0c7801bc49e348f1d1752c9aaf

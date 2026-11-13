@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: DeletingPolicy
+metadata:
+  labels:
+    kyverno.io/automated: "true"
+spec:
+  matchConstraints:
+    resourceRules:
+    - apiGroups:
+      - "policies.kyverno.io"
+      resources:
+      - policyexceptions

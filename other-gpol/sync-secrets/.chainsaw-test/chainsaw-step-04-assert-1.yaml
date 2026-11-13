@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  bar: Zm9v
+kind: Secret
+metadata:
+  name: regcred
+  namespace: sync-secrets-ns01

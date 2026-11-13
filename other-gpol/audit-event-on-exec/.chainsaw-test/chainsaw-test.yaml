@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: audit-event-on-exec
+spec:
+  steps:
+  - name: step-00
+    try:
+    - apply:
+        file: chainsaw-step-00-apply-1.yaml
+  - name: step-01
+    try:
+    - apply:
+        file: ../audit-event-on-exec.yaml
+    - assert:
+        file: policy-ready.yaml
+  - name: step-02
+    try:
+    - apply:
+        file: ns.yaml
+    - apply:
+        file: pod.yaml
+    - wait:
+        apiVersion: v1
+        kind: Pod
+        name: execevent-pod
+        namespace: exec-event-ns
+        timeout: 1m
+        for:
+          condition:
+            name: Ready
+            value: 'true'
+  - name: step-03
+    try:
+    - sleep:
+        duration: 5s
+    - script:
+        content: kubectl exec -n exec-event-ns execevent-pod -- ls /
+  - name: step-04
+    try:
+    - assert:
+        file: chainsaw-step-04-assert-1.yaml
