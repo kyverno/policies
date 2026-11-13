@@ -1,0 +1,42 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: inject-infrastructurename
+  annotations:
+    policies.kyverno.io/title: Inject Infrastructure Name
+    policies.kyverno.io/category: OpenShift
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: MachineSet
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/description: >-
+      A required component of a MachineSet is the infrastructure name which is a random string
+      created in a separate resource. It can be tedious or impossible to know this for each
+      MachineSet created. This policy fetches the value of the infrastructure name from the
+      Cluster resource and replaces all instances of TEMPLATE in a MachineSet with that name.
+spec:
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["machine.openshift.io"]
+        apiVersions: ["v1beta1"]
+        operations: ["CREATE"]
+        resources: ["machinesets"]
+  variables:
+    - name: infra
+      expression: resource.Get("config.openshift.io/v1", "infrastructures", "", "cluster")
+    - name: infraid
+      expression: variables.infra.status.infrastructureName
+    - name: metadataJson
+      expression: json.marshal(object.metadata)
+    - name: specJson
+      expression: json.marshal(object.spec)
+  mutations:
+    - patchType: JSONPatch
+      jsonPatch:
+        expression: >-
+          (variables.metadataJson.contains('TEMPLATE') ?
+            [JSONPatch{op: "replace", path: "/metadata", value: json.unmarshal(variables.metadataJson.replace('TEMPLATE', variables.infraid))}] : []) +
+          (variables.specJson.contains('TEMPLATE') ?
+            [JSONPatch{op: "replace", path: "/spec", value: json.unmarshal(variables.specJson.replace('TEMPLATE', variables.infraid))}] : [])

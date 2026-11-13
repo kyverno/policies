@@ -1,0 +1,21 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: infrastructures.config.openshift.io
+spec:
+  group: config.openshift.io
+  names:
+    plural: infrastructures
+    singular: infrastructure
+    kind: Infrastructure
+    listKind: InfrastructureList
+  scope: Cluster
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    subresources: {}

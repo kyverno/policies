@@ -1,0 +1,26 @@
+apiVersion: cli.kyverno.io/v1alpha1
+clusterResources:
+- clusterresources.yaml
+context: context.yaml
+kind: Test
+metadata:
+  name: inject-infrastructurename
+policies:
+- ../inject-infrastructurename.yaml
+resources:
+- resource.yaml
+results:
+- isMutatingPolicy: true
+  kind: MachineSet
+  patchedResources: patchedResource.yaml
+  policy: inject-infrastructurename
+  resources:
+  - TEMPLATE-worker-us-east-1a
+  result: pass
+- isMutatingPolicy: true
+  kind: MachineSet
+  patchedResources: patchedResource.yaml
+  policy: inject-infrastructurename
+  resources:
+  - static-worker-us-east-1a
+  result: pass

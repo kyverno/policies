@@ -1,0 +1,9 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: UserInfo
+metadata:
+  name: user-info
+userInfo:
+  username: kubernetes-admin
+  groups:
+  - kubeadm:cluster-admins
+  - system:authenticated

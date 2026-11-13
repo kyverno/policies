@@ -12,7 +12,15 @@ spec:
         apiVersions: ["v1"]
         operations: ["CREATE", "UPDATE"]
         resources: ["namespaces"]
+  targetMatchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["namespaces"]
   matchConditions:
+    - name: exclude-kube-system
+      expression: 'object.metadata.name != "kube-system"'
+  targetMatchConditions:
     - name: exclude-kube-system
       expression: 'object.metadata.name != "kube-system"'
   mutations:

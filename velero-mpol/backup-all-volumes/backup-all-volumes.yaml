@@ -23,15 +23,15 @@ spec:
     resourceRules:
     - apiGroups: [""]
       apiVersions: ["v1"]
-      operations: ["CREATE", "UPDATE"]
+      operations: ["CREATE"]
       resources: ["pods"]
     - apiGroups: ["apps"]
       apiVersions: ["v1"]
-      operations: ["CREATE", "UPDATE"]
+      operations: ["CREATE"]
       resources: ["deployments", "daemonsets", "statefulsets"]
     - apiGroups: ["batch"]
       apiVersions: ["v1"]
-      operations: ["CREATE", "UPDATE"]
+      operations: ["CREATE"]
       resources: ["jobs", "cronjobs"]
     namespaceSelector:
       matchLabels:

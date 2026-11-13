@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-no-pvc
+  namespace: backup-velero-yes
+  labels:
+    app: deploy-no-pvc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-no-pvc
+  template:
+    metadata:
+      labels:
+        app: deploy-no-pvc
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35

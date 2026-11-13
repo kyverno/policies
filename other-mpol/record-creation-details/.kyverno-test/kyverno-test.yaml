@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: record-creation-details
+policies:
+- ../record-creation-details.yaml
+resources:
+- resource.yaml
+userinfo: userinfo.yaml
+results:
+- kind: Pod
+  patchedResources: patched-pod.yaml
+  policy: record-creation-details
+  resources:
+  - pod01
+  result: pass
+  isMutatingPolicy: true
+- kind: Namespace
+  patchedResources: patched-ns.yaml
+  policy: record-creation-details
+  resources:
+  - record-create-ns
+  result: pass
+  isMutatingPolicy: true
