@@ -31,10 +31,13 @@ spec:
       operations: ["UPDATE"]
       resources: ["*"]
   variables:
-  - name: oldCreator
-    expression: "oldObject.metadata.?annotations['kyverno.io/created-by'].orValue('')"
-  - name: newCreator
-    expression: "object.metadata.?annotations['kyverno.io/created-by'].orValue('')"
+  - name: oldHasKey
+    expression: "'kyverno.io/created-by' in oldObject.metadata.?annotations.orValue({})"
+  - name: newHasKey
+    expression: "'kyverno.io/created-by' in object.metadata.?annotations.orValue({})"
   validations:
-  - expression: "variables.oldCreator != '' ? variables.newCreator == variables.oldCreator : !('kyverno.io/created-by' in object.metadata.?annotations.orValue({}))"
+  - expression: >-
+      variables.oldHasKey ?
+        (variables.newHasKey && object.metadata.annotations['kyverno.io/created-by'] == oldObject.metadata.annotations['kyverno.io/created-by']) :
+        !variables.newHasKey
     message: The annotation kyverno.io/created-by is protected and may not be altered or removed.
