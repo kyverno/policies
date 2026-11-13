@@ -36,6 +36,8 @@ spec:
       expression: "object.metadata.namespace"
     - name: exceptionName
       expression: "object.metadata.name"
+    - name: targetGroup
+      expression: "object.apiVersion.split('/')[0]"
     - name: polexUID
       expression: "object.metadata.?uid.orValue('')"
     - name: cleanupName
@@ -59,16 +61,16 @@ spec:
               "matchConstraints": dyn({
                 "resourceRules": dyn([
                   {
-                    "apiGroups": ["kyverno.io", "policies.kyverno.io"],
-                    "apiVersions": ["*"],
-                    "resources": ["policyexceptions"]
+                    "apiGroups": dyn([variables.targetGroup]),
+                    "apiVersions": dyn(["*"]),
+                    "resources": dyn(["policyexceptions"])
                   }
                 ])
               }),
               "conditions": dyn([
                 {
                   "name": "match-target",
-                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "'" + (variables.polexUID != '' ? " && object.metadata.uid == '" + variables.polexUID + "'" : "")
+                  "expression": "object.metadata.namespace == '" + variables.targetNs + "' && object.metadata.name == '" + variables.exceptionName + "' && object.apiVersion.startsWith('" + variables.targetGroup + "/')" + (variables.polexUID != '' ? " && object.metadata.uid == '" + variables.polexUID + "'" : "")
                 }
               ])
             })

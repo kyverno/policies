@@ -7,7 +7,6 @@ spec:
   matchConstraints:
     resourceRules:
     - apiGroups:
-      - "kyverno.io"
       - "policies.kyverno.io"
       resources:
       - policyexceptions
