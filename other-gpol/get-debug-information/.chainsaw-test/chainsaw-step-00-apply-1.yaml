@@ -19,5 +19,7 @@ metadata:
   name: kyverno:get-debug-information:pods-view
 rules:
 - apiGroups: [""]
-  resources: ["pods"]
+  resources:
+  - pods
+  - pods/status
   verbs: ["get", "list", "watch"]

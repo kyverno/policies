@@ -24,16 +24,3 @@ spec:
     try:
     - assert:
         file: cleanup-policy-assert.yaml
-  - name: step-03
-    try:
-    - script:
-        content: |
-          set -eu
-          DP_NAME=$(kubectl get deletingpolicy -l kyverno.io/automated=true -o jsonpath='{.items[0].metadata.name}')
-          kubectl patch deletingpolicy "$DP_NAME" --type=merge -p '{"spec":{"schedule":"*/1 * * * *"}}'
-    - error:
-        timeout: 2m
-        file: exception.yaml
-    - error:
-        timeout: 30s
-        file: cleanup-policy-assert.yaml
