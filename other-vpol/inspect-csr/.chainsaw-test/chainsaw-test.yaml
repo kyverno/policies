@@ -105,7 +105,7 @@ spec:
             kubectl delete clusterpolicyreport "$name"
           done
           # Perform UPDATE on the CSR
-          kubectl --context=inspect-csr-user-context annotate csr inspect-csr-user test-update=true
+          kubectl --context=inspect-csr-user-context get csr inspect-csr-user -o json | jq '.metadata.annotations["test-update"] = "true"' | kubectl --context=inspect-csr-user-context replace -f -
     - assert:
         file: chainsaw-step-03-assert-1.yaml
     - script:
