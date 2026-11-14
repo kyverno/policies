@@ -1,0 +1,23 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-minimum-tls-version
+policies:
+- ../require-minimum-tls-version.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: require-minimum-tls-version
+  resources:
+  - bad-ingress-tls11
+  - bad-ingress-tls10
+  result: fail
+- isValidatingPolicy: true
+  kind: Ingress
+  policy: require-minimum-tls-version
+  resources:
+  - good-ingress
+  - good-ingress-no-annotation
+  result: pass
