@@ -37,6 +37,12 @@ spec:
     securityContext:
       capabilities:
         drop: ["CAP_NET_RAW"]
+  - name: drop-net-raw-add-all
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["NET_RAW"]
+        add: ["ALL"]
 ---
 apiVersion: v1
 kind: Pod
@@ -136,3 +142,29 @@ spec:
       capabilities:
         drop: ["ALL"]
         add: ["ALL"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod06
+spec:
+  containers:
+  - name: drop-net-raw-add-net-raw
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["NET_RAW"]
+        add: ["NET_RAW"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod07
+spec:
+  containers:
+  - name: drop-all-net-raw-add-cap-net-raw
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["ALL", "NET_RAW"]
+        add: ["CAP_NET_RAW"]
