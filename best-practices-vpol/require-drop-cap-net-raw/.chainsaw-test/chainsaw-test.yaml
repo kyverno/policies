@@ -54,4 +54,9 @@ spec:
         expect:
         - check:
             (contains($error, 'Policy drop-cap-net-raw failed')): true
+        file: bad-pod-drop-all-add-net-raw.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy drop-cap-net-raw failed')): true
         file: bad-podcontrollers.yaml
