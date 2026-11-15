@@ -1,0 +1,9 @@
+# system:aggregate-to-edit with a cluster-admin style rule that only has
+# nonResourceURLs (no resources field) and a wildcard verb.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: system:aggregate-to-edit
+rules:
+- nonResourceURLs: ["*"]
+  verbs: ["*"]
