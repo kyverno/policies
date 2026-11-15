@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bad-tls11
+  namespace: default
+data:
+  ssl-protocols: "TLSv1.1 TLSv1.2 TLSv1.3"
