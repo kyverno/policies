@@ -8,16 +8,17 @@ resources:
 - resource.yaml
 results:
 - isValidatingPolicy: true
-  kind: Ingress
+  kind: ConfigMap
   policy: require-minimum-tls-version
   resources:
-  - bad-ingress-tls11
-  - bad-ingress-tls10
+  - bad-tls11
+  - bad-tls10
+  - bad-no-tls13
   result: fail
 - isValidatingPolicy: true
-  kind: Ingress
+  kind: ConfigMap
   policy: require-minimum-tls-version
   resources:
-  - good-ingress
-  - good-ingress-no-annotation
+  - good-tls12-tls13
+  - good-tls13-only
   result: pass

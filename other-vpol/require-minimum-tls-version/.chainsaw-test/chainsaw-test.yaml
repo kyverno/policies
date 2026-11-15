@@ -26,14 +26,19 @@ spec:
   - name: step-02
     try:
     - apply:
-        file: ingress-good.yaml
+        file: configmap-good.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ingress-bad-tls11.yaml
+        file: configmap-bad-tls11.yaml
     - apply:
         expect:
         - check:
             ($error != null): true
-        file: ingress-bad-tls10.yaml
+        file: configmap-bad-tls10.yaml
+    - apply:
+        expect:
+        - check:
+            ($error != null): true
+        file: configmap-bad-no-tls13.yaml
