@@ -6,43 +6,64 @@ metadata:
   name: require-drop-cap-net-raw
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../require-drop-cap-net-raw.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: drop-cap-net-raw
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pod.yaml
-    - apply:
-        file: good-podcontrollers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-containers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-initcontainers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-corner.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-podcontrollers.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../require-drop-cap-net-raw.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: drop-cap-net-raw
+              spec:
+                rules:
+                  - name: require-drop-cap-net-raw
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: >-
+                        Containers must drop the `CAP_NET_RAW` capability.
+                      foreach:
+                        - list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+                          deny:
+                            conditions:
+                              all:
+                                - key: CAP_NET_RAW
+                                  operator: AnyNotIn
+                                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+                                - key: NET_RAW
+                                  operator: AnyNotIn
+                                  value: "{{ element.securityContext.capabilities.drop[].to_upper(@) || `[]` }}"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pod.yaml
+        - apply:
+            file: good-podcontrollers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-containers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-initcontainers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-corner.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-podcontrollers.yaml

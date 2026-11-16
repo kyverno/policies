@@ -6,36 +6,51 @@ metadata:
   name: disallow-empty-ingress-host
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../disallow-empty-ingress-host.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: disallow-empty-ingress-host
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-ingress.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: no-host-ingress.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: no-host-fail-first.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: no-host-success-first.yaml
+    - name: step-01
+      try:
+        - apply:
+            file: ../disallow-empty-ingress-host.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: disallow-empty-ingress-host
+              spec:
+                rules:
+                  - name: disallow-empty-ingress-host
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Ingress
+                    validate:
+                      failureAction: Enforce
+                      message: "The Ingress host name must be defined, not empty."
+                      deny:
+                        conditions:
+                          all:
+                            - key: "{{ request.object.spec.rules[].host || `[]` | length(@) }}"
+                              operator: NotEquals
+                              value: "{{ request.object.spec.rules[].http || `[]` | length(@) }}"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-ingress.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: no-host-ingress.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: no-host-fail-first.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: no-host-success-first.yaml

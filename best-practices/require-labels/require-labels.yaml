@@ -14,18 +14,18 @@ metadata:
       all tools can understand. The recommended labels describe applications in a way that can be
       queried. This policy validates that the label `app.kubernetes.io/name` is specified with some value.
 spec:
-  validationFailureAction: Audit
   background: true
   rules:
-  - name: check-for-labels
-    match:
-      any:
-      - resources:
-          kinds:
-          - Pod
-    validate:
-      message: "The label `app.kubernetes.io/name` is required."
-      pattern:
-        metadata:
-          labels:
-            app.kubernetes.io/name: "?*"
+    - name: check-for-labels
+      match:
+        any:
+          - resources:
+              kinds:
+                - Pod
+      validate:
+        failureAction: Audit
+        message: "The label `app.kubernetes.io/name` is required."
+        pattern:
+          metadata:
+            labels:
+              app.kubernetes.io/name: "?*"

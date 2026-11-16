@@ -6,39 +6,61 @@ metadata:
   name: require-probes
 spec:
   steps:
-  - name: step-01
-    try:
-    - apply:
-        file: ../require-probes.yaml
-    - patch:
-        resource:
-          apiVersion: kyverno.io/v1
-          kind: ClusterPolicy
-          metadata:
-            name: require-pod-probes
-          spec:
-            validationFailureAction: Enforce
-    - assert:
-        file: policy-ready.yaml
-  - name: step-02
-    try:
-    - apply:
-        file: good-pods.yaml
-    - apply:
-        file: good-podcontrollers.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-nothing.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-pod-notall.yaml
-    - apply:
-        expect:
-        - check:
-            ($error != null): true
-        file: bad-podcontrollers.yaml
-
+    - name: step-01
+      try:
+        - apply:
+            file: ../require-probes.yaml
+        - patch:
+            resource:
+              apiVersion: kyverno.io/v1
+              kind: ClusterPolicy
+              metadata:
+                name: require-pod-probes
+              spec:
+                rules:
+                  - name: validate-probes
+                    match:
+                      any:
+                        - resources:
+                            kinds:
+                              - Pod
+                    validate:
+                      failureAction: Enforce
+                      message: "Liveness, readiness, or startup probes are required for all containers."
+                      foreach:
+                        - list: request.object.spec.containers[]
+                          deny:
+                            conditions:
+                              all:
+                                - key: livenessProbe
+                                  operator: AllNotIn
+                                  value: "{{ element.keys(@)[] }}"
+                                - key: startupProbe
+                                  operator: AllNotIn
+                                  value: "{{ element.keys(@)[] }}"
+                                - key: readinessProbe
+                                  operator: AllNotIn
+                                  value: "{{ element.keys(@)[] }}"
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-pods.yaml
+        - apply:
+            file: good-podcontrollers.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-nothing.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-pod-notall.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-podcontrollers.yaml
