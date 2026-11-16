@@ -1,0 +1,30 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: add-karpenter-donot-disrupt
+policies:
+- ../add-karpenter-donot-disrupt.yaml
+resources:
+- resource.yaml
+results:
+- kind: Pod
+  patchedResources: patched01.yaml
+  policy: add-karpenter-donot-disrupt
+  resources:
+  - test-pod-with-evict
+  result: pass
+  rule: add-donot-disrupt-annotation
+- kind: Pod
+  patchedResources: patched03.yaml
+  policy: add-karpenter-donot-disrupt
+  resources:
+  - test-pod-evict-false
+  result: skip
+  rule: add-donot-disrupt-annotation
+- kind: Pod
+  patchedResources: patched02.yaml
+  policy: add-karpenter-donot-disrupt
+  resources:
+  - test-pod-without-evict
+  result: skip
+  rule: add-donot-disrupt-annotation
