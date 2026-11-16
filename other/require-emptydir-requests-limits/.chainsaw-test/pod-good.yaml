@@ -41,7 +41,7 @@ spec:
   volumes:
     - name: vol
       emptyDir:
-        sizeLimit: 200Mi
+        medium: Memory
 ---
 apiVersion: v1
 kind: Pod
@@ -85,7 +85,7 @@ spec:
       emptyDir: {}
     - name: foo
       emptyDir:
-        sizeLimit: 200Mi
+        medium: Memory
 ---
 apiVersion: v1
 kind: Pod
@@ -113,7 +113,7 @@ spec:
       emptyDir: {}
     - name: foo
       emptyDir:
-        sizeLimit: 200Mi
+        medium: Memory
 ---
 apiVersion: v1
 kind: Pod
