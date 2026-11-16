@@ -60,7 +60,7 @@ spec:
     admission:
       enabled: true
     synchronize:
-      enabled: true
+      enabled: false
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
@@ -79,8 +79,6 @@ spec:
     - name: policyAlreadyExists
       expression: >-
         variables.existingPolicies.exists(p,
-          (('generate.kyverno.io/policy-name' in p.metadata.?labels.orValue({}) && p.metadata.labels['generate.kyverno.io/policy-name'] == 'kasten-generate-policy-by-preset-label') ||
-           p.metadata.?name.orValue('') == object.metadata.name + '-' + object.metadata.labels['dataprotection'] + '-backup') &&
           p.spec.?presetRef.?name.orValue('') == object.metadata.labels['dataprotection'] &&
           p.spec.?selector.?matchExpressions.orValue([]).exists(me,
             me.key == 'k10.kasten.io/appNamespace' && object.metadata.name in me.values

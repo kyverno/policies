@@ -30,11 +30,14 @@ spec:
         file: generated-policy.yaml
   - name: step-04
     try:
-    - delete:
-        ref:
+    - patch:
+        resource:
           apiVersion: apps/v1
           kind: Deployment
-          name: test-deploy
-          namespace: test-kasten-example-backup-policy-ns
-    - error:
+          metadata:
+            name: test-deploy
+            namespace: test-kasten-example-backup-policy-ns
+          spec:
+            replicas: 2
+    - assert:
         file: generated-policy.yaml

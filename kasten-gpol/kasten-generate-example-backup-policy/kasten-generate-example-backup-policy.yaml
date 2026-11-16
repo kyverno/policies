@@ -59,7 +59,7 @@ spec:
     admission:
       enabled: true
     synchronize:
-      enabled: true
+      enabled: false
   matchConstraints:
     resourceRules:
       - apiGroups: ["apps"]
