@@ -1,0 +1,145 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-ambient-mode-namespace
+spec:
+  steps:
+    - name: install-audit-policy
+      try:
+        - apply:
+            file: ../enforce-ambient-mode-namespace.yaml
+        - assert:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: enforce-ambient-mode-namespace
+              spec:
+                validationActions: [Audit]
+                evaluation:
+                  background:
+                    enabled: true
+        - assert:
+            file: policy-ready.yaml
+        - sleep:
+            duration: 10s
+
+    - name: audit-allows-and-reports-invalid-namespace
+      try:
+        - apply:
+            file: ns-audit.yaml
+        - assert:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: audit-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: other
+        - assert:
+            file: audit-report.yaml
+        # Remove the Audit fixture before switching to Deny. Keep the three
+        # legacy bad fixtures absent so their Deny checks exercise CREATE.
+        - delete:
+            ref:
+              apiVersion: v1
+              kind: Namespace
+              name: audit-istio-amb01
+
+    - name: enable-deny-for-admission-checks
+      try:
+        # Change only the installed test policy; the shipped policy stays Audit.
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: enforce-ambient-mode-namespace
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+        - sleep:
+            duration: 10s
+
+    - name: allow-valid-creates
+      try:
+        - apply:
+            file: ns-good.yaml
+        - assert:
+            file: ns-good.yaml
+
+    - name: deny-invalid-creates
+      try:
+        - apply:
+            file: ns-bad-disabled.yaml
+            expect:
+              - check:
+                  (contains($error, 'Policy enforce-ambient-mode-namespace failed')): true
+        - apply:
+            file: ns-bad-somelabel.yaml
+            expect:
+              - check:
+                  (contains($error, 'Policy enforce-ambient-mode-namespace failed')): true
+        - apply:
+            file: ns-bad-nolabel.yaml
+            expect:
+              - check:
+                  (contains($error, 'Policy enforce-ambient-mode-namespace failed')): true
+
+    - name: allow-valid-update
+      try:
+        - patch:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: good-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: ambient
+                  admission-update: allowed
+        - assert:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: good-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: ambient
+                  admission-update: allowed
+
+    - name: deny-invalid-updates
+      try:
+        - patch:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: good-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: other
+            expect:
+              - check:
+                  (contains($error, 'Policy enforce-ambient-mode-namespace failed')): true
+        - patch:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: good-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: null
+            expect:
+              - check:
+                  (contains($error, 'Policy enforce-ambient-mode-namespace failed')): true
+        # Rejected updates must leave the valid Namespace unchanged.
+        - assert:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: good-istio-amb01
+                labels:
+                  istio.io/dataplane-mode: ambient
+                  admission-update: allowed

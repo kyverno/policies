@@ -213,6 +213,27 @@ jobs:
       with:
         path: istio-mpol
 
+  istio-vpol:
+    needs: kubernetes-matrix
+    strategy:
+      fail-fast: false
+      matrix:
+        k8s-version: ${{ fromJSON(needs.kubernetes-matrix.outputs.versions) }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+    - name: Setup Environment
+      uses: ./.github/actions/setup-env
+      with:
+        k8s-version: ${{ matrix.k8s-version }}
+        node-image: ${{ fromJSON(needs.kubernetes-matrix.outputs.images)[matrix.k8s-version] }}
+        kind-version: ${{ needs.kubernetes-matrix.outputs.kind-version }}
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+      with:
+        path: istio-vpol
+
   kubecost-mpol:
     needs: kubernetes-matrix
     strategy:
@@ -508,6 +529,7 @@ jobs:
     - castai-mpol
     - cleanup-dpol
     - istio-mpol
+    - istio-vpol
     - kubecost-mpol
     - kubevirt-gpol
     - linkerd-mpol
@@ -539,6 +561,7 @@ jobs:
     - castai-mpol
     - cleanup-dpol
     - istio-mpol
+    - istio-vpol
     - kubecost-mpol
     - kubevirt-gpol
     - linkerd-mpol

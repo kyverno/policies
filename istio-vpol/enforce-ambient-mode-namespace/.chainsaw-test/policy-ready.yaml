@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: enforce-ambient-mode-namespace
+status:
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+      - reason: Succeeded
+        status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+      - reason: Succeeded
+        status: "True"
