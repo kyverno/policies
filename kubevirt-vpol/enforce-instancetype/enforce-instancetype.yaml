@@ -1,0 +1,32 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: enforce-instancetype
+  annotations:
+    policies.kyverno.io/title: Enforce Instance Type
+    policies.kyverno.io/category: KubeVirt
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: VirtualMachine
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kyverno-version: 1.20.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/description: >-
+      VirtualMachines should use instance types and preferences to standardize
+      their configuration. This policy requires a non-empty instance type name
+      and preference name on every VirtualMachine.
+spec:
+  validationActions: [Deny]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [kubevirt.io]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [virtualmachines]
+  validations:
+    - expression: >-
+        object.?spec.?instancetype.?name.orValue('') != '' &&
+        object.?spec.?preference.?name.orValue('') != ''
+      message: VirtualMachines must specify non-empty spec.instancetype.name and spec.preference.name.
