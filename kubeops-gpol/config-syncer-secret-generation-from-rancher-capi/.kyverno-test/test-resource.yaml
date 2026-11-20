@@ -1,0 +1,23 @@
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: rancher-cluster
+  namespace: kubeops-cluster-ns
+spec:
+  rkeConfig:
+    machinePools:
+    - controlPlaneRole: true
+      name: machine01
+      quantity: 1
+---
+apiVersion: provisioning.cattle.io/v1
+kind: Cluster
+metadata:
+  name: sample-cluster
+  namespace: fleet-local
+spec:
+  rkeConfig:
+    machinePools:
+    - controlPlaneRole: true
+      name: machine01
+      quantity: 1

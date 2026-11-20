@@ -18,6 +18,8 @@ spec:
         file: permissions.yaml
     - apply:
         file: chainsaw-step-01-apply-1.yaml
+    - apply:
+        file: pre-existing-vmi.yaml
   - name: step-02
     try:
     - apply:
@@ -28,10 +30,14 @@ spec:
     try:
     - apply:
         file: vmi.yaml
+    - apply:
+        file: update-pre-existing-vmi.yaml
   - name: step-04
     try:
     - assert:
         file: generated-svc.yaml
+    - assert:
+        file: generated-svc-pre-existing.yaml
   - name: exception-isolation
     try:
     - apply:

@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: kasten-generate-policy-by-preset-label-test
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../kasten-generate-policy-by-preset-label.yaml
+resources:
+- test-resource.yaml
+results:
+- generatedResource: generatedResource.yaml
+  isGeneratingPolicy: true
+  kind: Namespace
+  policy: kasten-generate-policy-by-preset-label
+  resources:
+  - test-namespace
+  result: pass
+- isGeneratingPolicy: true
+  kind: Namespace
+  policy: kasten-generate-policy-by-preset-label
+  resources:
+  - skip-namespace
+  result: skip
