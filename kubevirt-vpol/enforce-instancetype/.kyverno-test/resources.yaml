@@ -1,0 +1,64 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-instancetype
+spec:
+  preference:
+    name: fedora
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-preference
+spec:
+  instancetype:
+    name: u1.small
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-empty-instancetype-name
+spec:
+  instancetype:
+    name: ""
+  preference:
+    name: fedora
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-empty-preference-name
+spec:
+  instancetype:
+    name: u1.small
+  preference:
+    name: ""
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-instancetype-name
+spec:
+  instancetype: {}
+  preference:
+    name: fedora
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-preference-name
+spec:
+  instancetype:
+    name: u1.small
+  preference: {}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-both
+spec: {}
+---
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-missing-spec

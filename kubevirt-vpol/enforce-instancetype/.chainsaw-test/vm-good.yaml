@@ -1,0 +1,14 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  name: vm-valid
+spec:
+  running: false
+  instancetype:
+    name: u1.small
+  preference:
+    name: fedora
+  template:
+    spec:
+      domain:
+        devices: {}
