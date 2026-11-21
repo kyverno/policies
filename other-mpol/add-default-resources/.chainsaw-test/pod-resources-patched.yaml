@@ -35,3 +35,29 @@ spec:
       requests:
         memory: "100Mi"
         cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  initContainers:
+  - name: pod03-init-01
+    image: busybox:latest
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"
+  - name: pod03-init-02
+    image: busybox:latest
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "250m"
+  containers:
+  - name: pod03-01
+    image: nginx:latest
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"

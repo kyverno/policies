@@ -33,3 +33,20 @@ spec:
         memory: "200Mi" 
   - name: busybox
     image: busybox:latest
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-demo4
+spec:
+  initContainers:
+  - name: init-default
+    image: busybox:latest
+  - name: init-partial
+    image: busybox:latest
+    resources:
+      requests:
+        cpu: "200m"
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
