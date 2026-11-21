@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-demo4
+spec:
+  initContainers:
+  - name: init-default
+    image: busybox:latest
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"
+  - name: init-partial
+    image: busybox:latest
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "200m"
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    resources:
+      requests:
+        memory: "100Mi"
+        cpu: "100m"

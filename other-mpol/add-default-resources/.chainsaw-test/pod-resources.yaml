@@ -26,3 +26,20 @@ spec:
     resources:
       requests:
         cpu: "500m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod03
+spec:
+  initContainers:
+  - name: pod03-init-01
+    image: busybox:latest
+  - name: pod03-init-02
+    image: busybox:latest
+    resources:
+      requests:
+        cpu: "250m"
+  containers:
+  - name: pod03-01
+    image: nginx:latest

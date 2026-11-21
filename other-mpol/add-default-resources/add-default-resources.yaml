@@ -45,6 +45,23 @@ spec:
                   }
                 }
               }
-            )
+            ),
+            initContainers: has(object.spec.initContainers) ?
+              object.spec.initContainers.map(c,
+                exceptions.allowedImages.exists(image, image == c.image) ? c :
+                Object.spec.initContainers{
+                  name: c.name,
+                  resources: Object.spec.initContainers.resources{
+                    requests: Object.spec.initContainers.resources.requests{
+                      cpu: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.cpu)
+                           ? c.resources.requests.cpu
+                           : "100m",
+                      memory: has(c.resources) && has(c.resources.requests) && has(c.resources.requests.memory)
+                            ? c.resources.requests.memory
+                            : "100Mi"
+                    }
+                  }
+                }
+              ) : []
           }
         }

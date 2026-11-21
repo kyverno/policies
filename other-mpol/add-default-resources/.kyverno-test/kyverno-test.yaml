@@ -7,24 +7,31 @@ policies:
 resources:
 - resource.yaml
 results:
-- kind: Pod
+- isMutatingPolicy: true
+  kind: Pod
   patchedResources: patchedResource1.yaml
   policy: add-default-resources
   resources:
   - nginx-demo1
   result: pass
-  isMutatingPolicy: true
-- kind: Pod
-  patchedResources: patchedResource3.yaml
-  policy: add-default-resources
-  resources:
-  - nginx-demo3
-  result: pass
-  isMutatingPolicy: true
-- kind: Pod
+- isMutatingPolicy: true
+  kind: Pod
   patchedResources: patchedResource2.yaml
   policy: add-default-resources
   resources:
   - nginx-demo2
   result: pass
-  isMutatingPolicy: true
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: patchedResource3.yaml
+  policy: add-default-resources
+  resources:
+  - nginx-demo3
+  result: pass
+- isMutatingPolicy: true
+  kind: Pod
+  patchedResources: patchedResource4.yaml
+  policy: add-default-resources
+  resources:
+  - nginx-demo4
+  result: pass
