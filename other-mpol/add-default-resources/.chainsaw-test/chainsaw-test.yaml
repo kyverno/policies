@@ -49,3 +49,15 @@ spec:
             - name: first
               resources:
                 requests: {cpu: 100m, memory: 100Mi}
+    - error:
+        resource:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: partial-exception
+            namespace: default
+          spec:
+            initContainers:
+            - name: init-exempt
+              resources:
+                requests: {cpu: 100m, memory: 100Mi}
