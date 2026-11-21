@@ -1,0 +1,23 @@
+name: validate-cron-schedule-vpol
+version: 1.0.0
+displayName: Validate Cron Schedule in CEL expressions
+description: >-
+  A Velero Schedule is given in Cron format and must be accurate to ensure operation. This policy validates that the schedule is a valid Cron format.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/velero-vpol/validate-cron-schedule/validate-cron-schedule.yaml
+  ```
+keywords:
+  - velero
+  - kyverno
+  - CEL Expressions
+readme: |
+  A Velero Schedule is given in Cron format and must be accurate to ensure operation. This policy validates that the schedule is a valid Cron format.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Velero in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "Schedule"
+digest: caa5f1e5bb9a77e57d2ef4279e2b174e5cb54ce75f6f7d1e9a9621ee77b6aabf
+createdAt: "2026-11-21T09:24:20Z"
