@@ -1,0 +1,22 @@
+name: restrict-exec-verbs-roles-vpol
+version: 1.0.0
+displayName: Restrict Interactive Pod Access in Roles
+createdAt: '2026-11-21T00:00:00Z'
+description: Audits Roles and ClusterRoles that grant get or create on the core Pod
+  exec, attach, or portforward subresources, including wildcard grants.
+install: '```shell
+
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-exec-verbs-roles/restrict-exec-verbs-roles.yaml
+
+  ```'
+keywords:
+- kyverno
+- Security
+- ValidatingPolicy
+readme: Audits Roles and ClusterRoles that grant get or create on the core Pod exec,
+  attach, or portforward subresources, including wildcard grants.
+annotations:
+  kyverno/category: Security in vpol
+  kyverno/kubernetesVersion: '1.30'
+  kyverno/subject: Role, ClusterRole, RBAC
+digest: e36cdcf639ab504450f1e38c71c90d976e13c5a4785529442883b09efacf2cd4
