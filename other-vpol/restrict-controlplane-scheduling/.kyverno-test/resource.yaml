@@ -111,7 +111,7 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: goodpod-empty-key
+  name: badpod-empty-key
 spec:
   containers:
   - name: busybox

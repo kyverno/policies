@@ -2,7 +2,7 @@ name: restrict-controlplane-scheduling-vpol
 version: 1.0.0
 displayName: Restrict control plane scheduling in ValidatingPolicy
 description: >-
-  Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`.
+  Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`. A toleration with an empty or missing key and operator `Exists` matches every taint, so it is rejected as well.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-controlplane-scheduling/restrict-controlplane-scheduling.yaml
@@ -12,7 +12,7 @@ keywords:
   - Sample
   - ValidatingPolicy
 readme: |
-  Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`.
+  Scheduling non-system Pods to control plane nodes (which run kubelet) is often undesirable because it takes away resources from the control plane components and can represent a possible security threat vector. This policy prevents users from setting a toleration in a Pod spec which allows running on control plane nodes with the taint key `node-role.kubernetes.io/master`. A toleration with an empty or missing key and operator `Exists` matches every taint, so it is rejected as well.
   
   ### Fine-grained PolicyException use
 
@@ -31,7 +31,7 @@ annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: 600b7a49387a111b24a40ccc7be774dd957a3b4e48fa6bc38ad96279e764e1c5
+digest: b5c56d8e0e4ff0d5dccce1982f1dc0580b6065e9b4fd2236ce834fd4d2e5002d
 
 
 createdAt: "2025-05-11T17:46:11Z"
