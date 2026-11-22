@@ -19,6 +19,11 @@ readme: |
   Additional labels are allowed, but a missing required label or a value other than
   `ambient` fails validation.
 
+  This policy is intended for ambient-only clusters. Istio also supports mixing
+  ambient and sidecar namespaces. Use a PolicyException, with PolicyException
+  support enabled in Kyverno, to exclude namespaces that should not use ambient mode,
+  such as `default`, `istio-system`, gateway, or sidecar namespaces.
+
   The policy uses `validationActions: [Audit]` by default, so violations are reported
   without blocking requests. It does not add or modify Namespace labels.
 
