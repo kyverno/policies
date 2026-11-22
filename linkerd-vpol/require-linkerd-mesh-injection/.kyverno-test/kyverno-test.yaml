@@ -1,0 +1,41 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-linkerd-mesh-injection
+policies:
+- ../require-linkerd-mesh-injection.yaml
+resources:
+- ../.chainsaw-test/bad-ns.yaml
+- ../.chainsaw-test/good-ns.yaml
+- edge-resources.yaml
+results:
+- isValidatingPolicy: true
+  policy: require-linkerd-mesh-injection
+  kind: Namespace
+  resources:
+  - ld-meshinj-badns01
+  - ld-meshinj-badns02
+  - ld-meshinj-badns03
+  result: fail
+- isValidatingPolicy: true
+  policy: require-linkerd-mesh-injection
+  kind: Namespace
+  resources:
+  - ld-meshinj-goodns01
+  - ld-meshinj-goodns02
+  result: pass
+# ingress mode and a mistyped value aren't enabled.
+- isValidatingPolicy: true
+  policy: require-linkerd-mesh-injection
+  kind: Namespace
+  resources:
+  - ld-meshinj-edge-badns01
+  - ld-meshinj-edge-badns02
+  result: fail
+# Only the annotation counts, not a label with the same key.
+- isValidatingPolicy: true
+  policy: require-linkerd-mesh-injection
+  kind: Namespace
+  resources:
+  - ld-meshinj-edge-goodns01
+  result: pass
