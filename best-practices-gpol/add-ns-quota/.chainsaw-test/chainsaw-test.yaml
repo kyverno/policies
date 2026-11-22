@@ -39,6 +39,18 @@ spec:
         file: ../.kyverno-test/generatedResourceQuota.yaml
     - assert:
         file: ../.kyverno-test/generatedLimitRange.yaml
+  - name: update-existing-namespace
+    try:
+    - error:
+        file: old-generated-quota.yaml
+    - apply:
+        file: old-resource-labeled.yaml
+    - sleep:
+        duration: 10s
+    - assert:
+        file: old-generated-quota.yaml
+    - assert:
+        file: old-generated-limitrange.yaml
   - name: exception-generation
     try:
     - apply:

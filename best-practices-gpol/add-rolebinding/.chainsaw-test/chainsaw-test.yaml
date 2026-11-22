@@ -9,7 +9,7 @@ spec:
   - name: step-00
     try:
     - apply:
-        file: chainsaw-step-00-apply-1.yaml
+        file: ../rbac.yaml
   - name: step-01
     try:
     - apply:
@@ -66,7 +66,7 @@ spec:
     - apply:
         file: chainsaw-step-03-apply-2.yaml
     - apply:
-        file: ns.yaml
+        file: cluster-admin-binding.yaml
     - script:
         content: |
           set -eu
@@ -76,8 +76,74 @@ spec:
     try:
     - assert:
         file: rb-gen.yaml
+  - name: cluster-admin-create
+    try:
+    # Users bound to cluster-admin directly, through a group, or as a service
+    # account get no RoleBinding.
+    - script:
+        content: |
+          set -eu
+          kubectl create -f ns.yaml --as=addrbadmin
+          kubectl create -f ns-group.yaml --as=addrbgroupuser --as-group=addrb-admins --as-group=system:authenticated
+          kubectl create -f ns-sa.yaml --as=system:serviceaccount:default:addrb-admin-sa
+    - sleep:
+        duration: 15s
     - error:
-        file: rb-not-gen.yaml
+        file: rb-admin-not-gen.yaml
+    - error:
+        file: rb-group-not-gen.yaml
+    - error:
+        file: rb-sa-not-gen.yaml
+    finally:
+    - script:
+        content: |
+          kubectl delete -f ns.yaml -f ns-group.yaml -f ns-sa.yaml --ignore-not-found --wait=false
+  - name: update-by-other-user
+    try:
+    # Synchronization replaces the generated RoleBinding with one for the
+    # latest requester.
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=other --as=addrbother
+    - assert:
+        file: rb-other-gen.yaml
+    - error:
+        file: rb-gen.yaml
+  - name: update-by-cluster-admin
+    try:
+    # A skipped cluster-admin update deletes the generated RoleBinding.
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=admin --overwrite --as=addrbadmin
+    - error:
+        file: rb-other-gen.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: rb-admin-update-not-gen.yaml
+  - name: update-by-namespace-cluster-admin
+    try:
+    # A RoleBinding to cluster-admin in the Namespace also excludes the requester.
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=other-again --overwrite --as=addrbother
+    - assert:
+        file: rb-other-gen.yaml
+    - apply:
+        file: ns-cluster-admin-binding.yaml
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=ns-admin --overwrite --as=addrbnsadmin
+    - error:
+        file: rb-other-gen.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: rb-nsadmin-not-gen.yaml
   - name: step-06
     try:
     - delete:

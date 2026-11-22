@@ -1,0 +1,64 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-linkerd-server
+  annotations:
+    policies.kyverno.io/title: Require Linkerd Server in CEL expressions
+    policies.kyverno.io/category: Linkerd in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: Deployment, Service, Server
+    policies.kyverno.io/description: >-
+      In Linkerd 2.11, a Server resource selects ports on a set of Pods in the
+      same Namespace and is used to deny traffic which then must be authorized later.
+      Ensuring that Linkerd policy is enforced on Pods in the mesh is important to maintaining
+      a secure environment. This policy, requiring Linkerd 2.11+, checks Deployments
+      (exposing ports) and Services to ensure a corresponding Server resource exists first.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [apps]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [deployments]
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [services]
+  variables:
+    # Pod template labels of a Deployment, or the selector of a Service.
+    - name: labels
+      expression: >-
+        object.kind == 'Deployment' ?
+        object.spec.?template.?metadata.?labels.orValue({}) :
+        object.spec.?selector.orValue({})
+    - name: hasPorts
+      expression: >-
+        object.spec.?template.?spec.?containers.orValue([])
+        .exists(c, size(c.?ports.orValue([])) > 0)
+    - name: servers
+      expression: >-
+        resource.List('policy.linkerd.io/v1beta1', 'servers', object.metadata.namespace).?items.orValue([])
+    # A Server matches when every entry of its podSelector.matchLabels is in the labels.
+    - name: hasServer
+      expression: >-
+        variables.servers.exists(s,
+          cel.bind(ml, s.spec.?podSelector.?matchLabels.orValue(null),
+            ml != null && ml.all(k, variables.labels[?k].orValue(null) == ml[k])))
+  validations:
+    - expression: "object.kind != 'Deployment' || !variables.hasPorts || variables.hasServer"
+      messageExpression: >-
+        'Every Deployment declaring ports requires a matching Server. No Server in
+        Namespace ' + object.metadata.namespace + ' selects the labels in
+        spec.template.metadata.labels.'
+    - expression: "object.kind != 'Service' || variables.hasServer"
+      messageExpression: >-
+        'Every Service requires a matching Server. No Server in Namespace ' +
+        object.metadata.namespace + ' selects the labels in spec.selector.'
