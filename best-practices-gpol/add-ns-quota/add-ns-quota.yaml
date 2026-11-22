@@ -12,7 +12,7 @@ metadata:
       Namespace and provide default resource consumption limits for Pods,
       ResourceQuota and LimitRange resources are recommended.
       This policy will generate ResourceQuota and LimitRange resources when
-      a new Namespace is created.
+      a Namespace is created or updated.
 spec:
   evaluation:
     synchronize:
@@ -21,7 +21,7 @@ spec:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
-        operations: ["CREATE"]
+        operations: ["CREATE", "UPDATE"]
         resources: ["namespaces"]
   variables:
     - name: targetNs
