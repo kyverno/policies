@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-linkerd-server-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-linkerd-server
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'baddeploy01'
