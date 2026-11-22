@@ -17,7 +17,7 @@ readme: |
   
   ### Required RBAC
 
-  The policy finds the requester's `cluster-admin` bindings with `resource.List`, so the Kyverno background controller must be able to read RoleBindings and ClusterRoleBindings. It also needs the `bind` verb on the ClusterRole `admin` to create the generated RoleBinding. The install command applies `rbac.yaml`, an aggregated ClusterRole that grants both.
+  The policy finds the requester's `cluster-admin` bindings with `resource.List`, so the Kyverno admission and background controllers must be able to read RoleBindings and ClusterRoleBindings. The background controller also needs the `bind` verb on the ClusterRole `admin` to create the generated RoleBinding. The install command applies `rbac.yaml`, which grants these permissions through aggregated ClusterRoles.
 
   Without the read permissions, the policy can't evaluate its `cluster-admin` check and generates no RoleBinding. The background controller logs the denied request.
 
