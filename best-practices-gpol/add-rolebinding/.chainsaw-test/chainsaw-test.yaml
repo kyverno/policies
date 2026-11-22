@@ -9,7 +9,7 @@ spec:
   - name: step-00
     try:
     - apply:
-        file: chainsaw-step-00-apply-1.yaml
+        file: ../rbac.yaml
   - name: step-01
     try:
     - apply:
@@ -123,6 +123,27 @@ spec:
         duration: 15s
     - error:
         file: rb-admin-update-not-gen.yaml
+  - name: update-by-namespace-cluster-admin
+    try:
+    # A RoleBinding to cluster-admin in the Namespace also excludes the requester.
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=other-again --overwrite --as=addrbother
+    - assert:
+        file: rb-other-gen.yaml
+    - apply:
+        file: ns-cluster-admin-binding.yaml
+    - script:
+        content: |
+          set -eu
+          kubectl label namespace addrb-ns addrb-step=ns-admin --overwrite --as=addrbnsadmin
+    - error:
+        file: rb-other-gen.yaml
+    - sleep:
+        duration: 15s
+    - error:
+        file: rb-nsadmin-not-gen.yaml
   - name: step-06
     try:
     - delete:
