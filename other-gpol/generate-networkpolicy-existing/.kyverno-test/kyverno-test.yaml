@@ -1,0 +1,16 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: generate-networkpolicy-existing
+policies:
+- ../generate-networkpolicy-existing.yaml
+resources:
+- resource.yaml
+results:
+- generatedResource: generatedResource.yaml
+  kind: Namespace
+  policy: generate-networkpolicy-existing
+  resources:
+  - foo57
+  result: pass
+  isGeneratingPolicy: true
