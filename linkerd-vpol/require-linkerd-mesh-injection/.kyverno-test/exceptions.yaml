@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: require-linkerd-mesh-injection-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: require-linkerd-mesh-injection
+  matchConditions:
+  - name: exact-resource
+    expression: request.name == 'ld-meshinj-badns01'

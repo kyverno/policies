@@ -1,0 +1,40 @@
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-same-namespace
+  namespace: team-b
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: remote
+  requiredAuthenticationRefs:
+    - name: webapp
+      kind: ServiceAccount
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-other-namespace
+  namespace: default
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: remote
+  requiredAuthenticationRefs:
+    - name: webapp
+      kind: ServiceAccount
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-namespace-target
+  namespace: default
+spec:
+  targetRef:
+    kind: Namespace
+    name: default
+  requiredAuthenticationRefs:
+    - name: webapp
+      kind: ServiceAccount

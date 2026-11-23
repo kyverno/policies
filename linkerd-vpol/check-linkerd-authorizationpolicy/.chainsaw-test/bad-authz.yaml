@@ -1,0 +1,26 @@
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: bad-policy01
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: HTTPRoute
+    name: authors-dont-route
+  requiredAuthenticationRefs:
+    - name: authors-get-authn
+      kind: MeshTLSAuthentication
+      group: policy.linkerd.io
+---
+apiVersion: policy.linkerd.io/v1alpha1
+kind: AuthorizationPolicy
+metadata:
+  name: bad-policy02
+spec:
+  targetRef:
+    group: policy.linkerd.io
+    kind: Server
+    name: not-authors
+  requiredAuthenticationRefs:
+    - name: webapp
+      kind: ServiceAccount

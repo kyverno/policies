@@ -1,0 +1,48 @@
+name: require-linkerd-server-vpol
+version: 1.0.0
+displayName: Require Linkerd Server in CEL expressions
+description: >-
+  In Linkerd 2.11, a Server resource selects ports on a set of Pods in the same Namespace and is used to deny traffic which then must be authorized later. Ensuring that Linkerd policy is enforced on Pods in the mesh is important to maintaining a secure environment. This policy, requiring Linkerd 2.11+, checks Deployments (exposing ports) and Services to ensure a corresponding Server resource exists first.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-vpol/require-linkerd-server/require-linkerd-server.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  In Linkerd 2.11, a Server resource selects ports on a set of Pods in the same Namespace and is used to deny traffic which then must be authorized later. Ensuring that Linkerd policy is enforced on Pods in the mesh is important to maintaining a secure environment. This policy, requiring Linkerd 2.11+, checks Deployments (exposing ports) and Services to ensure a corresponding Server resource exists first.
+
+  ### What the policy checks
+
+  - A Deployment fails when one of its containers declares a port and no Server in its Namespace matches the labels of its Pod template. A Deployment without container ports is skipped.
+  - A Service fails when no Server in its Namespace matches its `spec.selector`.
+  - A Server matches when every entry of its `spec.podSelector.matchLabels` is in those labels. A Server that selects Pods only through `matchExpressions` doesn't match.
+
+  ### Clusters without Linkerd
+
+  The policy lists `servers` in `policy.linkerd.io/v1beta1` through the Kubernetes API. If the Linkerd CRDs aren't installed, these lists fail, and the policy reports an error for every Deployment and Service it matches instead of a pass or a fail. Install it only on clusters that run Linkerd.
+
+  ### Required permissions
+
+  The policy lists `servers` in the `policy.linkerd.io/v1beta1` API. Grant `get`, `list`, and `watch` on `servers` in `policy.linkerd.io` to the Kyverno admission and reports controllers, with ClusterRoles labeled `rbac.kyverno.io/aggregate-to-admission-controller: "true"` and `rbac.kyverno.io/aggregate-to-reports-controller: "true"`. See the [tested example](https://github.com/kyverno/policies/blob/main/linkerd-vpol/require-linkerd-server/.chainsaw-test/rbac.yaml).
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-linkerd-server` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/linkerd-vpol/require-linkerd-server/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "Deployment, Service, Server"
+digest: 67d77ab4cf6f2d9630a253c4a9315664d0937a6fc0bdc5f4a02a3099a53bc1ac
+createdAt: "2026-11-22T05:23:18Z"

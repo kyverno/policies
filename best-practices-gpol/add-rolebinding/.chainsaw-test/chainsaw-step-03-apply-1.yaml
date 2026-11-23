@@ -9,3 +9,5 @@ rules:
   - namespaces
   verbs:
   - create
+  - get
+  - patch

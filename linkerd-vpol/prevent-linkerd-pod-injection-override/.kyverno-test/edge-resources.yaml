@@ -1,0 +1,219 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: badjob01
+spec:
+  template:
+    metadata:
+      labels:
+        app: badjob01
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+      restartPolicy: Never
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: badsts01
+spec:
+  selector:
+    matchLabels:
+      app: badsts01
+  serviceName: badsts01
+  template:
+    metadata:
+      labels:
+        app: badsts01
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: badds01
+spec:
+  selector:
+    matchLabels:
+      app: badds01
+  template:
+    metadata:
+      labels:
+        app: badds01
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: badrs01
+spec:
+  selector:
+    matchLabels:
+      app: badrs01
+  template:
+    metadata:
+      labels:
+        app: badrs01
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: badrc01
+spec:
+  selector:
+    app: badrc01
+  template:
+    metadata:
+      labels:
+        app: badrc01
+      annotations:
+        linkerd.io/inject: disabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: goodjob01
+spec:
+  template:
+    metadata:
+      labels:
+        app: goodjob01
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+      restartPolicy: Never
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: goodsts01
+spec:
+  selector:
+    matchLabels:
+      app: goodsts01
+  serviceName: goodsts01
+  template:
+    metadata:
+      labels:
+        app: goodsts01
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: goodds01
+spec:
+  selector:
+    matchLabels:
+      app: goodds01
+  template:
+    metadata:
+      labels:
+        app: goodds01
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: goodrs01
+spec:
+  selector:
+    matchLabels:
+      app: goodrs01
+  template:
+    metadata:
+      labels:
+        app: goodrs01
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: goodrc01
+spec:
+  selector:
+    app: goodrc01
+  template:
+    metadata:
+      labels:
+        app: goodrc01
+      annotations:
+        linkerd.io/inject: enabled
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03
+  annotations:
+    linkerd.io/inject: ingress
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod04
+  annotations:
+    foo: bar
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: badpod02
+  annotations:
+    foo: bar
+    linkerd.io/inject: disabled
+spec:
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
