@@ -1,0 +1,38 @@
+name: require-linkerd-mesh-injection-vpol
+version: 1.0.0
+displayName: Require Linkerd Mesh Injection in CEL expressions
+description: >-
+  Sidecar proxy injection in Linkerd may be handled at the Namespace level by setting the annotation `linkerd.io/inject` to `enabled`. This policy enforces that all Namespaces contain the annotation `linkerd.io/inject` set to `enabled`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-vpol/require-linkerd-mesh-injection/require-linkerd-mesh-injection.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  Sidecar proxy injection in Linkerd may be handled at the Namespace level by setting the annotation `linkerd.io/inject` to `enabled`. This policy enforces that all Namespaces contain the annotation `linkerd.io/inject` set to `enabled`.
+
+  ### System Namespaces
+
+  The policy checks every Namespace, including `kube-system` and the Namespaces of Kyverno and Linkerd, so it reports these as failures too. Linkerd never injects Pods in `kube-system`, whatever its annotations. To skip such Namespaces, use a PolicyException.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `require-linkerd-mesh-injection` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/linkerd-vpol/require-linkerd-mesh-injection/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "Namespace, Annotation"
+digest: 172c264ff1a2bab6360d4ea5465a8b35fa83f1c9dd9d37165512afcac96c0814
+createdAt: "2026-11-22T05:23:18Z"
