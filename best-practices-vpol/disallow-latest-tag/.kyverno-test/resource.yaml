@@ -43,6 +43,30 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: init-untagged-pod
+spec:
+  initContainers:
+  - name: init
+    image: busybox
+  containers:
+  - name: app
+    image: busybox:1.36
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ephemeral-untagged-pod
+spec:
+  containers:
+  - name: app
+    image: busybox:1.36
+  ephemeralContainers:
+  - name: debug
+    image: busybox
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: exception-latest-pod
   namespace: default
 spec:
