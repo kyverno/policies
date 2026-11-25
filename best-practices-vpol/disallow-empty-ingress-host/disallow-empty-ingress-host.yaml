@@ -29,8 +29,8 @@ spec:
       expression: "object.spec.?rules.orValue([])"
   validations:
             - expression: >-
-                variables.rules.all(rule,
                 'ingress-host' in exceptions.allowedValues ||
-                (has(rule.host) && rule.host != '' && has(rule.http)))
+                size(variables.rules.filter(rule, rule.?host.orValue('') != '')) ==
+                size(variables.rules.filter(rule, has(rule.http)))
               message: "The Ingress host name must be defined, not empty."
         

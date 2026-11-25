@@ -15,6 +15,7 @@ results:
   resources:
   - minimal-ingress
   - empty-host
+  - host-only-ingress
   result: fail
 - kind: Ingress
   isValidatingPolicy: true
@@ -27,4 +28,5 @@ results:
   policy: disallow-empty-ingress-host
   resources:
   - ingress-wildcard-host
+  - mixed-host-and-http-rules
   result: pass
