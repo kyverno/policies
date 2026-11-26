@@ -51,6 +51,8 @@ spec:
     - apply:
         file: good-pods.yaml
     - apply:
+        file: good-podcontrollers.yaml
+    - apply:
         expect:
         - check:
             (contains($error, 'Policy restrict-image-registries failed')): true
@@ -65,6 +67,11 @@ spec:
         - check:
             (contains($error, 'Policy restrict-image-registries failed')): true
         file: bad-pod-false.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy restrict-image-registries failed')): true
+        file: bad-podcontrollers.yaml
   - name: step-03
     try:
     - script:
