@@ -1,0 +1,30 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: enforce-sidecar-injection-namespace
+  annotations:
+    policies.kyverno.io/title: Enforce Istio Sidecar Injection in ValidatingPolicy
+    policies.kyverno.io/category: Istio in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      In order for Istio to inject sidecars to workloads deployed into Namespaces,
+      the label `istio-injection` must be set to `enabled`. This policy checks that
+      Namespaces have this label set to `enabled` and reports violations in Audit mode.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["namespaces"]
+  validations:
+    - expression: >-
+        object.metadata.?labels[?'istio-injection'].orValue('') == 'enabled'
+      message: "The Namespace must have label istio-injection set to enabled."
