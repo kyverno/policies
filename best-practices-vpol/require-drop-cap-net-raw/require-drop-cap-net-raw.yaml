@@ -36,6 +36,6 @@ spec:
             - expression: >-
                 variables.allContainers.all(container,
                 (has(exceptions.allowedImages) && container.image in exceptions.allowedImages) ||
-                container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability.upperAscii() in variables.mustDropCapabilities))
+                container.?securityContext.?capabilities.?drop.orValue([]).exists(capability, capability.upperAscii() in variables.mustDropCapabilities || capability.upperAscii() == 'ALL'))
               message: >-
                 Containers must drop the `CAP_NET_RAW` capability.
