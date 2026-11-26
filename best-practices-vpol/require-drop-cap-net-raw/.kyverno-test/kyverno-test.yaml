@@ -37,6 +37,12 @@ results:
   kind: Pod
   policy: drop-cap-net-raw
   resources:
+  - drop-all-lowercase-good
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
   - exception-net-raw
   result: fail
 - isValidatingPolicy: true
