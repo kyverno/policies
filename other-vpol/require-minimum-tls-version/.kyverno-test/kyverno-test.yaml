@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-minimum-tls-version
+policies:
+- ../require-minimum-tls-version.yaml
+resources:
+- resource.yaml
+results:
+- isValidatingPolicy: true
+  kind: ConfigMap
+  policy: require-minimum-tls-version
+  resources:
+  - bad-tls11
+  - bad-tls10
+  - bad-no-tls13
+  result: fail
+- isValidatingPolicy: true
+  kind: ConfigMap
+  policy: require-minimum-tls-version
+  resources:
+  - good-tls12-tls13
+  - good-tls13-only
+  result: pass

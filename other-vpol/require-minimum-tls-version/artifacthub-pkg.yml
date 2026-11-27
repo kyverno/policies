@@ -1,0 +1,25 @@
+name: require-minimum-tls-version-vpol
+version: 1.0.0
+displayName: Require Minimum TLS Version
+description: >-
+  TLS 1.0 and 1.1 are deprecated and contain known vulnerabilities, and TLS 1.3 is a prerequisite for post-quantum cryptography (PQC) hybrid key exchange as called for by NIST IR 8547 and NSA CNSA 2.0. ingress-nginx sets the TLS protocol versions for all Ingresses it serves through the `ssl-protocols` key of its controller ConfigMap; there is no per-Ingress annotation for it. This policy checks any ConfigMap that sets `ssl-protocols` and requires that TLSv1.3 is enabled and that SSLv2, SSLv3, TLSv1 and TLSv1.1 are not. When the key is absent, ingress-nginx defaults to `TLSv1.2 TLSv1.3`, which is compliant.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/require-minimum-tls-version/require-minimum-tls-version.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - ValidatingPolicy
+  - TLS
+  - ingress-nginx
+readme: |
+  TLS 1.0 and 1.1 are deprecated and contain known vulnerabilities, and TLS 1.3 is a prerequisite for post-quantum cryptography (PQC) hybrid key exchange as called for by NIST IR 8547 and NSA CNSA 2.0. ingress-nginx sets the TLS protocol versions for all Ingresses it serves through the `ssl-protocols` key of its controller ConfigMap; there is no per-Ingress annotation for it. This policy checks any ConfigMap that sets `ssl-protocols` and requires that TLSv1.3 is enabled and that SSLv2, SSLv3, TLSv1 and TLSv1.1 are not. When the key is absent, ingress-nginx defaults to `TLSv1.2 TLSv1.3`, which is compliant.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "ConfigMap"
+digest: 3632a6629584e819750a89a98f6213864cef1aa288e9826c5e9355c2e05b3466
+createdAt: "2026-06-12T00:00:00Z"
