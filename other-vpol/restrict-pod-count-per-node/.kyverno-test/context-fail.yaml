@@ -1,0 +1,110 @@
+# Mocks resource.List("v1", "pods", "") for the CLI.
+# NOTE: mocked Pods must NOT set metadata.namespace because the CLI's fake
+# context provider buckets resources by namespace, and the policy lists Pods
+# with an empty namespace (all Namespaces). A namespace would make the Pods
+# land in a different bucket and the List would return zero items.
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  resources:
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod01
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod02
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod03
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod04
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod05
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod06
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod07
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod08
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod09
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod10
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx
+    - apiVersion: v1
+      kind: Pod
+      metadata:
+        name: pod11
+      spec:
+        nodeName: minikube
+        containers:
+          - image: nginx
+            name: nginx

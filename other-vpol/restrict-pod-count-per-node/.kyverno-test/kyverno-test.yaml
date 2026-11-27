@@ -1,0 +1,33 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-pod-count-over-limit
+policies:
+  - ../restrict-pod-count-per-node.yaml
+resources:
+  - resource-fail.yaml
+context: context-fail.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-pod-count
+    resources:
+      - myapp-pod
+    result: fail
+---
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-pod-count-under-limit
+policies:
+  - ../restrict-pod-count-per-node.yaml
+resources:
+  - resource-pass.yaml
+context: context-pass.yaml
+results:
+  - isValidatingPolicy: true
+    kind: Pod
+    policy: restrict-pod-count
+    resources:
+      - myapp-pod-good
+    result: pass

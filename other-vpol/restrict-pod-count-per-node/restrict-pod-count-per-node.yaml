@@ -1,0 +1,37 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-pod-count
+  annotations:
+    policies.kyverno.io/title: Restrict Pod Count per Node
+    policies.kyverno.io/category: Sample
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      Sometimes Kubernetes Nodes may have a maximum number of Pods they can accommodate due to
+      resources outside CPU and memory such as licensing, or in some development cases. This
+      policy restricts the Pod count on a Node named `minikube` to be no more than 10.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE"]
+        resources: ["pods"]
+  variables:
+    - name: podList
+      expression: >-
+        resource.List("v1", "pods", "").items
+    - name: minikubePods
+      expression: >-
+        dyn(variables.podList).filter(p, dyn(p).?spec.?nodeName.orValue("") == "minikube")
+  validations:
+    - expression: "variables.minikubePods.size() <= 10"
+      message: "A maximum of 10 Pods are allowed on the Node `minikube`"
