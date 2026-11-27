@@ -1,0 +1,37 @@
+name: disallow-host-ports-range-vpol
+version: 1.0.0
+displayName: Disallow hostPorts Range (Alternate) in ValidatingPolicy
+description: >-
+  Access to host ports allows potential snooping of network traffic and should not be allowed by requiring host ports be undefined (recommended) or at minimum restricted to a known list. This policy ensures the `hostPort` field, if defined, is set to either a port in the specified range or to a value of zero. This policy is mutually exclusive of the disallow-host-ports policy. Note that Kubernetes Pod Security Admission does not support the host port range rule.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/pod-security-vpol/baseline/disallow-host-ports-range/disallow-host-ports-range.yaml
+  ```
+keywords:
+  - kyverno
+  - Pod Security Standards (Baseline)
+  - ValidatingPolicy
+readme: |
+  Access to host ports allows potential snooping of network traffic and should not be allowed by requiring host ports be undefined (recommended) or at minimum restricted to a known list. This policy ensures the `hostPort` field, if defined, is set to either a port in the specified range or to a value of zero. This policy is mutually exclusive of the disallow-host-ports policy. Note that Kubernetes Pod Security Admission does not support the host port range rule.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `disallow-host-ports-range` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  Use decimal host ports as strings in `spec.allowedValues`, such as `"8080"`, to allow
+  those host ports in addition to the 5000-6000 range. Exact `spec.images` entries exempt only matching containers.
+  `variables.podSpec` selects the Pod spec directly or from the workload template.
+  `variables.allContainers` includes regular, init, and ephemeral containers. CEL reads
+  images through `exceptions.allowedImages` and tokens through `exceptions.allowedValues`.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/pod-security-vpol/baseline/disallow-host-ports-range/.kyverno-test-exceptions/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Pod Security Standards (Baseline) in ValidatingPolicy"
+  kyverno/kubernetesVersion: "1.30+"
+  kyverno/subject: "Pod"
+digest: d1e47c4b49637a86391832c2d841552e6797b0d65fb2ae111a64a216d1c6d011
+createdAt: "2026-11-08T20:51:02Z"
