@@ -1,0 +1,27 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: enforce-instancetype
+policies:
+  - ../enforce-instancetype.yaml
+resources:
+  - ../.chainsaw-test/vm-good.yaml
+  - resources.yaml
+results:
+  - policy: enforce-instancetype
+    kind: VirtualMachine
+    resources:
+      - vm-valid
+    result: pass
+  - policy: enforce-instancetype
+    kind: VirtualMachine
+    resources:
+      - vm-missing-instancetype
+      - vm-missing-preference
+      - vm-empty-instancetype-name
+      - vm-empty-preference-name
+      - vm-missing-instancetype-name
+      - vm-missing-preference-name
+      - vm-missing-both
+      - vm-missing-spec
+    result: fail

@@ -1,0 +1,22 @@
+name: enforce-instancetype-vpol
+version: 1.0.0
+displayName: Enforce Instance Type
+description: Require non-empty instance type and preference names on KubeVirt VirtualMachines.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/kubevirt-vpol/enforce-instancetype/enforce-instancetype.yaml
+  ```
+keywords:
+  - kyverno
+  - KubeVirt
+  - CEL Expressions
+readme: |
+  Require non-empty spec.instancetype.name and spec.preference.name on VirtualMachines.
+  This policy denies VirtualMachines that omit either name on creation or update,
+  preserving the behavior of the legacy enforce-instancetype policy.
+annotations:
+  kyverno/category: KubeVirt
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: VirtualMachine
+digest: e56fb5acfc66d239fbfdd48f460170dbf88fcde5e78c16b6260c32248ec95f93
+createdAt: "2026-11-20T00:00:00Z"
