@@ -1,0 +1,9 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment01
+  namespace: foo
+spec:
+  template:
+    metadata:
+      (annotations == null): true

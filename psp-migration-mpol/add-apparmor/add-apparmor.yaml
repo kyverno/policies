@@ -20,6 +20,9 @@ spec:
   evaluation:
     admission:
       enabled: true
+  autogen:
+    podControllers:
+      controllers: []
   matchConstraints:
     resourceRules:
     - apiGroups: [""]

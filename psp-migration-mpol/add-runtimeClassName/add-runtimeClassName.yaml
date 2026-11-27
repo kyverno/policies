@@ -16,6 +16,9 @@ metadata:
       specified according to a policy. This Kyverno policy mutates Pods to add a runtimeClassName
       of `prodclass`.
 spec:
+  autogen:
+    podControllers:
+      controllers: []
   matchConstraints:
     resourceRules:
       - apiGroups: [""]

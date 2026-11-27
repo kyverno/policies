@@ -6,6 +6,7 @@ policies:
 - ../add-capabilities.yaml
 resources:
 - resource.yaml
+- resource-indexing.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -28,4 +29,18 @@ results:
   resources:
   - pod03
   result: skip
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource4.yaml
+  policy: add-capabilities
+  resources:
+  - pod04
+  result: pass
+  isMutatingPolicy: true
+- kind: Pod
+  patchedResources: patchedResource5.yaml
+  policy: add-capabilities
+  resources:
+  - pod05
+  result: pass
   isMutatingPolicy: true

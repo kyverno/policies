@@ -24,3 +24,9 @@ spec:
         file: ../.kyverno-test/resource.yaml
     - assert:
         file: ../.kyverno-test/patchedResource1.yaml
+  - name: step-04
+    try:
+    - apply:
+        file: deployment.yaml
+    - assert:
+        file: deployment-not-mutated.yaml
