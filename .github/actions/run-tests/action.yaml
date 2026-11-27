@@ -19,6 +19,28 @@ runs:
     - name: Install Cosign
       uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
     - name: Install Chainsaw
+      id: install-chainsaw
+      uses: kyverno/action-install-chainsaw@06560d18422209e9c1e08e931d477d04bf2674c1 # v0.2.14
+      continue-on-error: true
+      with:
+        verify: true
+    - name: Wait before retrying Chainsaw
+      if: steps.install-chainsaw.outcome == 'failure'
+      shell: bash
+      run: sleep 5
+    - name: Retry Chainsaw installation
+      id: retry-chainsaw
+      if: steps.install-chainsaw.outcome == 'failure'
+      uses: kyverno/action-install-chainsaw@06560d18422209e9c1e08e931d477d04bf2674c1 # v0.2.14
+      continue-on-error: true
+      with:
+        verify: true
+    - name: Wait before final Chainsaw retry
+      if: steps.retry-chainsaw.outcome == 'failure'
+      shell: bash
+      run: sleep 10
+    - name: Retry Chainsaw installation again
+      if: steps.retry-chainsaw.outcome == 'failure'
       uses: kyverno/action-install-chainsaw@06560d18422209e9c1e08e931d477d04bf2674c1 # v0.2.14
       with:
         verify: true
