@@ -4,6 +4,12 @@ metadata:
   name: partial-exception
   namespace: default
 spec:
+  initContainers:
+  - name: init-exempt
+    image: approved.example/keep:1
+  - name: init-mutate
+    image: example/mutate-init:1
+    resources: {requests: {cpu: 200m, memory: 100Mi}}
   containers:
   - name: first
     image: approved.example/keep:1
