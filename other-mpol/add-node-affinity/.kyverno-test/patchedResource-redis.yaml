@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: zone_weight
+                operator: Lt
+                values:
+                - "400"
+              matchFields:
+              - key: metadata.name
+                operator: In
+                values:
+                - red
+      containers:
+      - name: redis
+        image: redis:7
