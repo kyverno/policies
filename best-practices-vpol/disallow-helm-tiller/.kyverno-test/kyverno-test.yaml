@@ -28,6 +28,13 @@ results:
   - badpod02
   result: fail
 - isValidatingPolicy: true
+  kind: Pod
+  policy: disallow-helm-tiller
+  resources:
+  - init-tiller-pod
+  - ephemeral-tiller-pod
+  result: fail
+- isValidatingPolicy: true
   kind: Deployment
   policy: disallow-helm-tiller
   resources:

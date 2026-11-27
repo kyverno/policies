@@ -28,6 +28,12 @@ results:
   - bad-flowschema
   result: fail
 - isValidatingPolicy: true
+  kind: FlowSchema
+  policy: check-deprecated-apis
+  resources:
+  - bad-flowschema-v1beta3
+  result: fail
+- isValidatingPolicy: true
   kind: CronJob
   policy: check-deprecated-apis
   resources:
