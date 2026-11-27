@@ -6,6 +6,9 @@ policies:
 - ../add-node-affinity.yaml
 resources:
 - resource.yaml
+- exception-resource.yaml
+exceptions:
+- exceptions.yaml
 results:
 - isMutatingPolicy: true
   kind: Deployment
@@ -33,4 +36,10 @@ results:
   policy: add-node-affinity
   resources:
   - already-affined
+  result: skip
+- isMutatingPolicy: true
+  kind: Deployment
+  policy: add-node-affinity
+  resources:
+  - exception-deployment
   result: skip
