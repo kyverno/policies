@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+  labels:
+    app: demo
+    foo: bar
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-deployment
+  labels:
+    app: demo
+    foo: bar
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: demo-statefulset
+  labels:
+    app: demo
+    foo: bar
+spec:
+  replicas: 1
+  serviceName: demo
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: demo-daemonset
+  labels:
+    app: demo
+    foo: bar
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: demo-job
+  labels:
+    app: demo
+    foo: bar
+spec:
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: busybox
+        image: busybox:latest
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: demo-cronjob
+  labels:
+    app: demo
+    foo: bar
+spec:
+  schedule: "* * * * *"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: demo
+        spec:
+          restartPolicy: OnFailure
+          containers:
+          - name: busybox
+            image: busybox:latest
+

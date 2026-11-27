@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: goodclaim
+  annotations:
+    nfs.io/storage-path: "/data/myapp"
+spec:
+  storageClassName: nfs-client
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: badclaim
+  annotations:
+    nfs.io/storage-path: ""
+spec:
+  storageClassName: nfs-client
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: skipclaim
+spec:
+  storageClassName: goldstorage
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+

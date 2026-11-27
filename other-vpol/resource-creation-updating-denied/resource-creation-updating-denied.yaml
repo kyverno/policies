@@ -1,0 +1,42 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: resource-creation-updating-denied
+  annotations:
+    policies.kyverno.io/title: Resource Creation and Updating Denied in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Deployment
+    policies.kyverno.io/description: >-
+      To prevent disruption during peak hours, Deployment changes are denied
+      between 08:00 and 10:59 UTC. Adjust startHour and endHour in the policy
+      spec to change the maintenance window.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   ["apps"]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["deployments"]
+  variables:
+  - name: currentHour
+    expression: "time.now().getHours('UTC')"
+  - name: startHour
+    expression: "8"
+  - name: endHour
+    expression: "10"
+  validations:
+  - expression: >-
+      variables.currentHour < variables.startHour ||
+      variables.currentHour > variables.endHour
+    message: >-
+      Deployment changes are not allowed between 08:00 and 10:59 UTC.
+

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-bad
+  namespace: ns-frozen
+data:
+  key: value
+

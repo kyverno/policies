@@ -1,0 +1,35 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: namespace-protection
+  annotations:
+    policies.kyverno.io/title: Namespace Protection in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      Namespaces may be "frozen" by applying the label freeze=true, indicating
+      that no changes should be allowed to resources within them. This policy
+      denies all CREATE and UPDATE operations in Namespaces labeled freeze=true.
+spec:
+  validationActions:
+    - Deny
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    namespaceSelector:
+      matchLabels:
+        freeze: "true"
+    resourceRules:
+    - apiGroups:   ["*"]
+      apiVersions: ["*"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["*"]
+  validations:
+  - expression: "false"
+    message: "Changes are not allowed in frozen Namespaces."
+

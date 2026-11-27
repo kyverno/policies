@@ -1,0 +1,23 @@
+name: nfs-subdir-external-provisioner-storage-path-vpol
+version: 1.0.0
+displayName: NFS Subdir External Provisioner Storage Path in ValidatingPolicy
+description: >-
+  The NFS Subdir External Provisioner uses the annotation nfs.io/storage-path to set the directory path on the NFS server. When specified, it must not be empty. This policy audits PersistentVolumeClaims using the nfs-client StorageClass where the annotation is present but empty.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/nfs-subdir-external-provisioner-storage-path/nfs-subdir-external-provisioner-storage-path.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  The NFS Subdir External Provisioner uses the annotation nfs.io/storage-path to set the directory path on the NFS server. When specified, it must not be empty. This policy audits PersistentVolumeClaims using the nfs-client StorageClass where the annotation is present but empty.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "PersistentVolumeClaim"
+digest: f39f63f76f488024db1e5bc584e31006badd2ba61a595e6f8749366a7a58b6e5
+createdAt: "2026-11-06T08:33:08Z"

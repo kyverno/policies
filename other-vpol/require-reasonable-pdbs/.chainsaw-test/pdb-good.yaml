@@ -1,0 +1,20 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: goodpdb01
+spec:
+  minAvailable: 25%
+  selector:
+    matchLabels:
+      app: demo
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: goodpdb02
+spec:
+  maxUnavailable: 60%
+  selector:
+    matchLabels:
+      app: demo
+

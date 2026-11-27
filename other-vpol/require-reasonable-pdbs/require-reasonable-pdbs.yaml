@@ -1,0 +1,57 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-reasonable-pdbs
+  annotations:
+    policies.kyverno.io/title: Require Reasonable PodDisruptionBudgets in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: PodDisruptionBudget
+    policies.kyverno.io/description: >-
+      PodDisruptionBudgets that use percentage values must keep the cluster
+      reasonably available. minAvailable as a percentage must be 1%–50% and
+      maxUnavailable as a percentage must be 50%–100%. A missing field defaults
+      to 50%. Integer-only PDBs are skipped.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   ["policy"]
+      apiVersions: ["v1"]
+      operations:  ["CREATE", "UPDATE"]
+      resources:   ["poddisruptionbudgets"]
+  matchConditions:
+  - name: has-percentage-value
+    expression: >-
+      (object.spec.?minAvailable.hasValue() && string(object.spec.minAvailable).endsWith('%')) ||
+      (object.spec.?maxUnavailable.hasValue() && string(object.spec.maxUnavailable).endsWith('%'))
+  variables:
+  - name: minAvailPct
+    expression: >-
+      object.spec.?minAvailable.hasValue() && string(object.spec.minAvailable).endsWith('%')
+      ? int(string(object.spec.minAvailable).replace('%', ''))
+      : 50
+  - name: maxUnavailPct
+    expression: >-
+      object.spec.?maxUnavailable.hasValue() && string(object.spec.maxUnavailable).endsWith('%')
+      ? int(string(object.spec.maxUnavailable).replace('%', ''))
+      : 50
+  validations:
+  - expression: >-
+      (!object.spec.?minAvailable.hasValue() || !string(object.spec.minAvailable).endsWith('%')) ||
+      (variables.minAvailPct >= 1 && variables.minAvailPct <= 50) ||
+      exceptions.allowedValues.exists(v, v == 'minAvailable:' + string(object.spec.minAvailable))
+    message: "minAvailable percentage must be between 1% and 50%."
+  - expression: >-
+      (!object.spec.?maxUnavailable.hasValue() || !string(object.spec.maxUnavailable).endsWith('%')) ||
+      (variables.maxUnavailPct >= 50 && variables.maxUnavailPct <= 100) ||
+      exceptions.allowedValues.exists(v, v == 'maxUnavailable:' + string(object.spec.maxUnavailable))
+    message: "maxUnavailable percentage must be between 50% and 100%."
+

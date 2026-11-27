@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-good
+  annotations:
+    nfs.io/storage-path: "/data/myapp"
+spec:
+  storageClassName: nfs-client
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+

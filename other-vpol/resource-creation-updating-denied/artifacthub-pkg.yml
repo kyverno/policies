@@ -1,0 +1,23 @@
+name: resource-creation-updating-denied-vpol
+version: 1.0.0
+displayName: Resource Creation and Updating Denied in ValidatingPolicy
+description: >-
+  To prevent disruption during peak hours, Deployment changes are denied between 08:00 and 10:59 UTC. Adjust startHour and endHour in the policy spec to change the maintenance window.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/resource-creation-updating-denied/resource-creation-updating-denied.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  To prevent disruption during peak hours, Deployment changes are denied between 08:00 and 10:59 UTC. Adjust startHour and endHour in the policy spec to change the maintenance window.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Deployment"
+digest: 2bb38bbfc8d7870d782dbbb5c0110d45e9ba714768bff0e2982acc5714e14ab8
+createdAt: "2026-11-06T08:33:10Z"

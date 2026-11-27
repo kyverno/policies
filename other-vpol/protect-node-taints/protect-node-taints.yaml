@@ -1,0 +1,40 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: protect-node-taints
+  annotations:
+    policies.kyverno.io/title: Protect Node Taints in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kyverno-version: 1.14.0
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/subject: Node
+    policies.kyverno.io/description: >-
+      Node taints control Pod scheduling and must only be modified by cluster
+      administrators. This policy blocks Node taint changes by users who are not
+      members of the system:masters group or any group containing cluster-admin.
+      Requires removal of [Node,*,*] from the Kyverno resource filters.
+spec:
+  validationActions:
+    - Deny
+  evaluation:
+    background:
+      enabled: false
+  matchConstraints:
+    resourceRules:
+    - apiGroups:   [""]
+      apiVersions: ["v1"]
+      operations:  ["UPDATE"]
+      resources:   ["nodes"]
+  variables:
+  - name: isClusterAdmin
+    expression: >-
+      request.userInfo.groups.exists(g, g == 'system:masters') ||
+      request.userInfo.groups.exists(g, g.contains('cluster-admin'))
+  validations:
+  - expression: >-
+      variables.isClusterAdmin ||
+      object.spec.?taints.orValue([]) == oldObject.spec.?taints.orValue([])
+    message: "Node taint changes are only allowed for cluster administrators."
+

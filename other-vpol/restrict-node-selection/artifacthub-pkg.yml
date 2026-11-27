@@ -1,0 +1,23 @@
+name: restrict-node-selection-vpol
+version: 1.0.0
+displayName: Restrict Node Selection in ValidatingPolicy
+description: >-
+  Scheduling Pods to specific nodes using nodeSelector or nodeName bypasses normal scheduler decisions and can overload or drain specific nodes. This policy audits Pods that specify either spec.nodeSelector or spec.nodeName on creation.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-node-selection/restrict-node-selection.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  Scheduling Pods to specific nodes using nodeSelector or nodeName bypasses normal scheduler decisions and can overload or drain specific nodes. This policy audits Pods that specify either spec.nodeSelector or spec.nodeName on creation.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 0333bfd9b7fce03b297f89fb519ad2567723fb1923bad683872785b10c3c5b63
+createdAt: "2026-11-06T08:33:11Z"
