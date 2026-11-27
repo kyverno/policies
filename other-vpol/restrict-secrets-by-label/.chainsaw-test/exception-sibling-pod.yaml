@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-exception-sibling
+spec:
+  containers:
+    - name: app
+      image: nginx
+      env:
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: protected
+              key: token
+      envFrom:
+        - secretRef:
+            name: protected
+  volumes:
+    - name: direct-secret
+      secret:
+        secretName: protected
+    - name: projected-secret
+      projected:
+        sources:
+          - secret:
+              name: protected

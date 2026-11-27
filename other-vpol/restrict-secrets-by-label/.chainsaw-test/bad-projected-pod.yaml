@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: protected-projected
+spec:
+  containers:
+    - name: app
+      image: nginx
+  volumes:
+    - name: secrets
+      projected:
+        sources:
+          - secret:
+              name: protected

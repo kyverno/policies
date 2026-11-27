@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: automount-exception-target
+spec:
+  selector:
+    matchLabels:
+      app: automount-exception-target
+  template:
+    metadata:
+      labels:
+        app: automount-exception-target
+    spec:
+      automountServiceAccountToken: true
+      containers:
+        - name: app
+          image: nginx

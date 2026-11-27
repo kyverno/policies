@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secret-exception-target
+spec:
+  selector:
+    matchLabels:
+      app: secret-exception-target
+  template:
+    metadata:
+      labels:
+        app: secret-exception-target
+    spec:
+      containers:
+        - name: app
+          image: nginx
+          env:
+            - name: TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: protected
+                  key: token

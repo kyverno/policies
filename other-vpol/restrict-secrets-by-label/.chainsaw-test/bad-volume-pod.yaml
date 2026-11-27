@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: protected-volume
+spec:
+  containers:
+    - name: app
+      image: nginx
+  volumes:
+    - name: secret
+      secret:
+        secretName: protected

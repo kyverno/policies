@@ -1,0 +1,16 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-secrets-by-label
+status:
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+      - message: Background scanning disabled; reporting permissions not required.
+        reason: Succeeded
+        status: "True"
+        type: RBACPermissionsGranted
+    (conditions[?type == 'WebhookConfigured']):
+      - message: Webhook configured.
+        reason: Succeeded
+        status: "True"
+        type: WebhookConfigured

@@ -1,0 +1,38 @@
+name: restrict-automount-sa-token-vpol
+version: 1.0.0
+displayName: Restrict Auto-Mount of Service Account Tokens in Pods
+description: >-
+  Reports Pods and pod templates that leave ServiceAccount token automounting enabled, unless the Pod or Pod template is labeled app.kubernetes.io/part-of=policy-reporter. The default Audit action does not reject requests.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-automount-sa-token/restrict-automount-sa-token.yaml
+  ```
+keywords:
+  - kyverno
+  - Security
+  - ValidatingPolicy
+readme: |
+  By default, this policy runs in Audit mode: it reports violations but does not reject requests. Set `spec.validationActions` to `[Deny]` to enforce the requirement. The Chainsaw test temporarily patches the action to `Deny` solely to verify the rejection path; the policy manifest remains Audit by default.
+
+  The requirement is to set `automountServiceAccountToken: false`, except when the Pod or its controller's Pod template labels include `app.kubernetes.io/part-of: policy-reporter`. Labels on the controller object itself do not exempt its Pods.
+
+  This policy checks Pods and supported controller templates, including ReplicationControllers. It is distinct from `other-vpol/restrict-sa-automount-sa-token`, which validates the `ServiceAccount` resource itself; setting the ServiceAccount default does not prevent a Pod from overriding the setting.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-automount-sa-token` in `spec.policyRefs`, and restrict `spec.matchConditions`
+  to the exact Pod identity, requiring `object.kind == 'Pod'` as well as the namespace and name.
+  Controller objects are not exempt. Use the exact value
+  `automountServiceAccountToken:true` in `spec.allowedValues` to permit a token-enabled
+  resource only for that target. See the [tested exception](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-automount-sa-token/.kyverno-test-exceptions/exceptions.yaml).
+
+  Admission evaluation of `pods/ephemeralcontainers` requires the admission controller to have `get`, `list`, `watch`, and `update` on that subresource; background reporting also requires the reports controller to have `get`, `list`, and `watch`. See the [aggregated ClusterRole examples](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-automount-sa-token/.chainsaw-test/ephemeral-rbac.yaml).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Security in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "Pod"
+digest: 7bf71d658c498fb29aadbb76e5652d5ee161272fc30b2d5019108820aa9d9199
+createdAt: "2026-10-27T00:00:00Z"
