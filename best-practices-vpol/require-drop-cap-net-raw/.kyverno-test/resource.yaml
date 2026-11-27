@@ -23,6 +23,30 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: drop-all-good
+spec:
+  containers:
+  - name: drop-all
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["ALL"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-all-lowercase-good
+spec:
+  containers:
+  - name: drop-all
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        drop: ["all"]
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: drop-good
 spec:
   initContainers:
