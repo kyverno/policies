@@ -1,0 +1,93 @@
+name: require-authorizationpolicy-host-port-variant-vpol
+version: 1.0.0
+displayName: Require AuthorizationPolicy Host Port Variant in CEL expressions
+description: >-
+  An exact host in an Istio AuthorizationPolicy matches only that exact Host header. A request that adds a port, such as example.com:80, doesn't match it. Istio's security best practices recommend that you list both example.com and example.com:* in a rule. This policy flags exact hosts that lack their port variant where the gap lets requests through: the hosts of DENY and CUSTOM rules, and the notHosts of ALLOW rules.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio-vpol/require-authorizationpolicy-host-port-variant/require-authorizationpolicy-host-port-variant.yaml
+  ```
+keywords:
+  - kyverno
+  - Istio
+  - CEL Expressions
+readme: |
+  An exact host in an Istio AuthorizationPolicy, such as `example.com`, matches only that exact string in the Host header. A client can add a port, as in `example.com:80` or `example.com:8080`, and the rule no longer matches. Istio generates configuration for both `example.com` and `example.com:*`, so the section "Writing Host Match Policies" in Istio's security best practices recommends that you list both forms. See https://istio.io/latest/docs/ops/best-practices/security/.
+
+  The following AuthorizationPolicy is meant to block `example.com`, but a request with the Host header `example.com:80` gets through:
+
+      apiVersion: security.istio.io/v1
+      kind: AuthorizationPolicy
+      metadata:
+        name: deny-example
+      spec:
+        action: DENY
+        rules:
+        - to:
+          - operation:
+              hosts: ["example.com"]
+
+  To close the gap, list the port variant in the same list:
+
+      hosts: ["example.com", "example.com:*"]
+
+  ### Observed behavior
+
+  The following results come from Istio 1.32.0, with each AuthorizationPolicy applied to a sidecar's inbound traffic. Each cell shows the status code for the Host header `x` and then for `x:80`.
+
+  | Rule | `x` | `x:80` | Result |
+  | --- | --- | --- | --- |
+  | `DENY`, `hosts: ["example.com"]` | 403 | 200 | Bypassed. A port such as `:8080` gets through too. |
+  | `DENY`, `hosts: ["example.com", "example.com:*"]` | 403 | 403 | Blocked. |
+  | `ALLOW`, `notHosts: ["admin.example.com"]` | 403 | 200 | Bypassed. |
+  | `ALLOW`, `notHosts: ["admin.example.com", "admin.example.com:*"]` | 403 | 403 | Blocked. |
+  | `ALLOW`, `hosts: ["www.example.com"]` | 200 | 403 | Fails closed, so it isn't a bypass. |
+
+  An uppercase Host header was blocked in every case, so case doesn't affect matching.
+
+  ### What the policy checks
+
+  - The policy checks `spec.rules[].to[].operation` only where a missing port variant lets requests through:
+    - When `action` is `DENY`, it checks `hosts`.
+    - When `action` is `ALLOW` or absent, it checks `notHosts`.
+    - When `action` is `CUSTOM`, it checks `hosts`. These hosts decide which requests Istio sends to the external authorizer, so a request with a port skips the authorizer. This case comes from analysis of Istio's matching, not from the test results in the preceding table.
+  - It doesn't check `hosts` in `ALLOW` rules, `notHosts` in `DENY` or `CUSTOM` rules, or `AUDIT` rules. These fail closed or don't affect access.
+  - An entry is an exact host when it contains no `*` and no `:`. Each exact host needs the entry `<host>:*` in the same list. The comparison ignores case, because Istio matches hosts without regard to case.
+  - The message lists each missing entry by path, for example `spec.rules[0].to[1].operation.hosts is missing example.com:*`.
+  - The policy matches the `v1` and `v1beta1` versions of `security.istio.io`.
+  - It checks creates and updates, and reports existing AuthorizationPolicies through background scans. It defaults to `Audit`; switch to `Deny` to block.
+  - In `Deny` mode, AuthorizationPolicies that already exist keep working, and any update to them is blocked until you add the missing entries. Deleting them still works. Use the `Audit` reports to find them before you switch.
+
+  ### Limitations
+
+  - Suffix wildcards such as `*.example.com` have the same port behavior, but Istio has no simple port variant for them, so the policy doesn't flag them.
+  - An entry with a specific port, such as `example.com:443`, doesn't match a request without a port. The policy doesn't flag this case.
+  - Istio's documentation says that `hosts` and `notHosts` are mainly for gateways. On a sidecar, consider matching on other attributes, such as `ports` or `paths`.
+  - The policy checks only AuthorizationPolicies. It doesn't check other resources that control which hosts a workload accepts.
+
+  ### Exempting an AuthorizationPolicy
+
+  To exempt a single AuthorizationPolicy, create a Kyverno `PolicyException` that references this policy in `spec.policyRefs` and matches both the namespace and the name of that AuthorizationPolicy in `spec.matchConditions`. If you match on the name alone, you exempt the same name in every namespace. The following tested example exempts `legacy-gateways/legacy-deny`:
+
+      apiVersion: policies.kyverno.io/v1
+      kind: PolicyException
+      metadata:
+        name: require-authorizationpolicy-host-port-variant-legacy
+        namespace: policy-exceptions
+      spec:
+        policyRefs:
+        - name: require-authorizationpolicy-host-port-variant
+          kind: ValidatingPolicy
+        matchConditions:
+        - name: legacy-deny-policy
+          expression: object.metadata.namespace == 'legacy-gateways' && object.metadata.name == 'legacy-deny'
+
+  Kyverno reads PolicyExceptions only when you enable them, and only from the namespaces that you allow. This example uses the `policy-exceptions` namespace.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Istio in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "AuthorizationPolicy"
+digest: 55d831bb4e6efbb93bf65280e2b9c6752a14ffcef46ef13596bd9678e2653512
+createdAt: "2026-11-11T19:26:16Z"

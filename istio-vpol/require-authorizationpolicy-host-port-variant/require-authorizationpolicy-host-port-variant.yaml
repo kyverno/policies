@@ -1,0 +1,73 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-authorizationpolicy-host-port-variant
+  annotations:
+    policies.kyverno.io/title: Require AuthorizationPolicy Host Port Variant in CEL expressions
+    policies.kyverno.io/category: Istio in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: AuthorizationPolicy
+    policies.kyverno.io/description: >-
+      An exact host in an Istio AuthorizationPolicy matches only that exact
+      Host header. A request that adds a port, such as example.com:80, doesn't
+      match it. Istio's security best practices recommend that you list both
+      example.com and example.com:* in a rule. This policy flags exact hosts
+      that lack their port variant where the gap lets requests through: the
+      hosts of DENY and CUSTOM rules, and the notHosts of ALLOW rules.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["security.istio.io"]
+        apiVersions: [v1, v1beta1]
+        operations: [CREATE, UPDATE]
+        resources: [authorizationpolicies]
+  variables:
+    # An absent action means ALLOW.
+    - name: action
+      expression: >-
+        cel.bind(a, object.?spec.?action.orValue(null),
+          type(a) == null_type ? 'ALLOW' : (type(a) == string ? string(a) : ''))
+    # The field where a missing port variant lets requests through.
+    - name: field
+      expression: >-
+        variables.action in ['DENY', 'CUSTOM'] ? 'hosts' :
+          (variables.action == 'ALLOW' ? 'notHosts' : '')
+    # Each entry is [path, host list] for each rules[].to[].operation.
+    - name: hostLists
+      expression: >-
+        cel.bind(rules, object.?spec.?rules.orValue([]),
+          variables.field == '' || type(rules) != list ? [] :
+            lists.range(size(rules))
+              .filter(i, type(rules[i]) == map &&
+                type(rules[i][?'to'].orValue(null)) == list)
+              .map(i, cel.bind(tos, rules[i].to,
+                lists.range(size(tos))
+                  .filter(j, type(tos[j]) == map &&
+                    type(tos[j][?'operation'].orValue(null)) == map &&
+                    type(tos[j].operation[?variables.field].orValue(null)) == list)
+                  .map(j, [dyn('spec.rules[' + string(i) + '].to[' + string(j) +
+                    '].operation.' + variables.field), tos[j].operation[variables.field]])))
+              .flatten())
+    # One message per exact host without its port variant. Istio matches
+    # hosts without case, so the comparison ignores case.
+    - name: missing
+      expression: >-
+        variables.hostLists.map(e,
+          cel.bind(hosts, e[1].filter(h, type(h) == string).map(h, string(h)),
+            hosts
+              .filter(h, size(h) > 0 && !h.contains('*') && !h.contains(':') &&
+                !hosts.exists(o, o.lowerAscii() == h.lowerAscii() + ':*'))
+              .map(h, string(e[0]) + ' is missing ' + h + ':*'))).flatten()
+  validations:
+    - expression: size(variables.missing) == 0
+      messageExpression: >-
+        variables.missing.join(', ') +
+        ' (requests with a port in the Host header bypass this rule)'

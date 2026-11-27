@@ -1,0 +1,13 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: good-allow-hosts
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["www.example.com"]

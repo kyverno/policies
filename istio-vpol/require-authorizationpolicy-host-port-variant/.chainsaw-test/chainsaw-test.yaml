@@ -1,0 +1,113 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-authorizationpolicy-host-port-variant
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-bypass is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: existing-bypass.yaml
+    # A background scan reports the existing AuthorizationPolicy in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../require-authorizationpolicy-host-port-variant.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: require-authorizationpolicy-host-port-variant
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-deny-variant.yaml
+        - apply:
+            file: good-allow-hosts.yaml
+        - apply:
+            file: good-allow-nothosts-variant.yaml
+        - apply:
+            file: good-custom-variant.yaml
+        - apply:
+            file: good-wildcard.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'spec.rules[0].to[0].operation.hosts is missing example.com:* (requests with a port in the Host header bypass this rule)'))": true
+            file: bad-deny-hosts.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'spec.rules[0].to[0].operation.notHosts is missing admin.example.com:*'))": true
+            file: bad-allow-nothosts.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'spec.rules[0].to[0].operation.hosts is missing api.example.com:*'))": true
+            file: bad-custom-hosts.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'spec.rules[0].to[0].operation.hosts is missing a.example.com:*, spec.rules[1].to[1].operation.hosts is missing b.example.com:*'))": true
+            file: bad-mixed.yaml
+    # Changing the existing good-allow-hosts to DENY is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'spec.rules[0].to[0].operation.hosts is missing www.example.com:*'))": true
+            file: bad-update.yaml
+    # The PolicyException allows legacy-deny in legacy-gateways only. An
+    # AuthorizationPolicy with the same name in another namespace is still
+    # blocked, and so is legacy-deny once the exception is removed.
+    - name: step-05
+      try:
+        - apply:
+            file: legacy-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-ap.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'is missing legacy.example.com:*'))": true
+            file: exception-ap-tenant.yaml
+        - delete:
+            file: exception-ap.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy require-authorizationpolicy-host-port-variant failed') && contains($error, 'is missing legacy.example.com:*'))": true
+            file: exception-ap.yaml

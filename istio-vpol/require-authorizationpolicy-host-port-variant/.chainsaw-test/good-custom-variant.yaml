@@ -1,0 +1,15 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: good-custom-variant
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: CUSTOM
+  provider:
+    name: ext-authz
+  rules:
+  - to:
+    - operation:
+        hosts: ["api.example.com", "api.example.com:*"]

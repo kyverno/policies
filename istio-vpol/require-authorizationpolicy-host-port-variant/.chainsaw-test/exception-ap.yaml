@@ -1,0 +1,14 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: legacy-deny
+  namespace: legacy-gateways
+spec:
+  selector:
+    matchLabels:
+      app: frontend
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["legacy.example.com"]

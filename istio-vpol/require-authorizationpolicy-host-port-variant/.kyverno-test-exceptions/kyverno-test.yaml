@@ -1,0 +1,36 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-authorizationpolicy-host-port-variant-exception
+policies:
+- ../require-authorizationpolicy-host-port-variant.yaml
+resources:
+- ../.chainsaw-test/exception-ap.yaml
+- ../.chainsaw-test/exception-ap-tenant.yaml
+- ../.chainsaw-test/bad-deny-hosts.yaml
+- ../.chainsaw-test/good-deny-variant.yaml
+exceptions:
+- ../.chainsaw-test/exception.yaml
+results:
+# The PolicyException exempts legacy-gateways/legacy-deny, so it's skipped.
+- policy: require-authorizationpolicy-host-port-variant
+  kind: AuthorizationPolicy
+  resources: [legacy-gateways/legacy-deny]
+  result: skip
+  isValidatingPolicy: true
+# The same name in another namespace isn't exempt.
+- policy: require-authorizationpolicy-host-port-variant
+  kind: AuthorizationPolicy
+  resources: [default/legacy-deny]
+  result: fail
+  isValidatingPolicy: true
+- policy: require-authorizationpolicy-host-port-variant
+  kind: AuthorizationPolicy
+  resources: [good-deny-variant]
+  result: pass
+  isValidatingPolicy: true
+- policy: require-authorizationpolicy-host-port-variant
+  kind: AuthorizationPolicy
+  resources: [bad-deny-hosts]
+  result: fail
+  isValidatingPolicy: true

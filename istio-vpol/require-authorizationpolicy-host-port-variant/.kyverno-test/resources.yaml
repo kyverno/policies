@@ -1,0 +1,267 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-v1beta1
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-explicit-allow
+spec:
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        notHosts: ["admin.example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-null-action
+spec:
+  action: null
+  rules:
+  - to:
+    - operation:
+        notHosts: ["admin.example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-uppercase
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["EXAMPLE.COM"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-variant-in-other-rule
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+  - to:
+    - operation:
+        hosts: ["example.com:*"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-variant-in-nothosts
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+        notHosts: ["example.com:*"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-specific-port-only
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com", "example.com:80"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-custom-second-to
+spec:
+  action: CUSTOM
+  provider:
+    name: ext-authz
+  rules:
+  - to:
+    - operation:
+        paths: ["/api/*"]
+    - operation:
+        hosts: ["api.example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-bad-after-malformed
+spec:
+  action: DENY
+  rules:
+  - junk
+  - to: junk
+  - to:
+    - junk
+    - operation: junk
+    - operation:
+        hosts: junk
+    - operation:
+        hosts: [1, null, "", "example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-no-spec
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-empty-rules
+spec:
+  action: DENY
+  rules: []
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-no-to
+spec:
+  action: DENY
+  rules:
+  - from:
+    - source:
+        namespaces: ["dev"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-allow-hosts
+spec:
+  action: ALLOW
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-absent-action-hosts
+spec:
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-deny-nothosts
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        notHosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-custom-nothosts
+spec:
+  action: CUSTOM
+  provider:
+    name: ext-authz
+  rules:
+  - to:
+    - operation:
+        notHosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-audit-hosts
+spec:
+  action: AUDIT
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-wildcards
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["*", "*.example.com", "example.*"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-specific-port
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com:443"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-case-variant
+spec:
+  action: DENY
+  rules:
+  - to:
+    - operation:
+        hosts: ["Example.com", "example.COM:*"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-variant-first
+spec:
+  rules:
+  - to:
+    - operation:
+        notHosts: ["admin.example.com:*", "admin.example.com"]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-malformed
+spec:
+  action: DENY
+  rules:
+  - junk
+  - to: junk
+  - to:
+    - operation:
+        hosts: [1, null, ""]
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-rules-not-list
+spec:
+  action: DENY
+  rules: junk
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: edge-good-non-string-action
+spec:
+  action: 5
+  rules:
+  - to:
+    - operation:
+        hosts: ["example.com"]
