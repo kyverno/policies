@@ -1,0 +1,43 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-tekton-securitycontext
+  annotations:
+    policies.kyverno.io/title: Require Tekton Security Context
+    policies.kyverno.io/category: Tekton
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: TaskRun
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.26"
+    policies.kyverno.io/description: >-
+      Containers in a TaskRun must set a securityContext.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - tekton.dev
+        apiVersions:
+          - v1beta1
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - taskruns/status
+  validations:
+    - expression: >-
+        !has(object.status) || !has(object.status.taskSpec) ||
+        (has(object.status.taskSpec.steps) && size(object.status.taskSpec.steps) > 0 &&
+         object.status.taskSpec.steps.all(step,
+           step.name == 'digest-to-results' ||
+           (has(step.securityContext) &&
+            step.securityContext.?privileged.orValue(true) == false &&
+            step.securityContext.?allowPrivilegeEscalation.orValue(true) == false)
+         ))
+      message: "A securityContext is required with privileged and allowPrivilegeEscalation set to false on each TaskRun step except digest-to-results."

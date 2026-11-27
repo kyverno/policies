@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: block-tekton-task-runs
+status:
+  conditionStatus:
+    (conditions[?type == 'WebhookConfigured']):
+      - message: Webhook configured.
+        reason: Succeeded
+        status: "True"
+        type: WebhookConfigured

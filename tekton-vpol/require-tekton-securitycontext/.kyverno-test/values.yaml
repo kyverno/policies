@@ -1,0 +1,15 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Values
+subresources:
+- parentResource:
+    group: tekton.dev
+    kind: TaskRun
+    name: taskruns
+    namespaced: true
+    version: v1
+  subresource:
+    group: tekton.dev
+    kind: TaskRun
+    name: taskruns/status
+    namespaced: true
+    version: v1

@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: badpipelinerun01
+spec:
+  pipelineRef:
+    name: mypipeline
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: badpipelinerun02
+spec:
+  pipelineSpec:
+    tasks:
+      - name: task1
+        taskRef:
+          name: mytask
+---
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: badpipelinerun03-cross-kind
+spec:
+  taskRef:
+    name: echo-task
+    bundle: docker.io/foo/bar

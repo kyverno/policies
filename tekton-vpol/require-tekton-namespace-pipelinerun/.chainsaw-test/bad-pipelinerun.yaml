@@ -1,0 +1,8 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: badpipelinerun01
+  namespace: default
+spec:
+  pipelineRef:
+    name: mypipeline
