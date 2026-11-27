@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: drop-all-add-net-raw-bad
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - name: drop-all-add-net-raw
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - NET_RAW

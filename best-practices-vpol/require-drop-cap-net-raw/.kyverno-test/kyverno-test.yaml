@@ -25,6 +25,42 @@ results:
   kind: Pod
   policy: drop-cap-net-raw
   resources:
+  - badpod03
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod04
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod05
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod06
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - badpod07
+  result: fail
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
+  - drop-all-good
+  result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: drop-cap-net-raw
+  resources:
   - drop-good
   result: pass
 - isValidatingPolicy: true
