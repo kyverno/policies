@@ -1,0 +1,116 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: safe-paths
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /tea
+            pathType: Prefix
+          - path: /coffee
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: no-rules
+spec: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: empty-paths
+spec:
+  rules:
+    - http:
+        paths:
+          - path: ""
+            pathType: Prefix
+          - path: null
+            pathType: Prefix
+          - pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: null-rules
+spec:
+  rules: null
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: uppercase-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /ETC/kubernetes/admin.conf
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: etc-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /etc/config
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nested-etc-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /public/../etc/passwd
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: secrets-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /var/run/secrets/kubernetes.io/serviceaccount/token
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: root-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /root/.ssh/authorized_keys
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: service-account-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /var/run/kubernetes/serviceaccount/token
+            pathType: Prefix
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: admin-config-path
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /etc/kubernetes/admin.conf
+            pathType: Prefix

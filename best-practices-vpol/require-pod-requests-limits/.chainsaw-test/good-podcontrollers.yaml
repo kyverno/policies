@@ -12,6 +12,8 @@ spec:
       labels:
         foo: bar
     spec:
+      nodeSelector:
+        kyverno.io/e2e-unschedulable: "true"
       containers:
       - name: busybox
         image: ghcr.io/kyverno/test-busybox
@@ -35,6 +37,7 @@ kind: CronJob
 metadata:
   name: reqpodlimits-goodcronjob01
 spec:
+  suspend: true
   schedule: "*/1 * * * *"
   jobTemplate:
     spec:
