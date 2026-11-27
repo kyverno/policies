@@ -1,0 +1,24 @@
+name: verify-sbom-cyclonedx
+version: 1.0.0
+displayName: Verify CycloneDX SBOM (Keyless)
+description: >-
+  Software Bill of Materials (SBOM) provides details on the composition of a given container image and may be represented in a couple different standards. Having an SBOM can be important to ensuring images are built using verified processes. This policy verifies that an image has an SBOM in CycloneDX format and was signed by the expected subject and issuer when produced through GitHub Actions and using Cosign's keyless signing. It requires configuration based upon your own values.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-ivpol/verify-sbom-cyclonedx/verify-sbom-cyclonedx.yaml
+  ```
+keywords:
+  - kyverno
+  - Software Supply Chain Security
+readme: |
+  Software Bill of Materials (SBOM) provides details on the composition of a given container image and may be represented in a couple different standards. Having an SBOM can be important to ensuring images are built using verified processes. This policy verifies that an image has an SBOM in CycloneDX format and was signed by the expected subject and issuer when produced through GitHub Actions and using Cosign's keyless signing. It requires configuration based upon your own values.
+
+  The policy checks regular, init, and ephemeral container images that match the glob. Ephemeral containers are checked on updates to the `pods/ephemeralcontainers` subresource. Background evaluation is disabled, so only admission requests are checked. Audit mode reports failures without blocking workloads.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Software Supply Chain Security"
+  kyverno/kubernetesVersion: "1.35"
+  kyverno/subject: "Pod"
+digest: ad4cf507b906fa8ceb65b41ee44c6aa525dd65064d469f1057a3a33d095d60d5
+createdAt: "2026-11-10T04:41:53Z"
