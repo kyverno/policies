@@ -51,6 +51,8 @@ spec:
     - apply:
         file: good-pods.yaml
     - apply:
+        file: good-podcontrollers.yaml
+    - apply:
         expect:
         - check:
             (contains($error, 'Policy restrict-image-registries failed')): true
@@ -65,6 +67,11 @@ spec:
         - check:
             (contains($error, 'Policy restrict-image-registries failed')): true
         file: bad-pod-false.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy restrict-image-registries failed')): true
+        file: bad-podcontrollers.yaml
   - name: step-03
     try:
     - script:
@@ -86,4 +93,7 @@ spec:
     - delete:
         file: rbac-ephemeralcontainers-reports.yaml
     - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+        content: |
+          kubectl delete deployments,cronjobs --all --wait=false -n ir-pods-namespace
+          kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+

@@ -80,3 +80,30 @@ spec:
             name: test
             port:
               number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mixed-host-and-http-rules
+  namespace: test
+spec:
+  rules:
+  - host: "foo.bar.com"
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: host-only-ingress
+  namespace: test
+spec:
+  rules:
+  - host: "foo.bar.com"

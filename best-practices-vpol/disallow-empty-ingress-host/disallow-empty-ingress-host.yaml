@@ -11,8 +11,9 @@ metadata:
     policies.kyverno.io/subject: Ingress
     policies.kyverno.io/description: >-
       An ingress resource needs to define an actual host name
-      in order to be valid. This policy ensures that there is a
-      hostname for each rule defined.
+      in order to be valid. This policy fails an Ingress when the
+      number of rules with a non-empty host differs from the number
+      of rules with an http block. An empty host is not counted.
 spec:
   validationActions: [Audit]
   evaluation:
@@ -29,8 +30,8 @@ spec:
       expression: "object.spec.?rules.orValue([])"
   validations:
             - expression: >-
-                variables.rules.all(rule,
                 'ingress-host' in exceptions.allowedValues ||
-                (has(rule.host) && rule.host != '' && has(rule.http)))
+                size(variables.rules.filter(rule, rule.?host.orValue('') != '')) ==
+                size(variables.rules.filter(rule, has(rule.http)))
               message: "The Ingress host name must be defined, not empty."
         

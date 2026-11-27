@@ -2,7 +2,7 @@ name: disallow-empty-ingress-host-VPOL
 version: 1.0.0
 displayName: Disallow empty Ingress host in VPOL
 description: >-
-  An ingress resource needs to define an actual host name in order to be valid. This policy ensures that there is a hostname for each rule defined.
+  An ingress resource needs to define an actual host name in order to be valid. This policy fails an Ingress when the number of rules with a non-empty host differs from the number of rules with an http block. An empty host is not counted.
 install: |-
   ```shell
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-vpol/disallow-empty-ingress-host/disallow-empty-ingress-host.yaml
@@ -12,8 +12,8 @@ keywords:
   - Best Practices
   - VPOL
 readme: |
-  An ingress resource needs to define an actual host name in order to be valid. This policy ensures that there is a hostname for each rule defined.
-  
+  An ingress resource needs to define an actual host name in order to be valid. This policy fails an Ingress when the number of rules with a non-empty host differs from the number of rules with an http block. An empty host is not counted.
+
   ### Fine-grained PolicyException use
 
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
@@ -23,7 +23,8 @@ readme: |
   this check for all rules of the matched Ingress, not just one host value.
   Kyverno exposes it as `exceptions.allowedValues`. `variables.rules` reads
   `object.spec.rules`, defaulting to an empty list when absent. Without the token,
-  every rule must have a non-empty `host` and an `http` field.
+  the number of rules with a non-empty `host` must equal the number of rules
+  with an `http` field.
   See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/disallow-empty-ingress-host/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -33,5 +34,5 @@ annotations:
   kyverno/category: "Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Ingress"
-digest: 254426ae5ad2cc3197cce8aca087124b7745c0a87e084f783fcb964989cc2624
+digest: 76afd27918eb4f6ea878cad35870a0c1b223a1461511d44a7e2e3afe96891bc2
 createdAt: "2025-05-05T13:19:12Z"
