@@ -33,7 +33,7 @@ spec:
             restartPolicy: Never
             containers:
             - name: task
-              image: public.ecr.aws/docker/library/busybox:1.36
+              image: ghcr.io/kyverno/test-busybox
               command: [sh, -c, "exit 0"]
     - apply:
         resource:
@@ -47,7 +47,7 @@ spec:
           spec:
             containers:
             - name: task
-              image: public.ecr.aws/docker/library/busybox:1.36
+              image: ghcr.io/kyverno/test-busybox
               command: [sleep, "3600"]
     - apply:
         resource:
@@ -62,7 +62,7 @@ spec:
             restartPolicy: Never
             containers:
             - name: task
-              image: public.ecr.aws/docker/library/busybox:1.36
+              image: ghcr.io/kyverno/test-busybox
               command: [sh, -c, "exit 0"]
     - assert:
         resource:
