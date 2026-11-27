@@ -1,0 +1,41 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: require-cpu-limits
+  annotations:
+    policies.kyverno.io/title: Require CPU Limits in ValidatingPolicy
+    policies.kyverno.io/category: Other in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      Setting CPU limits on containers ensures fair distribution of resources,
+      preventing any single container from monopolizing CPU and impacting the
+      performance of other containers. This practice enhances stability,
+      predictability, and cost control, while also mitigating the noisy neighbor
+      problem and facilitating efficient scaling in Kubernetes clusters. This
+      policy ensures that cpu limits are set on every container.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups:
+          - ""
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - pods
+  variables:
+    - name: allContainers
+      expression: "object.spec.containers + object.spec.?initContainers.orValue([]) + object.spec.?ephemeralContainers.orValue([])"
+  validations:
+    - expression: "variables.allContainers.all(container, container.?resources.?limits.?cpu.orValue('') != '')"
+      message: "CPU limits are required for all containers."

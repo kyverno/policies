@@ -19,7 +19,7 @@ metadata:
       with some value.
 spec:
   validationActions: 
-    - Audit
+    - Deny
   evaluation:
     background:
       enabled: true

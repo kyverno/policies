@@ -24,6 +24,7 @@ spec:
           - v1
         operations:
           - CREATE
+          - UPDATE
         resources:
           - certificatesigningrequests
   validationActions:
@@ -35,7 +36,9 @@ spec:
         groups=' + variables.groups.join(',') + ' | Permissions: ClusterRoles=['
         + variables.clusterRoles.join(',') + '], Roles=[' +
         variables.roles.join(',') + '] | CSR Content: signerName=' +
-        variables.signerName + ', usages=[' + variables.usages.join(',') + ']'
+        variables.signerName + ', usages=[' + variables.usages.join(',') + ']' +
+        (variables.csrRequest != null ? (', CommonName=' + variables.commonName
+        + ', Organization=[' + variables.organizations + ']') : '')
   variables:
     - expression: request.userInfo.username
       name: username
@@ -60,9 +63,20 @@ spec:
         variables.groups))).map(rb, dyn(rb).metadata.namespace + '/' +
         dyn(rb).roleRef.name)
       name: roles
-    - expression: object.spec.request
-      name: csrRequest
     - expression: object.spec.?signerName.orValue('unknown')
       name: signerName
     - expression: 'object.spec.?usages.orValue([])'
       name: usages
+    - expression: >-
+        variables.signerName == 'kubernetes.io/kube-apiserver-client' ?
+        x509.decode(string(base64.decode(object.spec.request))) : null
+      name: csrRequest
+    - expression: >-
+        variables.csrRequest != null ?
+        variables.csrRequest.Subject.?CommonName.orValue('') : ''
+      name: commonName
+    - expression: >-
+        variables.csrRequest != null &&
+        variables.csrRequest.Subject.?Organization.orValue([]) != null ?
+        dyn(variables.csrRequest.Subject.?Organization.orValue([])).join(',') : ''
+      name: organizations
