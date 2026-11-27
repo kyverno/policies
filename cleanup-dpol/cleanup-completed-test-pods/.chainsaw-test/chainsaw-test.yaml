@@ -4,7 +4,20 @@ metadata:
   name: cleanup-completed-test-pods
 spec:
   steps:
-  - name: create-opted-in-and-protected-pods
+  - catch:
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        namespace: cleanup-test
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        namespace: production
+    - events:
+        namespace: cleanup-test
+    - events:
+        namespace: production
+    name: create-opted-in-and-protected-pods
     try:
     - apply:
         resource:
@@ -65,6 +78,7 @@ spec:
               image: public.ecr.aws/docker/library/busybox:1.36
               command: [sh, -c, "exit 0"]
     - assert:
+        timeout: 3m
         resource:
           apiVersion: v1
           kind: Pod
@@ -74,6 +88,7 @@ spec:
           status:
             phase: Succeeded
     - assert:
+        timeout: 3m
         resource:
           apiVersion: v1
           kind: Pod
@@ -86,7 +101,20 @@ spec:
         file: ../rbac.yaml
     - apply:
         file: ../cleanup-completed-test-pods.yaml
-  - name: delete-only-opted-in-terminal-pods
+  - catch:
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        namespace: cleanup-test
+    - describe:
+        apiVersion: v1
+        kind: Pod
+        namespace: production
+    - events:
+        namespace: cleanup-test
+    - events:
+        namespace: production
+    name: delete-only-opted-in-terminal-pods
     try:
     - error:
         timeout: 2m
@@ -97,6 +125,7 @@ spec:
             name: completed
             namespace: cleanup-test
     - assert:
+        timeout: 3m
         resource:
           apiVersion: v1
           kind: Pod
@@ -106,6 +135,7 @@ spec:
           status:
             phase: Running
     - assert:
+        timeout: 3m
         resource:
           apiVersion: v1
           kind: Pod

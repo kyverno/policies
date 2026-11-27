@@ -17,8 +17,6 @@ runs:
       uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6.1.0
       with:
         go-version: ~1.26.1
-    - name: Install latest Kyverno CLI
-      uses: kyverno/action-install-cli@fcee92fca5c883169ef9927acf543e0b5fc58289 # v0.2.0
     - name: Install ORAS
       uses: oras-project/setup-oras@38de303aac69abb66f3e6255b7198bff35f323e3 # v2.0.0
     - name: Create kind cluster
