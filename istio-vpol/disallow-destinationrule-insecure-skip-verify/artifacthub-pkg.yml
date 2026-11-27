@@ -1,0 +1,85 @@
+name: disallow-destinationrule-insecure-skip-verify-vpol
+version: 1.0.0
+displayName: Disallow DestinationRule insecureSkipVerify in CEL expressions
+description: >-
+  When an Istio DestinationRule sets tls.insecureSkipVerify to true, the proxy that originates TLS doesn't verify the server certificate's CA signature or subject alternative names. It then accepts any certificate, which allows a man-in-the-middle attack. Istio's validation accepts this setting. This policy flags DestinationRules that set insecureSkipVerify to true in the top-level traffic policy, in a subset's traffic policy, or in the port-level settings of either.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/istio-vpol/disallow-destinationrule-insecure-skip-verify/disallow-destinationrule-insecure-skip-verify.yaml
+  ```
+keywords:
+  - kyverno
+  - Istio
+  - CEL Expressions
+readme: |
+  When an Istio DestinationRule sets `tls.insecureSkipVerify` to `true`, the proxy that originates TLS doesn't verify the server certificate's CA signature or subject alternative names. It then accepts any certificate, which allows a man-in-the-middle attack on egress traffic or on traffic between services. Istio's security best practices recommend that you configure TLS verification in a DestinationRule when you use TLS origination. See https://istio.io/latest/docs/ops/best-practices/security/.
+
+  Istio's own validation accepts `insecureSkipVerify: true`. It rejects the field only when you combine it with `caCertificates`, `credentialName`, or `subjectAltNames`.
+
+  ### What the policy checks
+
+  - The policy flags `insecureSkipVerify: true` in each place where a DestinationRule sets TLS:
+    - `spec.trafficPolicy.tls`
+    - `spec.trafficPolicy.portLevelSettings[].tls`
+    - `spec.subsets[].trafficPolicy.tls`
+    - `spec.subsets[].trafficPolicy.portLevelSettings[].tls`
+  - The message lists each offending field by path, for example `spec.subsets[1].trafficPolicy.portLevelSettings[0].tls.insecureSkipVerify`.
+  - An absent field, `false`, or `null` passes. The default is `false`, so the proxy verifies the certificate.
+  - The policy matches the `v1`, `v1beta1`, and `v1alpha3` versions of `networking.istio.io`.
+  - It checks creates and updates, and reports existing DestinationRules through background scans. It defaults to `Audit`; switch to `Deny` to block.
+  - In `Deny` mode, DestinationRules that already exist keep working, and any update to them is blocked until you remove the field. Deleting them still works. Use the `Audit` reports to find them before you switch.
+
+  ### Limitations
+
+  - The policy skips TLS settings whose `mode` is `DISABLE`, because they originate no TLS. It still checks a `tls` block that sets no `mode`.
+  - It doesn't check whether a DestinationRule configures a CA. When you leave out `caCertificates` and `credentialName`, Istio verifies the server certificate against the system's trusted CAs by default.
+  - It checks only DestinationRules. It doesn't check mesh-wide settings in `meshConfig` or other resources that affect TLS origination.
+  - Development backends that use self-signed certificates need a PolicyException.
+
+  ### Verifying a backend with a private CA
+
+  Instead of skipping verification, give the proxy the CA that signed the backend's certificate. On a sidecar, `credentialName` takes effect only when the DestinationRule also sets a `workloadSelector`; otherwise, the sidecar ignores the secret and the connection fails. The secret must be in the namespace of the selected workloads:
+
+      apiVersion: networking.istio.io/v1
+      kind: DestinationRule
+      metadata:
+        name: backend
+        namespace: team-one
+      spec:
+        host: backend.ext.svc.cluster.local
+        workloadSelector:
+          matchLabels:
+            app: client
+        trafficPolicy:
+          tls:
+            mode: SIMPLE
+            credentialName: backend-ca
+
+  Here, `backend-ca` is a Secret in `team-one` with the CA certificate in its `ca.crt` key. See `credentialName` in the [DestinationRule reference](https://istio.io/latest/docs/reference/config/networking/destination-rule/#ClientTLSSettings-credential_name).
+
+  ### Exempting a DestinationRule
+
+  To exempt a single DestinationRule, such as a development backend with a self-signed certificate, create a Kyverno `PolicyException` that references this policy in `spec.policyRefs` and matches both the namespace and the name of that DestinationRule in `spec.matchConditions`. If you match on the name alone, you exempt the same name in every namespace. The following tested example exempts `dev-backends/self-signed-backend`:
+
+      apiVersion: policies.kyverno.io/v1
+      kind: PolicyException
+      metadata:
+        name: disallow-destinationrule-insecure-skip-verify-dev
+        namespace: policy-exceptions
+      spec:
+        policyRefs:
+        - name: disallow-destinationrule-insecure-skip-verify
+          kind: ValidatingPolicy
+        matchConditions:
+        - name: self-signed-dev-backend
+          expression: object.metadata.namespace == 'dev-backends' && object.metadata.name == 'self-signed-backend'
+
+  Kyverno reads PolicyExceptions only when you enable them, and only from the namespaces that you allow. This example uses the `policy-exceptions` namespace.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Istio in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "DestinationRule"
+digest: 0ad3a89bc702170c9974d36e5cd734ca2e9646ff1f2ddb2a6aedbc6498f8fb8e
+createdAt: "2026-11-11T12:31:08Z"

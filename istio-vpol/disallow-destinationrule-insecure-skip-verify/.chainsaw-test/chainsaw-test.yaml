@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: disallow-destinationrule-insecure-skip-verify
+spec:
+  template: false
+  steps:
+    # PolicyExceptions are read only from this namespace. CI creates it too;
+    # skipDelete keeps it for other tests.
+    - name: policy-exceptions-namespace
+      skipDelete: true
+      try:
+        - apply:
+            resource:
+              apiVersion: v1
+              kind: Namespace
+              metadata:
+                name: policy-exceptions
+    # existing-insecure is created before the policy exists.
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+        - apply:
+            file: existing-insecure.yaml
+    # A background scan reports the existing DestinationRule in Audit mode.
+    - name: step-02
+      try:
+        - apply:
+            file: ../disallow-destinationrule-insecure-skip-verify.yaml
+        - assert:
+            file: policy-ready.yaml
+        - assert:
+            file: report-existing.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: disallow-destinationrule-insecure-skip-verify
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-03
+      try:
+        - apply:
+            file: good-verified.yaml
+        - apply:
+            file: good-skip-false.yaml
+        - apply:
+            file: good-no-tls.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.trafficPolicy.tls.insecureSkipVerify'))": true
+            file: bad-top-level.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.trafficPolicy.portLevelSettings[1].tls.insecureSkipVerify'))": true
+            file: bad-port-level.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.subsets[0].trafficPolicy.tls.insecureSkipVerify'))": true
+            file: bad-subset.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.subsets[1].trafficPolicy.portLevelSettings[0].tls.insecureSkipVerify'))": true
+            file: bad-subset-port-level.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.trafficPolicy.tls.insecureSkipVerify, spec.subsets[0].trafficPolicy.tls.insecureSkipVerify, spec.subsets[1].trafficPolicy.portLevelSettings[0].tls.insecureSkipVerify'))": true
+            file: bad-mixed.yaml
+    # Setting insecureSkipVerify on the existing good-no-tls is blocked.
+    - name: step-04
+      try:
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.subsets[0].trafficPolicy.tls.insecureSkipVerify'))": true
+            file: bad-update.yaml
+    # The PolicyException allows self-signed-backend in dev-backends only. A
+    # DestinationRule with the same name in another namespace is still
+    # blocked, and so is self-signed-backend once the exception is removed.
+    - name: step-05
+      try:
+        - apply:
+            file: dev-namespace.yaml
+        - apply:
+            file: exception.yaml
+        - apply:
+            file: exception-dr.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.trafficPolicy.tls.insecureSkipVerify'))": true
+            file: exception-dr-tenant.yaml
+        - delete:
+            file: exception-dr.yaml
+        - delete:
+            file: exception.yaml
+        - apply:
+            expect:
+              - check:
+                  "(contains($error, 'Policy disallow-destinationrule-insecure-skip-verify failed') && contains($error, 'spec.trafficPolicy.tls.insecureSkipVerify'))": true
+            file: exception-dr.yaml

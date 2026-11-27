@@ -1,0 +1,10 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: self-signed-backend
+spec:
+  host: backend.example.com
+  trafficPolicy:
+    tls:
+      mode: SIMPLE
+      insecureSkipVerify: true

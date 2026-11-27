@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1
+kind: DestinationRule
+metadata:
+  name: bad-port-level
+spec:
+  host: api.example.com
+  trafficPolicy:
+    portLevelSettings:
+    - port:
+        number: 8080
+      loadBalancer:
+        simple: ROUND_ROBIN
+    - port:
+        number: 8443
+      tls:
+        mode: SIMPLE
+        insecureSkipVerify: true
