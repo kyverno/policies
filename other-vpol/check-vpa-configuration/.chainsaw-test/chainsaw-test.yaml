@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: check-vpa-configuration
+spec:
+  template: false
+  steps:
+    - name: step-01
+      try:
+        - assert:
+            file: crd-assert.yaml
+        - apply:
+            file: rbac.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: ../check-vpa-configuration.yaml
+        # Enforce the policy, but only in the test namespace so that workloads
+        # elsewhere in the cluster are not blocked while the test runs.
+        - patch:
+            template: true
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: check-vpa-configuration
+              spec:
+                validationActions: [Deny]
+                matchConstraints:
+                  namespaceSelector:
+                    matchLabels:
+                      kubernetes.io/metadata.name: ($namespace)
+        - assert:
+            file: policy-ready.yaml
+    # ReplicaSets are left out on purpose. The default Kyverno resourceFilters skip every
+    # ReplicaSet, so admission never evaluates them on a default install. The CLI test
+    # covers them instead.
+    - name: step-03
+      try:
+        - apply:
+            file: vpas.yaml
+        - apply:
+            file: decoy-namespace.yaml
+        - apply:
+            file: good-resources.yaml
+        - apply:
+            expect:
+              - check:
+                  ($error != null): true
+            file: bad-resources.yaml
+    - name: step-04
+      try:
+        # An update to a workload that still has a matching VPA is allowed.
+        - patch:
+            resource:
+              apiVersion: apps/v1
+              kind: StatefulSet
+              metadata:
+                name: good-sts
+                labels:
+                  updated: "true"
+        # Once its VPA is gone, an update to the same Deployment is rejected.
+        - delete:
+            ref:
+              apiVersion: autoscaling.k8s.io/v1
+              kind: VerticalPodAutoscaler
+              name: vpa-good-deploy
+        - patch:
+            expect:
+              - check:
+                  ($error != null): true
+            resource:
+              apiVersion: apps/v1
+              kind: Deployment
+              metadata:
+                name: good-deploy
+                labels:
+                  updated: "true"

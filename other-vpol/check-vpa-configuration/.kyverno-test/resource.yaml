@@ -1,0 +1,201 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: good-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-deploy
+  template:
+    metadata:
+      labels:
+        app: good-deploy
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: good-sts
+  namespace: default
+spec:
+  replicas: 1
+  serviceName: busybox
+  selector:
+    matchLabels:
+      app: good-sts
+  template:
+    metadata:
+      labels:
+        app: good-sts
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: good-rs
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-rs
+  template:
+    metadata:
+      labels:
+        app: good-rs
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: good-ds
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: good-ds
+  template:
+    metadata:
+      labels:
+        app: good-ds
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-deploy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-deploy
+  template:
+    metadata:
+      labels:
+        app: bad-deploy
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bad-sts
+  namespace: default
+spec:
+  replicas: 1
+  serviceName: busybox
+  selector:
+    matchLabels:
+      app: bad-sts
+  template:
+    metadata:
+      labels:
+        app: bad-sts
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: bad-rs
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bad-rs
+  template:
+    metadata:
+      labels:
+        app: bad-rs
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: bad-ds
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: bad-ds
+  template:
+    metadata:
+      labels:
+        app: bad-ds
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terminating-deploy
+  namespace: default
+  deletionTimestamp: "2026-01-01T00:00:00Z"
+  finalizers:
+  - foregroundDeletion
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terminating-deploy
+  template:
+    metadata:
+      labels:
+        app: terminating-deploy
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"

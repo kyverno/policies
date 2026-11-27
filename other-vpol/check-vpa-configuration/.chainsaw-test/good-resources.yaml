@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: good-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: good-deploy
+  template:
+    metadata:
+      labels:
+        app: good-deploy
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: good-sts
+spec:
+  replicas: 1
+  serviceName: busybox
+  selector:
+    matchLabels:
+      app: good-sts
+  template:
+    metadata:
+      labels:
+        app: good-sts
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: good-ds
+spec:
+  selector:
+    matchLabels:
+      app: good-ds
+  template:
+    metadata:
+      labels:
+        app: good-ds
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3600"
