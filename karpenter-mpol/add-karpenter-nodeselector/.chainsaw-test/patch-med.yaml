@@ -23,3 +23,15 @@ spec:
   containers:
     - name: busybox
       image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: kp-med-ns
+  name: deploy-med01
+spec:
+  template:
+    spec:
+      nodeSelector:
+        kubernetes.io/arch: amd64
+        karpenter.sh/capacity-type: spot

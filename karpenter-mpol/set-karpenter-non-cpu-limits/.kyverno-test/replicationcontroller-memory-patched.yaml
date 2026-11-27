@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: test-rc
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    app: test-rc
+  template:
+    metadata:
+      labels:
+        app: test-rc
+    spec:
+      containers:
+        - name: test-rc
+          image: test/test:latest
+          resources:
+            limits:
+              memory: "1Gi"
+            requests:
+              memory: "1Gi"
