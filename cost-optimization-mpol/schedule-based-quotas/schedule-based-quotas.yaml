@@ -1,0 +1,53 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: schedule-based-quotas
+  annotations:
+    policies.kyverno.io/title: Schedule-based Resource Quotas
+    policies.kyverno.io/category: Cost Optimization
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ResourceQuota
+    kyverno.io/kyverno-version: 1.15.0
+    policies.kyverno.io/minversion: 1.17.0
+    policies.kyverno.io/kubernetes-version: "1.24"
+    policies.kyverno.io/description: >-
+      Automatically adjusts resource quotas based on time schedules to optimize cloud costs.
+      During business hours (Monday to Friday, 09:00 to 17:00 America/Los_Angeles), sets cpu: 20
+      and memory: 40Gi. Otherwise, sets cpu: 10 and memory: 20Gi.
+spec:
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["resourcequotas"]
+  variables:
+    - name: mockConfigMap
+      expression: "resource.Get('v1', 'configmaps', 'default', 'time-mock')"
+    - name: currentTime
+      expression: >-
+        variables.mockConfigMap != null &&
+        has(variables.mockConfigMap.data) &&
+        'time' in variables.mockConfigMap.data ?
+        timestamp(variables.mockConfigMap.data.time) :
+        time.now()
+    - name: hour
+      expression: "variables.currentTime.getHours('America/Los_Angeles')"
+    - name: dayOfWeek
+      expression: "variables.currentTime.getDayOfWeek('America/Los_Angeles')"
+    - name: isBusinessHours
+      expression: >-
+        variables.dayOfWeek >= 1 && variables.dayOfWeek <= 5 &&
+        variables.hour >= 9 && variables.hour < 17
+  mutations:
+    - patchType: ApplyConfiguration
+      applyConfiguration:
+        expression: |
+          Object{
+            spec: Object.spec{
+              hard: {
+                "cpu": variables.isBusinessHours ? "20" : "10",
+                "memory": variables.isBusinessHours ? "40Gi" : "20Gi"
+              }
+            }
+          }

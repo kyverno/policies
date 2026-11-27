@@ -9,6 +9,8 @@ resources:
 - exception-resource.yaml
 - exception-sibling-resource.yaml
 - exception-wrong-namespace-resource.yaml
+- ../.chainsaw-test/deployment-emptydir.yaml
+- ../.chainsaw-test/deployment-no-volumes.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -58,3 +60,16 @@ results:
   - other/myapp-cli-exception-pod
   result: pass
   isMUtatingPolicy: true
+- kind: Deployment
+  isMutatingPolicy: true
+  patchedResources: ../.chainsaw-test/deployment-emptydir-patched.yaml
+  policy: add-safe-to-evict
+  resources:
+  - deploy-emptydir
+  result: pass
+- kind: Deployment
+  isMutatingPolicy: true
+  policy: add-safe-to-evict
+  resources:
+  - deploy-no-volumes
+  result: skip
