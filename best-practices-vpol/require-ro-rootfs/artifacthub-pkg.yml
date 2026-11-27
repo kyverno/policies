@@ -23,7 +23,7 @@ readme: |
   This policy accepts exact image references in `spec.images`; only matching
   images are exempted and all other images remain enforced.
   CEL reads these references through `exceptions.allowedImages`; `variables.allContainers`
-  includes regular, init, and ephemeral containers.
+  includes only regular containers (`spec.containers`).
   See the [tested example](https://github.com/kyverno/policies/blob/main/best-practices-vpol/require-ro-rootfs/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -33,5 +33,5 @@ annotations:
   kyverno/category: "Best Practices, EKS Best Practices in VPOL"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Pod"
-digest: f55a343212e3ae130e95e1d18b99941feec8d51eacc85e03d7ab84e1e24bcd4d
+digest: 1d8f6e4dec511bd740e9419fbc2115103f350a0ba60e1502d6c7d0ec809871ad
 createdAt: "2025-05-05T13:19:12Z"

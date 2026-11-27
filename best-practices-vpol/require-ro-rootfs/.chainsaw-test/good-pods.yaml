@@ -23,3 +23,17 @@ spec:
     image: ghcr.io/kyverno/test-busybox:1.35
     securityContext:
       readOnlyRootFilesystem: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: goodpod03-roroot
+spec:
+  initContainers:
+  - name: init
+    image: ghcr.io/kyverno/test-busybox:1.35
+  containers:
+  - name: busybox
+    image: ghcr.io/kyverno/test-busybox:1.35
+    securityContext:
+      readOnlyRootFilesystem: true
