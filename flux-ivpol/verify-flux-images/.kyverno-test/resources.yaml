@@ -97,6 +97,24 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
+  name: signed-source-watcher
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/source-watcher:v2.3.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: unsigned-source-watcher-identity
+spec:
+  containers:
+    - name: flux
+      image: ghcr.io/fluxcd/source-watcher:v1.0.0-rc.1
+---
+apiVersion: v1
+kind: Pod
+metadata:
   name: signed-previous-release
 spec:
   containers:

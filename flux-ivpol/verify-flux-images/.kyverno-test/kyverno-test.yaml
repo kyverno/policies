@@ -23,6 +23,7 @@ results:
       - signed-notification-controller
       - signed-image-reflector-controller
       - signed-image-automation-controller
+      - signed-source-watcher
       - signed-previous-release
       - signed-short-reference
       - signed-docker-alias
@@ -35,6 +36,7 @@ results:
       - unsigned-short-reference
       - unsigned-docker-alias
       - unsigned-docker-reference
+      - unsigned-source-watcher-identity
     result: fail
   - isImageValidatingPolicy: true
     kind: Pod
