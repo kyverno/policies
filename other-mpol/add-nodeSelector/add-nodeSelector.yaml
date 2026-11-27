@@ -16,7 +16,7 @@ spec:
     resourceRules:
     - apiGroups: [""]
       apiVersions: ["v1"]
-      operations: ["CREATE", "UPDATE"]
+      operations: ["CREATE"]
       resources: ["pods"]
     - apiGroups: ["apps"]
       apiVersions: ["v1"]
@@ -39,7 +39,7 @@ spec:
             path: "/spec/nodeSelector",
             value: dyn({"foo": "bar", "color": "orange"})
           }
-        ] : 
+        ] :
         [
           JSONPatch{
             op: "add",
@@ -65,7 +65,7 @@ spec:
               path: "/spec/template/spec/nodeSelector",
               value: dyn({"foo": "bar", "color": "orange"})
             }
-          ] : 
+          ] :
           [
             JSONPatch{
               op: "add",
@@ -92,7 +92,7 @@ spec:
               path: "/spec/jobTemplate/spec/template/spec/nodeSelector",
               value: dyn({"foo": "bar", "color": "orange"})
             }
-          ] : 
+          ] :
           [
             JSONPatch{
               op: "add",
