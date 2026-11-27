@@ -1,0 +1,33 @@
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: restrict-exec-verbs-roles
+spec:
+  steps:
+  - name: step-01
+    try:
+    - apply:
+        file: ../restrict-exec-verbs-roles.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-exec-verbs-roles
+          spec:
+            validationActions:
+            - Deny
+    - assert:
+        file: policy-ready.yaml
+    - sleep:
+        duration: 10s
+  - name: step-02
+    try:
+    - apply:
+        file: role-good.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Policy restrict-exec-verbs-roles failed')): true
+        file: role-bad.yaml

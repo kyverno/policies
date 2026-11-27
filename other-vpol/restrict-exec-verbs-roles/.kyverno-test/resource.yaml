@@ -1,0 +1,166 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: bad-exec-role
+  namespace: default
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods/exec
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: bad-attach-clusterrole
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods/attach
+  verbs:
+  - get
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: bad-portforward-clusterrole
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods/portforward
+  verbs:
+  - create
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: good-pod-reader
+  namespace: default
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  - pods/log
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: good-deployment-manager
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - update
+  - delete
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: all-access
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: any-attach
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - '*/attach'
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: wildcard-verb
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods/exec
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: other-group
+rules:
+- apiGroups:
+  - example.com
+  resources:
+  - pods/exec
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: split-rules
+rules:
+- apiGroups:
+  - ''
+  resources:
+  - pods/exec
+  verbs:
+  - list
+- apiGroups:
+  - ''
+  resources:
+  - pods
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: health-check
+rules:
+- nonResourceURLs:
+  - /healthz
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: empty
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pod-star-literal
+rules:
+- apiGroups: [""]
+  resources: ["pods/*"]
+  verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: star-star-literal
+rules:
+- apiGroups: [""]
+  resources: ["*/*"]
+  verbs: ["create"]

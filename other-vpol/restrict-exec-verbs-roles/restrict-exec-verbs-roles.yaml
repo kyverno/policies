@@ -1,0 +1,38 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-exec-verbs-roles
+  annotations:
+    policies.kyverno.io/title: Restrict Interactive Pod Access in Roles
+    policies.kyverno.io/category: Security in vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Role, ClusterRole, RBAC
+    kyverno.io/kyverno-version: 1.19.2
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      Audits Roles and ClusterRoles that grant get or create on the core Pod
+      exec, attach, or portforward subresources, including wildcard grants.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: ["rbac.authorization.k8s.io"]
+      apiVersions: ["v1"]
+      operations: ["CREATE", "UPDATE"]
+      resources: ["roles", "clusterroles"]
+  variables:
+  - name: interactiveResources
+    expression: >-
+      ['*', 'pods/exec', 'pods/attach', 'pods/portforward',
+       '*/exec', '*/attach', '*/portforward']
+  validations:
+  - expression: >-
+      !has(object.rules) || object.rules == null || !object.rules.exists(rule,
+        has(rule.apiGroups) && rule.apiGroups.exists(group, group in ['', '*']) &&
+        has(rule.resources) && rule.resources.exists(resource, resource in variables.interactiveResources) &&
+        rule.verbs.exists(verb, verb in ['get', 'create', '*']))
+    message: Roles must not grant get or create on Pod exec, attach, or portforward subresources.
