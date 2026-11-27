@@ -1,0 +1,67 @@
+apiVersion: policies.kyverno.io/v1
+kind: MutatingPolicy
+metadata:
+  name: refresh-env-var-in-pod
+  annotations:
+    policies.kyverno.io/title: Refresh Environment Variables in Pods
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod,Deployment,Secret
+    policies.kyverno.io/minversion: 1.19.1
+    policies.kyverno.io/description: >-
+      When Pods consume Secrets or ConfigMaps through environment variables, should the contents
+      of those source resources change, the downstream Pods are normally not aware of them. In order
+      for the changes to be reflected, Pods must either restart or be respawned. This policy watches
+      for changes to Secrets which have been marked for this refreshing process which contain the label
+      `kyverno.io/watch=true` and will write an annotation to any Deployment Pod template which consume
+      them as env vars. This will result in a new rollout of Pods which will pick up the changed values.
+      See the related policy entitled "Refresh Volumes in Pods" for a similar reloading process when ConfigMaps
+      and Secrets are consumed as volumes instead. Use of this policy may require providing the Kyverno ServiceAccount
+      with permission to update Deployments.
+spec:
+  evaluation:
+    admission:
+      enabled: true
+    mutateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+    - apiGroups: [""]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["secrets"]
+  matchConditions:
+  - name: watched-secret
+    expression: "has(object.metadata.labels) && 'kyverno.io/watch' in object.metadata.labels && object.metadata.labels['kyverno.io/watch'] == 'true'"
+  variables:
+  - name: secretName
+    expression: "request.name"
+  targetMatchConstraints:
+    resourceRules:
+    - apiGroups: ["apps"]
+      apiVersions: ["v1"]
+      operations: ["UPDATE"]
+      resources: ["deployments"]
+    expression: "resource.List('apps/v1', 'deployments', request.namespace)"
+  targetMatchConditions:
+  - name: references-secret-in-env
+    expression: >-
+      has(object.metadata.namespace) &&
+      object.metadata.namespace == request.namespace &&
+      has(object.spec.template.spec.containers) &&
+      object.spec.template.spec.containers.exists(c,
+        has(c.env) && c.env.exists(e,
+          has(e.valueFrom) && has(e.valueFrom.secretKeyRef) &&
+          has(e.valueFrom.secretKeyRef.name) &&
+          e.valueFrom.secretKeyRef.name == variables.secretName
+        )
+      )
+  mutations:
+  - patchType: JSONPatch
+    jsonPatch:
+      expression: |
+        !has(object.spec.template.metadata) ?
+          [JSONPatch{op: "add", path: "/spec/template/metadata", value: {"annotations": {"corp.org/random": random('[0-9a-z]{8}')}}}] :
+        has(object.spec.template.metadata.annotations) ?
+          [JSONPatch{op: "add", path: "/spec/template/metadata/annotations/" + jsonpatch.escapeKey("corp.org/random"), value: random('[0-9a-z]{8}')}] :
+          [JSONPatch{op: "add", path: "/spec/template/metadata/annotations", value: {"corp.org/random": random('[0-9a-z]{8}')}}]

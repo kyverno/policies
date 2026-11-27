@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    corp.org/random: 1234abcd
+  name: pod04
+  namespace: refresh-vols-ns
+spec:
+  containers:
+  - command:
+    - sleep
+    - "3600"
+    image: busybox:1.35
+    name: busybox
+    volumeMounts:
+    - mountPath: /mnt/foo
+      name: refresh-vol
+  volumes:
+  - emptyDir: {}
+    name: empty
+  - configMap:
+      name: not-refresh-cm
+    name: refresh-vol
