@@ -177,3 +177,12 @@ metadata:
 rules: null
 ---
 
+---
+# ClusterRole rule with only nonResourceURLs (no resources field).
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cr-nonresource-only
+rules:
+  - nonResourceURLs: ["/healthz", "/livez"]
+    verbs: ["get"]

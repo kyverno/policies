@@ -1,5 +1,5 @@
 name: restrict-wildcard-verbs-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict Wildcard in Verbs in ValidatingPolicy
 description: >-
   Wildcards ('*') in verbs grants all access to the resources referenced by it and does not follow the principal of least privilege. As much as possible, avoid such open verbs unless scoped to perhaps a custom API group. This policy blocks any Role or ClusterRole that contains a wildcard entry in the verbs list found in any rule.
@@ -33,7 +33,7 @@ annotations:
   kyverno/category: "Security, EKS Best Practices in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: 9e75ca7a8dc49f6bd245c60b46bca28f86685c570be826635e659a49e0b23430
+digest: c48bf534926979e9a2632d73340611aaf0f3113fab21f226bfb277f9904265f2
 
 
 createdAt: "2025-05-11T17:46:11Z"

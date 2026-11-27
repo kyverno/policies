@@ -1,5 +1,5 @@
 name: restrict-secret-role-verbs-vpol
-version: 1.0.0
+version: 1.0.1
 displayName: Restrict Secret Verbs in Roles in ValidatingPolicy
 description: >-
   The verbs `get`, `list`, and `watch` in a Role or ClusterRole, when paired with the Secrets resource, effectively allows Secrets to be read which may expose sensitive information. This policy prevents a Role or ClusterRole from using these verbs in tandem with Secret resources. In order to fully implement this control, it is recommended to pair this policy with another which also prevents use of the wildcard ('*') in the verbs list either when explicitly naming Secrets or when also using a wildcard in the base API group.
@@ -31,7 +31,7 @@ annotations:
   kyverno/category: "Security in vpol"
   kyverno/kubernetesVersion: "1.30"
   kyverno/subject: "Role, ClusterRole, RBAC"
-digest: 6f636cd485e0ef67275e152767aadaadd2bdd33b6cf4fec7d209eb83ce925b93
+digest: 7d5432cdd365263e5def8b2b2e1fd1c1fadc19a4bbefda3cc7d92c271e4c99b6
 
 
 createdAt: "2025-05-11T17:46:11Z"
