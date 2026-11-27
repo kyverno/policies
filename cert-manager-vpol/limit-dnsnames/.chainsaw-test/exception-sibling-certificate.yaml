@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dns-exception-sibling
+  namespace: default
+spec:
+  secretName: dns-exception-sibling
+  dnsNames: [one.example.com, two.example.com]
+  issuerRef:
+    name: acme

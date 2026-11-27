@@ -1,0 +1,21 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-restrict-issuer-exceptions
+policies:
+  - ../restrict-issuer.yaml
+resources:
+  - ../.kyverno-test/resource.yaml
+exceptions:
+  - exceptions.yaml
+results:
+  - isValidatingPolicy: true
+    policy: cert-manager-restrict-issuer
+    kind: Certificate
+    resources: [corp-exception-target]
+    result: skip
+  - isValidatingPolicy: true
+    policy: cert-manager-restrict-issuer
+    kind: Certificate
+    resources: [corp-exception-sibling, corp-exception-wrong-namespace]
+    result: fail

@@ -1,0 +1,10 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: duration-update-probe
+  namespace: default
+spec:
+  secretName: duration-update-probe
+  duration: 2160h
+  issuerRef:
+    name: acme

@@ -1,0 +1,11 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: cert-manager-limit-dnsnames
+status:
+  conditionStatus:
+    (conditions[?type == 'RBACPermissionsGranted']):
+      - status: "True"
+    (conditions[?type == 'WebhookConfigured']):
+      - status: "True"
+        type: WebhookConfigured

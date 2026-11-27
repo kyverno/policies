@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-limit-dnsnames
+policies:
+  - ../limit-dnsnames.yaml
+resources:
+  - resource.yaml
+results:
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-dnsnames
+    kind: Certificate
+    resources: [one-name]
+    result: pass
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-dnsnames
+    kind: Certificate
+    resources: [two-names]
+    result: fail
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-dnsnames
+    kind: Certificate
+    resources: [missing-names, null-names, empty-names]
+    result: pass

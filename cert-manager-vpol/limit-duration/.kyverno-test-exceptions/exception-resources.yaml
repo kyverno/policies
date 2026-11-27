@@ -1,0 +1,32 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-target
+  namespace: team-a
+spec:
+  secretName: exception-target
+  duration: 3400h
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-sibling
+  namespace: team-a
+spec:
+  secretName: exception-sibling
+  duration: 3400h
+  issuerRef:
+    name: acme
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: exception-wrong-namespace
+  namespace: team-b
+spec:
+  secretName: exception-wrong-namespace
+  duration: 3400h
+  issuerRef:
+    name: acme

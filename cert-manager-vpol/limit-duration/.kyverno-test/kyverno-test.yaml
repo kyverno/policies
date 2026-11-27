@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: cert-manager-limit-duration
+policies:
+  - ../limit-duration.yaml
+resources:
+  - resource.yaml
+results:
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-duration
+    kind: Certificate
+    resources: [short-duration, max-duration, letsencrypt-long]
+    result: pass
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-duration
+    kind: Certificate
+    resources: [long-duration, go-duration]
+    result: fail
+  - isValidatingPolicy: true
+    policy: cert-manager-limit-duration
+    kind: Certificate
+    resources: [default-duration, null-duration, empty-duration]
+    result: pass
