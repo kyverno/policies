@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: otel-inject-default
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: otel-inject-disabled
+  annotations:
+    otel.corp.org/inject-env-var: "false"
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: otel-custom-endpoint
+  annotations:
+    otel.corp.org/otlp-endpoint: http://http-collector:4318
