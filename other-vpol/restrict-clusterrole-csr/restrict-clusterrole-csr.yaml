@@ -1,0 +1,51 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: restrict-clusterrole-csr
+  annotations:
+    policies.kyverno.io/title: Restrict ClusterRole CSR Grants in ValidatingPolicy
+    policies.kyverno.io/category: Sample in Vpol
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: ClusterRole, RBAC
+    kyverno.io/kyverno-version: 1.14.0
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30"
+    policies.kyverno.io/description: >-
+      ClusterRoles that grant update or patch access to certificatesigningrequests/approval,
+      or approve access to signers, can issue credentials and should be tightly controlled.
+      This policy blocks those grants, including through RBAC wildcards. Aggregated
+      ClusterRoles are rejected because their effective rules are controller-generated.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: ["rbac.authorization.k8s.io"]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["clusterroles"]
+  variables:
+    - name: rules
+      expression: "object.?rules.orValue(null)"
+  validations:
+    - expression: >-
+        variables.rules == null || !variables.rules.exists(rule,
+          rule.?apiGroups.orValue([]) != null && rule.?apiGroups.orValue([]).exists(apiGroup, apiGroup in ['*', 'certificates.k8s.io']) &&
+          rule.?resources.orValue([]) != null && rule.?resources.orValue([]).exists(resource,
+            resource in ['*', 'certificatesigningrequests/approval', '*/approval'] &&
+            rule.?verbs.orValue([]) != null && rule.?verbs.orValue([]).exists(verb,
+              verb in ['*', 'update', 'patch'] &&
+              !('csr:approval:' + verb in exceptions.allowedValues))))
+      message: "ClusterRoles must not grant update or patch access to certificatesigningrequests/approval."
+    - expression: >-
+        variables.rules == null || !variables.rules.exists(rule,
+          rule.?apiGroups.orValue([]) != null && rule.?apiGroups.orValue([]).exists(apiGroup, apiGroup in ['*', 'certificates.k8s.io']) &&
+          rule.?resources.orValue([]) != null && rule.?resources.orValue([]).exists(resource, resource in ['*', 'signers']) &&
+          rule.?verbs.orValue([]) != null && rule.?verbs.orValue([]).exists(verb,
+            verb in ['*', 'approve'] &&
+            !('csr:signers:' + verb in exceptions.allowedValues)))
+      message: "ClusterRoles must not grant approve access to signers."
+    - expression: "!has(object.aggregationRule) || object.aggregationRule == null"
+      message: "Aggregated ClusterRoles are not allowed because their effective rules are controller-generated."

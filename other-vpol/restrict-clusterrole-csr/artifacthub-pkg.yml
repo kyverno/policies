@@ -1,0 +1,44 @@
+name: restrict-clusterrole-csr-vpol
+version: 1.0.0
+displayName: Restrict ClusterRole CSR Grants in ValidatingPolicy
+description: >-
+  ClusterRoles that grant update or patch access to certificatesigningrequests/approval,
+  or approve access to signers, can issue credentials and should be tightly controlled.
+  This policy blocks those grants, including through RBAC wildcards. Aggregated
+  ClusterRoles are rejected because their effective rules are controller-generated.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-clusterrole-csr/restrict-clusterrole-csr.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  ClusterRoles that grant update or patch access to certificatesigningrequests/approval, or approve access to signers, can issue credentials and should be tightly controlled. This policy blocks those grants, including through RBAC wildcards. It considers the `certificates.k8s.io` API group and wildcard API groups. The `resourceNames` field does not narrow these grants for this policy.
+
+  Aggregated ClusterRoles are rejected because their effective rules are controller-generated and may include permissions not present in the submitted `rules`. This is stricter than the legacy sample, which inspected only direct rules. Unlike the legacy sample, this policy treats the `certificates.k8s.io` group (or wildcard API group) as the CSR resource scope, so a similarly named resource in an unrelated API group is not flagged.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-clusterrole-csr` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact ClusterRole identity.
+  `spec.allowedValues` can permit an exact token such as `csr:approval:update`,
+  `csr:approval:patch`, `csr:approval:*`, `csr:signers:approve`, or `csr:signers:*`.
+  These tokens exempt only the corresponding protected permission; other verbs,
+  resources, or ClusterRoles remain checked. An allowed value does not exempt an
+  aggregation rule.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-clusterrole-csr/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "ClusterRole, RBAC"
+digest: f5680ae3837ae948545abe98649ef60c9204d9fcac1fa2d857a8b146017d5322
+
+
+createdAt: "2025-05-11T17:46:11Z"

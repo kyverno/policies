@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: csr-chainsaw-bad-signers
+rules:
+- apiGroups: ["*"]
+  resources: ["signers"]
+  resourceNames: ["example.com/signer"]
+  verbs: ["approve"]

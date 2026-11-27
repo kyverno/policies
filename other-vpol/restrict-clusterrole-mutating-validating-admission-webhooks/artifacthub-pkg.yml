@@ -1,0 +1,44 @@
+name: restrict-clusterrole-mutating-validating-admission-webhooks-vpol
+version: 1.0.0
+displayName: Restrict ClusterRole Admission Webhook Grants in ValidatingPolicy
+description: >-
+  ClusterRoles with create, update, or patch permissions over mutating or validating
+  admission webhook configurations can change cluster-wide admission enforcement.
+  This policy blocks those grants, including through RBAC wildcards. Aggregated
+  ClusterRoles are rejected because their effective rules are controller-generated.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/restrict-clusterrole-mutating-validating-admission-webhooks/restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+  ```
+keywords:
+  - kyverno
+  - Sample
+  - ValidatingPolicy
+readme: |
+  ClusterRoles with create, update, or patch permissions over mutating or validating admission webhook configurations can change cluster-wide admission enforcement. This policy blocks those grants, including through RBAC wildcards. It considers the `admissionregistration.k8s.io` API group and wildcard API groups. The `resourceNames` field does not narrow these grants for this policy.
+
+  Aggregated ClusterRoles are rejected because their effective rules are controller-generated and may include permissions not present in the submitted `rules`. This is stricter than the legacy sample, which inspected only direct rules. Unlike the legacy sample, this policy treats `admissionregistration.k8s.io` (or wildcard API groups) as the protected resource scope, so a similarly named resource in an unrelated API group is not flagged.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `restrict-clusterrole-mutating-validating-admission-webhooks` in `spec.policyRefs`,
+  and narrow the exception with `spec.matchConditions` using the exact ClusterRole
+  identity. `spec.allowedValues` can permit a token such as
+  `webhook:mutatingwebhookconfigurations:create` or
+  `webhook:validatingwebhookconfigurations:update`. These tokens exempt only the
+  corresponding protected permission; other verbs, resources, or ClusterRoles remain
+  checked. An allowed value does not exempt an aggregation rule.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/restrict-clusterrole-mutating-validating-admission-webhooks/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Sample in Vpol"
+  kyverno/kubernetesVersion: "1.30"
+  kyverno/subject: "ClusterRole, RBAC"
+digest: 24f7e0b4077f9249fc476779163e604d49b746f1e9cab913f5b7db4ad7b025d4
+
+
+createdAt: "2025-05-11T17:46:11Z"

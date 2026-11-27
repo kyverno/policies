@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: restrict-clusterrole-mutating-validating-admission-webhooks
+spec:
+  steps:
+  - name: restrict-admission-webhook-permissions
+    try:
+    - script:
+        content: |
+          set -eu
+          kubectl delete clusterrole webhook-chainsaw-good-read webhook-chainsaw-nonresource webhook-chainsaw-bad-mutating webhook-chainsaw-bad-wildcards webhook-chainsaw-bad-aggregate --ignore-not-found --wait
+          kubectl delete validatingpolicies.policies.kyverno.io restrict-clusterrole-mutating-validating-admission-webhooks --ignore-not-found --wait
+    - apply:
+        file: ../restrict-clusterrole-mutating-validating-admission-webhooks.yaml
+    - patch:
+        resource:
+          apiVersion: policies.kyverno.io/v1
+          kind: ValidatingPolicy
+          metadata:
+            name: restrict-clusterrole-mutating-validating-admission-webhooks
+          spec:
+            validationActions: [Deny]
+    - assert:
+        file: policy-ready.yaml
+    - apply:
+        file: cr-good.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'ClusterRoles must not grant create, update, or patch access to admission webhook configurations')): true
+        file: cr-bad-webhooks.yaml
+    - apply:
+        expect:
+        - check:
+            (contains($error, 'Aggregated ClusterRoles are not allowed')): true
+        file: cr-bad-aggregate.yaml
+    cleanup:
+    - script:
+        content: |
+          set -eu
+          kubectl delete clusterrole webhook-chainsaw-good-read webhook-chainsaw-nonresource webhook-chainsaw-bad-mutating webhook-chainsaw-bad-wildcards webhook-chainsaw-bad-aggregate --ignore-not-found --wait
+          kubectl delete validatingpolicies.policies.kyverno.io restrict-clusterrole-mutating-validating-admission-webhooks --ignore-not-found --wait

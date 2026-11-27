@@ -1,0 +1,14 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: admission-webhook-grant-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: restrict-clusterrole-mutating-validating-admission-webhooks
+  matchConditions:
+  - name: exact-clusterrole
+    expression: object.metadata.name in ['webhook-exception-create', 'webhook-exception-create-patch']
+  allowedValues:
+  - webhook:mutatingwebhookconfigurations:create
