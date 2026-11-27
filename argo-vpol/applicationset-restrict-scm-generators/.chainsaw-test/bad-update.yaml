@@ -1,0 +1,24 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: good-list
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - scmProvider:
+      github:
+        organization: example
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook

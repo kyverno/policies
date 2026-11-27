@@ -1,0 +1,24 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: applicationset-restrict-scm-generators-trusted-namespaces
+# policy.yaml trusts argocd and platform-tools. Each resource uses
+# pullRequest and scmProvider generators.
+policies:
+- policy.yaml
+resources:
+- resources.yaml
+results:
+- kind: ApplicationSet
+  policy: applicationset-restrict-scm-generators
+  resources:
+  - in-argocd
+  - in-platform-tools
+  result: pass
+- kind: ApplicationSet
+  policy: applicationset-restrict-scm-generators
+  resources:
+  # Only exact matches of a trusted namespace are allowed.
+  - in-team-one
+  - in-platform-tools-dev
+  result: fail

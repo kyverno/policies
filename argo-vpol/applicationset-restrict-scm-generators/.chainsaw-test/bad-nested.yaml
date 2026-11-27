@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bad-nested
+spec:
+  generators:
+  - merge:
+      mergeKeys: [name]
+      generators:
+      - list:
+          elements:
+          - name: one
+      - matrix:
+          generators:
+          - git:
+              repoURL: https://github.com/example/apps.git
+              revision: HEAD
+              directories:
+              - path: apps/*
+          - pullRequest:
+              github:
+                owner: example
+                repo: apps
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook

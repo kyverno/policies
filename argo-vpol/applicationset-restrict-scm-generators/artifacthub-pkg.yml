@@ -1,0 +1,91 @@
+name: applicationset-restrict-scm-generators-vpol
+version: 1.0.0
+displayName: Restrict ApplicationSet SCM Generators in CEL expressions
+description: >-
+  Argo CD's documentation warns that, with ApplicationSets in any namespace, scmProvider and pullRequest generators can be used to exfiltrate Secrets. See https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Appset-Any-Namespace/#scm-providers-secrets-consideration. Argo CD requires an SCM URL allowlist in that setup, but the allowlist covers only custom API URLs. This policy flags ApplicationSets outside the trusted Argo CD namespaces (argocd by default) that use these generators, including inside matrix and merge generators. It adds protection on top of Argo CD's own settings but doesn't fully prevent Secret exfiltration. To trust other namespaces, change the trustedNamespaces variable.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/argo-vpol/applicationset-restrict-scm-generators/applicationset-restrict-scm-generators.yaml
+  ```
+keywords:
+  - kyverno
+  - Argo
+  - CEL Expressions
+readme: |
+  Argo CD's documentation warns that, with ApplicationSets in any namespace, scmProvider and pullRequest generators can be used to exfiltrate Secrets. See https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/Appset-Any-Namespace/#scm-providers-secrets-consideration. Argo CD requires an SCM URL allowlist in that setup, but the allowlist covers only custom API URLs. This policy flags ApplicationSets outside the trusted Argo CD namespaces (argocd by default) that use these generators, including inside matrix and merge generators. It adds protection on top of Argo CD's own settings but doesn't fully prevent Secret exfiltration. To trust other namespaces, change the trustedNamespaces variable.
+
+  ### What the policy checks
+
+  - ApplicationSets in a trusted namespace can use any generator.
+  - In any other namespace, the policy flags every `scmProvider` and
+    `pullRequest` generator, at the top level and inside `matrix` and `merge`
+    generators. The message lists each one by path, for example
+    `spec.generators[0].matrix.generators[1].scmProvider`.
+  - It checks creates and updates, and reports existing ApplicationSets
+    through background scans. It defaults to `Audit`; switch to `Deny` to
+    block.
+  - In `Deny` mode, ApplicationSets that already exist keep running, and any
+    update to them is blocked until the generators are removed. Deleting them
+    still works. Use the `Audit` reports to find them before you switch.
+
+  ### Scope and limits
+
+  The policy checks only whether an ApplicationSet outside a trusted
+  namespace uses an `scmProvider` or `pullRequest` generator. It doesn't
+  inspect:
+
+  - `plugin` generators or any other generator type.
+  - Custom API URLs, such as `api` in a `gitea` generator.
+  - `tokenRef` values or the Secrets they reference.
+
+  Because it blocks these generator types outright, it also flags generators
+  that use no custom URL or token. It's an additional layer of protection, not
+  complete prevention of Secret exfiltration: keep Argo CD's own settings,
+  described in the next section, enabled.
+
+  Other limits:
+
+  - Argo CD nests `matrix` and `merge` generators at most two levels deep and
+    ignores a `matrix` or `merge` below that. The policy ignores them too.
+  - Namespaces must match a `trustedNamespaces` entry exactly; a similar name
+    such as `argocd-apps` isn't trusted.
+  - If ApplicationSets in any namespace aren't enabled, Argo CD doesn't
+    process ApplicationSets outside its own namespace, so the policy reports
+    ApplicationSets that never run.
+
+  ### How it complements Argo CD's settings
+
+  Argo CD's own protections are controller-wide settings in
+  `argocd-cmd-params-cm`:
+
+  - `applicationsetcontroller.allowed.scm.providers` limits the API URLs that
+    SCM providers can use. When ApplicationSets in any namespace are enabled,
+    Argo CD v2.10 and later don't start the ApplicationSet controller unless
+    this allowlist is set or SCM providers are turned off. The allowlist
+    applies only to generators that set a custom API URL.
+  - `applicationsetcontroller.enable.scm.providers: "false"` turns off SCM and
+    pull request generators for every namespace, including `argocd`.
+  - `applicationsetcontroller.enable.tokenref.strict.mode: "true"` only lets
+    `tokenRef` read Secrets labeled `argocd.argoproj.io/secret-type: scm-creds`.
+
+  This policy adds a per-namespace rule: administrators in a trusted
+  namespace keep these generators, and tenants in other namespaces can't use
+  them, whichever API URL or credentials they reference.
+
+  ### Trusting namespaces and exempting ApplicationSets
+
+  To trust more namespaces, add them to the `trustedNamespaces` variable, for
+  example `['argocd', 'argocd-platform']`. To exempt a single ApplicationSet,
+  create a Kyverno `PolicyException` that references this policy in
+  `spec.policyRefs` and matches that ApplicationSet's namespace and name in
+  `spec.matchConditions`. Matching on the name alone would exempt the same
+  name in every namespace. See the
+  [tested example](https://github.com/kyverno/policies/blob/main/argo-vpol/applicationset-restrict-scm-generators/.chainsaw-test/exception.yaml).
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Argo in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "ApplicationSet"
+digest: 513e8f20143151f6d2978bdaf6dd7459d36b60f83795c394c462fa5ccd5c5436
+createdAt: "2026-11-11T05:55:58Z"

@@ -1,0 +1,148 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: in-argocd
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - pullRequest:
+      github:
+        owner: example
+        repo: apps
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: in-platform-tools
+  namespace: platform-tools
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - pullRequest:
+      github:
+        owner: example
+        repo: apps
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: in-team-one
+  namespace: team-one
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - pullRequest:
+      github:
+        owner: example
+        repo: apps
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: in-platform-tools-dev
+  namespace: platform-tools-dev
+spec:
+  generators:
+  - list:
+      elements:
+      - name: one
+  - pullRequest:
+      github:
+        owner: example
+        repo: apps
+  - matrix:
+      generators:
+      - scmProvider:
+          github:
+            organization: example
+      - git:
+          repoURL: https://github.com/example/apps.git
+          revision: HEAD
+          directories:
+          - path: apps/*
+  template:
+    metadata:
+      name: '{{name}}-app'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/example/apps.git
+        targetRevision: HEAD
+        path: guestbook
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: guestbook
