@@ -7,7 +7,7 @@ spec:
   policyRefs:
   - name: advanced-restrict-image-registries
     kind: ValidatingPolicy
-  allowedValues:
+  images:
   - ghrc.io/kyverno/test-busybox:1.35
   matchConditions:
   - name: exact-pod

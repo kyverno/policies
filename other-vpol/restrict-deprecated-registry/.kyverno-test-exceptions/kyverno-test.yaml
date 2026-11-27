@@ -6,6 +6,7 @@ policies:
 - ../restrict-deprecated-registry.yaml
 resources:
 - ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -21,3 +22,9 @@ results:
   resources:
   - policy-test/test-pod-good
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: restrict-deprecated-registry
+  resources:
+  - exception-sibling-ns/test-pod-bad-sibling
+  result: fail

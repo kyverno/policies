@@ -2,7 +2,15 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: validate-probes-exceptions}
 policies: [../ensure-probes-different.yaml]
-resources: [../.kyverno-test/resource.yaml]
+resources:
+- ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - {kind: Deployment, policy: validate-probes, resources: [mydeploy-2], result: pass, isValidatingPolicy: true}
+- kind: Deployment
+  policy: validate-probes
+  isValidatingPolicy: true
+  resources:
+  - exception-sibling-ns/mydeploy-2-sibling
+  result: fail

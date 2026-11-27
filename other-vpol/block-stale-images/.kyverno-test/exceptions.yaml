@@ -10,5 +10,5 @@ spec:
   matchConditions:
   - name: exact-resource
     expression: request.name == 'redis-bad' && request.namespace == 'default'
-  allowedValues:
+  images:
   - docker.io/redis:6.0.0-buster

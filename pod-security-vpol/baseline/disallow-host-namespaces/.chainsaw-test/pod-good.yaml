@@ -3,6 +3,8 @@ kind: Pod
 metadata:
   name: goodpod01-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: busybox01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -14,6 +16,8 @@ kind: Pod
 metadata:
   name: goodpod02-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostPID: false
   containers:
   - name: busybox01
@@ -24,6 +28,8 @@ kind: Pod
 metadata:
   name: goodpod03-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostIPC: false
   containers:
   - name: busybox01
@@ -36,6 +42,8 @@ kind: Pod
 metadata:
   name: goodpod04-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostNetwork: false
   containers:
   - name: busybox01
@@ -48,6 +56,8 @@ kind: Pod
 metadata:
   name: goodpod05-new
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostPID: false
   hostIPC: false
   hostNetwork: false
@@ -62,6 +72,8 @@ kind: Pod
 metadata:
   name: goodpod01
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: container01
     image: ghcr.io/kyverno/test-busybox:1.35
@@ -71,6 +83,8 @@ kind: Pod
 metadata:
   name: goodpod02
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostPID: false
   containers:
   - name: container01
@@ -81,6 +95,8 @@ kind: Pod
 metadata:
   name: goodpod03
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostIPC: false
   containers:
   - name: container01
@@ -91,6 +107,8 @@ kind: Pod
 metadata:
   name: goodpod04
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostNetwork: false
   containers:
   - name: container01
@@ -101,6 +119,8 @@ kind: Pod
 metadata:
   name: goodpod05
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   hostPID: false
   hostIPC: false
   hostNetwork: false

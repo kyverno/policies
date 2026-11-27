@@ -6,6 +6,8 @@ metadata:
 spec:
   template:
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - name: pi
         image: perl
@@ -19,10 +21,13 @@ metadata:
   name: addcronjob01
 spec:
   schedule: "*/1 * * * *"
+  suspend: true
   jobTemplate:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           containers:
           - name: hello
             image: busybox

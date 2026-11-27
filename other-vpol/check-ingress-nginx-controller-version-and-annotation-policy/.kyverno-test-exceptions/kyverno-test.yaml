@@ -2,7 +2,9 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: ingress-controller-exceptions}
 policies: [../check-ingress-nginx-controller-version-and-annotation-policy.yaml]
-resources: [resource.yaml]
+resources:
+- resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - isValidatingPolicy: true
@@ -10,3 +12,9 @@ results:
   policy: check-ingress-nginx-controller-version-and-annotation-policy
   resources: [policy-exceptions/bad-pod]
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: check-ingress-nginx-controller-version-and-annotation-policy
+  resources:
+  - exception-sibling-ns/bad-pod-sibling
+  result: fail

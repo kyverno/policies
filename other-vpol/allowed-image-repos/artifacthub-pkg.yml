@@ -19,9 +19,9 @@ readme: |
   Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
   `allowed-image-repos` in `spec.policyRefs`, and narrow the exception with
   `spec.matchConditions` using the exact request identity.
-  List exact container image references in `spec.allowedValues` to bypass the repository
-  check for those images, not repository names. CEL consumes `spec.allowedValues` as
-  `exceptions.allowedValues`; unlisted values remain checked.
+  List exact container image references in `spec.images` to bypass the repository
+  check for those images, not repository names. CEL consumes `spec.images` as
+  `exceptions.allowedImages`; unlisted images remain checked.
   See the [tested example](https://github.com/kyverno/policies/blob/main/other-vpol/allowed-image-repos/.kyverno-test/exceptions.yaml).
   With PolicyException support disabled, or when no exception matches, the
   policy keeps its normal enforcement behavior.
@@ -31,5 +31,5 @@ annotations:
   kyverno/category: "Sample in Vpol"
   kyverno/kubernetesVersion: "1.24"
   kyverno/subject: "Pod"
-digest: 4c753f1d6fef79ca0d7c505fd14060d0a9f67b4cb52d3b79e6461cd7f0a162fe
+digest: 30db71c8edd3667af64cf32432a458712e3f1aff1b65586ecd3f0d9e03643076
 createdAt: "2025-11-24T17:13:07Z"

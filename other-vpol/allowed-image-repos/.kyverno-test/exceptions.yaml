@@ -10,5 +10,5 @@ spec:
   matchConditions:
   - name: exact-resource
     expression: request.name == 'badpod01' && request.namespace == 'default'
-  allowedValues:
+  images:
   - ghcr.io/kyverno/test-busybox:1.35

@@ -5,9 +5,18 @@ metadata:
   creationTimestamp: null
   name: add-psa-labels
 spec:
+  # Restore namespace labels when any step fails; the final step's cleanup covers success.
+  catch:
+  - script:
+      content: |
+        set -eu
+        kubectl delete mutatingpolicy add-psa-labels --ignore-not-found --wait=true
+        ../../../.chainsaw/scripts/namespace-labels.sh restore pod-security.kubernetes.io/enforce pod-security.kubernetes.io/warn
   steps:
   - name: step-01
     try:
+    - script:
+        content: ../../../.chainsaw/scripts/namespace-labels.sh save pod-security.kubernetes.io/enforce pod-security.kubernetes.io/warn
     - apply:
         file: ../add-psa-labels.yaml
     - assert:
@@ -38,3 +47,9 @@ spec:
         file: exception-expected.yaml
     - assert:
         file: exception-sibling-expected.yaml
+    cleanup:
+    - script:
+        content: |
+          set -eu
+          kubectl delete mutatingpolicy add-psa-labels --ignore-not-found --wait=true
+          ../../../.chainsaw/scripts/namespace-labels.sh restore pod-security.kubernetes.io/enforce pod-security.kubernetes.io/warn

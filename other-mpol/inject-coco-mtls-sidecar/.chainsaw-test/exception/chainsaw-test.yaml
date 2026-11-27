@@ -28,27 +28,12 @@ spec:
     - script:
         content: |
           set -eu
-          probe_output=".inject-coco-sidecar-exception-$$.json"
-          probe_error=".inject-coco-sidecar-exception-$$.stderr"
-          trap 'rm -f "$probe_output" "$probe_error"' EXIT
-          ready=false
-          for attempt in $(seq 1 60); do
-            if kubectl create --dry-run=server -f pod.yaml -o json > "$probe_output" 2> "$probe_error" &&
-              jq -e \
-                '(.spec.containers | length == 1) and ([.spec.containers[] | select(.name == "coco-sidecar")] | length == 0)' \
-                "$probe_output" >/dev/null 2>> "$probe_error"; then
-              ready=true
-              break
-            fi
-            sleep 1
-          done
-          if [ "$ready" != true ]; then
-            printf 'timed out waiting for PolicyException to suppress the CoCo sidecar; last probe response:\n' >&2
-            cat "$probe_output" >&2
-            printf 'last kubectl/jq stderr:\n' >&2
-            cat "$probe_error" >&2
-            exit 1
-          fi
+          . ../../../../.chainsaw/scripts/retry.sh
+          exception_active() {
+            kubectl create --dry-run=server -f pod.yaml -o json |
+              jq -e '(.spec.containers | length == 1) and ([.spec.containers[] | select(.name == "coco-sidecar")] | length == 0)'
+          }
+          retry exception_active
     - apply: {file: pod.yaml}
     - assert: {file: pod-unchanged.yaml}
     - apply: {file: pod-sibling.yaml}

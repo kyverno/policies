@@ -2,7 +2,9 @@ apiVersion: cli.kyverno.io/v1alpha1
 kind: Test
 metadata: {name: imagepullpolicy-exceptions}
 policies: [../imagepullpolicy-always.yaml]
-resources: [resource.yaml]
+resources:
+- resource.yaml
+- sibling-resource.yaml
 exceptions: [../.kyverno-test/exceptions.yaml]
 results:
 - isValidatingPolicy: true
@@ -10,3 +12,9 @@ results:
   policy: imagepullpolicy-always
   resources: [policy-exceptions/myapp-pod-2]
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: imagepullpolicy-always
+  resources:
+  - exception-sibling-ns/myapp-pod-2-sibling
+  result: fail

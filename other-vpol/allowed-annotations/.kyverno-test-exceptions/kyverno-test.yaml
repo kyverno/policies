@@ -6,6 +6,7 @@ policies:
 - ../allowed-annotations.yaml
 resources:
 - resource.yaml
+- sibling-resource.yaml
 exceptions:
 - ../.kyverno-test/exceptions.yaml
 results:
@@ -15,3 +16,9 @@ results:
   resources:
   - policy-exceptions/badpod01
   result: pass
+- isValidatingPolicy: true
+  kind: Pod
+  policy: allowed-annotations
+  resources:
+  - exception-sibling-ns/badpod01-sibling
+  result: fail

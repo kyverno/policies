@@ -7,6 +7,7 @@ policies:
 - ../limit-configmap-for-sa.yaml
 resources:
 - ../.kyverno-test/resource.yaml
+- sibling-resource.yaml
 exceptions:
 - ../.kyverno-test/exceptions.yaml
 results:
@@ -22,3 +23,9 @@ results:
   - any-configmap-name-bad
   result: skip
   isValidatingPolicy: true
+- kind: ConfigMap
+  policy: limit-configmap-for-sa
+  isValidatingPolicy: true
+  resources:
+  - another-namespace/another-configmap-name
+  result: fail

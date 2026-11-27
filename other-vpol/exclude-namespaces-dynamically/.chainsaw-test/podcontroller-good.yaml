@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: busybox
-  name: gooddeployment01
+  name: exclude-dynamically-gooddeployment01
   namespace: exclude-ns
 spec:
   replicas: 1
@@ -45,7 +45,7 @@ spec:
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: goodcronjob01
+  name: exclude-dynamically-goodcronjob01
   namespace: exclude-ns-2
 spec:
   schedule: "* * * * *"

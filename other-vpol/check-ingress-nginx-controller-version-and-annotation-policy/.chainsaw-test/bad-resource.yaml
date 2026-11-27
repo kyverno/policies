@@ -31,6 +31,8 @@ kind: Pod
 metadata:
   name: ingress-nginx-controller
 spec:
+  nodeSelector:
+    kyverno.io/chainsaw-never-schedule: "true"
   containers:
   - name: controller
     image: registry.k8s.io/ingress-nginx/controller:v1.11.0

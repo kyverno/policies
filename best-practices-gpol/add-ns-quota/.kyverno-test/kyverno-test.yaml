@@ -6,6 +6,7 @@ policies:
 - ../add-ns-quota.yaml
 resources:
 - resource.yaml
+- sibling-resource.yaml
 exceptions:
 - exceptions.yaml
 results:
@@ -14,5 +15,14 @@ results:
   policy: add-ns-quota
   resources:
   - hello-world-namespace
+  result: pass
+  isGeneratingPolicy: true
+- generatedResources:
+  - generatedResourceQuota-sibling.yaml
+  - generatedLimitRange-sibling.yaml
+  kind: Namespace
+  policy: add-ns-quota
+  resources:
+  - hello-world-namespace-sibling
   result: pass
   isGeneratingPolicy: true

@@ -12,6 +12,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       initContainers:
       - name: busybox01-init
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -35,6 +37,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: Never
           initContainers:
           - name: busybox01-init
@@ -63,6 +67,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -81,6 +87,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -101,6 +109,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - name: container01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -123,6 +133,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       initContainers:
       - name: initcontainer01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -144,6 +156,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       initContainers:
       - name: initcontainer01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -167,6 +181,8 @@ spec:
       labels:
         app: app
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       initContainers:
       - name: initcontainer01
         image: ghcr.io/kyverno/test-busybox:1.35
@@ -190,6 +206,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           containers:
           - name: container01
@@ -205,6 +223,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           containers:
           - name: container01
@@ -222,6 +242,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           containers:
           - name: container01
@@ -241,6 +263,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
@@ -259,6 +283,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01
@@ -279,6 +305,8 @@ spec:
     spec:
       template:
         spec:
+          nodeSelector:
+            kyverno.io/chainsaw-never-schedule: "true"
           restartPolicy: OnFailure
           initContainers:
           - name: initcontainer01

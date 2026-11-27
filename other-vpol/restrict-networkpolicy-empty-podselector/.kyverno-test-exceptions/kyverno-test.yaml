@@ -6,6 +6,7 @@ policies:
 - ../restrict-networkpolicy-empty-podselector.yaml
 resources:
 - resource.yaml
+- sibling-resource.yaml
 exceptions:
 - ../.kyverno-test/exceptions.yaml
 results:
@@ -15,3 +16,9 @@ results:
   resources:
   - policy-exceptions/badnetworkpolicy
   result: pass
+- isValidatingPolicy: true
+  kind: NetworkPolicy
+  policy: restrict-networkpolicy-empty-podselector
+  resources:
+  - exception-sibling-ns/badnetworkpolicy-sibling
+  result: fail

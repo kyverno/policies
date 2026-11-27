@@ -6,6 +6,8 @@ metadata:
     app: myapp
 spec:
   terminationGracePeriodSeconds: 0
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox
@@ -24,6 +26,8 @@ metadata:
     app: myapp
 spec:
   terminationGracePeriodSeconds: 0
+  nodeSelector:
+    kyverno.io/e2e-unschedulable: "true"
   containers:
   - name: busybox
     image: ghcr.io/kyverno/test-busybox

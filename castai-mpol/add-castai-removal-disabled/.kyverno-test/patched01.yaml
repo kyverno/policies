@@ -8,6 +8,8 @@ spec:
       labels:
         autoscaling.cast.ai/removal-disabled: "true"
     spec:
+      nodeSelector:
+        kyverno.io/chainsaw-never-schedule: "true"
       containers:
       - name: pi
         image: perl
