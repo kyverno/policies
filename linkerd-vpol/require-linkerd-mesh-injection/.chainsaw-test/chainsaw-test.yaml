@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/kyverno/chainsaw/main/.schemas/json/test-chainsaw-v1alpha1.json
+apiVersion: chainsaw.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  creationTimestamp: null
+  name: require-linkerd-mesh-injection
+spec:
+  template: false
+  steps:
+    - name: step-01
+      try:
+        - apply:
+            file: ../require-linkerd-mesh-injection.yaml
+        - patch:
+            resource:
+              apiVersion: policies.kyverno.io/v1
+              kind: ValidatingPolicy
+              metadata:
+                name: require-linkerd-mesh-injection
+              spec:
+                validationActions: [Deny]
+        - assert:
+            file: policy-ready.yaml
+    - name: step-02
+      try:
+        - apply:
+            file: good-ns.yaml
+        - apply:
+            expect:
+              - check:
+                  (contains($error, 'Policy require-linkerd-mesh-injection failed')): true
+            file: bad-ns.yaml

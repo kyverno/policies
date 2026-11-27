@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    linkerd.io/inject: disabled
+  name: badpod01
+spec:
+  containers:
+    - image: ghcr.io/kyverno/test-busybox:1.35
+      name: busybox

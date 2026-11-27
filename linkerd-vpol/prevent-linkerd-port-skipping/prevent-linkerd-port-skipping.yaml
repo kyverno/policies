@@ -1,0 +1,58 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: prevent-linkerd-port-skipping
+  annotations:
+    policies.kyverno.io/title: Prevent Linkerd Port Skipping in CEL expressions
+    policies.kyverno.io/category: Linkerd in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/description: >-
+      Linkerd has the ability to skip inbound and outbound ports assigned to Pods, exempting
+      them from mTLS. This can be important in some narrow use cases but
+      generally should be avoided. This policy prevents Pods from setting
+      the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [pods, replicationcontrollers]
+      - apiGroups: [apps]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [deployments, daemonsets, statefulsets, replicasets]
+      - apiGroups: [batch]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [jobs, cronjobs]
+  variables:
+    # Annotations of the Pod, or of the Pod template for Pod controllers.
+    - name: annotations
+      expression: >-
+        object.kind == 'Pod' ? object.metadata.?annotations.orValue({}) :
+        object.kind == 'CronJob' ? object.spec.?jobTemplate.?spec.?template.?metadata.?annotations.orValue({}) :
+        object.spec.?template.?metadata.?annotations.orValue({})
+    - name: skipKeys
+      expression: >-
+        ['config.linkerd.io/skip-inbound-ports', 'config.linkerd.io/skip-outbound-ports']
+        .filter(k, k in variables.annotations)
+    # Path to the Pod template, or '' for Pods.
+    - name: prefix
+      expression: >-
+        object.kind == 'Pod' ? '' :
+        object.kind == 'CronJob' ? 'spec.jobTemplate.spec.template.' : 'spec.template.'
+  validations:
+    - expression: size(variables.skipKeys) == 0
+      messageExpression: >-
+        'Pods may not skip ports. Remove ' + variables.skipKeys.join(', ') +
+        ' from ' + variables.prefix + 'metadata.annotations.'

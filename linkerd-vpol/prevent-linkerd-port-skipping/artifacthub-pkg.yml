@@ -1,0 +1,36 @@
+name: prevent-linkerd-port-skipping-vpol
+version: 1.0.0
+displayName: Prevent Linkerd Port Skipping in CEL expressions
+description: >-
+  Linkerd has the ability to skip inbound and outbound ports assigned to Pods, exempting them from mTLS. This can be important in some narrow use cases but generally should be avoided. This policy prevents Pods from setting the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/linkerd-vpol/prevent-linkerd-port-skipping/prevent-linkerd-port-skipping.yaml
+  ```
+keywords:
+  - kyverno
+  - Linkerd
+  - CEL Expressions
+readme: |
+  Linkerd has the ability to skip inbound and outbound ports assigned to Pods, exempting them from mTLS. This can be important in some narrow use cases but generally should be avoided. This policy prevents Pods from setting the annotations `config.linkerd.io/skip-inbound-ports` or `config.linkerd.io/skip-outbound-ports`.
+
+  The policy checks Pods and the Pod templates of Deployments, DaemonSets, StatefulSets, ReplicaSets, ReplicationControllers, Jobs, and CronJobs. It fails when either annotation is present, whatever its value.
+
+  ### Fine-grained PolicyException use
+
+  Enable PolicyException support in Kyverno, reference the `ValidatingPolicy` named
+  `prevent-linkerd-port-skipping` in `spec.policyRefs`, and narrow the exception with
+  `spec.matchConditions` using the exact request identity.
+  This policy uses a resource-scoped exception, so no `spec.images` or
+  `spec.allowedValues` entry is needed.
+  See the [tested example](https://github.com/kyverno/policies/blob/main/linkerd-vpol/prevent-linkerd-port-skipping/.kyverno-test/exceptions.yaml).
+  With PolicyException support disabled, or when no exception matches, the
+  policy keeps its normal enforcement behavior.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Linkerd in CEL"
+  kyverno/kubernetesVersion: "1.34-1.35"
+  kyverno/subject: "Pod"
+digest: 44bd9ec612d1dc54256386e9b48386a4381bffab04e8d43063906aac41cec057
+createdAt: "2026-11-22T05:23:18Z"

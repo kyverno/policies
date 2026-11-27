@@ -1,0 +1,12 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: prevent-linkerd-port-skipping-exception
+  namespace: policy-exceptions
+spec:
+  policyRefs:
+  - kind: ValidatingPolicy
+    name: prevent-linkerd-port-skipping
+  matchConditions:
+  - name: exact-resource
+    expression: request.namespace == 'default' && request.name == 'badpod01'

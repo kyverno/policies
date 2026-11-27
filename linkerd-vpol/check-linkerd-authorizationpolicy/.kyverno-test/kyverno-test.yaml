@@ -1,0 +1,42 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: check-linkerd-authorizationpolicy
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../check-linkerd-authorizationpolicy.yaml
+resources:
+- ../.chainsaw-test/good-authz.yaml
+- ../.chainsaw-test/bad-authz.yaml
+- edge-resources.yaml
+results:
+- isValidatingPolicy: true
+  policy: check-linkerd-authorizationpolicy
+  kind: AuthorizationPolicy
+  resources:
+  - good-policy01
+  - good-policy02
+  result: pass
+- isValidatingPolicy: true
+  policy: check-linkerd-authorizationpolicy
+  kind: AuthorizationPolicy
+  resources:
+  - bad-policy01
+  - bad-policy02
+  result: fail
+# Only Servers and HTTPRoutes in the AuthorizationPolicy's Namespace count.
+- isValidatingPolicy: true
+  policy: check-linkerd-authorizationpolicy
+  kind: AuthorizationPolicy
+  resources:
+  - edge-good-same-namespace
+  result: pass
+# A Namespace target fails, like in the legacy policy.
+- isValidatingPolicy: true
+  policy: check-linkerd-authorizationpolicy
+  kind: AuthorizationPolicy
+  resources:
+  - edge-bad-other-namespace
+  - edge-bad-namespace-target
+  result: fail

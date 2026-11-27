@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: ingress
+  name: ld-meshinj-edge-badns01
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: Enabled
+  name: ld-meshinj-edge-badns02
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: enabled
+  labels:
+    linkerd.io/inject: disabled
+  name: ld-meshinj-edge-goodns01

@@ -1,0 +1,10 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: prevent-linkerd-pod-injection-override-exceptions}
+policies: [../prevent-linkerd-pod-injection-override.yaml]
+resources: [../.chainsaw-test/bad-pod.yaml, ../.chainsaw-test/bad-podcontrollers.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, policy: prevent-linkerd-pod-injection-override, kind: Pod, resources: [badpod01], result: skip}
+- {isValidatingPolicy: true, policy: prevent-linkerd-pod-injection-override, kind: Deployment, resources: [baddeploy01], result: fail}
+- {isValidatingPolicy: true, policy: prevent-linkerd-pod-injection-override, kind: CronJob, resources: [badcronjob01], result: fail}

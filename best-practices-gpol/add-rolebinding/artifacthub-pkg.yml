@@ -3,17 +3,34 @@ version: 1.0.0
 displayName: Add RoleBinding
 createdAt: "2023-04-10T19:47:15.000Z"
 description: >-
-  Typically in multi-tenancy and other use cases, when a new Namespace is created, users and other principals must be given some permissions to create and interact with resources in the Namespace. Very commonly, Roles and RoleBindings are used to grant permissions at the Namespace level. This policy generates a RoleBinding called `<userName>-admin-binding` in the new Namespace which binds to the ClusterRole `admin` as long as a `cluster-admin` did not create the Namespace. Additionally, an annotation named `kyverno.io/user` is added to the RoleBinding recording the name of the user responsible for the Namespace's creation.
+  Typically in multi-tenancy and other use cases, when a new Namespace is created, users and other principals must be given some permissions to create and interact with resources in the Namespace. Very commonly, Roles and RoleBindings are used to grant permissions at the Namespace level. This policy generates a RoleBinding called `<userName>-admin-binding` in the new Namespace which binds to the ClusterRole `admin` as long as a `cluster-admin` did not create the Namespace. Additionally, an annotation named `kyverno.io/user` is added to the RoleBinding recording the name of the user responsible for the Namespace's creation. The policy also runs when a Namespace is updated, and skips requesters that a ClusterRoleBinding, or a RoleBinding in that Namespace, binds to the ClusterRole `cluster-admin`.
 install: |-
   ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-gpol/add-rolebinding/rbac.yaml
   kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/best-practices-gpol/add-rolebinding/add-rolebinding.yaml
   ```
 keywords:
   - kyverno
   - Multi-Tenancy
 readme: |
-  Typically in multi-tenancy and other use cases, when a new Namespace is created, users and other principals must be given some permissions to create and interact with resources in the Namespace. Very commonly, Roles and RoleBindings are used to grant permissions at the Namespace level. This policy generates a RoleBinding called `<userName>-admin-binding` in the new Namespace which binds to the ClusterRole `admin` as long as a `cluster-admin` did not create the Namespace. Additionally, an annotation named `kyverno.io/user` is added to the RoleBinding recording the name of the user responsible for the Namespace's creation.
+  Typically in multi-tenancy and other use cases, when a new Namespace is created, users and other principals must be given some permissions to create and interact with resources in the Namespace. Very commonly, Roles and RoleBindings are used to grant permissions at the Namespace level. This policy generates a RoleBinding called `<userName>-admin-binding` in the new Namespace which binds to the ClusterRole `admin` as long as a `cluster-admin` did not create the Namespace. Additionally, an annotation named `kyverno.io/user` is added to the RoleBinding recording the name of the user responsible for the Namespace's creation. The policy also runs when a Namespace is updated, and skips requesters that a ClusterRoleBinding, or a RoleBinding in that Namespace, binds to the ClusterRole `cluster-admin`.
   
+  ### Required RBAC
+
+  The policy finds the requester's `cluster-admin` bindings with `resource.List`, so the Kyverno admission and background controllers must be able to read RoleBindings and ClusterRoleBindings. The background controller also needs the `bind` verb on the ClusterRole `admin` to create the generated RoleBinding. The install command applies `rbac.yaml`, which grants these permissions through aggregated ClusterRoles.
+
+  Without the read permissions, the policy can't evaluate its `cluster-admin` check and generates no RoleBinding. The background controller logs the denied request.
+
+  ### Excluding cluster-admin
+
+  A GeneratingPolicy can't read the requester's roles from the request, so the policy lists the bindings itself. It skips a requester when a ClusterRoleBinding, or a RoleBinding in the target Namespace, binds the ClusterRole `cluster-admin` to the requester's user name, to one of their groups, or to their ServiceAccount. This matches how the legacy `exclude.clusterRoles` matched subjects.
+
+  ### Updates and synchronization
+
+  Kyverno keeps the generated RoleBinding synchronized with the Namespace that triggered it. Each create or update by a user who isn't a `cluster-admin` generates a RoleBinding for that user, and synchronization replaces the RoleBinding that an earlier request generated. An update by a `cluster-admin` is skipped, and the RoleBinding that the policy generated earlier is deleted. As a result, the Namespace keeps at most one generated RoleBinding, for the last user who created or updated it.
+
+  Any user who can update a Namespace, for example by adding a label, gets the ClusterRole `admin` in that Namespace, and the RoleBinding of the previous user is removed. Restrict the `update` and `patch` verbs on Namespaces to users who should administer them.
+
   ### Fine-grained PolicyException use
 
   Enable PolicyException support in Kyverno, reference the `GeneratingPolicy` named
@@ -29,4 +46,4 @@ readme: |
 annotations:
   kyverno/category: "Multi-Tenancy"
   kyverno/subject: "RoleBinding"
-digest: 6f4d60898d5c884138ff8466d415783919f14969d9b8961867237d1af978a19d
+digest: 3873c16c3162db542453cec8c646f18681f05ea85036b1a977665f56c59e65e5

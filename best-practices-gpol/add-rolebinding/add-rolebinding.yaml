@@ -15,7 +15,9 @@ metadata:
       called `<userName>-admin-binding` in the new Namespace which binds to the ClusterRole
       `admin` as long as a `cluster-admin` did not create the Namespace. Additionally, an annotation
       named `kyverno.io/user` is added to the RoleBinding recording the name of the user responsible
-      for the Namespace's creation.
+      for the Namespace's creation. The policy also runs when a Namespace is updated, and skips
+      requesters that a ClusterRoleBinding, or a RoleBinding in that Namespace, binds to the
+      ClusterRole `cluster-admin`.
 spec:
   evaluation:
     synchronize:
@@ -26,11 +28,24 @@ spec:
     resourceRules:
       - apiGroups: [""]
         apiVersions: ["v1"]
-        operations: ["CREATE"]
+        operations: ["CREATE", "UPDATE"]
         resources: ["namespaces"]
   matchConditions:
+    # Skip requesters bound to cluster-admin, matching subjects the way the
+    # legacy exclude.clusterRoles did: by user, group, or service account.
     - name: exclude-cluster-admin
-      expression: "!('cluster-admin' in request.userInfo.?groups.orValue([]))"
+      expression: >-
+        !cel.bind(user, request.userInfo.username,
+          cel.bind(groups, request.userInfo.?groups.orValue([]),
+            (resource.List('rbac.authorization.k8s.io/v1', 'clusterrolebindings', '').items +
+              resource.List('rbac.authorization.k8s.io/v1', 'rolebindings', object.metadata.name).items)
+            .exists(b, dyn(b).roleRef.kind == 'ClusterRole' && dyn(b).roleRef.name == 'cluster-admin' &&
+              dyn(b).?subjects.orValue([]).exists(s,
+                (s.kind == 'User' && s.name == user) ||
+                (s.kind == 'Group' && s.name in groups) ||
+                (s.kind == 'ServiceAccount' &&
+                  user == 'system:serviceaccount:' +
+                    s.?namespace.orValue(dyn(b).metadata.?namespace.orValue('')) + ':' + s.name)))))
   variables:
     - name: targetNs
       expression: "object.metadata.name"

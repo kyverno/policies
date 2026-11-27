@@ -1,0 +1,74 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: require-linkerd-server
+clusterResources:
+- clusterresources.yaml
+policies:
+- ../require-linkerd-server.yaml
+resources:
+- ../.chainsaw-test/good-deploy.yaml
+- ../.chainsaw-test/good-svc.yaml
+- ../.chainsaw-test/bad-deploy.yaml
+- ../.chainsaw-test/bad-svc.yaml
+- edge-resources.yaml
+results:
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Deployment
+  resources:
+  - gooddeploy01
+  - gooddeploy02
+  - gooddeploy03
+  result: pass
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Service
+  resources:
+  - goodsvc01
+  result: pass
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Deployment
+  resources:
+  - baddeploy01
+  - baddeploy02
+  result: fail
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Service
+  resources:
+  - badsvc01
+  result: fail
+# Extra Pod labels are fine, every matchLabels entry must match, and ports
+# only in init containers don't count.
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Deployment
+  resources:
+  - edge-good-superset
+  - edge-good-multi
+  - edge-good-init-ports
+  result: pass
+# A partial label match, a matchExpressions-only Server, and a Server in
+# another Namespace don't count.
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Deployment
+  resources:
+  - edge-bad-partial
+  - edge-bad-expr-only
+  - edge-bad-other-namespace
+  result: fail
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Service
+  resources:
+  - edge-good-multi
+  result: pass
+- isValidatingPolicy: true
+  policy: require-linkerd-server
+  kind: Service
+  resources:
+  - edge-bad-no-selector
+  result: fail

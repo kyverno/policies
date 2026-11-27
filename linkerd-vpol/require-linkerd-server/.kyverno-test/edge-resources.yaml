@@ -1,0 +1,147 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-good-superset
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: bbserver
+  template:
+    metadata:
+      labels:
+        app: bbserver
+        tier: web
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-good-multi
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: multi
+  template:
+    metadata:
+      labels:
+        app: multi
+        tier: db
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-good-init-ports
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: noserver
+  template:
+    metadata:
+      labels:
+        app: noserver
+    spec:
+      initContainers:
+      - name: init
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-bad-partial
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: multi
+  template:
+    metadata:
+      labels:
+        app: multi
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-bad-expr-only
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: expr
+  template:
+    metadata:
+      labels:
+        app: expr
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edge-bad-other-namespace
+  namespace: team-b
+spec:
+  selector:
+    matchLabels:
+      app: bbserver
+  template:
+    metadata:
+      labels:
+        app: bbserver
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:1.35
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-good-multi
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: multi
+    tier: db
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edge-bad-no-selector
+  namespace: default
+spec:
+  ports:
+  - port: 80
+    targetPort: 80

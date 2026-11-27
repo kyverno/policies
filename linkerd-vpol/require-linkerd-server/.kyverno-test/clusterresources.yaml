@@ -1,0 +1,42 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: clusterresources
+spec:
+  crds:
+  - ../.kyverno-test/crds/servers.yaml
+  resources:
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: Server
+    metadata:
+      name: reqserver
+      namespace: default
+    spec:
+      podSelector:
+        matchLabels:
+          app: bbserver
+      port: grpc
+      proxyProtocol: gRPC
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: Server
+    metadata:
+      name: multi
+      namespace: default
+    spec:
+      podSelector:
+        matchLabels:
+          app: multi
+          tier: db
+      port: 5432
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: Server
+    metadata:
+      name: expr-only
+      namespace: default
+    spec:
+      podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: [expr]
+      port: 8080

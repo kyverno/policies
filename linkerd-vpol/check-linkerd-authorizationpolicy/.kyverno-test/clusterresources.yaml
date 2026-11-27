@@ -1,0 +1,46 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: ClusterResource
+metadata:
+  name: clusterresources
+spec:
+  crds:
+  - ../.kyverno-test/crds/authorizationpolicies.yaml
+  - ../.kyverno-test/crds/servers.yaml
+  - ../.kyverno-test/crds/httproutes.yaml
+  resources:
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: Server
+    metadata:
+      name: authors
+      namespace: default
+    spec:
+      podSelector:
+        matchLabels:
+          app: emoji-svc
+      port: grpc
+      proxyProtocol: gRPC
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: HTTPRoute
+    metadata:
+      name: authors-get-route
+      namespace: default
+    spec:
+      parentRefs:
+      - name: authors-server
+        kind: Server
+        group: policy.linkerd.io
+      rules:
+      - matches:
+        - path:
+            value: "/authors.json"
+          method: GET
+  - apiVersion: policy.linkerd.io/v1beta1
+    kind: Server
+    metadata:
+      name: remote
+      namespace: team-b
+    spec:
+      podSelector:
+        matchLabels:
+          app: remote
+      port: http

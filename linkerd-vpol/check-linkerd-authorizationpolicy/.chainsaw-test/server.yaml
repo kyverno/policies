@@ -1,0 +1,10 @@
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  name: authors
+spec:
+  podSelector:
+    matchLabels:
+      app: emoji-svc
+  port: grpc
+  proxyProtocol: gRPC

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    foo: bar
+    linkerd.io/inject: enabled
+  name: ld-meshinj-goodns01
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    linkerd.io/inject: enabled
+    foo: bar
+  name: ld-meshinj-goodns02

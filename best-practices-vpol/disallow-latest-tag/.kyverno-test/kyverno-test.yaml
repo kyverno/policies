@@ -48,6 +48,8 @@ results:
   resources:
   - init-latest-pod
   - ephemeral-latest-pod
+  - init-untagged-pod
+  - ephemeral-untagged-pod
   result: fail
 - isValidatingPolicy: true
   kind: Deployment

@@ -1,0 +1,53 @@
+apiVersion: policies.kyverno.io/v1
+kind: GeneratingPolicy
+metadata:
+  name: generate-networkpolicy-existing
+  annotations:
+    policies.kyverno.io/title: Generate NetworkPolicy to Existing Namespaces
+    policies.kyverno.io/category: Other
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Namespace, NetworkPolicy
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/description: >-
+      A NetworkPolicy is often a critical piece when provisioning new Namespaces,
+      but there may be existing Namespaces which also need the same resource. Creating
+      each one individually or manipulating each Namespace in order to trigger creation
+      is additional overhead. This policy creates a new NetworkPolicy for existing
+      Namespaces which results in a default deny behavior and labels it with created-by=kyverno.
+spec:
+  evaluation:
+    synchronize:
+      enabled: true
+    generateExisting:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["namespaces"]
+  variables:
+    - name: targetNs
+      expression: "object.metadata.name"
+    - name: downstream
+      expression: >-
+        [
+          {
+            "kind": dyn("NetworkPolicy"),
+            "apiVersion": dyn("networking.k8s.io/v1"),
+            "metadata": dyn({
+              "name": "default-deny",
+              "labels": dyn({
+                "created-by": "kyverno"
+              })
+            }),
+            "spec": dyn({
+              "podSelector": dyn({}),
+              "policyTypes": dyn(["Egress"])
+            })
+          }
+        ]
+  generate:
+    - expression: generator.Apply(variables.targetNs, variables.downstream)

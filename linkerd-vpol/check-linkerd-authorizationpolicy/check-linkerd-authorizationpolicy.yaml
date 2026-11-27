@@ -1,0 +1,48 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: check-linkerd-authorizationpolicy
+  annotations:
+    policies.kyverno.io/title: Check Linkerd AuthorizationPolicy in CEL expressions
+    policies.kyverno.io/category: Linkerd in CEL
+    policies.kyverno.io/severity: medium
+    kyverno.io/kyverno-version: 1.17.0
+    policies.kyverno.io/minversion: 1.17.0
+    kyverno.io/kubernetes-version: "1.34-1.35"
+    policies.kyverno.io/subject: AuthorizationPolicy
+    policies.kyverno.io/description: >-
+      As of Linkerd 2.12, an AuthorizationPolicy is a resource used to selectively allow traffic
+      to either a Server or HTTPRoute resource. Creating AuthorizationPolicies is needed when
+      a Server exists in order to control what traffic is permitted within the mesh to the Pods
+      selected by the Server or HTTPRoute. This policy, requiring Linkerd 2.12+, checks incoming
+      AuthorizationPolicy resources to ensure that either a matching Server or HTTPRoute exists
+      first.
+spec:
+  validationActions:
+    - Audit
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [policy.linkerd.io]
+        apiVersions: [v1alpha1]
+        operations: [CREATE, UPDATE]
+        resources: [authorizationpolicies]
+  variables:
+    - name: servers
+      expression: >-
+        resource.List('policy.linkerd.io/v1beta1', 'servers', object.metadata.namespace).?items.orValue([])
+    - name: httproutes
+      expression: >-
+        resource.List('policy.linkerd.io/v1beta1', 'httproutes', object.metadata.namespace).?items.orValue([])
+    - name: targetName
+      expression: "object.spec.?targetRef.?name.orValue('')"
+  validations:
+    - expression: >-
+        variables.servers.exists(s, s.metadata.name == variables.targetName) ||
+        variables.httproutes.exists(r, r.metadata.name == variables.targetName)
+      messageExpression: >-
+        'Server or HTTPRoute not found for this AuthorizationPolicy. No Server or
+        HTTPRoute named ' + variables.targetName + ' exists in Namespace ' +
+        object.metadata.namespace + '.'

@@ -1,0 +1,10 @@
+apiVersion: policy.linkerd.io/v1beta1
+kind: Server
+metadata:
+  name: reqserver
+spec:
+  podSelector:
+    matchLabels:
+      app: bbserver
+  port: grpc
+  proxyProtocol: gRPC

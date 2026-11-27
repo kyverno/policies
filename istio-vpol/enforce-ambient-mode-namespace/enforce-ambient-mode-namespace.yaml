@@ -1,0 +1,30 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: enforce-ambient-mode-namespace
+  annotations:
+    policies.kyverno.io/title: Enforce Istio Ambient Mode in ValidatingPolicy
+    policies.kyverno.io/category: Istio in ValidatingPolicy
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/minversion: 1.19.1
+    kyverno.io/kubernetes-version: "1.30+"
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      In order for Istio to include namespaces in ambient mode, the label
+      `istio.io/dataplane-mode` must be set to `ambient`. This policy checks that
+      Namespaces have this label set to `ambient` and reports violations in Audit mode.
+spec:
+  validationActions: [Audit]
+  evaluation:
+    background:
+      enabled: true
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["namespaces"]
+  validations:
+    - expression: >-
+        object.metadata.?labels[?'istio.io/dataplane-mode'].orValue('') == 'ambient'
+      message: "The Namespace must have label istio.io/dataplane-mode set to ambient."

@@ -1,0 +1,11 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata: {name: require-linkerd-server-exceptions}
+clusterResources: [../.kyverno-test/clusterresources.yaml]
+policies: [../require-linkerd-server.yaml]
+resources: [../.chainsaw-test/bad-deploy.yaml, ../.chainsaw-test/bad-svc.yaml]
+exceptions: [../.kyverno-test/exceptions.yaml]
+results:
+- {isValidatingPolicy: true, policy: require-linkerd-server, kind: Deployment, resources: [baddeploy01], result: skip}
+- {isValidatingPolicy: true, policy: require-linkerd-server, kind: Deployment, resources: [baddeploy02], result: fail}
+- {isValidatingPolicy: true, policy: require-linkerd-server, kind: Service, resources: [badsvc01], result: fail}

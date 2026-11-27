@@ -23,6 +23,12 @@ results:
 - kind: Service
   policy: restrict-external-ips
   resources:
+  - badservice03
+  result: fail
+  isValidatingPolicy: true
+- kind: Service
+  policy: restrict-external-ips
+  resources:
   - goodservice01
   result: pass
   isValidatingPolicy: true
