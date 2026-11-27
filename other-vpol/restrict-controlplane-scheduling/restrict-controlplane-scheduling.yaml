@@ -13,7 +13,8 @@ metadata:
       because it takes away resources from the control plane components and can represent
       a possible security threat vector. This policy prevents users from setting a toleration
       in a Pod spec which allows running on control plane nodes
-      with the taint key `node-role.kubernetes.io/master`.
+      with the taint key `node-role.kubernetes.io/master`. A toleration with an empty or
+      missing key and operator `Exists` matches every taint, so it is rejected as well.
 spec:
   validationActions: 
     - Audit
@@ -30,7 +31,7 @@ spec:
     - expression: >-
         !has(object.spec.tolerations) || 
         !object.spec.tolerations.exists(toleration,
-          (!has(toleration.key) ||
+          (toleration.?key.orValue('') == '' ||
           toleration.key in ['node-role.kubernetes.io/master', 'node-role.kubernetes.io/control-plane']) &&
           !exceptions.allowedValues.exists(value, value == 'toleration:' + toleration.?key.orValue('')))
       message: Pods may not use tolerations which schedule on control plane nodes.

@@ -16,6 +16,7 @@ results:
   - default/badpod01
   - default/badpod02
   - default/badpod-keyless
+  - default/badpod-empty-key
   result: fail
 - isValidatingPolicy: true
   kind: Pod
@@ -24,6 +25,5 @@ results:
   - default/goodpod01
   - default/goodpod02
   - default/goodpod-no-tolerations
-  - default/goodpod-empty-key
   - default/exception-controlplane
   result: pass
