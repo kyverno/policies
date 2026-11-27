@@ -1,0 +1,96 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Context
+metadata:
+  name: context
+spec:
+  resources:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: busybox
+      namespace: default
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: busybox
+      template:
+        metadata:
+          labels:
+            app: busybox
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:latest
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: other-busybox
+      namespace: other
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: other-busybox
+      template:
+        metadata:
+          labels:
+            app: other-busybox
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:latest
+  - apiVersion: apps/v1
+    kind: DaemonSet
+    metadata:
+      name: ds-busybox
+      namespace: default
+    spec:
+      selector:
+        matchLabels:
+          app: ds-busybox
+      template:
+        metadata:
+          labels:
+            app: ds-busybox
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:latest
+  - apiVersion: apps/v1
+    kind: StatefulSet
+    metadata:
+      name: ss-busybox
+      namespace: default
+    spec:
+      replicas: 0
+      serviceName: ss-busybox
+      selector:
+        matchLabels:
+          app: ss-busybox
+      template:
+        metadata:
+          labels:
+            app: ss-busybox
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:latest
+  - apiVersion: apps/v1
+    kind: ReplicaSet
+    metadata:
+      name: rs-busybox
+      namespace: default
+    spec:
+      replicas: 0
+      selector:
+        matchLabels:
+          app: rs-busybox
+      template:
+        metadata:
+          labels:
+            app: rs-busybox
+        spec:
+          containers:
+          - name: busybox
+            image: ghcr.io/kyverno/test-busybox:latest

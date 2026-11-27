@@ -1,0 +1,23 @@
+name: verify-vpa-target-vpol
+version: 1.0.0
+displayName: Verify VerticalPodAutoscaler Target in ValidatingPolicy
+description: >-
+  VerticalPodAutoscaler (VPA) is useful to automatically adjust the resources assigned to Pods. It requires defining a specific target resource by kind and name. There are no built-in validation checks by the VPA controller to ensure that the target resource exists or that the target kind is specified correctly. This policy has two checks. The first verifies that the kind is specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet, which helps avoid typos. The second verifies that the target resource exists in the same namespace before allowing the VPA to be created.
+install: |-
+  ```shell
+  kubectl apply -f https://raw.githubusercontent.com/kyverno/policies/main/other-vpol/verify-vpa-target/verify-vpa-target.yaml
+  ```
+keywords:
+  - kyverno
+  - Other
+  - ValidatingPolicy
+readme: |
+  VerticalPodAutoscaler (VPA) is useful to automatically adjust the resources assigned to Pods. It requires defining a specific target resource by kind and name. There are no built-in validation checks by the VPA controller to ensure that the target resource exists or that the target kind is specified correctly. This policy has two checks. The first verifies that the kind is specified exactly as Deployment, StatefulSet, ReplicaSet, or DaemonSet, which helps avoid typos. The second verifies that the target resource exists in the same namespace before allowing the VPA to be created.
+
+  Refer to the documentation for more details on Kyverno annotations: https://artifacthub.io/docs/topics/annotations/kyverno/
+annotations:
+  kyverno/category: "Other in Vpol"
+  kyverno/kubernetesVersion: "1.34-1.37"
+  kyverno/subject: "VerticalPodAutoscaler"
+digest: 3c54514f9c92bd44323f96ae4e5b0af6ff964a9a781d6a920cd83a2e81b21c18
+createdAt: "2026-10-29T11:19:57Z"

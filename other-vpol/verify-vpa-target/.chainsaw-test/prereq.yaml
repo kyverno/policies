@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3000"
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ds-busybox
+spec:
+  selector:
+    matchLabels:
+      app: ds-busybox
+  template:
+    metadata:
+      labels:
+        app: ds-busybox
+    spec:
+      # No node carries this label, so the DaemonSet runs no Pods and pulls no image.
+      nodeSelector:
+        kyverno.io/verify-vpa-target: unschedulable
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3000"
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: ss-busybox
+spec:
+  replicas: 0
+  serviceName: ss-busybox
+  selector:
+    matchLabels:
+      app: ss-busybox
+  template:
+    metadata:
+      labels:
+        app: ss-busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3000"
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-busybox
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: rs-busybox
+  template:
+    metadata:
+      labels:
+        app: rs-busybox
+    spec:
+      containers:
+      - name: busybox
+        image: ghcr.io/kyverno/test-busybox:latest
+        command:
+        - sleep
+        - "3000"

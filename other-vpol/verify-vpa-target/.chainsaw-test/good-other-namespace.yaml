@@ -1,0 +1,12 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: good-other-namespace
+  namespace: verify-vpa-target-other
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: other-busybox
+  updatePolicy:
+    updateMode: Auto

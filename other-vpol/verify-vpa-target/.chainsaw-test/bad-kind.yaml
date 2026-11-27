@@ -1,0 +1,23 @@
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad01
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Foo
+    name: foobar
+  updatePolicy:
+    updateMode: Auto
+---
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: bad02
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: deployment
+    name: busybox
+  updatePolicy:
+    updateMode: Auto
