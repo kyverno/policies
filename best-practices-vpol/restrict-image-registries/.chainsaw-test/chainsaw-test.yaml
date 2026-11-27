@@ -93,4 +93,7 @@ spec:
     - delete:
         file: rbac-ephemeralcontainers-reports.yaml
     - script:
-        content: kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+        content: |
+          kubectl delete deployments,cronjobs --all --wait=false -n ir-pods-namespace
+          kubectl delete pods --all --force --grace-period=0 -n ir-pods-namespace
+
