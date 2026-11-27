@@ -1,0 +1,62 @@
+apiVersion: cli.kyverno.io/v1alpha1
+kind: Test
+metadata:
+  name: unique-external-dns
+policies:
+  - ../require-unique-external-dns.yaml
+resources:
+  - resource.yaml
+context: context.yaml
+# Self-exclusion (same Namespace and name) is covered by the Chainsaw test.
+# The CLI assigns namespaced resources to "default", while the fake context
+# provider stores namespaceless resources under ""; a self-update cannot be
+# represented faithfully in this CLI fixture.
+#
+# Behavior changes from the legacy AnyIn comparison, covered here:
+# - exact match only: foo.wild.example.com is allowed when *.wild.example.com
+#   exists, while an exact *.wild.example.com duplicate is denied;
+# - empty "" values are allowed even when duplicated;
+# - Services without the annotation are skipped by matchConditions.
+results:
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - bad-svc
+    result: fail
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - good-svc
+    result: pass
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - no-annotation-svc
+    result: skip
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - empty-annotation-svc
+    result: pass
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - wildcard-pass-svc
+    result: pass
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - wildcard-fail-svc
+    result: fail
+  - isValidatingPolicy: true
+    kind: Service
+    policy: unique-external-dns
+    resources:
+      - empty-duplicate-svc
+    result: pass
