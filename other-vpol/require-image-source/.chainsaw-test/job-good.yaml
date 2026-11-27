@@ -1,0 +1,16 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: source-good-job
+spec:
+  template:
+    metadata:
+      labels:
+        app: source-good-job
+    spec:
+      nodeSelector:
+        kyverno.io/chainsaw-admission-only: "true"
+      containers:
+        - name: app
+          image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
+      restartPolicy: Never

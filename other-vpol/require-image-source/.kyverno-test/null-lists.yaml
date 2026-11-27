@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-null-init
+spec:
+  initContainers: null
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: good-null-ephemeral
+spec:
+  ephemeralContainers: null
+  containers:
+  - name: app
+    image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-null-lists
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: bad-null-lists
+  template:
+    metadata:
+      labels:
+        app: bad-null-lists
+    spec:
+      initContainers: null
+      ephemeralContainers: null
+      containers:
+      - name: app
+        image: ghcr.io/kyverno/test-verify-image@sha256:74a98f0e4d750c9052f092a7f7a72de7b20f94f176a490088f7a744c76c53ea5

@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: source-good-daemonset
+spec:
+  selector:
+    matchLabels:
+      app: source-good-daemonset
+  template:
+    metadata:
+      labels:
+        app: source-good-daemonset
+    spec:
+      nodeSelector:
+        kyverno.io/chainsaw-admission-only: "true"
+      containers:
+        - name: app
+          image: ghcr.io/kyverno/kyverno-annotations-example@sha256:2910cb73213d60c4166138c8c2220290a636bc82d16f6990c62e8830f57f2d11
