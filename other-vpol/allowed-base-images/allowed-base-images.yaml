@@ -20,8 +20,8 @@ metadata:
 spec:
   evaluation:
     background:
-      enabled: false
-  validationActions: ["Warn", "Audit"]
+      enabled: true
+  validationActions: [Audit]
   variables:
     - name: baseImageConfigMap
       expression: 'resource.Get("v1", "configmaps", "platform", "baseimages")'
